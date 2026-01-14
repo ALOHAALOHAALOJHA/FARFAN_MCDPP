@@ -2,14 +2,61 @@
 
 ## Overview
 
-This document describes the calibration layer infrastructure implementing the F.A.R.F.A.N epistemic calibration system.
+This document describes the calibration layer infrastructure implementing the F.A.R.F.A.N epistemic calibration system with **unified single-regime architecture**.
 
-**Schema Version:** 2.0.0  
-**Last Updated:** 2026-01-05
+**Schema Version:** 3.0.0
+**Last Updated:** 2026-01-14
 
 ## Purpose
 
 The calibration layer provides foundational types and data structures for calibration within the F.A.R.F.A.N epistemic regime. It operates **within** the existing epistemic framework (N1-EMP, N2-INF, N3-AUD), not parallel to it.
+
+## Unified Calibration Regime (NEW in v3.0)
+
+**ARCHITECTURAL PRINCIPLE:** Single regime with distinct calibration layer that feeds manifests to both Phase 1 (ingestion) and Phase 2 (computation), sharing taxonomies and invariants.
+
+### Key Features
+
+1. **Phase 1 Calibration (UoA-First)**
+   - Tight bounds derived from UoA characteristics
+   - UoA-derived priors based on complexity score
+   - Ingestion-only defaults (chunk size, coverage target)
+   - Short validity windows (30-180 days, default 90 days)
+
+2. **Phase 2 Calibration (Interaction-Aware)**
+   - Role→layer activation via ROLE_LAYER_REQUIREMENTS matrix
+   - Method-binding validation before orchestrator decisions
+   - Veto thresholds adjusted for interaction density
+   - Fusion rules enforced via TYPE-specific prohibited operations
+   - Longer validity windows (180-730 days, default 365 days)
+
+3. **Granularity Requirements**
+   - Per-method docstrings with "Unit of Analysis Requirements"
+   - Epistemic level metadata (N1/N2/N3)
+   - Fusion strategy documentation
+   - Contract-level verbosity with canonical variable commentary
+   - Each field anchored to single invariant source with cross-references
+
+4. **Interaction Governance**
+   - Explicit role/layer matrices (ROLE_LAYER_REQUIREMENTS)
+   - Prohibited operations lists per TYPE
+   - Bounded fusion strategies (multiplicative fusion in [0.01, 10.0])
+   - Mandatory method_binding_validator checks before composition
+
+5. **Auditability**
+   - Immutable calibration manifests with deterministic SHA-256 hashes
+   - Rationale and evidence links for all parameters
+   - Drift reports with severity classification
+   - INV-CAL-00x auditor specifications (21+ invariants)
+   - Grep-based enforcement for missing UoA documentation
+
+6. **Sensitivity Factors**
+   - UoA signals (complexity score, fiscal context, policy area count)
+   - Cognitive cost (higher cost → stronger priors, stricter veto)
+   - Interaction density caps per TYPE
+   - Veto thresholds per TYPE
+   - Validity windows with expiry tracking
+   - Coverage/dispersion/contradiction penalties
 
 ## Architecture
 
@@ -17,21 +64,31 @@ The calibration layer provides foundational types and data structures for calibr
 
 ```
 src/farfan_pipeline/infrastructure/calibration/
-├── __init__.py                    # Public API (Facade pattern)
-├── calibration_core.py            # Frozen core types with invariants
-├── type_defaults.py               # TYPE-specific defaults (Flyweight cached)
-├── unit_of_analysis.py            # Municipal unit characterization
-├── ingestion_calibrator.py        # N1-EMP calibration (Strategy pattern)
-├── phase2_calibrator.py           # N2-INF calibration (TYPE constraints)
-├── method_binding_validator.py    # Chain of Responsibility validation
-├── calibration_manifest.py        # Audit trail (Memento pattern)
-├── calibration_auditor.py         # N3-AUD veto gate (Specification pattern)
-├── interaction_governor.py        # Bounded fusion, veto cascades
-├── fact_registry.py               # Deduplication with verbosity control
-└── README.md                      # This documentation
+├── __init__.py                       # Public API (Facade pattern)
+├── calibration_core.py               # Frozen core types with invariants
+├── calibration_types.py              # Orchestrator API types (LayerId, CalibrationResult)
+├── calibration_regime.py             # ** NEW ** Unified single-regime architecture
+├── calibration_manifest.py           # Audit trail (Memento pattern)
+├── calibration_auditor.py            # N3-AUD veto gate (Specification pattern)
+├── cognitive_cost.py                 # ** NEW ** Cognitive cost estimation
+├── interaction_density.py            # ** NEW ** Interaction density tracking
+├── drift_detector.py                 # ** NEW ** Comprehensive drift detection
+├── inv_specifications.py             # ** NEW ** INV-CAL-00x specifications
+├── type_defaults.py                  # TYPE-specific defaults (Flyweight cached)
+├── unit_of_analysis.py               # Municipal unit characterization
+├── ingestion_calibrator.py           # N1-EMP calibration (Strategy pattern)
+├── phase2_calibrator.py              # N2-INF calibration (TYPE constraints)
+├── method_binding_validator.py       # Chain of Responsibility validation
+├── interaction_governor.py           # Bounded fusion, veto cascades
+├── fact_registry.py                  # Deduplication with verbosity control
+├── decorators.py                     # Calibration decorators
+├── parameters.py                     # Runtime parameter loading
+├── canonical_specs.py                # Specification implementations
+└── README.md                         # This documentation
 
-src/farfan_pipeline/phases/Phase_two/
-└── phase2_60_04_calibration_policy.py  # Policy facade (wired to infrastructure)
+src/farfan_pipeline/phases/Phase_2/
+├── phase2_60_04_calibration_policy.py              # Policy facade
+└── phase2_95_03_executor_calibration_integration.py # Executor integration
 ```
 
 ### Wiring Diagram
@@ -83,6 +140,54 @@ phases/Phase_two/phase2_60_04_calibration_policy.py ← Policy facade (Calibrati
 
 ## Invariants Enforced
 
+### Core Calibration Invariants (INV-CAL-001 to INV-CAL-010)
+
+| Invariant ID | Description | Enforcement | Grep Pattern |
+|--------------|-------------|-------------|--------------|
+| INV-CAL-001 | Prior strength within TYPE-specific bounds | `CalibrationParameter.__post_init__` | `INV-CAL-001.*prior_strength.*bounds` |
+| INV-CAL-002 | Veto threshold within TYPE-specific bounds | `CalibrationParameter.__post_init__` | `INV-CAL-002.*veto_threshold.*bounds` |
+| INV-CAL-003 | No prohibited operations in fusion strategy | `Phase2Calibrator.calibrate` | `INV-CAL-003.*prohibited.*operations` |
+| INV-CAL-004 | Validity window ≤ UoA.data_validity_days | `UnifiedCalibrationRegime._create_phase1_layer` | `INV-CAL-004.*validity.*UoA` |
+| INV-CAL-005 | Cognitive cost factored into prior strength | `UnifiedCalibrationRegime._create_phase1_layer` | `INV-CAL-005.*cognitive.*cost.*prior` |
+| INV-CAL-006 | Interaction density capped per TYPE | `InteractionDensityTracker.compute_density` | `INV-CAL-006.*interaction.*density.*cap` |
+| INV-CAL-007 | Manifests immutable and deterministically hashed | `UnifiedCalibrationManifest.__post_init__` | `INV-CAL-007.*immutable.*manifest.*hash` |
+| INV-CAL-008 | Drift reports generated on parameter changes | `DriftDetector.detect_drift` | `INV-CAL-008.*drift.*report` |
+| INV-CAL-009 | Coverage and dispersion penalties applied | `DriftDetector._check_coverage_penalty` | `INV-CAL-009.*coverage.*dispersion.*penalty` |
+| INV-CAL-010 | Contradiction penalties enforced | `DriftDetector._detect_contradictions` | `INV-CAL-010.*contradiction.*penalty` |
+
+### Unit of Analysis Invariants (INV-CAL-011 to INV-CAL-012)
+
+| Invariant ID | Description | Enforcement |
+|--------------|-------------|-------------|
+| INV-CAL-011 | UoA complexity score ∈ [0.0, 1.0] | `UnitOfAnalysis.complexity_score` |
+| INV-CAL-012 | Municipality code matches pattern [A-Z]{2,6}-[0-9]{4,12} | `UnitOfAnalysis.__post_init__` |
+
+### Method Binding Invariants (INV-CAL-013 to INV-CAL-015)
+
+| Invariant ID | Description | Enforcement |
+|--------------|-------------|-------------|
+| INV-CAL-013 | N1:N2:N3 ratios match TYPE requirements | `MethodBindingValidator._validate_layer_ratios` |
+| INV-CAL-014 | Mandatory patterns present per TYPE | `MethodBindingValidator._validate_mandatory_patterns` |
+| INV-CAL-015 | Dependency chain validity (N2.requires ⊆ N1.provides) | `MethodBindingValidator._validate_dependency_chain` |
+
+### Interaction Governance Invariants (INV-CAL-016 to INV-CAL-018)
+
+| Invariant ID | Description | Enforcement |
+|--------------|-------------|-------------|
+| INV-CAL-016 | Acyclic dependency graph (DAG) | `CycleDetector.find_cycles` |
+| INV-CAL-017 | No level inversions (N3 cannot depend on N2) | `LevelInversionDetector.detect_inversions` |
+| INV-CAL-018 | Bounded multiplicative fusion [0.01, 10.0] | `bounded_multiplicative_fusion` |
+
+### Documentation Invariants (INV-CAL-019 to INV-CAL-021)
+
+| Invariant ID | Description | Enforcement |
+|--------------|-------------|-------------|
+| INV-CAL-019 | UoA requirements documented | Docstrings (grep enforcement) |
+| INV-CAL-020 | Epistemic level documented | Docstrings (grep enforcement) |
+| INV-CAL-021 | Fusion strategy documented | Docstrings (grep enforcement) |
+
+### Legacy Invariants (Preserved)
+
 | Invariant ID | Description | Enforcement |
 |--------------|-------------|-------------|
 | INV-CAL-FREEZE-001 | All calibration parameters immutable post-construction | `frozen=True` dataclasses |
@@ -98,6 +203,25 @@ phases/Phase_two/phase2_60_04_calibration_policy.py ← Policy facade (Calibrati
 | INV-FACT-001 | Every fact has exactly one canonical representation | CanonicalFactRegistry |
 | INV-FACT-002 | Duplicate content triggers provenance logging | DuplicateRecord |
 | INV-FACT-003 | Verbosity ratio >= 0.90 | `validate_verbosity()` |
+
+### Grep Enforcement
+
+To verify invariant coverage:
+```bash
+# Check all INV-CAL references
+grep -r "INV-CAL-" src/farfan_pipeline/infrastructure/calibration/ | wc -l
+
+# Check for missing UoA docstrings
+grep -L "Unit of Analysis Requirements" src/farfan_pipeline/infrastructure/calibration/*.py
+
+# Verify epistemic level documentation
+grep -c "Epistemic Level:" src/farfan_pipeline/infrastructure/calibration/*.py
+
+# Generate automated enforcement script
+python -c "from farfan_pipeline.infrastructure.calibration import generate_grep_enforcement_script; print(generate_grep_enforcement_script())" > scripts/enforce_invariants.sh
+chmod +x scripts/enforce_invariants.sh
+./scripts/enforce_invariants.sh
+```
 
 ## Success Criteria
 
