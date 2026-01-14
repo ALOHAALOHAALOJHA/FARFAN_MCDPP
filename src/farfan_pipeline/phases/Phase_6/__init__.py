@@ -38,6 +38,7 @@ from .phase6_10_00_phase_6_constants import (
 )
 
 from .phase6_10_00_cluster_score import ClusterScore
+from .phase6_30_00_cluster_aggregator import ClusterAggregator
 
 __all__ = [
     "CLUSTERS",
@@ -52,4 +53,5 @@ __all__ = [
     "DispersionScenario",
     "Phase6Invariants",
     "ClusterScore",
+    "ClusterAggregator",
 ]

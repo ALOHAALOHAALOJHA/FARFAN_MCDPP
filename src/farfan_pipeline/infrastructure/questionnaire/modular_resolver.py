@@ -75,8 +75,8 @@ class QuestionnaireModularResolver:
         self.root = (
             root or Path(__file__).resolve().parents[3] / "canonic_questionnaire_central"
         ).resolve()
-        self.manifest_path = (manifest_path or self.root / "modular_manifest.json").resolve()
-        self.index_path = (index_path or self.root / "questionnaire_index.json").resolve()
+        self.manifest_path = (manifest_path or self.root / "config" / "modular_manifest.json").resolve()
+        self.index_path = (index_path or self.root / "_registry" / "questionnaire_index.json").resolve()
 
         self._manifest = self._load_json(self.manifest_path)
         self._index = self._load_json(self.index_path)
@@ -142,10 +142,10 @@ class QuestionnaireModularResolver:
         return QuestionnaireSlice(slice_id="ALL", path=self.manifest_path, questions=questions)
 
     def build_monolith_payload(self) -> AggregatePayload:
-        canonical_notation = self._load_json(self.root / "canonical_notation.json")
+        canonical_notation = self._load_json(self.root / "config" / "canonical_notation.json")
         micro_questions = self.aggregate_policy_area_questions().questions
-        meso_questions = self._load_json(self.root / "meso_questions.json")
-        macro_question = self._load_json(self.root / "macro_question.json")
+        meso_questions = self._load_json(self.root / "_registry" / "questions" / "meso_questions.json")
+        macro_question = self._load_json(self.root / "_registry" / "questions" / "macro_question.json")
 
         data = {
             "version": self._index.get("version")
@@ -173,9 +173,9 @@ class QuestionnaireModularResolver:
             source_paths=[
                 str(self.manifest_path),
                 str(self.index_path),
-                str(self.root / "canonical_notation.json"),
-                str(self.root / "meso_questions.json"),
-                str(self.root / "macro_question.json"),
+                str(self.root / "config" / "canonical_notation.json"),
+                str(self.root / "_registry" / "questions" / "meso_questions.json"),
+                str(self.root / "_registry" / "questions" / "macro_question.json"),
             ],
         )
 

@@ -18,8 +18,6 @@
     "questionnaire_flat.json",
     "signal_flow_graph.json"
   ],
-  "legacy_artifacts": [
-    "questionnaire_monolith.json"
-  ],
+  "legacy_artifacts": [],
   "success": true
 }

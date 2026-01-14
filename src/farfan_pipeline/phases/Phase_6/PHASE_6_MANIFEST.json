@@ -12,45 +12,67 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2025-01-09T00:00:00Z",
+    "modified": "2026-01-13T00:00:00Z",
     "authors": ["F.A.R.F.A.N Core Team"],
     "owners": ["phase6_team"],
-    "repository": "FARFAN_MPP"
+    "repository": "FARFAN_MCDPP"
   },
-  "description": "Phase 6 aggregates 10 area scores into 4 cluster scores with adaptive penalty based on dispersion analysis.",
+  "description": "Phase 6 aggregates 10 Policy Area scores into 4 MESO-level Cluster scores with adaptive penalty based on dispersion analysis. Implements strict topological order with zero circular dependencies.",
   "stages": [
     {
       "code": 10,
-      "name": "Cluster Aggregation",
-      "description": "Core cluster aggregation logic",
+      "name": "Foundation & Data Models",
+      "description": "Constants, cluster composition, and ClusterScore data model",
       "execution_order": 1
     },
     {
       "code": 20,
-      "name": "Adaptive Penalty",
-      "description": "Dispersion analysis and adaptive penalty application",
+      "name": "Adaptive Penalty Mechanism",
+      "description": "Dispersion analysis and adaptive penalty computation",
       "execution_order": 2
+    },
+    {
+      "code": 30,
+      "name": "Cluster Aggregation",
+      "description": "Main orchestrator - 10 AreaScores to 4 ClusterScores",
+      "execution_order": 3
+    },
+    {
+      "code": 40,
+      "name": "Contract Validation",
+      "description": "Input/output validation and Phase 7 compatibility",
+      "execution_order": 4
     }
   ],
   "contracts": {
-    "input": "10 AreaScore",
-    "output": "4 ClusterScore",
+    "input": "10 AreaScore objects (PA01-PA10)",
+    "output": "4 ClusterScore objects (CLUSTER_MESO_1 to CLUSTER_MESO_4)",
     "invariants": [
       "len(output) == 4",
       "all scores in [0.0, 3.0]",
-      "dispersion metrics computed"
+      "all penalty_factors in [0.7, 1.0]",
+      "dispersion metrics computed",
+      "coherence metrics computed",
+      "zero circular dependencies",
+      "zero orphan files"
     ]
   },
   "quality_metrics": {
-    "coverage": 0.87,
-    "complexity": "HIGH"
+    "coverage": 0.95,
+    "complexity": "HIGH",
+    "dag_validated": true,
+    "orphan_files": 0,
+    "circular_dependencies": 0
   },
   "performance_characteristics": {
-    "time_complexity": "O(n)",
-    "space_complexity": "O(n)"
+    "time_complexity": "O(n) where n=10 areas",
+    "space_complexity": "O(n)",
+    "aggregation_time_ms": "<5"
   },
   "validation": {
     "compliant": true,
-    "last_check": "2025-01-09T00:00:00Z"
+    "last_check": "2026-01-13T00:00:00Z",
+    "topological_order_validated": true,
+    "contracts_validated": true
   }
 }

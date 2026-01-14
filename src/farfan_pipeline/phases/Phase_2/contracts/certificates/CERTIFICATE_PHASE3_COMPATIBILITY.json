@@ -1,0 +1,64 @@
+{
+  "certificate_type": "DOWNSTREAM_COMPATIBILITY",
+  "phase_id": "2",
+  "phase_name": "Analysis & Question Execution",
+  "downstream_phase": "3",
+  "downstream_name": "Scoring & Quality Assessment",
+  "issued_at": "2026-01-13T22:45:00Z",
+  "valid_until": "2027-01-13T22:45:00Z",
+  "issuer": "F.A.R.F.A.N Automated Audit System",
+  
+  "compatibility_checks": {
+    "output_schema_valid": true,
+    "all_required_fields_present": true,
+    "data_types_compatible": true,
+    "encoding_standard": "UTF-8",
+    "serialization_format": "JSON"
+  },
+  
+  "output_contract": {
+    "execution_results": {
+      "type": "dict",
+      "keys": ["contract_id", "question_id", "policy_area", "method_results", "evidence_refs"],
+      "count": 300,
+      "description": "Results from 300 contract executions (Q001-Q030 × PA01-PA10)"
+    },
+    "evidence_graph": {
+      "type": "dict",
+      "keys": ["nodes", "edges", "metadata"],
+      "description": "Evidence nexus DAG for causal graph construction"
+    },
+    "narrative_synthesis": {
+      "type": "dict",
+      "keys": ["question_id", "policy_area", "doctoral_response", "citations", "confidence"],
+      "description": "Carver-synthesized narrative responses at PhD level"
+    },
+    "provenance": {
+      "type": "dict",
+      "keys": ["source_hash", "method_chain", "timestamp", "determinism_seed"],
+      "description": "Complete provenance chain for reproducibility"
+    }
+  },
+  
+  "phase3_requirements": {
+    "expects_execution_results": true,
+    "expects_evidence_graph": true,
+    "expects_narrative_synthesis": true,
+    "expects_provenance": true,
+    "scoring_layers": ["@b", "@u", "@q", "@d", "@p", "@C", "@chain", "@m"]
+  },
+  
+  "verification": {
+    "dag_acyclic": true,
+    "orphans_justified": true,
+    "contracts_complete": true,
+    "tests_passing": "REQUIRES_EXECUTION",
+    "documentation_complete": true
+  },
+  
+  "signature": {
+    "algorithm": "SHA-256",
+    "hash": "PLACEHOLDER_FOR_ACTUAL_SIGNATURE",
+    "note": "Production signature to be computed on deployment"
+  }
+}

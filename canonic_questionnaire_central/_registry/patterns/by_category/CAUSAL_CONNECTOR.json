@@ -1,6 +1,6 @@
 {
-  "category": "CAUSAL_CONNECTOR",
-  "pattern_count": 1,
+  "_category": "CAUSAL_CONNECTOR",
+  "_count": 1,
   "patterns": {
     "PAT-0162": {
       "id": "PAT-0162",

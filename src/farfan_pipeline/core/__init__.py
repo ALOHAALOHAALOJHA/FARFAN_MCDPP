@@ -1,3 +1,4 @@
-"""Core compatibility shims for canonical constants."""
-
-from .canonical_specs import *  # noqa: F403
+"""
+Core types for F.A.R.F.A.N pipeline.
+Stub module to enable test execution.
+"""

@@ -2,7 +2,7 @@
 Phase 6 Integration Tests - Real Module Validation
 ===================================================
 
-Tests for Phase 6 integration with real Phase 4 and Phase 6 types.
+Tests for Phase 6 integration with real Phase 5 and Phase 6 types.
 
 INTEGRATION TEST CATEGORIES:
 1. Phase 6 constants validation
@@ -15,22 +15,23 @@ from __future__ import annotations
 
 import pytest
 
-# Try to import real types
+# Try to import real types from Phase 5 (input) and Phase 6 (output)
 try:
-    from farfan_pipeline.phases.Phase_4 import (
-        AreaScore,
+    from farfan_pipeline.phases.Phase_5 import AreaScore
+    REAL_PHASE5_AVAILABLE = True
+except ImportError:
+    REAL_PHASE5_AVAILABLE = False
+    AreaScore = None
+
+try:
+    from farfan_pipeline.phases.Phase_6 import (
         ClusterScore,
-        DimensionScore,
-    )
-    from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
         ClusterAggregator,
     )
-    REAL_PHASE4_AVAILABLE = True
+    REAL_PHASE6_TYPES_AVAILABLE = True
 except ImportError:
-    REAL_PHASE4_AVAILABLE = False
-    AreaScore = None
+    REAL_PHASE6_TYPES_AVAILABLE = False
     ClusterScore = None
-    DimensionScore = None
     ClusterAggregator = None
 
 try:

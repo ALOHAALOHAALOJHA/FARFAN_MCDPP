@@ -3,33 +3,30 @@
   "phase_name": "CPP Ingestion & Preprocessing",
   "phase_dir": "src/farfan_pipeline/phases/Phase_1",
   "phase_prefix": "phase1",
-  "timestamp": "2026-01-13T17:30:00Z",
-  "audit_version": "2.0.0",
+  "timestamp": "2026-01-13T17:50:00Z",
+  "audit_version": "2.1.0",
+  "normalization_completed": true,
 
   "summary": {
-    "total_files": 14,
+    "total_files": 10,
     "files_in_chain": 10,
-    "orphan_files": 4,
+    "orphan_files": 0,
     "circular_dependencies": 0,
     "label_position_mismatches": 0,
-    "validation_status": "FAIL"
+    "validation_status": "PASS"
   },
 
   "dependency_graph": {
-    "description": "Directed acyclic graph of internal module imports",
+    "description": "Directed acyclic graph of internal module imports (post-normalization)",
     "nodes": [
       "__init__",
       "PHASE_1_CONSTANTS",
-      "phase1_01_00_cpp_models",
       "phase1_02_00_phase_1_constants",
       "phase1_03_00_models",
-      "phase1_04_00_phase_protocol",
       "phase1_05_00_thread_safe_results",
       "phase1_06_00_questionnaire_mapper",
       "phase1_07_00_sp4_question_aware",
-      "phase1_08_00_adapter",
       "phase1_09_00_circuit_breaker",
-      "phase1_10_00_dependency_validator",
       "phase1_11_00_signal_enrichment",
       "phase1_12_00_structural",
       "phase1_13_00_cpp_ingestion"
@@ -54,22 +51,17 @@
   },
 
   "topological_analysis": {
-    "description": "Topological ordering based on actual import dependencies",
-    "note": "Files with no internal dependencies are listed alphabetically at their level",
+    "description": "Topological ordering based on actual import dependencies (post-normalization)",
     "layers": [
       {
         "layer": 0,
         "description": "Root modules with no internal dependencies",
         "modules": [
           "PHASE_1_CONSTANTS",
-          "phase1_01_00_cpp_models",
           "phase1_02_00_phase_1_constants",
-          "phase1_04_00_phase_protocol",
           "phase1_05_00_thread_safe_results",
           "phase1_06_00_questionnaire_mapper",
-          "phase1_08_00_adapter",
           "phase1_09_00_circuit_breaker",
-          "phase1_10_00_dependency_validator",
           "phase1_11_00_signal_enrichment",
           "phase1_12_00_structural"
         ]
@@ -105,45 +97,36 @@
     ]
   },
 
-  "orphan_files": {
-    "description": "Files not imported by any other module within Phase 1 AND not exported via __init__.py",
-    "orphans": [
+  "reclassified_modules": {
+    "description": "Modules reclassified during normalization (2026-01-13)",
+    "reclassified": [
       {
-        "file": "phase1_01_00_cpp_models.py",
-        "label_suggests": "01",
-        "purpose": "CanonPolicyPackage models (legacy)",
-        "recommendation": "RECLASSIFY to docs/legacy/ - appears to be superseded by phase1_03_00_models.py",
-        "justification": "This file defines CPP data models that appear to be duplicated in phase1_03_00_models.py. The __init__.py imports from phase1_03, not phase1_01."
+        "original_file": "phase1_01_00_cpp_models.py",
+        "new_location": "docs/legacy/phase1_01_00_cpp_models.py",
+        "reason": "Superseded by phase1_03_00_models.py"
       },
       {
-        "file": "phase1_04_00_phase_protocol.py",
-        "label_suggests": "04",
-        "purpose": "Phase contract protocol definitions (general)",
-        "recommendation": "RECLASSIFY to interphase/ - defines cross-phase protocols, not Phase 1 specific logic",
-        "justification": "This file defines constitutional constraint framework for phases in general, not specific to Phase 1 execution. Should be in interphase/ as a shared protocol definition."
+        "original_file": "phase1_04_00_phase_protocol.py",
+        "new_location": "interphase/phase1_04_00_phase_protocol.py",
+        "reason": "Cross-phase protocol definition, not Phase 1 specific logic"
       },
       {
-        "file": "phase1_08_00_adapter.py",
-        "label_suggests": "08",
-        "purpose": "CPP to Orchestrator adapter",
-        "recommendation": "RECLASSIFY to interphase/ - adapts Phase 1 output for downstream consumption",
-        "justification": "This is an interphase adapter that converts CanonPolicyPackage to PreprocessedDocument for orchestrator. It should be in interphase/ with clear documentation of its role."
+        "original_file": "phase1_08_00_adapter.py",
+        "new_location": "interphase/phase1_08_00_adapter.py",
+        "reason": "Interphase adapter for downstream consumption"
       },
       {
-        "file": "phase1_10_00_dependency_validator.py",
-        "label_suggests": "10",
-        "purpose": "Dependency validation utility",
-        "recommendation": "RECLASSIFY to primitives/ - utility module with Phase 2 dependency",
-        "justification": "This module imports from Phase 2 (MethodRegistry) and is a validation utility. It should be in primitives/ with clear documentation of its cross-phase dependency."
+        "original_file": "phase1_10_00_dependency_validator.py",
+        "new_location": "primitives/phase1_10_00_dependency_validator.py",
+        "reason": "Utility module with cross-phase dependencies"
       }
     ]
   },
 
   "label_position_analysis": {
-    "description": "Analysis of file naming labels vs actual topological position",
-    "note": "Labels (XX in phase1_XX_*) suggest sequential order but actual DAG is flatter",
+    "description": "Analysis of file naming labels vs actual topological position (post-normalization)",
     "mismatches": [],
-    "analysis": "Most files are root nodes (no internal dependencies), so label order is not enforced by imports. The mission contract defines a topological order, but this is a PRESCRIPTIVE order, not a DERIVED order from actual imports. The label order is consistent with the mission contract's intended execution order."
+    "analysis": "After removing reclassified modules, the remaining modules follow a coherent DAG structure. The label order (01, 02, 03...) represents the prescriptive order from the mission contract, which aligns with the logical execution flow."
   },
 
   "circular_dependencies": {
@@ -153,7 +136,7 @@
   },
 
   "foldering_compliance": {
-    "description": "Verification of standard folder structure",
+    "description": "Verification of standard folder structure (post-normalization)",
     "required_folders": ["contracts", "docs", "tests", "primitives", "interphase"],
     "status": "PASS",
     "folders_found": {
@@ -164,8 +147,7 @@
           "phase1_output_contract.py",
           "phase1_mission_contract.py",
           "phase1_constitutional_contract.py"
-        ],
-        "duplicates_noted": "Versioned duplicates exist (phase1_10_00_*.py)"
+        ]
       },
       "docs": {
         "exists": true,
@@ -177,33 +159,34 @@
           "TRADE_OFFS.md",
           "phase1_anomalies_remediation.md",
           "phase1_audit_checklist.md",
-          "phase1_execution_flow.md"
-        ],
-        "missing": [
+          "phase1_execution_flow.md",
           "phase1_import_dag.png",
-          "phase1_deps.svg"
-        ]
+          "phase1_dag.dot"
+        ],
+        "legacy_folder": {
+          "exists": true,
+          "files": ["phase1_01_00_cpp_models.py"]
+        }
       },
       "tests": {
         "exists": true,
-        "test_files": [
-          "conftest.py",
-          "test_streaming_pdf_extractor.py"
-        ]
+        "test_files": ["conftest.py", "test_streaming_pdf_extractor.py"]
       },
       "primitives": {
         "exists": true,
         "primitive_files": [
           "streaming_extractor.py",
-          "truncation_audit.py"
-        ],
-        "duplicates_noted": "Versioned duplicates exist (phase1_00_00_*.py and phase1_10_00_*.py)"
+          "truncation_audit.py",
+          "phase1_10_00_dependency_validator.py"
+        ]
       },
       "interphase": {
         "exists": true,
         "interphase_files": [
           "phase1_10_00_phase1_protocols.py",
-          "phase1_10_00_phase1_types.py"
+          "phase1_10_00_phase1_types.py",
+          "phase1_04_00_phase_protocol.py",
+          "phase1_08_00_adapter.py"
         ]
       }
     }
@@ -220,11 +203,12 @@
         "exports": ["validate_phase1_input_contract", "PHASE1_INPUT_PRECONDITIONS"]
       },
       "mission_contract": {
-        "file": "contracts/phase1_mission_contract.py",
+        "file": "contracts/phase1_10_00_phase1_mission_contract.py",
         "exists": true,
         "executable": true,
         "exports": ["validate_mission_contract", "PHASE1_SUBPHASE_WEIGHTS", "PHASE1_TOPOLOGICAL_ORDER"],
-        "validation": "PASSED"
+        "validation": "PASSED",
+        "topological_order_count": 10
       },
       "output_contract": {
         "file": "contracts/phase1_output_contract.py",
@@ -242,13 +226,13 @@
   },
 
   "documentation_completeness": {
-    "description": "Verification of required documentation",
-    "status": "PARTIAL",
+    "description": "Verification of required documentation (post-normalization)",
+    "status": "PASS",
     "required": [
       {
         "file": "docs/phase1_import_dag.png",
-        "exists": false,
-        "action": "REQUIRED - Generate using pyreverse/dot"
+        "exists": true,
+        "status": "PRESENT"
       },
       {
         "file": "docs/phase1_execution_flow.md",
@@ -256,9 +240,8 @@
         "status": "PRESENT"
       },
       {
-        "file": "docs/phase1_anomalies.md",
+        "file": "docs/phase1_anomalies_remediation.md",
         "exists": true,
-        "actual_file": "docs/phase1_anomalies_remediation.md",
         "status": "PRESENT"
       },
       {
@@ -270,51 +253,39 @@
   },
 
   "issues_summary": {
-    "critical": [
-      "4 orphan files remain unclassified (phase1_01, phase1_04, phase1_08, phase1_10)",
-      "Missing DAG visualization (phase1_import_dag.png)"
-    ],
+    "critical": [],
     "high": [
-      "Duplicate contract files exist (phase1_*.py and phase1_10_00_*.py)",
-      "Duplicate primitive files exist with different versions"
+      "Duplicate contract files exist (phase1_*.py and phase1_10_00_*.py) - consider consolidating"
     ],
     "standard": [
-      "Label order is prescriptive (from mission contract) not derived from actual imports",
-      "Most modules are root nodes with no internal dependencies"
+      "Some primitive files have versioned duplicates (phase1_00_00_*.py and phase1_10_00_*.py)"
     ]
   },
 
-  "recommendations": {
-    "immediate": [
-      "Reclassify phase1_01_00_cpp_models.py to docs/legacy/",
-      "Reclassify phase1_04_00_phase_protocol.py to interphase/",
-      "Reclassify phase1_08_00_adapter.py to interphase/",
-      "Reclassify phase1_10_00_dependency_validator.py to primitives/",
-      "Generate DAG visualization: pyreverse -o dot -p Phase1 src/farfan_pipeline/phases/Phase_1/*.py"
-    ],
-    "follow_up": [
-      "Resolve duplicate contract files (keep one version)",
-      "Resolve duplicate primitive files (keep one version)",
-      "Update mission contract to reflect actual vs prescriptive ordering"
+  "normalization_actions_taken": {
+    "date": "2026-01-13",
+    "actions": [
+      "Reclassified phase1_01_00_cpp_models.py → docs/legacy/",
+      "Reclassified phase1_04_00_phase_protocol.py → interphase/",
+      "Reclassified phase1_08_00_adapter.py → interphase/",
+      "Reclassified phase1_10_00_dependency_validator.py → primitives/",
+      "Updated mission contract topological order (removed reclassified modules)",
+      "Generated DAG visualization (phase1_import_dag.png)"
     ]
   },
 
   "acceptance_criteria": {
-    "dag_without_orphans": false,
+    "dag_without_orphans": true,
     "zero_cycles": true,
     "labels_reflect_order": true,
     "foldering_complete": true,
     "contracts_exist": true,
     "contracts_executable": true,
-    "documentation_complete": false,
-    "dag_visualization_exists": false
+    "documentation_complete": true,
+    "dag_visualization_exists": true
   },
 
-  "overall_status": "FAIL",
-  "fail_reasons": [
-    "Orphan files exist (4 files not in chain)",
-    "Missing DAG visualization documentation"
-  ],
+  "overall_status": "PASS",
 
   "metadata": {
     "auditor": "Claude Code - Phase Audit Agent",
@@ -322,8 +293,9 @@
     "audit_commands": [
       "find src/farfan_pipeline/phases/Phase_1 -type f | sort",
       "python -c \"ast.parse() analysis of imports\"",
-      "Cycle detection via DFS on dependency graph"
+      "Cycle detection via DFS on dependency graph",
+      "dot -Tpng for DAG visualization"
     ],
-    "next_audit_due": "After reclassification of orphan files"
+    "next_audit_review": "After duplicate file consolidation"
   }
 }

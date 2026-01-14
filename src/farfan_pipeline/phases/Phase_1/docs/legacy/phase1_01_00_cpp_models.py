@@ -1,6 +1,12 @@
 """
-CanonPolicyPackage Models - Production Implementation
-=====================================================
+LEGACY: CanonPolicyPackage Models - ARCHIVED
+============================================
+
+**STATUS**: This module has been superseded by phase1_03_00_models.py.
+**RECLASSIFICATION DATE**: 2026-01-13
+**NEW LOCATION**: Use phase1_03_00_models.py for all new code.
+
+This file is preserved for backward compatibility only.
 
 REAL models for Phase 1 output contract. NO STUBS, NO PLACEHOLDERS.
 All models are frozen dataclasses per [INV-010] FORCING ROUTE requirement.
@@ -11,7 +17,7 @@ These models are wired to:
 - Canonical questionnaire for PA×DIM validation
 
 Author: FARFAN Pipeline Team
-Version: SPC-2025.1
+Version: SPC-2025.1 (LEGACY - ARCHIVED 2026-01-13)
 """
 from __future__ import annotations
 

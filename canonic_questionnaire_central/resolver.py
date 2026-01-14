@@ -381,9 +381,9 @@ class CanonicalQuestionnaireResolver:
         source_paths: list[str] = []
         start_time = time.perf_counter()
 
-        # 1. Canonical Notation (foundation)
-        canonical_notation = self._load_json("canonical_notation.json")
-        source_paths.append(str(self._root / "canonical_notation.json"))
+        # 1. Canonical Notation (foundation) - located in config/
+        canonical_notation = self._load_json("config/canonical_notation.json")
+        source_paths.append(str(self._root / "config/canonical_notation.json"))
 
         # 2. Governance
         governance = self._load_governance()
@@ -417,15 +417,15 @@ class CanonicalQuestionnaireResolver:
         cross_cutting = self._load_cross_cutting()
         source_paths.extend(self._get_dir_paths("cross_cutting"))
 
-        # 10. MESO Questions
-        meso_questions = self._load_json_safe("meso_questions.json", default=[])
-        if (self._root / "meso_questions.json").exists():
-            source_paths.append(str(self._root / "meso_questions.json"))
+        # 10. MESO Questions - located in _registry/questions/
+        meso_questions = self._load_json_safe("_registry/questions/meso_questions.json", default=[])
+        if (self._root / "_registry/questions/meso_questions.json").exists():
+            source_paths.append(str(self._root / "_registry/questions/meso_questions.json"))
 
-        # 11. MACRO Question
-        macro_question = self._load_json_safe("macro_question.json", default={})
-        if (self._root / "macro_question.json").exists():
-            source_paths.append(str(self._root / "macro_question.json"))
+        # 11. MACRO Question - located in _registry/questions/
+        macro_question = self._load_json_safe("_registry/questions/macro_question.json", default={})
+        if (self._root / "_registry/questions/macro_question.json").exists():
+            source_paths.append(str(self._root / "_registry/questions/macro_question.json"))
 
         # 12. Assemble Micro Questions
         micro_questions = self._assemble_micro_questions(dimensions, policy_areas, patterns)

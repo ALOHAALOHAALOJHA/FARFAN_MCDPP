@@ -126,16 +126,16 @@ CONFIG_DIR: Final[Path] = PROJECT_ROOT / "canonic_questionnaire_central"
 # Questionnaire Authority: Modular Manifest
 # This is the SINGLE SOURCE OF TRUTH for the questionnaire structure.
 QUESTIONNAIRE_ROOT: Final[Path] = CONFIG_DIR
-QUESTIONNAIRE_ENTRY_POINT: Final[Path] = CONFIG_DIR / "modular_manifest.json"
+QUESTIONNAIRE_ENTRY_POINT: Final[Path] = CONFIG_DIR / "config" / "modular_manifest.json"
 
 # Legacy/Deprecated Paths (Maintained only for transition, do not use in new code)
-_LEGACY_MONOLITH_FILE: Final[Path] = CONFIG_DIR / "questionnaire_monolith.json"
+_LEGACY_MONOLITH_FILE: Final[Path] = CONFIG_DIR / "questionnaire_monolith.json"  # DELETED
 
 # Questionnaire Modular Structure Components
-QUESTIONNAIRE_INDEX_FILE: Final[Path] = CONFIG_DIR / "questionnaire_index.json"
-QUESTIONNAIRE_CANONICAL_NOTATION_FILE: Final[Path] = CONFIG_DIR / "canonical_notation.json"
-QUESTIONNAIRE_MESO_FILE: Final[Path] = CONFIG_DIR / "meso_questions.json"
-QUESTIONNAIRE_MACRO_FILE: Final[Path] = CONFIG_DIR / "macro_question.json"
+QUESTIONNAIRE_INDEX_FILE: Final[Path] = CONFIG_DIR / "_registry" / "questionnaire_index.json"
+QUESTIONNAIRE_CANONICAL_NOTATION_FILE: Final[Path] = CONFIG_DIR / "config" / "canonical_notation.json"
+QUESTIONNAIRE_MESO_FILE: Final[Path] = CONFIG_DIR / "_registry" / "questions" / "meso_questions.json"
+QUESTIONNAIRE_MACRO_FILE: Final[Path] = CONFIG_DIR / "_registry" / "questions" / "macro_question.json"
 
 # Cross-referenced modular files
 

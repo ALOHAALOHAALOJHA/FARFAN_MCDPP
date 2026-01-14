@@ -66,6 +66,7 @@ from farfan_pipeline.phases.Phase_0.phase0_20_02_determinism import (
 from farfan_pipeline.phases.Phase_0.phase0_50_00_boot_checks import BootCheckError
 from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import (
     check_all_gates,
+    get_gate_summary,
 )
 
 
