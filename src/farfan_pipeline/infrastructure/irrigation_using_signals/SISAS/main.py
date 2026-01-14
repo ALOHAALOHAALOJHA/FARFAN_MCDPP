@@ -137,10 +137,10 @@ def run_irrigation(args):
     # Ejecutar según modo
     if args.phase:
         logger.info(f"Executing phase:  {args.phase}")
-        results = executor.execute_phase(args.phase, args.base_path)
+        executor.execute_phase(args.phase, args.base_path)
     elif args.all:
         logger.info("Executing all irrigable routes")
-        results = executor.execute_all_irrigable(args.base_path)
+        executor.execute_all_irrigable(args.base_path)
     else:
         logger.error("Specify --phase or --all")
         return
