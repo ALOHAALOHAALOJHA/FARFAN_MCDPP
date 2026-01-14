@@ -1,0 +1,223 @@
+# SISAS Bus Configuration
+# Defines routing, performance settings, and policies for all signal buses
+
+buses:
+  structural_bus:
+    type: STRUCTURAL
+    description: "Bus for structural alignment and schema signals"
+    max_queue_size: 10000
+    max_history_size: 100000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_oldest"
+      storage_path: "_logs/buses/structural"
+    performance:
+      max_latency_ms: 500
+      batch_size: 100
+      flush_interval_ms: 1000
+    allowed_signal_types:
+      - StructuralAlignmentSignal
+      - SchemaConflictSignal
+      - CanonicalMappingSignal
+    quality_thresholds:
+      min_confidence: "LOW"
+      require_context: true
+      require_source: true
+
+  integrity_bus:
+    type: INTEGRITY
+    description: "Bus for data integrity and completeness signals"
+    max_queue_size: 10000
+    max_history_size: 100000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_oldest"
+      storage_path: "_logs/buses/integrity"
+    performance:
+      max_latency_ms: 500
+      batch_size: 100
+      flush_interval_ms: 1000
+    allowed_signal_types:
+      - EventPresenceSignal
+      - EventCompletenessSignal
+      - DataIntegritySignal
+    quality_thresholds:
+      min_confidence: "LOW"
+      require_context: true
+      require_source: true
+
+  epistemic_bus:
+    type: EPISTEMIC
+    description: "Bus for epistemic quality signals (determinacy, specificity, support)"
+    max_queue_size: 15000
+    max_history_size: 150000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_oldest"
+      storage_path: "_logs/buses/epistemic"
+    performance:
+      max_latency_ms: 1000  # Can tolerate higher latency
+      batch_size: 50
+      flush_interval_ms: 2000
+    allowed_signal_types:
+      - AnswerDeterminacySignal
+      - AnswerSpecificitySignal
+      - EmpiricalSupportSignal
+      - MethodApplicationSignal
+    quality_thresholds:
+      min_confidence: "LOW"
+      require_context: true
+      require_source: true
+
+  contrast_bus:
+    type: CONTRAST
+    description: "Bus for contrast signals (divergence, confidence drops, temporal changes)"
+    max_queue_size: 5000
+    max_history_size: 50000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_all"  # Critical for audit trail
+      storage_path: "_logs/buses/contrast"
+    performance:
+      max_latency_ms: 2000
+      batch_size: 25
+      flush_interval_ms: 3000
+    allowed_signal_types:
+      - DecisionDivergenceSignal
+      - ConfidenceDropSignal
+      - TemporalContrastSignal
+    quality_thresholds:
+      min_confidence: "MEDIUM"  # Higher threshold for contrast
+      require_context: true
+      require_source: true
+    alerts:
+      enabled: true
+      alert_on_critical_divergence: true
+      alert_threshold: 0.5  # Alert if divergence > 50%
+
+  operational_bus:
+    type: OPERATIONAL
+    description: "Bus for operational signals (execution, failures, legacy activity)"
+    max_queue_size: 20000
+    max_history_size: 200000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_failures_only"
+      storage_path: "_logs/buses/operational"
+    performance:
+      max_latency_ms: 200  # Fast for operational monitoring
+      batch_size: 200
+      flush_interval_ms: 500
+    allowed_signal_types:
+      - ExecutionAttemptSignal
+      - FailureModeSignal
+      - LegacyActivitySignal
+      - LegacyDependencySignal
+    quality_thresholds:
+      min_confidence: "LOW"
+      require_context: false  # More lenient for operational signals
+      require_source: true
+
+  consumption_bus:
+    type: CONSUMPTION
+    description: "Bus for consumption pattern signals (frequency, coupling, health)"
+    max_queue_size: 8000
+    max_history_size: 80000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_oldest"
+      storage_path: "_logs/buses/consumption"
+    performance:
+      max_latency_ms: 1000
+      batch_size: 50
+      flush_interval_ms: 2000
+    allowed_signal_types:
+      - FrequencySignal
+      - TemporalCouplingSignal
+      - ConsumerHealthSignal
+    quality_thresholds:
+      min_confidence: "LOW"
+      require_context: false
+      require_source: true
+    monitoring:
+      enabled: true
+      track_consumer_health: true
+      health_check_interval_ms: 60000  # Every minute
+
+  universal_bus:
+    type: UNIVERSAL
+    description: "Universal bus that accepts all signal types (fallback)"
+    max_queue_size: 50000
+    max_history_size: 500000
+    persistence:
+      enabled: true
+      overflow_strategy: "persist_oldest"
+      storage_path: "_logs/buses/universal"
+    performance:
+      max_latency_ms: 5000
+      batch_size: 100
+      flush_interval_ms: 5000
+    allowed_signal_types: ["*"]  # Accept all
+    quality_thresholds:
+      min_confidence: "LOW"
+      require_context: false
+      require_source: false
+
+# Global settings
+global:
+  default_timeout_ms: 120000  # 2 minutes
+  enable_metrics: true
+  metrics_export_interval_ms: 30000  # Export every 30 seconds
+  logging:
+    level: INFO
+    log_all_publications: false  # Only log errors by default
+    log_all_consumptions: false
+    log_rejections: true
+    log_file: "_logs/sisas_bus.log"
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 10
+    timeout_ms: 60000
+    recovery_timeout_ms: 300000
+
+# Phase-specific routing rules
+routing:
+  phase_0:
+    preferred_buses:
+      - structural_bus
+      - integrity_bus
+    fallback_bus: universal_bus
+
+  phase_1:
+    preferred_buses:
+      - structural_bus
+      - integrity_bus
+      - epistemic_bus
+    fallback_bus: universal_bus
+
+  phase_2:
+    preferred_buses:
+      - operational_bus
+      - consumption_bus
+      - epistemic_bus
+    fallback_bus: universal_bus
+
+  phase_3:
+    preferred_buses:
+      - epistemic_bus
+      - structural_bus
+      - integrity_bus
+    fallback_bus: universal_bus
+
+  phase_7:
+    preferred_buses:
+      - structural_bus
+      - epistemic_bus
+    fallback_bus: universal_bus
+
+  phase_8:
+    preferred_buses:
+      - contrast_bus
+      - epistemic_bus
+      - integrity_bus
+    fallback_bus: universal_bus

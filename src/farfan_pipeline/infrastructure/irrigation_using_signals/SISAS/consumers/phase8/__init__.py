@@ -1,0 +1,5 @@
+# src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase8/__init__.py
+
+from .phase8_30_00_signal_enriched_recommendations import Phase8SignalEnrichedRecommendationsConsumer
+
+__all__ = ["Phase8SignalEnrichedRecommendationsConsumer"]
