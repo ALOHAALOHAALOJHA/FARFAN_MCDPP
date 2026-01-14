@@ -54,8 +54,50 @@ from .calibration_manifest import (
     CalibrationDecision,
     CalibrationManifest,
     DriftIndicator,
-    DriftReport,
     ManifestBuilder,
+)
+from .calibration_regime import (
+    UnifiedCalibrationManifest,
+    UnifiedCalibrationRegime,
+)
+from .calibration_types import (
+    CalibrationEvidenceContext,
+    CalibrationResult,
+    CalibrationSubject,
+    LayerId,
+    ROLE_LAYER_REQUIREMENTS,
+    VALID_ROLES,
+)
+from .cognitive_cost import (
+    CognitiveCostEstimator,
+    MethodComplexity,
+)
+from .drift_detector import (
+    DriftDetector,
+    DriftReport as CalibrationDriftReport,
+    DriftSeverity,
+    ParameterDrift,
+)
+from .interaction_density import (
+    InteractionDensityTracker,
+)
+from .inv_specifications import (
+    ALL_INVARIANT_SPECIFICATIONS,
+    INV_CAL_001,
+    INV_CAL_002,
+    INV_CAL_003,
+    INV_CAL_004,
+    INV_CAL_005,
+    INV_CAL_006,
+    INV_CAL_007,
+    INV_CAL_008,
+    INV_CAL_009,
+    INV_CAL_010,
+    InvariantSeverity,
+    InvariantSpecification,
+    generate_grep_enforcement_script,
+    get_specification_by_id,
+    get_specifications_by_severity,
 )
 from .fact_registry import (
     CanonicalFactRegistry,
@@ -203,7 +245,55 @@ __all__ = [
     "CalibrationDecision",
     "ManifestBuilder",
     "DriftIndicator",
-    "DriftReport",
+    # =========================================================================
+    # UNIFIED CALIBRATION REGIME (Single Regime Architecture)
+    # =========================================================================
+    "UnifiedCalibrationRegime",
+    "UnifiedCalibrationManifest",
+    # =========================================================================
+    # CALIBRATION TYPES (Orchestrator API)
+    # =========================================================================
+    "CalibrationSubject",
+    "CalibrationEvidenceContext",
+    "CalibrationResult",
+    "LayerId",
+    "ROLE_LAYER_REQUIREMENTS",
+    "VALID_ROLES",
+    # =========================================================================
+    # COGNITIVE COST ESTIMATION
+    # =========================================================================
+    "CognitiveCostEstimator",
+    "MethodComplexity",
+    # =========================================================================
+    # INTERACTION DENSITY TRACKING
+    # =========================================================================
+    "InteractionDensityTracker",
+    # =========================================================================
+    # DRIFT DETECTION AND REPORTING
+    # =========================================================================
+    "DriftDetector",
+    "CalibrationDriftReport",  # Comprehensive drift report
+    "DriftSeverity",
+    "ParameterDrift",
+    # =========================================================================
+    # INVARIANT SPECIFICATIONS (INV-CAL-00x)
+    # =========================================================================
+    "InvariantSpecification",
+    "InvariantSeverity",
+    "ALL_INVARIANT_SPECIFICATIONS",
+    "INV_CAL_001",
+    "INV_CAL_002",
+    "INV_CAL_003",
+    "INV_CAL_004",
+    "INV_CAL_005",
+    "INV_CAL_006",
+    "INV_CAL_007",
+    "INV_CAL_008",
+    "INV_CAL_009",
+    "INV_CAL_010",
+    "get_specification_by_id",
+    "get_specifications_by_severity",
+    "generate_grep_enforcement_script",
     # =========================================================================
     # CALIBRATION AUDITOR (N3-AUD Veto Gate)
     # =========================================================================
