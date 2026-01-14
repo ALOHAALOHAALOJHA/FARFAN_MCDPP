@@ -156,8 +156,6 @@ def run_irrigation(args):
 
 def check_alignment(args):
     """Verifica alineación de vocabularios"""
-    logger = logging.getLogger("SISAS.Check")
-
     system = initialize_system()
     checker = system["alignment_checker"]
 
@@ -255,8 +253,6 @@ def generate_contracts(args):
 
 def show_stats(args):
     """Muestra estadísticas del sistema"""
-    logger = logging.getLogger("SISAS.Stats")
-
     # Cargar mapa de irrigación
     irrigation_map = load_irrigation_map(args.csv_path)
     stats = irrigation_map.get_statistics()

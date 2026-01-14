@@ -205,9 +205,8 @@ class SignalBus:
         overflow_count = len(self._message_history) - self._max_history_size
         if overflow_count > 0:
             # Los primeros N mensajes van a persistencia
-            to_persist = self._message_history[:overflow_count]
             self._message_history = self._message_history[overflow_count:]
-            # TODO: Escribir to_persist a almacenamiento persistente
+            # TODO: Escribir mensajes removidos a almacenamiento persistente
             self._logger.info(f"Persisted {overflow_count} messages from {self.name}")
 
 

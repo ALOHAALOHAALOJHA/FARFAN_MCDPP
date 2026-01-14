@@ -58,7 +58,7 @@ class TestStructuralSignals:
 
         assert signal.signal_type == "StructuralAlignmentSignal"
         assert signal.category == SignalCategory.STRUCTURAL
-        assert signal.alignment_status == AlignmentStatus. ALIGNED
+        assert signal.alignment_status == AlignmentStatus.ALIGNED
         assert signal.compute_alignment_score() == 1.0
 
     def test_alignment_score_partial(self, sample_context, sample_source):
@@ -146,7 +146,7 @@ class TestEpistemicSignals:
             context=sample_context,
             source=sample_source,
             question_id="Q147",
-            support_level=EmpiricalSupportLevel. MODERATE,
+            support_level=EmpiricalSupportLevel.MODERATE,
             normative_references=["Ley 1448 de 2011"],
             document_references=[],
             institutional_references=["Unidad de Víctimas"]
@@ -195,7 +195,7 @@ class TestSignalDeterminism:
         signal2 = StructuralAlignmentSignal(
             context=sample_context,
             source=sample_source,
-            alignment_status=AlignmentStatus. ALIGNED,
+            alignment_status=AlignmentStatus.ALIGNED,
             canonical_path="test/path",
             actual_path="test/path"
         )

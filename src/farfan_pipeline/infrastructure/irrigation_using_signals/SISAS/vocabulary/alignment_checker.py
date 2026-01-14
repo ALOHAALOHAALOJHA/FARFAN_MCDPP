@@ -1,7 +1,7 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary/alignment_checker.py
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List
 
 from .signal_vocabulary import SignalVocabulary
 from .capability_vocabulary import CapabilityVocabulary
@@ -217,7 +217,7 @@ class VocabularyAlignmentChecker:
         plan = []
 
         # Agrupar issues por tipo
-        by_type:  Dict[str, List[AlignmentIssue]] = {}
+        by_type: Dict[str, List[AlignmentIssue]] = {}
         for issue in report.issues:
             if issue.issue_type not in by_type:
                 by_type[issue.issue_type] = []

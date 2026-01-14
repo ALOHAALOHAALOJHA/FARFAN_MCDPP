@@ -236,7 +236,7 @@ class SignalVocabulary:
         """Obtiene tipos de señal por categoría"""
         return [d for d in self.definitions.values() if d.category == category]
 
-    def validate_signal(self, signal:  Any) -> tuple[bool, List[str]]:
+    def validate_signal(self, signal: Any) -> tuple[bool, List[str]]:
         """
         Valida una señal contra el vocabulario.
         Retorna (es_válido, lista_de_errores)
@@ -268,7 +268,7 @@ class SignalVocabulary:
                 # El valor podría ser un Enum, extraer su valor
                 value_str = value.value if hasattr(value, 'value') else str(value)
                 if value_str not in allowed:
-                    errors.append(f"Invalid value '{value_str}'.  Allowed:  {allowed}")
+                    errors.append(f"Invalid value '{value_str}'. Allowed: {allowed}")
 
         return (len(errors) == 0, errors)
 
