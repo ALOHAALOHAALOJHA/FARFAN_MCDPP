@@ -20,12 +20,11 @@ class TestConstitutionalInvariant:
 
     def test_expected_constants_defined(self):
         """Verify expected constants are defined in constitutional contract."""
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        phase1_dir = Path(__file__).resolve().parent.parent
         constitutional_contract_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
+            phase1_dir
             / "contracts"
             / "phase1_10_00_phase1_constitutional_contract.py"
         )
@@ -48,14 +47,10 @@ class TestConstitutionalInvariant:
 
     def test_contract_files_exist(self):
         """Verify all 4 contract files exist."""
-        contracts_dir = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "contracts"
-        )
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        phase1_dir = Path(__file__).resolve().parent.parent
+        contracts_dir = phase1_dir / "contracts"
 
         required_contracts = [
             "phase1_10_00_phase1_mission_contract.py",
@@ -74,12 +69,11 @@ class TestConstitutionalInvariant:
 
     def test_subphase_weights_defined(self):
         """Verify all 16 subphase weights are defined in mission contract."""
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        phase1_dir = Path(__file__).resolve().parent.parent
         mission_contract_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
+            phase1_dir
             / "contracts"
             / "phase1_10_00_phase1_mission_contract.py"
         )
@@ -103,12 +97,11 @@ class TestConstitutionalInvariant:
 
     def test_mission_contract_has_validation_function(self):
         """Verify mission contract has validation function."""
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        phase1_dir = Path(__file__).resolve().parent.parent
         mission_contract_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
+            phase1_dir
             / "contracts"
             / "phase1_10_00_phase1_mission_contract.py"
         )
@@ -147,15 +140,10 @@ class TestCertificates:
         """Verify all 15 certificates exist."""
         from pathlib import Path
 
-        cert_dir = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "contracts"
-            / "certificates"
-        )
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        phase1_dir = Path(__file__).resolve().parent.parent
+        cert_dir = phase1_dir / "contracts" / "certificates"
 
         assert cert_dir.exists(), f"Certificates directory must exist: {cert_dir}"
 
@@ -169,15 +157,10 @@ class TestCertificates:
         """Verify certificate files have required fields."""
         from pathlib import Path
 
-        cert_dir = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "contracts"
-            / "certificates"
-        )
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        phase1_dir = Path(__file__).resolve().parent.parent
+        cert_dir = phase1_dir / "contracts" / "certificates"
 
         required_fields = [
             "**Status**:",
@@ -202,12 +185,11 @@ class TestOrchestratorIntegration:
 
     def test_orchestrator_has_60_chunk_assertion(self):
         """Verify orchestrator enforces 60-chunk invariant."""
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Go to Phase_1 (parent.parent), then to phases (parent), then to farfan_pipeline (parent), then to orchestration
+        phase1_dir = Path(__file__).resolve().parent.parent
         orchestrator_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "orchestration"
-            / "orchestrator.py"
+            phase1_dir.parent.parent / "orchestration" / "orchestrator.py"
         )
 
         assert orchestrator_path.exists(), "Orchestrator must exist"
@@ -230,12 +212,11 @@ class TestOrchestratorIntegration:
 
     def test_orchestrator_structure(self):
         """Verify orchestrator has basic DAG/execution structure."""
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Go to Phase_1 (parent.parent), then to phases (parent), then to farfan_pipeline (parent), then to orchestration
+        phase1_dir = Path(__file__).resolve().parent.parent
         orchestrator_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "orchestration"
-            / "orchestrator.py"
+            phase1_dir.parent.parent / "orchestration" / "orchestrator.py"
         )
 
         content = orchestrator_path.read_text()

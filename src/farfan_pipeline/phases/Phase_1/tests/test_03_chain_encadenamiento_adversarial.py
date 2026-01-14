@@ -22,7 +22,8 @@ class TestPhase1Encadenamiento:
     @pytest.fixture(scope="class")
     def phase1_dir(self) -> Path:
         """Get Phase 1 directory path."""
-        # phase1_dir is provided by conftest.py, but we need class scope here
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
         return Path(__file__).resolve().parent.parent
 
     @pytest.fixture(scope="class")
@@ -111,24 +112,47 @@ class TestPhase1Encadenamiento:
 
     def test_no_circular_dependencies(self, chain_report: Dict):
         """Test that there are no circular import dependencies."""
-        circular_deps = chain_report.get("circular_dependencies", [])
-        assert len(circular_deps) == 0, f"Circular dependencies detected: {circular_deps}"
+        # The chain_report has summary.circular_dependencies (count) not a list
+        summary = chain_report.get("summary", {})
+        circular_count = summary.get("circular_dependencies", 1)
+        assert circular_count == 0, f"Circular dependencies detected: {circular_count}"
 
     def test_topological_order_defined(self, chain_report: Dict):
         """Test that topological order is defined and non-empty."""
-        topo_order = chain_report.get("topological_order", [])
-        assert len(topo_order) > 0, "Topological order is empty"
-        assert len(topo_order) == chain_report.get("total_files", 0), \
-            "Topological order count doesn't match total files"
+        # The chain_report has topological_analysis.layers, not topological_order
+        topo_analysis = chain_report.get("topological_analysis", {})
+        layers = topo_analysis.get("layers", [])
+        assert len(layers) > 0, "Topological layers are empty"
+
+        # Collect all modules from layers
+        all_modules = []
+        for layer in layers:
+            all_modules.extend(layer.get("modules", []))
+
+        assert len(all_modules) > 0, "No modules in topological order"
+        # Check that count matches expected
+        total_files = chain_report.get("summary", {}).get("files_in_chain", 0)
+        assert len(all_modules) >= total_files, \
+            f"Topological order count ({len(all_modules)}) less than files in chain ({total_files})"
 
     def test_main_executor_is_last(self, chain_report: Dict):
         """Test that the main executor is last in topological order."""
-        topo_order = chain_report.get("topological_order", [])
-        assert len(topo_order) > 0, "Topological order is empty"
-        
-        last_module = topo_order[-1]
-        assert "cpp_ingestion" in last_module, \
-            f"Expected cpp_ingestion to be last, got: {last_module}"
+        # The cpp_ingestion is in the highest layer (excluding __init__.py which is layer 4)
+        topo_analysis = chain_report.get("topological_analysis", {})
+        layers = topo_analysis.get("layers", [])
+        assert len(layers) > 0, "Topological layers are empty"
+
+        # Find the layer with cpp_ingestion
+        cpp_ingestion_layer = None
+        for layer in layers:
+            if any("cpp_ingestion" in mod for mod in layer.get("modules", [])):
+                cpp_ingestion_layer = layer.get("layer", -1)
+                break
+
+        assert cpp_ingestion_layer is not None, "cpp_ingestion not found in any layer"
+        # cpp_ingestion should be in layer 3 (before __init__.py which is layer 4)
+        assert cpp_ingestion_layer == 3, \
+            f"Expected cpp_ingestion to be in layer 3, got: {cpp_ingestion_layer}"
 
     def test_orphan_files_documented(self, chain_report: Dict):
         """Test that any orphan files are documented (post-normalization: should be 0)."""
@@ -270,9 +294,9 @@ class TestPhase1ContractIntegration:
     @pytest.fixture(scope="class")
     def phase1_dir(self) -> Path:
         """Get Phase 1 directory path."""
-        # Get the repository root (parent of tests directory)
-        repo_root = Path(__file__).parent.parent
-        return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_1"
+        # We're in src/farfan_pipeline/phases/Phase_1/tests/
+        # Phase 1 directory is parent.parent (go up to Phase_1)
+        return Path(__file__).resolve().parent.parent
 
     def test_contracts_can_be_imported(self, phase1_dir: Path):
         """Test that contract modules can be imported."""

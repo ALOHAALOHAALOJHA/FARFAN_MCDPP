@@ -224,7 +224,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
         """Normalize currency to pesos."""
         # 1. Clean the string
         clean_str = valor_str.strip()
-        
+
         # 2. Heuristic parsing for separators
         # If both ',' and '.' exist
         if "," in clean_str and "." in clean_str:
@@ -244,11 +244,11 @@ class FinancialChainExtractor(PatternBasedExtractor):
                  # Check if it looks like a decimal (e.g. "1,5 millones") vs thousands ("1,200")
                  # Context matters. "1,5 millones" is clearly 1.5. "1,200 pesos" is 1200.
                  # If unit is present (millones, etc), it's likely a decimal comma
-                 if unidad: 
+                 if unidad:
                      clean_str = clean_str.replace(",", ".")
                  else:
                      # If no unit, assume standard thousands if length after comma is 3 (1,000)
-                     # But this is ambiguous. Let's assume decimal if < 1000? 
+                     # But this is ambiguous. Let's assume decimal if < 1000?
                      # Risk: "1,500" could be 1.5 or 1500.
                      # In CO plans, "." is usually thousands, "," is decimal.
                      # Let's try replacing "," with "." and see if it makes sense as a float.
@@ -257,14 +257,28 @@ class FinancialChainExtractor(PatternBasedExtractor):
         # If only '.' exists (e.g. 1.234 or 1.5)
         elif "." in clean_str:
             if clean_str.count(".") > 1:
+                # Multiple dots = thousands separator: 1.234.567 -> 1234567
+                # This is the standard Colombian/Spanish format for thousands
                 clean_str = clean_str.replace(".", "")
             else:
-                # If unit present, likely decimal (1.5 M) -> 1.5
+                # Single dot - could be decimal (1.5) or thousands (2.500)
+                # In Spanish/Colombian format with "millones", a dot before millones is thousands
+                # e.g., "2.500 millones" = 2500 * 10^6 = 2.5 * 10^9
+                # But "1.5 millones" = 1.5 * 10^6
+                # Heuristic: if 3 digits after dot and followed by large unit (millones/billones), it's thousands
                 if unidad:
-                    pass # Keep as is (decimal point)
+                    parts = clean_str.split(".")
+                    if len(parts) == 2 and len(parts[1]) == 3:
+                        # "2.500" format - thousands separator
+                        clean_str = clean_str.replace(".", "")
+                    else:
+                        # "1.5" format - decimal point
+                        pass  # Keep as is
                 else:
-                    # 1.200 -> 1200
-                     clean_str = clean_str.replace(".", "")
+                    # No unit - assume thousands if 3 digits after dot
+                    parts = clean_str.split(".")
+                    if len(parts) == 2 and len(parts[1]) == 3:
+                        clean_str = clean_str.replace(".", "")
 
         try:
             valor = float(clean_str)
