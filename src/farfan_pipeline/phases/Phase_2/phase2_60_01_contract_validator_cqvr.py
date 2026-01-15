@@ -3,6 +3,7 @@
 PHASE_LABEL: Phase 2
 PHASE_COMPONENT: CQVR Validator
 PHASE_ROLE: Validates executor contracts using multi-tier quality scoring
+"""
 
 from __future__ import annotations
 
