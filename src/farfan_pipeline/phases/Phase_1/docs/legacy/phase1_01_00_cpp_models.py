@@ -404,19 +404,26 @@ class CanonPolicyPackage:
     Canonical Policy Package - PRODUCTION MODEL.
 
     [INV-010] This dataclass MUST be frozen (immutable).
-    [POST-005] schema_version MUST be "SPC-2025.1"
+    [POST-005] schema_version MUST be "SPC-2025.1" or "CPP-2025.1"
     [INT-POST-004] chunk_graph MUST contain EXACTLY 60 chunks
 
     This is the OUTPUT CONTRACT for Phase 1 SPC Ingestion.
 
     Attributes:
-        schema_version: Must be "SPC-2025.1"
+        schema_version: Must be "SPC-2025.1" or "CPP-2025.1"
         document_id: Unique document identifier
         chunk_graph: Graph of 60 PA×DIM chunks
         quality_metrics: SISAS-computed quality metrics
         integrity_index: Cryptographic integrity verification
         policy_manifest: Canonical notation reference
         metadata: Execution trace and additional metadata
+
+        # PDM-specific fields (PDM-2025.1 extension):
+        pdm_profile_version: Version of PDM structural profile used
+        calibration_applied: Whether ex-post calibration was applied
+        calibration_metadata: Calibration results (if applied)
+        semantic_integrity_verified: Whether semantic integrity was verified
+        semantic_violations: List of semantic violations detected
     """
 
     schema_version: str
@@ -427,11 +434,19 @@ class CanonPolicyPackage:
     policy_manifest: PolicyManifest | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
 
+    # PDM structural recognition fields (optional - PDM-2025.1 extension)
+    pdm_profile_version: str | None = None
+    calibration_applied: bool = False
+    calibration_metadata: dict[str, Any] | None = None
+    semantic_integrity_verified: bool = False
+    semantic_violations: tuple[str, ...] = field(default_factory=tuple)
+
     def __post_init__(self):
         # [POST-005] Validate schema_version
-        if self.schema_version != "SPC-2025.1":
+        valid_versions = ("SPC-2025.1", "CPP-2025.1")
+        if self.schema_version not in valid_versions:
             raise ValueError(
-                f"[POST-005] schema_version must be 'SPC-2025.1', got '{self.schema_version}'"
+                f"[POST-005] schema_version must be one of {valid_versions}, got '{self.schema_version}'"
             )
 
         # [INT-POST-004] Validate non-empty chunk graph
