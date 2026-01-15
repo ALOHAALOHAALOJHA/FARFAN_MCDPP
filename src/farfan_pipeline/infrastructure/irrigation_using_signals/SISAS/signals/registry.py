@@ -1,6 +1,6 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals/registry.py
 
-from typing import Dict, Type, Optional
+from typing import Dict, Type, Optional, List
 from ..core.signal import Signal
 
 # Import all types to register them

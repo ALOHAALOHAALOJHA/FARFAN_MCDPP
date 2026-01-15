@@ -17,9 +17,10 @@
     "specification_source": "operationalization_guide.json"
   },
   "executor_binding": {
-    "executor_class": "D1_Q5_PA02_Executor",
-    "executor_module": "farfan_pipeline.phases.Phase_two.executors",
-    "contract_number": 42
+    "executor_class": "DynamicContractExecutor",
+    "executor_module": "phase2_60_00_base_executor_with_contract",
+    "contract_number": 42,
+    "legacy_executor_class": "D1_Q5_PA02_Executor"
   },
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",

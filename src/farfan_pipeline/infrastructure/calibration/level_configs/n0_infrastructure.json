@@ -1,0 +1,35 @@
+{
+  "level": "N0-INFRA",
+  "epistemology": "Infraestructura Metodológica",
+  "description": "Capa de infraestructura sin juicio analítico. Proporciona servicios fundamentales para el pipeline.",
+  "output_type": "INFRASTRUCTURE",
+  "fusion_behavior": "none",
+  "fusion_symbol": "∅",
+  "calibration_parameters": {
+    "random_seed": 42,
+    "default_timeout_seconds": 30.0,
+    "max_retries": 3
+  },
+  "validation_schema": {
+    "random_seed": {"type": "int", "range": [0, null]},
+    "default_timeout_seconds": {"type": "float", "range": [0.0, null]},
+    "max_retries": {"type": "int", "range": [0, null]}
+  },
+  "pdm_sensitivity": {
+    "active": false,
+    "rules": []
+  },
+  "constraints": [
+    "level_cannot_be_modified",
+    "infrastructure_is_document_agnostic",
+    "no_interpretation_allowed"
+  ],
+  "typical_methods": [
+    "ConfigLoader.load",
+    "ConfigLoader.validate",
+    "PDETMunicipalPlanAnalyzer._get_spanish_stopwords",
+    "PDETMunicipalPlanAnalyzer._deduplicate_tables"
+  ],
+  "epistemic_regime": "Deterministic",
+  "meta_level": false
+}

@@ -81,7 +81,7 @@ except ImportError:
 from .phase1_03_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,
-    SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
+    SmartChunk, ValidationResult, CausalGraph, PDMMetadata, CANONICAL_TYPES_AVAILABLE
 )
 
 # Remediation Imports (SPEC-001, SPEC-003, SPEC-004)
@@ -95,6 +95,18 @@ from .PHASE_1_CONSTANTS import (
     ASSIGNMENT_METHOD_FALLBACK,
     VALID_ASSIGNMENT_METHODS,
     PHASE1_LOGGER_NAME,
+)
+from farfan_pipeline.infrastructure.parametrization.pdm_structural_profile import (
+    PDMStructuralProfile,
+    CanonicalSection,
+    ContextualMarker,
+    HierarchyLevel as PDMHierarchyLevel,
+    get_default_profile,
+)
+from farfan_pipeline.infrastructure.contractual.pdm_contracts import (
+    SP2Obligations,
+    SP4Obligations,
+    PrerequisiteError,
 )
 
 # PDT Section Types and Hierarchy Levels
@@ -1183,12 +1195,18 @@ class Phase1CPPIngestionFullContract:
     - Signal packs obtained from registry, not created empty
     """
     
-    def __init__(self, signal_registry: Optional[Any] = None):
+    def __init__(
+        self,
+        signal_registry: Optional[Any] = None,
+        structural_profile: PDMStructuralProfile | None = None,
+    ):
         """Initialize Phase 1 executor with signal registry dependency injection.
         
         Args:
             signal_registry: QuestionnaireSignalRegistry from Factory (LEVEL 3 access)
                             If None, falls back to creating default packs (degraded mode)
+            structural_profile: Constitutional PDMStructuralProfile (mandatory for SP2).
+                                 Defaults to get_default_profile() if not provided.
         """
         self.MANDATORY_SUBPHASES = list(range(16))  # SP0 through SP15
         self.execution_trace: List[Tuple[str, str, str]] = []
@@ -1199,6 +1217,9 @@ class Phase1CPPIngestionFullContract:
         self.checkpoint_validator = SubphaseCheckpoint()  # Checkpoint validator
         self.signal_registry = signal_registry  # DI: Injected from Factory via Orchestrator
         self.signal_enricher: Optional[Any] = None  # Signal enrichment engine
+        self.structural_profile: PDMStructuralProfile = (
+            structural_profile or get_default_profile()
+        )
         
     def _deterministic_serialize(self, output: Any) -> str:
         """Deterministic serialization for hashing and traceability.
@@ -1456,7 +1477,10 @@ class Phase1CPPIngestionFullContract:
             self._record_subphase(1, preprocessed)
             
             # SP2: Structural Analysis - WEIGHT: 950
-            structure = self._execute_sp2_structural(preprocessed)
+            SP2Obligations.enforce_sp2_preconditions(self.structural_profile)
+            structure = self._execute_sp2_structural(
+                preprocessed, profile=self.structural_profile
+            )
             self._record_subphase(2, structure)
             
             # SP3: Topic Modeling & KG - WEIGHT: 980
@@ -1464,8 +1488,9 @@ class Phase1CPPIngestionFullContract:
             self._record_subphase(3, knowledge_graph)
             
             # SP4: PA×DIM Segmentation [CRITICAL: 60 CHUNKS] - WEIGHT: 10000
+            SP4Obligations.enforce_sp4_preconditions(structure, self.structural_profile)
             pa_dim_chunks = self._execute_sp4_segmentation(
-                preprocessed, structure, knowledge_graph
+                preprocessed, structure, knowledge_graph, profile=self.structural_profile
             )
             self._assert_chunk_count(4, pa_dim_chunks, 60)  # HARD STOP IF FAILS
             
@@ -1798,13 +1823,70 @@ class Phase1CPPIngestionFullContract:
             _hash=hashlib.sha256(normalized_text.encode()).hexdigest()
         )
 
-    def _execute_sp2_structural(self, preprocessed: PreprocessedDoc) -> StructureData:
+    def _execute_sp2_structural(
+        self, preprocessed: PreprocessedDoc, profile: PDMStructuralProfile | None = None
+    ) -> StructureData:
         logger.info("SP2: Starting structural analysis")
+
+        profile = profile or getattr(self, "structural_profile", None)
+        if profile is None:
+            raise PrerequisiteError("SP2-ABORT: PDMStructuralProfile required for SP2")
+        self.subphase_results["pdm_profile_version"] = profile.profile_version
 
         sections: List[str] = []
         hierarchy: Dict[str, Optional[str]] = {}
         paragraph_mapping: Dict[int, str] = {}
         structure_annotations: Dict[str, Dict[str, Any]] = {}
+        section_hierarchy_levels: Dict[str, PDMHierarchyLevel | None] = {}
+        section_canonical_map: Dict[str, CanonicalSection] = {}
+
+        def detect_hierarchy(paragraph: str) -> PDMHierarchyLevel | None:
+            head = (paragraph or "")[:200]
+            for level, patterns in profile.header_patterns.items():
+                for pattern in patterns:
+                    try:
+                        if pattern.search(head):
+                            return level
+                    except re.error as e:
+                        logger.warning(f"SP2: Invalid hierarchy pattern {pattern}: {e}")
+            return None
+
+        def detect_canonical_sections(paragraph: str) -> list[tuple[str, CanonicalSection]]:
+            head = (paragraph or "")[:200]
+            matches: list[tuple[str, CanonicalSection]] = []
+            for label, canonical in profile.canonical_sections.items():
+                if re.search(re.escape(label), head, re.IGNORECASE):
+                    matches.append((label, canonical))
+            return matches
+
+        def detect_and_validate_tables(paragraphs: list[str]) -> list[dict[str, Any]]:
+            tables: list[dict[str, Any]] = []
+            text_block = "\n".join(paragraphs).lower()
+            for schema_key, schema in profile.table_schemas.items():
+                found_columns = [
+                    col
+                    for col in schema.required_columns
+                    if re.search(re.escape(col), text_block, re.IGNORECASE)
+                ]
+                detected = len(found_columns) >= max(1, len(schema.required_columns) // 2)
+                table_data = {col: True for col in found_columns}
+                is_valid, errors = (
+                    schema.validate_table(table_data)
+                    if detected
+                    else (False, [f"Missing required columns for {schema_key}"])
+                )
+                tables.append(
+                    {
+                        "schema": schema_key,
+                        "name": schema_key,
+                        "display_name": schema.name,
+                        "detected": detected,
+                        "found_columns": found_columns,
+                        "valid": is_valid,
+                        "errors": errors,
+                    }
+                )
+            return tables
 
         base_patterns = [
             r"^(?:CAP[IÍ]TULO|CAPITULO)\s+([IVXLCDM]+|\d+)",
@@ -1815,8 +1897,13 @@ class Phase1CPPIngestionFullContract:
         ]
         spec = self._load_unit_analysis_spec()
         spec_patterns = self._build_heading_patterns_from_spec(spec)
+        profile_patterns = [
+            p.pattern if hasattr(p, "pattern") else str(p)
+            for patterns in profile.header_patterns.values()
+            for p in patterns
+        ]
         combined_pattern = re.compile(
-            "|".join(f"({p})" for p in (base_patterns + spec_patterns)),
+            "|".join(f"({p})" for p in (base_patterns + spec_patterns + profile_patterns)),
             re.MULTILINE | re.IGNORECASE,
         )
 
@@ -1848,6 +1935,10 @@ class Phase1CPPIngestionFullContract:
                         sections.append(section_name)
                         hierarchy[section_name] = current_section
                         current_section = section_name
+                        section_hierarchy_levels[section_name] = detect_hierarchy(head)
+                        canonical_matches = detect_canonical_sections(head)
+                        if canonical_matches:
+                            section_canonical_map[section_name] = canonical_matches[0][1]
                 paragraph_mapping[i] = current_section
         else:
             for i in range(len(preprocessed.paragraphs)):
@@ -1857,6 +1948,16 @@ class Phase1CPPIngestionFullContract:
         for section in sections:
             if section not in hierarchy:
                 hierarchy[section] = None
+            if section not in section_hierarchy_levels:
+                # Derive hierarchy level from first mapped paragraph
+                para_idx = next((pi for pi, name in paragraph_mapping.items() if name == section), None)
+                snippet = preprocessed.paragraphs[para_idx] if para_idx is not None else ""
+                section_hierarchy_levels[section] = detect_hierarchy(snippet)
+                canonical_matches = detect_canonical_sections(snippet)
+                if canonical_matches and section not in section_canonical_map:
+                    section_canonical_map[section] = canonical_matches[0][1]
+
+        tables = detect_and_validate_tables(preprocessed.paragraphs)
 
         if PDT_TYPES_AVAILABLE:
             for section in sections:
@@ -1865,21 +1966,48 @@ class Phase1CPPIngestionFullContract:
                     if s_name == section:
                         snippet = (preprocessed.paragraphs[p_idx] or "")[:400]
                         break
+                detected_level = section_hierarchy_levels.get(section)
                 structure_annotations[section] = {
-                    "nivel_jerarquico": self._infer_nivel_jerarquico(section),
+                    "nivel_jerarquico": detected_level or self._infer_nivel_jerarquico(section),
                     "seccion_pdt": self._infer_seccion_pdt(section, snippet),
+                    "canonical_section": section_canonical_map.get(section),
                 }
             self.subphase_results["structure_annotations"] = {
                 k: {
-                    "nivel_jerarquico": (v["nivel_jerarquico"].name if v["nivel_jerarquico"] else None),
-                    "seccion_pdt": (v["seccion_pdt"].value if v["seccion_pdt"] else None),
+                    "nivel_jerarquico": (
+                        v["nivel_jerarquico"].name if v.get("nivel_jerarquico") else None
+                    ),
+                    "seccion_pdt": (v["seccion_pdt"].value if v.get("seccion_pdt") else None),
+                    "canonical_section": (
+                        v["canonical_section"].value if v.get("canonical_section") else None
+                    ),
                 }
                 for k, v in structure_annotations.items()
             }
 
+        self.subphase_results["hierarchy_levels_detected"] = {
+            k: (v.name if v else None) for k, v in section_hierarchy_levels.items()
+        }
+        self.subphase_results["canonical_sections_detected"] = {
+            k: v.value for k, v in section_canonical_map.items()
+        }
+        self.subphase_results["tables_detected"] = tables
+
         logger.info(f"SP2: Identified {len(sections)} sections, mapped {len(paragraph_mapping)} paragraphs")
 
-        return StructureData(sections=sections, hierarchy=hierarchy, paragraph_mapping=paragraph_mapping)
+        structure_data = StructureData(
+            sections=sections,
+            hierarchy=hierarchy,
+            paragraph_mapping=paragraph_mapping,
+            tables=tables,
+        )
+        setattr(structure_data, "_pdm_profile_used", profile.profile_version)
+
+        is_valid, violations = SP2Obligations.validate_sp2_execution(profile, structure_data)
+        if not is_valid:
+            raise Phase1FatalError(f"SP2 postconditions failed: {violations}")
+
+        return structure_data
 
     def _execute_sp3_knowledge_graph(self, preprocessed: PreprocessedDoc, structure: StructureData) -> KnowledgeGraph:
         """
@@ -2049,16 +2177,93 @@ class Phase1CPPIngestionFullContract:
             span_to_node_mapping={}
         )
 
-    def _execute_sp4_segmentation(self, preprocessed: PreprocessedDoc, structure: StructureData, kg: KnowledgeGraph) -> List[Chunk]:
+    def _execute_sp4_segmentation(
+        self,
+        preprocessed: PreprocessedDoc,
+        structure: StructureData,
+        kg: KnowledgeGraph,
+        profile: PDMStructuralProfile | None = None,
+    ) -> List[Chunk]:
         """
         SP4: Structured PA×DIM Segmentation per FORCING ROUTE SECCIÓN 5.
         [EXEC-SP4-001] through [EXEC-SP4-008]
         CONSTITUTIONAL INVARIANT: EXACTLY 60 CHUNKS
         """
         logger.info("SP4: Starting PA×DIM segmentation - CONSTITUTIONAL INVARIANT")
+        profile = profile or getattr(self, "structural_profile", None)
+        if profile is None:
+            raise PrerequisiteError("SP4-ABORT: PDMStructuralProfile required for segmentation")
         
         chunks: List[Chunk] = []
         idx = 0
+        hierarchy_detected = self.subphase_results.get("hierarchy_levels_detected", {})
+        canonical_detected = self.subphase_results.get("canonical_sections_detected", {})
+        section_annotations = self.subphase_results.get("structure_annotations", {})
+
+        def resolve_hierarchy_level(section_name: str | None) -> PDMHierarchyLevel | None:
+            if not section_name:
+                return None
+            level_val = hierarchy_detected.get(section_name)
+            if isinstance(level_val, str):
+                try:
+                    return PDMHierarchyLevel[level_val]
+                except Exception:
+                    try:
+                        return PDMHierarchyLevel(level_val)
+                    except Exception:
+                        return None
+            if isinstance(level_val, PDMHierarchyLevel):
+                return level_val
+            ann = section_annotations.get(section_name, {})
+            ann_level = ann.get("nivel_jerarquico")
+            if isinstance(ann_level, PDMHierarchyLevel):
+                return ann_level
+            if isinstance(ann_level, str):
+                try:
+                    return PDMHierarchyLevel[ann_level]
+                except Exception:
+                    return None
+            return None
+
+        def resolve_canonical_section(section_name: str | None) -> CanonicalSection | None:
+            if not section_name:
+                return None
+            canon_val = canonical_detected.get(section_name)
+            if isinstance(canon_val, CanonicalSection):
+                return canon_val
+            if isinstance(canon_val, str):
+                try:
+                    return CanonicalSection(canon_val)
+                except Exception:
+                    try:
+                        return CanonicalSection[canon_val]
+                    except Exception:
+                        pass
+            for label, canon in profile.canonical_sections.items():
+                if label.lower() in section_name.lower():
+                    return canon
+            return None
+
+        def resolve_pdq_context(canonical_section: CanonicalSection | None) -> ContextualMarker | None:
+            if canonical_section == CanonicalSection.DIAGNOSTICO:
+                return ContextualMarker.P
+            if canonical_section == CanonicalSection.PARTE_ESTRATEGICA:
+                return ContextualMarker.D
+            if canonical_section == CanonicalSection.PLAN_PLURIANUAL:
+                return ContextualMarker.Q
+            return None
+
+        def check_semantic_integrity(chunk_id: str, text: str) -> None:
+            for rule in profile.semantic_integrity_rules:
+                if rule.check_violation(text):
+                    if rule.violation_severity == "CRITICAL":
+                        raise Phase1FatalError(
+                            f"SP4: Semantic integrity violation {rule.rule_id} in {chunk_id} ({rule.description})"
+                        )
+                    else:
+                        logger.warning(
+                            f"SP4: Semantic integrity warning {rule.rule_id} in {chunk_id} ({rule.description})"
+                        )
         
         # Distribute paragraphs across PA×DIM grid
         total_paragraphs = len(preprocessed.paragraphs)
@@ -2146,6 +2351,15 @@ class Phase1CPPIngestionFullContract:
                     # Traceability (SPEC-002)
                     assignment_method = ASSIGNMENT_METHOD_FALLBACK
                     semantic_confidence = 0.0
+
+                # Semantic integrity enforcement (profile rules)
+                check_semantic_integrity(chunk_id, chunk_text)
+                section_name = None
+                if paragraph_ids:
+                    section_name = structure.paragraph_mapping.get(paragraph_ids[0])
+                canonical_section = resolve_canonical_section(section_name)
+                hierarchy_level = resolve_hierarchy_level(section_name)
+                pdq_context = resolve_pdq_context(canonical_section)
                 
                 # Convert string IDs to enum types for type-safe aggregation in CPP cycle
                 policy_area_enum = None
@@ -2194,6 +2408,14 @@ class Phase1CPPIngestionFullContract:
                     'text': chunk_text[:2000],
                     'has_type_enums': policy_area_enum is not None and dimension_enum is not None
                 }
+                # Attach PDM metadata
+                chunk.pdm_metadata = PDMMetadata(
+                    hierarchy_level=hierarchy_level,
+                    source_section=canonical_section,
+                    pdq_context=pdq_context,
+                    semantic_unit_id=None,
+                    table_reference=None,
+                )
                 
                 chunks.append(chunk)
                 idx += 1
@@ -2205,6 +2427,10 @@ class Phase1CPPIngestionFullContract:
         chunk_ids = {c.chunk_id for c in chunks}
         expected_ids = {f"{pa}-{dim}" for pa in PADimGridSpecification.POLICY_AREAS for dim in PADimGridSpecification.DIMENSIONS}
         assert chunk_ids == expected_ids, f"SP4 FATAL: Coverage mismatch. Missing: {expected_ids - chunk_ids}"
+
+        is_valid, violations = SP4Obligations.validate_sp4_assignment(structure, profile, chunks)
+        if not is_valid:
+            raise Phase1FatalError(f"SP4 postconditions failed: {violations}")
         
         logger.info(f"SP4: Generated EXACTLY 60 chunks with complete PA×DIM coverage")
         return chunks
@@ -3577,7 +3803,8 @@ class Phase1CPPIngestionFullContract:
 
 def execute_phase_1_with_full_contract(
     canonical_input: CanonicalInput,
-    signal_registry: Optional[Any] = None
+    signal_registry: Optional[Any] = None,
+    structural_profile: PDMStructuralProfile | None = None,
 ) -> CanonPolicyPackage:
     """
     EXECUTE PHASE 1 WITH COMPLETE CONTRACT ENFORCEMENT
@@ -3598,7 +3825,10 @@ def execute_phase_1_with_full_contract(
     """
     try:
         # INITIALIZE EXECUTOR WITH SIGNAL REGISTRY (DI)
-        executor = Phase1CPPIngestionFullContract(signal_registry=signal_registry)
+        executor = Phase1CPPIngestionFullContract(
+            signal_registry=signal_registry,
+            structural_profile=structural_profile,
+        )
         
         # Log policy compliance
         if signal_registry is not None:

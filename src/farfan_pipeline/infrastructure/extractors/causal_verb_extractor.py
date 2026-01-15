@@ -207,7 +207,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
         # Outcome pattern: connector + [phrase]
         # We look for the connector first, then capture what follows
         self.outcome_pattern = re.compile(
-            rf"\b(?:{connectors_regex})\s+((?:\w+\s+){0,15}\w+)", re.IGNORECASE
+            rf"\b(?:{connectors_regex})\s+((?:\w+\s+){{0,15}}\w+)", re.IGNORECASE
         )
 
         # Subject pattern: preceding noun phrase (simplified)

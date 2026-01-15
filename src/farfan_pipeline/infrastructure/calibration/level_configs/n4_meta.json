@@ -1,0 +1,41 @@
+{
+  "level": "N4-META",
+  "epistemology": "Meta-análisis del proceso analítico",
+  "description": "Identificación de puntos de fallo y síntesis final. Consume outputs validados de todos los niveles inferiores para producir narrativa final.",
+  "output_type": "META_ANALYSIS",
+  "fusion_behavior": "terminal",
+  "fusion_symbol": "⊙",
+  "calibration_parameters": {
+    "failure_detection_threshold": 0.3,
+    "synthesis_confidence_threshold": 0.7
+  },
+  "validation_schema": {
+    "failure_detection_threshold": {"type": "float", "range": [0.0, 1.0]},
+    "synthesis_confidence_threshold": {"type": "float", "range": [0.0, 1.0]}
+  },
+  "pdm_sensitivity": {
+    "active": false,
+    "rules": [],
+    "description": "Meta-analysis is level-agnostic; no PDM adjustments"
+  },
+  "constraints": [
+    "consumes_all_lower_levels",
+    "cannot_be_vetoed",
+    "terminal_synthesis",
+    "level_is_immutable"
+  ],
+  "typical_methods": [
+    "CausalInferenceSetup.identify_failure_points",
+    "PerformanceAnalyzer.analyze_performance",
+    "DoctoralCarverSynthesizer.synthesize"
+  ],
+  "epistemic_regime": "Meta-Analytic",
+  "meta_level": true,
+  "asymmetry_principle": {
+    "can_veto": false,
+    "can_be_vetoed_by": [],
+    "description": "N4 is the terminal level; it cannot be vetoed by lower levels"
+  },
+  "dependency_rule": "N4 consumes validated outputs from N1, N2, and N3",
+  "synthesis_role": "Constructs final human-readable narrative from filtered evidence graph"
+}
