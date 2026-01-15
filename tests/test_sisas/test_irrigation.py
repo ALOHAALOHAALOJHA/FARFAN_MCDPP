@@ -3,12 +3,7 @@
 import pytest
 import json
 import tempfile
-import sys
-import os
 from pathlib import Path
-
-# Asegurar que src está en el path para las pruebas
-sys.path.append(os.path.abspath("src"))
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_map import (
     IrrigationMap, IrrigationRoute, IrrigationSource, IrrigationTarget,

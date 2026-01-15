@@ -2,11 +2,6 @@
 
 import pytest
 from datetime import datetime
-import sys
-import os
-
-# Asegurar que src está en el path para las pruebas
-sys.path.append(os.path.abspath("src"))
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
     SignalContext, SignalSource, SignalCategory, SignalConfidence

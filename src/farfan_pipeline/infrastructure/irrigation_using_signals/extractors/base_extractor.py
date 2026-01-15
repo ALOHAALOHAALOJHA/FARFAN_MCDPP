@@ -18,9 +18,6 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 import logging
 
-import sys
-sys.path.insert(0, str(__file__).split('src')[0])
-
 from canonic_questionnaire_central.core.signal import Signal, SignalType, SignalScope, SignalProvenance
 from canonic_questionnaire_central.core.signal_distribution_orchestrator import SignalDistributionOrchestrator
 

@@ -7,15 +7,16 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
 
+from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT, DATA_DIR
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("atroz_dashboard")
 
 # Initialize Flask App
-PROJECT_ROOT = "/home/recovered/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL-3"
-app = Flask(__name__, static_folder=PROJECT_ROOT, static_url_path="")
+app = Flask(__name__, static_folder=str(PROJECT_ROOT), static_url_path="")
 app.config["SECRET_KEY"] = os.getenv("MANIFEST_SECRET_KEY", "atroz-secret-key")
-app.config["UPLOAD_FOLDER"] = os.path.abspath("data/uploads")
+app.config["UPLOAD_FOLDER"] = str(DATA_DIR / "uploads")
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50MB max upload
 
 # Enable CORS for development
@@ -163,7 +164,7 @@ from flask import Flask, Response
 @app.route("/")
 def index():
     dashboard_path = PROJECT_ROOT / "dashboard.html"
-    with open(dashboard_path, encoding="utf-8") as f:
+    with open(str(dashboard_path), encoding="utf-8") as f:
         return Response(f.read(), mimetype="text/html")
 
 
