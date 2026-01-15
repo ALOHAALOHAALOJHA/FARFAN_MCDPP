@@ -1,0 +1,157 @@
+{
+  "audit_date": "2026-01-14",
+  "total_tests": 21,
+  "passed": 10,
+  "warnings": 11,
+  "failed": 0,
+  "pass_rate": 47.61904761904761,
+  "results": [
+    {
+      "test_id": "1.1.1",
+      "description": "AXIOM: Ning\u00fan evento se pierde",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.1.2",
+      "description": "AXIOM: Las se\u00f1ales son derivadas",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.1.3",
+      "description": "AXIOM: Las se\u00f1ales son deterministas",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.1.4",
+      "description": "AXIOM: Se\u00f1ales nunca se sobrescriben",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.1.5",
+      "description": "AXIOM: Se\u00f1ales tienen contexto",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.1.6",
+      "description": "AXIOM: Se\u00f1ales son auditables",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.1.7",
+      "description": "AXIOM: Se\u00f1ales no son imperativas",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.core",
+      "description": "Existencia de core/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.signals/types",
+      "description": "Existencia de signals/types/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals/types",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.vehicles",
+      "description": "Existencia de vehicles/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.consumers",
+      "description": "Existencia de consumers/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.irrigation",
+      "description": "Existencia de irrigation/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.vocabulary",
+      "description": "Existencia de vocabulary/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.audit",
+      "description": "Existencia de audit/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.schemas",
+      "description": "Existencia de schemas/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/schemas",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.config",
+      "description": "Existencia de config/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config",
+      "impact": ""
+    },
+    {
+      "test_id": "1.2.scripts",
+      "description": "Existencia de scripts/",
+      "status": "PASS",
+      "evidence": "Directory exists at /home/user/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/scripts",
+      "impact": ""
+    },
+    {
+      "test_id": "2.1.10",
+      "description": "SignalCategory tiene 6 valores",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "2.1.11",
+      "description": "SignalConfidence tiene 4 valores",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "2.2.1",
+      "description": "EventType enum completo",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    },
+    {
+      "test_id": "2.3.12",
+      "description": "ContractStatus tiene 4 estados",
+      "status": "WARNING",
+      "evidence": "Could not verify: (unicode error) 'utf-8' codec can't decode byte 0xf3 in position 26: invalid continuation byte (__init__.py, line 11)",
+      "impact": ""
+    }
+  ]
+}

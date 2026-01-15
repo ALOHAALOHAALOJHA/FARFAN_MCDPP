@@ -210,5 +210,139 @@ class EventStore:
         """Exporta a formato JSONL para persistencia"""
         lines = []
         for event in self.events:
-            lines.append(json.dumps(event.to_dict(), default=str))
+            lines.append(json.dumps(event.to_dict()))
         return "\n".join(lines)
+
+    @classmethod
+    def from_jsonl(cls, jsonl_content: str) -> 'EventStore':
+        """
+        Carga EventStore desde formato JSONL.
+        """
+        store = cls()
+        for line in jsonl_content.strip().split('\n'):
+            if not line.strip():
+                continue
+            event_data = json.loads(line)
+            # Reconstituir evento
+            event = Event(
+                event_id=event_data['event_id'],
+                event_type=EventType(event_data['event_type']),
+                timestamp=datetime.fromisoformat(event_data['timestamp']),
+                source_component=event_data.get('source_component', ''),
+                source_file=event_data.get('source_file', ''),
+                source_path=event_data.get('source_path', ''),
+                phase=event_data.get('phase', ''),
+                consumer_scope=event_data.get('consumer_scope', ''),
+                correlation_id=event_data.get('correlation_id'),
+                causation_id=event_data.get('causation_id'),
+                processed=event_data.get('processed', False)
+            )
+            # Reconstituir payload si existe
+            if event_data.get('payload'):
+                event.payload = EventPayload(
+                    data=event_data['payload']['data'],
+                    schema_version=event_data['payload'].get('schema_version', '1.0.0')
+                )
+            store.append(event)
+        return store
+
+    def persist_to_file(self, file_path: str):
+        """Persiste el store a archivo"""
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(self.to_jsonl())
+
+    @classmethod
+    def load_from_file(cls, file_path: str) -> 'EventStore':
+        """Carga EventStore desde archivo"""
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return cls.from_jsonl(content)
+
+    def get_by_correlation(self, correlation_id: str) -> List[Event]:
+        """Obtiene todos los eventos con el mismo correlation_id"""
+        return [e for e in self.events if e.correlation_id == correlation_id]
+
+    def get_event_chain(self, event_id: str) -> List[Event]:
+        """
+        Obtiene cadena causal de un evento.
+        Retorna todos los eventos que causaron este evento.
+        """
+        chain = []
+        current_event = self.get_by_id(event_id)
+
+        while current_event and current_event.causation_id:
+            caused_by = self.get_by_id(current_event.causation_id)
+            if caused_by:
+                chain.append(caused_by)
+                current_event = caused_by
+            else:
+                break
+
+        return list(reversed(chain))  # Orden cronológico
+
+    def get_statistics(self) -> Dict[str, Any]:
+        """Obtiene estadísticas del store"""
+        stats = {
+            "total_events": len(self.events),
+            "processed": len([e for e in self.events if e.processed]),
+            "unprocessed": len([e for e in self.events if not e.processed]),
+            "by_type": {},
+            "by_phase": {},
+            "with_errors": len([e for e in self.events if e.processing_errors]),
+        }
+
+        # Contar por tipo
+        for event_type in EventType:
+            count = len(self._index_by_type.get(event_type.value, []))
+            if count > 0:
+                stats["by_type"][event_type.value] = count
+
+        # Contar por fase
+        for phase in self._index_by_phase.keys():
+            stats["by_phase"][phase] = len(self._index_by_phase[phase])
+
+        return stats
+
+    def get_recent(self, limit: int = 10) -> List[Event]:
+        """Obtiene los eventos más recientes"""
+        sorted_events = sorted(self.events, key=lambda e: e.timestamp, reverse=True)
+        return sorted_events[:limit]
+
+    def get_errors(self) -> List[Event]:
+        """Obtiene eventos que tuvieron errores de procesamiento"""
+        return [e for e in self.events if e.processing_errors]
+
+    def archive_processed(self, older_than_days: int = 30, archive_path: str = None) -> int:
+        """
+        Archiva (NO elimina) eventos procesados más antiguos que N días.
+        Los eventos se mueven a un almacenamiento de archivo separado.
+
+        AXIOM COMPLIANCE: Eventos nunca se pierden - solo se archivan.
+
+        Args:
+            older_than_days: Edad mínima de eventos a archivar
+            archive_path: Path opcional para archivo de almacenamiento
+
+        Returns:
+            Cantidad de eventos archivados
+        """
+        cutoff_date = datetime.utcnow() - timedelta(days=older_than_days)
+        to_archive = [
+            e for e in self.events
+            if e.processed and e.timestamp < cutoff_date
+        ]
+
+        # Si se proporciona un path, persistir a archivo
+        if archive_path and to_archive:
+            archive_store = EventStore(events=to_archive)
+            archive_store.persist_to_file(archive_path)
+
+        # NOTE: En cumplimiento con el axioma "Ningún evento se pierde",
+        # esta implementación NO elimina eventos. Si se requiere liberar
+        # memoria, los eventos archivados deben moverse a almacenamiento
+        # persistente externo (DB, S3, etc.) en lugar de eliminarse.
+
+        # TODO: Implementar estrategia de almacenamiento en frío para
+        # eventos archivados (database, object storage, etc.)
+
+        return len(to_archive)
