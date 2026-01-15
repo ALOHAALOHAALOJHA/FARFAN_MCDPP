@@ -42,6 +42,22 @@ except ImportError:
     PolicyArea = None  # type: ignore
     DimensionCausal = None  # type: ignore
 
+# PDM STRUCTURAL PROFILE IMPORTS
+# These provide PDM-specific metadata for structural recognition
+try:
+    from farfan_pipeline.infrastructure.parametrization.pdm_structural_profile import (
+        CanonicalSection,
+        ContextualMarker,
+        HierarchyLevel,
+    )
+
+    PDM_PROFILE_AVAILABLE = True
+except ImportError:
+    PDM_PROFILE_AVAILABLE = False
+    HierarchyLevel = None  # type: ignore
+    CanonicalSection = None  # type: ignore
+    ContextualMarker = None  # type: ignore
+
 
 @dataclass
 class LanguageData:
@@ -132,6 +148,51 @@ class CausalGraph:
     events: list[Any] = field(default_factory=list)
     causes: list[Any] = field(default_factory=list)
     effects: list[Any] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class PDMMetadata:
+    """
+    PDM structural metadata for chunks.
+
+    Captures PDM-specific structural information according to Ley 152/94:
+    - Hierarchy level (H1-H5): PARTE, CAPITULO, LINEA, SUBPROGRAMA, META
+    - Source section: DIAGNOSTICO, PARTE_ESTRATEGICA, PLAN_PLURIANUAL, etc.
+    - P-D-Q context: Problem, Decision, or Quality marker
+    - Semantic unit ID: For grouped elements (Meta+Indicador+Línea Base)
+    - Table reference: Link to structured tables (PPI, Indicadores, etc.)
+
+    This metadata enables constitutional validation and calibration.
+    """
+
+    hierarchy_level: Any  # HierarchyLevel enum when PDM_PROFILE_AVAILABLE
+    source_section: Any  # CanonicalSection enum when PDM_PROFILE_AVAILABLE
+    pdq_context: Any  # ContextualMarker enum when PDM_PROFILE_AVAILABLE
+    semantic_unit_id: str | None = None
+    table_reference: str | None = None
+
+    def __post_init__(self):
+        """Validate PDM metadata integrity."""
+        # Validate enum types if PDM profile available
+        if PDM_PROFILE_AVAILABLE:
+            if self.hierarchy_level is not None and not isinstance(
+                self.hierarchy_level, HierarchyLevel
+            ):
+                raise ValueError(
+                    f"hierarchy_level must be HierarchyLevel enum, got {type(self.hierarchy_level)}"
+                )
+            if self.source_section is not None and not isinstance(
+                self.source_section, CanonicalSection
+            ):
+                raise ValueError(
+                    f"source_section must be CanonicalSection enum, got {type(self.source_section)}"
+                )
+            if self.pdq_context is not None and not isinstance(
+                self.pdq_context, ContextualMarker
+            ):
+                raise ValueError(
+                    f"pdq_context must be ContextualMarker enum, got {type(self.pdq_context)}"
+                )
 
 
 @dataclass
@@ -372,6 +433,9 @@ class SmartChunk:
 
     rank_score: float = 0.0
     signal_weighted_score: float = 0.0
+
+    # PDM structural metadata (optional)
+    pdm_metadata: PDMMetadata | None = None
 
     def __post_init__(self):
         # Validate SPEC-002 Traceability
