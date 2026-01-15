@@ -1,3 +1,77 @@
+# FORCING ROUTE: PHASE 1 CPP INGESTION CONTRACT
+
+> **DOCUMENTO NORMATIVO** — No es documentación, es la constitución de Phase 1.
+
+---
+
+## TRÍADA CONSTITUCIONAL DE FASE 1
+
+### La Tríada: Parametrización / Calibración / Invariante
+
+#### 1. PARAMETRIZACIÓN (Ex Ante, Diseño-Tiempo)
+
+| Aspecto | Descripción |
+|---------|-------------|
+| **Subfases** | SP2, SP4 |
+| **Namespace** | `parametrization.sp2.*`, `parametrization.sp4.*` |
+| **Cuándo** | Antes de ejecutar (diseño) |
+| **Cómo** | SP2 recibe `PlanStructureProfile` via DI |
+| **Dimensiones** | σ (SeccionPDT), η (NivelJerarquico), μ (MecanismoCausal), τ (TipoContenido), k (MarcadorContextual) |
+
+#### 2. CALIBRACIÓN (Ex Post, Evidencia-Tiempo)
+
+| Aspecto | Descripción |
+|---------|-------------|
+| **Subfases** | SP5, SP7, SP9, SP10, SP12, SP14 (solo HIGH tier) |
+| **Namespace** | `calibration.sp5.*`, `calibration.sp7.*`, etc. |
+| **Cuándo** | Después de observar métricas (runtime) |
+| **Restricción** | **JAMÁS** calibrar CRITICAL subphases |
+
+#### 3. INVARIANTE (Constitucional, Intocable)
+
+| Aspecto | Descripción |
+|---------|-------------|
+| **Subfases** | SP4, SP11, SP13 (CRITICAL tier) |
+| **Namespace** | `invariant.60_chunks`, `invariant.grid_spec` |
+| **Qué protege** | 60 chunks = 10 PA × 6 Dim |
+
+#### Regla de Precedencia
+
+```
+1. PARAMETRIZAR PRIMERO  →  Abrir los diales (diseño)
+2. CALIBRAR DESPUÉS      →  Girar los diales (evidencia)
+3. NUNCA TOCAR INVARIANTES → Son la constitución
+
+AXIOMA: Si calibras sin parametrizar, solo estás afinando un error bien definido.
+```
+
+#### Mapa de Subfases por Tríada
+
+```
+SP0  [STANDARD]  ─────────────────────────────── Input validation
+SP1  [STANDARD]  ─────────────────────────────── Language preprocessing
+SP2  [STANDARD]  ★ PARAMETRIZABLE ────────────── Structural analysis
+SP3  [STANDARD]  ─────────────────────────────── Knowledge graph
+SP4  [CRITICAL]  ★ PARAMETRIZABLE + INVARIANT ── PA×Dim grid (60 chunks)
+SP5  [HIGH]      ★ CALIBRATABLE ───────────────── Causal extraction
+SP6  [STANDARD]  ─────────────────────────────── Arguments extraction
+SP7  [STANDARD]  ★ CALIBRATABLE ───────────────── Discourse analysis
+SP8  [STANDARD]  ─────────────────────────────── Temporal extraction
+SP9  [HIGH]      ★ CALIBRATABLE ───────────────── Causal integration
+SP10 [HIGH]      ★ CALIBRATABLE ───────────────── Strategic integration
+SP11 [CRITICAL]  ★ INVARIANT ──────────────────── Chunk assembly (60)
+SP12 [HIGH]      ★ CALIBRATABLE ───────────────── SISAS irrigation
+SP13 [CRITICAL]  ★ INVARIANT ──────────────────── CPP packaging (60)
+SP14 [HIGH]      ★ CALIBRATABLE ───────────────── Quality metrics
+SP15 [HIGH]      ─────────────────────────────── Integrity verification
+```
+
+> **ADVERTENCIA**: Dentro de 6 meses alguien intentará "optimizar SP4" reduciendo
+> chunks. **ESTO ESTÁ PROHIBIDO CONSTITUCIONALMENTE.** Los 60 chunks NO son un
+> parámetro — son la CONSTITUCIÓN.
+
+---
+
 SECCIÓN 1: PRECONDICIONES DE ENTRADA (PHASE 0 → PHASE 1)
 1.1 CONTRATO DE ENTRADA: CanonicalInput
 [PRE-001] | ESTRUCTURA | El objeto recibido DEBE ser instancia de CanonicalInput | isinstance(input_obj, CanonicalInput) == True | FATAL: Rechazar ejecución

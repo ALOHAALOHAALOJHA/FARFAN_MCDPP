@@ -7,19 +7,86 @@ Constitutional Invariants:
 - EXACTLY 60 chunks must be produced (10 Policy Areas × 6 Causal Dimensions)
 - All 16 subphases must complete or fail gracefully according to weight tier
 - Weight-based timeouts: CRITICAL (3x), HIGH (2x), STANDARD (1x)
+
+═══════════════════════════════════════════════════════════════════════════════
+                    TRÍADA CONSTITUCIONAL DE FASE 1
+═══════════════════════════════════════════════════════════════════════════════
+
+PARAMETRIZACIÓN (ex ante, diseño-tiempo):
+    Subfases: SP2, SP4
+    - SP2 recibe PlanStructureProfile (σ, η, μ, τ, k) vía DI
+    - SP4 CONSUME obligatoriamente el profile para grid PA×Dim
+    - Define chunk_size_multiplier, overlap_ratio por sección
+    NAMESPACE: parametrization.sp2.*, parametrization.sp4.*
+
+CALIBRACIÓN (ex post, evidencia-tiempo):
+    Subfases: SP5, SP7, SP9, SP10, SP12, SP14 (sólo HIGH tier)
+    - Ajuste empírico basado en métricas observadas
+    - Phase1Calibrator.freeze() → artefacto versionado
+    - JAMÁS calibrar CRITICAL subphases
+    NAMESPACE: calibration.sp5.*, calibration.sp7.*, ...
+
+INVARIANTE (constitucional, intocable):
+    Subfases: SP4, SP11, SP13 (CRITICAL tier)
+    - 60 chunks = 10 PA × 6 Dim — NUNCA modificar
+    - Cualquier "optimización" que altere esto es INCONSTITUCIONAL
+    NAMESPACE: invariant.60_chunks, invariant.grid_spec
+
+REGLA DE PRECEDENCIA:
+    1. Parametrizar PRIMERO (abrir los diales)
+    2. Calibrar DESPUÉS (girar los diales con evidencia)
+    3. Si calibras sin parametrizar, solo estás afinando un error bien definido
+
+ADVERTENCIA PARA FUTUROS DESARROLLADORES:
+    Dentro de 6 meses alguien intentará "optimizar SP4" reduciendo chunks
+    para "mejorar performance". ESTO ESTÁ PROHIBIDO CONSTITUCIONALMENTE.
+    Los 60 chunks NO son un parámetro ajustable — son la CONSTITUCIÓN.
+═══════════════════════════════════════════════════════════════════════════════
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
+from typing import Dict, FrozenSet
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# TRÍADA ASSERTIONS - Ejecutadas en import-time como guardrails
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Subphases que PUEDEN ser parametrizadas (diseño-tiempo)
+PARAMETRIZABLE_SUBPHASES: FrozenSet[str] = frozenset({"SP2", "SP4"})
+
+# Subphases que PUEDEN ser calibradas (evidencia-tiempo) — solo HIGH tier
+CALIBRATABLE_SUBPHASES: FrozenSet[str] = frozenset({
+    "SP5", "SP7", "SP9", "SP10", "SP12", "SP14"
+})
+
+# Subphases INVARIANTES — JAMÁS tocar (CRITICAL tier)
+INVARIANT_SUBPHASES: FrozenSet[str] = frozenset({"SP4", "SP11", "SP13"})
+
+# CONSTITUTIONAL INVARIANT: 60 chunks = 10 PA × 6 Dim
+CONSTITUTIONAL_CHUNK_COUNT: int = 60
+CONSTITUTIONAL_POLICY_AREAS: int = 10
+CONSTITUTIONAL_CAUSAL_DIMENSIONS: int = 6
+
+# Assertion at import-time: matemática constitucional
+assert (
+    CONSTITUTIONAL_POLICY_AREAS * CONSTITUTIONAL_CAUSAL_DIMENSIONS 
+    == CONSTITUTIONAL_CHUNK_COUNT
+), "CONSTITUTIONAL VIOLATION: 10 PA × 6 Dim ≠ 60 chunks"
 
 
 class WeightTier(Enum):
-    """Weight tier classification for subphases."""
-    CRITICAL = "CRITICAL"  # 10000: Constitutional invariants
-    HIGH = "HIGH"          # 5000-9000: Essential processing
+    """Weight tier classification for subphases.
+    
+    CRITICAL: Constitutional invariants — NEVER calibrate
+    HIGH: Essential processing — CAN be calibrated
+    STANDARD: Standard processing — CAN be calibrated but lower priority
+    """
+    CRITICAL = "CRITICAL"  # 10000: Constitutional invariants — INVARIANT tier
+    HIGH = "HIGH"          # 5000-9000: Essential processing — CALIBRATABLE tier
     STANDARD = "STANDARD"  # 900-4999: Standard processing
 
 
@@ -78,9 +145,122 @@ def validate_mission_contract() -> bool:
     return True
 
 
+def validate_triada_integrity() -> bool:
+    """Validate the Tríada (Parametrization/Calibration/Invariant) integrity.
+    
+    This function enforces constitutional constraints:
+    1. INVARIANT subphases MUST be CRITICAL tier
+    2. CALIBRATABLE subphases MUST be HIGH tier (never CRITICAL)
+    3. SP4 is special: PARAMETRIZABLE but also INVARIANT (design vs runtime)
+    4. No overlap between CALIBRATABLE and INVARIANT (except SP4 design-only)
+    
+    Returns:
+        True if Tríada is valid
+        
+    Raises:
+        ValueError: If Tríada constraints are violated
+    """
+    # Rule 1: All INVARIANT subphases must be CRITICAL tier
+    for sp_id in INVARIANT_SUBPHASES:
+        sp = PHASE1_SUBPHASE_WEIGHTS.get(sp_id)
+        if sp is None:
+            raise ValueError(f"INVARIANT subphase {sp_id} not found in contract")
+        if sp.tier != WeightTier.CRITICAL:
+            raise ValueError(
+                f"CONSTITUTIONAL VIOLATION: INVARIANT subphase {sp_id} "
+                f"is {sp.tier.value}, MUST be CRITICAL"
+            )
+    
+    # Rule 2: All CALIBRATABLE subphases must NOT be CRITICAL
+    for sp_id in CALIBRATABLE_SUBPHASES:
+        sp = PHASE1_SUBPHASE_WEIGHTS.get(sp_id)
+        if sp is None:
+            raise ValueError(f"CALIBRATABLE subphase {sp_id} not found in contract")
+        if sp.tier == WeightTier.CRITICAL:
+            raise ValueError(
+                f"CONSTITUTIONAL VIOLATION: Cannot calibrate CRITICAL subphase {sp_id}. "
+                "Calibration is forbidden on constitutional invariants."
+            )
+    
+    # Rule 3: CALIBRATABLE and INVARIANT must not overlap
+    # Note: SP4 is both PARAMETRIZABLE and INVARIANT, but NOT CALIBRATABLE
+    forbidden_overlap = CALIBRATABLE_SUBPHASES & INVARIANT_SUBPHASES
+    if forbidden_overlap:
+        raise ValueError(
+            f"CONSTITUTIONAL VIOLATION: Subphases {forbidden_overlap} are both "
+            "CALIBRATABLE and INVARIANT. This is forbidden."
+        )
+    
+    # Rule 4: Verify 60 chunks math
+    expected_chunks = CONSTITUTIONAL_POLICY_AREAS * CONSTITUTIONAL_CAUSAL_DIMENSIONS
+    if expected_chunks != CONSTITUTIONAL_CHUNK_COUNT:
+        raise ValueError(
+            f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × "
+            f"{CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim = {expected_chunks}, "
+            f"expected {CONSTITUTIONAL_CHUNK_COUNT}"
+        )
+    
+    return True
+
+
+def is_subphase_calibratable(sp_id: str) -> bool:
+    """Check if a subphase can be calibrated.
+    
+    Only HIGH tier subphases can be calibrated.
+    CRITICAL tier subphases are INVARIANT and cannot be calibrated.
+    
+    Args:
+        sp_id: Subphase identifier (e.g., "SP5", "SP11")
+        
+    Returns:
+        True if subphase can be calibrated
+    """
+    return sp_id in CALIBRATABLE_SUBPHASES
+
+
+def is_subphase_parametrizable(sp_id: str) -> bool:
+    """Check if a subphase can be parametrized.
+    
+    Only SP2 and SP4 receive PlanStructureProfile for parametrization.
+    Parametrization happens at design-time (ex ante), not runtime.
+    
+    Args:
+        sp_id: Subphase identifier (e.g., "SP2", "SP4")
+        
+    Returns:
+        True if subphase can receive structural parameters
+    """
+    return sp_id in PARAMETRIZABLE_SUBPHASES
+
+
+def is_subphase_invariant(sp_id: str) -> bool:
+    """Check if a subphase is constitutionally invariant.
+    
+    INVARIANT subphases (SP4, SP11, SP13) enforce the 60-chunk grid.
+    They CANNOT be calibrated or modified at runtime.
+    
+    Args:
+        sp_id: Subphase identifier
+        
+    Returns:
+        True if subphase is constitutional invariant
+    """
+    return sp_id in INVARIANT_SUBPHASES
+
+
 __all__ = [
     "WeightTier",
     "SubphaseWeight",
     "PHASE1_SUBPHASE_WEIGHTS",
+    "PARAMETRIZABLE_SUBPHASES",
+    "CALIBRATABLE_SUBPHASES",
+    "INVARIANT_SUBPHASES",
+    "CONSTITUTIONAL_CHUNK_COUNT",
+    "CONSTITUTIONAL_POLICY_AREAS",
+    "CONSTITUTIONAL_CAUSAL_DIMENSIONS",
     "validate_mission_contract",
+    "validate_triada_integrity",
+    "is_subphase_calibratable",
+    "is_subphase_parametrizable",
+    "is_subphase_invariant",
 ]

@@ -1168,43 +1168,20 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
-                        MethodBelowThresholdError,
-                    )
-                    
                     calibration_result = self.calibration_orchestrator.calibrate(
                         method_id=method_id,
                         context=payload,
                         evidence=None
                     )
-                    
+
                     calibration_score = calibration_result.final_score
                     calibration_results[method_id] = calibration_result.to_dict()
-                    
+
                     import logging
                     logger = logging.getLogger(__name__)
                     logger.info(
                         f"[{base_slot}] Calibration: {method_id} -> {calibration_score:.3f}"
                     )
-                    
-                except MethodBelowThresholdError as e:
-                    import logging
-                    logger = logging.getLogger(__name__)
-                    calibration_score = e.score
-                    
-                    should_execute, reason = self.calibration_policy.should_execute_method(
-                        method_id, calibration_score
-                    )
-                    
-                    if not should_execute:
-                        logger.error(
-                            f"[{base_slot}] Method {method_id} SKIPPED: {reason}"
-                        )
-                        continue
-                    else:
-                        logger.warning(
-                            f"[{base_slot}] Method {method_id} below threshold but executing: {reason}"
-                        )
                 except Exception as e:
                     import logging
                     logger = logging.getLogger(__name__)
@@ -1632,34 +1609,19 @@ class BaseExecutorWithContract(ABC):
                 
                 if self.calibration_orchestrator:
                     try:
-                        from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
-                            MethodBelowThresholdError,
-                        )
-                        
                         calibration_result = self.calibration_orchestrator.calibrate(
                             method_id=method_id,
                             context=common_kwargs,
                             evidence=None
                         )
-                        
+
                         calibration_results[method_id] = calibration_result.to_dict()
-                        
+
                         import logging
                         logger = logging.getLogger(__name__)
                         logger.info(
                             f"[{base_slot}] Calibration: {method_id} -> {calibration_result.final_score:.3f}"
                         )
-                        
-                    except MethodBelowThresholdError as e:
-                        import logging
-                        logger = logging.getLogger(__name__)
-                        logger.error(
-                            f"[{base_slot}] Method {method_id} FAILED calibration: "
-                            f"score={e.score:.3f}, threshold={e.threshold:.3f}"
-                        )
-                        raise RuntimeError(
-                            f"Method {method_id} failed calibration threshold"
-                        ) from e
                     except Exception as e:
                         import logging
                         logger = logging.getLogger(__name__)
@@ -1757,22 +1719,12 @@ class BaseExecutorWithContract(ABC):
                     # Calibration check
                     if self.calibration_orchestrator:
                         try:
-                            from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
-                                MethodBelowThresholdError,
-                            )
                             calibration_result = self.calibration_orchestrator.calibrate(
                                 method_id=method_id,
                                 context=phase_context,
                                 evidence=None
                             )
                             calibration_results[method_id] = calibration_result.to_dict()
-                        except MethodBelowThresholdError as e:
-                            import logging
-                            logger = logging.getLogger(__name__)
-                            logger.error(
-                                f"[{base_slot}][{phase_key}] Method {method_id} FAILED calibration"
-                            )
-                            raise RuntimeError(f"Method {method_id} failed calibration") from e
                         except Exception as e:
                             import logging
                             logger = logging.getLogger(__name__)
@@ -1872,34 +1824,19 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
-                        MethodBelowThresholdError,
-                    )
-                    
                     calibration_result = self.calibration_orchestrator.calibrate(
                         method_id=method_id,
                         context=common_kwargs,
                         evidence=None
                     )
-                    
+
                     calibration_results[method_id] = calibration_result.to_dict()
-                    
+
                     import logging
                     logger = logging.getLogger(__name__)
                     logger.info(
                         f"[{base_slot}] Calibration: {method_id} -> {calibration_result.final_score:.3f}"
                     )
-                    
-                except MethodBelowThresholdError as e:
-                    import logging
-                    logger = logging.getLogger(__name__)
-                    logger.error(
-                        f"[{base_slot}] Method {method_id} FAILED calibration: "
-                        f"score={e.score:.3f}, threshold={e.threshold:.3f}"
-                    )
-                    raise RuntimeError(
-                        f"Method {method_id} failed calibration threshold"
-                    ) from e
                 except Exception as e:
                     import logging
                     logger = logging.getLogger(__name__)
