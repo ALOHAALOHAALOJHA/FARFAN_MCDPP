@@ -8,6 +8,15 @@ Author: FARFAN Pipeline Team
 Version: 1.0.0
 """
 
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "ORCH"  # Orchestration
+__criticality__ = "CRITICAL"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Singleton"
+__phase_label__ = "Cross-Phase Coordinator"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 import logging
 from typing import Any
 

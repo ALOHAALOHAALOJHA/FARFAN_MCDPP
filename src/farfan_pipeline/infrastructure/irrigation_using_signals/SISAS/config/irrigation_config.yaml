@@ -1,279 +1,93 @@
-# SISAS Irrigation Configuration
-# Defines execution parameters, data sources, and irrigation policies
+# src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config/irrigation_config. yaml
 
-# Data sources
-data_sources:
-  canonical_base_path: "."
-  sabana_csv_path: "artifacts/sabana_final_decisiones.csv"
-  registry_path: "_registry"
+irrigation: 
+  base_path: "src/farfan_pipeline/data"
+  
+  phases:
+    phase_0:
+      description: "Bootstrap y carga inicial"
+      priority: 1
+      parallel_routes:  10
+      
+    phase_1:
+      description: "Signal enrichment e ingestion"
+      priority: 2
+      parallel_routes: 5
+      depends_on: [phase_0]
+      
+    phase_2:
+      description:  "Factory, execution, synchronization"
+      priority: 3
+      parallel_routes: 7
+      depends_on: [phase_1]
+      
+    phase_3:
+      description: "Signal enriched scoring"
+      priority: 4
+      parallel_routes: 3
+      depends_on: [phase_2]
+      
+    phase_7:
+      description: "Meso questions processing"
+      priority: 5
+      parallel_routes: 2
+      depends_on: [phase_3]
+      
+    phase_8:
+      description: "Signal enriched recommendations"
+      priority: 6
+      parallel_routes: 1
+      depends_on: [phase_7]
 
-  # Canonical data directories
-  clusters_path: "_registry/clusters"
-  dimensions_path: "_registry/dimensions"
-  policy_areas_path: "_registry/policy_areas"
-  patterns_path: "_registry/patterns"
-  cross_cutting_path: "_registry/cross_cutting"
-  scoring_path: "_registry/scoring"
-  entities_path: "_registry/entities"
-  membership_criteria_path: "_registry/membership_criteria"
-  questions_path: "_registry/questions"
+  vehicles:
+    signal_registry:
+      enabled: true
+      priority: 1
+      
+    signal_context_scoper:
+      enabled: true
+      priority: 2
+      
+    signal_evidence_extractor:
+      enabled:  true
+      priority: 3
+      
+    signal_intelligence_layer:
+      enabled: true
+      priority: 4
+      
+    signal_loader:
+      enabled: true
+      priority: 1
+      
+    signal_quality_metrics:
+      enabled: true
+      priority: 5
+      
+    signal_irrigator:
+      enabled: true
+      priority: 6
+      
+    signal_enhancement_integrator:
+      enabled: true
+      priority: 7
+      
+    signals: 
+      enabled: true
+      priority: 8
 
-# Execution settings
-execution:
-  # Parallel execution
-  max_parallel_executions: 4
-  max_workers: 8
-
-  # Timeouts
-  default_timeout_ms: 300000  # 5 minutes per file
-  phase_timeout_ms: 1800000   # 30 minutes per phase
-  total_timeout_ms: 7200000   # 2 hours total
-
-  # Retry policy
-  retry:
+  execution: 
+    max_concurrent_routes: 20
+    route_timeout_seconds: 300
+    retry_failed_routes: true
+    max_route_retries: 3
+    
+  logging:
+    level: INFO
+    file: "_logs/irrigation. log"
+    rotation:  daily
+    
+  audit:
     enabled: true
-    max_retries: 3
-    backoff_strategy: "exponential"  # linear, exponential, fixed
-    initial_backoff_ms: 1000
-    max_backoff_ms: 30000
-    retry_on_failures:
-      - "VALIDATION_ERROR"
-      - "TRANSFORMATION_ERROR"
-      - "TIMEOUT_ERROR"
-    do_not_retry_on:
-      - "CONTRACT_VIOLATION"
-      - "RESOURCE_EXHAUSTION"
-
-  # Resource limits
-  resources:
-    max_memory_mb: 4096
-    max_cpu_percent: 80
-    max_file_size_mb: 100
-    max_signals_per_file: 10000
-
-# Irrigation policy
-irrigation:
-  # What to irrigate
-  irrigate_on_startup: false
-  auto_irrigate_new_files: false
-
-  # Filters
-  filters:
-    # Only irrigate files with these buckets
-    allowed_buckets:
-      - "irrigable_now"
-      # - "not_irrigable_yet"  # Uncomment to include
-
-    # Only irrigate these phases (empty = all)
-    allowed_phases: []
-    # Example: ["phase_0", "phase_1", "phase_2"]
-
-    # Only irrigate files with these stages
-    allowed_stages: []
-    # Example: ["phase_1", "phase_2", "phase_3", "phase_7", "phase_8"]
-
-    # Minimum file size (bytes)
-    min_file_size: 10
-
-    # Require vehicles
-    require_vehicles: false
-
-    # Require consumers
-    require_consumers: false
-
-  # Execution order
-  execution_order:
-    strategy: "phase_sequential"  # phase_sequential, phase_parallel, priority_based
-    phase_order:
-      - "phase_0"
-      - "phase_1"
-      - "phase_2"
-      - "phase_3"
-      - "phase_7"
-      - "phase_8"
-
-  # Progress tracking
-  progress:
-    save_checkpoints: true
-    checkpoint_interval_files: 10
-    checkpoint_path: "_logs/irrigation_checkpoints"
-    resume_from_checkpoint: true
-
-# Signal generation settings
-signals:
-  # Global signal settings
-  enable_signal_generation: true
-  publish_signals: true
-
-  # Signal quality
-  quality:
-    min_confidence: "LOW"
-    require_rationale: true
-    require_context: true
-    require_source: true
-    validate_before_publish: true
-
-  # Signal categories to enable
-  enabled_categories:
-    - "structural"
-    - "integrity"
-    - "epistemic"
-    - "contrast"
-    - "operational"
-    - "consumption"
-
-  # Signal aggregation
-  aggregation:
-    enabled: true
-    aggregate_similar_signals: true
-    similarity_threshold: 0.9
-    aggregation_window_ms: 5000
-
-# Phase-specific settings
-phases:
-  phase_0:
-    enabled: true
-    priority: 1
-    consumers:
-      - "phase0_90_02_bootstrap.py"
-      - "providers.py"
-      - "wiring_types.py"
-    vehicles:
-      - "signal_registry"
-      - "signal_quality_metrics"
-    signal_types:
-      - "StructuralAlignmentSignal"
-      - "CanonicalMappingSignal"
-      - "EventPresenceSignal"
-      - "DataIntegritySignal"
-
-  phase_1:
-    enabled: true
-    priority: 2
-    consumers:
-      - "phase1_11_00_signal_enrichment.py"
-      - "phase1_13_00_cpp_ingestion.py"
-    vehicles:
-      - "signal_evidence_extractor"
-      - "signal_loader"
-    signal_types:
-      - "MethodApplicationSignal"
-      - "AnswerSpecificitySignal"
-      - "EventPresenceSignal"
-
-  phase_2:
-    enabled: true
-    priority: 3
-    consumers:
-      - "phase2_factory_consumer.py"
-      - "phase2_executor_consumer.py"
-      - "phase2_evidence_consumer.py"
-      - "phase2_contract_consumer.py"
-    vehicles:
-      - "signal_irrigator"
-      - "signal_context_scoper"
-    signal_types:
-      - "ExecutionAttemptSignal"
-      - "FailureModeSignal"
-      - "EmpiricalSupportSignal"
-      - "ConsumerHealthSignal"
-
-  phase_3:
-    enabled: true
-    priority: 4
-    consumers:
-      - "phase3_10_00_phase3_signal_enriched_scoring.py"
-    vehicles:
-      - "signal_intelligence_layer"
-      - "signal_enhancement_integrator"
-    signal_types:
-      - "AnswerDeterminacySignal"
-      - "AnswerSpecificitySignal"
-      - "EmpiricalSupportSignal"
-      - "MethodApplicationSignal"
-
-  phase_7:
-    enabled: true
-    priority: 5
-    consumers:
-      - "phase7_meso_consumer.py"
-    vehicles:
-      - "signal_context_scoper"
-      - "signal_registry"
-    signal_types:
-      - "CanonicalMappingSignal"
-      - "StructuralAlignmentSignal"
-
-  phase_8:
-    enabled: true
-    priority: 6
-    consumers:
-      - "phase8_30_00_signal_enriched_recommendations.py"
-    vehicles:
-      - "signal_context_scoper"
-      - "signal_registry"
-    signal_types:
-      - "DecisionDivergenceSignal"
-      - "ConfidenceDropSignal"
-      - "TemporalContrastSignal"
-      - "EmpiricalSupportSignal"
-
-# Monitoring and reporting
-monitoring:
-  enabled: true
-
-  # Metrics collection
-  metrics:
-    enabled: true
-    collect_interval_ms: 10000
-    metrics_path: "_logs/metrics"
-    export_format: "json"  # json, csv, prometheus
-
-  # Real-time monitoring
-  realtime:
-    enabled: false
-    websocket_port: 8765
-    update_interval_ms: 1000
-
-  # Reporting
-  reporting:
-    enabled: true
-    generate_summary: true
-    summary_path: "_logs/irrigation_summary.json"
-    generate_html_report: false
-    html_report_path: "_logs/irrigation_report.html"
-
-# Logging
-logging:
-  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
-  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-
-  # Log destinations
-  console:
-    enabled: true
-    level: "INFO"
-
-  file:
-    enabled: true
-    level: "DEBUG"
-    path: "_logs/sisas_irrigation.log"
-    max_size_mb: 100
-    backup_count: 5
-    rotation: "size"  # size, time
-
-  # Component-specific logging
-  components:
-    vehicles: "INFO"
-    consumers: "INFO"
-    buses: "WARNING"
-    contracts: "INFO"
-    executors: "INFO"
-
-# Development and debugging
-development:
-  debug_mode: false
-  verbose: false
-  dry_run: false  # Simulate without actually processing
-  stop_on_first_error: false
-  save_intermediate_results: true
-  intermediate_results_path: "_logs/intermediate"
+    store_all_signals: true
+    store_path: "_audit/irrigation/"

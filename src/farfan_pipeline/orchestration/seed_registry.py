@@ -20,6 +20,15 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "REG"  # Registry
+__criticality__ = "CRITICAL"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Singleton"
+__purpose__ = "Deterministic seed generation for reproducibility"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 # Current seed derivation algorithm version
 SEED_VERSION = "sha256_v1"
 

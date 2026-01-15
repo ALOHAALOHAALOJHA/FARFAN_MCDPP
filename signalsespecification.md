@@ -1,4 +1,4 @@
-
+3
 I. ANÁLISIS DEL ESTADO ACTUAL DEL CANONIC CENTRAL
 
 1.1 Extracción del Núcleo Canónico desde sabana_final_decisiones.csv

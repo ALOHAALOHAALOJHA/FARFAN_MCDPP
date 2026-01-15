@@ -19,9 +19,6 @@ import logging
 
 from .base_extractor import BaseSignalExtractor, ExtractionContext
 
-import sys
-sys.path.insert(0, str(__file__).split('src')[0])
-
 from canonic_questionnaire_central.core.signal import Signal, SignalType
 
 logger = logging.getLogger(__name__)

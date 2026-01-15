@@ -2,21 +2,20 @@
 
 import pytest
 from datetime import datetime
-from dataclasses import dataclass
 
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
     SignalContext, SignalSource, SignalCategory, SignalConfidence
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.structural import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.structural import (
     StructuralAlignmentSignal, AlignmentStatus,
     SchemaConflictSignal, CanonicalMappingSignal
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.epistemic import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.epistemic import (
     AnswerDeterminacySignal, DeterminacyLevel,
     AnswerSpecificitySignal, SpecificityLevel,
     EmpiricalSupportSignal, EmpiricalSupportLevel
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.contrast import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.contrast import (
     DecisionDivergenceSignal, DivergenceType, DivergenceSeverity
 )
 
@@ -44,7 +43,7 @@ def sample_source():
 
 class TestStructuralSignals:
     """Tests para señales estructurales"""
-
+    
     def test_structural_alignment_signal(self, sample_context, sample_source):
         signal = StructuralAlignmentSignal(
             context=sample_context,
@@ -55,12 +54,12 @@ class TestStructuralSignals:
             missing_elements=[],
             extra_elements=[]
         )
-
+        
         assert signal.signal_type == "StructuralAlignmentSignal"
         assert signal.category == SignalCategory.STRUCTURAL
         assert signal.alignment_status == AlignmentStatus.ALIGNED
         assert signal.compute_alignment_score() == 1.0
-
+    
     def test_alignment_score_partial(self, sample_context, sample_source):
         signal = StructuralAlignmentSignal(
             context=sample_context,
@@ -71,10 +70,10 @@ class TestStructuralSignals:
             missing_elements=["field1"],
             extra_elements=["field2"]
         )
-
+        
         score = signal.compute_alignment_score()
         assert 0 < score < 1.0
-
+    
     def test_canonical_mapping_signal(self, sample_context, sample_source):
         signal = CanonicalMappingSignal(
             context=sample_context,
@@ -88,14 +87,14 @@ class TestStructuralSignals:
             unmapped_aspects=[],
             mapping_completeness=1.0
         )
-
+        
         assert signal.signal_type == "CanonicalMappingSignal"
         assert signal.mapped_entities["policy_area"] == "PA03"
 
 
 class TestEpistemicSignals:
     """Tests para señales epistémicas"""
-
+    
     def test_determinacy_signal_high(self, sample_context, sample_source):
         signal = AnswerDeterminacySignal(
             context=sample_context,
@@ -106,11 +105,11 @@ class TestEpistemicSignals:
             ambiguity_markers=[],
             negation_markers=[]
         )
-
+        
         assert signal.signal_type == "AnswerDeterminacySignal"
         assert signal.category == SignalCategory.EPISTEMIC
         assert signal.determinacy_level == DeterminacyLevel.HIGH
-
+    
     def test_determinacy_signal_medium(self, sample_context, sample_source):
         signal = AnswerDeterminacySignal(
             context=sample_context,
@@ -121,10 +120,10 @@ class TestEpistemicSignals:
             ambiguity_markers=["en algunos casos"],
             negation_markers=[]
         )
-
+        
         assert signal.determinacy_level == DeterminacyLevel.MEDIUM
         assert "en algunos casos" in signal.ambiguity_markers
-
+    
     def test_specificity_signal(self, sample_context, sample_source):
         signal = AnswerSpecificitySignal(
             context=sample_context,
@@ -136,11 +135,11 @@ class TestEpistemicSignals:
             missing_elements=["formal_instrument", "mandatory_scope"],
             specificity_score=0.33
         )
-
+        
         assert signal.signal_type == "AnswerSpecificitySignal"
         assert signal.specificity_level == SpecificityLevel.LOW
         assert len(signal.missing_elements) == 2
-
+    
     def test_empirical_support_signal(self, sample_context, sample_source):
         signal = EmpiricalSupportSignal(
             context=sample_context,
@@ -151,15 +150,15 @@ class TestEpistemicSignals:
             document_references=[],
             institutional_references=["Unidad de Víctimas"]
         )
-
+        
         assert signal.signal_type == "EmpiricalSupportSignal"
         assert signal.support_level == EmpiricalSupportLevel.MODERATE
         assert "Ley 1448 de 2011" in signal.normative_references
 
 
-class TestContrastSignals:
+class TestContrastSignals: 
     """Tests para señales de contraste"""
-
+    
     def test_decision_divergence_signal(self, sample_context, sample_source):
         signal = DecisionDivergenceSignal(
             context=sample_context,
@@ -172,7 +171,7 @@ class TestContrastSignals:
             divergence_type=DivergenceType.CLASSIFICATION_MISMATCH,
             divergence_severity=DivergenceSeverity.HIGH
         )
-
+        
         assert signal.signal_type == "DecisionDivergenceSignal"
         assert signal.category == SignalCategory.CONTRAST
         assert signal.legacy_value != signal.signal_based_value
@@ -180,8 +179,8 @@ class TestContrastSignals:
 
 
 class TestSignalDeterminism:
-    """Tests para el axioma:  deterministic (mismo input → misma señal)"""
-
+    """Tests para el axioma: deterministic (mismo input → misma señal)"""
+    
     def test_same_input_same_hash(self, sample_context, sample_source):
         """El mismo input debe producir el mismo hash"""
         signal1 = StructuralAlignmentSignal(
@@ -191,7 +190,7 @@ class TestSignalDeterminism:
             canonical_path="test/path",
             actual_path="test/path"
         )
-
+        
         signal2 = StructuralAlignmentSignal(
             context=sample_context,
             source=sample_source,
@@ -199,10 +198,10 @@ class TestSignalDeterminism:
             canonical_path="test/path",
             actual_path="test/path"
         )
-
+        
         # Los hashes deben ser idénticos
         assert signal1.compute_hash() == signal2.compute_hash()
-
+    
     def test_different_input_different_hash(self, sample_context, sample_source):
         """Diferente input debe producir diferente hash"""
         signal1 = StructuralAlignmentSignal(
@@ -212,7 +211,7 @@ class TestSignalDeterminism:
             canonical_path="test/path1",
             actual_path="test/path1"
         )
-
+        
         signal2 = StructuralAlignmentSignal(
             context=sample_context,
             source=sample_source,
@@ -220,5 +219,5 @@ class TestSignalDeterminism:
             canonical_path="test/path2",
             actual_path="test/path2"
         )
-
+        
         assert signal1.compute_hash() != signal2.compute_hash()

@@ -10,6 +10,15 @@ from typing import Final
 
 from dotenv import load_dotenv
 
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "CFG"  # Configuration
+__criticality__ = "HIGH"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Singleton"
+__owner__ = "Orchestration"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 # Load environment variables from .env file
 # Look for .env in the repository root
 REPO_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
