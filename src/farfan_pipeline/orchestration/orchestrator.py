@@ -35,6 +35,10 @@ from typing import Any, TYPE_CHECKING
 from datetime import datetime, timezone
 from enum import Enum
 
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (
+    ResourceLimits,
+)
+
 # Phase integration imports
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig
@@ -360,6 +364,7 @@ class Orchestrator:
         executor_config: "ExecutorConfig",
         runtime_config: "RuntimeConfig | None" = None,
         phase0_validation: Phase0ValidationResult | None = None,
+        resource_limits: ResourceLimits | None = None,
     ):
         """Initialize the orchestrator with dependency injection.
 
@@ -393,6 +398,7 @@ class Orchestrator:
         self.executor_config = executor_config
         self.runtime_config = runtime_config
         self.phase0_validation = phase0_validation
+        self.resource_limits = resource_limits or ResourceLimits()
 
         # Validate Phase 0 if result provided
         if phase0_validation is not None:
@@ -431,6 +437,13 @@ class Orchestrator:
             method_executor is not None,
             getattr(questionnaire, 'version', 'unknown'),
             len(CanonicalPhase)
+        )
+        self.logger.info(
+            "orchestrator_resource_limits memory_mb=%s cpu_seconds=%s disk_mb=%s file_descriptors=%s",
+            self.resource_limits.memory_mb,
+            self.resource_limits.cpu_seconds,
+            self.resource_limits.disk_mb,
+            self.resource_limits.file_descriptors,
         )
 
     def execute(
@@ -759,6 +772,7 @@ __all__ = [
     "PhaseExecutionResult",
     "Phase0ValidationResult",
     "GateResult",
+    "ResourceLimits",
     # Phase 1 constants
     "P01_EXPECTED_CHUNK_COUNT",
     "P01_POLICY_AREA_COUNT",
