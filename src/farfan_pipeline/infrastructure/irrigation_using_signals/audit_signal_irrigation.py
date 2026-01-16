@@ -231,8 +231,13 @@ class WiringAuditor:
         # This is a structural check - actual usage is checked in utilization audit
         try:
             from farfan_pipeline.phases.Phase_02.executors.base_executor_with_contract import BaseExecutorWithContract
+            # TODO: Implement actual connection validation
+            # This check should verify that BaseExecutorWithContract instances
+            # properly initialize and use the signal_registry attribute
         except ImportError:
-            pass  # Placeholder for connection check
+            # BaseExecutorWithContract may not exist or may be in a different location
+            # Skip this check if the module is not available
+            pass
 
 
 if __name__ == "__main__":

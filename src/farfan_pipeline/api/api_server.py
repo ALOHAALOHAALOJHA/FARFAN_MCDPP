@@ -5,6 +5,7 @@ exposing REST endpoints for pipeline execution and status monitoring.
 """
 from __future__ import annotations
 
+import os
 import sys
 from typing import Any
 
@@ -30,12 +31,16 @@ def create_app() -> Any:
         version="1.0.0",
     )
 
-    # Configure CORS
+    # Configure CORS - use environment variable for allowed origins
+    # Default to localhost for development, require explicit configuration for production
+    allowed_origins_env = os.getenv("FARFAN_CORS_ORIGINS", "http://localhost:3000,http://localhost:8080")
+    allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")]
+    
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],  # Configure appropriately for production
+        allow_origins=allowed_origins,
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE"],
         allow_headers=["*"],
     )
 
