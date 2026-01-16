@@ -92,8 +92,25 @@ RULE_SCHEMA_DECLARATION = {
                 "maximum": 3,
                 "description": "Score threshold (exclusive)",
             },
+            "score_min": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3,
+                "description": "Score minimum (inclusive)",
+            },
+            "score_max": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3,
+                "description": "Score maximum (inclusive)",
+            },
+            "score_band": {
+                "type": "string",
+                "description": "Score band code",
+            },
         },
-        "required": ["pa_id", "dim_id", "score_lt"],
+        "required": ["pa_id", "dim_id"],
+        "at_least_one": ["score_lt", "score_min", "score_max", "score_band"],
     },
     "MESO": {
         "description": "MESO-level rule for clusters",
@@ -133,6 +150,10 @@ RULE_SCHEMA_DECLARATION = {
             "macro_band": {
                 "type": "string",
                 "description": "Macro performance band",
+            },
+            "macro_variance_level": {
+                "type": "string",
+                "description": "Macro variance level",
             },
             "clusters_below_target": {
                 "type": "array",
@@ -228,6 +249,48 @@ COMMON_SCHEMAS = {
                 },
             },
             "fiscal_year": {"type": "integer"},
+        },
+    },
+    "recommendations": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+            "type": "object",
+            "required": [
+                "id",
+                "action",
+                "expected_output",
+                "method_id",
+                "questions",
+                "owner",
+                "timeframe",
+                "cost",
+            ],
+            "properties": {
+                "id": {"type": "string"},
+                "action": {"type": "string"},
+                "expected_output": {"type": "string"},
+                "method_id": {"type": "string"},
+                "questions": {"type": "array", "items": {"type": "string"}},
+                "owner": {"type": "string"},
+                "timeframe": {
+                    "type": "object",
+                    "required": ["start", "end"],
+                    "properties": {
+                        "start": {"type": "string"},
+                        "end": {"type": "string"},
+                    },
+                },
+                "cost": {
+                    "type": "object",
+                    "required": ["estimate", "currency", "basis"],
+                    "properties": {
+                        "estimate": {"type": ["string", "number"]},
+                        "currency": {"type": "string"},
+                        "basis": {"type": "string"},
+                    },
+                },
+            },
         },
     },
 }

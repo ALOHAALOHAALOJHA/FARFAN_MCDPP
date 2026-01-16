@@ -252,8 +252,8 @@ def create_recommendation_engine_adapter(
     Example:
         >>> from pathlib import Path
         >>> adapter = create_recommendation_engine_adapter(
-        ...     rules_path=Path("config/recommendation_rules_enhanced.json"),
-        ...     schema_path=Path("rules/recommendation_rules_enhanced.schema.json"),
+        ...     rules_path=Path("json_phase_eight/recommendation_rules_enhanced.json"),
+        ...     schema_path=Path("rules/recommendation_rules.schema.json"),
         ...     questionnaire_provider=provider,
         ...     orchestrator=orch
         ... )

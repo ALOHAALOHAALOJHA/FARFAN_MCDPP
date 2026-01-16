@@ -1,6 +1,6 @@
 {
-  "version": "3.0",
-  "last_updated": "2026-01-15T23:29:27.903Z",
+  "version": "2.0.0",
+  "last_updated": "2026-01-15T23:59:59.000Z",
   "enhanced_features": [
     "template_parameterization",
     "execution_logic",
@@ -17,19 +17,17 @@
     "excellence_sustaining"
   ],
   "scoring_scenarios": [
-    "CRÍTICO (0-0.8): Emergency intervention",
-    "DEFICIENTE (0.8-1.2): Major restructuring",
-    "INSUFICIENTE (1.2-1.65): Significant improvement",
-    "ACEPTABLE (1.65-2.0): Minor adjustments",
-    "BUENO (2.0-2.4): Optimization",
-    "MUY BUENO (2.4-2.7): Excellence maintenance",
-    "EXCELENTE (2.7-3.0): Leadership/best practices"
+    "CRISIS (0.00-0.80): Emergency intervention",
+    "CRÍTICO (0.81-1.65): Major restructuring",
+    "ACEPTABLE (1.66-2.30): Minor adjustments",
+    "BUENO (2.31-2.70): Optimization",
+    "EXCELENTE (2.71-3.00): Leadership/best practices"
   ],
   "levels": {
     "MICRO": {
       "description": "PA-DIM specific rules with threshold-based triggers",
-      "count": 60,
-      "coverage": "PA01-PA10 × DIM01-DIM06 with low-band remediation"
+      "count": 300,
+      "coverage": "PA01-PA10 × DIM01-DIM06 × 5 bandas (CRISIS→EXCELENTE)"
     },
     "MESO": {
       "description": "Cluster-level rules using score_band, variance_level, weak_pa",
@@ -40,6 +38,136 @@
       "description": "System-level rules across macro bands and variance alerts",
       "count": 5,
       "coverage": "Crisis, stabilization, optimization, excellence"
+    }
+  },
+  "micro_score_bands": [
+    {
+      "code": "CRISIS",
+      "label": "CRISIS",
+      "min": 0.0,
+      "max": 0.8,
+      "requires_approval": true,
+      "blocking": true,
+      "horizon_months": 3,
+      "cost_multiplier": 1.4
+    },
+    {
+      "code": "CRITICO",
+      "label": "CRÍTICO",
+      "min": 0.81,
+      "max": 1.65,
+      "requires_approval": true,
+      "blocking": false,
+      "horizon_months": 6,
+      "cost_multiplier": 1.0
+    },
+    {
+      "code": "ACEPTABLE",
+      "label": "ACEPTABLE",
+      "min": 1.66,
+      "max": 2.3,
+      "requires_approval": false,
+      "blocking": false,
+      "horizon_months": 9,
+      "cost_multiplier": 0.8
+    },
+    {
+      "code": "BUENO",
+      "label": "BUENO",
+      "min": 2.31,
+      "max": 2.7,
+      "requires_approval": false,
+      "blocking": false,
+      "horizon_months": 12,
+      "cost_multiplier": 0.6
+    },
+    {
+      "code": "EXCELENTE",
+      "label": "EXCELENTE",
+      "min": 2.71,
+      "max": 3.0,
+      "requires_approval": false,
+      "blocking": false,
+      "horizon_months": 18,
+      "cost_multiplier": 0.5
+    }
+  ],
+  "micro_question_map": {
+    "DIM01": {
+      "questions": ["Q001", "Q002", "Q003", "Q004", "Q005"],
+      "question_range": "Q001-Q005",
+      "method_id": "SemanticProcessor.chunk_text"
+    },
+    "DIM02": {
+      "questions": ["Q006", "Q007", "Q008", "Q009", "Q010"],
+      "question_range": "Q006-Q010",
+      "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts"
+    },
+    "DIM03": {
+      "questions": ["Q011", "Q012", "Q013", "Q014", "Q015"],
+      "question_range": "Q011-Q015",
+      "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs"
+    },
+    "DIM04": {
+      "questions": ["Q016", "Q017", "Q018", "Q019", "Q020"],
+      "question_range": "Q016-Q020",
+      "method_id": "CausalExtractor.extract_causal_hierarchy"
+    },
+    "DIM05": {
+      "questions": ["Q021", "Q022", "Q023", "Q024", "Q025"],
+      "question_range": "Q021-Q025",
+      "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts"
+    },
+    "DIM06": {
+      "questions": ["Q026", "Q027", "Q028", "Q029", "Q030"],
+      "question_range": "Q026-Q030",
+      "method_id": "CausalExtractor.extract_causal_hierarchy"
+    }
+  },
+  "recommendation_templates": {
+    "MICRO": {
+      "id": "REC-{{PAxx}}-{{DIMxx}}-{{score_band}}",
+      "action": "Aplicar medidas {{score_band}} para {{DIMxx}} en {{PAxx}} enfocadas en {{question_range}}.",
+      "expected_output": "Evidencia verificable para {{question_range}} y mejora del score.",
+      "method_id": "{{method_id}}",
+      "questions": ["{{question_range}}"],
+      "owner": "{{responsible_entity}}",
+      "timeframe": {"start": "{{horizon_start}}", "end": "{{horizon_end}}"},
+      "cost": {"estimate": "{{scaled_cost_cop}}", "currency": "COP", "basis": "score_scaled"}
+    },
+    "MESO": {
+      "id": "REC-MESO-{{cluster_id}}-{{score_band}}",
+      "action": "Activar mesa interinstitucional y plataforma compartida para {{cluster_id}} con foco en reducción de varianza.",
+      "expected_output": "Plan de coordinación y tablero compartido con acuerdos interagenciales.",
+      "method_id": "GovernanceBoard.activate",
+      "questions": [],
+      "owner": "{{responsible_entity}}",
+      "timeframe": {"start": "{{horizon_start}}", "end": "{{horizon_end}}"},
+      "cost": {"estimate": "{{scaled_cost_cop}}", "currency": "COP", "basis": "score_scaled"}
+    },
+    "MACRO": {
+      "id": "REC-MACRO-{{macro_band}}",
+      "action": "Implementar ruta de resiliencia, inclusión digital y reequilibrio financiero intersectorial.",
+      "expected_output": "Marco de política aprobado con metas de inclusión y datos abiertos interoperables.",
+      "method_id": "PolicySteering.activate",
+      "questions": [],
+      "owner": "{{responsible_entity}}",
+      "timeframe": {"start": "{{horizon_start}}", "end": "{{horizon_end}}"},
+      "cost": {"estimate": "{{scaled_cost_cop}}", "currency": "COP", "basis": "score_scaled"}
+    }
+  },
+  "budget_defaults": {
+    "MICRO": {
+      "basis": "score_scaled",
+      "formula": {"base": 45000000, "slope": 55000000, "cap": 160000000, "floor": 20000000}
+    },
+    "MESO": {
+      "basis": "score_scaled",
+      "formula": {"base": 120000000, "slope": 180000000, "cap": 500000000, "floor": 80000000}
+    },
+    "MACRO": {
+      "basis": "score_scaled",
+      "formula": {"base": 300000000, "slope": 500000000, "cap": 1200000000, "floor": 200000000}
     }
   },
   "rules": [
