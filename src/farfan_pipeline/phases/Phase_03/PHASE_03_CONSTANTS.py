@@ -1,0 +1,11 @@
+"""
+Phase 3 Constants
+"""
+import os
+
+PHASE_ID = "03"
+PHASE_NAME = "Scoring Transformation"
+DEFAULT_THRESHOLD = 0.5
+MAX_SCORE = 1.0
+MIN_SCORE = 0.0
+VALID_QUALITY_LEVELS = {"EXCELENTE", "ACEPTABLE", "INSUFICIENTE", "NO_APLICABLE"}

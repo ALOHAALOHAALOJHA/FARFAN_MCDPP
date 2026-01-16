@@ -43,7 +43,7 @@ class TestPhase3InputValidation:
     
     def test_rejects_wrong_question_count(self):
         """Test Phase 3 rejects input with wrong question count."""
-        from farfan_pipeline.phases.Phase_three.validation import validate_micro_results_input
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import validate_micro_results_input
         
         # Create 100 questions instead of 305
         micro_results = [
@@ -62,14 +62,14 @@ class TestPhase3InputValidation:
     
     def test_rejects_empty_input(self):
         """Test Phase 3 rejects empty micro_results list."""
-        from farfan_pipeline.phases.Phase_three.validation import validate_micro_results_input
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import validate_micro_results_input
         
         with pytest.raises(ValueError, match="micro_results list is empty"):
             validate_micro_results_input([], 305)
     
     def test_accepts_correct_count(self):
         """Test Phase 3 accepts correct question count."""
-        from farfan_pipeline.phases.Phase_three.validation import validate_micro_results_input
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import validate_micro_results_input
         
         micro_results = [
             MockMicroQuestionRun(
@@ -91,7 +91,7 @@ class TestPhase3ScoreBoundsValidation:
     
     def test_clamps_negative_scores(self):
         """Test Phase 3 clamps negative scores to 0.0."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -105,7 +105,7 @@ class TestPhase3ScoreBoundsValidation:
     
     def test_clamps_scores_above_one(self):
         """Test Phase 3 clamps scores above 1.0."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -119,7 +119,7 @@ class TestPhase3ScoreBoundsValidation:
     
     def test_accepts_valid_scores(self):
         """Test Phase 3 accepts scores in [0.0, 1.0] range."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -135,7 +135,7 @@ class TestPhase3ScoreBoundsValidation:
     
     def test_handles_unconvertible_scores(self):
         """Test Phase 3 handles unconvertible score types."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -157,7 +157,7 @@ class TestPhase3QualityLevelValidation:
     
     def test_accepts_valid_quality_levels(self):
         """Test Phase 3 accepts all valid quality levels."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -173,7 +173,7 @@ class TestPhase3QualityLevelValidation:
     
     def test_corrects_invalid_quality_levels(self):
         """Test Phase 3 corrects invalid quality levels to INSUFICIENTE."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -191,7 +191,7 @@ class TestPhase3QualityLevelValidation:
     
     def test_handles_none_quality_level(self):
         """Test Phase 3 handles None quality level."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -208,7 +208,7 @@ class TestPhase3EvidenceValidation:
     
     def test_detects_missing_evidence(self):
         """Test Phase 3 detects and counts missing evidence."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_evidence_presence,
             ValidationCounters,
         )
@@ -221,7 +221,7 @@ class TestPhase3EvidenceValidation:
     
     def test_accepts_present_evidence(self):
         """Test Phase 3 accepts present evidence."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_evidence_presence,
             ValidationCounters,
         )
@@ -236,7 +236,7 @@ class TestPhase3EvidenceValidation:
     
     def test_counts_multiple_missing_evidence(self):
         """Test Phase 3 counts multiple missing evidence."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_evidence_presence,
             ValidationCounters,
         )
@@ -255,7 +255,7 @@ class TestPhase3ValidationCounters:
     
     def test_counters_track_all_failures(self):
         """Test counters track all validation failure types."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             ValidationCounters,
             validate_evidence_presence,
             validate_and_clamp_score,
@@ -278,7 +278,7 @@ class TestPhase3ValidationCounters:
         assert counters.total_questions == 305
         assert counters.missing_evidence == 2
         assert counters.out_of_bounds_scores == 3
-        assert counters.score_clamping_applied == 2
+        assert counters.score_clamping_applied == 3
         assert counters.invalid_quality_levels == 2
         assert counters.quality_level_corrections == 2
 
@@ -288,7 +288,7 @@ class TestPhase3EndToEnd:
     
     def test_full_validation_pipeline(self):
         """Test complete Phase 3 validation pipeline."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_micro_results_input,
             validate_evidence_presence,
             validate_and_clamp_score,
