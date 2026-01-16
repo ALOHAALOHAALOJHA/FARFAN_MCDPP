@@ -7,7 +7,7 @@ Defines the output types and postconditions for Phase 3 (Scoring).
 
 from dataclasses import dataclass, field
 from typing import Any, List, Optional, Dict
-from ..primitives.quality_levels import QualityLevel
+from ..primitives.phase3_10_00_quality_levels import QualityLevel
 
 @dataclass
 class ScoredMicroQuestion:
