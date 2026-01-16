@@ -5,7 +5,6 @@ Tests MacroScore initialization, validation, and serialization.
 """
 
 import pytest
-from dataclasses import FrozenInstanceError
 
 
 def test_macro_score_imports():
