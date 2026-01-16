@@ -64,7 +64,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import pipeline
 
 # === CANONICAL REFACTORING: Import from canonical_specs ===
-from farfan_pipeline.infrastructure.calibration.canonical_specs import (
+from farfan_pipeline.calibration.canonical_specs import (
     ALIGNMENT_THRESHOLD,
     MICRO_LEVELS,
     PDT_PATTERNS,

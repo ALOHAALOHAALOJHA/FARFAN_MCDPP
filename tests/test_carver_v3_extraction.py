@@ -23,7 +23,7 @@ class TestCarverV3DataStructures:
 
     def test_method_epistemology_frozen(self):
         """Test MethodEpistemology is frozen."""
-        from farfan_pipeline.phases.Phase_2.carver import MethodEpistemology
+        from farfan_pipeline.phases.Phase_02.carver import MethodEpistemology
 
         epi = MethodEpistemology(
             paradigm="test",
@@ -39,7 +39,7 @@ class TestCarverV3DataStructures:
 
     def test_technical_approach_frozen(self):
         """Test TechnicalApproach is frozen."""
-        from farfan_pipeline.phases.Phase_2.carver import TechnicalApproach
+        from farfan_pipeline.phases.Phase_02.carver import TechnicalApproach
 
         tech = TechnicalApproach(
             method_type="test",
@@ -55,7 +55,7 @@ class TestCarverV3DataStructures:
 
     def test_output_interpretation_frozen(self):
         """Test OutputInterpretation is frozen."""
-        from farfan_pipeline.phases.Phase_2.carver import OutputInterpretation
+        from farfan_pipeline.phases.Phase_02.carver import OutputInterpretation
 
         output = OutputInterpretation(
             output_structure={"key": "value"},
@@ -68,7 +68,7 @@ class TestCarverV3DataStructures:
 
     def test_method_depth_entry_complete(self):
         """Test MethodDepthEntry contains all required fields."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             MethodDepthEntry,
             MethodEpistemology,
             TechnicalApproach,
@@ -115,7 +115,7 @@ class TestCarverV3DataStructures:
 
     def test_methodological_depth_structure(self):
         """Test MethodologicalDepth contains methods and combination logic."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             MethodologicalDepth,
             MethodCombinationLogic,
         )
@@ -141,7 +141,7 @@ class TestContractInterpreterV3:
 
     def test_extract_methodological_depth_from_v3_contract(self):
         """Test extraction returns MethodologicalDepth with v3 contract."""
-        from farfan_pipeline.phases.Phase_2.carver import ContractInterpreter
+        from farfan_pipeline.phases.Phase_02.carver import ContractInterpreter
 
         # Mock v3 contract with methodological_depth
         contract = {
@@ -208,7 +208,7 @@ class TestContractInterpreterV3:
 
     def test_extract_methodological_depth_backward_compatible(self):
         """Test extraction returns None for v2 contracts (backward compatible)."""
-        from farfan_pipeline.phases.Phase_2.carver import ContractInterpreter
+        from farfan_pipeline.phases.Phase_02.carver import ContractInterpreter
 
         # Mock v2 contract without methodological_depth
         contract_v2 = {
@@ -225,7 +225,7 @@ class TestContractInterpreterV3:
 
     def test_extract_methodological_depth_empty_methods(self):
         """Test extraction handles empty methods list gracefully."""
-        from farfan_pipeline.phases.Phase_2.carver import ContractInterpreter
+        from farfan_pipeline.phases.Phase_02.carver import ContractInterpreter
 
         contract = {"method_binding": {"methodological_depth": {"methods": []}}}
 
@@ -237,7 +237,7 @@ class TestContractInterpreterV3:
 
     def test_extract_methodological_depth_no_combination_logic(self):
         """Test extraction handles missing combination_logic."""
-        from farfan_pipeline.phases.Phase_2.carver import ContractInterpreter
+        from farfan_pipeline.phases.Phase_02.carver import ContractInterpreter
 
         contract = {
             "method_binding": {
@@ -285,7 +285,7 @@ class TestCarverRendererV3:
 
     def test_render_limitations_section(self):
         """Test render_limitations_section produces correct output."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             CarverRenderer,
             MethodologicalDepth,
             MethodDepthEntry,
@@ -360,7 +360,7 @@ class TestCarverRendererV3:
 
     def test_render_theoretical_references(self):
         """Test render_theoretical_references produces deduplicated output."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             CarverRenderer,
             MethodologicalDepth,
             MethodDepthEntry,
@@ -434,7 +434,7 @@ class TestCarverRendererV3:
 
     def test_render_actionable_insights(self):
         """Test render_actionable_insights produces correct output."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             CarverRenderer,
             MethodologicalDepth,
             MethodDepthEntry,
@@ -507,7 +507,7 @@ class TestCarverRendererV3:
 
     def test_render_assumptions_section(self):
         """Test render_assumptions_section produces deduplicated output."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             CarverRenderer,
             MethodologicalDepth,
             MethodDepthEntry,
@@ -586,7 +586,7 @@ class TestCarverAnswerV3:
 
     def test_carver_answer_backward_compatible(self):
         """Test CarverAnswer works without v3 fields (backward compatible)."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             CarverAnswer,
             Dimension,
             BayesianConfidenceResult,
@@ -620,7 +620,7 @@ class TestCarverAnswerV3:
 
     def test_carver_answer_with_v3_fields(self):
         """Test CarverAnswer with v3 fields populated."""
-        from farfan_pipeline.phases.Phase_2.carver import (
+        from farfan_pipeline.phases.Phase_02.carver import (
             CarverAnswer,
             Dimension,
             BayesianConfidenceResult,
@@ -669,7 +669,7 @@ class TestDoctoralCarverSynthesizerV3:
 
     def test_synthesize_with_v3_contract(self):
         """Test synthesize extracts and renders v3 methodological depth."""
-        from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+        from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
         synthesizer = DoctoralCarverSynthesizer()
 
@@ -752,7 +752,7 @@ class TestDoctoralCarverSynthesizerV3:
 
     def test_synthesize_backward_compatible_v2(self):
         """Test synthesize works with v2 contracts without methodological_depth."""
-        from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+        from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
         synthesizer = DoctoralCarverSynthesizer()
 
@@ -801,7 +801,7 @@ class TestDoctoralCarverSynthesizerV3:
 
     def test_synthesize_structured_with_v3(self):
         """Test synthesize_structured returns CarverAnswer with v3 depth."""
-        from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+        from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
         synthesizer = DoctoralCarverSynthesizer()
 

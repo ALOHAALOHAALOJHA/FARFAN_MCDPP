@@ -28,7 +28,7 @@ import uuid
 from datetime import UTC, datetime
 from typing import Any
 
-from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
+from farfan_pipeline.calibration.parameters import ParameterLoaderV2
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # ============================================================================

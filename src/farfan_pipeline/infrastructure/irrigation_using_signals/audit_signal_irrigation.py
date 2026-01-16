@@ -230,7 +230,7 @@ class WiringAuditor:
         # Check if executors have signal_registry attribute
         # This is a structural check - actual usage is checked in utilization audit
         try:
-            from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
+            from farfan_pipeline.phases.Phase_02.executors.base_executor_with_contract import BaseExecutorWithContract
             
     output_dir = PROJECT_ROOT / "artifacts" / "audit_reports"
     output_dir.mkdir(parents=True, exist_ok=True)

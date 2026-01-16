@@ -215,7 +215,7 @@ class TestRecommendationModel:
 
     def test_recommendation_creation(self):
         """Test creating a valid Recommendation."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         rec = Recommendation(
             rule_id="TEST-001",
@@ -234,7 +234,7 @@ class TestRecommendationModel:
 
     def test_recommendation_to_dict(self):
         """Test Recommendation.to_dict() method."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         rec = Recommendation(
             rule_id="TEST-002",
@@ -256,7 +256,7 @@ class TestRecommendationModel:
 
     def test_recommendation_levels_valid(self):
         """Test that only MICRO/MESO/MACRO levels are valid."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         valid_levels = ["MICRO", "MESO", "MACRO"]
         for level in valid_levels:
@@ -278,7 +278,7 @@ class TestRecommendationSetModel:
 
     def test_recommendation_set_creation(self):
         """Test creating a valid RecommendationSet."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
             Recommendation,
             RecommendationSet,
         )
@@ -308,7 +308,7 @@ class TestRecommendationSetModel:
 
     def test_recommendation_set_to_dict(self):
         """Test RecommendationSet.to_dict() method."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
             Recommendation,
             RecommendationSet,
         )
@@ -347,7 +347,7 @@ class TestRecommendationEngineInitialization:
 
     def test_engine_initialization_with_files(self, phase8_path):
         """Test engine initializes with canonical rule files."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
             RecommendationEngine,
         )
 
@@ -363,7 +363,7 @@ class TestRecommendationEngineInitialization:
 
     def test_engine_has_level_dictionaries(self):
         """Test engine has MICRO/MESO/MACRO level dictionaries."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
             RecommendationEngine,
         )
 
@@ -383,7 +383,7 @@ class TestAdversarialInputs:
 
     def test_empty_micro_scores(self):
         """Test with empty micro scores dictionary."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
             RecommendationEngine,
         )
 
@@ -447,7 +447,7 @@ class TestAdversarialInputs:
 
     def test_sql_injection_in_rule_id(self):
         """Test SQL injection attempt in rule_id field."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         # Should not crash with malicious input
         rec = Recommendation(
@@ -466,7 +466,7 @@ class TestAdversarialInputs:
 
     def test_unicode_in_recommendation_text(self):
         """Test Unicode characters in recommendation text."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         rec = Recommendation(
             rule_id="UNICODE-001",
@@ -500,7 +500,7 @@ class TestDeterminism:
 
     def test_recommendation_to_dict_deterministic(self):
         """Test that to_dict() produces deterministic output."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         rec = Recommendation(
             rule_id="DET-001",
@@ -521,7 +521,7 @@ class TestDeterminism:
 
     def test_recommendation_set_to_dict_deterministic(self):
         """Test that RecommendationSet.to_dict() is deterministic."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
             Recommendation,
             RecommendationSet,
         )
@@ -579,7 +579,7 @@ class TestEnhancedFeatures:
 
     def test_recommendation_supports_enhanced_fields(self):
         """Test Recommendation supports enhanced fields."""
-        from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import Recommendation
+        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
         
         rec = Recommendation(
             rule_id="ENH-001",
@@ -620,7 +620,7 @@ class TestPhase8Integration:
 
     def test_get_recommendation_engine_function(self):
         """Test get_recommendation_engine factory function."""
-        from farfan_pipeline.phases.Phase_8 import get_recommendation_engine
+        from farfan_pipeline.phases.Phase_08 import get_recommendation_engine
 
         engine = get_recommendation_engine()
         assert engine is not None

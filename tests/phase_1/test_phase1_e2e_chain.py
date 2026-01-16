@@ -75,7 +75,7 @@ class TestImportChain:
     def test_phase1_public_api_exports(self, src_added):
         """Phase 1 must export all public API components."""
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 SmartChunk,
                 Chunk,
                 TOTAL_CHUNK_COMBINATIONS,
@@ -95,7 +95,7 @@ class TestImportChain:
     def test_constants_importable(self, src_added):
         """Phase 1 constants must be importable."""
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 PDF_EXTRACTION_CHAR_LIMIT,
                 SEMANTIC_SCORE_MAX_EXPECTED,
                 RANDOM_SEED,
@@ -109,7 +109,7 @@ class TestImportChain:
     def test_models_importable(self, src_added):
         """Phase 1 models must be importable."""
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 LanguageData,
                 PreprocessedDoc,
                 StructureData,
@@ -136,7 +136,7 @@ class TestImportChain:
     def test_questionnaire_mapper_importable(self, src_added):
         """Questionnaire mapper must be importable if available."""
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 QuestionnaireMap,
                 load_questionnaire_map,
                 TOTAL_QUESTIONS,
@@ -148,7 +148,7 @@ class TestImportChain:
     def test_sp4_question_aware_importable(self, src_added):
         """SP4 question-aware segmentation must be importable if available."""
         try:
-            from farfan_pipeline.phases.Phase_1 import execute_sp4_question_aware
+            from farfan_pipeline.phases.Phase_01 import execute_sp4_question_aware
             assert execute_sp4_question_aware is not None
         except (ImportError, SystemExit):
             pytest.skip("SP4 question-aware not available or dependencies missing")
@@ -161,7 +161,7 @@ class TestImportChain:
         # If those aren't available, we can't import the full module
         # Test the import is available when dependencies are met
         try:
-            from farfan_pipeline.phases.Phase_1 import Phase1Executor
+            from farfan_pipeline.phases.Phase_01 import Phase1Executor
             assert Phase1Executor is not None
         except (ImportError, SystemExit) as e:
             # If dependencies are missing, skip this test
@@ -189,7 +189,7 @@ class TestExecutionFlow:
     def test_execution_path_exists(self, src_added):
         """There must be a valid execution path from entry to exit."""
         try:
-            from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
                 Phase1MissionContract,
             )
 
@@ -202,7 +202,7 @@ class TestExecutionFlow:
     def test_all_subphases_defined(self, src_added):
         """All 16 subphases must be defined in mission contract."""
         try:
-            from farfan_pipeline.phases.Phase_1.contracts.phase1_10_00_phase1_mission_contract import (
+            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
                 PHASE1_SUBPHASE_WEIGHTS,
                 validate_mission_contract,
             )
@@ -220,7 +220,7 @@ class TestExecutionFlow:
     def test_critical_subphases_correct(self, src_added):
         """Critical subphases (SP4, SP11, SP13) must be properly marked."""
         try:
-            from farfan_pipeline.phases.Phase_1.contracts.phase1_10_00_phase1_mission_contract import (
+            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
                 PHASE1_SUBPHASE_WEIGHTS,
             )
 
@@ -250,7 +250,7 @@ class TestContractEnforcement:
     def test_input_contract_importable(self, src_added):
         """Input contract must be importable and executable."""
         try:
-            from farfan_pipeline.phases.Phase_1.contracts.phase1_input_contract import (
+            from farfan_pipeline.phases.Phase_01.contracts.phase1_input_contract import (
                 PHASE1_INPUT_PRECONDITIONS,
                 validate_phase1_input_contract,
             )
@@ -268,7 +268,7 @@ class TestContractEnforcement:
     def test_mission_contract_importable(self, src_added):
         """Mission contract must be importable and valid."""
         try:
-            from farfan_pipeline.phases.Phase_1.contracts.phase1_10_00_phase1_mission_contract import (
+            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
                 PHASE1_TOPOLOGICAL_ORDER,
                 validate_mission_contract,
             )
@@ -286,7 +286,7 @@ class TestContractEnforcement:
     def test_output_contract_importable(self, src_added):
         """Output contract must be importable and executable."""
         try:
-            from farfan_pipeline.phases.Phase_1.contracts.phase1_output_contract import (
+            from farfan_pipeline.phases.Phase_01.contracts.phase1_output_contract import (
                 PHASE1_OUTPUT_POSTCONDITIONS,
                 validate_phase1_output_contract,
             )
@@ -312,7 +312,7 @@ class TestInvariantPreservation:
     def test_sixty_chunk_invariant(self, src_added):
         """The 60-chunk invariant (10 PA × 6 Dim) must be defined."""
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 POLICY_AREA_COUNT,
                 DIMENSION_COUNT,
             )
@@ -325,7 +325,7 @@ class TestInvariantPreservation:
     def test_policy_areas_defined(self, src_added):
         """All 10 policy areas must be defined."""
         try:
-            from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
                 PADimGridSpecification,
             )
 
@@ -338,7 +338,7 @@ class TestInvariantPreservation:
     def test_dimensions_defined(self, src_added):
         """All 6 causal dimensions must be defined."""
         try:
-            from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
                 PADimGridSpecification,
             )
 
@@ -351,7 +351,7 @@ class TestInvariantPreservation:
     def test_chunk_combinations_match(self, src_added):
         """Chunk combinations must match PA × Dim count."""
         try:
-            from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
                 PADimGridSpecification,
             )
 
@@ -365,7 +365,7 @@ class TestInvariantPreservation:
         try:
             import re
 
-            from farfan_pipeline.phases.Phase_1 import CHUNK_ID_PATTERN
+            from farfan_pipeline.phases.Phase_01 import CHUNK_ID_PATTERN
 
             pattern = re.compile(CHUNK_ID_PATTERN)
 
@@ -411,7 +411,7 @@ class TestFailureHandling:
 
     def test_circuit_breaker_exists(self, src_added):
         """Circuit breaker must exist and be importable."""
-        from farfan_pipeline.phases.Phase_1.phase1_09_00_circuit_breaker import (
+        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
             Phase1CircuitBreaker,
         )
 
@@ -419,7 +419,7 @@ class TestFailureHandling:
 
     def test_circuit_breaker_initializes(self, src_added):
         """Circuit breaker must initialize correctly."""
-        from farfan_pipeline.phases.Phase_1.phase1_09_00_circuit_breaker import (
+        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
             Phase1CircuitBreaker,
             CircuitState,
         )
@@ -429,7 +429,7 @@ class TestFailureHandling:
 
     def test_circuit_breaker_preflight(self, src_added):
         """Circuit breaker preflight check must work."""
-        from farfan_pipeline.phases.Phase_1.phase1_09_00_circuit_breaker import (
+        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
             Phase1CircuitBreaker,
         )
 
@@ -443,7 +443,7 @@ class TestFailureHandling:
         try:
             import pytest as pt
 
-            from farfan_pipeline.phases.Phase_1 import Chunk, ASSIGNMENT_METHOD_SEMANTIC
+            from farfan_pipeline.phases.Phase_01 import Chunk, ASSIGNMENT_METHOD_SEMANTIC
 
             # Invalid confidence
             with pt.raises(ValueError, match="Invalid semantic_confidence"):

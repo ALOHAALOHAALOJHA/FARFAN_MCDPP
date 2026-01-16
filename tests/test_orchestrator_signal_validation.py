@@ -17,7 +17,7 @@ from unittest.mock import Mock, MagicMock, patch
 import pytest
 
 from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.phases.Phase_2.executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_02.executor_config import ExecutorConfig
 
 
 class TestOrchestratorSignalValidationIntegration:

@@ -15,7 +15,7 @@ from unittest.mock import Mock
 
 # Test imports
 try:
-    from farfan_pipeline.phases.Phase_1.phase1_12_01_pdm_integration import (
+    from farfan_pipeline.phases.Phase_01.phase1_12_01_pdm_integration import (
         PDMStructuralAnalyzer,
         PDMMetadataAssigner,
         assign_pdm_metadata_to_chunks,
@@ -26,7 +26,7 @@ except ImportError:
     PDM_INTEGRATION_AVAILABLE = False
 
 try:
-    from farfan_pipeline.phases.Phase_1.phase1_03_00_models import (
+    from farfan_pipeline.phases.Phase_01.phase1_03_00_models import (
         Chunk,
         PDMMetadata,
         StructureData,
@@ -36,7 +36,7 @@ except ImportError:
     MODELS_AVAILABLE = False
 
 try:
-    from farfan_pipeline.infrastructure.parametrization.pdm_structural_profile import (
+    from farfan_pipeline.pdm.profile.pdm_structural_profile import (
         CanonicalSection,
         ContextualMarker,
         HierarchyLevel,
@@ -402,7 +402,7 @@ class TestPDMMetadataInSmartChunk:
     def test_smartchunk_has_pdm_metadata_field(self):
         """Test SmartChunk has pdm_metadata field."""
         try:
-            from farfan_pipeline.phases.Phase_1.phase1_03_00_models import SmartChunk
+            from farfan_pipeline.phases.Phase_01.phase1_03_00_models import SmartChunk
 
             # Check field exists
             assert hasattr(SmartChunk, "__dataclass_fields__")
@@ -419,7 +419,7 @@ class TestPhase1Exports:
     def test_phase1_exports_pdm_integration(self):
         """Test Phase 1 __init__ exports PDM integration."""
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 PDM_INTEGRATION_AVAILABLE,
                 PDMStructuralAnalyzer,
                 PDMMetadataAssigner,

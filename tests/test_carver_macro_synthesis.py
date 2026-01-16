@@ -20,7 +20,7 @@ class TestCarverMacroSynthesis:
     def test_carver_has_synthesize_macro_method(self):
         """Test that Carver has synthesize_macro method."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             synthesizer = DoctoralCarverSynthesizer()
             assert hasattr(
@@ -33,7 +33,7 @@ class TestCarverMacroSynthesis:
     def test_synthesize_macro_with_empty_meso_results(self):
         """Test macro synthesis with no meso results."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             synthesizer = DoctoralCarverSynthesizer()
             result = synthesizer.synthesize_macro(meso_results=[], coverage_matrix=None)
@@ -55,7 +55,7 @@ class TestCarverMacroSynthesis:
     def test_synthesize_macro_with_meso_results(self):
         """Test macro synthesis with meso results."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create mock meso results
             meso_results = [
@@ -78,7 +78,7 @@ class TestCarverMacroSynthesis:
     def test_synthesize_macro_with_coverage_matrix(self):
         """Test macro synthesis with PA×DIM coverage matrix."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create mock coverage matrix (60 cells)
             coverage_matrix: Dict[Tuple[str, str], float] = {}
@@ -119,7 +119,7 @@ class TestCarverMacroSynthesis:
     def test_pa_dim_divergence_analysis(self):
         """Test _analyze_pa_dim_divergence method."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create coverage matrix with known patterns
             coverage_matrix: Dict[Tuple[str, str], float] = {}
@@ -153,7 +153,7 @@ class TestCarverMacroSynthesis:
     def test_macro_scoring_levels(self):
         """Test that macro scoring produces correct levels."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             synthesizer = DoctoralCarverSynthesizer()
 
@@ -179,7 +179,7 @@ class TestCarverMacroSynthesis:
     def test_macro_recommendations_generation(self):
         """Test that recommendations are generated based on gaps."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create coverage matrix with critical gaps
             coverage_matrix: Dict[Tuple[str, str], float] = {}
@@ -212,7 +212,7 @@ class TestCarverMacroSynthesis:
     def test_macro_identifies_strengths_and_weaknesses(self):
         """Test that strengths and weaknesses are properly identified."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             synthesizer = DoctoralCarverSynthesizer()
 
@@ -248,7 +248,7 @@ class TestPADIMDivergenceCalculation:
     def test_divergence_with_uniform_coverage(self):
         """Test divergence analysis with uniform coverage."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create uniform coverage matrix
             coverage_matrix: Dict[Tuple[str, str], float] = {}
@@ -273,7 +273,7 @@ class TestPADIMDivergenceCalculation:
     def test_divergence_by_dimension(self):
         """Test that divergence is calculated by dimension."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create coverage with DIM01 weak across all PAs
             coverage_matrix: Dict[Tuple[str, str], float] = {}
@@ -302,7 +302,7 @@ class TestPADIMDivergenceCalculation:
     def test_divergence_patterns_identification(self):
         """Test that divergence patterns are identified and described."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create specific patterns
             coverage_matrix: Dict[Tuple[str, str], float] = {}
@@ -338,7 +338,7 @@ class TestMacroSynthesisIntegration:
     def test_end_to_end_macro_synthesis(self):
         """Test complete macro synthesis workflow."""
         try:
-            from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
+            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 
             # Create realistic scenario
             meso_results = [

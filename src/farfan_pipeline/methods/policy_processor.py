@@ -34,7 +34,7 @@ import numpy as np
 
 # Import runtime error fixes for defensive programming
 try:
-    from farfan_pipeline.phases.Phase_0.phase0_00_02_runtime_error_fixes import ensure_list_return
+    from farfan_pipeline.phases.Phase_00.phase0_00_02_runtime_error_fixes import ensure_list_return
 except Exception:  # pragma: no cover - local fallback for standalone import
 
     def ensure_list_return(value: Any) -> list[Any]:
@@ -102,7 +102,7 @@ except Exception as import_error:
 # CANONICAL REFACTORING: Import from canonical_specs instead of runtime JSON loading
 # ADR: No runtime questionnaire dependency - all constants frozen at module import
 # Source: src/farfan_pipeline/core/canonical_specs.py
-from farfan_pipeline.infrastructure.calibration.canonical_specs import (
+from farfan_pipeline.calibration.canonical_specs import (
     CANON_DIMENSIONS,
     CANON_POLICY_AREAS,
     MICRO_LEVELS,

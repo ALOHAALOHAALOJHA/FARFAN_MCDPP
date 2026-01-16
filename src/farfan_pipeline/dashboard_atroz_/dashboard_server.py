@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
 
-from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT, DATA_DIR
+from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT, DATA_DIR
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

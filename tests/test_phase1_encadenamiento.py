@@ -283,16 +283,16 @@ class TestPhase1ContractIntegration:
             sys.path.insert(0, str(src_path))
         
         try:
-            from farfan_pipeline.phases.Phase_1.contracts import phase1_10_00_phase1_input_contract
-            from farfan_pipeline.phases.Phase_1.contracts import phase1_10_00_phase1_mission_contract
-            from farfan_pipeline.phases.Phase_1.contracts import phase1_10_00_phase1_output_contract
+            from farfan_pipeline.phases.Phase_01.contracts import phase1_10_00_phase1_input_contract
+            from farfan_pipeline.phases.Phase_01.contracts import phase1_10_00_phase1_mission_contract
+            from farfan_pipeline.phases.Phase_01.contracts import phase1_10_00_phase1_output_contract
         except ImportError as e:
             pytest.fail(f"Failed to import contracts: {e}")
 
     def test_mission_contract_validation(self):
         """Test that mission contract validation works."""
         try:
-            from farfan_pipeline.phases.Phase_1.contracts.phase1_10_00_phase1_mission_contract import (
+            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
                 validate_mission_contract
             )
             

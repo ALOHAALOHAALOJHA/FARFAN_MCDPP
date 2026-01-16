@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import pytest
 
-from farfan_pipeline.infrastructure.calibration import (
+from farfan_pipeline.calibration import (
     ValidationError,
     CalibrationBoundsError,
     ClosedInterval,

@@ -22,7 +22,7 @@ from __future__ import annotations
 import pytest
 import re
 
-from farfan_pipeline.infrastructure.parametrization import (
+from farfan_pipeline.pdm.profile import (
     HierarchyLevel,
     CanonicalSection,
     ContextualMarker,

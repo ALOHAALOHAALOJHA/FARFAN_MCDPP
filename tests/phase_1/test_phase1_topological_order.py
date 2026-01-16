@@ -198,7 +198,7 @@ class TestImportDependencies:
             problematic_patterns = [
                 f"from . import {legacy_module}",  # Direct relative import from root
                 f"import {legacy_module}",  # Direct absolute import without path
-                f"from farfan_pipeline.phases.Phase_1 import {legacy_module}",  # Absolute import from root
+                f"from farfan_pipeline.phases.Phase_01 import {legacy_module}",  # Absolute import from root
             ]
 
             for pattern in problematic_patterns:
@@ -319,7 +319,7 @@ class TestCycleDetection:
                     # This is a heuristic, not perfect detection
                     lines = content.split("\n")
                     for i, line in enumerate(lines):
-                        if f"from . import {other}" in line or f"from farfan_pipeline.phases.Phase_1 import {other}" in line:
+                        if f"from . import {other}" in line or f"from farfan_pipeline.phases.Phase_01 import {other}" in line:
                             # Verify the other file doesn't import back
                             other_file = phase1_dir / f"{other}.py"
                             if other_file.exists():
@@ -434,7 +434,7 @@ class TestEdgeCases:
             # Check for internal imports (relative or absolute from Phase_1)
             has_internal_import = False
             for line in content.split("\n"):
-                if "from ." in line or "from farfan_pipeline.phases.Phase_1" in line:
+                if "from ." in line or "from farfan_pipeline.phases.Phase_01" in line:
                     if any(m in line for m in ["phase1_", "PHASE_1_CONSTANTS"]):
                         has_internal_import = True
                         break

@@ -172,7 +172,7 @@ logging.basicConfig(
 # Source: canonical_specs.py (single source of truth)
 # ============================================================================
 
-from farfan_pipeline.infrastructure.calibration.canonical_specs import (
+from farfan_pipeline.calibration.canonical_specs import (
     ALIGNMENT_THRESHOLD,
     CANON_POLICY_AREAS,
     CAUSAL_CHAIN_VOCABULARY,

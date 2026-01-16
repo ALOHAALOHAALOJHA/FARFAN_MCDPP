@@ -1,7 +1,7 @@
 """Tests for memory guard degradation annotations."""
 
 import pytest
-from farfan_pipeline.phases.Phase_0.phase0_30_00_resource_controller import ResourceLimits
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
 
 
 class TestMemoryGuardAnnotations:

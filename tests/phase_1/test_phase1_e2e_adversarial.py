@@ -52,7 +52,7 @@ def questionnaire_path():
 @pytest.fixture(scope="module")
 def canonical_input(test_pdf_path, questionnaire_path):
     """Create CanonicalInput for testing."""
-    from farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
     
     # Compute hashes
     pdf_sha256 = hashlib.sha256(test_pdf_path.read_bytes()).hexdigest()
@@ -94,7 +94,7 @@ class TestPhase1EndToEnd:
         4. Execution trace has 16 entries (SP0-SP15)
         5. Quality metrics meet SLA thresholds
         """
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
             Phase1FatalError,
         )
@@ -153,7 +153,7 @@ class TestPhase1EndToEnd:
     @pytest.mark.slow
     def test_chunk_metadata_completeness(self, canonical_input):
         """Verify all chunks have required metadata fields."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         
@@ -174,7 +174,7 @@ class TestPhase1EndToEnd:
     @pytest.mark.slow
     def test_integrity_index_computed(self, canonical_input):
         """Verify integrity index is computed with BLAKE2b."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         
@@ -187,7 +187,7 @@ class TestPhase1EndToEnd:
     @pytest.mark.slow
     def test_deterministic_execution(self, canonical_input):
         """Verify Phase 1 produces deterministic output for same input."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         
@@ -214,8 +214,8 @@ class TestPhase1AdversarialInputs:
 
     def test_rejects_invalid_pdf_hash(self, test_pdf_path, questionnaire_path):
         """Phase 1 must reject input with wrong PDF hash."""
-        from farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
             Phase1FatalError,
         )
@@ -244,8 +244,8 @@ class TestPhase1AdversarialInputs:
 
     def test_rejects_invalid_questionnaire_hash(self, test_pdf_path, questionnaire_path):
         """Phase 1 must reject input with wrong questionnaire hash."""
-        from farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
             Phase1FatalError,
         )
@@ -279,7 +279,7 @@ class TestPhase1SubphaseWeights:
     @pytest.mark.slow
     def test_critical_subphases_executed(self, canonical_input):
         """Verify critical subphases (SP4, SP11, SP13) are executed."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         
@@ -297,7 +297,7 @@ class TestPhase1SubphaseWeights:
     @pytest.mark.slow
     def test_weight_metrics_recorded(self, canonical_input):
         """Verify weight metrics are recorded in metadata."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         
@@ -317,7 +317,7 @@ class TestPhase1PADimGrid:
     @pytest.mark.slow
     def test_all_60_combinations_covered(self, canonical_input):
         """Verify all 60 PA×DIM combinations are covered."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         
@@ -342,7 +342,7 @@ class TestPhase1PADimGrid:
     @pytest.mark.slow
     def test_no_duplicate_chunks(self, canonical_input):
         """Verify no duplicate chunk IDs."""
-        from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
             execute_phase_1_with_full_contract,
         )
         

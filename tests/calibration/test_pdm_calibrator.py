@@ -19,12 +19,12 @@ from __future__ import annotations
 import pytest
 from pathlib import Path
 
-from farfan_pipeline.infrastructure.calibration import Phase1PDMCalibrator
-from farfan_pipeline.infrastructure.parametrization import (
+from farfan_pipeline.calibration import Phase1PDMCalibrator
+from farfan_pipeline.pdm.profile import (
     PDMStructuralProfile,
     get_default_profile,
 )
-from farfan_pipeline.infrastructure.calibration.pdm_calibrator import (
+from farfan_pipeline.calibration.pdm_calibrator import (
     CALIBRABLE_SUBPHASES,
     NON_CALIBRABLE_SUBPHASES,
     GoldAnnotation,

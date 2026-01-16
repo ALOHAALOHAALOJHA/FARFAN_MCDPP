@@ -53,7 +53,7 @@ except ImportError as e:
     print(f"Warning: Modular resolver not available: {e}")
 
 try:
-    from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import (
+    from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import (
         AnalysisPipelineFactory,
         load_questionnaire,
         _USE_MODULAR_RESOLVER,

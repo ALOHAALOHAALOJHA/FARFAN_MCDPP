@@ -22,7 +22,7 @@ import pytest
 
 # Imports del sistema de calibración
 try:
-    from farfan_pipeline.infrastructure.calibration.core import (
+    from farfan_pipeline.calibration.core import (
         N0InfrastructureCalibration,
         N1EmpiricalCalibration,
         N2InferentialCalibration,
@@ -34,7 +34,7 @@ except ImportError:
     CALIBRATION_CORE_AVAILABLE = False
 
 try:
-    from farfan_pipeline.infrastructure.calibration.registry import (
+    from farfan_pipeline.calibration.registry import (
         EpistemicCalibrationRegistry,
         create_registry,
         MockPDMProfile,

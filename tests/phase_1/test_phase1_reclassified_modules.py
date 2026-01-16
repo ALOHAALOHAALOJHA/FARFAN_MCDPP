@@ -272,7 +272,7 @@ class TestBackwardCompatibility:
 
         try:
             # Try importing interphase module
-            from farfan_pipeline.phases.Phase_1.interphase import phase1_04_00_phase_protocol
+            from farfan_pipeline.phases.Phase_01.interphase import phase1_04_00_phase_protocol
             assert phase1_04_00_phase_protocol is not None
         except (ImportError, SystemExit) as e:
             pytest.skip(f"Interphase module not importable (expected during transition or missing dependencies): {e}")
@@ -308,7 +308,7 @@ class TestReclassifiedIntegration:
         sys.path.insert(0, str(src_path))
 
         try:
-            from farfan_pipeline.phases.Phase_1 import (
+            from farfan_pipeline.phases.Phase_01 import (
                 SmartChunk,
                 Chunk,
                 TOTAL_CHUNK_COMBINATIONS,

@@ -19,10 +19,10 @@ import time
 from unittest.mock import Mock, MagicMock, patch
 from pathlib import Path
 
-from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import AnalysisPipelineFactory
-from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import IrrigationSynchronizer, Task
-from farfan_pipeline.phases.Phase_2.phase2_50_00_task_executor import TaskExecutor, TaskResult, ExecutionError
-from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import ExecutionPlan
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import AnalysisPipelineFactory
+from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import IrrigationSynchronizer, Task
+from farfan_pipeline.phases.Phase_02.phase2_50_00_task_executor import TaskExecutor, TaskResult, ExecutionError
+from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import ExecutionPlan
 
 # Mock dependencies that are hard to instantiate in isolation
 class MockChunk:

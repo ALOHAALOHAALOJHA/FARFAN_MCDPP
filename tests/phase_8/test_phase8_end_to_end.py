@@ -23,7 +23,7 @@ def _load_rules(phase8_path: Path) -> dict[str, Any]:
 
 
 def test_end_to_end_recommendations_generated(phase8_path: Path) -> None:
-    from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
+    from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
         RecommendationEngine,
     )
 

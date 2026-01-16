@@ -19,7 +19,7 @@ from dataclasses import dataclass, replace, field
 from typing import Any
 
 # Import actual classes from Phase 4
-from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
     DimensionAggregator,
     DimensionScore as ActualDimensionScore,
     AreaPolicyAggregator,
@@ -30,31 +30,31 @@ from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
     MacroScore,
     validate_scored_results,
 )
-from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_integration import (
     aggregate_dimensions_async,
     aggregate_policy_areas_async,
     aggregate_clusters,
     evaluate_macro,
 )
-from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
     BootstrapAggregator,
     aggregate_with_uncertainty,
 )
-from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,
 )
-from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
 )
-from farfan_pipeline.phases.Phase_4.primitives.phase4_10_00_quality_levels import (
+from farfan_pipeline.phases.Phase_04.primitives.phase4_10_00_quality_levels import (
     QualityLevel,
     QualityLevelThresholds,
     determine_quality_level,
 )
-from farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_phase_4_7_constants import (
     QUALITY_LEVEL_EXCELENTE,
     QUALITY_LEVEL_BUENO,
     QUALITY_LEVEL_ACEPTABLE,
@@ -65,14 +65,14 @@ from farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants import (
     QUALITY_THRESHOLD_BUENO_MIN,
     QUALITY_THRESHOLD_ACEPTABLE_MIN,
 )
-from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_enhanced_aggregators import (
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_enhanced_aggregators import (
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
 )
-from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_adaptive_meso_scoring import (
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
 )
-from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_signal_enriched_aggregation import (
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
 )
 
@@ -1227,7 +1227,7 @@ class TestChoquetPrimitivesAdversarial:
 
     def test_fuzzy_measure_operations(self):
         """Test fuzzy measure primitive operations."""
-        from farfan_pipeline.phases.Phase_4.primitives.phase4_10_00_choquet_primitives import (
+        from farfan_pipeline.phases.Phase_04.primitives.phase4_10_00_choquet_primitives import (
             FuzzyMeasure,
             is_fuzzy_measure,
             check_monotonicity,
@@ -1248,7 +1248,7 @@ class TestChoquetPrimitivesAdversarial:
 
     def test_mobius_transform(self):
         """Test Möbius transform computation."""
-        from farfan_pipeline.phases.Phase_4.primitives.phase4_10_00_choquet_primitives import (
+        from farfan_pipeline.phases.Phase_04.primitives.phase4_10_00_choquet_primitives import (
             mobius_transform,
         )
 

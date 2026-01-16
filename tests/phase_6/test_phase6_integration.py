@@ -17,14 +17,14 @@ import pytest
 
 # Try to import real types from Phase 5 (input) and Phase 6 (output)
 try:
-    from farfan_pipeline.phases.Phase_5 import AreaScore
+    from farfan_pipeline.phases.Phase_05 import AreaScore
     REAL_PHASE5_AVAILABLE = True
 except ImportError:
     REAL_PHASE5_AVAILABLE = False
     AreaScore = None
 
 try:
-    from farfan_pipeline.phases.Phase_6 import (
+    from farfan_pipeline.phases.Phase_06 import (
         ClusterScore,
         ClusterAggregator,
     )
@@ -35,7 +35,7 @@ except ImportError:
     ClusterAggregator = None
 
 try:
-    from farfan_pipeline.phases.Phase_6 import (
+    from farfan_pipeline.phases.Phase_06 import (
         CLUSTER_COMPOSITION,
         CLUSTERS,
         COHERENCE_THRESHOLD_HIGH,

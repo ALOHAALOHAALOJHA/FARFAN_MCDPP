@@ -18,11 +18,11 @@ import pytest
 
 # Try to import real types - skip if not available
 try:
-    from farfan_pipeline.phases.Phase_4 import (
+    from farfan_pipeline.phases.Phase_04 import (
         AreaScore,
         DimensionScore,
     )
-    from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
+    from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
         AreaPolicyAggregator,
     )
     REAL_IMPORTS_AVAILABLE = True
@@ -33,7 +33,7 @@ except ImportError:
     AreaPolicyAggregator = None
 
 try:
-    from farfan_pipeline.phases.Phase_5 import (
+    from farfan_pipeline.phases.Phase_05 import (
         CLUSTER_ASSIGNMENTS,
         DIMENSIONS_PER_AREA,
         EXPECTED_AREA_SCORE_COUNT,

@@ -11,7 +11,7 @@ Note: Orchestrator is imported from orchestrator.py directly to avoid
       circular import issues with complex dependencies.
 """
 
-from farfan_pipeline.infrastructure.calibration.calibration_types import (
+from farfan_pipeline.calibration.calibration_types import (
     ROLE_LAYER_REQUIREMENTS,
     VALID_ROLES,
     CalibrationEvidenceContext,

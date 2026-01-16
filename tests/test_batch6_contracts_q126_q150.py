@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 
-from farfan_pipeline.phases.Phase_2.contract_validator_cqvr import CQVRValidator  # noqa: E402
+from farfan_pipeline.phases.Phase_02.contract_validator_cqvr import CQVRValidator  # noqa: E402
 
 
 CONTRACTS_DIR = (
