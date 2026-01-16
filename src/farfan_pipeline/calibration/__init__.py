@@ -55,6 +55,8 @@ from .type_defaults import (
     get_all_type_defaults,
     get_all_fusion_strategies,
     get_fusion_strategy,
+    validate_fusion_strategy_for_type,
+    get_contract_type_for_question,
     is_operation_prohibited,
     is_operation_permitted,
 )
@@ -88,6 +90,8 @@ __all__ = [
     "get_all_type_defaults",
     "get_all_fusion_strategies",
     "get_fusion_strategy",
+    "validate_fusion_strategy_for_type",
+    "get_contract_type_for_question",
     "is_operation_prohibited",
     "is_operation_permitted",
     # PDM calibrator
