@@ -9,14 +9,12 @@ from __future__ import annotations
 import pytest
 from typing import List
 
-from src.canonic_phases.phase_02.phase2_b_carver import (
+from farfan_pipeline.phases.Phase_02.phase2_90_00_carver import (
     Carver,
     CPPChunk,
     MicroAnswer,
     CarverError,
     carve_chunks,
-)
-from src.canonic_phases.phase_02.constants.phase2_constants import (
     CPP_CHUNK_COUNT,
     MICRO_ANSWER_COUNT,
     SHARDS_PER_CHUNK,

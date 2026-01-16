@@ -28,7 +28,7 @@ import structlog
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
-from orchestration.factory import load_questionnaire
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire
 from sse_starlette.sse import EventSourceResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
