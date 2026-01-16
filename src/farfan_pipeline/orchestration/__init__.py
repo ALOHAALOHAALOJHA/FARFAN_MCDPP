@@ -5,8 +5,10 @@ F.A.R.F.A.N Orchestration Module
 Public API for the orchestration layer.
 
 EXPORTS:
-    - Orchestrator, MethodExecutor, Phase0ValidationResult
-    - Calibration types (when available)
+    - Core Orchestrator: PipelineOrchestrator, ExecutionContext, PhaseResult
+    - Configuration: OrchestratorConfig, validation functions, presets
+    - Phase Management: PhaseID, PhaseStatus, ContractEnforcer
+    - Calibration types: CalibrationResult, CalibrationSubject, etc.
 
 Note: Calibration types imports are optional. If calibration_types module
       is not available, only core orchestration classes are exported.
@@ -27,12 +29,52 @@ from farfan_pipeline.orchestration.orchestrator import (
     GateResult,
 )
 
+# Core Orchestrator Components
+from farfan_pipeline.orchestration.core_orchestrator import (
+    ContractEnforcer,
+    ExecutionContext,
+    PhaseID,
+    PhaseResult,
+    PhaseStatus,
+    PipelineOrchestrator,
+    PHASE_METADATA,
+)
+
+# Configuration Management
+from farfan_pipeline.orchestration.orchestrator_config import (
+    OrchestratorConfig,
+    ConfigValidationError,
+    validate_config,
+    get_development_config,
+    get_production_config,
+    get_testing_config,
+)
+
 __all__ = [
-    # Core orchestration
-    "Orchestrator",
-    "MethodExecutor",
-    "Phase0ValidationResult",
-    "GateResult",
+    # Core Orchestrator
+    "PipelineOrchestrator",
+    "ExecutionContext",
+    "PhaseResult",
+    "PhaseStatus",
+    "PhaseID",
+    "ContractEnforcer",
+    "PHASE_METADATA",
+
+    # Configuration
+    "OrchestratorConfig",
+    "ConfigValidationError",
+    "validate_config",
+    "get_development_config",
+    "get_production_config",
+    "get_testing_config",
+
+    # Calibration types (legacy)
+    "LayerId",
+    "ROLE_LAYER_REQUIREMENTS",
+    "VALID_ROLES",
+    "CalibrationSubject",
+    "CalibrationEvidenceContext",
+    "CalibrationResult",
 ]
 
 # Add calibration types if available
