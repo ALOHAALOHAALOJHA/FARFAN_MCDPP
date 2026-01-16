@@ -28,6 +28,11 @@ __created__ = "2026-01-13"
 from typing import Any
 import logging
 
+from farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config import (
+    PHASE6_CONFIG,
+    CoherenceQuality,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -53,6 +58,19 @@ class Phase6OutputContract:
         "CLUSTER_MESO_3": ["PA07", "PA08"],
         "CLUSTER_MESO_4": ["PA09", "PA10"],
     }
+
+    @classmethod
+    def classify_coherence_quality(cls, coherence: float) -> tuple[CoherenceQuality, str]:
+        """
+        Classify coherence value into quality tier using PHASE6_CONFIG thresholds.
+        """
+        quality = PHASE6_CONFIG.classify_coherence(coherence)
+        descriptions = {
+            CoherenceQuality.EXCELLENT: f"Excellent coherence ({coherence:.3f} >= {PHASE6_CONFIG.coherence_high})",
+            CoherenceQuality.ACCEPTABLE: f"Acceptable coherence ({PHASE6_CONFIG.coherence_low} <= {coherence:.3f} < {PHASE6_CONFIG.coherence_high})",
+            CoherenceQuality.POOR: f"Poor coherence ({coherence:.3f} < {PHASE6_CONFIG.coherence_low})",
+        }
+        return quality, descriptions[quality]
     
     @classmethod
     def validate(cls, cluster_scores: list[Any]) -> tuple[bool, dict[str, Any]]:
@@ -118,7 +136,17 @@ class Phase6OutputContract:
             )
         else:
             validation_details["checks"].append(f"✓ All scores in [{cls.MIN_SCORE}, {cls.MAX_SCORE}]")
-        
+
+        # Check 5: Coherence quality assessment (advisory)
+        for cluster in cluster_scores:
+            if hasattr(cluster, 'coherence'):
+                quality, description = cls.classify_coherence_quality(cluster.coherence)
+                validation_details["checks"].append(f"✓ {cluster.cluster_id}: {description}")
+                if quality == CoherenceQuality.POOR:
+                    validation_details["warnings"].append(
+                        f"{cluster.cluster_id} has poor coherence - consider investigation"
+                    )
+
         # Check 5: Coherence metrics present
         missing_coherence = [cluster.cluster_id for cluster in cluster_scores 
                             if not hasattr(cluster, 'coherence') or cluster.coherence is None]
@@ -148,7 +176,22 @@ class Phase6OutputContract:
             )
         else:
             validation_details["checks"].append("✓ All clusters have provenance tracking")
-        
+
+        coherence_values = [c.coherence for c in cluster_scores if hasattr(c, 'coherence')]
+        if coherence_values:
+            avg_coherence = sum(coherence_values) / len(coherence_values)
+            validation_details["coherence_summary"] = {
+                "average": round(avg_coherence, 3),
+                "minimum": round(min(coherence_values), 3),
+                "quality_distribution": {
+                    q.value: sum(
+                        1 for c in cluster_scores
+                        if hasattr(c, 'coherence') and PHASE6_CONFIG.classify_coherence(c.coherence) == q
+                    )
+                    for q in CoherenceQuality
+                },
+            }
+
         validation_passed = len(validation_details["errors"]) == 0
         validation_details["passed"] = validation_passed
         

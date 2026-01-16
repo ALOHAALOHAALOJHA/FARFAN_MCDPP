@@ -263,6 +263,10 @@ class Chunk:
     method_invocation_results: dict[str, Any] = field(default_factory=dict)
     governance_threshold: float = 0.0
 
+    # PDM structural metadata (PDM-2025.1 extension)
+    # PDM-specific structural information for Colombian municipal development plans
+    pdm_metadata: PDMMetadata | None = None
+
     def __post_init__(self) -> None:
         # REMEDIATION: Validate SPEC-002 Traceability (parity with SmartChunk)
         if self.assignment_method not in VALID_ASSIGNMENT_METHODS:

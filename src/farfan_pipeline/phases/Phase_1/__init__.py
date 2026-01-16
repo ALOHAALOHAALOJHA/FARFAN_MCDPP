@@ -112,6 +112,23 @@ except ImportError:
     SP4_TOTAL_CHUNKS = 300
     SP4_QUESTION_AWARE_AVAILABLE = False
 
+# PDM Structural Recognition (PDM-2025.1) - NEW
+try:
+    from .phase1_12_01_pdm_integration import (
+        PDMStructuralAnalyzer,
+        PDMMetadataAssigner,
+        assign_pdm_metadata_to_chunks,
+        enhance_sp2_with_pdm,
+    )
+
+    PDM_INTEGRATION_AVAILABLE = True
+except ImportError:
+    PDMStructuralAnalyzer = None
+    PDMMetadataAssigner = None
+    assign_pdm_metadata_to_chunks = None
+    enhance_sp2_with_pdm = None
+    PDM_INTEGRATION_AVAILABLE = False
+
 __all__ = [
     # Executor
     "Phase1Executor",
@@ -164,4 +181,10 @@ __all__ = [
     "execute_sp4_question_aware",
     "QUESTIONNAIRE_MAPPER_AVAILABLE",
     "SP4_QUESTION_AWARE_AVAILABLE",
+    # PDM Structural Recognition (PDM-2025.1) - NEW
+    "PDMStructuralAnalyzer",
+    "PDMMetadataAssigner",
+    "assign_pdm_metadata_to_chunks",
+    "enhance_sp2_with_pdm",
+    "PDM_INTEGRATION_AVAILABLE",
 ]

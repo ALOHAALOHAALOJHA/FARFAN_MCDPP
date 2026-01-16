@@ -118,6 +118,23 @@ Blockers: None - all dependencies satisfied.
 
 **Status**: ✅ ACCEPTABLE - Clean modularity.
 
+## 4. Routing Clarifications
+
+### 4.1 cluster_id Field Ignored by Aggregator
+
+**Observation**: `AreaScore.cluster_id` is not used for routing decisions.
+
+**Clarification**: This is **BY DESIGN**, not an oversight.
+
+**Rationale**:
+- `CLUSTER_COMPOSITION` constant is the authoritative source of cluster membership.
+- `area_id`-based routing ensures deterministic, reproducible results.
+- `cluster_id` on AreaScore is for provenance/audit purposes only.
+
+**Documentation**: See `docs/phase6_execution_flow.md` → "Hermeticity Model & Cluster Routing".
+
+**Status**: ✅ DOCUMENTED (no code change required)
+
 ## 4. Contract Deviations
 
 ### 4.1 No Hard Gates in Input Contract

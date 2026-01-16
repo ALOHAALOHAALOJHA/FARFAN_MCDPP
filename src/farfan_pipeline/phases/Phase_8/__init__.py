@@ -47,7 +47,6 @@ Phase_8/
 │   └── README.md
 ├── interphase/                                     # Interphase adapters
 └── json_phase_eight/                               # Rule definitions
-    ├── recommendation_rules.json                   # Base rules
     └── recommendation_rules_enhanced.json          # Enhanced v2.0 rules
 """
 from __future__ import annotations

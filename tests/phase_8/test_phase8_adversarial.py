@@ -87,11 +87,18 @@ class TestPhase8Structure:
             "phase8_10_00_schema_validation.py",
             "phase8_20_00_recommendation_engine.py",
             "phase8_20_01_recommendation_engine_adapter.py",
+            "phase8_20_02_generic_rule_engine.py",
+            "phase8_20_03_template_compiler.py",
             "phase8_30_00_signal_enriched_recommendations.py",
         ]
         for module in required_modules:
             module_path = phase8_path / module
             assert module_path.exists(), f"Required module must exist: {module}"
+
+    def test_rules_schema_exists(self, phase8_path):
+        """Verify rules schema exists at canonical location."""
+        schema_path = phase8_path / "rules" / "recommendation_rules.schema.json"
+        assert schema_path.exists(), f"Rules schema must exist: {schema_path}"
 
     def test_init_exports(self, phase8_path):
         """Verify __init__.py exports required symbols."""
@@ -123,6 +130,24 @@ class TestPhase8Structure:
         """Verify primitives directory exists."""
         primitives_dir = phase8_path / "primitives"
         assert primitives_dir.exists(), "primitives directory must exist"
+
+    def test_rules_enhanced_has_recommendations(self, phase8_path):
+        """Verify all rules include recommendations array."""
+        rules_path = phase8_path / "json_phase_eight" / "recommendation_rules_enhanced.json"
+        rules = json.loads(rules_path.read_text())
+        assert "rules" in rules, "Rules file must contain rules list"
+        missing = [r.get("rule_id") for r in rules["rules"] if not r.get("recommendations")]
+        assert not missing, f"Rules missing recommendations: {missing[:5]}"
+
+    def test_micro_rules_cover_bands(self, phase8_path):
+        """Verify MICRO rules include banded conditions after expansion."""
+        rules_path = phase8_path / "json_phase_eight" / "recommendation_rules_enhanced.json"
+        rules = json.loads(rules_path.read_text())
+        micro_rules = [r for r in rules.get("rules", []) if r.get("level") == "MICRO"]
+        assert micro_rules, "Expected MICRO rules"
+
+        bands = rules.get("micro_score_bands", [])
+        assert bands, "Rules must declare micro_score_bands"
 
 
 class TestPhase8Contracts:
@@ -296,40 +321,29 @@ class TestRecommendationSetModel:
 class TestRecommendationEngineInitialization:
     """Test RecommendationEngine initialization."""
 
-    def test_engine_initialization_without_files(self):
-        """Test engine initializes even without rule files (graceful degradation)."""
+    def test_engine_initialization_with_files(self, phase8_path):
+        """Test engine initializes with canonical rule files."""
         from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
             RecommendationEngine,
         )
-        
-        # Should not raise, even with non-existent paths
-        try:
-            engine = RecommendationEngine(
-                rules_path="nonexistent/rules.json",
-                schema_path="nonexistent/schema.json",
-            )
-            # May have empty rules
-            assert hasattr(engine, "rules_by_level")
-        except FileNotFoundError:
-            # This is acceptable behavior - file not found
-            pass
-        except Exception as e:
-            # Other exceptions may indicate initialization issues
-            pytest.skip(f"Engine initialization failed: {e}")
+
+        rules_path = phase8_path / "json_phase_eight" / "recommendation_rules_enhanced.json"
+        schema_path = phase8_path / "rules" / "recommendation_rules.schema.json"
+
+        engine = RecommendationEngine(
+            rules_path=rules_path,
+            schema_path=schema_path,
+        )
+        assert hasattr(engine, "rules_by_level")
+        assert engine.rules_by_level["MICRO"], "MICRO rules should load"
 
     def test_engine_has_level_dictionaries(self):
         """Test engine has MICRO/MESO/MACRO level dictionaries."""
         from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
             RecommendationEngine,
         )
-        
-        try:
-            engine = RecommendationEngine(
-                rules_path="nonexistent.json",
-                schema_path="nonexistent.json",
-            )
-        except Exception:
-            pytest.skip("Engine requires valid files")
+
+        engine = RecommendationEngine()
         
         assert "MICRO" in engine.rules_by_level
         assert "MESO" in engine.rules_by_level
@@ -348,18 +362,10 @@ class TestAdversarialInputs:
         from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
             RecommendationEngine,
         )
-        
-        try:
-            engine = RecommendationEngine(
-                rules_path="nonexistent.json",
-                schema_path="nonexistent.json",
-            )
-            # Empty scores should not crash
-            result = engine.generate_micro_recommendations({})
-            assert result is not None
-        except Exception as e:
-            # May skip if engine requires files
-            pytest.skip(f"Engine not available: {e}")
+
+        engine = RecommendationEngine()
+        result = engine.generate_micro_recommendations({})
+        assert result is not None
 
     def test_negative_scores_rejected(self):
         """Test that negative scores are handled appropriately."""
@@ -561,8 +567,8 @@ class TestEnhancedFeatures:
             horizon={"months": 12, "milestones": ["M1", "M2"]},
             verification=["V1", "V2"],
             # Enhanced fields (v2.0)
-            execution={"steps": ["S1", "S2"], "dependencies": []},
-            budget={"amount": 100000, "currency": "COP"},
+            execution={"trigger_condition": "score < 1.0", "blocking": False, "auto_apply": False, "requires_approval": True, "approval_roles": ["Comité"]},
+            budget={"estimated_cost_cop": 100000, "cost_breakdown": {"personal": 60000, "technology": 40000}, "funding_sources": [{"source": "SGP", "amount": 100000, "confirmed": False}], "fiscal_year": 2025},
             template_id="TPL-001",
             template_params={"area": "PA01"},
         )
@@ -571,50 +577,6 @@ class TestEnhancedFeatures:
         assert d.get("execution") is not None
         assert d.get("budget") is not None
         assert d.get("template_id") == "TPL-001"
-
-
-# ============================================================================
-# GENERATIVE TESTING FRAMEWORK TESTS
-# ============================================================================
-
-class TestGenerativeTestingFramework:
-    """Test the generative testing framework in Phase 8."""
-
-    def test_generative_testing_module_exists(self, phase8_path):
-        """Verify generative testing module exists."""
-        gen_test_path = phase8_path / "tests" / "phase8_10_00_generative_testing.py"
-        assert gen_test_path.exists(), "Generative testing module must exist"
-
-    def test_phase8_generators_class(self):
-        """Test Phase8Generators class."""
-        from farfan_pipeline.phases.Phase_8.tests.phase8_10_00_generative_testing import (
-            Phase8Generators,
-        )
-        
-        # Test PA ID generator
-        pa_id = Phase8Generators.pa_id()
-        assert pa_id.startswith("PA")
-        assert len(pa_id) == 4
-        
-        # Test DIM ID generator
-        dim_id = Phase8Generators.dim_id()
-        assert dim_id.startswith("DIM")
-        assert len(dim_id) == 5
-        
-        # Test score generator
-        score = Phase8Generators.score()
-        assert 0 <= score <= 3
-
-    def test_property_test_suite_creation(self):
-        """Test PropertyTestSuite creation."""
-        from farfan_pipeline.phases.Phase_8.tests.phase8_10_00_generative_testing import (
-            PropertyTestSuite,
-        )
-        
-        suite = PropertyTestSuite()
-        assert hasattr(suite, "properties")
-        assert hasattr(suite, "add_property")
-        assert hasattr(suite, "run_all")
 
 
 # ============================================================================
@@ -634,14 +596,10 @@ class TestPhase8Integration:
 
     def test_get_recommendation_engine_function(self):
         """Test get_recommendation_engine factory function."""
-        from farfan_pipeline.phases.Phase_8 import get_recommendation_engine_v2
-        
-        try:
-            engine = get_recommendation_engine_v2()
-            assert engine is not None
-        except Exception as e:
-            # May fail if files don't exist, but function should be callable
-            pytest.skip(f"Engine requires files: {e}")
+        from farfan_pipeline.phases.Phase_8 import get_recommendation_engine
+
+        engine = get_recommendation_engine()
+        assert engine is not None
 
 
 if __name__ == "__main__":

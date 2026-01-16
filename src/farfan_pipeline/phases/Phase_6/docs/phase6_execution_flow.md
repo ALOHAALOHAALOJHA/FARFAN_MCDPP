@@ -127,6 +127,56 @@ Phase 5 Output (10 AreaScores)
 Phase 6 Output (4 ClusterScores) → Phase 7
 ```
 
+## Hermeticity Model & Cluster Routing
+
+### Design Decision: area_id-Based Routing
+
+Phase 6 uses **static area_id membership** for cluster routing, NOT the `cluster_id` field on `AreaScore` objects.
+
+#### Routing Logic (Actual)
+
+```python
+# From phase6_30_00_cluster_aggregator.py
+def aggregate_cluster(self, cluster_id: str, area_scores: list[AreaScore]):
+    expected_areas = CLUSTER_COMPOSITION[cluster_id]  # Static lookup
+    cluster_areas = [
+        area for area in area_scores
+        if area.area_id in expected_areas  # Match by area_id
+        # NOTE: area.cluster_id is NOT checked
+    ]
+```
+
+#### Why This Matters
+
+- **Single Source of Truth**: `CLUSTER_COMPOSITION` defines membership authoritatively.
+- **Determinism**: Same `area_id` always routes to the same cluster.
+- **Decoupling**: Phase 6 does not depend on Phase 5 setting `cluster_id`.
+- **Debugging**: Membership is statically inspectable.
+
+#### Implications
+
+| Scenario                                        | Behavior                                |
+|-------------------------------------------------|-----------------------------------------|
+| AreaScore(area_id="PA01", cluster_id=None)      | Routes to CLUSTER_MESO_1 ✅             |
+| AreaScore(area_id="PA01", cluster_id="..._1")   | Routes to CLUSTER_MESO_1 ✅             |
+| AreaScore(area_id="PA01", cluster_id="..._2")   | Routes to CLUSTER_MESO_1 ✅ (ignored)   |
+| AreaScore(area_id="PA99", cluster_id="..._1")   | Not routed (PA99 not in any cluster)    |
+
+#### Input Contract Behavior
+
+The input contract issues a **warning** (not an error) for missing `cluster_id`. Aggregation proceeds regardless.
+
+#### Canonical Cluster Membership
+
+| Cluster          | Policy Areas        | Count |
+|------------------|---------------------|-------|
+| CLUSTER_MESO_1   | PA01, PA02, PA03    | 3     |
+| CLUSTER_MESO_2   | PA04, PA05, PA06    | 3     |
+| CLUSTER_MESO_3   | PA07, PA08          | 2     |
+| CLUSTER_MESO_4   | PA09, PA10          | 2     |
+
+Defined in: `phase6_10_00_phase_6_constants.py` → `CLUSTER_COMPOSITION`
+
 ## Invariants Enforced
 
 Throughout execution, Phase 6 maintains these invariants (see `contracts/phase6_mission_contract.py`):
@@ -138,13 +188,45 @@ Throughout execution, Phase 6 maintains these invariants (see `contracts/phase6_
 5. **I5: Coherence Bounds** - All coherence values in [0.0, 1.0]
 6. **I6: Penalty Bounds** - All penalty values in [0.0, 1.0]
 
-## Error Handling
+## Error Handling & Contract Enforcement
 
-Phase 6 uses fail-fast validation:
-- Input contract violations → raise ValueError immediately
-- Missing policy areas → raise HermeticityError
-- Score out of bounds → clamp and log warning
-- Invalid cluster composition → raise ConfigurationError
+Phase 6 implements Design by Contract (DbC) with configurable enforcement:
+
+### Contract Modes
+
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| `strict` (default) | Raise `ValueError` on any contract violation | Production, CI/CD |
+| `warn` | Log warnings but continue execution | Development, debugging |
+| `disabled` | Skip contract validation entirely | Performance testing |
+
+### Configuration
+
+```python
+from farfan_pipeline.phases.Phase_6 import ClusterAggregator
+
+# Strict mode (default) - fail fast on contract violations
+agg = ClusterAggregator(enforce_contracts=True, contract_mode="strict")
+
+# Warn mode - log violations but continue
+agg = ClusterAggregator(contract_mode="warn")
+
+# Disabled - skip contract validation
+agg = ClusterAggregator(contract_mode="disabled")
+```
+
+### Contract Invocation Points
+
+- **Precondition (Phase6InputContract)**: invoked at start of `aggregate()`; validates 10 AreaScores, PA01–PA10 coverage, score bounds. Failure in strict mode raises `ValueError`.
+- **Postcondition (Phase6OutputContract)**: invoked at end of `aggregate()`; validates 4 ClusterScores, cluster IDs, hermeticity. Failure in strict mode raises `ValueError`.
+
+### Error Types
+
+| Error | Cause | Resolution |
+|-------|-------|-----------|
+| `ValueError("Phase6InputContract failed")` | Missing areas, wrong count, out-of-bounds scores | Fix Phase 5 output |
+| `ValueError("Phase6OutputContract failed")` | Wrong cluster count, hermeticity violation | Internal bug - report |
+| `HermeticityError` (legacy) | Internal validation failure | Same as input contract failure |
 
 ## Provenance Tracking
 

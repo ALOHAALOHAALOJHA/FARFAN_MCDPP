@@ -211,16 +211,23 @@ Phase 6 Mission: Aggregate 10 Policy Area scores into 4 MESO-level Cluster score
 Compression Ratio: 10:4 (2.5:1)
 
 Process:
-1. Group 10 AreaScore objects by cluster assignment
-2. For each cluster, compute weighted average of area scores
-3. Analyze dispersion within cluster (CV, DI, variance)
-4. Apply adaptive penalty based on dispersion scenario
-5. Produce 4 ClusterScore objects with full metadata
+1. PRECONDITION: Validate input via Phase6InputContract
+2. Group 10 AreaScore objects by cluster assignment (area_id-based routing)
+3. For each cluster, compute weighted average of area scores
+4. Analyze dispersion within cluster (CV, DI, variance)
+5. Apply adaptive penalty based on dispersion scenario
+6. POSTCONDITION: Validate output via Phase6OutputContract
+7. Produce 4 ClusterScore objects with full metadata
+
+Contract Enforcement (configurable):
+- Mode "strict": Raise ValueError on violation (default)
+- Mode "warn": Log and continue
+- Mode "disabled": Skip validation
 
 Guarantees:
-- Exactly 4 clusters produced
-- All clusters hermetic (correct policy areas)
-- All scores in [0.0, 3.0]
+- Exactly 4 clusters produced (I1)
+- All clusters hermetic (I3)
+- All scores in [0.0, 3.0] (I4)
 - Full provenance tracking
 - Dispersion-based quality assessment
 """

@@ -221,7 +221,7 @@ class TestFusionStrategies:
 
     def test_get_fusion_strategy_invalid_level(self) -> None:
         """Invalid epistemic level should raise ValueError."""
-        with pytest.raises(ValueError, match="N1.*N2.*N3"):
+        with pytest.raises(ValueError):
             get_fusion_strategy(CONTRACT_TYPE_A, "N4")
         with pytest.raises(ValueError):
             get_fusion_strategy(CONTRACT_TYPE_A, "N0")

@@ -72,23 +72,27 @@ class CalibrationBoundsError(ValidationError):
 @dataclass(frozen=True, slots=True)
 class ClosedInterval:
     """
-    An immutable closed interval [lower, upper] with a default value.
+    An immutable closed interval [lower, upper] for parameter bounds.
 
-    Represents a bounded parameter in the calibration system. The interval
-    is closed (inclusive) and the default must lie within the bounds.
+    Represents bounded constraints for a calibration parameter. The interval
+    is closed (inclusive). Actual values are COMPUTED at runtime based on
+    the unit of analysis, not stored as static defaults.
+
+    DESIGN PRINCIPLE:
+        This is a bounds-only structure. Values are calculated transparently
+        at runtime by the calibration system based on PDM characteristics,
+        not hardcoded as defaults.
 
     Invariants:
         INV-CI-001: lower <= upper
-        INV-CI-002: lower <= default <= upper
-        INV-CI-003: All values are finite (not inf/nan)
+        INV-CI-002: All values are finite (not inf/nan)
 
     Attributes:
         lower: Minimum allowed value (inclusive).
         upper: Maximum allowed value (inclusive).
-        default: Default/calibrated value within [lower, upper].
 
     Examples:
-        >>> interval = ClosedInterval(lower=0.0, upper=1.0, default=0.5)
+        >>> interval = ClosedInterval(lower=0.0, upper=1.0)
         >>> interval.contains(0.75)
         True
         >>> interval.midpoint()
@@ -97,30 +101,29 @@ class ClosedInterval:
 
     lower: float
     upper: float
-    default: float
 
     def __post_init__(self) -> None:
-        """Validate interval bounds and default value."""
-        # Validate lower <= upper
-        if self.lower > self.upper:
-            raise CalibrationBoundsError(
-                f"Interval lower bound ({self.lower}) cannot exceed upper bound ({self.upper})"
-            )
-
-        # Validate default is within bounds
-        if not (self.lower <= self.default <= self.upper):
-            raise CalibrationBoundsError(
-                f"Default value ({self.default}) must be within bounds "
-                f"[{self.lower}, {self.upper}]"
-            )
-
-        # Validate finite values
+        """Validate interval bounds."""
         import math
 
-        if not (math.isfinite(self.lower) and math.isfinite(self.upper) and math.isfinite(self.default)):
-            raise CalibrationBoundsError(
+        # Validate finite values first
+        if not (math.isfinite(self.lower) and math.isfinite(self.upper)):
+            raise ValidationError(
                 f"Interval values must be finite: got "
-                f"lower={self.lower}, upper={self.upper}, default={self.default}"
+                f"lower={self.lower}, upper={self.upper}"
+            )
+
+        # Validate lower <= upper
+        if self.lower > self.upper:
+            raise ValidationError(
+                f"Malformed interval: lower bound ({self.lower}) cannot exceed "
+                f"upper bound ({self.upper})"
+            )
+
+        # Check for NaN explicitly
+        if math.isnan(self.lower) or math.isnan(self.upper):
+            raise ValidationError(
+                f"Interval bounds cannot be NaN: lower={self.lower}, upper={self.upper}"
             )
 
     def contains(self, value: float) -> bool:
@@ -149,12 +152,11 @@ class ClosedInterval:
         Convert to canonical dictionary for serialization.
 
         Returns:
-            Dict with keys: lower, upper, default
+            Dict with keys: lower, upper
         """
         return {
             "lower": self.lower,
             "upper": self.upper,
-            "default": self.default,
         }
 
     @classmethod
@@ -163,19 +165,18 @@ class ClosedInterval:
         Create ClosedInterval from canonical dictionary.
 
         Args:
-            data: Dict with keys: lower, upper, default
+            data: Dict with keys: lower, upper
 
         Returns:
             ClosedInterval instance
 
         Raises:
-            CalibrationBoundsError: If data is invalid
+            ValidationError: If data is invalid
             KeyError: If required keys are missing
         """
         return cls(
             lower=float(data["lower"]),
             upper=float(data["upper"]),
-            default=float(data["default"]),
         )
 
 

@@ -42,6 +42,7 @@ __execution_pattern__ = "On-Demand"
 
 
 import copy
+import json
 import logging
 import re
 from dataclasses import asdict, dataclass, field
@@ -50,9 +51,11 @@ from pathlib import Path
 from typing import Any
 
 import jsonschema
-from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
 from farfan_pipeline.infrastructure.calibration.decorators import (
     calibrated_method,
+)
+from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import (
+    QUESTIONNAIRE_CANONICAL_NOTATION_FILE,
 )
 
 logger = logging.getLogger(__name__)
@@ -66,6 +69,16 @@ _REQUIRED_ENHANCED_FEATURES = {
     "cost_tracking",
     "authority_mapping",
 }
+
+# ==========================================================================
+# BUSINESS/PRESENTATION CONSTANTS (Phase 8)
+# ==========================================================================
+
+# MESO variance band thresholds
+MESO_VARIANCE_BAJA_MAX = 0.08
+MESO_VARIANCE_MEDIA_MIN = 0.08
+MESO_VARIANCE_MEDIA_MAX = 0.18
+MESO_VARIANCE_ALTA_MIN = 0.18
 
 # ============================================================================
 # DATA STRUCTURES FOR RECOMMENDATIONS
@@ -155,6 +168,8 @@ class RecommendationEngine:
         schema_path: str | Path | None = None,
         questionnaire_provider=None,
         orchestrator=None,
+        signal_registry=None,
+        enable_signal_enrichment: bool = True,
     ) -> None:
         """
         Initialize recommendation engine
@@ -192,6 +207,7 @@ class RecommendationEngine:
         self.micro_question_map: dict[str, dict[str, Any]] = {}
         self.recommendation_templates: dict[str, Any] = {}
         self.budget_defaults: dict[str, Any] = {}
+        self.signal_enricher = None
 
         # Load canonical notation for validation
         self._load_canonical_notation()
@@ -199,6 +215,15 @@ class RecommendationEngine:
         # Load rules and schema
         self._load_schema()
         self._load_rules()
+
+        if enable_signal_enrichment:
+            from .phase8_30_00_signal_enriched_recommendations import (
+                SignalEnrichedRecommender,
+            )
+
+            self.signal_enricher = SignalEnrichedRecommender(
+                signal_registry=signal_registry
+            )
 
         logger.info(
             f"Recommendation engine initialized with "
@@ -213,13 +238,16 @@ class RecommendationEngine:
     def _load_canonical_notation(self) -> None:
         """Load canonical notation for validation"""
         try:
-            from farfan_pipeline.core.canonical_notation import (
-                get_all_dimensions,
-                get_all_policy_areas,
-            )
+            if not QUESTIONNAIRE_CANONICAL_NOTATION_FILE.exists():
+                raise FileNotFoundError(
+                    f"Canonical notation not found: {QUESTIONNAIRE_CANONICAL_NOTATION_FILE}"
+                )
 
-            self.canonical_dimensions = get_all_dimensions()
-            self.canonical_policy_areas = get_all_policy_areas()
+            payload = json.loads(
+                QUESTIONNAIRE_CANONICAL_NOTATION_FILE.read_text(encoding="utf-8")
+            )
+            self.canonical_dimensions = payload.get("dimensions", {})
+            self.canonical_policy_areas = payload.get("policy_areas", {})
             logger.info(
                 f"Canonical notation loaded: {len(self.canonical_dimensions)} dimensions, "
                 f"{len(self.canonical_policy_areas)} policy areas"
@@ -234,11 +262,8 @@ class RecommendationEngine:
     )
     def _load_schema(self) -> None:
         """Load JSON schema for rule validation"""
-        # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import load_json
-
         try:
-            self.schema = load_json(self.schema_path)
+            self.schema = json.loads(self.schema_path.read_text(encoding="utf-8"))
             logger.info(f"Loaded recommendation rules schema from {self.schema_path}")
         except Exception as e:
             logger.error(f"Failed to load schema: {e}")
@@ -249,11 +274,8 @@ class RecommendationEngine:
     )
     def _load_rules(self) -> None:
         """Load and validate recommendation rules"""
-        # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import load_json
-
         try:
-            self.rules = load_json(self.rules_path)
+            self.rules = json.loads(self.rules_path.read_text(encoding="utf-8"))
             self._apply_rule_defaults()
 
             # Validate against schema
@@ -570,7 +592,7 @@ class RecommendationEngine:
         Generate MICRO-level recommendations based on PA-DIM scores
 
         Args:
-            scores: Dictionary mapping "PA##-DIM##" to scores (ParameterLoaderV2.get("farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith", "auto_param_L279_63", 0.0)-3.0)
+            scores: Dictionary mapping "PA##-DIM##" to scores (0.0-3.0)
             context: Additional context for template rendering
 
         Returns:
@@ -620,6 +642,12 @@ class RecommendationEngine:
                 )
 
                 # Create recommendation with enhanced fields (v2.0) if available
+                gap_value: float | None = None
+                if score_lt is not None:
+                    gap_value = float(score_lt) - scores[score_key]
+                elif score_min is not None:
+                    gap_value = float(score_min) - scores[score_key]
+
                 rec = Recommendation(
                     rule_id=rule.get("rule_id"),
                     level="MICRO",
@@ -633,7 +661,7 @@ class RecommendationEngine:
                         "score_key": score_key,
                         "actual_score": scores[score_key],
                         "threshold": score_lt,
-                        "gap": score_lt - scores[score_key],
+                        "gap": gap_value,
                         "score_band": score_band,
                         "score_min": score_min,
                         "score_max": score_max,
@@ -646,6 +674,20 @@ class RecommendationEngine:
                     template_id=rendered.get("template_id"),
                     template_params=rendered.get("template_params"),
                 )
+                score_data = {
+                    "score": scores[score_key],
+                    "score_band": score_band,
+                    "score_min": score_min,
+                    "score_max": score_max,
+                    "quality_level": (context or {}).get("quality_level"),
+                }
+                question_id = substitutions.get("question_id")
+                if isinstance(question_id, str) and question_id.lstrip("Q").isdigit():
+                    score_data["question_global"] = int(question_id.lstrip("Q"))
+                condition = self._build_score_condition(
+                    scores[score_key], score_lt, score_min, score_max
+                )
+                self._apply_signal_enrichment(rec, rule, score_data, condition)
                 recommendations.append(rec)
 
         return RecommendationSet(
@@ -762,8 +804,8 @@ class RecommendationEngine:
         Args:
             cluster_data: Dictionary with cluster metrics:
                 {
-                    'CL01': {'score': 75.0, 'variance': ParameterLoaderV2.get("farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith", "auto_param_L398_56", 0.15), 'weak_pa': 'PA02'},
-                    'CL02': {'score': 62.0, 'variance': ParameterLoaderV2.get("farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith", "auto_param_L399_56", 0.22), 'weak_pa': 'PA05'},
+                    'CL01': {'score': 75.0, 'variance': 0.15, 'weak_pa': 'PA02'},
+                    'CL02': {'score': 62.0, 'variance': 0.22, 'weak_pa': 'PA05'},
                     ...
                 }
             context: Additional context for template rendering
@@ -843,6 +885,15 @@ class RecommendationEngine:
                 template_id=rendered.get("template_id"),
                 template_params=rendered.get("template_params"),
             )
+            score_data = {
+                "score": cluster_score,
+                "variance": cluster_variance,
+                "score_band": score_band,
+                "variance_level": variance_level,
+                "quality_level": (context or {}).get("quality_level"),
+            }
+            condition = self._build_score_condition(cluster_score, None, None, None)
+            self._apply_signal_enrichment(rec, rule, score_data, condition)
             recommendations.append(rec)
 
         return RecommendationSet(
@@ -874,40 +925,19 @@ class RecommendationEngine:
 
         # Check variance level
         if (
-            variance_level == "BAJA"
-            and variance
-            >= ParameterLoaderV2.get(
-                "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith",
-                "auto_param_L488_52",
-                0.08,
-            )
+            variance_level == "BAJA" and variance >= MESO_VARIANCE_BAJA_MAX
         ) or (
             variance_level == "MEDIA"
             and (
-                variance
-                < ParameterLoaderV2.get(
-                    "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith",
-                    "auto_param_L488_102",
-                    0.08,
-                )
-                or variance
-                >= ParameterLoaderV2.get(
-                    "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith",
-                    "auto_param_L488_122",
-                    0.18,
-                )
+                variance < MESO_VARIANCE_MEDIA_MIN
+                or variance >= MESO_VARIANCE_MEDIA_MAX
             )
         ):
             return False
         elif variance_level == "ALTA":
             if (variance_threshold and variance < variance_threshold / 100) or (
                 not variance_threshold
-                and variance
-                < ParameterLoaderV2.get(
-                    "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith",
-                    "auto_param_L491_115",
-                    0.18,
-                )
+                and variance < MESO_VARIANCE_ALTA_MIN
             ):
                 return False
 
@@ -1039,6 +1069,14 @@ class RecommendationEngine:
                 template_id=rendered.get("template_id"),
                 template_params=rendered.get("template_params"),
             )
+            score_data = {
+                "score": macro_data.get("macro_score", 0),
+                "macro_band": actual_band,
+                "variance_alert": actual_variance,
+                "quality_level": (context or {}).get("quality_level"),
+            }
+            condition = self._build_score_condition(score_data["score"], None, None, None)
+            self._apply_signal_enrichment(rec, rule, score_data, condition)
             recommendations.append(rec)
 
         return RecommendationSet(
@@ -1075,6 +1113,72 @@ class RecommendationEngine:
                         substitutions.setdefault(key.upper(), value)
 
         return substitutions
+
+    def _build_score_condition(
+        self,
+        score: float,
+        score_lt: float | None,
+        score_min: float | None,
+        score_max: float | None,
+    ) -> dict[str, Any]:
+        if score_lt is not None:
+            return {"field": "score", "operator": "lt", "value": score_lt}
+        if score_max is not None:
+            return {"field": "score", "operator": "lte", "value": score_max}
+        if score_min is not None:
+            return {"field": "score", "operator": "gte", "value": score_min}
+        return {"field": "score", "operator": "eq", "value": score}
+
+    def _apply_signal_enrichment(
+        self,
+        rec: Recommendation,
+        rule: dict[str, Any],
+        score_data: dict[str, Any],
+        condition: dict[str, Any],
+    ) -> None:
+        if self.signal_enricher is None:
+            return
+
+        try:
+            _, evaluation_details = self.signal_enricher.enhance_rule_condition(
+                rule_id=rule.get("rule_id", ""),
+                condition=condition,
+                score_data=score_data,
+            )
+            priority_score, priority_details = self.signal_enricher.compute_intervention_priority(
+                recommendation=rec.to_dict(),
+                score_data=score_data,
+            )
+            problem_type = (
+                rule.get("problem_type")
+                or rule.get("problem")
+                or rec.problem
+                or "generic"
+            )
+            template_id, template_details = self.signal_enricher.select_intervention_template(
+                problem_type=problem_type,
+                score_data=score_data,
+            )
+
+            rec.metadata["signal_enrichment"] = {
+                "enabled": True,
+                "registry_available": self.signal_enricher.signal_registry is not None,
+                "evaluation": evaluation_details,
+                "priority": {
+                    **priority_details,
+                    "priority_score": priority_score,
+                },
+                "template_selection": {
+                    **template_details,
+                    "template_id": template_id,
+                },
+            }
+        except Exception as exc:
+            logger.debug(
+                "Signal enrichment failed for %s: %s",
+                rule.get("rule_id"),
+                exc,
+            )
 
     # ========================================================================
     # UTILITY METHODS
@@ -1376,7 +1480,18 @@ class RecommendationEngine:
         template_params = template["template_params"]
         if not isinstance(template_params, dict):
             raise ValueError(f"Rule {rule_id} template_params must be an object")
-        allowed_param_keys = {"pa_id", "dim_id", "cluster_id", "question_id"}
+        allowed_param_keys = {
+            "pa_id",
+            "dim_id",
+            "cluster_id",
+            "question_id",
+            "method_id",
+            "question_range",
+            "score_band",
+            "score_min",
+            "score_max",
+            "score_lt",
+        }
         unknown_params = set(template_params) - allowed_param_keys
         if unknown_params:
             raise ValueError(

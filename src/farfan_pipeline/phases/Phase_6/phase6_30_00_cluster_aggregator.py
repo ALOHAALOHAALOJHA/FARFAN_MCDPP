@@ -224,7 +224,12 @@ class ClusterAggregator:
         area_scores: list[AreaScore],
     ) -> ClusterScore:
         """
-        Aggregate a single cluster from its constituent policy areas.
+        Aggregate a single cluster from area scores.
+
+        ROUTING BEHAVIOR:
+        AreaScores are routed by `area_id` membership in `CLUSTER_COMPOSITION`
+        (single source of truth). The `cluster_id` field on AreaScore is
+        informational/provenance only and is not used for routing.
 
         Args:
             cluster_id: Cluster identifier

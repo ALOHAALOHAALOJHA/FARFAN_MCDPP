@@ -67,12 +67,12 @@ Los siguientes códigos están **PROHIBIDOS** y deben ser reemplazados:
 
 | PROHIBIDO | Correcto | Archivo(s) Violador(es) |
 |-----------|----------|------------------------|
-| "Equidad de género" | "Derechos de las mujeres e igualdad de género" | recommendation_rules.json |
+| "Equidad de género" | "Derechos de las mujeres e igualdad de género" | recommendation_rules_enhanced.json |
 | "PA01-Género" | "PA01 - Derechos de las mujeres e igualdad de género" | EPISTEMIC_METHOD_ASSIGNMENTS |
 | "Grupos Étnicos" | N/A (PA06 es Niñez, no Etnias) | manifest.json |
 | "Primera Infancia, Niñez..." | N/A (PA01 es Mujeres) | manifest.json |
-| "Atención a víctimas" | "Derechos de las víctimas y construcción de paz" | recommendation_rules.json |
-| "Niñez y juventud" | "Derecho al buen futuro de la niñez..." | recommendation_rules.json |
+| "Atención a víctimas" | "Derechos de las víctimas y construcción de paz" | recommendation_rules_enhanced.json |
+| "Niñez y juventud" | "Derecho al buen futuro de la niñez..." | recommendation_rules_enhanced.json |
 
 ---
 
@@ -105,9 +105,9 @@ Los siguientes códigos están **PROHIBIDOS** y deben ser reemplazados:
 | # | Archivo | Tipo de Violación | Valor Incorrecto | Valor Correcto |
 |---|---------|-------------------|------------------|----------------|
 | **13** | `EPISTEMIC_METHOD_ASSIGNMENTS_Q001_Q030.json` | Nombre abreviado PA01 | `"PA01-Género"` | `"PA01 - Derechos de las mujeres..."` |
-| **14** | `recommendation_rules.json` | Nombre incorrecto PA01 | `"Equidad de género"` | `"Derechos de las mujeres e igualdad de género"` |
-| **15** | `recommendation_rules.json` | Nombre incorrecto PA05 | `"Atención a víctimas"` | `"Derechos de las víctimas y construcción de paz"` |
-| **16** | `recommendation_rules.json` | Nombre incorrecto PA06 | `"Niñez y juventud"` | `"Derecho al buen futuro de la niñez..."` |
+| **14** | `recommendation_rules_enhanced.json` | Nombre incorrecto PA01 | `"Equidad de género"` | `"Derechos de las mujeres e igualdad de género"` |
+| **15** | `recommendation_rules_enhanced.json` | Nombre incorrecto PA05 | `"Atención a víctimas"` | `"Derechos de las víctimas y construcción de paz"` |
+| **16** | `recommendation_rules_enhanced.json` | Nombre incorrecto PA06 | `"Niñez y juventud"` | `"Derecho al buen futuro de la niñez..."` |
 | **17** | `manifest.json` | Nombre incorrecto PA01 | `"Primera Infancia, Niñez..."` | `"Derechos de las mujeres e igualdad de género"` ← YA CORREGIDO |
 
 ### 3.4 Violaciones de FORMATO (Prioridad P3)

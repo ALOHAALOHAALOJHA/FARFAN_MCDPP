@@ -296,7 +296,6 @@ SEED_STRATEGY: Final[str] = "FIXED"
 # ============================================================================
 
 RULES_PATH_ENHANCED: Final[str] = "json_phase_eight/recommendation_rules_enhanced.json"
-RULES_PATH_SIMPLE: Final[str] = "json_phase_eight/recommendation_rules.json"
 SCHEMA_PATH: Final[str] = "rules/recommendation_rules.schema.json"
 
 # ============================================================================
@@ -410,6 +409,5 @@ __all__ = [
     "SEED_STRATEGY",
     # File paths
     "RULES_PATH_ENHANCED",
-    "RULES_PATH_SIMPLE",
     "SCHEMA_PATH",
 ]
