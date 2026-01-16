@@ -63,14 +63,41 @@ def load_empirical_thresholds(corpus_path: Path | str | None = None) -> dict[str
     """
     if corpus_path is None:
         # Default path: canonic_questionnaire_central/scoring/calibration/empirical_weights.json
-        repo_root = Path(__file__).parents[4]  # src/farfan_pipeline/phases/Phase_3 -> repo root
-        corpus_path = (
-            repo_root
-            / "canonic_questionnaire_central"
-            / "scoring"
-            / "calibration"
-            / "empirical_weights.json"
-        )
+        # Try multiple potential repository root locations
+        current_file = Path(__file__).resolve()
+
+        # Try different levels of parent directories
+        for parent_level in [4, 5, 3]:
+            try:
+                repo_root = current_file.parents[parent_level]
+                potential_path = (
+                    repo_root
+                    / "canonic_questionnaire_central"
+                    / "scoring"
+                    / "calibration"
+                    / "empirical_weights.json"
+                )
+                if potential_path.exists():
+                    corpus_path = potential_path
+                    break
+            except (IndexError, OSError):
+                continue
+
+        # If still None, try working directory
+        if corpus_path is None:
+            cwd_path = Path.cwd() / "canonic_questionnaire_central" / "scoring" / "calibration" / "empirical_weights.json"
+            if cwd_path.exists():
+                corpus_path = cwd_path
+            else:
+                # Last resort: use parent[4] and let the FileNotFoundError happen below
+                repo_root = current_file.parents[4]
+                corpus_path = (
+                    repo_root
+                    / "canonic_questionnaire_central"
+                    / "scoring"
+                    / "calibration"
+                    / "empirical_weights.json"
+                )
 
     corpus_path = Path(corpus_path)
 
