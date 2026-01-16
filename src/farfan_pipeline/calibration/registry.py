@@ -502,7 +502,7 @@ def create_registry(
     """
     if root_path is None:
         # Default to this module's calibration directory
-        root_path = Path(__file__).parent
+        root_path = Path(__file__).resolve().parent
 
     return EpistemicCalibrationRegistry(Path(root_path))
 

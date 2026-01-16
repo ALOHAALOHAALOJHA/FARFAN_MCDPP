@@ -36,9 +36,9 @@ Phase 0 modules must execute in this strict topological order:
 6. `phase0_10_00_paths.py` - Path resolution (depends on: domain_errors)
 7. `primitives/constants.py` - Constants and mappings
 8. `phase0_10_01_runtime_config.py` - Config parsing (depends on: paths)
-9. `phase0_10_01_runtime_config_typed.py` - Typed config models
-10. `primitives/json_logger.py` - Structured logging (depends on: runtime_config)
-11. `phase0_10_03_runtime_config_schema.py` - Config schema validation
+9. `primitives/json_logger.py` - Structured logging (depends on: runtime_config)
+10. `phase0_10_03_runtime_config_schema.py` - Config schema validation
+11. `phase0_10_04_runtime_config_typed.py` - Typed config models
 
 **Stage 20 - Determinism Enforcement (t=2)**
 12. `phase0_20_00_seed_factory.py` - Seed management (depends on: runtime_config)

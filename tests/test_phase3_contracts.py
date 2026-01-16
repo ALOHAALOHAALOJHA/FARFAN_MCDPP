@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 from unittest.mock import MagicMock
 
 # Add src to path
-repo_root = Path(__file__).parent.parent
+repo_root = Path(__file__).resolve().parent.parent
 
 from orchestration.orchestrator import Orchestrator, MicroQuestionRun, ScoredMicroQuestion, Evidence
 

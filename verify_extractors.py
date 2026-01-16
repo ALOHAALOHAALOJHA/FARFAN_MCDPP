@@ -2,8 +2,11 @@ import logging
 import sys
 from pathlib import Path
 
-# Add src to path
-sys.path.append("src")
+# Add src to path for standalone execution
+_repo_root = Path(__file__).resolve().parent
+_src_path = _repo_root / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
 
 from farfan_pipeline.infrastructure.extractors.financial_chain_extractor import FinancialChainExtractor
 from farfan_pipeline.infrastructure.extractors.causal_verb_extractor import CausalVerbExtractor

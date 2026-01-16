@@ -96,7 +96,7 @@ class CalibrationPolicy:
 
     def __init__(self, registry_path: Path | None = None) -> None:
         if registry_path is None:
-            registry_path = Path(__file__).parent.parent.parent / "infrastructure" / "calibration"
+            registry_path = Path(__file__).resolve().parent.parent.parent / "infrastructure" / "calibration"
 
         self._registry = create_registry(registry_path)
         self._global_params = CalibrationParameters()

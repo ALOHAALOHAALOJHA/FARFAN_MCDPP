@@ -215,7 +215,7 @@ def enrich_keywords_file(keywords_path: Path, pdet_mapping: Dict[str, Any]) -> N
 def main():
     """Main enrichment process."""
     # Use relative path from script location
-    script_dir = Path(__file__).parent
+    script_dir = Path(__file__).resolve().parent
     repo_root = script_dir.parent
     pdet_data_path = (
         repo_root

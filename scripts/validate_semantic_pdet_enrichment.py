@@ -23,7 +23,7 @@ def validate_semantic_config_pdet_references():
     print("=" * 60)
     
     try:
-        config_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "semantic" / "semantic_config.json"
+        config_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "semantic" / "semantic_config.json"
         
         if not config_path.exists():
             print(f"❌ semantic_config.json not found at {config_path}")
@@ -164,7 +164,7 @@ def validate_pdet_semantic_enrichment_file():
     print("=" * 60)
     
     try:
-        enrichment_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "semantic" / "pdet_semantic_enrichment.json"
+        enrichment_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "semantic" / "pdet_semantic_enrichment.json"
         
         if not enrichment_path.exists():
             print(f"❌ pdet_semantic_enrichment.json not found at {enrichment_path}")
@@ -290,7 +290,7 @@ def validate_semantic_patterns_have_pdet_context():
     print("=" * 60)
     
     try:
-        patterns_dir = Path(__file__).parent.parent / "canonic_questionnaire_central" / "semantic" / "patterns"
+        patterns_dir = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "semantic" / "patterns"
         
         # Check territorial patterns
         territorial_path = patterns_dir / "territorial_patterns.json"
@@ -378,7 +378,7 @@ def validate_cross_reference_consistency():
     print("=" * 60)
     
     try:
-        base_path = Path(__file__).parent.parent / "canonic_questionnaire_central"
+        base_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central"
         
         # Load all relevant files
         with open(base_path / "semantic" / "semantic_config.json", encoding="utf-8") as f:

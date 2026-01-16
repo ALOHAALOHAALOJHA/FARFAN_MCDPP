@@ -1,9 +1,9 @@
 # tests/test_sisas/consumers/test_consumers.py
 
 import pytest
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.consumers.phase7.phase7_meso_consumer import Phase7MesoConsumer
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import SignalContext, SignalSource
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.structural import CanonicalMappingSignal
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.consumers.phase7.phase7_meso_consumer import Phase7MesoConsumer
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import SignalContext, SignalSource
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.structural import CanonicalMappingSignal
 
 class TestPhase7MesoConsumer:
     def test_initialization(self):

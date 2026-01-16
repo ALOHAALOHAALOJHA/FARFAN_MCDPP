@@ -532,7 +532,8 @@ def main():
     report = auditor.audit_all()
     
     # Generar reporte
-    output_path = Path("/home/runner/work/FARFAN_MPP/FARFAN_MPP/artifacts/data/reports/EPISTEMIC_AUDIT_REPORT.md")
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    output_path = repo_root / "artifacts" / "data" / "reports" / "EPISTEMIC_AUDIT_REPORT.md"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     generate_markdown_report(report, output_path)
     
