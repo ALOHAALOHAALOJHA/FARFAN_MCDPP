@@ -149,6 +149,30 @@ class TestPhase8Structure:
         bands = rules.get("micro_score_bands", [])
         assert bands, "Rules must declare micro_score_bands"
 
+    def test_rules_level_counts_match_declared(self, phase8_path):
+        """Verify declared level counts match actual rules array."""
+        rules_path = phase8_path / "json_phase_eight" / "recommendation_rules_enhanced.json"
+        payload = json.loads(rules_path.read_text())
+        levels = payload.get("levels", {})
+        rules = payload.get("rules", [])
+
+        actual_counts: dict[str, int] = {}
+        for rule in rules:
+            level = rule.get("level")
+            if level:
+                actual_counts[level] = actual_counts.get(level, 0) + 1
+
+        mismatches = {}
+        for level_name, meta in levels.items():
+            declared = meta.get("count")
+            if declared is None:
+                continue
+            actual = actual_counts.get(level_name, 0)
+            if declared != actual:
+                mismatches[level_name] = {"declared": declared, "actual": actual}
+
+        assert not mismatches, f"Declared counts do not match actual rules: {mismatches}"
+
 
 class TestPhase8Contracts:
     """Test Phase 8 contract definitions from manifest."""
