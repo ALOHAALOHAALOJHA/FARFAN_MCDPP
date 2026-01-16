@@ -64,7 +64,7 @@ class InstitutionalNERExtractor(BaseSignalExtractor):
             self._load_entities(entities_path)
         else:
             # Default path
-            default_path = Path(__file__).parents[5] / "canonic_questionnaire_central" / "_registry" / "entities"
+            default_path = Path(__file__).resolve().parents[5] / "canonic_questionnaire_central" / "_registry" / "entities"
             self._load_entities_from_directory(default_path)
         
         # Build lookup structures

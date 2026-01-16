@@ -140,7 +140,7 @@ def validate_policy_area_enrichment(pa_dir: Path) -> Dict[str, Any]:
 def main():
     """Run validation for all policy areas."""
     # Use relative path from script location
-    script_dir = Path(__file__).parent
+    script_dir = Path(__file__).resolve().parent
     repo_root = script_dir.parent
     policy_areas_dir = repo_root / "canonic_questionnaire_central" / "policy_areas"
 

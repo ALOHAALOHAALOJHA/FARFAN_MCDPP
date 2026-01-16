@@ -1857,7 +1857,7 @@ def get_method_dispensary_info() -> dict[str, Any]:
     try:
         import json
         from pathlib import Path
-        executors_methods_path = Path(__file__).parent / "executors_methods.json"
+        executors_methods_path = Path(__file__).resolve().parent / "executors_methods.json"
         if executors_methods_path.exists():
             with open(executors_methods_path) as f:
                 executors_methods = json.load(f)
@@ -1968,7 +1968,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     try:
         import json
         from pathlib import Path
-        executors_methods_path = Path(__file__).parent / "executors_methods.json"
+        executors_methods_path = Path(__file__).resolve().parent / "executors_methods.json"
         if not executors_methods_path.exists():
             validation_results["warnings"].append(
                 "executors_methods.json not found - cannot validate method mappings"
@@ -1984,7 +1984,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
 
     # Check 3: Verify validation file exists
     try:
-        validation_path = Path(__file__).parent / "executor_factory_validation.json"
+        validation_path = Path(__file__).resolve().parent / "executor_factory_validation.json"
         if not validation_path.exists():
             validation_results["warnings"].append(
                 "executor_factory_validation.json not found - cannot validate method catalog"

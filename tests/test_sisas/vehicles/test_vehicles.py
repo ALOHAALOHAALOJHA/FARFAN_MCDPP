@@ -4,12 +4,11 @@ import pytest
 from datetime import datetime
 from uuid import uuid4
 
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
     SignalContext, SignalSource
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.base_vehicle import BaseVehicle
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistryVehicle
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoperVehicle
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistryVehicle
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoperVehicle
 
 @pytest.fixture
 def sample_context():

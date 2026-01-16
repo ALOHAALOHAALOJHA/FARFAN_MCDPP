@@ -294,7 +294,7 @@ class HierarchyGuardian:
 
         report = {
             "repository_root": str(self.repo_root),
-            "validation_timestamp": Path(__file__).stat().st_mtime,
+            "validation_timestamp": Path(__file__).resolve().stat().st_mtime,
             "max_depth_allowed": self.max_depth,
             "phases": {},
             "summary": {"total_issues": len(self.issues), "by_severity": {}, "by_type": {}},

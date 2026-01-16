@@ -145,7 +145,7 @@ def main() -> int:
     print("\n[6] Documentation Drift Resolved")
     docs_path = "src/farfan_pipeline/phases/Phase_6/docs"
 
-    exec_flow = os.path.join(docs_path, "phase6_execution_flow.md")
+    exec_flow = docs_path / "phase6_execution_flow.md"
     if os.path.exists(exec_flow):
         with open(exec_flow, encoding="utf-8") as f:
             content = f.read()

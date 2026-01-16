@@ -168,7 +168,7 @@ class PolicyAreaUpdater:
 
 def main():
     """Main execution."""
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parent.parent
     policy_areas_dir = repo_root / "canonic_questionnaire_central" / "policy_areas"
 
     updater = PolicyAreaUpdater(policy_areas_dir)

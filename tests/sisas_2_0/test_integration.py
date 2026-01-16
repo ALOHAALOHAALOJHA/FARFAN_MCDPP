@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Any
 
-sys.path.insert(0, str(Path(__file__).parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 
 class TestFullPipelineIntegration:
@@ -29,7 +29,7 @@ class TestFullPipelineIntegration:
     @pytest.fixture
     def orchestrator(self, resolver):
         """Create extractor orchestrator connected to resolver's SDO."""
-        from src.farfan_pipeline.infrastructure.extractors import (
+        from farfan_pipeline.infrastructure.extractors import (
             ExtractorOrchestrator, create_orchestrator_from_resolver
         )
         return create_orchestrator_from_resolver(resolver)
@@ -71,7 +71,7 @@ class TestFullPipelineIntegration:
     
     def test_full_extraction_pipeline(self, resolver, orchestrator, sample_document):
         """Test complete extraction pipeline from document to signals."""
-        from src.farfan_pipeline.infrastructure.extractors import ExtractionContext
+        from farfan_pipeline.infrastructure.extractors import ExtractionContext
         
         # Process document
         context = ExtractionContext(
@@ -100,7 +100,7 @@ class TestFullPipelineIntegration:
     
     def test_signal_types_coverage(self, resolver, orchestrator, sample_document):
         """Test that multiple signal types are extracted."""
-        from src.farfan_pipeline.infrastructure.extractors import ExtractionContext
+        from farfan_pipeline.infrastructure.extractors import ExtractionContext
         
         context = ExtractionContext(
             source_file="test.pdf",
@@ -202,7 +202,7 @@ class TestFullPipelineIntegration:
     
     def test_health_check(self, resolver, orchestrator, sample_document):
         """Test SDO health check after processing."""
-        from src.farfan_pipeline.infrastructure.extractors import ExtractionContext
+        from farfan_pipeline.infrastructure.extractors import ExtractionContext
         
         context = ExtractionContext(source_file="test.pdf", policy_area="PA01")
         orchestrator.process_document(text=sample_document, context=context)
@@ -222,7 +222,7 @@ class TestExtractorOrchestrator:
     @pytest.fixture
     def orchestrator(self):
         """Create standalone orchestrator (no SDO)."""
-        from src.farfan_pipeline.infrastructure.extractors import ExtractorOrchestrator
+        from farfan_pipeline.infrastructure.extractors import ExtractorOrchestrator
         return ExtractorOrchestrator(sdo=None)
     
     def test_orchestrator_initialization(self, orchestrator):
@@ -236,7 +236,7 @@ class TestExtractorOrchestrator:
     
     def test_extraction_without_sdo(self, orchestrator):
         """Test extraction works without SDO (signals not dispatched)."""
-        from src.farfan_pipeline.infrastructure.extractors import ExtractionContext
+        from farfan_pipeline.infrastructure.extractors import ExtractionContext
         
         context = ExtractionContext(source_file="test.pdf", policy_area="PA01")
         result = orchestrator.process_document(
@@ -255,7 +255,7 @@ class TestKeywordConsolidation:
     
     def test_consolidated_index_exists(self):
         """Test that consolidated index was created."""
-        index_path = Path(__file__).parents[2] / "canonic_questionnaire_central" / "_registry" / "keywords" / "CONSOLIDATED_INDEX.json"
+        index_path = Path(__file__).resolve().parents[2] / "canonic_questionnaire_central" / "_registry" / "keywords" / "CONSOLIDATED_INDEX.json"
         
         assert index_path.exists(), "Consolidated index should exist"
         
@@ -268,7 +268,7 @@ class TestKeywordConsolidation:
     
     def test_keyword_to_pa_map_exists(self):
         """Test that keyword-to-PA map was created."""
-        map_path = Path(__file__).parents[2] / "canonic_questionnaire_central" / "_registry" / "keywords" / "KEYWORD_TO_PA_MAP.json"
+        map_path = Path(__file__).resolve().parents[2] / "canonic_questionnaire_central" / "_registry" / "keywords" / "KEYWORD_TO_PA_MAP.json"
         
         assert map_path.exists(), "Keyword-to-PA map should exist"
         

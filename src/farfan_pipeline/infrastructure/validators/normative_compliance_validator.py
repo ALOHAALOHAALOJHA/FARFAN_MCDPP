@@ -95,7 +95,7 @@ class NormativeComplianceValidator:
 
     def _default_compliance_path(self) -> Path:
         """Get default path to normative_compliance.json."""
-        return Path(__file__).parent.parent.parent.parent / \
+        return Path(__file__).resolve().parent.parent.parent.parent / \
                "canonic_questionnaire_central" / "_registry" / "entities" / \
                "normative_compliance.json"
 
@@ -134,7 +134,7 @@ class NormativeComplianceValidator:
 
     def _load_from_integration_map(self) -> None:
         """Load normative requirements from integration_map.json as fallback."""
-        integration_map_path = Path(__file__).parent.parent.parent.parent / \
+        integration_map_path = Path(__file__).resolve().parent.parent.parent.parent / \
                                "canonic_questionnaire_central" / "_registry" / \
                                "questions" / "integration_map.json"
 

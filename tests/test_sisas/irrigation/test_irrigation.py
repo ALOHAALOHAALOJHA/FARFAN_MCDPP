@@ -5,19 +5,19 @@ import json
 import tempfile
 from pathlib import Path
 
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_map import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_map import (
     IrrigationMap, IrrigationRoute, IrrigationSource, IrrigationTarget,
     IrrigabilityStatus
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import (
     IrrigationExecutor, IrrigationResult
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import (
     SignalRegistryVehicle
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import BusRegistry
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import ContractRegistry
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventStore
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import BusRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import ContractRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventStore
 
 
 class TestIrrigationMap:

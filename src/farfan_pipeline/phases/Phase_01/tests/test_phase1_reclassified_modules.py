@@ -260,7 +260,7 @@ class TestBackwardCompatibility:
         import sys
 
         # Add src to path
-        repo_root = Path(__file__).parent.parent.parent.parent.parent
+        repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
         src_path = repo_root / "src"
         src_path_str = str(src_path)
         if src_path_str not in sys.path:
@@ -299,7 +299,7 @@ class TestReclassifiedIntegration:
         # The main Phase 1 modules should be importable
         import sys
 
-        repo_root = Path(__file__).parent.parent.parent.parent.parent
+        repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
         src_path = repo_root / "src"
         sys.path.insert(0, str(src_path))
 

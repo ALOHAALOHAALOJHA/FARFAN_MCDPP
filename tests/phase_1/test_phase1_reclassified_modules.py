@@ -60,7 +60,7 @@ RECLASSIFIED_MODULES = {
 @pytest.fixture(scope="session")
 def phase1_dir() -> Path:
     """Get Phase 1 directory path."""
-    repo_root = Path(__file__).parent.parent.parent
+    repo_root = Path(__file__).resolve().parent.parent.parent
     return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_1"
 
 
@@ -264,7 +264,7 @@ class TestBackwardCompatibility:
         import sys
 
         # Add src to path
-        repo_root = Path(__file__).parent.parent.parent
+        repo_root = Path(__file__).resolve().parent.parent.parent
         src_path = repo_root / "src"
         src_path_str = str(src_path)
         if src_path_str not in sys.path:
@@ -303,7 +303,7 @@ class TestReclassifiedIntegration:
         # The main Phase 1 modules should be importable
         import sys
 
-        repo_root = Path(__file__).parent.parent.parent
+        repo_root = Path(__file__).resolve().parent.parent.parent
         src_path = repo_root / "src"
         sys.path.insert(0, str(src_path))
 

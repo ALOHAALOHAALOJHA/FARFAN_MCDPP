@@ -32,7 +32,7 @@ class FARFANMigration:
             dry_run: Si True, solo simula cambios sin ejecutarlos.
         """
         self.dry_run = dry_run
-        self.project_root = Path(__file__).parent.parent
+        self.project_root = Path(__file__).resolve().parent.parent
         self.src_root = self.project_root / "src" / "farfan_pipeline"
         self.tests_root = self.project_root / "tests"
         self.docs_root = self.project_root / "docs"
