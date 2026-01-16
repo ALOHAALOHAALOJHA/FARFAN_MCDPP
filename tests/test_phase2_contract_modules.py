@@ -15,7 +15,7 @@ import pytest
 
 # Add src to path for imports
 
-from farfan_pipeline.phases.phase_2.contracts import (
+from farfan_pipeline.phases.Phase_02.contracts import (
     ConcurrencyContractViolation,
     ConcurrencyDeterminismVerifier,
     InvariantViolation,

@@ -52,14 +52,20 @@ from .registry import EpistemicCalibrationRegistry
 # Type defaults
 from .type_defaults import (
     get_type_defaults,
+    get_all_type_defaults,
+    get_all_fusion_strategies,
+    get_fusion_strategy,
+    validate_fusion_strategy_for_type,
+    get_contract_type_for_question,
     is_operation_prohibited,
+    is_operation_permitted,
 )
 
 # PDM calibrator
 try:
-    from .pdm_calibrator import PDMExPostCalibrator
+    from .pdm_calibrator import Phase1PDMCalibrator
 except ImportError:
-    PDMExPostCalibrator = None
+    Phase1PDMCalibrator = None
 
 __all__ = [
     # Core utilities
@@ -81,7 +87,13 @@ __all__ = [
     "EpistemicCalibrationRegistry",
     # Type defaults
     "get_type_defaults",
+    "get_all_type_defaults",
+    "get_all_fusion_strategies",
+    "get_fusion_strategy",
+    "validate_fusion_strategy_for_type",
+    "get_contract_type_for_question",
     "is_operation_prohibited",
+    "is_operation_permitted",
     # PDM calibrator
-    "PDMExPostCalibrator",
+    "Phase1PDMCalibrator",
 ]
