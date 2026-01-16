@@ -116,10 +116,29 @@ def validate_phase8_output_contract(
     if isinstance(micro_recs, dict) and 'recommendations' in micro_recs:
         recommendations = micro_recs['recommendations']
         policy_areas = set()
+
         for rec in recommendations:
+            if not isinstance(rec, dict):
+                continue
+
             if 'policy_area' in rec:
                 policy_areas.add(rec['policy_area'])
-        
+                continue
+
+            metadata = rec.get('metadata', {}) if isinstance(rec.get('metadata'), dict) else {}
+            score_key = metadata.get('score_key')
+            if isinstance(score_key, str) and score_key.startswith('PA'):
+                policy_areas.add(score_key.split('-')[0])
+                continue
+
+            rule_id = rec.get('rule_id')
+            if isinstance(rule_id, str) and 'PA' in rule_id:
+                parts = rule_id.split('-')
+                for part in parts:
+                    if part.startswith('PA') and len(part) == 4:
+                        policy_areas.add(part)
+                        break
+
         expected_pas = {f'PA{i:02d}' for i in range(1, 11)}
         if not expected_pas.issubset(policy_areas):
             results['failures'].append({

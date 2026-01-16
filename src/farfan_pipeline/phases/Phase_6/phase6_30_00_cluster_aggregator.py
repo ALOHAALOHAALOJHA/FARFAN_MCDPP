@@ -51,6 +51,12 @@ from farfan_pipeline.phases.Phase_6.phase6_20_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
 )
+from farfan_pipeline.phases.Phase_6.contracts.phase6_input_contract import (
+    Phase6InputContract,
+)
+from farfan_pipeline.phases.Phase_6.contracts.phase6_output_contract import (
+    Phase6OutputContract,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +82,8 @@ class ClusterAggregator:
         monolith: dict[str, Any] | None = None,
         abort_on_insufficient: bool = True,
         scoring_config: AdaptiveScoringConfig | None = None,
+        enforce_contracts: bool = True,
+        contract_mode: str = "strict",
     ):
         """
         Initialize ClusterAggregator.
@@ -84,15 +92,22 @@ class ClusterAggregator:
             monolith: Questionnaire monolith (optional, for future weight customization)
             abort_on_insufficient: Whether to raise on validation failures
             scoring_config: Optional custom scoring configuration
+            enforce_contracts: Whether to invoke input/output contracts
+            contract_mode: Contract enforcement mode: "strict" | "warn" | "disabled"
         """
         self.monolith = monolith or {}
         self.abort_on_insufficient = abort_on_insufficient
+        self.enforce_contracts = enforce_contracts
+        self.contract_mode = contract_mode
         self.adaptive_scoring = AdaptiveMesoScoring(scoring_config)
 
         # Load cluster weights (equal weights for now)
         self.cluster_weights = self._initialize_cluster_weights()
 
-        logger.info("ClusterAggregator initialized for Phase 6")
+        logger.info(
+            "ClusterAggregator initialized for Phase 6 "
+            f"(enforce_contracts={enforce_contracts}, contract_mode={contract_mode})"
+        )
 
     def _initialize_cluster_weights(self) -> dict[str, dict[str, float]]:
         """
@@ -114,9 +129,57 @@ class ClusterAggregator:
         logger.debug(f"Initialized cluster weights: {weights}")
         return weights
 
+    def _validate_input_contract(
+        self, area_scores: list["AreaScore"]
+    ) -> tuple[bool, dict[str, Any]]:
+        """
+        Validate input via Phase6InputContract.
+        """
+        if not self.enforce_contracts or self.contract_mode == "disabled":
+            return True, {"skipped": True, "reason": "contracts disabled"}
+
+        valid, details = Phase6InputContract.validate(area_scores)
+
+        for warning in details.get("warnings", []):
+            logger.warning(f"Phase6InputContract warning: {warning}")
+
+        if not valid:
+            error_msg = f"Phase6InputContract failed: {details.get('errors', [])}"
+            if self.contract_mode == "strict":
+                logger.error(error_msg)
+                raise ValueError(error_msg)
+            elif self.contract_mode == "warn":
+                logger.warning(error_msg)
+
+        return valid, details
+
+    def _validate_output_contract(
+        self, cluster_scores: list["ClusterScore"]
+    ) -> tuple[bool, dict[str, Any]]:
+        """
+        Validate output via Phase6OutputContract.
+        """
+        if not self.enforce_contracts or self.contract_mode == "disabled":
+            return True, {"skipped": True, "reason": "contracts disabled"}
+
+        valid, details = Phase6OutputContract.validate(cluster_scores)
+
+        for warning in details.get("warnings", []):
+            logger.warning(f"Phase6OutputContract warning: {warning}")
+
+        if not valid:
+            error_msg = f"Phase6OutputContract failed: {details.get('errors', [])}"
+            if self.contract_mode == "strict":
+                logger.error(error_msg)
+                raise ValueError(error_msg)
+            elif self.contract_mode == "warn":
+                logger.warning(error_msg)
+
+        return valid, details
+
     def aggregate(self, area_scores: list[AreaScore]) -> list[ClusterScore]:
         """
-        Main aggregation entry point - transforms 10 AreaScores to 4 ClusterScores.
+        Aggregate 10 AreaScores into 4 ClusterScores with contract enforcement.
 
         Args:
             area_scores: List of 10 AreaScore objects from Phase 5
@@ -125,42 +188,51 @@ class ClusterAggregator:
             List of 4 ClusterScore objects
 
         Raises:
-            ValueError: If input validation fails
+            ValueError: If validation fails and contract_mode is strict
         """
         logger.info("Phase 6: Starting cluster aggregation")
 
-        # Validate input
+        # Contract precondition
+        input_valid, _ = self._validate_input_contract(area_scores)
+        if input_valid:
+            logger.debug("Phase6InputContract passed")
+
+        # Legacy validation
         self._validate_input(area_scores)
 
         # Aggregate each cluster
         cluster_scores = []
         for cluster_id in CLUSTERS:
             logger.debug(f"Processing cluster: {cluster_id}")
-            cluster_score = self.aggregate_cluster(
-                area_scores,
-                {"cluster_id": cluster_id}
-            )
+            cluster_score = self.aggregate_cluster(cluster_id, area_scores)
             cluster_scores.append(cluster_score)
 
-        logger.info(f"Phase 6: Completed {len(cluster_scores)} cluster aggregations")
+        # Contract postcondition
+        output_valid, _ = self._validate_output_contract(cluster_scores)
+        if output_valid:
+            logger.debug("Phase6OutputContract passed")
+
+        logger.info(
+            f"Phase 6: Completed {len(cluster_scores)} cluster aggregations "
+            f"(input_valid={input_valid}, output_valid={output_valid})"
+        )
         return cluster_scores
 
     def aggregate_cluster(
         self,
+        cluster_id: str,
         area_scores: list[AreaScore],
-        group_by_values: dict[str, str],
     ) -> ClusterScore:
         """
         Aggregate a single cluster from its constituent policy areas.
 
         Args:
+            cluster_id: Cluster identifier
             area_scores: List of all AreaScore objects
-            group_by_values: Dictionary with 'cluster_id' key
 
         Returns:
             ClusterScore object for the cluster
         """
-        cluster_id = group_by_values["cluster_id"]
         expected_areas = CLUSTER_COMPOSITION[cluster_id]
 
         # Filter areas for this cluster

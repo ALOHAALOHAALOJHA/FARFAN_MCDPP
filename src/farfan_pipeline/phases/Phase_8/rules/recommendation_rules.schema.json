@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Phase 8 Recommendation Rules v2.0",
+  "type": "object",
+  "required": ["version", "enhanced_features", "rules"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^2\\.0(\\.|$)"
+    },
+    "last_updated": {"type": "string"},
+    "enhanced_features": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "scoring_scenarios": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "levels": {"type": "object"},
+    "micro_score_bands": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/scoreBand"}
+    },
+    "micro_question_map": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "questions": {"type": "array", "items": {"type": "string"}},
+          "question_range": {"type": "string"},
+          "method_id": {"type": "string"}
+        },
+        "required": ["questions", "question_range", "method_id"]
+      }
+    },
+    "recommendation_templates": {"type": "object"},
+    "budget_defaults": {"type": "object"},
+    "rules": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/rule"}
+    }
+  },
+  "definitions": {
+    "scoreBand": {
+      "type": "object",
+      "required": ["code", "min", "max"],
+      "properties": {
+        "code": {"type": "string"},
+        "label": {"type": "string"},
+        "min": {"type": "number"},
+        "max": {"type": "number"},
+        "requires_approval": {"type": "boolean"},
+        "blocking": {"type": "boolean"},
+        "horizon_months": {"type": "number"},
+        "cost_multiplier": {"type": "number"}
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["rule_id", "level", "when", "template", "execution", "budget", "recommendations"],
+      "properties": {
+        "rule_id": {"type": "string"},
+        "level": {"type": "string", "enum": ["MICRO", "MESO", "MACRO"]},
+        "when": {"$ref": "#/definitions/whenClause"},
+        "template": {"$ref": "#/definitions/template"},
+        "execution": {"$ref": "#/definitions/execution"},
+        "budget": {"$ref": "#/definitions/budget"},
+        "recommendations": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/recommendation"},
+          "minItems": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "whenClause": {
+      "type": "object",
+      "properties": {
+        "pa_id": {"type": "string"},
+        "dim_id": {"type": "string"},
+        "score_lt": {"type": "number"},
+        "score_min": {"type": "number"},
+        "score_max": {"type": "number"},
+        "score_band": {"type": "string"},
+        "cluster_id": {"type": "string"},
+        "variance_level": {"type": "string"},
+        "variance_threshold": {"type": "number"},
+        "weak_pa_id": {"type": "string"},
+        "macro_band": {"type": "string"},
+        "variance_alert": {"type": "string"},
+        "macro_variance_level": {"type": "string"},
+        "clusters_below_target": {"type": "array", "items": {"type": "string"}},
+        "priority_micro_gaps": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "template": {
+      "type": "object",
+      "required": ["problem", "intervention", "indicator", "responsible", "horizon", "verification"],
+      "properties": {
+        "problem": {"type": "string"},
+        "intervention": {"type": "string"},
+        "indicator": {"type": "object"},
+        "responsible": {"type": "object"},
+        "horizon": {"type": "object"},
+        "verification": {"type": "array"},
+        "template_id": {"type": "string"},
+        "template_params": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "trigger_condition",
+        "blocking",
+        "auto_apply",
+        "requires_approval",
+        "approval_roles"
+      ],
+      "properties": {
+        "trigger_condition": {"type": "string"},
+        "blocking": {"type": "boolean"},
+        "auto_apply": {"type": "boolean"},
+        "requires_approval": {"type": "boolean"},
+        "approval_roles": {"type": "array", "items": {"type": "string"}},
+        "steps": {"type": "array"},
+        "gating": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "budget": {
+      "type": "object",
+      "anyOf": [
+        {
+          "required": ["estimated_cost_cop", "cost_breakdown", "funding_sources", "fiscal_year"]
+        },
+        {
+          "required": ["basis", "formula"]
+        }
+      ],
+      "properties": {
+        "estimated_cost_cop": {"type": "number"},
+        "cost_breakdown": {"type": "object"},
+        "funding_sources": {"type": "array"},
+        "fiscal_year": {"type": "integer"},
+        "basis": {"type": "string"},
+        "formula": {"type": "object"},
+        "items": {"type": "array"}
+      },
+      "additionalProperties": true
+    },
+    "recommendation": {
+      "type": "object",
+      "required": [
+        "id",
+        "action",
+        "expected_output",
+        "method_id",
+        "questions",
+        "owner",
+        "timeframe",
+        "cost"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "action": {"type": "string"},
+        "expected_output": {"type": "string"},
+        "method_id": {"type": "string"},
+        "questions": {"type": "array", "items": {"type": "string"}},
+        "owner": {"type": "string"},
+        "timeframe": {
+          "type": "object",
+          "required": ["start", "end"],
+          "properties": {
+            "start": {"type": "string"},
+            "end": {"type": "string"}
+          }
+        },
+        "cost": {
+          "type": "object",
+          "required": ["estimate", "currency", "basis"],
+          "properties": {
+            "estimate": {"type": ["string", "number"]},
+            "currency": {"type": "string"},
+            "basis": {"type": "string"}
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

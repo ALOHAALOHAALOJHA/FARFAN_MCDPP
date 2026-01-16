@@ -52,35 +52,35 @@ import logging
 from dataclasses import dataclass
 from typing import Any
 
+from farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config import (
+    PHASE6_CONFIG,
+    DispersionScenario,
+)
+
 logger = logging.getLogger(__name__)
 
 
 @dataclass
 class AdaptiveScoringConfig:
-    """Configuration for adaptive scoring behavior."""
+    """
+    Configuration for adaptive scoring behavior.
 
-    max_score: float = 3.0
+    Defaults are derived from PHASE6_CONFIG (single source of truth).
+    Custom values can be passed for testing or special scenarios.
+    """
 
-    # Base penalty weight (replaces fixed PENALTY_WEIGHT=0.3)
-    base_penalty_weight: float = 0.35
-
-    # Convergence thresholds (low dispersion)
-    convergence_cv_threshold: float = 0.15
-    convergence_di_threshold: float = 0.20
-
-    # Dispersion thresholds (high dispersion)
-    high_dispersion_cv_threshold: float = 0.40
-    extreme_dispersion_cv_threshold: float = 0.60
-
-    # Sensitivity multipliers
-    convergence_multiplier: float = 0.5  # Reduce penalty for convergence
-    moderate_multiplier: float = 1.0  # Normal penalty
-    high_dispersion_multiplier: float = 1.5  # Increase penalty
-    extreme_dispersion_multiplier: float = 2.0  # Strong penalty
-
-    # Non-linear scaling factors for extreme cases
-    extreme_shape_factor: float = 1.8  # Exponential scaling
-    bimodal_penalty_boost: float = 1.3  # Additional penalty for bimodal
+    max_score: float = PHASE6_CONFIG.max_score
+    base_penalty_weight: float = PHASE6_CONFIG.base_penalty_weight
+    convergence_cv_threshold: float = PHASE6_CONFIG.cv_convergence
+    convergence_di_threshold: float = PHASE6_CONFIG.di_convergence
+    high_dispersion_cv_threshold: float = PHASE6_CONFIG.cv_moderate
+    extreme_dispersion_cv_threshold: float = PHASE6_CONFIG.cv_high
+    convergence_multiplier: float = PHASE6_CONFIG.convergence_multiplier
+    moderate_multiplier: float = PHASE6_CONFIG.moderate_multiplier
+    high_dispersion_multiplier: float = PHASE6_CONFIG.high_multiplier
+    extreme_dispersion_multiplier: float = PHASE6_CONFIG.extreme_multiplier
+    extreme_shape_factor: float = PHASE6_CONFIG.extreme_shape_factor
+    bimodal_penalty_boost: float = PHASE6_CONFIG.bimodal_penalty_boost
 
 
 @dataclass

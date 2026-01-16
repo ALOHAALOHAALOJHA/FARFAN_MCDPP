@@ -41,6 +41,7 @@ __execution_pattern__ = "On-Demand"
 
 
 
+import copy
 import logging
 import re
 from dataclasses import asdict, dataclass, field
@@ -150,8 +151,8 @@ class RecommendationEngine:
 
     def __init__(
         self,
-        rules_path: str = "config/recommendation_rules_enhanced.json",
-        schema_path: str = "rules/recommendation_rules.schema.json",
+        rules_path: str | Path | None = None,
+        schema_path: str | Path | None = None,
         questionnaire_provider=None,
         orchestrator=None,
     ) -> None:
@@ -167,6 +168,15 @@ class RecommendationEngine:
         ARCHITECTURAL NOTE: Thresholds should come from questionnaire monolith
         via QuestionnaireResourceProvider, not from hardcoded values.
         """
+        if rules_path is None:
+            rules_path = (
+                Path(__file__).resolve().parent
+                / "json_phase_eight"
+                / "recommendation_rules_enhanced.json"
+            )
+        if schema_path is None:
+            schema_path = Path(__file__).resolve().parent / "rules" / "recommendation_rules.schema.json"
+
         self.rules_path = Path(rules_path)
         self.schema_path = Path(schema_path)
         self.questionnaire_provider = questionnaire_provider
@@ -178,6 +188,10 @@ class RecommendationEngine:
             "MESO": [],
             "MACRO": [],
         }
+        self.micro_score_bands: list[dict[str, Any]] = []
+        self.micro_question_map: dict[str, dict[str, Any]] = {}
+        self.recommendation_templates: dict[str, Any] = {}
+        self.budget_defaults: dict[str, Any] = {}
 
         # Load canonical notation for validation
         self._load_canonical_notation()
@@ -240,6 +254,7 @@ class RecommendationEngine:
 
         try:
             self.rules = load_json(self.rules_path)
+            self._apply_rule_defaults()
 
             # Validate against schema
             jsonschema.validate(instance=self.rules, schema=self.schema)
@@ -269,6 +284,240 @@ class RecommendationEngine:
         """Reload rules from disk (useful for hot-reloading)"""
         self.rules_by_level = {"MICRO": [], "MESO": [], "MACRO": []}
         self._load_rules()
+
+    def _apply_rule_defaults(self) -> None:
+        """Expand MICRO rules into score bands and inject defaults for recommendations/budgets."""
+        self.micro_score_bands = self.rules.get("micro_score_bands", []) or [
+            {
+                "code": "CRISIS",
+                "label": "CRISIS",
+                "min": 0.0,
+                "max": 0.8,
+                "requires_approval": True,
+                "blocking": True,
+                "horizon_months": 3,
+                "cost_multiplier": 1.4,
+            },
+            {
+                "code": "CRITICO",
+                "label": "CRÍTICO",
+                "min": 0.81,
+                "max": 1.65,
+                "requires_approval": True,
+                "blocking": False,
+                "horizon_months": 6,
+                "cost_multiplier": 1.0,
+            },
+            {
+                "code": "ACEPTABLE",
+                "label": "ACEPTABLE",
+                "min": 1.66,
+                "max": 2.3,
+                "requires_approval": False,
+                "blocking": False,
+                "horizon_months": 9,
+                "cost_multiplier": 0.8,
+            },
+            {
+                "code": "BUENO",
+                "label": "BUENO",
+                "min": 2.31,
+                "max": 2.7,
+                "requires_approval": False,
+                "blocking": False,
+                "horizon_months": 12,
+                "cost_multiplier": 0.6,
+            },
+            {
+                "code": "EXCELENTE",
+                "label": "EXCELENTE",
+                "min": 2.71,
+                "max": 3.0,
+                "requires_approval": False,
+                "blocking": False,
+                "horizon_months": 18,
+                "cost_multiplier": 0.5,
+            },
+        ]
+
+        self.micro_question_map = self.rules.get("micro_question_map", {}) or {
+            "DIM01": {
+                "questions": ["Q001", "Q002", "Q003", "Q004", "Q005"],
+                "question_range": "Q001-Q005",
+                "method_id": "SemanticProcessor.chunk_text",
+            },
+            "DIM02": {
+                "questions": ["Q006", "Q007", "Q008", "Q009", "Q010"],
+                "question_range": "Q006-Q010",
+                "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            },
+            "DIM03": {
+                "questions": ["Q011", "Q012", "Q013", "Q014", "Q015"],
+                "question_range": "Q011-Q015",
+                "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            },
+            "DIM04": {
+                "questions": ["Q016", "Q017", "Q018", "Q019", "Q020"],
+                "question_range": "Q016-Q020",
+                "method_id": "CausalExtractor.extract_causal_hierarchy",
+            },
+            "DIM05": {
+                "questions": ["Q021", "Q022", "Q023", "Q024", "Q025"],
+                "question_range": "Q021-Q025",
+                "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            },
+            "DIM06": {
+                "questions": ["Q026", "Q027", "Q028", "Q029", "Q030"],
+                "question_range": "Q026-Q030",
+                "method_id": "CausalExtractor.extract_causal_hierarchy",
+            },
+        }
+
+        self.recommendation_templates = self.rules.get("recommendation_templates", {}) or {}
+        self.budget_defaults = self.rules.get("budget_defaults", {}) or {}
+
+        expanded_rules: list[dict[str, Any]] = []
+        for rule in self.rules.get("rules", []):
+            if rule.get("level") == "MICRO":
+                expanded_rules.extend(self._expand_micro_rule(rule))
+                continue
+
+            self._apply_rule_defaults_to_rule(rule)
+            expanded_rules.append(rule)
+
+        self.rules["rules"] = expanded_rules
+
+    def _expand_micro_rule(self, rule: dict[str, Any]) -> list[dict[str, Any]]:
+        """Expand a base MICRO rule into banded variants."""
+        when = rule.get("when", {})
+        pa_id = when.get("pa_id")
+        dim_id = when.get("dim_id")
+        base_rule_id = rule.get("rule_id", "").strip()
+
+        expanded: list[dict[str, Any]] = []
+        for band in self.micro_score_bands:
+            band_code = band.get("code", "BAND")
+            band_label = band.get("label", band_code)
+            band_min = band.get("min", 0.0)
+            band_max = band.get("max", 3.0)
+
+            new_rule = copy.deepcopy(rule)
+            new_rule["rule_id"] = f"{base_rule_id}-{band_code}"
+            new_rule["when"] = {
+                "pa_id": pa_id,
+                "dim_id": dim_id,
+                "score_band": band_code,
+                "score_min": band_min,
+                "score_max": band_max,
+            }
+
+            question_info = self.micro_question_map.get(dim_id, {})
+            template = new_rule.get("template", {})
+            template_params = template.get("template_params", {}) if isinstance(template, dict) else {}
+            if isinstance(template_params, dict):
+                template_params.setdefault("score_band", band_label)
+                template_params.setdefault("score_min", str(band_min))
+                template_params.setdefault("score_max", str(band_max))
+                template_params.setdefault("question_range", question_info.get("question_range", ""))
+                template_params.setdefault("method_id", question_info.get("method_id", ""))
+                template["template_params"] = template_params
+            new_rule["template"] = template
+
+            execution = new_rule.get("execution", {})
+            if isinstance(execution, dict):
+                execution["requires_approval"] = bool(band.get("requires_approval", False))
+                execution["blocking"] = bool(band.get("blocking", False))
+                execution.setdefault("approval_roles", ["Comité Intersectorial"])
+                execution["trigger_condition"] = (
+                    f"score >= {band_min} AND score <= {band_max} AND pa_id = '{pa_id}' "
+                    f"AND dim_id = '{dim_id}'"
+                )
+                new_rule["execution"] = execution
+
+            self._apply_budget_defaults(new_rule, band.get("cost_multiplier", 1.0))
+            self._apply_recommendations_defaults(new_rule, question_info)
+            expanded.append(new_rule)
+
+        return expanded
+
+    def _apply_rule_defaults_to_rule(self, rule: dict[str, Any]) -> None:
+        """Apply recommendations and budget defaults to MESO/MACRO rules."""
+        when = rule.get("when", {}) if isinstance(rule.get("when"), dict) else {}
+        execution = rule.get("execution", {}) if isinstance(rule.get("execution"), dict) else {}
+
+        variance_level = when.get("variance_level")
+        weak_pa_id = when.get("weak_pa_id")
+        variance_alert = when.get("variance_alert") or when.get("macro_variance_level")
+
+        if variance_level == "ALTA" or weak_pa_id is not None or variance_alert is not None:
+            execution["requires_approval"] = True
+            execution.setdefault("approval_roles", ["Comité Intersectorial"])
+            rule["execution"] = execution
+
+        self._apply_budget_defaults(rule, 1.0)
+        self._apply_recommendations_defaults(rule, {})
+
+    def _apply_budget_defaults(self, rule: dict[str, Any], multiplier: float) -> None:
+        level = rule.get("level", "").upper()
+        defaults = self.budget_defaults.get(level, {}) if isinstance(self.budget_defaults, dict) else {}
+        budget = rule.get("budget")
+        if not isinstance(budget, dict):
+            budget = {}
+
+        if "basis" not in budget and "basis" in defaults:
+            budget["basis"] = defaults.get("basis")
+        if "formula" not in budget and "formula" in defaults:
+            budget["formula"] = defaults.get("formula")
+        if "items" not in budget and "items" in defaults:
+            budget["items"] = defaults.get("items")
+
+        if "estimated_cost_cop" in budget and self._is_number(budget["estimated_cost_cop"]):
+            budget["estimated_cost_cop"] = float(budget["estimated_cost_cop"]) * multiplier
+        elif "estimated_cost_cop" not in budget and "formula" in budget:
+            base = budget.get("formula", {}).get("base")
+            if self._is_number(base):
+                budget["estimated_cost_cop"] = float(base) * multiplier
+
+        cost_breakdown = budget.get("cost_breakdown")
+        if isinstance(cost_breakdown, dict) and multiplier != 1.0:
+            for key, value in cost_breakdown.items():
+                if self._is_number(value):
+                    cost_breakdown[key] = float(value) * multiplier
+            budget["cost_breakdown"] = cost_breakdown
+
+        rule["budget"] = budget
+
+    def _apply_recommendations_defaults(
+        self, rule: dict[str, Any], question_info: dict[str, Any]
+    ) -> None:
+        if "recommendations" in rule and isinstance(rule.get("recommendations"), list):
+            return
+
+        level = rule.get("level", "MICRO").upper()
+        template = self.recommendation_templates.get(level)
+
+        if template is None:
+            template = {
+                "id": "REC-{{PAxx}}-{{DIMxx}}-{{score_band}}",
+                "action": "Ejecutar plan {{score_band}} para {{DIMxx}} en {{PAxx}} con foco en {{question_range}}.",
+                "expected_output": "Evidencia validada y trazable para {{question_range}}.",
+                "method_id": "{{method_id}}",
+                "questions": question_info.get("questions", []),
+                "owner": "{{responsible_entity}}",
+                "timeframe": {"start": "{{horizon_start}}", "end": "{{horizon_end}}"},
+                "cost": {
+                    "estimate": "{{scaled_cost_cop}}",
+                    "currency": "COP",
+                    "basis": "score_scaled",
+                },
+            }
+
+        if question_info.get("questions"):
+            existing_questions = template.get("questions") if isinstance(template, dict) else None
+            if existing_questions in (None, [], ["{{question_range}}"]):
+                template["questions"] = question_info.get("questions", [])
+
+        rule["recommendations"] = [template]
 
     @calibrated_method(
         "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith"
@@ -338,15 +587,37 @@ class RecommendationEngine:
             pa_id = when.get("pa_id")
             dim_id = when.get("dim_id")
             score_lt = when.get("score_lt")
+            score_band = when.get("score_band")
+            score_min = when.get("score_min")
+            score_max = when.get("score_max")
 
             # Build score key
             score_key = f"{pa_id}-{dim_id}"
 
             # Check if condition matches
-            if score_key in scores and scores[score_key] < score_lt:
+            if score_key in scores and self._match_micro_condition(
+                scores[score_key], score_lt, score_band, score_min, score_max
+            ):
                 # Render template
                 template = rule.get("template", {})
-                rendered = self._render_micro_template(template, pa_id, dim_id, context)
+                substitutions = self._get_micro_substitutions(
+                    pa_id,
+                    dim_id,
+                    template,
+                    context,
+                    scores[score_key],
+                    score_band,
+                    score_min,
+                    score_max,
+                )
+                rendered = self._render_template(template, substitutions)
+                scaled_cost = self._calculate_scaled_cost(
+                    rule.get("budget", {}), scores[score_key], max_score=3.0
+                )
+                substitutions["scaled_cost_cop"] = str(scaled_cost)
+                rendered_recommendations = self._render_template(
+                    rule.get("recommendations", []), substitutions
+                )
 
                 # Create recommendation with enhanced fields (v2.0) if available
                 rec = Recommendation(
@@ -363,6 +634,11 @@ class RecommendationEngine:
                         "actual_score": scores[score_key],
                         "threshold": score_lt,
                         "gap": score_lt - scores[score_key],
+                        "score_band": score_band,
+                        "score_min": score_min,
+                        "score_max": score_max,
+                        "scaled_cost_cop": scaled_cost,
+                        "recommendations": rendered_recommendations,
                     },
                     # Enhanced fields (v2.0)
                     execution=rule.get("execution"),
@@ -380,28 +656,31 @@ class RecommendationEngine:
             rules_matched=len(recommendations),
         )
 
-    def _render_micro_template(
+    def _get_micro_substitutions(
         self,
-        template: dict[str, Any],
         pa_id: str,
         dim_id: str,
-        context: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
-        """
-        Render MICRO template with variable substitution
-
-        Variables supported:
-        - {{PAxx}}: Policy area (e.g., PA01)
-        - {{DIMxx}}: Dimension (e.g., DIM01)
-        - {{Q###}}: Question number (from context)
-        """
+        template: dict[str, Any],
+        context: dict[str, Any] | None,
+        score: float,
+        score_band: str | None,
+        score_min: float | None,
+        score_max: float | None,
+    ) -> dict[str, str]:
+        """Build substitutions for MICRO rendering."""
         ctx = context or {}
-
-        substitutions = {
+        question_info = self.micro_question_map.get(dim_id, {})
+        substitutions: dict[str, str] = {
             "PAxx": pa_id,
             "DIMxx": dim_id,
             "pa_id": pa_id,
             "dim_id": dim_id,
+            "score_band": score_band or "",
+            "score_min": str(score_min) if score_min is not None else "",
+            "score_max": str(score_max) if score_max is not None else "",
+            "question_range": str(question_info.get("question_range", "")),
+            "method_id": str(question_info.get("method_id", "")),
+            "scaled_cost_cop": "",
         }
 
         question_hint = ctx.get("question_id")
@@ -409,8 +688,8 @@ class RecommendationEngine:
         if isinstance(template_params, dict):
             for key, value in template_params.items():
                 if isinstance(value, str):
-                    substitutions.setdefault(key, value)
-                    substitutions.setdefault(key.upper(), value)
+                    substitutions[key] = value
+                    substitutions[key.upper()] = value
                     if key == "question_id":
                         question_hint = value
 
@@ -423,7 +702,52 @@ class RecommendationEngine:
             if isinstance(value, str):
                 substitutions.setdefault(key, value)
 
-        return self._render_template(template, substitutions)
+        template_block = template if isinstance(template, dict) else {}
+        responsible = template_block.get("responsible", {}) if isinstance(template_block, dict) else {}
+        if isinstance(responsible, dict):
+            entity = responsible.get("entity")
+            if isinstance(entity, str):
+                substitutions.setdefault("responsible_entity", entity)
+
+        horizon = template_block.get("horizon", {}) if isinstance(template_block, dict) else {}
+        if isinstance(horizon, dict):
+            start = horizon.get("start")
+            end = horizon.get("end")
+            if isinstance(start, str):
+                substitutions.setdefault("horizon_start", start)
+            if isinstance(end, str):
+                substitutions.setdefault("horizon_end", end)
+
+        return substitutions
+
+    def _match_micro_condition(
+        self,
+        score: float,
+        score_lt: float | None,
+        score_band: str | None,
+        score_min: float | None,
+        score_max: float | None,
+    ) -> bool:
+        """Evaluate MICRO rule conditions with band support."""
+        constraints = []
+
+        if score_band and (score_min is not None or score_max is not None):
+            lower_ok = score_min is None or score >= float(score_min)
+            upper_ok = score_max is None or score <= float(score_max)
+            constraints.append(lower_ok and upper_ok)
+
+        if score_min is not None:
+            constraints.append(score >= float(score_min))
+        if score_max is not None:
+            constraints.append(score <= float(score_max))
+
+        if score_lt is not None:
+            constraints.append(score < float(score_lt))
+
+        if not constraints:
+            return False
+
+        return all(constraints)
 
     # ========================================================================
     # MESO LEVEL RECOMMENDATIONS
@@ -481,7 +805,17 @@ class RecommendationEngine:
 
             # Render template
             template = rule.get("template", {})
-            rendered = self._render_meso_template(template, cluster_id, context)
+            substitutions = self._get_meso_substitutions(
+                template, cluster_id, cluster_score, cluster_variance, context
+            )
+            rendered = self._render_template(template, substitutions)
+            scaled_cost = self._calculate_scaled_cost(
+                rule.get("budget", {}), cluster_score, max_score=100.0
+            )
+            substitutions["scaled_cost_cop"] = str(scaled_cost)
+            rendered_recommendations = self._render_template(
+                rule.get("recommendations", []), substitutions
+            )
 
             # Create recommendation with enhanced fields (v2.0) if available
             rec = Recommendation(
@@ -500,6 +834,8 @@ class RecommendationEngine:
                     "variance": cluster_variance,
                     "variance_level": variance_level,
                     "weak_pa": cluster_weak_pa,
+                    "scaled_cost_cop": scaled_cost,
+                    "recommendations": rendered_recommendations,
                 },
                 # Enhanced fields (v2.0)
                 execution=rule.get("execution"),
@@ -578,13 +914,18 @@ class RecommendationEngine:
         # Check weak PA if specified
         return not (weak_pa_id and weak_pa != weak_pa_id)
 
-    def _render_meso_template(
-        self, template: dict[str, Any], cluster_id: str, context: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Render MESO template with variable substitution"""
-
-        substitutions = {
+    def _get_meso_substitutions(
+        self,
+        template: dict[str, Any],
+        cluster_id: str,
+        score: float,
+        variance: float,
+        context: dict[str, Any] | None = None,
+    ) -> dict[str, str]:
+        substitutions: dict[str, str] = {
             "cluster_id": cluster_id,
+            "cluster_score": str(score),
+            "cluster_variance": str(variance),
         }
 
         if isinstance(template, dict):
@@ -600,7 +941,7 @@ class RecommendationEngine:
                 if isinstance(value, str):
                     substitutions.setdefault(key, value)
 
-        return self._render_template(template, substitutions)
+        return substitutions
 
     # ========================================================================
     # MACRO LEVEL RECOMMENDATIONS
@@ -664,7 +1005,15 @@ class RecommendationEngine:
 
             # Render template
             template = rule.get("template", {})
-            rendered = self._render_macro_template(template, context)
+            substitutions = self._get_macro_substitutions(template, macro_data, context)
+            rendered = self._render_template(template, substitutions)
+            scaled_cost = self._calculate_scaled_cost(
+                rule.get("budget", {}), macro_data.get("macro_score", 0), max_score=100.0
+            )
+            substitutions["scaled_cost_cop"] = str(scaled_cost)
+            rendered_recommendations = self._render_template(
+                rule.get("recommendations", []), substitutions
+            )
 
             # Create recommendation with enhanced fields (v2.0) if available
             rec = Recommendation(
@@ -681,6 +1030,8 @@ class RecommendationEngine:
                     "clusters_below_target": list(actual_clusters),
                     "variance_alert": actual_variance,
                     "priority_micro_gaps": list(actual_gaps),
+                    "scaled_cost_cop": scaled_cost,
+                    "recommendations": rendered_recommendations,
                 },
                 # Enhanced fields (v2.0)
                 execution=rule.get("execution"),
@@ -698,12 +1049,17 @@ class RecommendationEngine:
             rules_matched=len(recommendations),
         )
 
-    def _render_macro_template(
-        self, template: dict[str, Any], context: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Render MACRO template with variable substitution"""
+    def _get_macro_substitutions(
+        self,
+        template: dict[str, Any],
+        macro_data: dict[str, Any],
+        context: dict[str, Any] | None = None,
+    ) -> dict[str, str]:
+        substitutions: dict[str, str] = {}
 
-        substitutions = {}
+        for key, value in macro_data.items():
+            if isinstance(value, str):
+                substitutions.setdefault(key, value)
 
         if context:
             for key, value in context.items():
@@ -718,7 +1074,7 @@ class RecommendationEngine:
                         substitutions.setdefault(key, value)
                         substitutions.setdefault(key.upper(), value)
 
-        return self._render_template(template, substitutions)
+        return substitutions
 
     # ========================================================================
     # UTILITY METHODS
@@ -748,8 +1104,8 @@ class RecommendationEngine:
         "farfan_core.analysis.recommendation_engine.RecommendationEngine._render_template"
     )
     def _render_template(
-        self, template: dict[str, Any], substitutions: dict[str, str]
-    ) -> dict[str, Any]:
+        self, template: Any, substitutions: dict[str, str]
+    ) -> Any:
         """Recursively render a template applying substitutions to nested structures."""
 
         def render_value(value: Any) -> Any:
@@ -809,11 +1165,16 @@ class RecommendationEngine:
             raise ValueError(f"Rule {rule_id} is missing budget block required for enhanced rules")
         self._validate_budget(rule_id, budget)
 
+        recommendations = rule.get("recommendations")
+        if recommendations is None:
+            raise ValueError(f"Rule {rule_id} missing recommendations block")
+        self._validate_recommendations(rule_id, recommendations)
+
     @calibrated_method(
         "farfan_core.analysis.recommendation_engine.RecommendationEngine._validate_micro_when"
     )
     def _validate_micro_when(self, rule_id: str, when: dict[str, Any]) -> None:
-        required_keys = ("pa_id", "dim_id", "score_lt")
+        required_keys = ("pa_id", "dim_id")
         for key in required_keys:
             if key not in when:
                 raise ValueError(f"Rule {rule_id} missing '{key}' in MICRO condition")
@@ -825,11 +1186,29 @@ class RecommendationEngine:
         if not isinstance(dim_id, str) or not dim_id.strip():
             raise ValueError(f"Rule {rule_id} has invalid dim_id")
 
-        score_lt = when["score_lt"]
-        if not self._is_number(score_lt):
-            raise ValueError(f"Rule {rule_id} has non-numeric MICRO threshold")
-        if not 0 <= float(score_lt) <= 3:
-            raise ValueError(f"Rule {rule_id} MICRO threshold must be between 0 and 3")
+        score_lt = when.get("score_lt")
+        score_min = when.get("score_min")
+        score_max = when.get("score_max")
+        score_band = when.get("score_band")
+
+        if score_lt is None and score_min is None and score_max is None and score_band is None:
+            raise ValueError(
+                f"Rule {rule_id} must define score_lt or score_band or score_min/score_max"
+            )
+
+        for value, label in ((score_lt, "score_lt"), (score_min, "score_min"), (score_max, "score_max")):
+            if value is None:
+                continue
+            if not self._is_number(value):
+                raise ValueError(f"Rule {rule_id} has non-numeric {label}")
+            if not 0 <= float(value) <= 3:
+                raise ValueError(f"Rule {rule_id} {label} must be between 0 and 3")
+
+        if score_min is not None and score_max is not None and float(score_min) > float(score_max):
+            raise ValueError(f"Rule {rule_id} score_min cannot exceed score_max")
+
+        if score_band is not None and not isinstance(score_band, str):
+            raise ValueError(f"Rule {rule_id} has invalid score_band")
 
     @calibrated_method(
         "farfan_core.analysis.recommendation_engine.RecommendationEngine._validate_meso_when"
@@ -906,6 +1285,31 @@ class RecommendationEngine:
             raise ValueError(
                 f"Rule {rule_id} must specify at least one MACRO discriminant condition"
             )
+
+    def _validate_recommendations(self, rule_id: str, recommendations: Any) -> None:
+        if not isinstance(recommendations, list) or not recommendations:
+            raise ValueError(f"Rule {rule_id} recommendations must be a non-empty list")
+
+        required_fields = {
+            "id",
+            "action",
+            "expected_output",
+            "method_id",
+            "questions",
+            "owner",
+            "timeframe",
+            "cost",
+        }
+        for item in recommendations:
+            if not isinstance(item, dict):
+                raise ValueError(f"Rule {rule_id} recommendation entries must be objects")
+            missing = required_fields - set(item.keys())
+            if missing:
+                raise ValueError(
+                    f"Rule {rule_id} recommendation missing fields: {sorted(missing)}"
+                )
+            if not isinstance(item.get("questions"), list):
+                raise ValueError(f"Rule {rule_id} recommendation questions must be list")
 
     @calibrated_method(
         "farfan_core.analysis.recommendation_engine.RecommendationEngine._validate_template"
@@ -1097,6 +1501,14 @@ class RecommendationEngine:
                 f"Rule {rule_id} execution approval_roles must contain non-empty strings"
             )
 
+        steps = execution.get("steps")
+        if steps is not None and not isinstance(steps, list):
+            raise ValueError(f"Rule {rule_id} execution steps must be a list")
+
+        gating = execution.get("gating")
+        if gating is not None and not isinstance(gating, dict):
+            raise ValueError(f"Rule {rule_id} execution gating must be an object")
+
     @calibrated_method(
         "farfan_core.analysis.recommendation_engine.RecommendationEngine._validate_budget"
     )
@@ -1104,42 +1516,56 @@ class RecommendationEngine:
         if not isinstance(budget, dict):
             raise ValueError(f"Rule {rule_id} budget block must be an object")
 
-        required_keys = {"estimated_cost_cop", "cost_breakdown", "funding_sources", "fiscal_year"}
-        missing = required_keys - budget.keys()
-        if missing:
-            raise ValueError(f"Rule {rule_id} budget block missing keys: {sorted(missing)}")
+        legacy_keys = {"estimated_cost_cop", "cost_breakdown", "funding_sources", "fiscal_year"}
+        modern_keys = {"basis", "formula", "items"}
 
-        if not self._is_number(budget["estimated_cost_cop"]):
-            raise ValueError(f"Rule {rule_id} budget estimated_cost_cop must be numeric")
+        if legacy_keys.issubset(budget.keys()):
+            if not self._is_number(budget["estimated_cost_cop"]):
+                raise ValueError(f"Rule {rule_id} budget estimated_cost_cop must be numeric")
 
-        cost_breakdown = budget["cost_breakdown"]
-        if not isinstance(cost_breakdown, dict) or not cost_breakdown:
-            raise ValueError(f"Rule {rule_id} cost_breakdown must be a non-empty object")
-        for key, value in cost_breakdown.items():
-            if not isinstance(key, str) or not key.strip():
-                raise ValueError(f"Rule {rule_id} cost_breakdown keys must be non-empty strings")
-            if not self._is_number(value):
-                raise ValueError(f"Rule {rule_id} cost_breakdown values must be numeric")
+            cost_breakdown = budget["cost_breakdown"]
+            if not isinstance(cost_breakdown, dict) or not cost_breakdown:
+                raise ValueError(f"Rule {rule_id} cost_breakdown must be a non-empty object")
+            for key, value in cost_breakdown.items():
+                if not isinstance(key, str) or not key.strip():
+                    raise ValueError(
+                        f"Rule {rule_id} cost_breakdown keys must be non-empty strings"
+                    )
+                if not self._is_number(value):
+                    raise ValueError(f"Rule {rule_id} cost_breakdown values must be numeric")
 
-        funding_sources = budget["funding_sources"]
-        if not isinstance(funding_sources, list) or not funding_sources:
-            raise ValueError(f"Rule {rule_id} funding_sources must be a non-empty list")
-        for source in funding_sources:
-            if not isinstance(source, dict):
-                raise ValueError(f"Rule {rule_id} funding source entries must be objects")
-            for key in ("source", "amount", "confirmed"):
-                if key not in source:
-                    raise ValueError(f"Rule {rule_id} funding source missing '{key}'")
-            if not isinstance(source["source"], str) or not source["source"].strip():
-                raise ValueError(f"Rule {rule_id} funding source name must be a non-empty string")
-            if not self._is_number(source["amount"]):
-                raise ValueError(f"Rule {rule_id} funding source amount must be numeric")
-            if not isinstance(source["confirmed"], bool):
-                raise ValueError(f"Rule {rule_id} funding source confirmed flag must be boolean")
+            funding_sources = budget["funding_sources"]
+            if not isinstance(funding_sources, list) or not funding_sources:
+                raise ValueError(f"Rule {rule_id} funding_sources must be a non-empty list")
+            for source in funding_sources:
+                if not isinstance(source, dict):
+                    raise ValueError(f"Rule {rule_id} funding source entries must be objects")
+                for key in ("source", "amount", "confirmed"):
+                    if key not in source:
+                        raise ValueError(f"Rule {rule_id} funding source missing '{key}'")
+                if not isinstance(source["source"], str) or not source["source"].strip():
+                    raise ValueError(
+                        f"Rule {rule_id} funding source name must be a non-empty string"
+                    )
+                if not self._is_number(source["amount"]):
+                    raise ValueError(f"Rule {rule_id} funding source amount must be numeric")
+                if not isinstance(source["confirmed"], bool):
+                    raise ValueError(f"Rule {rule_id} funding source confirmed flag must be boolean")
 
-        fiscal_year = budget["fiscal_year"]
-        if not isinstance(fiscal_year, int):
-            raise ValueError(f"Rule {rule_id} fiscal_year must be an integer")
+            fiscal_year = budget["fiscal_year"]
+            if not isinstance(fiscal_year, int):
+                raise ValueError(f"Rule {rule_id} fiscal_year must be an integer")
+
+        if modern_keys & set(budget.keys()):
+            basis = budget.get("basis")
+            if basis is not None and not isinstance(basis, str):
+                raise ValueError(f"Rule {rule_id} budget basis must be string")
+            formula = budget.get("formula")
+            if formula is not None and not isinstance(formula, dict):
+                raise ValueError(f"Rule {rule_id} budget formula must be object")
+            items = budget.get("items")
+            if items is not None and not isinstance(items, list):
+                raise ValueError(f"Rule {rule_id} budget items must be list")
 
     @calibrated_method(
         "farfan_core.analysis.recommendation_engine.RecommendationEngine._validate_ruleset_metadata"
@@ -1188,6 +1614,34 @@ class RecommendationEngine:
             "MESO": self.generate_meso_recommendations(cluster_data, context),
             "MACRO": self.generate_macro_recommendations(macro_data, context),
         }
+
+    def _calculate_scaled_cost(
+        self, budget: dict[str, Any], score: float, max_score: float
+    ) -> float:
+        basis = budget.get("basis") if isinstance(budget, dict) else None
+        formula = budget.get("formula", {}) if isinstance(budget, dict) else {}
+
+        if basis != "score_scaled" or not isinstance(formula, dict):
+            estimated_cost = budget.get("estimated_cost_cop") if isinstance(budget, dict) else None
+            return float(estimated_cost) if self._is_number(estimated_cost) else 0.0
+
+        base = formula.get("base")
+        slope = formula.get("slope")
+        cap = formula.get("cap")
+        floor = formula.get("floor")
+
+        if not self._is_number(base) or not self._is_number(slope):
+            return 0.0
+
+        normalized = 0.0 if max_score <= 0 else min(max(score / max_score, 0.0), 1.0)
+        scaled = float(base) + float(slope) * (1 - normalized)
+
+        if self._is_number(floor):
+            scaled = max(scaled, float(floor))
+        if self._is_number(cap):
+            scaled = min(scaled, float(cap))
+
+        return round(scaled, 2)
 
     def export_recommendations(
         self, recommendations: dict[str, RecommendationSet], output_path: str, format: str = "json"

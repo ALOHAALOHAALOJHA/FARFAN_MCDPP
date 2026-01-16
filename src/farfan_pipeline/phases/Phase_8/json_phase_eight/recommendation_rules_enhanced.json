@@ -1,6 +1,6 @@
 {
-  "version": "3.0",
-  "last_updated": "2026-01-15T23:29:27.903Z",
+  "version": "2.0.0",
+  "last_updated": "2026-01-15T23:59:59.000Z",
   "enhanced_features": [
     "template_parameterization",
     "execution_logic",
@@ -17,19 +17,17 @@
     "excellence_sustaining"
   ],
   "scoring_scenarios": [
-    "CRÍTICO (0-0.8): Emergency intervention",
-    "DEFICIENTE (0.8-1.2): Major restructuring",
-    "INSUFICIENTE (1.2-1.65): Significant improvement",
-    "ACEPTABLE (1.65-2.0): Minor adjustments",
-    "BUENO (2.0-2.4): Optimization",
-    "MUY BUENO (2.4-2.7): Excellence maintenance",
-    "EXCELENTE (2.7-3.0): Leadership/best practices"
+    "CRISIS (0.00-0.80): Emergency intervention",
+    "CRÍTICO (0.81-1.65): Major restructuring",
+    "ACEPTABLE (1.66-2.30): Minor adjustments",
+    "BUENO (2.31-2.70): Optimization",
+    "EXCELENTE (2.71-3.00): Leadership/best practices"
   ],
   "levels": {
     "MICRO": {
       "description": "PA-DIM specific rules with threshold-based triggers",
-      "count": 60,
-      "coverage": "PA01-PA10 × DIM01-DIM06 with low-band remediation"
+      "count": 300,
+      "coverage": "PA01-PA10 × DIM01-DIM06 × 5 bandas (CRISIS→EXCELENTE)"
     },
     "MESO": {
       "description": "Cluster-level rules using score_band, variance_level, weak_pa",
@@ -40,6 +38,210 @@
       "description": "System-level rules across macro bands and variance alerts",
       "count": 5,
       "coverage": "Crisis, stabilization, optimization, excellence"
+    }
+  },
+  "micro_score_bands": [
+    {
+      "code": "CRISIS",
+      "label": "CRISIS",
+      "min": 0.0,
+      "max": 0.8,
+      "requires_approval": true,
+      "blocking": true,
+      "horizon_months": 3,
+      "cost_multiplier": 1.4
+    },
+    {
+      "code": "CRITICO",
+      "label": "CRÍTICO",
+      "min": 0.81,
+      "max": 1.65,
+      "requires_approval": true,
+      "blocking": false,
+      "horizon_months": 6,
+      "cost_multiplier": 1.0
+    },
+    {
+      "code": "ACEPTABLE",
+      "label": "ACEPTABLE",
+      "min": 1.66,
+      "max": 2.3,
+      "requires_approval": false,
+      "blocking": false,
+      "horizon_months": 9,
+      "cost_multiplier": 0.8
+    },
+    {
+      "code": "BUENO",
+      "label": "BUENO",
+      "min": 2.31,
+      "max": 2.7,
+      "requires_approval": false,
+      "blocking": false,
+      "horizon_months": 12,
+      "cost_multiplier": 0.6
+    },
+    {
+      "code": "EXCELENTE",
+      "label": "EXCELENTE",
+      "min": 2.71,
+      "max": 3.0,
+      "requires_approval": false,
+      "blocking": false,
+      "horizon_months": 18,
+      "cost_multiplier": 0.5
+    }
+  ],
+  "micro_question_map": {
+    "DIM01": {
+      "questions": [
+        "Q001",
+        "Q002",
+        "Q003",
+        "Q004",
+        "Q005"
+      ],
+      "question_range": "Q001-Q005",
+      "method_id": "SemanticProcessor.chunk_text"
+    },
+    "DIM02": {
+      "questions": [
+        "Q006",
+        "Q007",
+        "Q008",
+        "Q009",
+        "Q010"
+      ],
+      "question_range": "Q006-Q010",
+      "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts"
+    },
+    "DIM03": {
+      "questions": [
+        "Q011",
+        "Q012",
+        "Q013",
+        "Q014",
+        "Q015"
+      ],
+      "question_range": "Q011-Q015",
+      "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs"
+    },
+    "DIM04": {
+      "questions": [
+        "Q016",
+        "Q017",
+        "Q018",
+        "Q019",
+        "Q020"
+      ],
+      "question_range": "Q016-Q020",
+      "method_id": "CausalExtractor.extract_causal_hierarchy"
+    },
+    "DIM05": {
+      "questions": [
+        "Q021",
+        "Q022",
+        "Q023",
+        "Q024",
+        "Q025"
+      ],
+      "question_range": "Q021-Q025",
+      "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts"
+    },
+    "DIM06": {
+      "questions": [
+        "Q026",
+        "Q027",
+        "Q028",
+        "Q029",
+        "Q030"
+      ],
+      "question_range": "Q026-Q030",
+      "method_id": "CausalExtractor.extract_causal_hierarchy"
+    }
+  },
+  "recommendation_templates": {
+    "MICRO": {
+      "id": "REC-{{PAxx}}-{{DIMxx}}-{{score_band}}",
+      "action": "Aplicar medidas {{score_band}} para {{DIMxx}} en {{PAxx}} enfocadas en {{question_range}}.",
+      "expected_output": "Evidencia verificable para {{question_range}} y mejora del score.",
+      "method_id": "{{method_id}}",
+      "questions": [
+        "{{question_range}}"
+      ],
+      "owner": "{{responsible_entity}}",
+      "timeframe": {
+        "start": "{{horizon_start}}",
+        "end": "{{horizon_end}}"
+      },
+      "cost": {
+        "estimate": "{{scaled_cost_cop}}",
+        "currency": "COP",
+        "basis": "score_scaled"
+      }
+    },
+    "MESO": {
+      "id": "REC-MESO-{{cluster_id}}-{{score_band}}",
+      "action": "Activar mesa interinstitucional y plataforma compartida para {{cluster_id}} con foco en reducción de varianza.",
+      "expected_output": "Plan de coordinación y tablero compartido con acuerdos interagenciales.",
+      "method_id": "GovernanceBoard.activate",
+      "questions": [],
+      "owner": "{{responsible_entity}}",
+      "timeframe": {
+        "start": "{{horizon_start}}",
+        "end": "{{horizon_end}}"
+      },
+      "cost": {
+        "estimate": "{{scaled_cost_cop}}",
+        "currency": "COP",
+        "basis": "score_scaled"
+      }
+    },
+    "MACRO": {
+      "id": "REC-MACRO-{{macro_band}}",
+      "action": "Implementar ruta de resiliencia, inclusión digital y reequilibrio financiero intersectorial.",
+      "expected_output": "Marco de política aprobado con metas de inclusión y datos abiertos interoperables.",
+      "method_id": "PolicySteering.activate",
+      "questions": [],
+      "owner": "{{responsible_entity}}",
+      "timeframe": {
+        "start": "{{horizon_start}}",
+        "end": "{{horizon_end}}"
+      },
+      "cost": {
+        "estimate": "{{scaled_cost_cop}}",
+        "currency": "COP",
+        "basis": "score_scaled"
+      }
+    }
+  },
+  "budget_defaults": {
+    "MICRO": {
+      "basis": "score_scaled",
+      "formula": {
+        "base": 45000000,
+        "slope": 55000000,
+        "cap": 160000000,
+        "floor": 20000000
+      }
+    },
+    "MESO": {
+      "basis": "score_scaled",
+      "formula": {
+        "base": 120000000,
+        "slope": 180000000,
+        "cap": 500000000,
+        "floor": 80000000
+      }
+    },
+    "MACRO": {
+      "basis": "score_scaled",
+      "formula": {
+        "base": 300000000,
+        "slope": 500000000,
+        "cap": 1200000000,
+        "floor": 200000000
+      }
     }
   },
   "rules": [
@@ -219,7 +421,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA01-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de brechas de género, violencia basada en género y autonomía económica integrando registros de Observatorio de Género, DANE y Medicina Legal en el Repositorio del Observatorio de Género municipal, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA01-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de la Mujer Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA01-DIM02-ACT",
@@ -397,7 +624,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA01-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento ruta integral de prevención y atención a violencias basadas en género en fichas operativas con objetivo causal, población objetivo, dosis (brigadas mensuales y acompañamiento psicosocial continuo), costos y responsables, integradas al sistema SIG Mujer y Sistema de Alertas Tempranas y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA01-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de la Mujer Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA01-DIM03-BPIN",
@@ -583,7 +835,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA01-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de centros de atención, casas refugio y unidades móviles para mujeres con trazabilidad presupuestal (BPIN, Fondo de Seguridad y recursos SGP), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA01-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de la Mujer Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA01-DIM04-RESULT",
@@ -771,7 +1048,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA01-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con reducción de violencias y fortalecimiento de autonomía económica femenina, defina indicadores con línea base y metas, y documente supuestos de coordinación con comisarías de familia, justicia y servicios sociales con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA01-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de la Mujer Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA01-DIM05-RIESGOS",
@@ -959,7 +1261,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA01-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para garantía de derechos y seguridad de las mujeres con escenarios probabilísticos, análisis de revictimización, subregistro y represalias de agresores y planes de contingencia articulados al Comité de Justicia de Género y Mesa de DDHH.",
+          "expected_output": "Entrega verificable: PA01-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de la Mujer Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA01-DIM06-DAG",
@@ -1147,7 +1474,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA01-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para prevención, protección, justicia y autonomía económica de mujeres con nodos de insumo a impacto, supuestos explícitos, moderadores (capacidad institucional de comisarías y disponibilidad presupuestal territorial) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA01-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de la Mujer Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA02-DIM01-LB01",
@@ -1325,7 +1677,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA02-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de tasas de homicidio, hurtos y violencia en zonas priorizadas integrando registros de SIEDCO, Medicina Legal y Observatorio de Seguridad en el Sistema Integrado de Seguridad y Convivencia municipal, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA02-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de Gobierno Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA02-DIM02-ACT",
@@ -1505,7 +1882,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA02-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan integral de seguridad y convivencia articulado con fuerza pública en fichas operativas con objetivo causal, población objetivo, dosis (operativos semanales y jornadas preventivas trimestrales), costos y responsables, integradas al sistema SIPARES y Observatorio de Seguridad Territorial y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA02-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de Gobierno Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA02-DIM03-BPIN",
@@ -1691,7 +2093,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA02-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de frentes de seguridad, CAI móviles y sistemas de videovigilancia con trazabilidad presupuestal (BPIN, Fondo de Seguridad y cofinanciación del Ministerio del Interior), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA02-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de Gobierno Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA02-DIM04-RESULT",
@@ -1879,7 +2306,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA02-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con mejoras en convivencia y disminución de delitos priorizados, defina indicadores con línea base y metas, y documente supuestos de operatividad conjunta con Fiscalía y justicia con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA02-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de Gobierno Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA02-DIM05-RIESGOS",
@@ -2067,7 +2519,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA02-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para pacificación territorial y percepción de seguridad ciudadana con escenarios probabilísticos, análisis de retaliaciones criminales, desplazamientos y captura institucional y planes de contingencia articulados al Comité de Orden Público y Sala de Análisis SAT.",
+          "expected_output": "Entrega verificable: PA02-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de Gobierno Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA02-DIM06-DAG",
@@ -2255,7 +2732,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA02-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para prevención situacional, control policial y justicia restaurativa con nodos de insumo a impacto, supuestos explícitos, moderadores (capacidad de fuerza pública y cooperación comunitaria) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA02-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de Gobierno Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA03-DIM01-LB01",
@@ -2433,7 +2935,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA03-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de amenazas ambientales, gestión del riesgo y degradación ecosistémica integrando registros de IDEAM, SINA y Consejo Municipal de Gestión del Riesgo en el Sistema de Información Ambiental y de Gestión del Riesgo, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA03-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de Ambiente y Gestión del Riesgo",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA03-DIM02-ACT",
@@ -2613,7 +3140,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA03-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento planes de manejo ambiental y estrategias de gestión del riesgo en fichas operativas con objetivo causal, población objetivo, dosis (simulacros semestrales y asistencia técnica mensual), costos y responsables, integradas al sistema SIGAM y plataforma PMGRD y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA03-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de Ambiente y Gestión del Riesgo",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA03-DIM03-BPIN",
@@ -2799,7 +3351,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA03-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de obras de mitigación, sistemas de alerta temprana y restauración ecológica con trazabilidad presupuestal (BPIN, SGR y recursos de adaptación climática), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA03-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de Ambiente y Gestión del Riesgo",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA03-DIM04-RESULT",
@@ -2987,7 +3564,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA03-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con disminución de pérdidas por desastres y mejora en servicios ecosistémicos, defina indicadores con línea base y metas, y documente supuestos de coordinación con Corporación Autónoma y gestión predial con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA03-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de Ambiente y Gestión del Riesgo",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA03-DIM05-RIESGOS",
@@ -3175,7 +3777,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA03-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para resiliencia climática y reducción de riesgo sistémico con escenarios probabilísticos, análisis de fenómenos extremos, invasión de rondas y debilidad institucional y planes de contingencia articulados al Consejo Municipal de Gestión del Riesgo.",
+          "expected_output": "Entrega verificable: PA03-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de Ambiente y Gestión del Riesgo",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA03-DIM06-DAG",
@@ -3363,7 +3990,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA03-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para ordenamiento ecológico, mitigación y recuperación postdesastre con nodos de insumo a impacto, supuestos explícitos, moderadores (financiación del SGR y gobernanza comunitaria) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA03-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de Ambiente y Gestión del Riesgo",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA04-DIM01-LB01",
@@ -3543,7 +4195,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA04-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de cobertura y calidad en salud, educación y agua potable integrando registros de SISPRO, SIMAT y SUI en el Observatorio de DESC municipal, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA04-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de Planeación Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA04-DIM02-ACT",
@@ -3723,7 +4400,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA04-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan integral de mejoramiento de servicios sociales en fichas operativas con objetivo causal, población objetivo, dosis (microplanes trimestrales con metas de cobertura), costos y responsables, integradas al sistema SIGOB social y tableros de seguimiento sectorial y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA04-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de Planeación Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA04-DIM03-BPIN",
@@ -3909,7 +4611,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA04-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de infraestructura educativa y sanitaria, redes de acueducto con trazabilidad presupuestal (BPIN, SGP y convenios sectoriales), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA04-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de Planeación Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA04-DIM04-RESULT",
@@ -4097,7 +4824,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA04-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con mejoras en calidad educativa, salud preventiva y acceso a agua segura, defina indicadores con línea base y metas, y documente supuestos de coordinación con EPS, instituciones educativas y operadores de agua con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA04-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de Planeación Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA04-DIM05-RIESGOS",
@@ -4285,7 +5037,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA04-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para reducción de brechas DESC y riesgos sanitarios con escenarios probabilísticos, análisis de brotes epidemiológicos, deserción y fallas de infraestructura y planes de contingencia articulados al Comité de DESC y sala SITREP en salud pública.",
+          "expected_output": "Entrega verificable: PA04-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de Planeación Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA04-DIM06-DAG",
@@ -4473,7 +5250,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA04-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para inversiones en infraestructura, talento humano y resultados sociales con nodos de insumo a impacto, supuestos explícitos, moderadores (finanzas sectoriales y participación comunitaria) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA04-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de Planeación Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA05-DIM01-LB01",
@@ -4649,7 +5451,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA05-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de registro de víctimas, retornos y reparación integral integrando registros de RUV, UARIV y comités de justicia transicional en el Sistema Municipal de Atención a Víctimas, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA05-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Enlace Municipal de Víctimas",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA05-DIM02-ACT",
@@ -4829,7 +5656,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA05-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan de atención, asistencia y reparación integral en fichas operativas con objetivo causal, población objetivo, dosis (rutas de atención personalizadas con seguimiento bimestral), costos y responsables, integradas al sistema SIAV y tablero de compromisos del PAPSIVI y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA05-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Enlace Municipal de Víctimas",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA05-DIM03-BPIN",
@@ -5015,7 +5867,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA05-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de centros regionales de atención, proyectos productivos y medidas de satisfacción con trazabilidad presupuestal (BPIN, Fondo de Reparación y recursos territoriales), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA05-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Enlace Municipal de Víctimas",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA05-DIM04-RESULT",
@@ -5203,7 +6080,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA05-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con avances en reparación integral, retorno sostenible y no repetición, defina indicadores con línea base y metas, y documente supuestos de coordinación con UARIV, Ministerio del Interior y cooperación con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA05-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Enlace Municipal de Víctimas",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA05-DIM05-RIESGOS",
@@ -5391,7 +6293,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA05-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para restitución de derechos y reconstrucción del tejido social con escenarios probabilísticos, análisis de revictimización, amenazas y desfinanciamiento y planes de contingencia articulados al Comité de Justicia Transicional.",
+          "expected_output": "Entrega verificable: PA05-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Enlace Municipal de Víctimas",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA05-DIM06-DAG",
@@ -5579,7 +6506,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA05-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para asistencia, reparación y garantías de no repetición articuladas con nodos de insumo a impacto, supuestos explícitos, moderadores (seguridad en territorios y disponibilidad presupuestal) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA05-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Enlace Municipal de Víctimas",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA06-DIM01-LB01",
@@ -5759,7 +6711,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA06-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de nutrición, protección y educación de niños, niñas y adolescentes integrando registros de SISBEN, SIRITI, SIMAT e ICBF en el Observatorio de Infancia y Adolescencia, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA06-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de Desarrollo Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA06-DIM02-ACT",
@@ -5939,7 +6916,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA06-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento programa integral para el desarrollo de niñez y juventud en fichas operativas con objetivo causal, población objetivo, dosis (sesiones semanales con seguimiento trimestral), costos y responsables, integradas al sistema SIMAT-ICBF y tablero de primera infancia y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA06-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de Desarrollo Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA06-DIM03-BPIN",
@@ -6125,7 +7127,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA06-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de centros de desarrollo infantil, entornos protectores y rutas de restablecimiento con trazabilidad presupuestal (BPIN, recursos ICBF y SGP Infancia), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA06-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de Desarrollo Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA06-DIM04-RESULT",
@@ -6313,7 +7340,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA06-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con incremento en desarrollo integral y permanencia escolar, defina indicadores con línea base y metas, y documente supuestos de articulación con ICBF, MEN y sector salud con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA06-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de Desarrollo Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA06-DIM05-RIESGOS",
@@ -6501,7 +7553,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA06-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para reducción de vulnerabilidades y riesgos en el ciclo vital con escenarios probabilísticos, análisis de violencias, trabajo infantil y desnutrición y planes de contingencia articulados al Comité de Infancia y Adolescencia.",
+          "expected_output": "Entrega verificable: PA06-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de Desarrollo Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA06-DIM06-DAG",
@@ -6689,7 +7766,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA06-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para protección integral articulada con salud, educación y participación juvenil con nodos de insumo a impacto, supuestos explícitos, moderadores (cobertura de talento humano especializado y participación familiar) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA06-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de Desarrollo Social",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA07-DIM01-LB01",
@@ -6867,7 +7969,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA07-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de catastro multipropósito, uso del suelo y brechas rurales integrando registros de IGAC, UPRA y POT vigente en el Sistema de Información Geográfica del POT, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA07-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de Planeación Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA07-DIM02-ACT",
@@ -7047,7 +8174,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA07-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan de ordenamiento rural y ejecución del POT en fichas operativas con objetivo causal, población objetivo, dosis (asistencia técnica trimestral y formalización predial semestral), costos y responsables, integradas al sistema SIGOT y tablero POT y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA07-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de Planeación Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA07-DIM03-BPIN",
@@ -7233,7 +8385,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA07-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de proyectos de vías terciarias, distritos de riego y formalización predial con trazabilidad presupuestal (BPIN, OCAD Paz y recursos de infraestructura), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA07-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de Planeación Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA07-DIM04-RESULT",
@@ -7421,7 +8598,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA07-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con incremento en productividad rural y seguridad jurídica, defina indicadores con línea base y metas, y documente supuestos de coordinación con Agencia Nacional de Tierras y Ministerio de Transporte con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA07-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de Planeación Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA07-DIM05-RIESGOS",
@@ -7609,7 +8811,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA07-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para ordenamiento territorial y mitigación de conflictos por tierra con escenarios probabilísticos, análisis de acaparamiento, conflictos sociales y variabilidad climática y planes de contingencia articulados al Consejo Territorial de Planeación y PMGRD rural.",
+          "expected_output": "Entrega verificable: PA07-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de Planeación Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA07-DIM06-DAG",
@@ -7797,7 +9024,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA07-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para infraestructura rural, servicios de apoyo y productividad con nodos de insumo a impacto, supuestos explícitos, moderadores (articulación intersectorial y gobernanza campesina) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA07-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de Planeación Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA08-DIM01-LB01",
@@ -7975,7 +9227,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA08-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de agresiones, amenazas y protección de líderes sociales integrando registros de SIPARES, UNP y Defensoría del Pueblo en el Sistema Municipal de Derechos Humanos, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA08-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Oficina de Derechos Humanos Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA08-DIM02-ACT",
@@ -8155,7 +9432,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA08-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan integral de protección a líderes y defensores en fichas operativas con objetivo causal, población objetivo, dosis (esquemas de protección con seguimiento mensual), costos y responsables, integradas al sistema SIPARES-DDHH y tableros de riesgo UNP y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA08-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Oficina de Derechos Humanos Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA08-DIM03-BPIN",
@@ -8341,7 +9643,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA08-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de esquemas de protección, refugios temporales y redes de autoprotección con trazabilidad presupuestal (BPIN, recursos de seguridad y convenios con UNP), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA08-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Oficina de Derechos Humanos Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA08-DIM04-RESULT",
@@ -8529,7 +9856,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA08-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con disminución de amenazas y fortalecimiento organizativo, defina indicadores con línea base y metas, y documente supuestos de coordinación con Fiscalía, Policía y Procuraduría con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA08-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Oficina de Derechos Humanos Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA08-DIM05-RIESGOS",
@@ -8717,7 +10069,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA08-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para garantías efectivas de derechos y liderazgo social con escenarios probabilísticos, análisis de escalamiento de amenazas, estigmatización e impunidad y planes de contingencia articulados al Comité de Evaluación de Riesgo y Recomendación de Medidas.",
+          "expected_output": "Entrega verificable: PA08-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Oficina de Derechos Humanos Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA08-DIM06-DAG",
@@ -8905,7 +10282,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA08-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para prevención, protección, investigación y fortalecimiento comunitario con nodos de insumo a impacto, supuestos explícitos, moderadores (respuesta judicial y confianza comunitaria) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA08-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Oficina de Derechos Humanos Municipal",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA09-DIM01-LB01",
@@ -9084,7 +10486,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA09-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de hacinamiento, salud y condiciones de establecimientos penitenciarios integrando registros de INPEC, USPEC y Secretaría de Salud en el Sistema Municipal de Atención a PPL, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA09-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Secretaría de Gobierno y Justicia",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA09-DIM02-ACT",
@@ -9265,7 +10692,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA09-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan integral de humanización carcelaria y ampliación de cupos en fichas operativas con objetivo causal, población objetivo, dosis (intervenciones semanales en salud y formación laboral), costos y responsables, integradas al sistema SISIPEC y tablero penitenciario y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA09-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Secretaría de Gobierno y Justicia",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA09-DIM03-BPIN",
@@ -9452,7 +10904,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA09-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de obras de infraestructura carcelaria, módulos de salud y talleres productivos con trazabilidad presupuestal (BPIN, recursos USPEC y vigencias futuras municipales), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA09-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Secretaría de Gobierno y Justicia",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA09-DIM04-RESULT",
@@ -9641,7 +11118,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA09-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con reducción de hacinamiento y mejora en indicadores de salud y reinserción, defina indicadores con línea base y metas, y documente supuestos de coordinación con INPEC, Ministerio de Justicia y sector salud con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA09-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Secretaría de Gobierno y Justicia",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA09-DIM05-RIESGOS",
@@ -9830,7 +11332,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA09-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para garantía de derechos y reducción de reincidencia con escenarios probabilísticos, análisis de disturbios, fallas sanitarias y retrasos en obras y planes de contingencia articulados al Comité de Seguimiento Penitenciario.",
+          "expected_output": "Entrega verificable: PA09-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Secretaría de Gobierno y Justicia",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA09-DIM06-DAG",
@@ -10019,7 +11546,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA09-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para infraestructura, salud integral y programas de resocialización con nodos de insumo a impacto, supuestos explícitos, moderadores (disponibilidad presupuestal y coordinación interinstitucional) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA09-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Secretaría de Gobierno y Justicia",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA10-DIM01-LB01",
@@ -10199,7 +11751,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA10-DIM01-LB01-REC-01",
+          "action": "Levantar y normalizar las líneas base de regularización, acceso a servicios y caracterización de población migrante integrando registros de Migración Colombia, SISBEN y Registro Único de Migrantes en el Observatorio Municipal de Población Migrante, con metadatos de cobertura, periodicidad y responsable homologados con Planeación y Hacienda.",
+          "expected_output": "Entrega verificable: PA10-DIM01 líneas base homologadas, meta 0.85 proporción.",
+          "method_id": "SemanticProcessor.chunk_text",
+          "questions": [
+            "Q001",
+            "Q002",
+            "Q003",
+            "Q004",
+            "Q005"
+          ],
+          "owner": "Gerencia de Atención al Migrante",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA10-DIM02-ACT",
@@ -10379,7 +11956,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA10-DIM02-ACT-REC-01",
+          "action": "Documentar el portafolio de actividades del instrumento plan integral de integración socioeconómica de población migrante en fichas operativas con objetivo causal, población objetivo, dosis (jornadas bimestrales de regularización y servicios integrados), costos y responsables, integradas al sistema SIVIGILA migrante y tablero intersectorial de integración y validadas con Planeación.",
+          "expected_output": "Entrega verificable: PA10-DIM02 actividades con ficha completa, meta 0.8 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q006",
+            "Q007",
+            "Q008",
+            "Q009",
+            "Q010"
+          ],
+          "owner": "Gerencia de Atención al Migrante",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA10-DIM03-BPIN",
@@ -10565,7 +12167,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA10-DIM03-BPIN-REC-01",
+          "action": "Radicar y validar las fichas BPIN de centros integrados de atención, ventanillas únicas y programas de empleabilidad con trazabilidad presupuestal (BPIN, cooperación internacional y recursos nacionales de integración), responsables definidos y articulación al Plan Plurianual de Inversiones.",
+          "expected_output": "Entrega verificable: PA10-DIM03 productos con BPIN y FV, meta 0.8 proporción.",
+          "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+          "questions": [
+            "Q011",
+            "Q012",
+            "Q013",
+            "Q014",
+            "Q015"
+          ],
+          "owner": "Gerencia de Atención al Migrante",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA10-DIM04-RESULT",
@@ -10753,7 +12380,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA10-DIM04-RESULT-REC-01",
+          "action": "Construir matriz producto-resultado que conecte entregables con incremento en regularización, afiliación en salud y matrícula educativa, defina indicadores con línea base y metas, y documente supuestos de coordinación con MEN, Ministerio de Salud y cooperación internacional con responsables y cronograma.",
+          "expected_output": "Entrega verificable: PA10-DIM04 resultados con matriz válida, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q016",
+            "Q017",
+            "Q018",
+            "Q019",
+            "Q020"
+          ],
+          "owner": "Gerencia de Atención al Migrante",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA10-DIM05-RIESGOS",
@@ -10941,7 +12593,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA10-DIM05-RIESGOS-REC-01",
+          "action": "Diseñar matriz de impactos y riesgos para integración socioeconómica y reducción de xenofobia con escenarios probabilísticos, análisis de cambios normativos, picos migratorios y tensiones sociales y planes de contingencia articulados al Comité Municipal de Migraciones.",
+          "expected_output": "Entrega verificable: PA10-DIM05 impactos con riesgos modelados, meta 0.7 proporción.",
+          "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+          "questions": [
+            "Q021",
+            "Q022",
+            "Q023",
+            "Q024",
+            "Q025"
+          ],
+          "owner": "Gerencia de Atención al Migrante",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MICRO-PA10-DIM06-DAG",
@@ -11129,7 +12806,32 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MICRO-PA10-DIM06-DAG-REC-01",
+          "action": "Elaborar y validar un DAG para regularización, inclusión en servicios y generación de ingresos con nodos de insumo a impacto, supuestos explícitos, moderadores (capacidad institucional y cooperación internacional) y bitácora de pruebas de consistencia.",
+          "expected_output": "Entrega verificable: PA10-DIM06 DAG validado, meta 0.75 proporción.",
+          "method_id": "CausalExtractor.extract_causal_hierarchy",
+          "questions": [
+            "Q026",
+            "Q027",
+            "Q028",
+            "Q029",
+            "Q030"
+          ],
+          "owner": "Gerencia de Atención al Migrante",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 45000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA02-ALTO",
@@ -11311,7 +13013,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA02-ALTO-REC-01",
+          "action": "Implementar plan de choque territorial con patrullajes integrados, justicia restaurativa y articulación con Fiscalía y Unidad para las Víctimas, corrigiendo brechas en PA02-DIM02 y PA02-DIM05. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL01-PA02 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA02-BAJO",
@@ -11501,7 +13222,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA02-BAJO-REC-01",
+          "action": "Implementar plan de choque territorial con patrullajes integrados, justicia restaurativa y articulación con Fiscalía y Unidad para las Víctimas, corrigiendo brechas en PA02-DIM02 y PA02-DIM05. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL01-PA02 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA02-MEDIO",
@@ -11691,7 +13431,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA02-MEDIO-REC-01",
+          "action": "Implementar plan de choque territorial con patrullajes integrados, justicia restaurativa y articulación con Fiscalía y Unidad para las Víctimas, corrigiendo brechas en PA02-DIM02 y PA02-DIM05. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL01-PA02 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA03-ALTO",
@@ -11873,7 +13632,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA03-ALTO-REC-01",
+          "action": "Integrar alertas IDEAM y PMGRD con la sala de seguridad rural, actualizando PA03-DIM01 y PA03-DIM05 para que soporten la respuesta territorial. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL01-PA03 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA03-BAJO",
@@ -12063,7 +13841,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA03-BAJO-REC-01",
+          "action": "Integrar alertas IDEAM y PMGRD con la sala de seguridad rural, actualizando PA03-DIM01 y PA03-DIM05 para que soporten la respuesta territorial. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL01-PA03 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA03-MEDIO",
@@ -12253,7 +14050,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA03-MEDIO-REC-01",
+          "action": "Integrar alertas IDEAM y PMGRD con la sala de seguridad rural, actualizando PA03-DIM01 y PA03-DIM05 para que soporten la respuesta territorial. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL01-PA03 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA07-ALTO",
@@ -12435,7 +14251,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA07-ALTO-REC-01",
+          "action": "Acelerar planes de ordenamiento rural, protección colectiva y presencia institucional consolidando PA07-DIM03 y PA07-DIM06 con catastro y vías seguras. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL01-PA07 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA07-BAJO",
@@ -12625,7 +14460,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA07-BAJO-REC-01",
+          "action": "Acelerar planes de ordenamiento rural, protección colectiva y presencia institucional consolidando PA07-DIM03 y PA07-DIM06 con catastro y vías seguras. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL01-PA07 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-ALTA-PA07-MEDIO",
@@ -12815,7 +14669,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-ALTA-PA07-MEDIO-REC-01",
+          "action": "Acelerar planes de ordenamiento rural, protección colectiva y presencia institucional consolidando PA07-DIM03 y PA07-DIM06 con catastro y vías seguras. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL01-PA07 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-BAJA-ALTO",
@@ -12993,7 +14866,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-BAJA-ALTO-REC-01",
+          "action": "Formalizar un protocolo de sostenibilidad para el cluster CL01, incluyendo la documentación de buenas prácticas en la gestión de PA02, PA03 y PA07, y establecer un programa de mentoría trimestral para transferir estas capacidades a los equipos de los clusters con desempeño inferior. El protocolo debe ser validado por la Oficina de Planeación.",
+          "expected_output": "Entrega verificable: CL01 dispersión baja sostenida, meta 0.9 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-BAJA-BAJO",
@@ -13179,7 +15071,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-BAJA-BAJO-REC-01",
+          "action": "Implementar protocolos mínimos de coordinación interinstitucional en municipios críticos asegurando planes de respuesta unificados.",
+          "expected_output": "Entrega verificable: CL01 dispersión baja sostenida, meta 0.76 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-BAJA-MEDIO",
@@ -13357,7 +15268,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-BAJA-MEDIO-REC-01",
+          "action": "Formalizar contratos de sostenibilidad y mantener indicadores de convivencia dentro de bandas de control.",
+          "expected_output": "Entrega verificable: CL01 dispersión baja sostenida, meta 0.86 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-MEDIA-ALTO",
@@ -13535,7 +15465,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-MEDIA-ALTO-REC-01",
+          "action": "Mantener coordinación de inteligencia y prevención comunitaria con simulacros semestrales y revisión de supuestos.",
+          "expected_output": "Entrega verificable: CL01 dispersión media controlada, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-MEDIA-BAJO",
@@ -13721,7 +15670,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-MEDIA-BAJO-REC-01",
+          "action": "Reasignar recursos de seguridad, justicia transicional y gestión del riesgo para estabilizar los componentes rezagados en microterritorios priorizados.",
+          "expected_output": "Entrega verificable: CL01 dispersión media controlada, meta 0.74 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL01-MEDIA-MEDIO",
@@ -13907,7 +15875,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL01-MEDIA-MEDIO-REC-01",
+          "action": "Sincronizar patrullajes, justicia restaurativa y alertas de riesgo en un tablero integrado con metas revisadas por cuadrante.",
+          "expected_output": "Entrega verificable: CL01 dispersión media controlada, meta 0.84 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Consejo de Seguridad y Paz Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA01-ALTO",
@@ -14089,7 +16076,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA01-ALTO-REC-01",
+          "action": "Activar plan integral de género con rutas VBG, autonomía económica y cierre de PA01-DIM02 y PA01-DIM05 mediante seguimiento SIG Mujer. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL02-PA01 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA01-BAJO",
@@ -14279,7 +16285,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA01-BAJO-REC-01",
+          "action": "Activar plan integral de género con rutas VBG, autonomía económica y cierre de PA01-DIM02 y PA01-DIM05 mediante seguimiento SIG Mujer. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL02-PA01 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA01-MEDIO",
@@ -14469,7 +16494,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA01-MEDIO-REC-01",
+          "action": "Activar plan integral de género con rutas VBG, autonomía económica y cierre de PA01-DIM02 y PA01-DIM05 mediante seguimiento SIG Mujer. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL02-PA01 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA05-ALTO",
@@ -14651,7 +16695,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA05-ALTO-REC-01",
+          "action": "Reforzar PAPSIVI, reparación integral y generación de ingresos ajustando PA05-DIM03 y PA05-DIM04 con soporte presupuestal y trazabilidad RUV. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL02-PA05 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA05-BAJO",
@@ -14841,7 +16904,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA05-BAJO-REC-01",
+          "action": "Reforzar PAPSIVI, reparación integral y generación de ingresos ajustando PA05-DIM03 y PA05-DIM04 con soporte presupuestal y trazabilidad RUV. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL02-PA05 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA05-MEDIO",
@@ -15031,7 +17113,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA05-MEDIO-REC-01",
+          "action": "Reforzar PAPSIVI, reparación integral y generación de ingresos ajustando PA05-DIM03 y PA05-DIM04 con soporte presupuestal y trazabilidad RUV. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL02-PA05 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA06-ALTO",
@@ -15213,7 +17314,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA06-ALTO-REC-01",
+          "action": "Consolidar programas de protección integral, salud mental y permanencia escolar cerrando PA06-DIM02 y PA06-DIM05 con MEN y ICBF. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL02-PA06 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA06-BAJO",
@@ -15403,7 +17523,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA06-BAJO-REC-01",
+          "action": "Consolidar programas de protección integral, salud mental y permanencia escolar cerrando PA06-DIM02 y PA06-DIM05 con MEN y ICBF. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL02-PA06 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-ALTA-PA06-MEDIO",
@@ -15593,7 +17732,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-ALTA-PA06-MEDIO-REC-01",
+          "action": "Consolidar programas de protección integral, salud mental y permanencia escolar cerrando PA06-DIM02 y PA06-DIM05 con MEN y ICBF. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL02-PA06 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-BAJA-ALTO",
@@ -15771,7 +17929,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-BAJA-ALTO-REC-01",
+          "action": "Formalizar un protocolo de sostenibilidad para el cluster CL02, documentando las lecciones aprendidas en la gestión de PA01, PA05 y PA06. Establecer un programa de acompañamiento técnico para transferir estas capacidades a los equipos de los clusters con desempeño inferior, con reportes de avance bimensuales.",
+          "expected_output": "Entrega verificable: CL02 dispersión baja sostenida, meta 0.9 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-BAJA-BAJO",
@@ -15957,7 +18134,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-BAJA-BAJO-REC-01",
+          "action": "Establecer paquetes mínimos de respuesta para género, víctimas y niñez con financiamiento garantizado.",
+          "expected_output": "Entrega verificable: CL02 dispersión baja sostenida, meta 0.76 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-BAJA-MEDIO",
@@ -16135,7 +18331,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-BAJA-MEDIO-REC-01",
+          "action": "Asegurar la sostenibilidad de los programas mediante la formalización de contratos de operación a largo plazo y la implementación de un sistema de supervisión diferencial con auditorías externas trimestrales. Los hallazgos de la auditoría deben presentarse al Comité de Sostenibilidad.",
+          "expected_output": "Entrega verificable: CL02 dispersión baja sostenida, meta 0.86 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-MEDIA-ALTO",
@@ -16313,7 +18528,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-MEDIA-ALTO-REC-01",
+          "action": "Consolidar la articulación intersectorial garantizando continuidad de programas diferenciales y monitoreo de riesgos de retroceso.",
+          "expected_output": "Entrega verificable: CL02 dispersión media controlada, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-MEDIA-BAJO",
@@ -16499,7 +18733,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-MEDIA-BAJO-REC-01",
+          "action": "Redistribuir servicios diferenciales, PAPSIVI y protección infantil hacia territorios con mayores brechas, con metas corregidas por segmento poblacional.",
+          "expected_output": "Entrega verificable: CL02 dispersión media controlada, meta 0.74 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL02-MEDIA-MEDIO",
@@ -16685,7 +18938,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL02-MEDIA-MEDIO-REC-01",
+          "action": "Unificar tableros SIG Mujer, RUV e infancia para balancear coberturas y metas diferenciadas por sexo y edad.",
+          "expected_output": "Entrega verificable: CL02 dispersión media controlada, meta 0.84 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Mesa Intersectorial de Enfoque Diferencial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-ALTA-PA04-ALTO",
@@ -16867,7 +19139,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-ALTA-PA04-ALTO-REC-01",
+          "action": "Priorizar inversiones de salud, educación y agua con trazabilidad BPIN y contratos, fortaleciendo PA04-DIM03 y PA04-DIM04 para garantizar continuidad de servicios. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL03-PA04 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-ALTA-PA04-BAJO",
@@ -17057,7 +19348,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-ALTA-PA04-BAJO-REC-01",
+          "action": "Priorizar inversiones de salud, educación y agua con trazabilidad BPIN y contratos, fortaleciendo PA04-DIM03 y PA04-DIM04 para garantizar continuidad de servicios. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL03-PA04 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-ALTA-PA04-MEDIO",
@@ -17247,7 +19557,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-ALTA-PA04-MEDIO-REC-01",
+          "action": "Priorizar inversiones de salud, educación y agua con trazabilidad BPIN y contratos, fortaleciendo PA04-DIM03 y PA04-DIM04 para garantizar continuidad de servicios. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL03-PA04 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-ALTA-PA08-ALTO",
@@ -17429,7 +19758,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-ALTA-PA08-ALTO-REC-01",
+          "action": "Fortalecer planes integrales de protección colectiva, esquemas UNP y análisis de riesgo, cerrando PA08-DIM02 y PA08-DIM05 con trazabilidad en SIPARES-DDHH. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL03-PA08 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-ALTA-PA08-BAJO",
@@ -17619,7 +19967,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-ALTA-PA08-BAJO-REC-01",
+          "action": "Fortalecer planes integrales de protección colectiva, esquemas UNP y análisis de riesgo, cerrando PA08-DIM02 y PA08-DIM05 con trazabilidad en SIPARES-DDHH. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL03-PA08 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-ALTA-PA08-MEDIO",
@@ -17809,7 +20176,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-ALTA-PA08-MEDIO-REC-01",
+          "action": "Fortalecer planes integrales de protección colectiva, esquemas UNP y análisis de riesgo, cerrando PA08-DIM02 y PA08-DIM05 con trazabilidad en SIPARES-DDHH. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL03-PA08 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-BAJA-ALTO",
@@ -17987,7 +20373,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-BAJA-ALTO-REC-01",
+          "action": "Formalizar un protocolo de sostenibilidad para el cluster CL03, documentando los procesos de articulación socioambiental y protección comunitaria. Establecer un programa de capacitación para transferir estas capacidades a otros territorios, con seguimiento trimestral.",
+          "expected_output": "Entrega verificable: CL03 dispersión baja sostenida, meta 0.9 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-BAJA-BAJO",
@@ -18173,7 +20578,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-BAJA-BAJO-REC-01",
+          "action": "Establecer y financiar paquetes de servicios mínimos de atención y protección para los territorios con mayores rezagos, asegurando la asignación de recursos mediante reservas presupuestarias específicas y un esquema de supervisión conjunta con la participación de la comunidad.",
+          "expected_output": "Entrega verificable: CL03 dispersión baja sostenida, meta 0.76 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-BAJA-MEDIO",
@@ -18351,7 +20775,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-BAJA-MEDIO-REC-01",
+          "action": "Asegurar la continuidad de los servicios y la protección mediante la formalización de contratos de operación a largo plazo y convenios interinstitucionales, los cuales serán sometidos a una auditoría técnica semestral para verificar su cumplimiento y efectividad.",
+          "expected_output": "Entrega verificable: CL03 dispersión baja sostenida, meta 0.86 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-MEDIA-ALTO",
@@ -18529,7 +20972,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-MEDIA-ALTO-REC-01",
+          "action": "Implementar un programa de mantenimiento preventivo para la infraestructura de servicios sociales y actualizar los planes de protección comunitaria, asegurando la asignación de recursos y la realización de simulacros trimestrales para garantizar la calidad y la respuesta oportuna.",
+          "expected_output": "Entrega verificable: CL03 dispersión media controlada, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-MEDIA-BAJO",
@@ -18715,7 +21177,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-MEDIA-BAJO-REC-01",
+          "action": "Realizar una reprogramación de las inversiones en servicios sociales y protección colectiva, priorizando los territorios más críticos. Esta reprogramación se basará en un análisis socioambiental detallado para asegurar la pertinencia y efectividad de las intervenciones.",
+          "expected_output": "Entrega verificable: CL03 dispersión media controlada, meta 0.74 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL03-MEDIA-MEDIO",
@@ -18901,7 +21382,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL03-MEDIA-MEDIO-REC-01",
+          "action": "Desarrollar e implementar un tablero de control territorial que sincronice el avance de las obras de infraestructura, la operación de los servicios sociales y las acciones de protección comunitaria. Este tablero deberá incluir un sistema de alertas tempranas para identificar y mitigar riesgos de manera proactiva.",
+          "expected_output": "Entrega verificable: CL03 dispersión media controlada, meta 0.84 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-ALTA-PA09-ALTO",
@@ -19083,7 +21583,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-ALTA-PA09-ALTO-REC-01",
+          "action": "Implementar plan integral de cupos, salud y resocialización articulando INPEC, salud y obras, corrigiendo brechas en PA09-DIM03 y PA09-DIM05. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL04-PA09 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-ALTA-PA09-BAJO",
@@ -19273,7 +21792,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-ALTA-PA09-BAJO-REC-01",
+          "action": "Implementar plan integral de cupos, salud y resocialización articulando INPEC, salud y obras, corrigiendo brechas en PA09-DIM03 y PA09-DIM05. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL04-PA09 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-ALTA-PA09-MEDIO",
@@ -19463,7 +22001,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-ALTA-PA09-MEDIO-REC-01",
+          "action": "Implementar plan integral de cupos, salud y resocialización articulando INPEC, salud y obras, corrigiendo brechas en PA09-DIM03 y PA09-DIM05. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL04-PA09 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-ALTA-PA10-ALTO",
@@ -19645,7 +22202,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-ALTA-PA10-ALTO-REC-01",
+          "action": "Acelerar integración de población migrante en salud, educación y empleo cerrando PA10-DIM02 y PA10-DIM05 con Migración Colombia, MEN y MinSalud. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
+          "expected_output": "Entrega verificable: CL04-PA10 brecha corregida, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-ALTA-PA10-BAJO",
@@ -19835,7 +22411,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-ALTA-PA10-BAJO-REC-01",
+          "action": "Acelerar integración de población migrante en salud, educación y empleo cerrando PA10-DIM02 y PA10-DIM05 con Migración Colombia, MEN y MinSalud. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL04-PA10 brecha corregida, meta 0.7 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-ALTA-PA10-MEDIO",
@@ -20025,7 +22620,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-ALTA-PA10-MEDIO-REC-01",
+          "action": "Acelerar integración de población migrante en salud, educación y empleo cerrando PA10-DIM02 y PA10-DIM05 con Migración Colombia, MEN y MinSalud. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
+          "expected_output": "Entrega verificable: CL04-PA10 brecha corregida, meta 0.82 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-BAJA-ALTO",
@@ -20203,7 +22817,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-BAJA-ALTO-REC-01",
+          "action": "Desarrollar y documentar un manual de buenas prácticas en integración de población migrante y resocialización de personas privadas de la libertad. Este manual deberá incluir protocolos y procedimientos replicables para ser transferidos a otros territorios.",
+          "expected_output": "Entrega verificable: CL04 dispersión baja sostenida, meta 0.9 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-BAJA-BAJO",
@@ -20389,7 +23022,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-BAJA-BAJO-REC-01",
+          "action": "Definir y asegurar el financiamiento de paquetes de servicios mínimos para la atención de la población privada de la libertad y migrante. Esto incluye la formalización de protocolos humanitarios y la asignación de recursos específicos para su implementación.",
+          "expected_output": "Entrega verificable: CL04 dispersión baja sostenida, meta 0.76 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-BAJA-MEDIO",
@@ -20567,7 +23219,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-BAJA-MEDIO-REC-01",
+          "action": "Fortalecer la supervisión de los contratos y convenios de atención a población vulnerable mediante la implementación de auditorías externas semestrales. Los resultados de estas auditorías serán vinculantes y deberán ser presentados al Comité de Sostenibilidad.",
+          "expected_output": "Entrega verificable: CL04 dispersión baja sostenida, meta 0.86 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-MEDIA-ALTO",
@@ -20745,7 +23416,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-MEDIA-ALTO-REC-01",
+          "action": "Fortalecer la capacidad instalada para la atención a población vulnerable mediante la firma de convenios de cooperación con organizaciones especializadas. Se establecerá un sistema de vigilancia de indicadores críticos para monitorear el desempeño y asegurar la calidad de los servicios.",
+          "expected_output": "Entrega verificable: CL04 dispersión media controlada, meta 0.88 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-MEDIA-BAJO",
@@ -20931,7 +23621,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-MEDIA-BAJO-REC-01",
+          "action": "Realizar una reorientación estratégica de los recursos para atender las necesidades más urgentes en materia de cupos penitenciarios, salud carcelaria y servicios a migrantes. Se establecerán metas corregidas y específicas para cada población objetivo, con seguimiento trimestral.",
+          "expected_output": "Entrega verificable: CL04 dispersión media controlada, meta 0.74 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MESO-CL04-MEDIA-MEDIO",
@@ -21117,7 +23826,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MESO-CL04-MEDIA-MEDIO-REC-01",
+          "action": "Implementar un tablero de control unificado que sincronice los datos de los sistemas penitenciario y migratorio. Este tablero permitirá balancear las coberturas de servicios y desarrollar estrategias para reducir las tensiones en las comunidades de acogida.",
+          "expected_output": "Entrega verificable: CL04 dispersión media controlada, meta 0.84 proporción.",
+          "method_id": "GovernanceBoard.activate",
+          "questions": [],
+          "owner": "Comité de DESC y Gestión Migratoria",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 150000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MACRO-ALTO-MODERADO",
@@ -21307,7 +24035,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MACRO-ALTO-MODERADO-REC-01",
+          "action": "Acelerar inversiones territoriales y planes de protección colectiva, garantizando mantenimiento preventivo y acompañamiento comunitario para sostener el nivel BUENO sin rezagos sectoriales.",
+          "expected_output": "Entrega verificable: Macro BUENO equilibrado, meta 0.82 proporción.",
+          "method_id": "PolicySteering.activate",
+          "questions": [],
+          "owner": "Comité Territorial Socioambiental",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 500000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MACRO-COHESION-SATISFACTORIO",
@@ -21500,7 +24247,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MACRO-COHESION-SATISFACTORIO-REC-01",
+          "action": "Implementar plan de cohesión meso-macro que sincronice enfoques diferenciales y territoriales, escale programas exitosos y ajuste metas de protección colectiva.",
+          "expected_output": "Entrega verificable: Macro SATISFACTORIO optimizado, meta 0.78 proporción.",
+          "method_id": "PolicySteering.activate",
+          "questions": [],
+          "owner": "Gabinete Social Territorial",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 500000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MACRO-EXCELENTE-SOSTENER",
@@ -21679,7 +24445,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MACRO-EXCELENTE-SOSTENER-REC-01",
+          "action": "Consolidar protocolo de sostenibilidad macro con auditorías cruzadas, gestión del conocimiento y preparación de paquetes replicables para otros territorios.",
+          "expected_output": "Entrega verificable: Macro EXCELENTE sostenido, meta 0.9 proporción.",
+          "method_id": "PolicySteering.activate",
+          "questions": [],
+          "owner": "Consejo de Gobierno",
+          "timeframe": {
+            "start": "T0",
+            "end": "T1"
+          },
+          "cost": {
+            "estimate": 500000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MACRO-GLOBAL-DEFICIENTE",
@@ -21875,7 +24660,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MACRO-GLOBAL-DEFICIENTE-REC-01",
+          "action": "Conformar sala de crisis macro que reorganice portafolio, reasigne 20% del presupuesto a cierres críticos y active misiones conjuntas Nación-territorio para estabilizar seguridad, servicios y gestión migratoria.",
+          "expected_output": "Entrega verificable: Macro DEFICIENTE corregido, meta 0.65 proporción.",
+          "method_id": "PolicySteering.activate",
+          "questions": [],
+          "owner": "Comité Estratégico PDM",
+          "timeframe": {
+            "start": "T0",
+            "end": "T3"
+          },
+          "cost": {
+            "estimate": 500000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     },
     {
       "rule_id": "REC-MACRO-SEG-SOC-INSUFICIENTE",
@@ -22068,7 +24872,26 @@
           }
         ],
         "fiscal_year": 2025
-      }
+      },
+      "recommendations": [
+        {
+          "id": "REC-MACRO-SEG-SOC-INSUFICIENTE-REC-01",
+          "action": "Activar misión conjunta seguridad-social para ejecutar proyectos de infraestructura prioritaria, protección a líderes y ampliación de cupos y servicios a población migrante con seguimiento quincenal.",
+          "expected_output": "Entrega verificable: Macro INSUFICIENTE estabilizado, meta 0.72 proporción.",
+          "method_id": "PolicySteering.activate",
+          "questions": [],
+          "owner": "Comisión Intersectorial de Recuperación Macro",
+          "timeframe": {
+            "start": "T0",
+            "end": "T2"
+          },
+          "cost": {
+            "estimate": 500000000.0,
+            "currency": "COP",
+            "basis": "score_band_scaled"
+          }
+        }
+      ]
     }
   ]
 }
