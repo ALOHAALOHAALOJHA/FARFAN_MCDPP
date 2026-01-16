@@ -155,15 +155,19 @@ CANON_POLICY_AREAS: dict[str, dict[str, Any]] = {
 }
 
 # ============================================================================
-# MICRO-LEVEL ANALYSIS UNITS
+# MICRO-LEVEL QUALITY THRESHOLDS
 # ============================================================================
+# These thresholds define quality levels for scoring and calibration across
+# the entire pipeline. They provide a consistent scale for evaluating
+# evidence, alignment, and analytical outputs.
 
-MICRO_LEVELS: list[str] = [
-    "municipal",
-    "departamental",
-    "regional",
-    "nacional",
-]
+MICRO_LEVELS: dict[str, float] = {
+    "DEFICIENTE": 0.25,    # Poor quality - significant issues
+    "INSUFICIENTE": 0.40,  # Insufficient - below minimum standards
+    "ACEPTABLE": 0.55,     # Acceptable - meets minimum requirements
+    "BUENO": 0.70,         # Good - above minimum, solid quality
+    "EXCELENTE": 0.85,     # Excellent - high quality, best practices
+}
 
 # ============================================================================
 # ALIGNMENT THRESHOLDS
