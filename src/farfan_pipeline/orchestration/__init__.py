@@ -10,17 +10,23 @@ EXPORTS:
     - Phase Management: PhaseID, PhaseStatus, ContractEnforcer
     - Calibration types: CalibrationResult, CalibrationSubject, etc.
 
-Note: Orchestrator is imported from orchestrator.py directly to avoid
-      circular import issues with complex dependencies.
+Note: Calibration types imports are optional. If calibration_types module
+      is not available, only core orchestration classes are exported.
 """
 
-from farfan_pipeline.calibration.calibration_types import (
-    ROLE_LAYER_REQUIREMENTS,
-    VALID_ROLES,
-    CalibrationEvidenceContext,
-    CalibrationResult,
-    CalibrationSubject,
-    LayerId,
+# Try to import calibration types if available
+try:
+    from farfan_pipeline.calibration.pdm_calibrator import CalibrationResult
+    _has_calibration_types = True
+except ImportError:
+    _has_calibration_types = False
+
+# Always export core orchestration classes
+from farfan_pipeline.orchestration.orchestrator import (
+    Orchestrator,
+    MethodExecutor,
+    Phase0ValidationResult,
+    GateResult,
 )
 
 # Core Orchestrator Components
@@ -70,3 +76,7 @@ __all__ = [
     "CalibrationEvidenceContext",
     "CalibrationResult",
 ]
+
+# Add calibration types if available
+if _has_calibration_types:
+    __all__.append("CalibrationResult")

@@ -47,7 +47,7 @@ class PDMProfileContract:
     """
 
     DEFAULT_PROFILE_PATH = Path(
-        "src/farfan_pipeline/infrastructure/parametrization/pdm_structural_profile.py"
+        "src/farfan_pipeline/pdm/profile/pdm_structural_profile.py"
     )
 
     @staticmethod
