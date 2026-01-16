@@ -51,7 +51,7 @@ except Exception as e:
     )
 
 try:
-    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT
 except ImportError:
     from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 

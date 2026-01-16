@@ -13,7 +13,7 @@ import logging
 from collections.abc import Generator
 from pathlib import Path
 
-from ..phase1_02_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT, PHASE1_LOGGER_NAME
+from ..PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT, PHASE1_LOGGER_NAME
 
 try:
     import fitz

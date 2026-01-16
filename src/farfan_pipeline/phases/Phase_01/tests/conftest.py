@@ -66,7 +66,7 @@ def sample_smart_chunk_data() -> dict:
 @pytest.fixture
 def phase1_dir() -> Path:
     """Get Phase 1 directory path (canonical location)."""
-    # We're in src/farfan_pipeline/phases/Phase_1/tests/
+    # We're in src/farfan_pipeline.phases.Phase_01/tests/
     # Phase 1 directory is parent
     return Path(__file__).resolve().parent.parent
 

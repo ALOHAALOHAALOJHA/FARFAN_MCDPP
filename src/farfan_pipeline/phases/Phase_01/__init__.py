@@ -48,7 +48,7 @@ from .phase1_03_00_models import (
 from .phase1_05_00_thread_safe_results import ThreadSafeResults
 
 # Constants
-from .phase1_02_00_phase_1_constants import (
+from .PHASE_1_CONSTANTS import (
     ASSIGNMENT_METHOD_FALLBACK,
     ASSIGNMENT_METHOD_SEMANTIC,
     CHUNK_ID_PATTERN,

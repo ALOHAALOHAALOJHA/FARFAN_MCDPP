@@ -12,7 +12,43 @@ Updated to support question-level granularity (300 questions = 10 PA × 6 DIM ×
 This addresses the audit finding that Phase 1 must map to questionnaire questions.
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 1
+__stage__ = 10
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
+
+
 from typing import Final
+
+# =============================================================================
+# QUESTIONNAIRE CONSTANTS
+# =============================================================================
+
+TOTAL_QUESTIONS: Final[int] = 300
+"""
+Total number of questions in the questionnaire (10 PA × 6 DIM × 5 Q/slot).
+
+This is the constitutional invariant for Phase 1: all chunk combinations
+must map to exactly 300 question slots.
+"""
+
+QUESTIONS_PER_SLOT: Final[int] = 5
+"""
+Number of questions per chunk slot.
+
+Each chunk (PA-DIM combination) has 5 question slots, giving us
+300 total questions (10 PA × 6 DIM × 5 Q/slot).
+"""
 
 # =============================================================================
 # SPEC-001: PDF Extraction Limits
@@ -47,7 +83,7 @@ Composition:
 Normalization: semantic_confidence = min(1.0, raw_score / SEMANTIC_SCORE_MAX_EXPECTED)
 """
 
-ASSIGNMENT_METHOD_SEMANTIC:  Final[str] = "semantic"
+ASSIGNMENT_METHOD_SEMANTIC: Final[str] = "semantic"
 ASSIGNMENT_METHOD_FALLBACK: Final[str] = "fallback_sequential"
 
 VALID_ASSIGNMENT_METHODS: Final[tuple[str, ...]] = (
@@ -61,7 +97,7 @@ VALID_ASSIGNMENT_METHODS: Final[tuple[str, ...]] = (
 
 # Question-level granularity (NEW)
 QUESTIONS_PER_DIMENSION: Final[int] = 5  # Q1-Q5 per PA×DIM combination
-POLICY_AREA_COUNT:  Final[int] = 10
+POLICY_AREA_COUNT: Final[int] = 10
 DIMENSION_COUNT: Final[int] = 6
 
 # OLD: 60 chunks (PA×DIM) - DEPRECATED, kept for backward compatibility reference
@@ -73,7 +109,7 @@ TOTAL_CHUNK_COMBINATIONS: Final[int] = (
 )  # 300
 
 # Chunk ID patterns
-CHUNK_ID_PATTERN_LEGACY: Final[str] = r'^PA(0[1-9]|10)-DIM0[1-6]$'
+CHUNK_ID_PATTERN_LEGACY: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]$"
 """
 Legacy chunk_id pattern for PA×DIM combinations (deprecated).
 
@@ -82,7 +118,7 @@ Examples:
   - PA10-DIM06 ✅
 """
 
-CHUNK_ID_PATTERN: Final[str] = r'^CHUNK-PA(0[1-9]|10)-DIM0[1-6]-Q[1-5]$'
+CHUNK_ID_PATTERN: Final[str] = r"^CHUNK-PA(0[1-9]|10)-DIM0[1-6]-Q[1-5]$"
 """
 New chunk_id pattern for question-level chunks (PA×DIM×Q).
 
@@ -92,7 +128,7 @@ Examples:
   - CHUNK-PA01DIM01-Q6 ❌ (Q slot out of range 1-5)
 """
 
-QUESTION_ID_PATTERN: Final[str] = r'^Q([1-9]|[1-9][0-9]|[12][0-9][0-9]|300)$'
+QUESTION_ID_PATTERN: Final[str] = r"^Q([1-9]|[1-9][0-9]|[12][0-9][0-9]|300)$"
 """
 Pattern for valid question_id from questionnaire.
 
@@ -111,16 +147,16 @@ SUBPHASE_COUNT: Final[int] = 16  # SP0 through SP15
 
 # Keys in subphase_results that are NOT integer subphase indices
 SUBPHASE_METADATA_KEYS: Final[tuple[str, ...]] = (
-    'truncation_audit',
-    'irrigation_map',
-    'final_rankings',
+    "truncation_audit",
+    "irrigation_map",
+    "final_rankings",
 )
 
 # =============================================================================
 # SPEC-005: Logging Configuration
 # =============================================================================
 
-PHASE1_LOGGER_NAME: Final[str] = "farfan_pipeline.phases.Phase_one"
+PHASE1_LOGGER_NAME: Final[str] = "farfan_pipeline.phases.Phase_01"
 
 # =============================================================================
 # SPEC-006: Determinism

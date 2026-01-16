@@ -71,11 +71,9 @@ from enum import Enum
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
 try:
-    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
 except ImportError:
-    # Fallback if farfan_pipeline is not in path directly but src is?
-    # Or keep the old one just in case but it seems broken.
-    # I'll try the absolute one first.
+    # Fallback for legacy Phase_zero alias
     from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
 
 from .phase1_03_00_models import (
@@ -128,8 +126,7 @@ class PDTSectionType(Enum):
 PDT_TYPES_AVAILABLE = True
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
-# NOTE: cpp_models was reclassified to docs/legacy/ - import from there
-from .docs.legacy.phase1_01_00_cpp_models import (
+from .phase1_01_00_cpp_models import (
     CanonPolicyPackage,
     CanonPolicyPackageValidator,
     ChunkGraph,
@@ -216,29 +213,34 @@ except ImportError as e:
 # Methods Dispensary via factory/registry (no direct module imports)
 try:
     from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
+    _METHOD_REGISTRY = MethodRegistry()
+    _METHOD_REGISTRY_AVAILABLE = True
 except ImportError:
-    # If import fails, raise with clear message
-    raise ImportError(
-        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry. "
-        "Ensure Phase_2 module is properly installed and accessible."
-    )
-
-_METHOD_REGISTRY = MethodRegistry()
+    # Degraded mode: Phase 2 methods unavailable
+    import logging
+    logging.getLogger(__name__).warning("Phase 2 MethodRegistry not available. Running in degraded mode without advanced methods.")
+    _METHOD_REGISTRY = None
+    _METHOD_REGISTRY_AVAILABLE = False
+    MethodRegistryError = Exception  # Fallback exception type
 
 def _get_beach_classifier():
     """Resolve BeachEvidentialTest.classify_test via registry."""
+    if not _METHOD_REGISTRY_AVAILABLE or _METHOD_REGISTRY is None:
+        return None
     try:
         return _METHOD_REGISTRY.get_method("BeachEvidentialTest", "classify_test")
-    except MethodRegistryError:
+    except (MethodRegistryError, Exception):
         return None
 
 
 def _get_teoria_cambio_class():
     """Resolve TeoriaCambio class via registry without direct import."""
+    if not _METHOD_REGISTRY_AVAILABLE or _METHOD_REGISTRY is None:
+        return None
     try:
         # Protected access acceptable here to avoid module-level import
         return _METHOD_REGISTRY._load_class("TeoriaCambio")
-    except MethodRegistryError:
+    except (MethodRegistryError, Exception):
         return None
 
 

@@ -10,7 +10,7 @@ import logging
 from dataclasses import dataclass
 from typing import Any
 
-from ..phase1_02_00_phase_1_constants import PHASE1_LOGGER_NAME
+from ..PHASE_1_CONSTANTS import PHASE1_LOGGER_NAME
 
 logger = logging.getLogger(PHASE1_LOGGER_NAME)
 
