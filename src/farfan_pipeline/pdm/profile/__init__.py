@@ -9,6 +9,7 @@ Components:
     - CanonicalSection: Canonical sections enum
     - ContextualMarker: P-D-Q markers (Problem, Decision, Quality)
     - SemanticRule: Semantic integrity rules
+    - StructuralTransition: Structural transitions
     - TableSchema: PDM table schemas
     - PDMStructuralProfile: Main profile class
     - get_default_profile(): Get default PDM profile
@@ -22,6 +23,7 @@ from .pdm_structural_profile import (
     CanonicalSection,
     ContextualMarker,
     SemanticRule,
+    StructuralTransition,
     TableSchema,
     PDMStructuralProfile,
     get_default_profile,
@@ -32,6 +34,7 @@ __all__ = [
     "CanonicalSection",
     "ContextualMarker",
     "SemanticRule",
+    "StructuralTransition",
     "TableSchema",
     "PDMStructuralProfile",
     "get_default_profile",
