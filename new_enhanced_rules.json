@@ -159,9 +159,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -326,9 +326,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -499,9 +499,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -672,9 +672,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -845,9 +845,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -1018,9 +1018,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -1185,9 +1185,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -1352,9 +1352,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -1525,9 +1525,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -1698,9 +1698,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -1871,9 +1871,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -2044,9 +2044,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -2211,9 +2211,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -2378,9 +2378,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -2551,9 +2551,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -2724,9 +2724,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -2897,9 +2897,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -3070,9 +3070,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -3237,9 +3237,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -3404,9 +3404,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -3577,9 +3577,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -3750,9 +3750,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -3923,9 +3923,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -4096,9 +4096,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -4263,9 +4263,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -4430,9 +4430,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -4603,9 +4603,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -4776,9 +4776,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -4949,9 +4949,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -5122,9 +5122,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -5289,9 +5289,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -5456,9 +5456,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -5629,9 +5629,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -5802,9 +5802,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -5975,9 +5975,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -6148,9 +6148,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -6315,9 +6315,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -6482,9 +6482,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -6655,9 +6655,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -6828,9 +6828,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -7001,9 +7001,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -7174,9 +7174,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -7341,9 +7341,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -7508,9 +7508,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -7681,9 +7681,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -7854,9 +7854,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -8027,9 +8027,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -8200,9 +8200,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -8367,9 +8367,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -8534,9 +8534,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -8707,9 +8707,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -8880,9 +8880,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -9053,9 +9053,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -9226,9 +9226,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -9393,9 +9393,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -9560,9 +9560,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -9733,9 +9733,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -9906,9 +9906,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -10079,9 +10079,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -10252,9 +10252,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -10419,9 +10419,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -10586,9 +10586,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -10759,9 +10759,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -10932,9 +10932,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -11105,9 +11105,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -11278,9 +11278,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -11445,9 +11445,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -11612,9 +11612,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -11785,9 +11785,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -11958,9 +11958,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -12131,9 +12131,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -12304,9 +12304,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -12471,9 +12471,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -12638,9 +12638,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -12811,9 +12811,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -12984,9 +12984,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -13157,9 +13157,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -13330,9 +13330,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -13497,9 +13497,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -13664,9 +13664,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -13837,9 +13837,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -14010,9 +14010,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -14183,9 +14183,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -14356,9 +14356,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -14523,9 +14523,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -14690,9 +14690,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -14863,9 +14863,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -15036,9 +15036,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -15209,9 +15209,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -15382,9 +15382,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -15549,9 +15549,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -15716,9 +15716,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -15889,9 +15889,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -16062,9 +16062,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -16235,9 +16235,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -16408,9 +16408,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -16575,9 +16575,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -16742,9 +16742,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -16915,9 +16915,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -17088,9 +17088,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -17261,9 +17261,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -17434,9 +17434,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -17601,9 +17601,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -17768,9 +17768,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -17941,9 +17941,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -18114,9 +18114,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -18287,9 +18287,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -18460,9 +18460,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -18627,9 +18627,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -18794,9 +18794,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -18967,9 +18967,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -19140,9 +19140,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -19313,9 +19313,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -19486,9 +19486,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -19653,9 +19653,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -19820,9 +19820,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -19993,9 +19993,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -20166,9 +20166,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -20339,9 +20339,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -20512,9 +20512,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -20679,9 +20679,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -20846,9 +20846,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -21019,9 +21019,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -21192,9 +21192,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -21365,9 +21365,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -21538,9 +21538,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -21705,9 +21705,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -21872,9 +21872,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -22045,9 +22045,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -22218,9 +22218,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -22391,9 +22391,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -22564,9 +22564,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -22731,9 +22731,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -22898,9 +22898,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -23071,9 +23071,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -23244,9 +23244,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -23417,9 +23417,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -23590,9 +23590,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -23757,9 +23757,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -23924,9 +23924,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -24097,9 +24097,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -24270,9 +24270,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -24443,9 +24443,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -24616,9 +24616,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -24783,9 +24783,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -24950,9 +24950,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -25123,9 +25123,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -25296,9 +25296,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -25469,9 +25469,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -25642,9 +25642,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -25809,9 +25809,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -25976,9 +25976,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -26149,9 +26149,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -26322,9 +26322,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -26495,9 +26495,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -26668,9 +26668,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -26835,9 +26835,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -27002,9 +27002,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -27175,9 +27175,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -27348,9 +27348,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -27521,9 +27521,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -27694,9 +27694,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -27861,9 +27861,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -28028,9 +28028,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -28201,9 +28201,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -28374,9 +28374,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -28547,9 +28547,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -28720,9 +28720,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -28887,9 +28887,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -29054,9 +29054,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -29227,9 +29227,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -29400,9 +29400,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -29573,9 +29573,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -29746,9 +29746,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -29913,9 +29913,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -30080,9 +30080,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -30253,9 +30253,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -30426,9 +30426,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -30599,9 +30599,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -30772,9 +30772,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -30939,9 +30939,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -31106,9 +31106,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -31279,9 +31279,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -31452,9 +31452,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -31625,9 +31625,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -31798,9 +31798,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -31965,9 +31965,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -32132,9 +32132,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -32305,9 +32305,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -32478,9 +32478,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -32651,9 +32651,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -32824,9 +32824,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -32991,9 +32991,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -33158,9 +33158,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -33331,9 +33331,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -33504,9 +33504,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -33677,9 +33677,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -33850,9 +33850,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -34017,9 +34017,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -34184,9 +34184,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -34357,9 +34357,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -34530,9 +34530,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -34703,9 +34703,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -34876,9 +34876,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -35043,9 +35043,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -35210,9 +35210,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -35383,9 +35383,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -35556,9 +35556,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -35729,9 +35729,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -35902,9 +35902,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -36069,9 +36069,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -36236,9 +36236,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -36409,9 +36409,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -36582,9 +36582,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -36755,9 +36755,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -36928,9 +36928,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -37095,9 +37095,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -37262,9 +37262,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -37435,9 +37435,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -37608,9 +37608,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -37781,9 +37781,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -37954,9 +37954,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -38121,9 +38121,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -38288,9 +38288,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -38461,9 +38461,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -38634,9 +38634,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -38807,9 +38807,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -38980,9 +38980,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -39147,9 +39147,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -39314,9 +39314,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -39487,9 +39487,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -39660,9 +39660,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -39833,9 +39833,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -40006,9 +40006,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -40173,9 +40173,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -40340,9 +40340,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -40513,9 +40513,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -40686,9 +40686,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -40859,9 +40859,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -41032,9 +41032,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -41199,9 +41199,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -41366,9 +41366,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -41539,9 +41539,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -41712,9 +41712,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -41885,9 +41885,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -42058,9 +42058,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -42225,9 +42225,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -42392,9 +42392,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -42565,9 +42565,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -42738,9 +42738,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -42911,9 +42911,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -43084,9 +43084,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -43250,9 +43250,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -43416,9 +43416,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -43588,9 +43588,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -43760,9 +43760,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -43932,9 +43932,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -44104,9 +44104,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -44270,9 +44270,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -44436,9 +44436,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -44608,9 +44608,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -44780,9 +44780,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -44952,9 +44952,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -45124,9 +45124,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -45290,9 +45290,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -45456,9 +45456,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -45628,9 +45628,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -45800,9 +45800,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -45972,9 +45972,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -46144,9 +46144,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -46310,9 +46310,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -46476,9 +46476,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -46648,9 +46648,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -46820,9 +46820,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -46992,9 +46992,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -47164,9 +47164,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -47330,9 +47330,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -47496,9 +47496,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -47668,9 +47668,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -47840,9 +47840,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -48012,9 +48012,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -48184,9 +48184,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -48350,9 +48350,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -48516,9 +48516,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -48688,9 +48688,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -48860,9 +48860,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -49032,9 +49032,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -49204,9 +49204,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -49371,9 +49371,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -49538,9 +49538,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -49711,9 +49711,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -49884,9 +49884,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -50057,9 +50057,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -50230,9 +50230,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -50397,9 +50397,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -50564,9 +50564,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -50737,9 +50737,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -50910,9 +50910,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -51083,9 +51083,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -51256,9 +51256,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -51423,9 +51423,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -51590,9 +51590,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -51763,9 +51763,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -51936,9 +51936,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -52109,9 +52109,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -52282,9 +52282,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -52449,9 +52449,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -52616,9 +52616,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -52789,9 +52789,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -52962,9 +52962,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -53135,9 +53135,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -53308,9 +53308,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -53475,9 +53475,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -53642,9 +53642,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -53815,9 +53815,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -53988,9 +53988,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -54161,9 +54161,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -54334,9 +54334,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -54501,9 +54501,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -54668,9 +54668,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -54841,9 +54841,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -55014,9 +55014,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -55187,9 +55187,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -55360,9 +55360,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -55527,9 +55527,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -55694,9 +55694,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -55867,9 +55867,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -56040,9 +56040,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -56213,9 +56213,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -56386,9 +56386,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -56553,9 +56553,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -56720,9 +56720,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -56893,9 +56893,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -57066,9 +57066,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -57239,9 +57239,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -57412,9 +57412,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -57579,9 +57579,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -57746,9 +57746,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -57919,9 +57919,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -58092,9 +58092,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -58265,9 +58265,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -58438,9 +58438,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -58605,9 +58605,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -58772,9 +58772,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -58945,9 +58945,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -59118,9 +59118,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -59291,9 +59291,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -59464,9 +59464,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -59631,9 +59631,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -59798,9 +59798,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -59971,9 +59971,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -60144,9 +60144,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -60317,9 +60317,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -60490,9 +60490,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -60657,9 +60657,9 @@
           "end": "T0+3M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 1300000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -60824,9 +60824,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 900000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -60997,9 +60997,9 @@
           "end": "T1"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 550000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -61170,9 +61170,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 315000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -61343,9 +61343,9 @@
           "end": "T2"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 187500000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -61516,9 +61516,9 @@
           "end": "T3"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 260000000.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -61639,9 +61639,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -61762,9 +61762,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -61885,9 +61885,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62008,9 +62008,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62131,9 +62131,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62253,9 +62253,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62375,9 +62375,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62497,9 +62497,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62619,9 +62619,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62741,9 +62741,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62863,9 +62863,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -62985,9 +62985,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63107,9 +63107,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63229,9 +63229,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63351,9 +63351,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63473,9 +63473,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63595,9 +63595,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63717,9 +63717,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63839,9 +63839,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -63961,9 +63961,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64082,9 +64082,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64203,9 +64203,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64324,9 +64324,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64445,9 +64445,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64566,9 +64566,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64646,9 +64646,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64726,9 +64726,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64804,9 +64804,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64882,9 +64882,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -64960,9 +64960,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65038,9 +65038,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65116,9 +65116,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65194,9 +65194,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65273,9 +65273,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65352,9 +65352,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65431,9 +65431,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65508,9 +65508,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65585,9 +65585,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65662,9 +65662,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65739,9 +65739,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65816,9 +65816,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65893,9 +65893,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -65970,9 +65970,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66047,9 +66047,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66124,9 +66124,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66177,9 +66177,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66230,9 +66230,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66283,9 +66283,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66358,9 +66358,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66433,9 +66433,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66508,9 +66508,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66583,9 +66583,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66628,9 +66628,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66673,9 +66673,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66718,9 +66718,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]
@@ -66763,9 +66763,9 @@
           "end": "T0+6M"
         },
         "cost": {
-          "estimate": 0,
+          "estimate": 0.0,
           "currency": "COP",
-          "basis": "score_scaled"
+          "basis": "score_band_scaled"
         }
       }
     ]

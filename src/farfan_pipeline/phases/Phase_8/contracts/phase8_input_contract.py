@@ -65,12 +65,20 @@ PHASE8_INPUT_PRECONDITIONS = [
         criticality="CRITICAL",
         validation_rule="recommendation_rules_enhanced.json exists and is valid JSON"
     ),
+    Phase8InputPrecondition(
+        id="PRE-P8-006",
+        name="Rule Schema Exists",
+        description="Recommendation rules schema must exist and be readable",
+        criticality="HIGH",
+        validation_rule="rules/recommendation_rules.schema.json exists and is valid JSON"
+    ),
 ]
 
 
 def validate_phase8_input_contract(
     phase7_output: Dict[str, Any],
-    rules_path: Path | None = None
+    rules_path: Path | None = None,
+    schema_path: Path | None = None,
 ) -> Dict[str, Any]:
     """
     Validate Phase 8 input contract.
@@ -139,7 +147,18 @@ def validate_phase8_input_contract(
         else:
             results['preconditions_passed'] += 1
     else:
-        # Assume rules exist if path not provided
+        results['preconditions_passed'] += 1
+
+    # PRE-P8-006: Rule schema
+    if schema_path:
+        if not schema_path.exists():
+            results['failures'].append({
+                'id': 'PRE-P8-006',
+                'message': f'Rule schema not found: {schema_path}'
+            })
+        else:
+            results['preconditions_passed'] += 1
+    else:
         results['preconditions_passed'] += 1
     
     # Set overall status

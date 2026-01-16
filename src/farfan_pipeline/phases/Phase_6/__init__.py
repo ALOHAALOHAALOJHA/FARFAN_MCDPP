@@ -36,6 +36,11 @@ from .phase6_10_00_phase_6_constants import (
     DispersionScenario,
     Phase6Invariants,
 )
+from .phase6_10_01_scoring_config import (
+    PHASE6_CONFIG,
+    CoherenceQuality,
+    Phase6ScoringConfig,
+)
 
 from .phase6_10_00_cluster_score import ClusterScore
 from .phase6_30_00_cluster_aggregator import ClusterAggregator
@@ -52,6 +57,9 @@ __all__ = [
     "PENALTY_WEIGHT",
     "DispersionScenario",
     "Phase6Invariants",
+    "PHASE6_CONFIG",
+    "Phase6ScoringConfig",
+    "CoherenceQuality",
     "ClusterScore",
     "ClusterAggregator",
 ]

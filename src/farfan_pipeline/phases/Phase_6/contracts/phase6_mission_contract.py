@@ -13,7 +13,7 @@ Topological Order:
 1. phase6_10_00_phase_6_constants.py - Constants and configuration
 2. phase6_10_00_cluster_score.py - ClusterScore data model
 3. phase6_20_00_adaptive_meso_scoring.py - Adaptive penalty logic
-4. phase6_30_00_cluster_aggregator.py - Main aggregation logic (to be created)
+4. phase6_30_00_cluster_aggregator.py - Main aggregation logic
 
 Module: src/farfan_pipeline/phases/Phase_6/contracts/phase6_mission_contract.py
 Phase: 6 (Cluster Aggregation - MESO)
@@ -195,7 +195,7 @@ TOPOLOGICAL_ORDER = [
     {
         "file": "phase6_30_00_cluster_aggregator.py",
         "stage": 30,
-        "description": "Main cluster aggregation logic (to be created)",
+        "description": "Main cluster aggregation logic",
         "dependencies": [
             "phase6_10_00_phase_6_constants.py",
             "phase6_10_00_cluster_score.py",
