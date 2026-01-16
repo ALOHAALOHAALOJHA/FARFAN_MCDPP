@@ -118,13 +118,9 @@ class MacroAggregator:
                 k: v / weight_sum for k, v in self.cluster_weights.items()
             }
     
-    @content_hash_cache
     def aggregate(self, cluster_scores: list[ClusterScore]) -> MacroScore:
         """
         Aggregate cluster scores into macro score.
-        
-        SOTA Optimization #3: Results are cached based on content hash of inputs.
-        Identical inputs return cached results without recomputation.
         
         Args:
             cluster_scores: List of 4 ClusterScore objects
