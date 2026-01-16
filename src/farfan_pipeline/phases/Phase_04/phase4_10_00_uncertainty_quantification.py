@@ -393,7 +393,7 @@ class BootstrapConvergenceAnalyzer:
 
         z = (mean_first - mean_last) / math.sqrt(se_diff_sq)
 
-        p = 2. 0 * (1.0 - self._standard_normal_cdf(abs(z)))
+        p = 2.0 * (1.0 - self._standard_normal_cdf(abs(z)))
 
         return z, p
 

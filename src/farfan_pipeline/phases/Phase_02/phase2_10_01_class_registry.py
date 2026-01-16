@@ -39,6 +39,10 @@ _CLASS_PATHS: Mapping[str, str] = {
     "PolicyTextProcessor": "farfan_pipeline.methods.policy_processor.PolicyTextProcessor",
     "BayesianEvidenceScorer": "farfan_pipeline.methods.policy_processor.BayesianEvidenceScorer",
     "_FallbackTemporalVerifier": "farfan_pipeline.methods.policy_processor._FallbackTemporalVerifier",
+    "AdvancedTextSanitizer": "farfan_pipeline.methods.policy_processor.AdvancedTextSanitizer",
+    "PolicyAnalysisPipeline": "farfan_pipeline.methods.policy_processor.PolicyAnalysisPipeline",
+    "_FallbackBayesianCalculator": "farfan_pipeline.methods.policy_processor._FallbackBayesianCalculator",
+    "_FallbackContradictionDetector": "farfan_pipeline.methods.policy_processor._FallbackContradictionDetector",
     # Contradiction Detection
     "PolicyContradictionDetector": "farfan_pipeline.methods.contradiction_deteccion.PolicyContradictionDetector",
     "TemporalLogicVerifier": "farfan_pipeline.methods.contradiction_deteccion.TemporalLogicVerifier",
@@ -46,6 +50,7 @@ _CLASS_PATHS: Mapping[str, str] = {
     "SemanticValidator": "farfan_pipeline.methods.contradiction_deteccion.SemanticValidator",
     "ContradictionDominator": "farfan_pipeline.methods.contradiction_deteccion.ContradictionDominator",
     "LogicalConsistencyChecker": "farfan_pipeline.methods.contradiction_deteccion.LogicalConsistencyChecker",
+    "DempsterShaferCombinator": "farfan_pipeline.methods.contradiction_deteccion.DempsterShaferCombinator",
     # Financial Analysis
     "PDETMunicipalPlanAnalyzer": "farfan_pipeline.methods.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer",
     "FinancialAggregator": "farfan_pipeline.methods.financiero_viabilidad_tablas.FinancialAggregator",
@@ -72,17 +77,25 @@ _CLASS_PATHS: Mapping[str, str] = {
     "AdvancedSemanticChunker": "farfan_pipeline.methods.embedding_policy.AdvancedSemanticChunker",
     "EmbeddingPolicyProducer": "farfan_pipeline.methods.embedding_policy.EmbeddingPolicyProducer",
     "SemanticChunker": "farfan_pipeline.methods.embedding_policy.AdvancedSemanticChunker",
+    "AnalyticalDimension": "farfan_pipeline.methods.embedding_policy.AnalyticalDimension",
+    "PolicyCrossEncoderReranker": "farfan_pipeline.methods.embedding_policy.PolicyCrossEncoderReranker",
+    "PolicyDomain": "farfan_pipeline.methods.embedding_policy.PolicyDomain",
     # Semantic Chunking
     "SemanticProcessor": "farfan_pipeline.methods.semantic_chunking_policy.SemanticProcessor",
     "SemanticChunkingProducer": "farfan_pipeline.methods.semantic_chunking_policy.SemanticChunkingProducer",
     "PolicyDocumentAnalyzer": "farfan_pipeline.methods.semantic_chunking_policy.PolicyDocumentAnalyzer",
     "BayesianEvidenceIntegrator": "farfan_pipeline.methods.semantic_chunking_policy.BayesianEvidenceIntegrator",
+    "CausalDimension": "farfan_pipeline.methods.semantic_chunking_policy.CausalDimension",
     # Analyzer One
     "SemanticAnalyzer": "farfan_pipeline.methods.analyzer_one.SemanticAnalyzer",
     "PerformanceAnalyzer": "farfan_pipeline.methods.analyzer_one.PerformanceAnalyzer",
     "TextMiningEngine": "farfan_pipeline.methods.analyzer_one.TextMiningEngine",
     "MunicipalOntology": "farfan_pipeline.methods.analyzer_one.MunicipalOntology",
     "DocumentProcessor": "farfan_pipeline.methods.analyzer_one.DocumentProcessor",
+    "BatchProcessor": "farfan_pipeline.methods.analyzer_one.BatchProcessor",
+    "CanonicalQuestionSegmenter": "farfan_pipeline.methods.analyzer_one.CanonicalQuestionSegmenter",
+    "MunicipalAnalyzer": "farfan_pipeline.methods.analyzer_one.MunicipalAnalyzer",
+    "ResultsExporter": "farfan_pipeline.methods.analyzer_one.ResultsExporter",
     # Teoria de Cambio
     "TeoriaCambio": "farfan_pipeline.methods.teoria_cambio.TeoriaCambio",
     "AdvancedDAGValidator": "farfan_pipeline.methods.teoria_cambio.AdvancedDAGValidator",
@@ -94,9 +107,15 @@ _CLASS_PATHS: Mapping[str, str] = {
     "ContradictionScanner": "farfan_pipeline.methods.bayesian_multilevel_system.ContradictionScanner",
     "BayesianPortfolioComposer": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianPortfolioComposer",
     "BayesianEvidenceExtractor": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianEvidenceExtractor",
+    "BayesianRollUp": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianRollUp",
+    "BayesianUpdater": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianUpdater",
+    "MultiLevelBayesianOrchestrator": "farfan_pipeline.methods.bayesian_multilevel_system.MultiLevelBayesianOrchestrator",
+    "ProbativeTest": "farfan_pipeline.methods.bayesian_multilevel_system.ProbativeTest",
+    "ReconciliationValidator": "farfan_pipeline.methods.bayesian_multilevel_system.ReconciliationValidator",
+    "StatisticalGateAuditor": "farfan_pipeline.methods.bayesian_multilevel_system.StatisticalGateAuditor",
     # Evidence Nexus (Phase Two)
-    "EvidenceNexus": "farfan_pipeline.phases.Phase_2.evidence_nexus.EvidenceNexus",
-    "EvidenceAssembler": "farfan_pipeline.phases.Phase_2.evidence_nexus.EvidenceNexus",
+    "EvidenceNexus": "farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus.EvidenceNexus",
+    "EvidenceAssembler": "farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus.EvidenceNexus",
 }
 
 

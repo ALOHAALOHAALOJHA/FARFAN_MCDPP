@@ -56,7 +56,7 @@ except ImportError as e:
 
 # EMPIRICAL CORPUS INTEGRATION
 try:
-    from farfan_pipeline.phases.Phase_03.phase3_10_00_empirical_thresholds_loader import (
+    from farfan_pipeline.phases.Phase_03.phase3_15_00_empirical_thresholds_loader import (
         get_global_thresholds_loader,
     )
 
