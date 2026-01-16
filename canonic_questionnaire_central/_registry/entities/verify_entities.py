@@ -190,7 +190,7 @@ def print_verification_report(results: Dict[str, any]):
         return True
 
 if __name__ == "__main__":
-    base_path = Path("/Users/recovered/Downloads/FARFAN_MCDPP")
+    base_path = Path(__file__).resolve().parent.parent.parent.parent
     
     try:
         results = verify_entity_registry(base_path)

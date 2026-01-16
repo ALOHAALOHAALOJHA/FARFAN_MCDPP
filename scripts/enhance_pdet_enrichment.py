@@ -175,7 +175,7 @@ def enhance_metadata_file(metadata_path: Path, enhanced_indicators: List[str]) -
 
 def main():
     """Run enhanced enrichment."""
-    script_dir = Path(__file__).parent
+    script_dir = Path(__file__).resolve().parent
     repo_root = script_dir.parent
     policy_areas_dir = repo_root / "canonic_questionnaire_central" / "policy_areas"
 

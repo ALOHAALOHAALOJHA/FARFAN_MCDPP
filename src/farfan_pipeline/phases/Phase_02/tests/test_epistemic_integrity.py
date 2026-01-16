@@ -60,6 +60,15 @@ from farfan_pipeline.calibration.registry import (
 
 
 # =============================================================================
+# Test Helper Functions
+# =============================================================================
+
+def get_repo_root() -> Path:
+    """Get the repository root directory."""
+    return Path(__file__).resolve().parents[5]
+
+
+# =============================================================================
 # CI-01: EXACTITUD NUMÉRICA (300 Contratos)
 # =============================================================================
 
@@ -69,7 +78,8 @@ class TestCI01ContractCount:
 
     def test_ci01_contract_count(self):
         """CI-01: Exactly 300 contracts must exist."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
         contracts = list(contracts_dir.glob("*_contract_v4.json"))
 
         assert len(contracts) == 300, (
@@ -80,7 +90,8 @@ class TestCI01ContractCount:
 
     def test_ci01_no_extra_files(self):
         """CI-01: No extra non-contract files in contracts directory."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
         contract_files = [f for f in contracts_dir.glob("*.json") if f.name.endswith("_contract_v4.json")]
         all_json_files = list(contracts_dir.glob("*.json"))
 
@@ -95,7 +106,8 @@ class TestCI01ContractCount:
 
     def test_ci01_contract_naming_pattern(self):
         """CI-01: All contracts follow QXXX_PAXX_contract_v4.json pattern."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
         pattern = re.compile(r"^Q\d{3}_PA\d{2}_contract_v4\.json$")
 
         invalid_names = []
@@ -120,7 +132,8 @@ class TestCI02NoLegacyExecutors:
 
     def test_ci02_no_legacy_executor_classes(self):
         """CI-02: No files with pattern D[0-9]Q[0-9]_Executor."""
-        src_path = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline")
+        repo_root = get_repo_root()
+        src_path = repo_root / "src" / "farfan_pipeline"
 
         # Search for legacy pattern in Python files
         legacy_pattern = re.compile(r"class\s+(D\d_Q\d+_[\w_]+Executor)\s*:")
@@ -140,7 +153,8 @@ class TestCI02NoLegacyExecutors:
 
     def test_ci02_contracts_use_dynamic_executor(self):
         """CI-02: All contracts use DynamicContractExecutor."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
 
         invalid_executors = []
         for contract_file in contracts_dir.glob("*_contract_v4.json"):
@@ -269,7 +283,8 @@ class TestCI04Asymmetry:
     def test_ci04_no_n1_veto_n3_in_code(self):
         """CI-04: No code allows N1/N2 to veto N3."""
         # Check task executor (N1 level)
-        task_executor_path = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/phase2_50_00_task_executor.py")
+        repo_root = get_repo_root()
+        task_executor_path = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "phase2_50_00_task_executor.py"
 
         if task_executor_path.exists():
             content = task_executor_path.read_text()
@@ -291,7 +306,8 @@ class TestCI04Asymmetry:
 
     def test_ci04_contract_declares_asymmetry(self):
         """CI-04: Contracts declare asymmetry principle."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
 
         # Check a sample of contracts
         sample_count = 0
@@ -491,7 +507,8 @@ class TestContractStructure:
 
     def test_all_contracts_have_required_fields(self):
         """All contracts have required top-level fields."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
 
         required_fields = [
             "identity",
@@ -513,7 +530,8 @@ class TestContractStructure:
 
     def test_contracts_have_three_phases(self):
         """All contracts have three execution phases."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
 
         required_phases = [
             "phase_A_construction",
@@ -536,7 +554,8 @@ class TestContractStructure:
 
     def test_phase_c_has_asymmetry_declaration(self):
         """Phase C declares asymmetry principle."""
-        contracts_dir = Path("/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_2/generated_contracts")
+        repo_root = get_repo_root()
+        contracts_dir = repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "generated_contracts"
 
         # Sample check
         errors = []

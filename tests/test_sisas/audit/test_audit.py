@@ -1,8 +1,8 @@
 # tests/test_sisas/audit/test_audit.py
 
 import pytest
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.signal_auditor import SignalAuditor
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import BusRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.signal_auditor import SignalAuditor
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import BusRegistry
 
 class TestSignalAuditor:
     def test_audit_empty(self):

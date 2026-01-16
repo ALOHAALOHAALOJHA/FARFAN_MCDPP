@@ -165,7 +165,7 @@ def fix_type_d_fusion_strategy(data: Dict[str, Any]) -> int:
 
 def main():
     # File paths
-    repo_root = Path(__file__).parent.parent.parent
+    repo_root = Path(__file__).resolve().parent.parent.parent
     input_file = repo_root / 'artifacts/data/reports/EPISTEMIC_METHOD_ASSIGNMENTS_Q001_Q030.json'
     output_file = repo_root / 'artifacts/data/reports/EPISTEMIC_METHOD_ASSIGNMENTS_Q001_Q030_REPAIRED.json'
     

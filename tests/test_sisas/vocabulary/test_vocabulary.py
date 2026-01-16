@@ -1,9 +1,9 @@
 # tests/test_sisas/vocabulary/test_vocabulary.py
 
 import pytest
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.signal_vocabulary import SignalVocabulary
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.capability_vocabulary import CapabilityVocabulary
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.alignment_checker import VocabularyAlignmentChecker
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.signal_vocabulary import SignalVocabulary
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.capability_vocabulary import CapabilityVocabulary
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.alignment_checker import VocabularyAlignmentChecker
 
 class TestVocabularies:
     def test_signal_vocabulary_loading(self):

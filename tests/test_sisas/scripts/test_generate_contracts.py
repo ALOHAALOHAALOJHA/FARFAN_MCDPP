@@ -5,7 +5,7 @@ import csv
 import json
 import tempfile
 from pathlib import Path
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.scripts.generate_contracts import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.scripts.generate_contracts import (
     generate_contracts_from_csv,
     generate_gap_resolution_tasks,
     ContractStatus

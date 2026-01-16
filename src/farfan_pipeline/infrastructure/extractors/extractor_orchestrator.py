@@ -445,7 +445,7 @@ def create_orchestrator_from_resolver(resolver) -> ExtractorOrchestrator:
     
     Usage:
         from canonic_questionnaire_central import CanonicalQuestionnaireResolver
-        from src.farfan_pipeline.infrastructure.extractors.extractor_orchestrator import (
+        from farfan_pipeline.infrastructure.extractors.extractor_orchestrator import (
             create_orchestrator_from_resolver, ExtractionContext
         )
         

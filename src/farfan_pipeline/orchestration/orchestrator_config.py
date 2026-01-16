@@ -27,7 +27,7 @@ logger = structlog.get_logger(__name__)
 
 def get_project_root() -> Path:
     """Get the project root directory."""
-    return Path(__file__).parent.parent.parent.parent
+    return Path(__file__).resolve().parent.parent.parent.parent
 
 
 def get_data_dir() -> Path:
