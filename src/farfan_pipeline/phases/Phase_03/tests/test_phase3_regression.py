@@ -39,7 +39,7 @@ class TestPhase3RegressionScoreCorruption:
     
     def test_detects_score_corruption_infinity(self):
         """Test Phase 3 detects infinity scores."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -54,7 +54,7 @@ class TestPhase3RegressionScoreCorruption:
     
     def test_detects_score_corruption_negative_infinity(self):
         """Test Phase 3 detects negative infinity scores."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -69,7 +69,7 @@ class TestPhase3RegressionScoreCorruption:
     
     def test_detects_score_corruption_large_values(self):
         """Test Phase 3 detects very large scores."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -87,7 +87,7 @@ class TestPhase3RegressionScoreCorruption:
     
     def test_detects_score_corruption_large_negative(self):
         """Test Phase 3 detects very large negative scores."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -109,7 +109,7 @@ class TestPhase3RegressionQualityCorruption:
     
     def test_detects_quality_corruption_mixed_case(self):
         """Test Phase 3 handles mixed-case quality levels."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -127,7 +127,7 @@ class TestPhase3RegressionQualityCorruption:
     
     def test_detects_quality_corruption_typos(self):
         """Test Phase 3 detects quality level typos."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -144,7 +144,7 @@ class TestPhase3RegressionQualityCorruption:
     
     def test_detects_quality_corruption_empty_string(self):
         """Test Phase 3 handles empty string quality level."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -161,7 +161,7 @@ class TestPhase3RegressionSilentFailures:
     
     def test_prevents_silent_missing_evidence(self):
         """Test Phase 3 doesn't silently accept missing evidence."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_evidence_presence,
             ValidationCounters,
         )
@@ -176,7 +176,7 @@ class TestPhase3RegressionSilentFailures:
     
     def test_prevents_silent_score_overflow(self):
         """Test Phase 3 doesn't silently accept score overflow."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -192,7 +192,7 @@ class TestPhase3RegressionSilentFailures:
     
     def test_prevents_silent_quality_mutation(self):
         """Test Phase 3 doesn't silently accept quality mutations."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_quality_level,
             ValidationCounters,
         )
@@ -212,7 +212,7 @@ class TestPhase3RegressionInputValidation:
     
     def test_rejects_partial_results(self):
         """Test Phase 3 rejects partial results (< 305 questions)."""
-        from farfan_pipeline.phases.Phase_three.validation import validate_micro_results_input
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import validate_micro_results_input
         
         # Create only 200 questions
         micro_results = [
@@ -231,7 +231,7 @@ class TestPhase3RegressionInputValidation:
     
     def test_rejects_duplicate_results(self):
         """Test Phase 3 rejects too many results (> 305 questions)."""
-        from farfan_pipeline.phases.Phase_three.validation import validate_micro_results_input
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import validate_micro_results_input
         
         # Create 400 questions
         micro_results = [
@@ -254,7 +254,7 @@ class TestPhase3RegressionDataTypes:
     
     def test_handles_string_scores(self):
         """Test Phase 3 handles string scores gracefully."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -276,7 +276,7 @@ class TestPhase3RegressionDataTypes:
     
     def test_handles_dict_scores(self):
         """Test Phase 3 handles dict scores gracefully."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -290,7 +290,7 @@ class TestPhase3RegressionDataTypes:
     
     def test_handles_list_scores(self):
         """Test Phase 3 handles list scores gracefully."""
-        from farfan_pipeline.phases.Phase_three.validation import (
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
             validate_and_clamp_score,
             ValidationCounters,
         )
@@ -308,7 +308,7 @@ class TestPhase3RegressionLogging:
     
     def test_logs_all_validation_counters(self):
         """Test Phase 3 logs all validation counter types."""
-        from farfan_pipeline.phases.Phase_three.validation import ValidationCounters
+        from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import ValidationCounters
         
         counters = ValidationCounters(
             total_questions=305,

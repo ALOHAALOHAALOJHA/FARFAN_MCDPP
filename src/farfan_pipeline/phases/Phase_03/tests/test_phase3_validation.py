@@ -13,7 +13,7 @@ import pytest
 # Add src to path for imports
 repo_root = Path(__file__).resolve().parent.parent
 
-from farfan_pipeline.phases.Phase_three.validation import (
+from farfan_pipeline.phases.Phase_03.phase3_22_00_validation import (
     VALID_QUALITY_LEVELS,
     ValidationCounters,
     validate_micro_results_input,

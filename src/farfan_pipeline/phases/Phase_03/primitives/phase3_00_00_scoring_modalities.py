@@ -90,7 +90,7 @@ from typing import Any, Literal
 
 # Import mathematical foundations (academic rigor)
 try:
-    from .phase3_10_00_mathematical_foundation import (
+    from .phase3_00_00_mathematical_foundation import (
         validate_scoring_invariants,
         verify_convexity_property,
         weighted_aggregation,
@@ -119,7 +119,7 @@ except ImportError:
 ScoringModality = Literal["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E", "TYPE_F"]
 
 
-from .phase3_10_00_quality_levels import QualityLevel
+from .phase3_00_00_quality_levels import QualityLevel
 
 # =============================================================================
 # EXCEPTIONS

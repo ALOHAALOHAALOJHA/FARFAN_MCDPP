@@ -13,7 +13,7 @@ from typing import Any
 # Add src to path for imports
 repo_root = Path(__file__).resolve().parent.parent
 
-from farfan_pipeline.phases.Phase_three.scoring import (
+from farfan_pipeline.phases.Phase_03.phase3_20_00_score_extraction import (
     extract_score_from_nexus,
     map_completeness_to_quality,
     extract_score_from_evidence,
