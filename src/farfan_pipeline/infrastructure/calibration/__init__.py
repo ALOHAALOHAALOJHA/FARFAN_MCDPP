@@ -68,8 +68,13 @@ from .registry import (
 )
 
 from .type_defaults import (
-    ContractType,
     get_type_defaults,
+    get_all_type_defaults,
+    is_operation_permitted,
+    is_operation_prohibited,
+    get_contract_type_for_question,
+    get_fusion_strategy,
+    validate_fusion_strategy_for_type,
 )
 
 
@@ -110,6 +115,11 @@ __all__ = [
     "MockPDMProfile",
 
     # === Type Defaults ===
-    "ContractType",
     "get_type_defaults",
+    "get_all_type_defaults",
+    "is_operation_permitted",
+    "is_operation_prohibited",
+    "get_contract_type_for_question",
+    "get_fusion_strategy",
+    "validate_fusion_strategy_for_type",
 ]

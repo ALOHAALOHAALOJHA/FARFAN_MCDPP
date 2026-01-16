@@ -41,10 +41,11 @@ pymupdf>=1.23.0  # Imported as `fitz`, not `pymupdf`
 pypdf>=6.4.0
 python-docx>=1.1.0
 
-# REPORTING LAYER
+# reporting layer
 jinja2>=3.1.0
 pillow>=10.0.0
-weasyprint>=62.0  # Requires GTK libraries on Linux
+weasyprint>=62.0  # requires gtk libraries on linux
+markdown>=3.5.0
 
 # UTILITY LAYER
 bcrypt>=4.0.0

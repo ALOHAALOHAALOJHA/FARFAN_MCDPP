@@ -1,0 +1,222 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/type_b.json",
+  "contract_type": "TYPE_B",
+  "name": "Bayesian Inference Contracts",
+  "version": "1.0.0-epistemic",
+  "description": "Bayesian contracts emphasizing balanced epistemic layers with strong priors for statistical inference and probabilistic reasoning.",
+
+  "epistemology": {
+    "regime": "Bayesian Subjetivista",
+    "primary_paradigm": "Subjective Probability Revision",
+    "justification_mode": "Bayesian Updating with Priors",
+    "evaluation_criteria": "Posterior probability calibration and credible intervals"
+  },
+
+  "epistemic_ratios": {
+    "description": "Distribution of computational effort across epistemic layers",
+    "n1_empirical": {
+      "lower": 0.25,
+      "upper": 0.45,
+      "default": 0.35,
+      "justification": "Extraction of probabilistic evidence and frequency data"
+    },
+    "n2_inferential": {
+      "lower": 0.30,
+      "upper": 0.50,
+      "default": 0.40,
+      "justification": "Core Bayesian inference computation and updating"
+    },
+    "n3_audit": {
+      "lower": 0.15,
+      "upper": 0.35,
+      "default": 0.25,
+      "justification": "Validation of probabilistic coherence and calibration"
+    }
+  },
+
+  "thresholds": {
+    "veto_threshold": {
+      "lower": 0.03,
+      "upper": 0.07,
+      "default": 0.05,
+      "description": "Probability threshold for N3 veto gate activation",
+      "strictness_level": "STANDARD"
+    },
+    "prior_strength": {
+      "lower": 0.1,
+      "upper": 10.0,
+      "default": 2.0,
+      "description": "Weight assigned to prior beliefs in Bayesian updating",
+      "units": "multiplicative_factor",
+      "note": "TYPE_B uses stronger priors (2.0) than default (1.0)"
+    },
+    "credible_interval_alpha": {
+      "lower": 0.01,
+      "upper": 0.10,
+      "default": 0.05,
+      "description": "Alpha level for credible interval computation"
+    },
+    "mcmc_convergence_threshold": {
+      "lower": 1.01,
+      "upper": 1.10,
+      "default": 1.05,
+      "description": "R-hat threshold for MCMC convergence"
+    }
+  },
+
+  "operations": {
+    "permitted": [
+      {
+        "name": "bayesian_update",
+        "description": "Bayesian posterior updating via Bayes' rule",
+        "layer": "N2",
+        "implementation": "BayesianUpdateEngine"
+      },
+      {
+        "name": "concat",
+        "description": "Concatenation of evidence for prior construction",
+        "layer": "N1",
+        "implementation": "EvidenceConcatenation"
+      },
+      {
+        "name": "veto_gate",
+        "description": "N3 veto based on probabilistic coherence",
+        "layer": "N3",
+        "implementation": "ProbabilisticVetoGate"
+      },
+      {
+        "name": "carver_doctoral_synthesis",
+        "description": "Carver doctoral synthesis methodology for R4",
+        "layer": "N4",
+        "implementation": "CarverSynthesis"
+      },
+      {
+        "name": "prior_posterior_update",
+        "description": "Prior to posterior transformation",
+        "layer": "N2",
+        "implementation": "PriorPosteriorTransformer"
+      },
+      {
+        "name": "credible_interval",
+        "description": "Credible interval computation for uncertainty quantification",
+        "layer": "N2",
+        "implementation": "CredibleIntervalComputer"
+      }
+    ],
+    "prohibited": [
+      {
+        "name": "weighted_mean",
+        "reason": "Inappropriate for Bayesian inference",
+        "alternative": "Use bayesian_update for probabilistic combination"
+      },
+      {
+        "name": "simple_average",
+        "reason": "Violates Bayesian principles",
+        "alternative": "Use bayesian_update with proper priors"
+      },
+      {
+        "name": "semantic_corroboration",
+        "reason": "Not probabilistic in nature",
+        "alternative": "Use bayesian_update for evidence combination"
+      },
+      {
+        "name": "arithmetic_aggregation",
+        "reason": "Violates Bayesian epistemology",
+        "alternative": "Use bayesian_update for probabilistic aggregation"
+      }
+    ]
+  },
+
+  "fusion_strategies": {
+    "description": "Canonical fusion strategy per epistemic layer",
+    "N1": {
+      "strategy": "concat",
+      "symbol": "⊕",
+      "behavior": "additive",
+      "implementation": "ConcatenationStrategy"
+    },
+    "N2": {
+      "strategy": "bayesian_update",
+      "symbol": "⊗",
+      "behavior": "multiplicative",
+      "implementation": "BayesianUpdateStrategy"
+    },
+    "N3": {
+      "strategy": "veto_gate",
+      "symbol": "⊘",
+      "behavior": "gate",
+      "implementation": "VetoGateStrategy"
+    }
+  },
+
+  "sample_questions": {
+    "description": "Base questions classified as TYPE_B (largest category)",
+    "questions": [
+      "Q002", "Q005", "Q007", "Q011",
+      "Q017", "Q018", "Q020", "Q023",
+      "Q024", "Q025", "Q027", "Q029"
+    ],
+    "extended_pattern": "12 base questions × 10 sectors = 120 total questions"
+  },
+
+  "calibration_adjustments": {
+    "description": "Parameter overrides from base level configuration",
+    "prior_strength": {
+      "value": 2.0,
+      "override_from": 1.0,
+      "justification": "TYPE_B emphasizes strong informative priors"
+    },
+    "use_data_driven_priors": {
+      "value": true,
+      "description": "Enable historical baseline-based priors when available"
+    },
+    "enable_hierarchical_models": {
+      "value": false,
+      "description": "Hierarchical models optional for TYPE_B",
+      "note": "Can be enabled via PDM for nested document structures"
+    },
+    "mcmc_samples": {
+      "value": 5000,
+      "description": "MCMC samples for posterior approximation"
+    },
+    "likelihood_weight": {
+      "value": 1.0,
+      "description": "Weight for likelihood in Bayesian updating"
+    }
+  },
+
+  "quality_metrics": {
+    "precision_target": 0.80,
+    "recall_target": 0.75,
+    "f1_target": 0.77,
+    "calibration_target": 0.90,
+    "note": "calibration_target measures posterior probability calibration"
+  },
+
+  "validation_rules": [
+    {
+      "rule": "prior_validity_check",
+      "description": "Validate priors are proper probability distributions",
+      "severity": "ERROR"
+    },
+    {
+      "rule": "convergence_diagnostic",
+      "description": "Verify MCMC convergence via R-hat",
+      "severity": "ERROR"
+    },
+    {
+      "rule": "credible_interval_coverage",
+      "description": "Validate credible interval coverage matches nominal level",
+      "severity": "WARNING"
+    }
+  ],
+
+  "metadata": {
+    "created": "2025-01-15",
+    "last_modified": "2025-01-15",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0"
+  }
+}

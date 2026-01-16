@@ -1,0 +1,199 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/pdm/n2_rules.json",
+  "rule_set": "N2_INFERENTIAL_PDM_RULES",
+  "name": "N2 Inferential Computation PDM Sensitivity Rules",
+  "version": "1.0.0-epistemic",
+  "description": "PDM-driven parameter adjustments for N2-INF (Inferential Computation) layer. These rules adjust Bayesian inference parameters based on document structural characteristics.",
+
+  "epistemic_layer": {
+    "level": "N2-INF",
+    "name": "Inferential Computation",
+    "output_type": "PARAMETER",
+    "fusion_behavior": "multiplicative",
+    "constitutional_constraint": "PDM adjustments CANNOT change the epistemic level, only parameter values"
+  },
+
+  "pdm_triggers": {
+    "description": "Document structural characteristics that trigger PDM adjustments",
+    "triggers": [
+      {
+        "id": "HISTORICAL_BASELINES_DETECTED",
+        "name": "Temporal Baselines Available",
+        "description": "Document contains historical baselines for data-driven priors",
+        "detection_method": "temporal_structure_analysis",
+        "indicators": ["baseline", "historical", "previous_year", "trend"]
+      },
+      {
+        "id": "HIERARCHICAL_STRUCTURE_DETECTED",
+        "name": "Hierarchical Document Structure",
+        "description": "Document exhibits hierarchical nesting > 2 levels",
+        "detection_method": "hierarchy_depth_analysis",
+        "threshold": 2
+      },
+      {
+        "id": "HIGH_DIMENSIONAL_EVIDENCE",
+        "name": "High-Dimensional Evidence",
+        "description": "Document contains high-dimensional evidence requiring sophisticated inference",
+        "detection_method": "dimensionality_analysis",
+        "threshold": 10
+      },
+      {
+        "id": "MULTI_MODAL_DATA",
+        "name": "Multi-Modal Data Sources",
+        "description": "Document combines multiple data modalities (text, tables, figures)",
+        "detection_method": "modality_analysis"
+      }
+    ]
+  },
+
+  "adjustment_rules": [
+    {
+      "rule_id": "N2-PDM-001",
+      "name": "Data-Driven Prior Activation",
+      "trigger": "HISTORICAL_BASELINES_DETECTED",
+      "adjustment": {
+        "parameter": "use_data_driven_priors",
+        "operation": "set",
+        "value": true,
+        "description": "Enable use of historical baselines for prior construction"
+      },
+      "justification": "Historical baselines enable empirically-informed priors",
+      "validation": {
+        "type": "boolean",
+        "constraint": "Must be boolean true/false"
+      }
+    },
+    {
+      "rule_id": "N2-PDM-002",
+      "name": "Prior Strength Increase",
+      "trigger": "HISTORICAL_BASELINES_DETECTED",
+      "adjustment": {
+        "parameter": "prior_strength",
+        "operation": "set",
+        "value": 0.7,
+        "description": "Increase prior strength to 0.7 when using data-driven priors"
+      },
+      "justification": "Data-driven priors warrant higher confidence",
+      "validation": {
+        "min_value": 0.0,
+        "max_value": 1.0,
+        "constraint": "Prior strength must be in [0, 1]"
+      }
+    },
+    {
+      "rule_id": "N2-PDM-003",
+      "name": "Hierarchical Model Activation",
+      "trigger": "HIERARCHICAL_STRUCTURE_DETECTED",
+      "adjustment": {
+        "parameter": "enable_hierarchical_models",
+        "operation": "set",
+        "value": true,
+        "description": "Enable hierarchical Bayesian models for nested structures"
+      },
+      "justification": "Hierarchical structures require hierarchical inference",
+      "validation": {
+        "type": "boolean",
+        "constraint": "Must be boolean true/false"
+      }
+    },
+    {
+      "rule_id": "N2-PDM-004",
+      "name": "MCMC Sample Increase",
+      "trigger": "HIGH_DIMENSIONAL_EVIDENCE",
+      "adjustment": {
+        "parameter": "mcmc_samples",
+        "operation": "multiply",
+        "value": 1.5,
+        "description": "Increase MCMC samples by 50% for high-dimensional inference"
+      },
+      "justification": "High-dimensional spaces require more samples for convergence",
+      "validation": {
+        "min_value": 1000,
+        "max_value": 50000,
+        "constraint": "Samples must be > 0"
+      }
+    },
+    {
+      "rule_id": "N2-PDM-005",
+      "name": "Likelihood Weight Adjustment",
+      "trigger": "MULTI_MODAL_DATA",
+      "adjustment": {
+        "parameter": "likelihood_weight",
+        "operation": "multiply",
+        "value": 1.2,
+        "description": "Increase likelihood weight by 20% for multi-modal data"
+      },
+      "justification": "Multi-modal evidence strengthens likelihood",
+      "validation": {
+        "min_value": 0.1,
+        "max_value": 5.0,
+        "constraint": "Weight must be positive"
+      }
+    }
+  ],
+
+  "composite_rules": [
+    {
+      "rule_id": "N2-PDM-COMPOSITE-001",
+      "name": "Hierarchical Temporal Document",
+      "description": "Apply adjustments for documents with both hierarchical structure AND historical baselines",
+      "trigger_conditions": {
+        "operator": "AND",
+        "conditions": [
+          "HISTORICAL_BASELINES_DETECTED",
+          "HIERARCHICAL_STRUCTURE_DETECTED"
+        ]
+      },
+      "adjustments": [
+        {"ref": "N2-PDM-001"},
+        {"ref": "N2-PDM-002"},
+        {"ref": "N2-PDM-003"}
+      ],
+      "priority": "HIGH"
+    },
+    {
+      "rule_id": "N2-PDM-COMPOSITE-002",
+      "name": "Complex Multi-Dimensional Document",
+      "description": "Apply adjustments for documents with high-dimensional evidence AND multi-modal data",
+      "trigger_conditions": {
+        "operator": "AND",
+        "conditions": [
+          "HIGH_DIMENSIONAL_EVIDENCE",
+          "MULTI_MODAL_DATA"
+        ]
+      },
+      "adjustments": [
+        {"ref": "N2-PDM-004"},
+        {"ref": "N2-PDM-005"}
+      ],
+      "priority": "HIGH"
+    }
+  ],
+
+  "constraints": [
+    {
+      "constraint": "LEVEL_IMMUTABILITY",
+      "description": "PDM adjustments CANNOT change the epistemic level from N2-INF",
+      "enforcement": "Post-adjustment validation"
+    },
+    {
+      "constraint": "PARAMETER_BOUNDS",
+      "description": "All adjustments must respect parameter bounds from level config",
+      "enforcement": "Pre-adjustment validation"
+    },
+    {
+      "constraint": "MCMC_CONVERGENCE",
+      "description": "MCMC sample increases must maintain convergence diagnostics",
+      "enforcement": "Post-sampling validation"
+    }
+  ],
+
+  "metadata": {
+    "created": "2025-01-15",
+    "last_modified": "2025-01-15",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0"
+  }
+}

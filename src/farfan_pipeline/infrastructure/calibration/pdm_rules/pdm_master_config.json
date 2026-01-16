@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/pdm/master.json",
+  "config_type": "PDM_MASTER_CONFIGURATION",
+  "name": "PDM Sensitivity Master Configuration",
+  "version": "1.0.0-epistemic",
+  "description": "Master configuration file for PDM-driven calibration adjustments. Orchestrates all level-specific PDM rules and enforces constitutional constraints.",
+
+  "constitutional_framework": {
+    "description": "Constitutional principles enforced by PDM calibration system",
+    "principles": [
+      {
+        "id": "CI-03",
+        "name": "INMUTABILIDAD EPISTÉMICA",
+        "description": "The epistemic level (N0-N4) of a method is IMMUTABLE",
+        "enforcement": "PDM adjustments can NEVER change the level property",
+        "validation": "Post-adjustment level comparison with registry"
+      },
+      {
+        "id": "CI-04",
+        "name": "ASIMETRÍA POPPERIANA",
+        "description": "N3 can veto N1/N2, but N1/N2 can NEVER veto N3",
+        "enforcement": "Unidirectional veto gate in fusion logic",
+        "validation": "Architectural enforcement in fusion layer"
+      },
+      {
+        "id": "CI-05",
+        "name": "SEPARACIÓN CALIBRACIÓN-NIVEL",
+        "description": "PDM adjusts parameters (thresholds, samples), NEVER level",
+        "enforcement": "PDM rules only modify parameter values",
+        "validation": "Runtime check that 'level' not in adjustments"
+      }
+    ]
+  },
+
+  "pdm_system_architecture": {
+    "description": "Architecture of PDM-driven calibration adjustments",
+    "layers": [
+      {
+        "layer": 0,
+        "name": "Global Defaults",
+        "description": "Infrastructure parameters (seeds, timeouts)"
+      },
+      {
+        "layer": 1,
+        "name": "Level Determination",
+        "description": "IMMUTABLE epistemic level from registry",
+        "constraint": "Cannot be changed by subsequent layers"
+      },
+      {
+        "layer": 2,
+        "name": "Level Defaults",
+        "description": "Base calibration from level_configs/*.json"
+      },
+      {
+        "layer": 3,
+        "name": "Contract Type Overrides",
+        "description": "Type-specific adjustments from type_configs/*.json"
+      },
+      {
+        "layer": 4,
+        "name": "PDM-Driven Adjustments",
+        "description": "Dynamic adjustments based on document structure",
+        "constraint": "Can ONLY modify parameters, NEVER level"
+      },
+      {
+        "layer": 5,
+        "name": "Reserved",
+        "description": "Reserved for future extensions"
+      },
+      {
+        "layer": 6,
+        "name": "Reserved",
+        "description": "Reserved for future extensions"
+      },
+      {
+        "layer": 7,
+        "name": "Reserved",
+        "description": "Reserved for future extensions"
+      }
+    ]
+  },
+
+  "level_specific_rules": {
+    "description": "Mapping from epistemic levels to PDM rule files",
+    "levels": [
+      {
+        "level": "N0-INFRA",
+        "rule_file": null,
+        "reason": "N0 is infrastructure-only, no PDM sensitivity"
+      },
+      {
+        "level": "N1-EMP",
+        "rule_file": "n1_empirical_pdm_rules.json",
+        "description": "Empirical extraction PDM rules"
+      },
+      {
+        "level": "N2-INF",
+        "rule_file": "n2_inferential_pdm_rules.json",
+        "description": "Inferential computation PDM rules"
+      },
+      {
+        "level": "N3-AUD",
+        "rule_file": "n3_audit_pdm_rules.json",
+        "description": "Audit veto PDM rules"
+      },
+      {
+        "level": "N4-META",
+        "rule_file": null,
+        "reason": "N4 is level-agnostic meta-analysis"
+      }
+    ]
+  },
+
+  "pdm_profile_schema": {
+    "description": "Schema for PDM structural profile used in calibration",
+    "required_fields": [
+      {
+        "field": "document_type",
+        "type": "string",
+        "description": "Type of document (PDM, technical, financial, etc.)"
+      },
+      {
+        "field": "table_schemas",
+        "type": "array",
+        "description": "List of table schemas detected in document"
+      },
+      {
+        "field": "hierarchy_depth",
+        "type": "integer",
+        "description": "Depth of document hierarchy"
+      },
+      {
+        "field": "contains_financial_data",
+        "type": "boolean",
+        "description": "Whether document contains financial data"
+      },
+      {
+        "field": "temporal_structure",
+        "type": "object",
+        "description": "Temporal structure information",
+        "properties": [
+          {"name": "has_baselines", "type": "boolean"},
+          {"name": "requires_ordering", "type": "boolean"},
+          {"name": "time_span", "type": "object"}
+        ]
+      }
+    ],
+    "optional_fields": [
+      {
+        "field": "table_density",
+        "type": "float",
+        "description": "Density of tables in document"
+      },
+      {
+        "field": "semantic_sections",
+        "type": "array",
+        "description": "List of semantic section boundaries"
+      },
+      {
+        "field": "modality_count",
+        "type": "integer",
+        "description": "Number of data modalities present"
+      }
+    ]
+  },
+
+  "calibration_pipeline": {
+    "description": "Step-by-step process for PDM-driven calibration",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Load PDM Profile",
+        "description": "Extract structural profile from document"
+      },
+      {
+        "step": 2,
+        "action": "Detect Triggers",
+        "description": "Identify which PDM triggers are activated"
+      },
+      {
+        "step": 3,
+        "action": "Load Base Calibration",
+        "description": "Get base calibration from level config"
+      },
+      {
+        "step": 4,
+        "action": "Apply Adjustments",
+        "description": "Apply PDM rule adjustments to base parameters"
+      },
+      {
+        "step": 5,
+        "action": "Validate Constraints",
+        "description": "Enforce constitutional constraints (CI-03, CI-04, CI-05)"
+      },
+      {
+        "step": 6,
+        "action": "Return Resolved Calibration",
+        "description": "Return fully resolved calibration object"
+      }
+    ]
+  },
+
+  "validation_rules": [
+    {
+      "rule": "LEVEL_IMMUTABILITY_CHECK",
+      "description": "Verify level has not changed after PDM adjustments",
+      "severity": "ERROR",
+      "enforcement": "Post-adjustment validation"
+    },
+    {
+      "rule": "PARAMETER_BOUNDS_CHECK",
+      "description": "Verify all parameters are within valid bounds",
+      "severity": "ERROR",
+      "enforcement": "Post-adjustment validation"
+    },
+    {
+      "rule": "ASYMMETRY_PRINCIPLE_CHECK",
+      "description": "Verify N3 veto asymmetry is maintained",
+      "severity": "ERROR",
+      "enforcement": "Architectural enforcement"
+    }
+  ],
+
+  "metadata": {
+    "created": "2025-01-15",
+    "last_modified": "2025-01-15",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0"
+  }
+}

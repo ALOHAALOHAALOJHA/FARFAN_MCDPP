@@ -1,0 +1,166 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/pdm/n1_rules.json",
+  "rule_set": "N1_EMPIRICAL_PDM_RULES",
+  "name": "N1 Empirical Extraction PDM Sensitivity Rules",
+  "version": "1.0.0-epistemic",
+  "description": "PDM-driven parameter adjustments for N1-EMP (Empirical Extraction) layer. These rules adjust extraction parameters based on document structural characteristics.",
+
+  "epistemic_layer": {
+    "level": "N1-EMP",
+    "name": "Empirical Extraction",
+    "output_type": "FACT",
+    "fusion_behavior": "additive",
+    "constitutional_constraint": "PDM adjustments CANNOT change the epistemic level, only parameter values"
+  },
+
+  "pdm_triggers": {
+    "description": "Document structural characteristics that trigger PDM adjustments",
+    "triggers": [
+      {
+        "id": "PPI_PAI_TABLES_DETECTED",
+        "name": "Critical Policy Tables",
+        "description": "PPI (Productive Projects Investment) or PAI (Annual Investment Plan) tables detected in document",
+        "detection_method": "table_schema_analysis",
+        "indicators": ["PPI", "PAI", "POI", "budget_table", "financial_table"]
+      },
+      {
+        "id": "HIERARCHY_DEPTH_EXCEEDS_THRESHOLD",
+        "name": "Deep Hierarchical Structure",
+        "description": "Document hierarchy exceeds 3 levels deep",
+        "detection_method": "hierarchy_depth_analysis",
+        "threshold": 3
+      },
+      {
+        "id": "HIGH_TABLE_DENSITY",
+        "name": "High Table Density",
+        "description": "Document contains high density of structured tables",
+        "detection_method": "table_density_analysis",
+        "threshold": 0.3
+      },
+      {
+        "id": "SEMANTIC_SECTION_DETECTED",
+        "name": "Semantic Section Boundaries",
+        "description": "Document contains clear semantic section divisions",
+        "detection_method": "semantic_section_analysis"
+      }
+    ]
+  },
+
+  "adjustment_rules": [
+    {
+      "rule_id": "N1-PDM-001",
+      "name": "Table Extraction Boost",
+      "trigger": "PPI_PAI_TABLES_DETECTED",
+      "adjustment": {
+        "parameter": "table_extraction_boost",
+        "operation": "multiply",
+        "value": 1.2,
+        "description": "Increase extraction confidence for tabular data by 20%"
+      },
+      "justification": "PPI/PAI tables are highly structured and reliable sources",
+      "validation": {
+        "min_value": 1.0,
+        "max_value": 2.0,
+        "constraint": "Boost cannot be < 1.0 (would be penalty)"
+      }
+    },
+    {
+      "rule_id": "N1-PDM-002",
+      "name": "Hierarchy Sensitivity Adjustment",
+      "trigger": "HIERARCHY_DEPTH_EXCEEDS_THRESHOLD",
+      "adjustment": {
+        "parameter": "hierarchy_sensitivity",
+        "operation": "multiply",
+        "value": 1.1,
+        "description": "Increase hierarchy sensitivity by 10% for deep documents"
+      },
+      "justification": "Deep hierarchies require more sensitive extraction",
+      "validation": {
+        "min_value": 1.0,
+        "max_value": 2.0,
+        "constraint": "Sensitivity must be positive"
+      }
+    },
+    {
+      "rule_id": "N1-PDM-003",
+      "name": "Pattern Fuzzy Threshold Adjustment",
+      "trigger": "HIGH_TABLE_DENSITY",
+      "adjustment": {
+        "parameter": "pattern_fuzzy_threshold",
+        "operation": "add",
+        "value": 0.05,
+        "description": "Increase fuzzy matching threshold by 0.05 for table-heavy documents"
+      },
+      "justification": "High table density enables stricter matching",
+      "validation": {
+        "min_value": 0.0,
+        "max_value": 1.0,
+        "constraint": "Threshold must be in [0, 1]"
+      }
+    },
+    {
+      "rule_id": "N1-PDM-004",
+      "name": "Deduplication Threshold Increase",
+      "trigger": "SEMANTIC_SECTION_DETECTED",
+      "adjustment": {
+        "parameter": "deduplication_threshold",
+        "operation": "add",
+        "value": 0.02,
+        "description": "Increase deduplication threshold when sections are clear"
+      },
+      "justification": "Clear sections enable stricter deduplication",
+      "validation": {
+        "min_value": 0.0,
+        "max_value": 1.0,
+        "constraint": "Threshold must be in [0, 1]"
+      }
+    }
+  ],
+
+  "composite_rules": [
+    {
+      "rule_id": "N1-PDM-COMPOSITE-001",
+      "name": "Complex Document Profile",
+      "description": "Apply multiple adjustments for complex documents with tables AND deep hierarchy",
+      "trigger_conditions": {
+        "operator": "AND",
+        "conditions": [
+          "PPI_PAI_TABLES_DETECTED",
+          "HIERARCHY_DEPTH_EXCEEDS_THRESHOLD"
+        ]
+      },
+      "adjustments": [
+        {"ref": "N1-PDM-001"},
+        {"ref": "N1-PDM-002"}
+      ],
+      "priority": "HIGH"
+    }
+  ],
+
+  "constraints": [
+    {
+      "constraint": "LEVEL_IMMUTABILITY",
+      "description": "PDM adjustments CANNOT change the epistemic level from N1-EMP",
+      "enforcement": "Post-adjustment validation"
+    },
+    {
+      "constraint": "PARAMETER_BOUNDS",
+      "description": "All adjustments must respect parameter bounds from level config",
+      "enforcement": "Pre-adjustment validation"
+    },
+    {
+      "constraint": "NO_NEGATIVE_BOOSTS",
+      "description": "table_extraction_boost cannot be < 1.0",
+      "enforcement": "Runtime check"
+    }
+  ],
+
+  "metadata": {
+    "created": "2025-01-15",
+    "last_modified": "2025-01-15",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0"
+  }
+}

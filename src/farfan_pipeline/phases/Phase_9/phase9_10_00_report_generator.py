@@ -562,8 +562,8 @@ def generate_markdown_report(report: AnalysisReport) -> str:
             lines.extend([
                 f"### 🟣 {cluster_id}\n",
                 f"- **Score:** `{cluster_score:.1f}%`\n",
-                f"- **Indicadores:** `{len(cluster.indicators)}`\n",
-                f"- **Trend:** `{'+' if cluster.trend > 0 else '-' if cluster.trend < 0 else '='}`\n\n",
+                f"- **Indicadores:** `{len(cluster.micro_scores)}`\n",
+                f"- **Trend:** `{'='}`\n\n",
             ])
 
     lines.append(f"## 🔬 ANÁLISIS MICRO · PREGUNTAS\n\n")
@@ -575,12 +575,12 @@ def generate_markdown_report(report: AnalysisReport) -> str:
     lines.append("**TOP PERFORMERS:**\n\n")
     for i, q in enumerate(sorted_questions[:5]):
         if q.score:
-            lines.append(f"{i+1}. **Q{q.question_id}:** `{q.score*100:.1f}%` - {q.category}\n")
+            lines.append(f"{i+1}. **Q{q.question_id}:** `{q.score*100:.1f}%` - {q.metadata.get('dimension', 'Unknown')}\n")
     
     lines.append("\n**AREAS CRÍTICAS:**\n\n")
     for i, q in enumerate(sorted_questions[-5:][::-1]):
         if q.score:
-            lines.append(f"{i+1}. **Q{q.question_id}:** `{q.score*100:.1f}%` - {q.category}\n")
+            lines.append(f"{i+1}. **Q{q.question_id}:** `{q.score*100:.1f}%` - {q.metadata.get('dimension', 'Unknown')}\n")
 
     lines.append("\n---\n")
     lines.append("`⚡ GENERADO POR SISTEMA F.A.R.F.A.N · ANÁLISIS NEURAL`\n")
@@ -1095,27 +1095,20 @@ def _generate_atroz_html(
         {radar_chart if radar_chart else ""}
         
         <div class="section">
-            <div class="section-title">⚡ VISUALIZACIONES</div>
+            <div class="section-title">&#x26A1; VISUALIZACIONES</div>
             <div class="chart-grid">
                 {chart_images if chart_images else '<div style="opacity: 0.5; text-align: center;">No hay visualizaciones disponibles</div>'}
             </div>
         </div>
         
-        {f'''
+        {f"""
         <div class="section">
-            <div class="section-title">🎯 RECOMENDACIONES</div>
+            <div class="section-title">&#x1F3AF; RECOMENDACIONES</div>
             <div class="recommendation-grid">
-                {' '.join([f'''
-                <div class="rec-card">
-                    <div class="rec-severity">{html_escape(rec.severity)}</div>
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">{html_escape(rec.type)}</div>
-                    <div style="font-size: 12px; opacity: 0.9;">{html_escape(rec.description)}</div>
-                    <div style="font-size: 10px; opacity: 0.5; margin-top: 10px;">{html_escape(rec.source)}</div>
-                </div>
-                ''' for i, rec in enumerate(report.macro_summary.recommendations[:6]) if report.macro_summary])}
+                {' '.join([f'<div class="rec-card"><div class="rec-severity">{html_escape(rec.severity)}</div><div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">{html_escape(rec.type)}</div><div style="font-size: 12px; opacity: 0.9;">{html_escape(rec.description)}</div><div style="font-size: 10px; opacity: 0.5; margin-top: 10px;">{html_escape(rec.source)}</div></div>' for i, rec in enumerate(report.macro_summary.recommendations[:6]) if report.macro_summary])}
             </div>
         </div>
-        ''' if report.macro_summary and report.macro_summary.recommendations else ''}
+        """ if report.macro_summary and report.macro_summary.recommendations else ''}
         
         <div class="footer">
             <div class="footer-logo">F.A.R.F.A.N</div>
@@ -1130,7 +1123,7 @@ def _generate_atroz_html(
         </div>
     </div>
     
-    {'''
+    {"""
     <script>
         // Generate particles
         document.addEventListener('DOMContentLoaded', function() {
@@ -1161,7 +1154,7 @@ def _generate_atroz_html(
             }
         });
     </script>
-    ''' if enable_animations else ''}
+    """ if enable_animations else ''}
 </body>
 </html>'''
 

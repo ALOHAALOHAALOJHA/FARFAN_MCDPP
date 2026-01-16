@@ -1,0 +1,220 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/type_a.json",
+  "contract_type": "TYPE_A",
+  "name": "Semantic Triangulation Contracts",
+  "version": "1.0.0-epistemic",
+  "description": "Semantic contracts emphasizing N2-dominant processing for semantic triangulation and corroboration through multiple evidence sources.",
+
+  "epistemology": {
+    "regime": "Constructivist-Positivist Hybrid",
+    "primary_paradigm": "Semantic Triangulation",
+    "justification_mode": "Corroboration via Convergence",
+    "evaluation_criteria": "Multi-source semantic consistency"
+  },
+
+  "epistemic_ratios": {
+    "description": "Distribution of computational effort across epistemic layers",
+    "n1_empirical": {
+      "lower": 0.20,
+      "upper": 0.40,
+      "default": 0.30,
+      "justification": "Extraction of semantic primitives from text sources"
+    },
+    "n2_inferential": {
+      "lower": 0.40,
+      "upper": 0.60,
+      "default": 0.50,
+      "justification": "Dominant layer for semantic triangulation computation"
+    },
+    "n3_audit": {
+      "lower": 0.10,
+      "upper": 0.30,
+      "default": 0.20,
+      "justification": "Validation of semantic consistency across sources"
+    }
+  },
+
+  "thresholds": {
+    "veto_threshold": {
+      "lower": 0.03,
+      "upper": 0.07,
+      "default": 0.05,
+      "description": "Probability threshold for N3 veto gate activation",
+      "strictness_level": "STANDARD"
+    },
+    "prior_strength": {
+      "lower": 0.1,
+      "upper": 10.0,
+      "default": 1.0,
+      "description": "Weight assigned to prior beliefs in Bayesian updating",
+      "units": "multiplicative_factor"
+    },
+    "semantic_similarity_threshold": {
+      "lower": 0.70,
+      "upper": 0.95,
+      "default": 0.85,
+      "description": "Minimum cosine similarity for semantic match"
+    },
+    "corroboration_min_sources": {
+      "lower": 2,
+      "upper": 5,
+      "default": 3,
+      "description": "Minimum independent sources for corroboration",
+      "type": "integer"
+    }
+  },
+
+  "operations": {
+    "permitted": [
+      {
+        "name": "semantic_corroboration",
+        "description": "Triangulate semantic claims across multiple sources",
+        "layer": "N1",
+        "implementation": "SemanticCorroborationEngine"
+      },
+      {
+        "name": "dempster_shafer",
+        "description": "Dempster-Shafer evidence combination for uncertainty",
+        "layer": "N2",
+        "implementation": "DempsterShaferFusion"
+      },
+      {
+        "name": "veto_gate",
+        "description": "N3 veto based on consistency validation",
+        "layer": "N3",
+        "implementation": "ConsistencyVetoGate"
+      },
+      {
+        "name": "semantic_triangulation",
+        "description": "Multi-angle semantic evidence synthesis",
+        "layer": "N2",
+        "implementation": "TriangulationEngine"
+      },
+      {
+        "name": "embedding_similarity",
+        "description": "Vector embedding-based similarity computation",
+        "layer": "N1",
+        "implementation": "EmbeddingSimilarity"
+      },
+      {
+        "name": "concat",
+        "description": "Concatenation for R1 assembly",
+        "layer": "N1",
+        "implementation": "EvidenceConcatenation"
+      },
+      {
+        "name": "carver_doctoral_synthesis",
+        "description": "Carver doctoral synthesis methodology for R4",
+        "layer": "N4",
+        "implementation": "CarverSynthesis"
+      }
+    ],
+    "prohibited": [
+      {
+        "name": "weighted_mean",
+        "reason": "Violates semantic triangulation principles",
+        "alternative": "Use dempster_shafer for evidential combination"
+      },
+      {
+        "name": "simple_average",
+        "reason": "Insufficient for evidential reasoning",
+        "alternative": "Use dempster_shafer for uncertainty-aware combination"
+      },
+      {
+        "name": "bayesian_update",
+        "reason": "Not appropriate for semantic corroboration",
+        "alternative": "Use semantic_corroboration for triangulation"
+      },
+      {
+        "name": "arithmetic_aggregation",
+        "reason": "Violates constructivist epistemology",
+        "alternative": "Use semantic_triangulation for meaning construction"
+      }
+    ]
+  },
+
+  "fusion_strategies": {
+    "description": "Canonical fusion strategy per epistemic layer",
+    "N1": {
+      "strategy": "semantic_corroboration",
+      "symbol": "⊕",
+      "behavior": "additive",
+      "implementation": "SemanticCorroborationStrategy"
+    },
+    "N2": {
+      "strategy": "dempster_shafer",
+      "symbol": "⊗",
+      "behavior": "multiplicative",
+      "implementation": "DempsterShaferStrategy"
+    },
+    "N3": {
+      "strategy": "veto_gate",
+      "symbol": "⊘",
+      "behavior": "gate",
+      "implementation": "VetoGateStrategy"
+    }
+  },
+
+  "sample_questions": {
+    "description": "Base questions classified as TYPE_A",
+    "questions": ["Q001", "Q013"],
+    "extended_pattern": "Q031-Q060, Q061-Q090, ... (PA02-PA10 sectors)"
+  },
+
+  "calibration_adjustments": {
+    "description": "Parameter overrides from base level configuration",
+    "extraction_confidence_floor": {
+      "value": 0.65,
+      "override_from": 0.60,
+      "justification": "Higher confidence required for semantic extraction"
+    },
+    "deduplication_threshold": {
+      "value": 0.95,
+      "override_from": 0.95,
+      "justification": "Maintain strict deduplication for semantic uniqueness"
+    },
+    "pattern_fuzzy_threshold": {
+      "value": 0.85,
+      "override_from": 0.85,
+      "justification": "Standard fuzzy matching for semantic patterns"
+    },
+    "semantic_similarity_min": {
+      "value": 0.80,
+      "description": "Minimum embedding similarity for semantic link"
+    }
+  },
+
+  "quality_metrics": {
+    "precision_target": 0.85,
+    "recall_target": 0.80,
+    "f1_target": 0.82,
+    "semantic_coherence_target": 0.75
+  },
+
+  "validation_rules": [
+    {
+      "rule": "semantic_coherence_check",
+      "description": "Validate semantic consistency across triangulated sources",
+      "severity": "ERROR"
+    },
+    {
+      "rule": "min_corroboration_sources",
+      "description": "Require minimum 3 independent sources for corroboration",
+      "severity": "WARNING"
+    },
+    {
+      "rule": "embedding_similarity_threshold",
+      "description": "Enforce minimum semantic similarity for evidence acceptance",
+      "severity": "ERROR"
+    }
+  ],
+
+  "metadata": {
+    "created": "2025-01-15",
+    "last_modified": "2025-01-15",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0"
+  }
+}
