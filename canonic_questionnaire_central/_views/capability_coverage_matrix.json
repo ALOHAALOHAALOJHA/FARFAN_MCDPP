@@ -1,6 +1,6 @@
 {
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:40:07.603688+00:00",
+  "_generated_at": "2026-01-16T23:32:10.347644+00:00",
   "capabilities": {
     "NUMERIC_PARSING": {
       "capability_id": "NUMERIC_PARSING",
@@ -134,6 +134,20 @@
         "Normative reference parsing",
         "Validation de años (1991-2026)"
       ]
+    },
+    "INTERDEPENDENCY_VALIDATION": {
+      "capability_id": "INTERDEPENDENCY_VALIDATION",
+      "name": "Interdependency Validation",
+      "description": "Validación de dependencias inter-dimensionales y detección de razonamiento circular en cadenas causales",
+      "required_for": [
+        "INTERDEPENDENCY_CONTEXT"
+      ],
+      "implementation_hints": [
+        "Dimension dependency graph traversal (DIM01→DIM06)",
+        "Circular reasoning pattern matching (regex)",
+        "Causal chain completeness validation",
+        "Temporal coherence checking across dimensions"
+      ]
     }
   },
   "signal_requirements": {
@@ -228,6 +242,15 @@
       "required": [],
       "optional": [],
       "description": "Señales de coherencia entre componentes (agregación)"
+    },
+    "INTERDEPENDENCY_CONTEXT": {
+      "required": [
+        "INTERDEPENDENCY_VALIDATION"
+      ],
+      "optional": [
+        "CAUSAL_INFERENCE"
+      ],
+      "description": "Contexto de interdependencia dimensional para validación de cadenas causales (R-W3)"
     }
   },
   "coverage_analysis": {
@@ -267,8 +290,8 @@
     },
     "FINANCIAL_CHAIN": {
       "required": [
-        "NUMERIC_PARSING",
-        "FINANCIAL_ANALYSIS"
+        "FINANCIAL_ANALYSIS",
+        "NUMERIC_PARSING"
       ],
       "optional": [
         "TABLE_PARSING"
@@ -314,8 +337,8 @@
     },
     "SEMANTIC_RELATIONSHIP": {
       "required": [
-        "GRAPH_CONSTRUCTION",
-        "SEMANTIC_PROCESSING"
+        "SEMANTIC_PROCESSING",
+        "GRAPH_CONSTRUCTION"
       ],
       "optional": [],
       "all_required_defined": true,
@@ -332,6 +355,16 @@
     "COHERENCE_SIGNAL": {
       "required": [],
       "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "INTERDEPENDENCY_CONTEXT": {
+      "required": [
+        "INTERDEPENDENCY_VALIDATION"
+      ],
+      "optional": [
+        "CAUSAL_INFERENCE"
+      ],
       "all_required_defined": true,
       "missing_caps": []
     }
