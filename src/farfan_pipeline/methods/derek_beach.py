@@ -2125,7 +2125,7 @@ MGA_CODE_RE = re.compile(r"C[oó]digo\s+MGA\D*\d{7}", re.IGNORECASE)
 
 CVC_DIMENSION_SPECS: dict[str, dict[str, Any]] = {
     "D1": {
-        "keywords": CAUSAL_CHAIN_VOCABULARY[0:50],
+        "keywords": _CAUSAL_CHAIN_VOCABULARY_MOVED_TO_CANONICAL_SPECS[0:50],
         "patterns": (
             re.compile(r"recursos\s+financieros.*\$[\d,.]+", re.IGNORECASE),
             re.compile(r"personal\s+de\s+planta.*\d+", re.IGNORECASE),
@@ -2134,7 +2134,7 @@ CVC_DIMENSION_SPECS: dict[str, dict[str, Any]] = {
         ),
     },
     "D2": {
-        "keywords": CAUSAL_CHAIN_VOCABULARY[50:100],
+        "keywords": _CAUSAL_CHAIN_VOCABULARY_MOVED_TO_CANONICAL_SPECS[50:100],
         "patterns": (
             re.compile(r"cronograma.*fecha.*inicio.*fin", re.IGNORECASE | re.DOTALL),
             re.compile(r"implementaci[oó]n.*estrategia", re.IGNORECASE),
@@ -2143,7 +2143,7 @@ CVC_DIMENSION_SPECS: dict[str, dict[str, Any]] = {
         ),
     },
     "D3": {
-        "keywords": CAUSAL_CHAIN_VOCABULARY[100:150],
+        "keywords": _CAUSAL_CHAIN_VOCABULARY_MOVED_TO_CANONICAL_SPECS[100:150],
         "patterns": (
             MGA_CODE_RE,
             re.compile(r"indicador\s+de\s+producto", re.IGNORECASE),
@@ -2152,7 +2152,7 @@ CVC_DIMENSION_SPECS: dict[str, dict[str, Any]] = {
         ),
     },
     "D4": {
-        "keywords": CAUSAL_CHAIN_VOCABULARY[150:200],
+        "keywords": _CAUSAL_CHAIN_VOCABULARY_MOVED_TO_CANONICAL_SPECS[150:200],
         "patterns": (
             re.compile(r"tasa.*cobertura.*increment", re.IGNORECASE | re.DOTALL),
             re.compile(r"reducci[oó]n.*pobreza", re.IGNORECASE | re.DOTALL),
@@ -2161,7 +2161,7 @@ CVC_DIMENSION_SPECS: dict[str, dict[str, Any]] = {
         ),
     },
     "D5": {
-        "keywords": CAUSAL_CHAIN_VOCABULARY[200:250],
+        "keywords": _CAUSAL_CHAIN_VOCABULARY_MOVED_TO_CANONICAL_SPECS[200:250],
         "patterns": (
             re.compile(r"transformaci[oó]n.*estructural", re.IGNORECASE | re.DOTALL),
             re.compile(r"paz.*estable.*duradera", re.IGNORECASE | re.DOTALL),

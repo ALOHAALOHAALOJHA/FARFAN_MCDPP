@@ -114,8 +114,8 @@ _CLASS_PATHS: Mapping[str, str] = {
     "ReconciliationValidator": "farfan_pipeline.methods.bayesian_multilevel_system.ReconciliationValidator",
     "StatisticalGateAuditor": "farfan_pipeline.methods.bayesian_multilevel_system.StatisticalGateAuditor",
     # Evidence Nexus (Phase Two)
-    "EvidenceNexus": "farfan_pipeline.phases.Phase_2.evidence_nexus.EvidenceNexus",
-    "EvidenceAssembler": "farfan_pipeline.phases.Phase_2.evidence_nexus.EvidenceNexus",
+    "EvidenceNexus": "farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus.EvidenceNexus",
+    "EvidenceAssembler": "farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus.EvidenceNexus",
 }
 
 
