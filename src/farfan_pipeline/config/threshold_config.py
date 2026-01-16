@@ -123,7 +123,7 @@ class ThresholdConfig:
 
 def _load_config_file() -> dict[str, Any]:
     """Load signal_scoring_thresholds.json from config directory."""
-    config_path = Path(__file__).parent / "signal_scoring_thresholds.json"
+    config_path = Path(__file__).resolve().parent / "signal_scoring_thresholds.json"
 
     if not config_path.exists():
         logger.warning(f"Threshold config file not found at {config_path}, using defaults")

@@ -322,7 +322,7 @@ class ManualTerriDataEnricher:
 def main():
     """Main execution."""
     # Setup paths
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parent.parent
     pdet_data_path = (
         repo_root
         / "canonic_questionnaire_central"

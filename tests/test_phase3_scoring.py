@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 # Add src to path for imports
-repo_root = Path(__file__).parent.parent
+repo_root = Path(__file__).resolve().parent.parent
 
 from farfan_pipeline.phases.Phase_three.scoring import (
     extract_score_from_nexus,

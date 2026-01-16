@@ -32,7 +32,7 @@ except ImportError:
     SCIPY_AVAILABLE = False
     print("WARNING: scipy not available. Some statistical tests will be skipped.")
 
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def load_validation_results() -> dict[str, Any]:

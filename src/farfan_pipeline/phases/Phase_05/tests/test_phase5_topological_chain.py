@@ -20,7 +20,7 @@ class TestPhase5TopologicalOrder:
     @pytest.fixture
     def chain_report(self):
         """Load the phase5_chain_report.json."""
-        report_path = Path(__file__).parent.parent / "contracts" / "phase5_chain_report.json"
+        report_path = Path(__file__).resolve().parent.parent / "contracts" / "phase5_chain_report.json"
         with open(report_path, 'r') as f:
             return json.load(f)
     
