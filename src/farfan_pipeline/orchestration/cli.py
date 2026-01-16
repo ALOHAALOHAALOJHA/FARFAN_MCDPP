@@ -90,6 +90,7 @@ Phase IDs:
   P07: Macro Aggregation
   P08: Recommendations Engine
   P09: Report Assembly
+  P10: Verification
         """,
     )
 
@@ -114,7 +115,7 @@ Phase IDs:
         type=str,
         metavar="PHASE",
         default="P00",
-        choices=["P00", "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09"],
+        choices=["P00", "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10"],
         help="Starting phase (default: P00)",
     )
     phase_group.add_argument(
@@ -122,7 +123,7 @@ Phase IDs:
         type=str,
         metavar="PHASE",
         default="P09",
-        choices=["P00", "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09"],
+        choices=["P00", "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10"],
         help="Ending phase (default: P09)",
     )
 

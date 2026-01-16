@@ -106,7 +106,7 @@ class OrchestratorConfig:
 
     # Execution control
     start_phase: str = "P00"  # Phase 0 (bootstrap)
-    end_phase: str = "P09"  # Phase 9 (report assembly)
+    end_phase: str = "P10"  # Phase 9 (report assembly)
 
     def __post_init__(self):
         """Validate and normalize configuration."""
@@ -182,8 +182,8 @@ class OrchestratorConfig:
             FARFAN_DETERMINISTIC: Deterministic execution (true/false)
             FARFAN_OUTPUT_DIR: Output directory
             FARFAN_LOG_LEVEL: Logging level
-            FARFAN_START_PHASE: Starting phase (P00-P09)
-            FARFAN_END_PHASE: Ending phase (P00-P09)
+            FARFAN_START_PHASE: Starting phase (P00-P10)
+            FARFAN_END_PHASE: Ending phase (P00-P10)
 
         Returns:
             OrchestratorConfig instance
@@ -208,7 +208,7 @@ class OrchestratorConfig:
             output_dir=parse_path(os.getenv("FARFAN_OUTPUT_DIR")),
             log_level=os.getenv("FARFAN_LOG_LEVEL", "INFO"),
             start_phase=os.getenv("FARFAN_START_PHASE", "P00"),
-            end_phase=os.getenv("FARFAN_END_PHASE", "P09"),
+            end_phase=os.getenv("FARFAN_END_PHASE", "P10"),
         )
 
     @classmethod
@@ -334,7 +334,7 @@ def validate_config(config: OrchestratorConfig) -> list[str]:
     warnings = []
 
     # Validate phase identifiers
-    valid_phases = ["P00", "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09"]
+    valid_phases = ["P00", "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10"]
     if config.start_phase not in valid_phases:
         raise ConfigValidationError(f"Invalid start_phase: {config.start_phase}")
     if config.end_phase not in valid_phases:

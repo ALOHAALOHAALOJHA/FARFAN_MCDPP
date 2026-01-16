@@ -87,6 +87,7 @@ class PhaseID(str, Enum):
     PHASE_7 = "P07"  # Macro Aggregation
     PHASE_8 = "P08"  # Recommendations Engine
     PHASE_9 = "P09"  # Report Assembly
+    PHASE_10 = "P10"  # Verification
 
 
 # Phase metadata registry
@@ -148,6 +149,11 @@ PHASE_METADATA = {
         "name": "Report Assembly",
         "description": "Final report generation and assembly",
         "constitutional_invariants": ["report_completeness", "schema_compliance"],
+    },
+    PhaseID.PHASE_10: {
+        "name": "Verification",
+        "description": "Final verification of reports and manifest generation",
+        "constitutional_invariants": ["manifest_completeness", "output_integrity", "provenance_verification"],
     },
 }
 
@@ -326,6 +332,8 @@ class ContractEnforcer:
             violations.extend(self._validate_phase8_input(context))
         elif phase_id == PhaseID.PHASE_9:
             violations.extend(self._validate_phase9_input(context))
+        elif phase_id == PhaseID.PHASE_10:
+            violations.extend(self._validate_phase10_input(context))
 
         validation_time_ms = (time.time() - start_time) * 1000
         critical_count = sum(1 for v in violations if v.severity == Severity.CRITICAL)
@@ -383,6 +391,8 @@ class ContractEnforcer:
             violations.extend(self._validate_phase8_output(output, context))
         elif phase_id == PhaseID.PHASE_9:
             violations.extend(self._validate_phase9_output(output, context))
+        elif phase_id == PhaseID.PHASE_10:
+            violations.extend(self._validate_phase10_output(output, context))
 
         validation_time_ms = (time.time() - start_time) * 1000
         critical_count = sum(1 for v in violations if v.severity == Severity.CRITICAL)
@@ -581,6 +591,23 @@ class ContractEnforcer:
                     component_path="Phase_09.input",
                     message="Phase 8 must complete before Phase 9",
                     remediation="Execute Phase 8 recommendations engine first",
+                )
+            )
+
+        return violations
+
+    def _validate_phase10_input(self, context: ExecutionContext) -> list[ContractViolation]:
+        """Validate Phase 10 input (requires Phase 9 report)."""
+        violations = []
+
+        if PhaseID.PHASE_9 not in context.phase_results:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_PREREQUISITE",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_10.input",
+                    message="Phase 9 must complete before Phase 10",
+                    remediation="Execute Phase 9 report assembly first",
                 )
             )
 
@@ -872,6 +899,57 @@ class ContractEnforcer:
 
         return violations
 
+    def _validate_phase10_output(
+        self, output: Any, context: ExecutionContext
+    ) -> list[ContractViolation]:
+        """Validate Phase 10 output (Verification manifest)."""
+        violations = []
+
+        # Validate manifest structure
+        if hasattr(output, "manifest"):
+            manifest = output.manifest
+
+            # Check required manifest components
+            required_components = ["verification_status", "output_files", "integrity_hashes", "provenance"]
+
+            for component in required_components:
+                if not hasattr(manifest, component) or not getattr(manifest, component):
+                    violations.append(
+                        ContractViolation(
+                            type="INCOMPLETE_MANIFEST",
+                            severity=Severity.HIGH,
+                            component_path=f"Phase_10.output.manifest.{component}",
+                            message=f"Required manifest component '{component}' is missing or empty",
+                        )
+                    )
+        else:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_MANIFEST",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_10.output.manifest",
+                    message="Verification manifest is required",
+                    remediation="Ensure Phase 10 generates a complete manifest",
+                )
+            )
+
+        # Validate output integrity
+        if hasattr(output, "verification_status"):
+            status = output.verification_status
+            if status not in ["VERIFIED", "PARTIAL", "FAILED"]:
+                violations.append(
+                    ContractViolation(
+                        type="INVALID_VERIFICATION_STATUS",
+                        severity=Severity.HIGH,
+                        component_path="Phase_10.output.verification_status",
+                        message=f"Invalid verification status: {status}",
+                        expected="VERIFIED, PARTIAL, or FAILED",
+                        actual=status,
+                    )
+                )
+
+        return violations
+
 
 # =============================================================================
 # PIPELINE ORCHESTRATOR
@@ -928,14 +1006,14 @@ class PipelineOrchestrator:
     def execute_pipeline(
         self,
         start_phase: PhaseID = PhaseID.PHASE_0,
-        end_phase: PhaseID = PhaseID.PHASE_9,
+        end_phase: PhaseID = PhaseID.PHASE_10,
     ) -> ExecutionContext:
         """
         Execute the complete pipeline from start_phase to end_phase.
 
         Args:
             start_phase: Phase to start execution (default: Phase 0)
-            end_phase: Phase to end execution (default: Phase 9)
+            end_phase: Phase to end execution (default: Phase 10)
 
         Returns:
             ExecutionContext with results
@@ -1084,6 +1162,8 @@ class PipelineOrchestrator:
             return self._execute_phase8()
         elif phase_id == PhaseID.PHASE_9:
             return self._execute_phase9()
+        elif phase_id == PhaseID.PHASE_10:
+            return self._execute_phase10()
         else:
             raise ValueError(f"Unknown phase: {phase_id}")
 
@@ -1351,6 +1431,40 @@ class PipelineOrchestrator:
         self.logger.info("phase9_complete")
 
         return report
+
+    def _execute_phase10(self) -> Any:
+        """
+        Execute Phase 10: Verification.
+
+        Returns:
+            Verification manifest with integrity hashes and provenance
+        """
+        self.logger.info("executing_phase10_verification")
+
+        # TODO: Integrate with actual Phase 10 implementation
+
+        # Placeholder verification output
+        class VerificationManifest:
+            def __init__(self):
+                self.verification_status = "VERIFIED"
+                self.output_files = []
+                self.integrity_hashes = {}
+                self.provenance = {
+                    "pipeline_version": "2.0.0",
+                    "execution_id": self.context.execution_id if hasattr(self, 'context') else "unknown",
+                    "phases_completed": list(self.context.phase_results.keys()) if hasattr(self, 'context') else [],
+                }
+
+        class VerificationOutput:
+            def __init__(self):
+                self.verification_status = "VERIFIED"
+                self.manifest = VerificationManifest()
+
+        output = VerificationOutput()
+
+        self.logger.info("phase10_complete", status=output.verification_status)
+
+        return output
 
 
 # =============================================================================

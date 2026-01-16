@@ -6,7 +6,7 @@
 
 The Core Orchestrator provides comprehensive coordination for all 11 phases of the F.A.R.F.A.N (Framework for Advanced Retrieval and Forensic Analysis of Administrative Narratives) pipeline. It manages:
 
-- **Phase Coordination**: Sequential execution of Phases 0-9
+- **Phase Coordination**: Sequential execution of Phases 0-10
 - **Contract Validation**: Input/output contract enforcement between phases
 - **Signal Integration**: SISAS 2.0 signal distribution for inter-phase communication
 - **Determinism Enforcement**: SIN_CARRETA compliance for reproducible results
@@ -29,6 +29,7 @@ The Core Orchestrator provides comprehensive coordination for all 11 phases of t
 | P07 | Macro Aggregation | Clusters → holistic score | 1 macro score |
 | P08 | Recommendations Engine | Signal-enriched recommendations | N/A |
 | P09 | Report Assembly | Final report generation | 1 report |
+| P10 | Verification | Final verification and manifest generation | 1 manifest |
 
 ### Core Components
 
@@ -91,7 +92,7 @@ orchestrator = PipelineOrchestrator(
 # Execute pipeline
 context = orchestrator.execute_pipeline(
     start_phase=PhaseID.PHASE_0,
-    end_phase=PhaseID.PHASE_9,
+    end_phase=PhaseID.PHASE_10,
 )
 
 # Get results
@@ -347,7 +348,7 @@ orchestrator = PipelineOrchestrator(
 # Execute full pipeline
 context = orchestrator.execute_pipeline(
     start_phase=PhaseID.PHASE_0,
-    end_phase=PhaseID.PHASE_9,
+    end_phase=PhaseID.PHASE_10,
 )
 
 # Print summary
@@ -424,8 +425,8 @@ python -m farfan_pipeline.orchestration.cli [OPTIONS]
 - `--preset {development|production|testing}`: Use configuration preset
 
 #### Phase Control
-- `--start-phase PHASE`: Starting phase (P00-P09)
-- `--end-phase PHASE`: Ending phase (P00-P09)
+- `--start-phase PHASE`: Starting phase (P00-P10)
+- `--end-phase PHASE`: Ending phase (P00-P10)
 
 #### Paths
 - `--questionnaire FILE`: Path to questionnaire monolith JSON
@@ -493,7 +494,7 @@ config.resource_limits["cpu_seconds"] = 600
 #### 3. Missing Dependencies
 
 **Symptom**: `MISSING_PREREQUISITE` violation
-**Solution**: Ensure phases execute in order (P00 → P01 → ... → P09)
+**Solution**: Ensure phases execute in order (P00 → P01 → ... → P10)
 
 ```python
 # Correct: Start from beginning
@@ -547,7 +548,7 @@ if context.wiring:
 
 ```python
 # Save checkpoint after each phase
-for phase_id in range(PhaseID.PHASE_0, PhaseID.PHASE_9 + 1):
+for phase_id in range(PhaseID.PHASE_0, PhaseID.PHASE_10 + 1):
     context = orchestrator.execute_pipeline(
         start_phase=phase_id,
         end_phase=phase_id,
@@ -570,7 +571,7 @@ context = ExecutionContext.load_checkpoint("checkpoint_P05.pkl")
 
 ### Enums
 
-- **`PhaseID`**: Phase identifiers (P00-P09)
+- **`PhaseID`**: Phase identifiers (P00-P10)
 - **`PhaseStatus`**: Execution status (PENDING, IN_PROGRESS, COMPLETED, FAILED, SKIPPED)
 
 ### Configuration Functions
