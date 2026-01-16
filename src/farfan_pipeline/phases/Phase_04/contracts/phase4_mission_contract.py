@@ -125,6 +125,35 @@ class Phase4MissionContract:
         },
     ]
 
+    # Removed files (outside DAG / duplicated modules)
+    REMOVED_FILES = [
+        {
+            "file": "aggregation_validation.py",
+            "reason": "Duplicate of phase4_10_00_aggregation_validation.py",
+            "action": "deleted",
+        },
+        {
+            "file": "aggregation_provenance.py",
+            "reason": "Duplicate of phase4_10_00_aggregation_provenance.py",
+            "action": "deleted",
+        },
+        {
+            "file": "choquet_adapter.py",
+            "reason": "Duplicate of phase4_10_00_choquet_adapter.py",
+            "action": "deleted",
+        },
+        {
+            "file": "uncertainty_quantification.py",
+            "reason": "Duplicate of phase4_10_00_uncertainty_quantification.py",
+            "action": "deleted",
+        },
+        {
+            "file": "interface/",
+            "reason": "Non-standard folder; interphase/ is canonical",
+            "action": "deleted",
+        },
+    ]
+
     # Phase invariants
     INVARIANTS = [
         "Input: 300 ScoredMicroQuestion from Phase 3",

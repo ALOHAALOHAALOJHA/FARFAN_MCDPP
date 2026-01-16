@@ -3,36 +3,12 @@ Aggregation Provenance System - DAG-based Lineage Tracking
 
 This module provides full provenance tracking for the hierarchical aggregation pipeline.
 It implements W3C PROV-compliant directed acyclic graphs (DAGs) to capture:
-- Data lineage: Which micro-questions contributed to which macro-scores
-- Operation tracking: How aggregation operations transformed data
-- Sensitivity analysis: Which inputs have highest impact on outputs
-- Counterfactual reasoning: What-if analysis for policy decisions
-
-Architecture:
-- ProvenanceNode: Immutable record of a score at any aggregation level
-- AggregationDAG: NetworkX-based graph with attribution methods
-- SHAPAttribution: Shapley value computation for feature importance
-
-References:
-- W3C PROV: https://www.w3.org/TR/prov-overview/
-- Shapley values: Shapley, L.S. (1953). "A value for n-person games"
-- NetworkX: Hagberg et al. (2008). "Exploring network structure, dynamics, and function"
+- Data lineage: which micro-questions contributed to which macro-scores
+- Operation tracking: how aggregation operations transformed data
+- Sensitivity analysis: which inputs have highest impact on outputs
+- Counterfactual reasoning: what-if analysis for policy decisions
 """
 from __future__ import annotations
-
-# =============================================================================
-# METADATA
-# =============================================================================
-
-__version__ = "1.0.0"
-__phase__ = 4
-__stage__ = 10
-__order__ = 0
-__author__ = "F.A.R.F.A.N Core Team"
-__created__ = "2026-01-10"
-__modified__ = "2026-01-10"
-__criticality__ = "CRITICAL"
-__execution_pattern__ = "On-Demand"
 
 import hashlib
 import json
@@ -113,7 +89,7 @@ class AggregationDAG:
     Directed Acyclic Graph for full provenance tracking of aggregation pipeline.
 
     This class maintains the complete lineage of how micro-question scores
-    propagate through dimension → area → cluster → macro aggregation.
+    propagate through dimension -> area -> cluster -> macro aggregation.
 
     Features:
     - Cycle detection (enforces DAG property)
@@ -153,7 +129,9 @@ class AggregationDAG:
             timestamp=node.timestamp,
             metadata=node.metadata,
         )
-        logger.debug(f"Added node {node.node_id} (level={node.level}, score={node.score:.2f})")
+        logger.debug(
+            f"Added node {node.node_id} (level={node.level}, score={node.score:.2f})"
+        )
 
     def add_aggregation_edge(
         self,
@@ -164,7 +142,7 @@ class AggregationDAG:
         metadata: dict[str, Any] | None = None,
     ) -> None:
         """
-        Record an aggregation operation: sources → target.
+        Record an aggregation operation: sources -> target.
 
         Args:
             source_ids: List of source node IDs (e.g., micro-questions)
@@ -215,10 +193,10 @@ class AggregationDAG:
             for source_id in source_ids:
                 if self.graph.has_edge(source_id, target_id):
                     self.graph.remove_edge(source_id, target_id)
-            raise ValueError(f"Adding edges {source_ids} → {target_id} would create a cycle")
+            raise ValueError(f"Adding edges {source_ids} -> {target_id} would create a cycle")
 
         logger.info(
-            f"Added aggregation: {len(source_ids)} sources → {target_id} "
+            f"Added aggregation: {len(source_ids)} sources -> {target_id} "
             f"(operation={operation})"
         )
 
