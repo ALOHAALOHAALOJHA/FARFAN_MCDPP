@@ -139,14 +139,14 @@ class ChoquetConfig:
         if not self.linear_weights:
             raise CalibrationConfigError("linear_weights cannot be empty")
 
-        for layer_id, weight in self. linear_weights.items():
+        for layer_id, weight in self.linear_weights.items():
             if not isinstance(layer_id, str):
                 raise CalibrationConfigError(
-                    f"Layer ID must be string, got {type(layer_id).__name__}:  {layer_id! r}"
+                    f"Layer ID must be string, got {type(layer_id).__name__}:  {layer_id!r}"
                 )
             if not isinstance(weight, (int, float)):
                 raise CalibrationConfigError(
-                    f"Weight must be numeric, got {type(weight).__name__} for layer {layer_id! r}"
+                    f"Weight must be numeric, got {type(weight).__name__} for layer {layer_id!r}"
                 )
             if weight < 0.0:
                 raise CalibrationConfigError(
@@ -158,17 +158,17 @@ class ChoquetConfig:
         for (layer_i, layer_j), weight in self.interaction_weights.items():
             if not isinstance(layer_i, str) or not isinstance(layer_j, str):
                 raise CalibrationConfigError(
-                    f"Layer IDs in interaction must be strings:  ({layer_i! r}, {layer_j!r})"
+                    f"Layer IDs in interaction must be strings:  ({layer_i!r}, {layer_j!r})"
                 )
             if not isinstance(weight, (int, float)):
                 raise CalibrationConfigError(
-                    f"Interaction weight must be numeric:  ({layer_i}, {layer_j})={weight! r}"
+                    f"Interaction weight must be numeric:  ({layer_i}, {layer_j})={weight!r}"
                 )
             # Note: Negative interaction weights ARE allowed (substitution effects).
             # See README Section 10.4. 
             if layer_i not in self.linear_weights:
                 raise CalibrationConfigError(
-                    f"Interaction layer {layer_i! r} not found in linear_weights.  "
+                    f"Interaction layer {layer_i!r} not found in linear_weights.  "
                     f"Available:  {set(self.linear_weights.keys())}"
                 )
             if layer_j not in self.linear_weights:
@@ -496,7 +496,7 @@ class ChoquetAggregator:
             # Clamp and warn if out of bounds
             if raw_score < DEFAULT_BOUNDEDNESS_LOWER or raw_score > DEFAULT_BOUNDEDNESS_UPPER:
                 logger.warning(
-                    f"Layer {layer_id! r} score {raw_score:.4f} outside [0,1], clamping"
+                    f"Layer {layer_id!r} score {raw_score:.4f} outside [0,1], clamping"
                 )
             score = self._clamp_score(raw_score)
 
@@ -649,7 +649,7 @@ class ChoquetAggregator:
             >>> print(f"Linear:  {result.breakdown. linear_contribution:.4f}")
             >>> print(f"Interaction: {result.breakdown.interaction_contribution:.4f}")
         """
-        logger.info(f"Aggregating calibration for subject: {subject! r}")
+        logger.info(f"Aggregating calibration for subject: {subject!r}")
 
         # Validate input completeness
         self._check_missing_layers(layer_scores)
