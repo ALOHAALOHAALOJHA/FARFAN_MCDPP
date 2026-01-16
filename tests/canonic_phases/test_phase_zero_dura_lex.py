@@ -36,13 +36,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # Phase 0 imports
-from farfan_pipeline.phases.Phase_zero.phase0_20_02_determinism import (
+from farfan_pipeline.phases.Phase_00.phase0_20_02_determinism import (
     apply_seeds_to_rngs,
     derive_seed_from_string,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
+from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import check_all_gates
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner import (
     VerifiedPipelineRunner,
 )
 
