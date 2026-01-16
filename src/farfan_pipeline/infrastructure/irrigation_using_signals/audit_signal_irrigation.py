@@ -231,7 +231,11 @@ class WiringAuditor:
         # This is a structural check - actual usage is checked in utilization audit
         try:
             from farfan_pipeline.phases.Phase_02.executors.base_executor_with_contract import BaseExecutorWithContract
-            
+        except ImportError:
+            pass  # Placeholder for connection check
+
+
+if __name__ == "__main__":
     output_dir = PROJECT_ROOT / "artifacts" / "audit_reports"
     output_dir.mkdir(parents=True, exist_ok=True)
 
