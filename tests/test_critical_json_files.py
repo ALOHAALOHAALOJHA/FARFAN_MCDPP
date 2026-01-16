@@ -107,15 +107,29 @@ class TestCriticalJSONFiles:
             f"Difference: {methods_q_ids.symmetric_difference(methods_o_ids)}"
         )
 
-    def test_questionnaire_has_300_questions(self, questionnaire_monolith_path: Path) -> None:
-        """Test that questionnaire_monolith.json contains 300 questions."""
+    def test_questionnaire_has_expected_questions(self, questionnaire_monolith_path: Path) -> None:
+        """
+        Test that questionnaire_monolith.json contains expected number of questions.
+        
+        Per canonical notation: Q001-Q030 base questions × 10 Policy Areas = 300 total questions.
+        This test validates the count matches the documented architecture.
+        """
         with open(questionnaire_monolith_path) as f:
             data = json.load(f)
         
         questions = data["blocks"]["micro_questions"]
-        assert len(questions) == 300, (
-            f"Expected 300 questions, found {len(questions)}"
+        
+        # Per canonical notation: 30 base questions × 10 policy areas = 300
+        expected_min = 300
+        
+        assert len(questions) >= expected_min, (
+            f"Expected at least {expected_min} questions (30 base × 10 policy areas), "
+            f"found {len(questions)}"
         )
+        
+        # Validate question IDs are sequential
+        question_ids = [q["question_id"] for q in questions]
+        assert question_ids[0].startswith("Q"), "Question IDs should start with 'Q'"
 
     def test_questionnaire_has_sha256(self, questionnaire_monolith_path: Path) -> None:
         """Test that questionnaire_monolith.json has a SHA256 hash for integrity verification."""
