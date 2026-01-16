@@ -230,6 +230,10 @@ def verify_phase_chain(phase_num: int, strict: bool = False, output: str | None 
     phase_dir = REPO_ROOT / "src" / "farfan_pipeline" / "phases" / f"Phase_{phase_num}"
     
     if not phase_dir.exists():
+        # Try padded version (Phase_00, Phase_01)
+        phase_dir = REPO_ROOT / "src" / "farfan_pipeline" / "phases" / f"Phase_{phase_num:02d}"
+
+    if not phase_dir.exists():
         print(f"Error: Phase directory not found: {phase_dir}", file=sys.stderr)
         return 1
     

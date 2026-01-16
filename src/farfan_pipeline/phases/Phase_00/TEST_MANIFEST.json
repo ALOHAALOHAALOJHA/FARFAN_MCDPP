@@ -94,10 +94,10 @@
       "criticality": "CRITICAL"
     },
     {
-      "module": "phase0_10_01_runtime_config_typed",
+      "module": "phase0_10_04_runtime_config_typed",
       "stage": 10,
-      "order": 1,
-      "test_file": "tests/phases/phase0/test_phase0_10_01_runtime_config_typed.py",
+      "order": 4,
+      "test_file": "tests/phases/phase0/test_phase0_10_04_runtime_config_typed.py",
       "coverage_target": 0.8,
       "criticality": "CRITICAL"
     },
