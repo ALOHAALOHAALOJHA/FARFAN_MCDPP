@@ -50,7 +50,7 @@ except Exception:  # pragma: no cover - local fallback for standalone import
 
 
 try:
-    from methods_dispensary.financiero_viabilidad_tablas import (  # type: ignore[attr-defined]
+    from farfan_pipeline.methods.financiero_viabilidad_tablas import (
         PDETAnalysisException,
         QualityScore,
     )
