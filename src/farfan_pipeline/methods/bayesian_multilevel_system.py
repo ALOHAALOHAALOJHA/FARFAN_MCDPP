@@ -34,7 +34,7 @@ from enum import Enum, auto
 from pathlib import Path
 from typing import Any
 
-from farfan_pipeline.calibration.unit_of_analysis import FiscalContext, UnitOfAnalysis
+from farfan_pipeline.data_models.unit_of_analysis import FiscalContext, UnitOfAnalysis
 
 import numpy as np
 from scipy import stats

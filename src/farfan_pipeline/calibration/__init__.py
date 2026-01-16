@@ -47,7 +47,7 @@ from .calibration_core import (
 )
 
 # Registry
-from .registry import EpistemicCalibrationRegistry
+from .registry import EpistemicCalibrationRegistry, create_registry
 
 # Type defaults
 from .type_defaults import (
@@ -85,6 +85,7 @@ __all__ = [
     "get_default_calibration_for_level",
     # Registry
     "EpistemicCalibrationRegistry",
+    "create_registry",
     # Type defaults
     "get_type_defaults",
     "get_all_type_defaults",

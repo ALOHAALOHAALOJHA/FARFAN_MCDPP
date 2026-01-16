@@ -50,7 +50,7 @@ except Exception:  # pragma: no cover - local fallback for standalone import
 
 
 try:
-    from methods_dispensary.financiero_viabilidad_tablas import (  # type: ignore[attr-defined]
+    from farfan_pipeline.methods.financiero_viabilidad_tablas import (
         PDETAnalysisException,
         QualityScore,
     )
@@ -102,7 +102,7 @@ except Exception as import_error:
 # CANONICAL REFACTORING: Import from canonical_specs instead of runtime JSON loading
 # ADR: No runtime questionnaire dependency - all constants frozen at module import
 # Source: src/farfan_pipeline/core/canonical_specs.py
-from farfan_pipeline.calibration.canonical_specs import (
+from canonic_questionnaire_central.constants import (
     CANON_DIMENSIONS,
     CANON_POLICY_AREAS,
     MICRO_LEVELS,
