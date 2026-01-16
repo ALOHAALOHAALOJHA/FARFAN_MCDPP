@@ -1,6 +1,6 @@
 import pytest
 import os
-from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config_typed import (
+from farfan_pipeline.phases.Phase_00.phase0_10_04_runtime_config_typed import (
     create_runtime_config_typed,
     ProdRuntimeConfig,
     DevRuntimeConfig

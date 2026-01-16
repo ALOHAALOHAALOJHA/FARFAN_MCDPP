@@ -63,7 +63,10 @@ from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeC
 from farfan_pipeline.phases.Phase_00.phase0_20_02_determinism import (
     initialize_determinism_from_registry,
 )
-from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import BootCheckError
+from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
+    BootCheckError,
+    run_boot_checks,
+)
 from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
     check_all_gates,
     get_gate_summary,
