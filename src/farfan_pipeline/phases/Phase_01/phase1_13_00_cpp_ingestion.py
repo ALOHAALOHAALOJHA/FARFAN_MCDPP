@@ -217,7 +217,6 @@ try:
     _METHOD_REGISTRY_AVAILABLE = True
 except ImportError:
     # Degraded mode: Phase 2 methods unavailable
-    import logging
     logging.getLogger(__name__).warning("Phase 2 MethodRegistry not available. Running in degraded mode without advanced methods.")
     _METHOD_REGISTRY = None
     _METHOD_REGISTRY_AVAILABLE = False
