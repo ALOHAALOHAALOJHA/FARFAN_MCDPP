@@ -332,7 +332,6 @@ def test_macro_aggregator_validation_score_bounds():
     from farfan_pipeline.phases.Phase_7.phase7_20_00_macro_aggregator import MacroAggregator
     
     aggregator = MacroAggregator()
-    cluster_scores = create_real_cluster_scores()
     
     # Test with invalid score - this will be caught by ClusterScore validation
     try:
