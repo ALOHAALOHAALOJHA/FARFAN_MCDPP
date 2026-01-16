@@ -1,13 +1,13 @@
 """
 SISAS Core Module
 
-Este módulo expone la infraestructura base del sistema SISAS (Signal-based Irrigation System Architecture).
+Este mÃ³dulo expone la infraestructura base del sistema SISAS (Signal-based Irrigation System Architecture).
 
 Exports:
-    Signal, SignalContext, SignalSource, SignalCategory, SignalConfidence: Clases base de señales
-    Event, EventStore, EventType, EventPayload: Sistema de eventos empíricos
+    Signal, SignalContext, SignalSource, SignalCategory, SignalConfidence: Clases base de seÃ±ales
+    Event, EventStore, EventType, EventPayload: Sistema de eventos empÃ­ricos
     PublicationContract, ConsumptionContract, IrrigationContract, ContractRegistry: Sistema de contratos
-    SignalBus, BusRegistry, BusType, BusMessage: Sistema de buses de señales
+    SignalBus, BusRegistry, BusType, BusMessage: Sistema de buses de seÃ±ales
 """
 
 from .signal import (

@@ -1,11 +1,11 @@
 """
 SISAS Signals Module
 
-Este módulo expone todos los tipos de señales del sistema SISAS.
+Este mÃ³dulo expone todos los tipos de seÃ±ales del sistema SISAS.
 
 Exports:
-    - Todas las 18 clases de señales
-    - SignalRegistry para introspección y factory
+    - Todas las 18 clases de seÃ±ales
+    - SignalRegistry para introspecciÃ³n y factory
 """
 
 # Registry first
