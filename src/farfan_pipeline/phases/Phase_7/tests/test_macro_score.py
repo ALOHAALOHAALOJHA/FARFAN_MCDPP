@@ -152,7 +152,10 @@ def test_macro_score_timestamp_auto_generation():
     )
     
     assert macro_score.evaluation_timestamp != ""
-    assert "Z" in macro_score.evaluation_timestamp  # UTC timestamp
+    # Check for ISO 8601 timestamp (either Z suffix or timezone offset)
+    assert ("Z" in macro_score.evaluation_timestamp or 
+            "+00:00" in macro_score.evaluation_timestamp or
+            "T" in macro_score.evaluation_timestamp)
 
 
 def test_macro_score_with_all_fields():

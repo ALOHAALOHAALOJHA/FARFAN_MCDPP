@@ -202,9 +202,11 @@ def test_macro_aggregator_gap_detection():
     
     aggregator = MacroAggregator(enable_gap_detection=True)
     
+    # SYSTEMIC_GAP_THRESHOLD = 0.55 on normalized scale
+    # On raw scale: 0.55 * 3.0 = 1.65
     # Create scores with gaps (< 1.65 threshold)
     gap_scores = [
-        MockClusterScore("CLUSTER_MESO_1", 1.5, 0.9, 0.1, "PA01", "LOW", 0.0, ["PA01"]),
+        MockClusterScore("CLUSTER_MESO_1", 1.2, 0.9, 0.1, "PA01", "LOW", 0.0, ["PA01"]),
         MockClusterScore("CLUSTER_MESO_2", 2.3, 0.85, 0.15, "PA04", "LOW", 0.0, ["PA04"]),
         MockClusterScore("CLUSTER_MESO_3", 2.1, 0.88, 0.12, "PA07", "LOW", 0.0, ["PA07"]),
         MockClusterScore("CLUSTER_MESO_4", 2.4, 0.92, 0.08, "PA09", "LOW", 0.0, ["PA09"]),
@@ -212,7 +214,7 @@ def test_macro_aggregator_gap_detection():
     
     macro_score = aggregator.aggregate(gap_scores)
     
-    # Should detect PA01 as a gap
+    # Should detect PA01 as a gap (score 1.2 < 1.65)
     assert "PA01" in macro_score.systemic_gaps
     assert macro_score.gap_severity["PA01"] in {"CRITICAL", "SEVERE", "MODERATE"}
 

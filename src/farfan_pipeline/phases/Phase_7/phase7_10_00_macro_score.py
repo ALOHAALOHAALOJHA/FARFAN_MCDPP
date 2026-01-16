@@ -115,7 +115,8 @@ class MacroScore:
         
         # Set evaluation_timestamp if not provided
         if not self.evaluation_timestamp:
-            self.evaluation_timestamp = datetime.utcnow().isoformat() + "Z"
+            from datetime import datetime, timezone
+            self.evaluation_timestamp = datetime.now(timezone.utc).isoformat()
     
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""

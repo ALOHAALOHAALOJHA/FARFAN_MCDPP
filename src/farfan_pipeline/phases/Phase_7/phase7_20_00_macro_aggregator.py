@@ -142,7 +142,8 @@ class MacroAggregator:
         cluster_details = self._assemble_cluster_details(cluster_scores)
         
         # Step 9: Generate evaluation ID and provenance
-        evaluation_id = f"EVAL_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
+        from datetime import timezone
+        evaluation_id = f"EVAL_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
         provenance_node_id = f"PROV_MACRO_{uuid4().hex[:8]}"
         
         # Step 10: Construct MacroScore
@@ -163,7 +164,7 @@ class MacroAggregator:
             confidence_interval_95=ci_95,
             provenance_node_id=provenance_node_id,
             aggregation_method="weighted_average",
-            evaluation_timestamp=datetime.utcnow().isoformat() + "Z",
+            evaluation_timestamp=datetime.now(timezone.utc).isoformat(),
             pipeline_version="1.0.0",
         )
         
@@ -269,9 +270,12 @@ class MacroAggregator:
         gaps = []
         severity = {}
         
+        # Convert normalized threshold to raw scale
+        raw_threshold = SYSTEMIC_GAP_THRESHOLD * MAX_SCORE  # 0.55 * 3.0 = 1.65
+        
         for cs in cluster_scores:
             # Check weakest area in cluster
-            if cs.weakest_area and cs.score < SYSTEMIC_GAP_THRESHOLD:
+            if cs.weakest_area and cs.score < raw_threshold:
                 area_id = cs.weakest_area
                 if area_id not in gaps:
                     gaps.append(area_id)
