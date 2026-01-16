@@ -73,7 +73,7 @@ class TestConstitutionalInvariants:
         Expected:
             Infrastructure supports contract generation, even if not all generated yet
         """
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
 
         # Buscar contratos v4
         contracts_paths = [
@@ -140,7 +140,7 @@ class TestConstitutionalInvariants:
         Expected:
             No files match legacy executor pattern
         """
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
         src_path = project_root / "src"
 
         legacy_patterns = [
@@ -235,7 +235,7 @@ class TestConstitutionalInvariants:
         Expected:
             No code allows N1/N2 to veto N3
         """
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
 
         # Buscar en TaskExecutor (N1)
         task_executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_50_00_task_executor.py"
@@ -535,7 +535,7 @@ class TestContractStructure:
             - Required fields present
             - No extra fields
         """
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
 
         # Buscar schema v4
         schema_paths = [
@@ -596,7 +596,7 @@ class TestContractStructure:
             - executor_module contiene "base_executor_with_contract"
             - No referencias a clases legacy
         """
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
 
         # Buscar contratos
         contracts_dirs = [
@@ -639,7 +639,7 @@ class TestContractStructure:
             - No method_class == "D1Q1Executor"
             - No method_class pattern D[0-9]Q[0-9]Executor
         """
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
 
         # Buscar contratos
         contracts_dirs = [
@@ -704,7 +704,7 @@ class TestFASE4Integration:
 
     def test_factory_has_calibration_integration(self):
         """Verificar que Factory tiene integración de calibración."""
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
         factory_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_10_00_factory.py"
 
         if not factory_path.exists():
@@ -728,7 +728,7 @@ class TestFASE4Integration:
 
     def test_task_executor_has_n1_calibration(self):
         """Verificar que TaskExecutor tiene resolución N1."""
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
         executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_50_00_task_executor.py"
 
         if not executor_path.exists():
@@ -748,7 +748,7 @@ class TestFASE4Integration:
 
     def test_bayesian_adapter_has_n2_calibration(self):
         """Verificar que BayesianAdapter tiene resolución N2."""
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
         adapter_path = project_root / "src" / "farfan_pipeline" / "inference" / "bayesian_adapter.py"
 
         if not adapter_path.exists():
@@ -768,7 +768,7 @@ class TestFASE4Integration:
 
     def test_base_executor_has_n3_veto(self):
         """Verificar que BaseExecutor tiene veto gate N3."""
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).resolve().parent.parent
         executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_60_00_base_executor_with_contract.py"
 
         if not executor_path.exists():

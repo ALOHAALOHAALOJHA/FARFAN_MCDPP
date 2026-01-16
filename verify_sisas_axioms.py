@@ -12,7 +12,7 @@ from typing import List, Tuple, Dict, Any
 import json
 
 # Add SISAS to path
-SISAS_PATH = Path(__file__).parent / "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS"
+SISAS_PATH = Path(__file__).resolve().parent / "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS"
 sys.path.insert(0, str(SISAS_PATH.parent.parent.parent.parent))
 
 # Color codes for output
@@ -58,7 +58,7 @@ class SISASAuditor:
     def audit_axiom_1_1_1(self) -> AuditResult:
         """AXIOM 1.1.1: Ningún evento se pierde"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventStore
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventStore
 
             # Check if clear_processed method exists
             if hasattr(EventStore, 'clear_processed'):
@@ -89,7 +89,7 @@ class SISASAuditor:
     def audit_axiom_1_1_2(self) -> AuditResult:
         """AXIOM 1.1.2: Las señales son derivadas"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
 
             # Check __post_init__ for source validation
             source = inspect.getsource(Signal.__post_init__)
@@ -118,7 +118,7 @@ class SISASAuditor:
     def audit_axiom_1_1_3(self) -> AuditResult:
         """AXIOM 1.1.3: Las señales son deterministas"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
 
             # Check compute_hash method
             if hasattr(Signal, 'compute_hash'):
@@ -148,7 +148,7 @@ class SISASAuditor:
     def audit_axiom_1_1_4(self) -> AuditResult:
         """AXIOM 1.1.4: Señales nunca se sobrescriben"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
 
             # Check if Signal is frozen
             source = inspect.getsource(Signal)
@@ -180,7 +180,7 @@ class SISASAuditor:
     def audit_axiom_1_1_5(self) -> AuditResult:
         """AXIOM 1.1.5: Señales tienen contexto"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
 
             source = inspect.getsource(Signal.__post_init__)
             if 'context is None' in source and 'ValueError' in source:
@@ -208,7 +208,7 @@ class SISASAuditor:
     def audit_axiom_1_1_6(self) -> AuditResult:
         """AXIOM 1.1.6: Señales son auditables"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
             import dataclasses
 
             fields = {f.name for f in dataclasses.fields(Signal)}
@@ -237,7 +237,7 @@ class SISASAuditor:
     def audit_axiom_1_1_7(self) -> AuditResult:
         """AXIOM 1.1.7: Señales no son imperativas"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
 
             methods = [m for m in dir(Signal) if not m.startswith('_')]
             imperative_methods = ['execute', 'run', 'perform', 'do', 'command']
@@ -304,7 +304,7 @@ class SISASAuditor:
     def audit_signal_category(self) -> AuditResult:
         """Check SignalCategory enum"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import SignalCategory
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import SignalCategory
 
             required_categories = {'STRUCTURAL', 'INTEGRITY', 'EPISTEMIC', 'CONTRAST', 'OPERATIONAL', 'CONSUMPTION'}
             actual_categories = {c.name for c in SignalCategory}
@@ -336,7 +336,7 @@ class SISASAuditor:
     def audit_signal_confidence(self) -> AuditResult:
         """Check SignalConfidence enum"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import SignalConfidence
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import SignalConfidence
 
             required_levels = {'HIGH', 'MEDIUM', 'LOW', 'INDETERMINATE'}
             actual_levels = {c.name for c in SignalConfidence}
@@ -377,7 +377,7 @@ class SISASAuditor:
     def audit_event_type(self) -> AuditResult:
         """Check EventType enum"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventType
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventType
 
             required_types = ['CANONICAL_DATA_LOADED', 'IRRIGATION_COMPLETED']
             actual_types = [e.name for e in EventType]
@@ -409,7 +409,7 @@ class SISASAuditor:
     def audit_contract_status(self) -> AuditResult:
         """Check ContractStatus enum"""
         try:
-            from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import ContractStatus
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import ContractStatus
 
             required_statuses = {'DRAFT', 'ACTIVE', 'SUSPENDED', 'TERMINATED'}
             actual_statuses = {s.name for s in ContractStatus}

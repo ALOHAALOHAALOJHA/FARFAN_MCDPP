@@ -15,7 +15,7 @@ from pathlib import Path
 from uuid import UUID
 
 import sys
-sys.path.insert(0, str(Path(__file__).parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from canonic_questionnaire_central.core.signal import (
     Signal, SignalType, SignalScope, SignalProvenance
@@ -372,10 +372,10 @@ class TestExtractors:
     
     def test_financial_chain_extractor(self, sdo):
         """Test FinancialChainExtractor."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.extractors.financial_chain_extractor import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.extractors.financial_chain_extractor import (
             FinancialChainExtractor
         )
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.extractors.base_extractor import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.extractors.base_extractor import (
             ExtractionContext
         )
         
@@ -390,10 +390,10 @@ class TestExtractors:
     
     def test_causal_verb_extractor(self, sdo):
         """Test CausalVerbExtractor."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.extractors.causal_verb_extractor import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.extractors.causal_verb_extractor import (
             CausalVerbExtractor
         )
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.extractors.base_extractor import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.extractors.base_extractor import (
             ExtractionContext
         )
         

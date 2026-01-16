@@ -60,7 +60,7 @@ SCRIPT_VERSION = "4.0.0-granular"
 EXPECTED_CONTRACTS = 300
 
 # Paths relativos desde este script
-SCRIPT_DIR = Path(__file__).parent.resolve()
+SCRIPT_DIR = Path(__file__).resolve().parent.resolve()
 PHASE_TWO_DIR = SCRIPT_DIR.parent
 DEFAULT_ASSETS_PATH = PHASE_TWO_DIR / "epistemological_assets"
 DEFAULT_OUTPUT_PATH = PHASE_TWO_DIR / "generated_contracts"

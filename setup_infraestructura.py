@@ -223,7 +223,7 @@ def main():
     print("-" * 80)
     
     # Inicializar validator
-    repo_root = Path(__file__).parent
+    repo_root = Path(__file__).resolve().parent
     validator = InfrastructureSetupValidator(repo_root)
     
     # Fase 1: Pre-verificación

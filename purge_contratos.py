@@ -306,7 +306,7 @@ def main():
     print("-" * 80)
     
     # Inicializar auditor
-    repo_root = Path(__file__).parent
+    repo_root = Path(__file__).resolve().parent
     auditor = ContractPurgeAuditor(repo_root)
     
     # Fase 1: Enumeración

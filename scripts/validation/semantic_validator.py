@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 # Path to GNEA rules configuration
-GNEA_RULES_PATH = Path(__file__).parent.parent / "enforcement" / "gnea_rules.json"
+GNEA_RULES_PATH = Path(__file__).resolve().parent.parent / "enforcement" / "gnea_rules.json"
 
 
 class SemanticIssue(Enum):

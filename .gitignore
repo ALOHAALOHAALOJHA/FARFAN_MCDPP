@@ -156,3 +156,4 @@ new_enhanced_rules.json
 # Temporary pip files with = prefix (from pip install --option=value)
 =*.txt
 =[0-9]*
+*.py.bak
