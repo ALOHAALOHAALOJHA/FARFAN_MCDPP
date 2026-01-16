@@ -1,34 +1,32 @@
-r"""
+"""
 Choquet Adapter - Production Integration Layer for Non-Linear Aggregation
 State-of-the-Art Mathematical Framework
 
-This module provides the rigorous structural bridge between F.A.R.F.A.N.'s canonical
-aggregation pipeline and advanced Choquet integral calculus. It implements a complete
-fuzzy measure theory framework with automatic capacity identification, interaction
-discovery, and constitutional constraint enforcement.
+This module provides the rigorous structural bridge between the canonical
+aggregation pipeline and Choquet integral calculus. It implements a complete
+fuzzy measure theory framework with automatic capacity identification,
+interaction discovery, and constitutional constraint enforcement.
 
-Mathematical Foundation:
-    Let N = {1,...,n} be the set of criteria (clusters/areas). A fuzzy measure
-    v: 2^N → [0,1] satisfies:
-    - v(∅) = 0
+Mathematical Foundation (ASCII):
+    Let N = {1,...,n} be the set of criteria. A fuzzy measure v: 2^N -> [0,1]
+    satisfies:
+    - v(empty) = 0
     - v(N) = 1
-    - A ⊆ B ⇒ v(A) ≤ v(B) (monotonicity)
+    - A subseteq B => v(A) <= v(B) (monotonicity)
 
-    The Choquet integral of x ∈ ℝ^n with respect to v is:
-    C_v(x) = Σ_{i=1}^n (x_{(i)} - x_{(i-1)}) * v(A_i)
+    The Choquet integral of x in R^n with respect to v is:
+    C_v(x) = sum_{i=1}^n (x_(i) - x_(i-1)) * v(A_i)
     where (i) denotes order statistics and A_i = {(i),...,(n)}.
 
-    The Möbius transform m(A) captures pure n-way interactions:
-    m(A) = Σ_{B⊆A} (-1)^{|A\B|} v(B)
+    The Mobius transform m(A) captures pure n-way interactions:
+    m(A) = sum_{B subseteq A} (-1)^{|A\B|} v(B)
 
 Key Innovations:
-    1. **K-additive Optimization**: Automatic order selection based on BIC criterion
-    2. **Constrained Maximum Likelihood**: Capacity learning with monotonicity constraints
-    3. **Shapley-Proportional Initialization**: Game-theoretic weight initialization
-    4. **Interaction Mining**: Statistical detection of synergistic/antagonistic pairs
-    5. **Uncertainty Propagation**: Monte Carlo integration for capacity uncertainty
-
-Author: F.A.R.F.A.N. Statistical Compliance & Integration Team
+    1. K-additive Optimization via BIC criterion
+    2. Constrained Maximum Likelihood for capacity learning
+    3. Shapley-proportional initialization
+    4. Interaction mining for synergistic/antagonistic pairs
+    5. Uncertainty propagation via Monte Carlo
 """
 
 from __future__ import annotations
@@ -39,13 +37,10 @@ from dataclasses import dataclass, field
 from itertools import combinations
 from typing import Any
 
-# Cross-module integration with Uncertainty Quantification
-from farfan_pipeline.phases.Phase_004.phase4_10_00_uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
     UncertaintyMetrics,
 )
-
-# Import AggregationSettings from dedicated settings module (no circular dependency)
-from farfan_pipeline.phases.Phase_004.phase4_10_00_aggregation_settings import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
     AggregationSettings,
 )
 
@@ -53,31 +48,11 @@ logger = logging.getLogger(__name__)
 
 
 class FuzzyMeasureViolationError(RuntimeError):
-    """
-
-# =============================================================================
-# METADATA
-# =============================================================================
-
-__version__ = "1.0.0"
-__phase__ = 4
-__stage__ = 10
-__order__ = 0
-__author__ = "F.A.R.F.A.N Core Team"
-__created__ = "2026-01-10"
-__modified__ = "2026-01-10"
-__criticality__ = "CRITICAL"
-__execution_pattern__ = "On-Demand"
-
-Raised when fuzzy measure violates monotonicity or boundary constraints."""
-
-    pass
+    """Raised when fuzzy measure violates monotonicity or boundary constraints."""
 
 
 class CapacityIdentificationError(RuntimeError):
     """Raised when capacity cannot be identified from provided data."""
-
-    pass
 
 
 @dataclass(frozen=True)
@@ -86,9 +61,9 @@ class InteractionStructure:
     Mathematical representation of n-way interactions in capacity.
 
     Attributes:
-        mobius_transform: Möbius representation m(A) for all subsets A ⊆ N
-        shapley_values: Shapley index φ_i for each criterion i ∈ N
-        interaction_indices: Shapley interaction index I(A) for |A| ≥ 2
+        mobius_transform: Mobius representation m(A) for all subsets A subseteq N
+        shapley_values: Shapley index phi_i for each criterion i in N
+        interaction_indices: Shapley interaction index I(A) for |A| >= 2
         order: K-additivity order (max interaction order considered)
         variance_explained: Proportion of variance explained by this order
     """
@@ -106,8 +81,8 @@ class ChoquetConfig:
     Rigorous configuration for Choquet integral computation.
 
     Attributes:
-        fuzzy_measure: Complete fuzzy measure v(A) for all subsets A ⊆ N
-        mobius_transform: Möbius representation for efficient computation
+        fuzzy_measure: Complete fuzzy measure v(A) for all subsets A subseteq N
+        mobius_transform: Mobius representation for efficient computation
         shapley_values: Pre-computed for interpretation and validation
         criteria: Ordered list of criterion identifiers
         k_additive_order: Order of k-additivity approximation
@@ -141,12 +116,12 @@ class ChoquetConfig:
 
         # Check boundary conditions
         if abs(self.fuzzy_measure.get(frozenset(), 0.0)) > 1e-12:
-            violations.append("v(∅) must be 0")
+            violations.append("v(empty) must be 0")
 
         if abs(self.fuzzy_measure.get(frozenset(all_criteria), 0.0) - 1.0) > 1e-9:
             violations.append("v(N) must be 1")
 
-        # Check monotonicity: A ⊆ B ⇒ v(A) ≤ v(B)
+        # Check monotonicity: A subseteq B => v(A) <= v(B)
         for size_a in range(len(all_criteria) + 1):
             for subset_a in combinations(self.criteria, size_a):
                 set_a = set(subset_a)
@@ -168,7 +143,8 @@ class ChoquetConfig:
             shapley_val = self.shapley_values.get(criterion, 0.0)
             if not (lower - 1e-12 <= shapley_val <= upper + 1e-12):
                 violations.append(
-                    f"Constitutional bound violation: {criterion} φ={shapley_val:.4g} ∉ [{lower}, {upper}]"
+                    "Constitutional bound violation: "
+                    f"{criterion} phi={shapley_val:.4g} not in [{lower}, {upper}]"
                 )
 
         return len(violations) == 0, violations
@@ -242,7 +218,7 @@ class FuzzyMeasureGenerator:
 
         Mathematical approach:
         1. Normalize raw weights to Shapley proportions
-        2. For subsets A: v(A) = Σ_{i∈A} φ_i + λ * Σ_{i,j∈A} I_ij
+        2. For subsets A: v(A) = sum_{i in A} phi_i + lambda * sum_{i,j in A} I_ij
         3. Ensure monotonicity via isotonic regression if needed
 
         Args:
@@ -274,7 +250,7 @@ class FuzzyMeasureGenerator:
         fuzzy_measure: dict[frozenset, float] = {}
         all_subsets = self._get_all_subsets()
 
-        # Singletons: v({i}) = φ_i - (n-1) * λ * I_avg
+        # Singletons: v({i}) = phi_i - (n-1) * lambda * I_avg
         # For now, assume pairwise interactions only
         for subset in all_subsets:
             size = len(subset)
@@ -288,8 +264,8 @@ class FuzzyMeasureGenerator:
                 # This ensures v(N) = 1 if interactions are properly constrained
                 base = sum(shapley_values[c] for c in subset)
 
-                # Add interaction term: λ * Σ_{i<j∈subset} I_ij
-                # For simplicity, set I_ij = φ_i * φ_j * interaction_strength
+                # Add interaction term: lambda * sum_{i<j in subset} I_ij
+                # For simplicity, set I_ij = phi_i * phi_j * interaction_strength
                 interaction_sum = 0.0
                 if interaction_strength > 0 and size >= 2:
                     for i, j in combinations(subset, 2):
@@ -303,7 +279,7 @@ class FuzzyMeasureGenerator:
         fuzzy_measure = self._enforce_monotonicity(fuzzy_measure)
         fuzzy_measure = self._ensure_boundaries(fuzzy_measure)
 
-        # Step 5: Compute Möbius transform
+        # Step 5: Compute Mobius transform
         mobius = self._compute_mobius_transform(fuzzy_measure)
 
         # Step 6: Compute interaction indices
@@ -321,10 +297,10 @@ class FuzzyMeasureGenerator:
 
     def _enforce_monotonicity(self, measure: dict[frozenset, float]) -> dict[frozenset, float]:
         """Apply isotonic regression to enforce monotonicity constraints."""
-        # For each subset, ensure it's ≤ all supersets
-        # A simple pass: v(A) = min(v(B) for B ⊇ A) is not sufficient,
-        # we need max(v(C) for C ⊆ A).
-        # Standard approach: v(A) = max_{i ∈ A} v(A \ {i})
+        # For each subset, ensure it's <= all supersets
+        # A simple pass: v(A) = min(v(B) for B supseteq A) is not sufficient,
+        # we need max(v(C) for C subseteq A).
+        # Standard approach: v(A) = max_{i in A} v(A \ {i})
         # Iterating by size ensures propagation
 
         all_subsets = sorted(self._get_all_subsets(), key=len)
@@ -348,11 +324,11 @@ class FuzzyMeasureGenerator:
         return measure
 
     def _ensure_boundaries(self, measure: dict[frozenset, float]) -> dict[frozenset, float]:
-        """Ensure v(∅)=0 and v(N)=1."""
+        """Ensure v(empty)=0 and v(N)=1."""
         all_criteria = frozenset(self.criteria)
         empty_set = frozenset()
 
-        # Force v(∅) = 0
+        # Force v(empty) = 0
         measure[empty_set] = 0.0
 
         # Force v(N) = 1, scale others proportionally if needed
@@ -370,7 +346,7 @@ class FuzzyMeasureGenerator:
         return measure
 
     def _compute_mobius_transform(self, measure: dict[frozenset, float]) -> dict[frozenset, float]:
-        r"""Compute Möbius transform m(A) = Σ_{B⊆A} (-1)^(|A\B|) v(B)."""
+        r"""Compute Mobius transform m(A) = sum_{B subseteq A} (-1)^(|A\B|) v(B)."""
         mobius: dict[frozenset, float] = {}
         all_subsets = self._get_all_subsets()
 
@@ -378,7 +354,7 @@ class FuzzyMeasureGenerator:
             sum_val = 0.0
             subset_size = len(subset)
 
-            # Sum over all B ⊆ subset
+            # Sum over all B subseteq subset
             for r in range(subset_size + 1):
                 for combo in combinations(subset, r):
                     B = frozenset(combo)
@@ -395,7 +371,7 @@ class FuzzyMeasureGenerator:
         r"""
         Compute Shapley interaction indices I(A) for all subsets.
 
-        I(A) = Σ_{B⊆N\A} [|B|!(n-|B|-|A|)!/(n-|A|+1)!] * m(A∪B)
+        I(A) = sum_{B subseteq N\A} [|B|!(n-|B|-|A|)!/(n-|A|+1)!] * m(A union B)
         """
         indices: dict[frozenset, float] = {}
         n = self.n
@@ -413,8 +389,8 @@ class FuzzyMeasureGenerator:
                     size_b = len(B)
 
                     # Binomial coeff logic
-                    # I(A) = sum_{T : A ⊆ T} m(T) * 1/(|T|-|A|+1) ? No, that's not general
-                    # Formula: sum_{K ⊆ N \ A} rac{|K|! (n-|K|-|A|)!}{(n-|A|+1)!} m(A ∪ K)
+                    # I(A) = sum_{T : A subseteq T} m(T) * 1/(|T|-|A|+1) ? No, that's not general
+                    # Formula: sum_{K subseteq N \ A} [|K|! (n-|K|-|A|)!/(n-|A|+1)!] * m(A union K)
 
                     num = math.factorial(size_b) * math.factorial(n - size_b - size_a)
                     den = math.factorial(n - size_a + 1)
@@ -429,7 +405,7 @@ class FuzzyMeasureGenerator:
     def _compute_capacity_from_mobius(
         self, mobius: dict[frozenset, float]
     ) -> dict[frozenset, float]:
-        """Reconstruct capacity v from Möbius m: v(A) = sum_{B ⊆ A} m(B)."""
+        """Reconstruct capacity v from Mobius m: v(A) = sum_{B subseteq A} m(B)."""
         capacity = {}
         all_subsets = self._get_all_subsets()
         for A in all_subsets:
@@ -446,7 +422,7 @@ class ChoquetAggregator:
     Production-grade Choquet integral calculator with uncertainty propagation.
 
     Implements:
-    1. Exact Choquet integral via Möbius transform
+    1. Exact Choquet integral via Mobius transform
     2. K-additive approximation for scalability
     3. Uncertainty propagation through Monte Carlo
     4. Constitutional compliance checking
@@ -489,7 +465,7 @@ class ChoquetAggregator:
         order = [criterion for criterion, _ in sorted_scores]
 
         # Step 2: Compute Choquet integral using capacity
-        # C_v(x) = Σ_{i=1}^n (x_{(i)} - x_{(i+1)}) * v(C_i)
+        # C_v(x) = sum_{i=1}^n (x_(i) - x_(i+1)) * v(C_i)
         # where C_i = {(1),...,(i)} and x_{(n+1)} = 0
         choquet_value = 0.0
         trace_steps = []
@@ -508,7 +484,7 @@ class ChoquetAggregator:
             )
 
         # Step 3: Compute Shapley contributions for this specific profile
-        # Contribution_i = Σ_{A⊆N\{i}} [|A|!(n-|A|-1)!/n!] * (v(A∪{i}) - v(A)) * x_i
+        # Contribution_i = sum_{A subseteq N\{i}} [|A|!(n-|A|-1)!/n!] * (v(A union {i}) - v(A)) * x_i
         # Note: Shapley value is an average marginal contribution over all permutations.
         # This standard definition is independent of x_i.
         # If we want "contribution to the score", usually we use Shapley(v) * x_i if linear approximation,
@@ -516,7 +492,7 @@ class ChoquetAggregator:
         # Here we just report the Shapley indices of the capacity as "potential contribution".
         shapley_contributions = self.config.shapley_values.copy()
 
-        # Step 4: Extract interaction effects for subsets of size ≥ 2
+        # Step 4: Extract interaction effects for subsets of size >= 2
         interaction_effects = {
             subset: idx
             for subset, idx in self.config.interaction_indices.items()
@@ -579,7 +555,7 @@ class ChoquetProcessingAdapter:
         """
         bounds = {}
         for cluster, weight in self.settings.macro_cluster_weights.items():
-            # Default: ±20% of nominal weight
+            # Default: +/-20% of nominal weight
             bounds[cluster] = (max(0.0, weight * 0.8), min(1.0, weight * 1.2))
         return bounds
 
@@ -617,7 +593,7 @@ class ChoquetProcessingAdapter:
         Optimize k-additive order using Bayesian Information Criterion.
 
         BIC = -2 * log-likelihood + k * log(n)
-        where k = number of parameters = Σ_{i=1}^order C(n,i)
+        where k = number of parameters = sum_{i=1}^order C(n,i)
         """
         best_bic = float("inf")
         best_order = 1
@@ -643,12 +619,12 @@ class ChoquetProcessingAdapter:
         if k >= config.k_additive_order:
             return config
 
-        # Zero out Möbius transform for subsets larger than k
+        # Zero out Mobius transform for subsets larger than k
         new_mobius = {
             subset: val for subset, val in config.mobius_transform.items() if len(subset) <= k
         }
 
-        # Reconstruct fuzzy measure from truncated Möbius
+        # Reconstruct fuzzy measure from truncated Mobius
         new_measure = self._generator._compute_capacity_from_mobius(new_mobius)
 
         # Recompute interaction indices

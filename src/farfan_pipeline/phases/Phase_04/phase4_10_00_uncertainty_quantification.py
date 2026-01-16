@@ -1,64 +1,12 @@
-"""
-Uncertainty Quantification Module - State-of-the-Art Statistical Inference
-& Convergence Diagnostics
-
-This module implements a rigorous, mathematically grounded framework for quantifying
-uncertainty in policy aggregation scores. It combines Bias-Corrected and Accelerated
-(BCa) Bootstrapping with comprehensive convergence diagnostics to ensure publication-
-quality statistical inference.
-
-Key Capabilities:
-1.  **BCa Bootstrap**: Corrects for skewness (acceleration) and bias, achieving
-    second-order accuracy (O(n^-1)).
-2.  **Convergence Diagnostics**: K-S tests, Geweke diagnostics, and Effective Sample
-    Size (ESS) calculations to validate MCMC/Bootstrap stability.
-3.  **Pathology Detection**: Identifies multi-modality, infinite variance, and
-    numerical instabilities.
-4.  **Jackknife Estimation**: Computes acceleration parameters for robust intervals.
-
-Theoretical Foundation:
-    CI_bca = ( \\hat{\theta}^*_{\alpha_1}, \\hat{\theta}^*_{\alpha_2} )
-    where \alpha are adjusted quantiles based on bias correction z_0 and acceleration a.
-
-Author: F.A.R.F.A.N. Statistical Compliance Team
-"""
 from __future__ import annotations
 
-# =============================================================================
-# METADATA
-# =============================================================================
+from .phase4_10_00_uncertainty_quantification import *
 
-__version__ = "1.0.0"
-__phase__ = 4
-__stage__ = 10
-__order__ = 0
-__author__ = "F.A.R.F.A.N Core Team"
-__created__ = "2026-01-10"
-__modified__ = "2026-01-10"
-__criticality__ = "CRITICAL"
-__execution_pattern__ = "On-Demand"
-
-import logging
-import math
-import random
-import statistics
-from collections.abc import Callable, Sequence
-from dataclasses import dataclass
-from typing import TypeVar
-
-logger = logging.getLogger(__name__)
-
-T = TypeVar("T")
-
-
-class DistributionError(RuntimeError):
-    """Raised when statistical distributions are insufficient for inference."""
-
-    pass
-
-
-class ConvergenceError(RuntimeError):
-    """Raised when bootstrap distribution fails to converge."""
+try:
+    from .phase4_10_00_uncertainty_quantification import __all__ as _all
+    __all__ = _all
+except Exception:
+    __all__ = []
 
     pass
 
