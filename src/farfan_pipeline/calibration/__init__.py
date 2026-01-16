@@ -50,7 +50,10 @@ from .calibration_core import (
 from .registry import EpistemicCalibrationRegistry
 
 # Type defaults
-from .type_defaults import get_contract_defaults
+from .type_defaults import (
+    get_type_defaults,
+    is_operation_prohibited,
+)
 
 # PDM calibrator
 try:
@@ -77,7 +80,8 @@ __all__ = [
     # Registry
     "EpistemicCalibrationRegistry",
     # Type defaults
-    "get_contract_defaults",
+    "get_type_defaults",
+    "is_operation_prohibited",
     # PDM calibrator
     "PDMExPostCalibrator",
 ]

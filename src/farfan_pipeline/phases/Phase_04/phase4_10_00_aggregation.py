@@ -55,9 +55,9 @@ from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification imp
     aggregate_with_uncertainty,
 )
 
-# Import AggregationSettings from dedicated module (breaks circular dependency)
+# Import AggregationSettings model from dedicated module (breaks circular dependency)
 from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
-    AggregationSettings,
+    AggregationSettings as AggregationSettingsModel,
 )
 
 # Import choquet_adapter directly (no circular dependency after settings extraction)
@@ -96,32 +96,18 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
-@dataclass(frozen=True)
-class AggregationSettings:
-    """Resolved aggregation settings derived from the questionnaire monolith.
+class AggregationSettingsFactory:
+    """Factory for AggregationSettingsModel derived from registry/monolith.
 
-    SISAS: Now supports construction from signal registry for deterministic irrigation.
+    SISAS: Supports deterministic construction from signal registry.
     """
-
-    dimension_group_by_keys: list[str]
-    area_group_by_keys: list[str]
-    cluster_group_by_keys: list[str]
-    dimension_question_weights: dict[str, dict[str, float]]
-    policy_area_dimension_weights: dict[str, dict[str, float]]
-    cluster_policy_area_weights: dict[str, dict[str, float]]
-    macro_cluster_weights: dict[str, float]
-    dimension_expected_counts: dict[tuple[str, str], int]
-    area_expected_dimension_counts: dict[str, int]
-    # SISAS: Signal provenance for byte-reproducibility
-    source_hash: str | None = None
-    sisas_source: str = "legacy"  # "legacy" or "sisas_registry"
 
     @classmethod
     def from_signal_registry(
         cls,
         registry: QuestionnaireSignalRegistry,
         level: str = "MACRO_1",
-    ) -> AggregationSettings:
+    ) -> AggregationSettingsModel:
         """SISAS: Build aggregation settings from signal registry.
 
         This method provides deterministic, signal-driven aggregation by:
@@ -166,7 +152,7 @@ class AggregationSettings:
                 equal_weight = 1.0 / len(cluster_ids)
                 macro_cluster_weights = dict.fromkeys(cluster_ids, equal_weight)
 
-            settings = cls(
+            settings = AggregationSettingsModel(
                 dimension_group_by_keys=["policy_area", "dimension"],
                 area_group_by_keys=["area_id"],
                 cluster_group_by_keys=["cluster_id"],
@@ -194,7 +180,7 @@ class AggregationSettings:
                 e,
             )
             # Return empty settings as fallback
-            return cls(
+            return AggregationSettingsModel(
                 dimension_group_by_keys=["policy_area", "dimension"],
                 area_group_by_keys=["area_id"],
                 cluster_group_by_keys=["cluster_id"],
@@ -209,10 +195,10 @@ class AggregationSettings:
             )
 
     @classmethod
-    def from_monolith(cls, monolith: dict[str, Any] | None) -> AggregationSettings:
+    def from_monolith(cls, monolith: dict[str, Any] | None) -> AggregationSettingsModel:
         """Build aggregation settings from canonical questionnaire data."""
         if not monolith:
-            return cls(
+            return AggregationSettingsModel(
                 dimension_group_by_keys=["policy_area", "dimension"],
                 area_group_by_keys=["area_id"],
                 cluster_group_by_keys=["cluster_id"],
@@ -300,7 +286,7 @@ class AggregationSettings:
             clusters,
         )
 
-        return cls(
+        return AggregationSettingsModel(
             dimension_group_by_keys=dimension_group_by_keys,
             area_group_by_keys=area_group_by_keys,
             cluster_group_by_keys=cluster_group_by_keys,
@@ -319,7 +305,7 @@ class AggregationSettings:
         cls,
         monolith: dict[str, Any] | None = None,
         corpus_path: str | None = None,
-    ) -> AggregationSettings:
+    ) -> AggregationSettingsModel:
         """Build aggregation settings with empirical weights from corpus.
 
         This method enhances monolith-based settings with empirical weights
@@ -393,8 +379,19 @@ class AggregationSettings:
                         policy_area_dimension_weights[area_id] = area_weights
 
                 if policy_area_dimension_weights:
-                    base_settings.policy_area_dimension_weights = policy_area_dimension_weights
-                    base_settings.sisas_source = "empirical_corpus"
+                    base_settings = AggregationSettingsModel(
+                        dimension_group_by_keys=base_settings.dimension_group_by_keys,
+                        area_group_by_keys=base_settings.area_group_by_keys,
+                        cluster_group_by_keys=base_settings.cluster_group_by_keys,
+                        dimension_question_weights=base_settings.dimension_question_weights,
+                        policy_area_dimension_weights=policy_area_dimension_weights,
+                        cluster_policy_area_weights=base_settings.cluster_policy_area_weights,
+                        macro_cluster_weights=base_settings.macro_cluster_weights,
+                        dimension_expected_counts=base_settings.dimension_expected_counts,
+                        area_expected_dimension_counts=base_settings.area_expected_dimension_counts,
+                        source_hash=base_settings.source_hash,
+                        sisas_source="empirical_corpus",
+                    )
                     logger.info(
                         f"Empirical corpus integrated: {len(policy_area_dimension_weights)} "
                         f"policy areas with dimension weights from corpus"
@@ -418,7 +415,7 @@ class AggregationSettings:
         monolith: dict[str, Any] | None = None,
         registry: QuestionnaireSignalRegistry | None = None,
         level: str = "MACRO_1",
-    ) -> AggregationSettings:
+    ) -> AggregationSettingsModel:
         """SISAS: Transition method - prefer registry, fallback to monolith.
 
         This method enables gradual migration from legacy monolith-based
