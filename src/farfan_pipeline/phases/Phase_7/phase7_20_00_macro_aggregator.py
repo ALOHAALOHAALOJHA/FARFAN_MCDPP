@@ -55,9 +55,7 @@ from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
 )
 # SOTA Performance Primitives
 from farfan_pipeline.phases.Phase_7.primitives.performance_primitives import (
-    lazy_property,
     VectorizedCoherenceAnalyzer,
-    content_hash_cache,
 )
 
 logger = logging.getLogger(__name__)
@@ -122,6 +120,10 @@ class MacroAggregator:
         """
         Aggregate cluster scores into macro score.
         
+        Note: Content-hash caching removed to avoid issues with instance state.
+        Different MacroAggregator instances with different configurations
+        (weights, enabled features) should produce different results.
+        
         Args:
             cluster_scores: List of 4 ClusterScore objects
             
@@ -130,14 +132,6 @@ class MacroAggregator:
             
         Raises:
             ValueError: If preconditions are violated
-        """
-        return self._aggregate_impl(cluster_scores)
-    
-    def _aggregate_impl(self, cluster_scores: list[ClusterScore]) -> MacroScore:
-        """
-        Internal implementation of aggregate (uncached).
-        
-        This is separated to allow caching at the public API level.
         """
         # Validate preconditions
         self._validate_input(cluster_scores)
@@ -271,7 +265,6 @@ class MacroAggregator:
                 import numpy as np
                 variance = float(np.var(scores))
             except ImportError:
-                import statistics
                 variance = statistics.variance(scores) if len(scores) > 1 else 0.0
         else:
             # Fallback: Original implementation
@@ -315,6 +308,11 @@ class MacroAggregator:
         - Normalized scoring (0-1 scale)
         - Normative baseline validation
         - Contextual validation rules
+        
+        Note: Currently passes None for extracted_norms_by_area and context_by_area.
+        These should be populated from pipeline context when available for full
+        normative baseline validation. Without these, gap detection works but
+        lacks normative compliance scoring.
         """
         if not self.enable_gap_detection or not self.gap_detector:
             return [], {}
@@ -331,10 +329,17 @@ class MacroAggregator:
         
         # Use SystemicGapDetector to detect gaps with normative baseline
         try:
+            # Log limitation about missing normative context
+            logger.debug(
+                "Gap detection running without normative context "
+                "(extracted_norms_by_area and context_by_area are None). "
+                "Basic gap detection active; normative compliance scoring unavailable."
+            )
+            
             detected_gaps = self.gap_detector.detect_gaps(
                 area_scores=area_scores,
-                extracted_norms_by_area=None,  # TODO: Pass from pipeline context
-                context_by_area=None,  # TODO: Pass from pipeline context
+                extracted_norms_by_area=None,  # TODO: Pass from pipeline context for normative validation
+                context_by_area=None,  # TODO: Pass from pipeline context for contextual rules
             )
             
             # Convert SystemicGap objects to simple lists for backward compatibility

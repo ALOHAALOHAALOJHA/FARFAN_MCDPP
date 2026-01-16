@@ -8,7 +8,6 @@ Tests the three surgical optimizations:
 """
 
 
-
 def test_lazy_property():
     """Test lazy property decorator."""
     from farfan_pipeline.phases.Phase_7.primitives.performance_primitives import lazy_property

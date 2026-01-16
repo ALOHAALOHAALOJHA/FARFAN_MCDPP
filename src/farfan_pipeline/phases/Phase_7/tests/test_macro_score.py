@@ -192,6 +192,7 @@ def test_macro_score_with_all_fields():
 def test_macro_score_immutability():
     """Test that MacroScore is immutable (frozen dataclass)."""
     from farfan_pipeline.phases.Phase_7.phase7_10_00_macro_score import MacroScore
+    from dataclasses import FrozenInstanceError
     import pytest
     
     macro_score = MacroScore(
@@ -203,5 +204,5 @@ def test_macro_score_immutability():
     )
     
     # Attempting to modify a frozen dataclass should raise FrozenInstanceError
-    with pytest.raises(Exception):  # FrozenInstanceError or AttributeError
+    with pytest.raises((FrozenInstanceError, AttributeError), match="(frozen|cannot assign|can't set attribute)"):
         macro_score.score = 3.0

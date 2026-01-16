@@ -237,15 +237,27 @@ class ContentHashCache:
         """
         Compute content hash of object using SHA256.
         
+        Uses dataclass serialization for ClusterScore and AreaScore objects
+        to ensure consistent hashing across instances with same values.
+        
         Args:
-            obj: Object to hash (must be JSON-serializable)
+            obj: Object to hash (must be JSON-serializable or dataclass)
             
         Returns:
             SHA256 hash hex digest
         """
         try:
+            # Handle dataclass objects specially for consistent serialization
+            def serialize_obj(o):
+                # Check if it's a dataclass
+                if hasattr(o, '__dataclass_fields__'):
+                    from dataclasses import asdict
+                    return asdict(o)
+                # Fallback to string representation
+                return str(o)
+            
             # Serialize to canonical JSON for consistent hashing
-            json_str = json.dumps(obj, sort_keys=True, default=str)
+            json_str = json.dumps(obj, sort_keys=True, default=serialize_obj)
             return hashlib.sha256(json_str.encode()).hexdigest()
         except (TypeError, ValueError) as e:
             logger.warning(f"Failed to hash object: {e}")
