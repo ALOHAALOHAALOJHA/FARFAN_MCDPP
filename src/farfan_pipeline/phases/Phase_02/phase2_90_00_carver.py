@@ -2572,10 +2572,268 @@ def synthesize_to_phase3(
 
 
 # =============================================================================
+# CARVER CHUNK PROCESSING (For Phase 2 300-delivery contract)
+# =============================================================================
+
+
+# Constants for chunk processing
+CPP_CHUNK_COUNT: Final[int] = 60
+MICRO_ANSWER_COUNT: Final[int] = 300
+SHARDS_PER_CHUNK: Final[int] = 5
+
+
+class CarverError(Exception):
+    """
+    Error raised by Carver when cardinality contract is violated.
+
+    Attributes:
+        error_code: Error code (e.g., "E2002" for cardinality error)
+        expected: Expected value
+        actual: Actual value
+        message: Human-readable error message
+    """
+
+    def __init__(
+        self,
+        error_code: str,
+        expected: int,
+        actual: int,
+        message: str | None = None,
+    ) -> None:
+        self.error_code = error_code
+        self.expected = expected
+        self.actual = actual
+        self.message = message or (
+            f"Cardinality error: expected {expected}, got {actual}"
+        )
+        super().__init__(self.message)
+
+
+@dataclass(frozen=True, slots=True)
+class CPPChunk:
+    """
+    Canonical Policy Processing (CPP) Chunk.
+
+    Represents one of 60 chunks in the canonical questionnaire.
+    Each chunk corresponds to one question-dimension pair.
+
+    Attributes:
+        chunk_id: Unique identifier (e.g., "chunk_000")
+        pa_code: Policy area code (e.g., "PA01")
+        dim_code: Dimension code (e.g., "D1")
+        content: Chunk content
+        metadata: Optional metadata dictionary
+    """
+
+    chunk_id: str
+    pa_code: str
+    dim_code: str
+    content: str
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        """Validate chunk invariants."""
+        if not self.chunk_id:
+            raise ValueError("chunk_id cannot be empty")
+        if not self.content:
+            raise ValueError("content cannot be empty")
+        if not self.pa_code.startswith("PA") or len(self.pa_code) != 4:
+            raise ValueError(f"Invalid pa_code: {self.pa_code}")
+        if not self.dim_code.startswith("D") or len(self.dim_code) > 4:
+            raise ValueError(f"Invalid dim_code: {self.dim_code}")
+
+
+@dataclass(frozen=True, slots=True)
+class MicroAnswer:
+    """
+    Micro-answer shard produced by Carver.
+
+    Each of 60 chunks produces exactly 5 micro-answer shards,
+    resulting in 300 total micro-answers.
+
+    Attributes:
+        task_id: Unique task identifier (e.g., "task_001")
+        chunk_id: Source chunk identifier
+        shard_index: Shard index within chunk (0-4)
+        pa_code: Policy area code
+        dim_code: Dimension code
+        content: Micro-answer content
+        content_hash: Hash of content for verification
+    """
+
+    task_id: str
+    chunk_id: str
+    shard_index: int
+    pa_code: str
+    dim_code: str
+    content: str
+    content_hash: str
+
+    def __post_init__(self) -> None:
+        """Validate micro-answer invariants."""
+        if self.shard_index < 0 or self.shard_index >= SHARDS_PER_CHUNK:
+            raise ValueError(
+                f"shard_index must be in [0, {SHARDS_PER_CHUNK}), got {self.shard_index}"
+            )
+        if not self.content:
+            raise ValueError("content cannot be empty")
+        if not self.content_hash:
+            raise ValueError("content_hash cannot be empty")
+
+
+class Carver:
+    """
+    Carver for processing 60 CPP chunks into 300 micro-answer shards.
+
+    The cardinality contract is strict:
+    - Input: Exactly 60 CPP chunks
+    - Output: Exactly 300 MicroAnswer shards (5 per chunk)
+
+    The Carver uses deterministic random seeding for reproducibility.
+
+    Attributes:
+        random_seed: Seed for random number generation
+    """
+
+    def __init__(self, random_seed: int | None = None) -> None:
+        """
+        Initialize Carver.
+
+        Args:
+            random_seed: Seed for deterministic output (default: 42)
+        """
+        self._random_seed = random_seed if random_seed is not None else 42
+        self._rng = _create_seeded_rng(self._random_seed)
+
+    def carve(self, chunks: Sequence[CPPChunk]) -> tuple[MicroAnswer, ...]:
+        """
+        Carve 60 CPP chunks into 300 micro-answer shards.
+
+        Args:
+            chunks: Sequence of exactly 60 CPP chunks
+
+        Returns:
+            Tuple of exactly 300 MicroAnswer objects
+
+        Raises:
+            CarverError: If cardinality contract is violated
+        """
+        # Validate cardinality
+        chunk_count = len(chunks)
+        if chunk_count != CPP_CHUNK_COUNT:
+            raise CarverError(
+                error_code="E2002",
+                expected=CPP_CHUNK_COUNT,
+                actual=chunk_count,
+                message=f"Expected {CPP_CHUNK_COUNT} chunks, got {chunk_count}",
+            )
+
+        # Process each chunk into 5 shards
+        micro_answers: list[MicroAnswer] = []
+
+        for chunk in chunks:
+            for shard_index in range(SHARDS_PER_CHUNK):
+                # Generate deterministic task_id based on seed and chunk
+                task_num = len(micro_answers) + 1
+                task_id = f"task_{task_num:03d}"
+
+                # Generate shard content
+                shard_content = self._generate_shard_content(
+                    chunk, shard_index, task_num
+                )
+
+                # Compute content hash
+                content_hash = hashlib.sha256(
+                    f"{chunk.chunk_id}:{shard_index}:{self._random_seed}:{shard_content}".encode()
+                ).hexdigest()[:32]
+
+                micro_answer = MicroAnswer(
+                    task_id=task_id,
+                    chunk_id=chunk.chunk_id,
+                    shard_index=shard_index,
+                    pa_code=chunk.pa_code,
+                    dim_code=chunk.dim_code,
+                    content=shard_content,
+                    content_hash=content_hash,
+                )
+                micro_answers.append(micro_answer)
+
+        return tuple(micro_answers)
+
+    def _generate_shard_content(
+        self, chunk: CPPChunk, shard_index: int, task_num: int
+    ) -> str:
+        """
+        Generate shard content deterministically.
+
+        Args:
+            chunk: Source chunk
+            shard_index: Index within chunk (0-4)
+            task_num: Global task number
+
+        Returns:
+            Generated shard content
+        """
+        # Deterministic content generation based on seed
+        shard_templates = [
+            "Análisis de {pa_code} en dimensión {dim_code}: {content}",
+            "Evaluación de {pa_code} ({dim_code}): {content}",
+            "Revisión de {content} para {pa_code} dimensión {dim_code}",
+            "Estudio de {dim_code} en {pa_code}: {content}",
+            "Examen de {content} - {pa_code} {dim_code}",
+        ]
+
+        template = shard_templates[shard_index]
+        return template.format(
+            pa_code=chunk.pa_code,
+            dim_code=chunk.dim_code,
+            content=chunk.content[:50],
+        )
+
+
+def _create_seeded_rng(seed: int) -> Any:
+    """Create a seeded random number generator."""
+    import random
+
+    rng = random.Random(seed)
+    return rng
+
+
+def carve_chunks(
+    chunks: Sequence[CPPChunk],
+    random_seed: int | None = None,
+) -> tuple[MicroAnswer, ...]:
+    """
+    Public API function to carve chunks into micro-answers.
+
+    Args:
+        chunks: Sequence of exactly 60 CPP chunks
+        random_seed: Seed for deterministic output (default: 42)
+
+    Returns:
+        Tuple of exactly 300 MicroAnswer objects
+
+    Raises:
+        CarverError: If cardinality contract is violated
+    """
+    carver = Carver(random_seed=random_seed)
+    return carver.carve(chunks)
+
+
+# =============================================================================
 # MODULE EXPORTS
 # =============================================================================
 
 __all__ = [
+    # Carver chunk processing (for Phase 2 300-delivery contract)
+    "Carver",
+    "CPPChunk",
+    "MicroAnswer",
+    "CarverError",
+    "carve_chunks",
+    "CPP_CHUNK_COUNT",
+    "MICRO_ANSWER_COUNT",
+    "SHARDS_PER_CHUNK",
     # Enums
     "QualityLevel",
     "Dimension",
