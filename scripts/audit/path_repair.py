@@ -40,6 +40,9 @@ class PathRepairer:
         r"os\.path\.join\(([^,]+),\s*([^)]+)\)": r"\1 / \2",
     }
 
+    # Directories to exclude from scanning
+    EXCLUDED_DIRS = [".venv", "venv", "__pycache__", ".git", "node_modules", "_build", "dist", "build"]
+
     def __init__(
         self,
         root: Path,
@@ -54,6 +57,7 @@ class PathRepairer:
         self.verbose = verbose
         self.aggressive = aggressive  # Enable more aggressive repairs
         self.changes: List[Dict[str, Any]] = []
+        self.project_dir_name = root.name  # Extract project directory name from root path
 
     def repair_imports(self, py_file: Path) -> int:
         """Repair deprecated imports in a file."""
