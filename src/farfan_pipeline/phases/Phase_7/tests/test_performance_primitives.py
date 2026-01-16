@@ -7,7 +7,6 @@ Tests the three surgical optimizations:
 3. Content-hash-based caching
 """
 
-import pytest
 
 
 def test_lazy_property():
