@@ -262,33 +262,49 @@ class MacroAggregator:
     def _detect_gaps(
         self, cluster_scores: list[ClusterScore]
     ) -> tuple[list[str], dict[str, str]]:
-        """Detect systemic gaps across all policy areas."""
+        """Detect systemic gaps across all policy areas using SystemicGapDetector.
+        
+        This method properly delegates to SystemicGapDetector which uses:
+        - Normalized scoring (0-1 scale)
+        - Normative baseline validation
+        - Contextual validation rules
+        """
         if not self.enable_gap_detection or not self.gap_detector:
             return [], {}
         
-        # Collect all policy areas with scores below threshold
-        gaps = []
-        severity = {}
-        
-        # Convert normalized threshold to raw scale
-        raw_threshold = SYSTEMIC_GAP_THRESHOLD * MAX_SCORE  # 0.55 * 3.0 = 1.65
-        
+        # Extract all area scores from cluster scores
+        area_scores = []
         for cs in cluster_scores:
-            # Check weakest area in cluster
-            if cs.weakest_area and cs.score < raw_threshold:
-                area_id = cs.weakest_area
-                if area_id not in gaps:
-                    gaps.append(area_id)
-                    
-                    # Determine severity based on score
-                    if cs.score < 1.0:  # < 33%
-                        severity[area_id] = "CRITICAL"
-                    elif cs.score < 1.35:  # < 45%
-                        severity[area_id] = "SEVERE"
-                    else:
-                        severity[area_id] = "MODERATE"
+            if hasattr(cs, 'area_scores') and cs.area_scores:
+                area_scores.extend(cs.area_scores)
         
-        return gaps, severity
+        if not area_scores:
+            logger.warning("No area scores found in cluster scores, cannot detect gaps")
+            return [], {}
+        
+        # Use SystemicGapDetector to detect gaps with normative baseline
+        try:
+            detected_gaps = self.gap_detector.detect_gaps(
+                area_scores=area_scores,
+                extracted_norms_by_area=None,  # TODO: Pass from pipeline context
+                context_by_area=None,  # TODO: Pass from pipeline context
+            )
+            
+            # Convert SystemicGap objects to simple lists for backward compatibility
+            gap_ids = [gap.area_id for gap in detected_gaps]
+            gap_severity = {gap.area_id: gap.priority for gap in detected_gaps}
+            
+            logger.info(
+                f"SystemicGapDetector found {len(detected_gaps)} gaps: "
+                f"{gap_ids}"
+            )
+            
+            return gap_ids, gap_severity
+            
+        except Exception as e:
+            logger.error(f"Error in SystemicGapDetector.detect_gaps: {e}")
+            # Fallback to empty results rather than crashing
+            return [], {}
     
     def _compute_alignment(
         self, cluster_scores: list[ClusterScore]

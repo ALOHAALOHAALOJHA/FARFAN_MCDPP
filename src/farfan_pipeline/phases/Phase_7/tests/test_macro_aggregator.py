@@ -5,7 +5,31 @@ Tests aggregation logic, coherence analysis, gap detection, and alignment scorin
 """
 
 import pytest
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+
+@dataclass
+class MockDimensionScore:
+    """Mock DimensionScore for testing."""
+    dimension_id: str
+    score: float
+
+
+@dataclass
+class MockAreaScore:
+    """Mock AreaScore for testing (Phase 5 output)."""
+    area_id: str
+    area_name: str
+    score: float
+    quality_level: str
+    dimension_scores: list = field(default_factory=list)
+    validation_passed: bool = True
+    validation_details: dict = field(default_factory=dict)
+    cluster_id: str = ""
+    score_std: float = 0.1
+    confidence_interval_95: tuple = field(default_factory=lambda: (0.0, 3.0))
+    provenance_node_id: str = ""
+    aggregation_method: str = "weighted_average"
 
 
 @dataclass
@@ -20,15 +44,16 @@ class MockClusterScore:
     penalty_applied: float
     areas: list
     score_std: float = 0.1
+    area_scores: list = field(default_factory=list)  # Added for gap detection
 
 
 def create_mock_cluster_scores():
     """Create 4 mock cluster scores for testing."""
     return [
-        MockClusterScore("CLUSTER_MESO_1", 2.5, 0.9, 0.1, "PA01", "LOW", 0.0, ["PA01", "PA02", "PA03"]),
-        MockClusterScore("CLUSTER_MESO_2", 2.3, 0.85, 0.15, "PA04", "LOW", 0.0, ["PA04", "PA05", "PA06"]),
-        MockClusterScore("CLUSTER_MESO_3", 2.1, 0.88, 0.12, "PA07", "LOW", 0.0, ["PA07", "PA08"]),
-        MockClusterScore("CLUSTER_MESO_4", 2.4, 0.92, 0.08, "PA09", "LOW", 0.0, ["PA09", "PA10"]),
+        MockClusterScore("CLUSTER_MESO_1", 2.5, 0.9, 0.1, "PA01", "LOW", 0.0, ["PA01", "PA02", "PA03"], 0.1, []),
+        MockClusterScore("CLUSTER_MESO_2", 2.3, 0.85, 0.15, "PA04", "LOW", 0.0, ["PA04", "PA05", "PA06"], 0.1, []),
+        MockClusterScore("CLUSTER_MESO_3", 2.1, 0.88, 0.12, "PA07", "LOW", 0.0, ["PA07", "PA08"], 0.1, []),
+        MockClusterScore("CLUSTER_MESO_4", 2.4, 0.92, 0.08, "PA09", "LOW", 0.0, ["PA09", "PA10"], 0.1, []),
     ]
 
 
@@ -197,26 +222,53 @@ def test_macro_aggregator_alignment_scoring():
 
 
 def test_macro_aggregator_gap_detection():
-    """Test systemic gap detection."""
+    """Test systemic gap detection using SystemicGapDetector."""
     from farfan_pipeline.phases.Phase_7.phase7_20_00_macro_aggregator import MacroAggregator
     
     aggregator = MacroAggregator(enable_gap_detection=True)
     
-    # SYSTEMIC_GAP_THRESHOLD = 0.55 on normalized scale
-    # On raw scale: 0.55 * 3.0 = 1.65
-    # Create scores with gaps (< 1.65 threshold)
+    # Create area scores with some below threshold (0.55 on normalized scale = 1.65 on raw scale)
+    area_with_gap = MockAreaScore(
+        area_id="PA01",
+        area_name="Mujeres y Género",
+        score=1.2,  # Below 1.65 threshold
+        quality_level="INSUFICIENTE"
+    )
+    area_without_gap = MockAreaScore(
+        area_id="PA04",
+        area_name="Educación",
+        score=2.3,  # Above threshold
+        quality_level="BUENO"
+    )
+    
+    # Create cluster scores with area_scores included
     gap_scores = [
-        MockClusterScore("CLUSTER_MESO_1", 1.2, 0.9, 0.1, "PA01", "LOW", 0.0, ["PA01"]),
-        MockClusterScore("CLUSTER_MESO_2", 2.3, 0.85, 0.15, "PA04", "LOW", 0.0, ["PA04"]),
-        MockClusterScore("CLUSTER_MESO_3", 2.1, 0.88, 0.12, "PA07", "LOW", 0.0, ["PA07"]),
-        MockClusterScore("CLUSTER_MESO_4", 2.4, 0.92, 0.08, "PA09", "LOW", 0.0, ["PA09"]),
+        MockClusterScore(
+            "CLUSTER_MESO_1", 1.5, 0.9, 0.1, "PA01", "LOW", 0.0, 
+            ["PA01", "PA02", "PA03"], 0.1,
+            [area_with_gap]  # Include area scores for gap detection
+        ),
+        MockClusterScore(
+            "CLUSTER_MESO_2", 2.3, 0.85, 0.15, "PA04", "LOW", 0.0,
+            ["PA04", "PA05", "PA06"], 0.1,
+            [area_without_gap]
+        ),
+        MockClusterScore(
+            "CLUSTER_MESO_3", 2.1, 0.88, 0.12, "PA07", "LOW", 0.0,
+            ["PA07", "PA08"], 0.1, []
+        ),
+        MockClusterScore(
+            "CLUSTER_MESO_4", 2.4, 0.92, 0.08, "PA09", "LOW", 0.0,
+            ["PA09", "PA10"], 0.1, []
+        ),
     ]
     
     macro_score = aggregator.aggregate(gap_scores)
     
-    # Should detect PA01 as a gap (score 1.2 < 1.65)
+    # Should detect PA01 as a gap (score 1.2 / 3.0 = 0.4 < 0.55 threshold)
     assert "PA01" in macro_score.systemic_gaps
-    assert macro_score.gap_severity["PA01"] in {"CRITICAL", "SEVERE", "MODERATE"}
+    # Gap severity should use priority from SystemicGapDetector (CRITICAL/HIGH/MEDIUM/LOW)
+    assert macro_score.gap_severity["PA01"] in {"CRITICAL", "HIGH", "MEDIUM", "LOW"}
 
 
 def test_macro_aggregator_uncertainty_propagation():

@@ -188,3 +188,21 @@ def test_macro_score_with_all_fields():
     assert macro_score.evaluation_id == "TEST_010"
     assert len(macro_score.systemic_gaps) == 2
     assert macro_score.provenance_node_id == "PROV_123"
+
+
+def test_macro_score_immutability():
+    """Test that MacroScore is immutable (frozen dataclass)."""
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_macro_score import MacroScore
+    import pytest
+    
+    macro_score = MacroScore(
+        evaluation_id="TEST_011",
+        score=2.5,
+        score_normalized=0.833,
+        quality_level="BUENO",
+        cross_cutting_coherence=0.90,
+    )
+    
+    # Attempting to modify a frozen dataclass should raise FrozenInstanceError
+    with pytest.raises(Exception):  # FrozenInstanceError or AttributeError
+        macro_score.score = 3.0

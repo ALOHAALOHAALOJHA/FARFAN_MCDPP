@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_6.phase6_10_00_cluster_score import ClusterScore
 
 
-@dataclass
+@dataclass(frozen=True)
 class MacroScore:
     """
     MACRO-Level Holistic Score - Output of Phase 7.
@@ -113,10 +113,10 @@ class MacroScore:
         if self.quality_level not in valid_levels:
             raise ValueError(f"MacroScore quality_level must be one of {valid_levels}, got {self.quality_level}")
         
-        # Set evaluation_timestamp if not provided
+        # Set evaluation_timestamp if not provided (use object.__setattr__ for frozen dataclass)
         if not self.evaluation_timestamp:
             from datetime import datetime, timezone
-            self.evaluation_timestamp = datetime.now(timezone.utc).isoformat()
+            object.__setattr__(self, 'evaluation_timestamp', datetime.now(timezone.utc).isoformat())
     
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
