@@ -3,6 +3,12 @@
 PHASE_LABEL: Phase 2
 PHASE_COMPONENT: Base Executor
 PHASE_ROLE: Abstract base class for contract-driven executors with method routing
+
+FASE 4.4: N3 Veto Integration
+- Accepts EpistemicCalibrationRegistry for N3-level audit calibration
+- Resolves N3 (Audit/Falsification) calibration for veto logic
+- Applies Popperian asymmetry: N3 can veto N1/N2, but N1/N2 cannot veto N3 [CI-04]
+- Implements veto gate: CRITICAL_VETO, PARTIAL_VETO, APPROVED
 """
 
 from __future__ import annotations
@@ -13,6 +19,16 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
 logger = logging.getLogger(__name__)
+
+# FASE 4.4: N3 Calibration imports
+try:
+    from farfan_pipeline.infrastructure.calibration.registry import (
+        EpistemicCalibrationRegistry,
+        CalibrationResolutionError,
+    )
+    CALIBRATION_REGISTRY_AVAILABLE = True
+except ImportError:
+    CALIBRATION_REGISTRY_AVAILABLE = False
 
 # CRITICAL: jsonschema is required for contract validation
 # If not available, schema validation will be disabled with a WARNING
@@ -94,6 +110,8 @@ class BaseExecutorWithContract(ABC):
         enriched_packs: dict[str, Any] | None = None,
         validation_orchestrator: Any | None = None,
         calibration_policy: CalibrationPolicy | None = None,
+        calibration_registry: Any = None,  # FASE 4.4
+        pdm_profile: Any = None,  # FASE 4.4
     ) -> None:
         self.method_executor = method_executor
         self.signal_registry = signal_registry
@@ -108,6 +126,11 @@ class BaseExecutorWithContract(ABC):
         self._use_validation_orchestrator = validation_orchestrator is not None
         # CALIBRATION POLICY: Method selection and weighting based on calibration
         self.calibration_policy = calibration_policy or create_default_policy(strict_mode=False)
+        # FASE 4.4: N3 Calibration for veto logic
+        self.calibration_registry = calibration_registry
+        self.pdm_profile = pdm_profile
+        # Calibration cache for resolved calibrations (FASE 4.4)
+        self._calibration_cache: dict[str, dict[str, Any]] = {}
 
     @classmethod
     @abstractmethod
@@ -823,6 +846,231 @@ class BaseExecutorWithContract(ABC):
                 raise ValueError(
                     f"Execution aborted by failure contract due to '{condition}'. Emit code: {emit_code}"
                 )
+
+    # ========================================================================
+    # FASE 4.4: N3 Calibration Resolution and Veto Logic
+    # ========================================================================
+
+    def resolve_n3_calibration(
+        self,
+        method_id: str,
+        contract_type: str = "TYPE_A",
+    ) -> dict[str, Any] | None:
+        """
+        Resolve N3 (Audit/Falsification) calibration for a method.
+
+        FASE 4.4: N3 Veto Integration
+
+        This method uses the EpistemicCalibrationRegistry to resolve
+        calibration parameters for N3-level methods, applying:
+        - Level defaults (N3-AUD base configuration)
+        - Contract type overrides (TYPE_C is typical for audit/falsification)
+        - PDM-driven adjustments (veto thresholds, financial strictness)
+
+        Args:
+            method_id: Fully-qualified method name (ClassName.method_name)
+            contract_type: Contract type (TYPE_A, TYPE_B, TYPE_C, etc.)
+
+        Returns:
+            Resolved calibration dict with N3 parameters, or None if registry unavailable.
+
+        N3 Calibration Parameters:
+            - veto_threshold_critical: Threshold for CRITICAL_VETO (suppress output)
+            - veto_threshold_partial: Threshold for PARTIAL_VETO (attenuate output)
+            - financial_strictness: Multiplier for financial data validation
+            - significance_level: Statistical significance level for validation
+            - temporal_logic_required: Enable temporal consistency validation
+
+        Raises:
+            CalibrationResolutionError: If calibration resolution fails
+        """
+        if self.calibration_registry is None:
+            logger.debug("n3_calibration_unavailable no_registry")
+            return None
+
+        # Check cache first
+        cache_key = f"{method_id}:{contract_type}"
+        if cache_key in self._calibration_cache:
+            return self._calibration_cache[cache_key]
+
+        try:
+            # Resolve calibration through 8-layer pipeline
+            calibration = self.calibration_registry.resolve_calibration(
+                method_id=method_id,
+                contract_type=contract_type,
+                pdm_profile=self.pdm_profile,
+            )
+
+            # Verify it's N3 calibration
+            if calibration.get("level") != "N3-AUD":
+                logger.warning(
+                    "n3_calibration_level_mismatch method=%s expected=N3-AUD got=%s",
+                    method_id,
+                    calibration.get("level"),
+                )
+
+            # Cache the result
+            self._calibration_cache[cache_key] = calibration
+
+            logger.debug(
+                "n3_calibration_resolved method=%s contract=%s params=%d",
+                method_id,
+                contract_type,
+                len(calibration.get("calibration_parameters", {})),
+            )
+
+            return calibration
+
+        except Exception as e:
+            logger.error(
+                "n3_calibration_failed method=%s contract=%s error=%s",
+                method_id,
+                contract_type,
+                str(e),
+            )
+            # Return None to allow fallback to default behavior
+            return None
+
+    def get_n3_parameter(
+        self,
+        method_id: str,
+        parameter_name: str,
+        default: float | bool | int = 1.0,
+        contract_type: str = "TYPE_C",
+    ) -> float | bool | int:
+        """
+        Get a specific N3 calibration parameter for an audit method.
+
+        FASE 4.4: Convenience method for accessing individual N3 parameters.
+
+        Args:
+            method_id: Fully-qualified method name
+            parameter_name: Parameter name (e.g., "veto_threshold_critical")
+            default: Default value if calibration unavailable
+            contract_type: Contract type (TYPE_C is typical for audit)
+
+        Returns:
+            Parameter value (float, bool, or int), or default if unavailable.
+
+        Example:
+            threshold = executor.get_n3_parameter(
+                "AuditValidator.validate",
+                "veto_threshold_critical",
+                default=0.1,
+            )
+        """
+        calibration = self.resolve_n3_calibration(method_id, contract_type)
+
+        if calibration is None:
+            return default
+
+        params = calibration.get("calibration_parameters", {})
+        return params.get(parameter_name, default)
+
+    def apply_n3_veto_gate(
+        self,
+        method_id: str,
+        confidence: float,
+        result: dict[str, Any],
+        contract_type: str = "TYPE_C",
+    ) -> dict[str, Any]:
+        """
+        Apply N3 veto gate to a result based on confidence score.
+
+        FASE 4.4: Implements Popperian asymmetry [CI-04]
+        - N3 can veto N1/N2, but N1/N2 cannot veto N3
+        - Veto gate: CRITICAL_VETO, PARTIAL_VETO, APPROVED
+
+        Args:
+            method_id: Fully-qualified method name
+            confidence: Confidence score (0.0 to 1.0)
+            result: Original result dict to potentially veto
+            contract_type: Contract type for calibration lookup
+
+        Returns:
+            Enhanced result dict with veto metadata:
+            - veto_action: "CRITICAL_VETO", "PARTIAL_VETO", or "APPROVED"
+            - veto_multiplier: 0.0 (suppressed), 0.5 (attenuated), or 1.0 (approved)
+            - confidence_before: Original confidence score
+            - calibration_metadata: PDM adjustments applied
+
+        Veto Gate Behavior:
+            CRITICAL_VETO: confidence <= veto_threshold_critical
+                - multiplier: 0.0
+                - status: SUPPRESSED
+            PARTIAL_VETO: veto_threshold_critical < confidence <= veto_threshold_partial
+                - multiplier: 0.5
+                - status: ATTENUATED
+            APPROVED: confidence > veto_threshold_partial
+                - multiplier: 1.0
+                - status: VALIDATED
+        """
+        # Get N3 calibration
+        calibration = self.resolve_n3_calibration(method_id, contract_type)
+
+        # Default veto thresholds (conservative)
+        veto_threshold_critical = 0.1  # Below this = critical veto
+        veto_threshold_partial = 0.7   # Below this = partial veto
+
+        calibration_metadata = {}
+
+        # Apply PDM-driven adjustments if available
+        if calibration is not None:
+            params = calibration.get("calibration_parameters", {})
+
+            # Get adjusted veto thresholds
+            if "veto_threshold_critical" in params:
+                veto_threshold_critical = params["veto_threshold_critical"]
+                calibration_metadata["veto_threshold_critical"] = veto_threshold_critical
+
+            if "veto_threshold_partial" in params:
+                veto_threshold_partial = params["veto_threshold_partial"]
+                calibration_metadata["veto_threshold_partial"] = veto_threshold_partial
+
+            # Check for financial strictness
+            if params.get("financial_strictness", 1.0) > 1.0:
+                calibration_metadata["financial_strictness_applied"] = True
+                # Financial data = stricter veto thresholds
+                financial_multiplier = params["financial_strictness"]
+                veto_threshold_partial = max(0.5, veto_threshold_partial * (1 / financial_multiplier))
+
+        # Determine veto action
+        if confidence <= veto_threshold_critical:
+            veto_action = "CRITICAL_VETO"
+            veto_multiplier = 0.0
+            veto_status = "SUPPRESSED"
+        elif confidence <= veto_threshold_partial:
+            veto_action = "PARTIAL_VETO"
+            veto_multiplier = 0.5
+            veto_status = "ATTENUATED"
+        else:
+            veto_action = "APPROVED"
+            veto_multiplier = 1.0
+            veto_status = "VALIDATED"
+
+        # Create enhanced result with veto metadata
+        veto_result = result.copy()
+        veto_result.update({
+            "veto_action": veto_action,
+            "veto_multiplier": veto_multiplier,
+            "veto_status": veto_status,
+            "confidence_before": confidence,
+            "confidence_after": confidence * veto_multiplier,
+            "calibration_metadata": calibration_metadata,
+            "asymmetry_principle": "N3 can veto N1/N2, but N1/N2 cannot veto N3 [CI-04]",
+        })
+
+        logger.info(
+            "n3_veto_gate_applied method=%s action=%s confidence=%.3f->%.3f thresholds=[critical=%.3f partial=%.3f]",
+            method_id,
+            veto_action,
+            confidence,
+            confidence * veto_multiplier,
+            veto_threshold_critical,
+            veto_threshold_partial,
+        )
+
+        return veto_result
 
     @classmethod
     def load_all_contracts(

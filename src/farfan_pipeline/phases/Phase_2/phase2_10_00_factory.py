@@ -185,6 +185,20 @@ from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry
 PHASE1_VALIDATION_CONSTANTS: dict[str, Any] = {}
 VALIDATION_CONSTANTS_AVAILABLE = False
 
+# =============================================================================
+# EPISTEMIC CALIBRATION REGISTRY (FASE 4: WIRING)
+# =============================================================================
+
+# Import calibration registry for epistemic level calibration
+from farfan_pipeline.infrastructure.calibration.registry import (
+    EpistemicCalibrationRegistry,
+    CalibrationResolutionError,
+    create_registry,
+    MockPDMProfile,
+)
+
+CALIBRATION_REGISTRY_AVAILABLE = True
+
 def load_validation_constants() -> dict[str, Any]:
     """Stub for validation constants loading (module not yet implemented)."""
     return PHASE1_VALIDATION_CONSTANTS
@@ -377,10 +391,10 @@ class SingletonViolationError(FactoryError):
 
 @dataclass(frozen=True)
 class ProcessorBundle:
-    """Aggregated orchestrator dependencies built by the Factory. 
+    """Aggregated orchestrator dependencies built by the Factory.
 
     This is the COMPLETE DI container returned by AnalysisPipelineFactory.
-    
+
     Attributes:
         orchestrator: Fully configured Orchestrator (main entry point).
         method_executor: MethodExecutor with signal registry injected.
@@ -389,6 +403,8 @@ class ProcessorBundle:
         executor_config: ExecutorConfig for operational parameters.
         enriched_signal_packs: Dict of EnrichedSignalPack per policy area.
         validation_constants: Phase 1 hard contracts (chunk counts, etc.).
+        calibration_registry: EpistemicCalibrationRegistry for level calibration (FASE 4.1).
+        pdm_profile: PDM structural profile for dynamic calibration (FASE 4.1).
         core_module_factory: Optional CoreModuleFactory for I/O helpers.
         seed_registry_initialized: Whether SeedRegistry singleton was set up.
         provenance: Construction metadata for audit trails.
@@ -401,6 +417,8 @@ class ProcessorBundle:
     executor_config: ExecutorConfig
     enriched_signal_packs: dict[str, EnrichedSignalPack]
     validation_constants: dict[str, Any]
+    calibration_registry: Any | None = None  # FASE 4.1: EpistemicCalibrationRegistry
+    pdm_profile: Any | None = None  # FASE 4.1: MockPDMProfile
     core_module_factory: Any | None = None
     seed_registry_initialized: bool = False
     provenance: dict[str, Any] = field(default_factory=dict)
@@ -544,11 +562,16 @@ class AnalysisPipelineFactory:
         self._method_executor: MethodExecutor | None = None
         self._enriched_packs: dict[str, EnrichedSignalPack] = {}
 
+        # FASE 4.1: Initialize Calibration Registry (Epistemic Level Calibration)
+        self._calibration_registry: EpistemicCalibrationRegistry | None = None
+        self._pdm_profile: MockPDMProfile | None = None
+
         logger.info(
-            "factory_initialized questionnaire_path=%s intelligence_layer=%s seed=%s",
+            "factory_initialized questionnaire_path=%s intelligence_layer=%s seed=%s calibration_enabled=%s",
             questionnaire_path or "default",
             enable_intelligence_layer,
             seed_for_determinism is not None,
+            CALIBRATION_REGISTRY_AVAILABLE,
         )
 
     def create_orchestrator(self) -> ProcessorBundle:
@@ -586,6 +609,9 @@ class AnalysisPipelineFactory:
 
             # Step 2: Build signal registry from canonical source
             self._build_signal_registry()
+
+            # Step 2.5: FASE 4.1 - Initialize Calibration Registry (Epistemic Level Calibration)
+            self._initialize_calibration_registry()
 
             # Step 3: Build enriched signal packs (intelligence layer)
             self._build_enriched_signal_packs()
@@ -631,6 +657,13 @@ class AnalysisPipelineFactory:
                 "phase0_validation_passed": phase0_validation.all_passed if phase0_validation else None,
                 "phase0_gate_count": len(phase0_validation.gate_results) if phase0_validation else 0,
                 "runtime_mode": self._runtime_config.mode.value if self._runtime_config else None,
+                # FASE 4.1: Calibration metadata
+                "calibration_registry_available": self._calibration_registry is not None,
+                "calibration_method_levels": len(self._calibration_registry.method_level_map) if self._calibration_registry else 0,
+                "calibration_type_configs": len(self._calibration_registry.type_overrides) if self._calibration_registry else 0,
+                "pdm_profile_available": self._pdm_profile is not None,
+                "pdm_profile_hierarchy_depth": getattr(self._pdm_profile, "hierarchy_depth", None) if self._pdm_profile else None,
+                "pdm_profile_financial": getattr(self._pdm_profile, "contains_financial_data", None) if self._pdm_profile else None,
             }
 
             # Step 10: Build complete bundle
@@ -642,6 +675,8 @@ class AnalysisPipelineFactory:
                 executor_config=executor_config,
                 enriched_signal_packs=self._enriched_packs,
                 validation_constants=validation_constants,
+                calibration_registry=self._calibration_registry,  # FASE 4.1
+                pdm_profile=self._pdm_profile,  # FASE 4.1
                 core_module_factory=self._build_core_module_factory(),
                 seed_registry_initialized=seed_initialized,
                 provenance=provenance,
@@ -699,6 +734,47 @@ class AnalysisPipelineFactory:
                 logger.info("phase1_manifest_validation_passed")
         
         return True
+
+    def get_calibration_registry(self) -> EpistemicCalibrationRegistry | None:
+        """Get the epistemic calibration registry (FASE 4.1).
+
+        Returns:
+            EpistemicCalibrationRegistry if initialized, else None.
+
+        Usage:
+            factory = AnalysisPipelineFactory(...)
+            bundle = factory.create_orchestrator()
+            registry = factory.get_calibration_registry()
+
+            # Resolve calibration for a method
+            calibration = registry.resolve_calibration(
+                method_id="PDETMunicipalPlanAnalyzer._score_indicators",
+                contract_type="TYPE_A",
+                pdm_profile=bundle.pdm_profile,
+            )
+        """
+        return self._calibration_registry
+
+    def extract_pdm_profile(
+        self,
+        doc: PreprocessedDocument | None = None,
+    ) -> MockPDMProfile:
+        """Extract PDM structural profile from PreprocessedDocument (FASE 4.1).
+
+        This is a public API for extracting PDM profiles that can be called
+        externally. It wraps the internal _extract_pdm_profile_from_cpp method.
+
+        Args:
+            doc: Optional PreprocessedDocument to analyze. If None, returns default profile.
+
+        Returns:
+            MockPDMProfile with extracted structural characteristics.
+
+        Usage:
+            factory = AnalysisPipelineFactory(...)
+            pdm_profile = factory.extract_pdm_profile(preprocessed_document)
+        """
+        return self._extract_pdm_profile_from_cpp(doc)
 
     # =========================================================================
     # Internal Construction Methods
@@ -996,6 +1072,122 @@ class AnalysisPipelineFactory:
             if isinstance(e, RegistryConstructionError):
                 raise
             raise RegistryConstructionError(f"Failed to build enriched packs: {e}") from e
+
+    def _initialize_calibration_registry(self) -> None:
+        """Initialize the Epistemic Calibration Registry for level-specific calibration.
+
+        FASE 4.1: Factory con Dependency Injection
+
+        This method initializes the calibration registry which provides:
+        - Level-specific calibration parameters (N0-N4)
+        - Contract type overrides (TYPE_A-E, SUBTIPO_F)
+        - PDM-driven adjustments based on document structure
+
+        The registry is used by TaskExecutor to resolve calibration for N1/N2/N3 methods.
+
+        Raises:
+            FactoryError: If calibration registry initialization fails.
+        """
+        if not CALIBRATION_REGISTRY_AVAILABLE:
+            logger.warning("calibration_registry_unavailable module_not_imported")
+            self._calibration_registry = None
+            return
+
+        logger.info("calibration_registry_initializing_start")
+
+        try:
+            # Create calibration registry with default root path
+            self._calibration_registry = create_registry()
+
+            # Create default PDM profile (will be replaced with actual extraction in future)
+            self._pdm_profile = MockPDMProfile(
+                table_schemas=[],
+                hierarchy_depth=2,
+                contains_financial_data=False,
+                temporal_structure={"has_baselines": False, "requires_ordering": False},
+            )
+
+            logger.info(
+                "calibration_registry_initialized method_levels=%d type_configs=%d",
+                len(self._calibration_registry.method_level_map),
+                len(self._calibration_registry.type_overrides),
+            )
+
+        except Exception as e:
+            if self._strict:
+                raise FactoryError(f"Failed to initialize calibration registry: {e}") from e
+            logger.warning(f"calibration_registry_init_failed non_strict_mode: {e}")
+            self._calibration_registry = None
+
+    def _extract_pdm_profile_from_cpp(self, doc: PreprocessedDocument | None = None) -> MockPDMProfile:
+        """Extract PDM (Process Document Matrix) structural profile from PreprocessedDocument.
+
+        FASE 4.1: PDM Profile Extraction
+
+        This method analyzes the document structure to extract:
+        - Table schemas (PPI, PAI, POI, financial tables)
+        - Hierarchy depth (nested section levels)
+        - Financial data presence
+        - Temporal structure (baselines, ordering requirements)
+
+        Args:
+            doc: Optional PreprocessedDocument to analyze. If None, returns default profile.
+
+        Returns:
+            MockPDMProfile with extracted structural characteristics.
+
+        Note:
+            This is a simplified implementation. Future versions will integrate
+            with the full PDM parametrization module for comprehensive structural analysis.
+        """
+        if doc is None:
+            logger.debug("pdm_profile_extraction no_document_provided using_default")
+            return MockPDMProfile()
+
+        # Extract table schemas from document
+        table_schemas = []
+        hierarchy_depth = 2
+        contains_financial_data = False
+        temporal_structure = {"has_baselines": False, "requires_ordering": False}
+
+        # Analyze document structure if available
+        if hasattr(doc, "document_structure"):
+            structure = doc.document_structure
+
+            # Extract table schemas
+            if hasattr(structure, "tables"):
+                for table in structure.tables:
+                    if hasattr(table, "schema_type"):
+                        table_schemas.append(table.schema_type)
+
+            # Determine hierarchy depth
+            if hasattr(structure, "max_depth"):
+                hierarchy_depth = structure.max_depth
+
+            # Detect financial data
+            if hasattr(structure, "contains_financial_data"):
+                contains_financial_data = structure.contains_financial_data
+
+            # Detect temporal structure
+            if hasattr(structure, "temporal_elements"):
+                temporal_structure["has_baselines"] = structure.temporal_elements.get("has_baselines", False)
+                temporal_structure["requires_ordering"] = structure.temporal_elements.get("requires_ordering", False)
+
+        profile = MockPDMProfile(
+            table_schemas=table_schemas,
+            hierarchy_depth=hierarchy_depth,
+            contains_financial_data=contains_financial_data,
+            temporal_structure=temporal_structure,
+        )
+
+        logger.debug(
+            "pdm_profile_extracted tables=%d hierarchy_depth=%d financial=%s",
+            len(table_schemas),
+            hierarchy_depth,
+            contains_financial_data,
+        )
+
+        return profile
 
     def _initialize_seed_registry(self) -> bool:
         """Initialize SeedRegistry singleton for deterministic operations.
@@ -1548,6 +1740,24 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
     diagnostics["components"]["validation_constants"] = len(bundle.validation_constants)
     diagnostics["metrics"]["validation_constant_count"] = len(bundle.validation_constants)
 
+    # FASE 4.1: Validate calibration registry
+    if bundle.calibration_registry is not None:
+        diagnostics["components"]["calibration_registry"] = "present"
+        if hasattr(bundle.calibration_registry, 'method_level_map'):
+            diagnostics["metrics"]["calibration_method_levels"] = len(bundle.calibration_registry.method_level_map)
+        if hasattr(bundle.calibration_registry, 'type_overrides'):
+            diagnostics["metrics"]["calibration_type_configs"] = len(bundle.calibration_registry.type_overrides)
+    else:
+        diagnostics["warnings"].append("CalibrationRegistry not initialized - epistemic calibration disabled")
+
+    # FASE 4.1: Validate PDM profile
+    if bundle.pdm_profile is not None:
+        diagnostics["components"]["pdm_profile"] = "present"
+        diagnostics["metrics"]["pdm_hierarchy_depth"] = getattr(bundle.pdm_profile, "hierarchy_depth", None)
+        diagnostics["metrics"]["pdm_financial"] = getattr(bundle.pdm_profile, "contains_financial_data", None)
+    else:
+        diagnostics["warnings"].append("PDM profile not extracted - using default calibration")
+
     # Validate seed registry
     if not bundle.seed_registry_initialized:
         diagnostics["warnings"].append("SeedRegistry not initialized - determinism not guaranteed")
@@ -1572,6 +1782,13 @@ def get_bundle_info(bundle: ProcessorBundle) -> dict[str, Any]:
         "construction_duration": bundle.provenance.get("construction_duration_seconds"),
         "seed_initialized": bundle.seed_registry_initialized,
         "factory_class": bundle.provenance.get("factory_class"),
+        # FASE 4.1: Calibration info
+        "calibration_available": bundle.calibration_registry is not None,
+        "calibration_method_levels": bundle.provenance.get("calibration_method_levels", 0),
+        "calibration_type_configs": bundle.provenance.get("calibration_type_configs", 0),
+        "pdm_available": bundle.pdm_profile is not None,
+        "pdm_hierarchy_depth": bundle.provenance.get("pdm_profile_hierarchy_depth"),
+        "pdm_financial": bundle.provenance.get("pdm_profile_financial"),
     }
 
 

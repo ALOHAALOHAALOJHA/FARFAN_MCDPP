@@ -360,6 +360,8 @@ class ParallelTaskExecutor:
         checkpoint_manager: CheckpointManager | None = None,
         checkpoint_batch_size: int = 10,
         use_processes: bool = False,
+        calibration_registry: Any = None,  # FASE 4.2
+        pdm_profile: Any = None,  # FASE 4.2
     ) -> None:
         """
         Initialize ParallelTaskExecutor.
@@ -374,6 +376,8 @@ class ParallelTaskExecutor:
             checkpoint_manager: Optional checkpoint manager for recovery
             checkpoint_batch_size: Tasks between checkpoints (default: 10)
             use_processes: Use ProcessPoolExecutor instead of ThreadPoolExecutor
+            calibration_registry: FASE 4.2 - Epistemic calibration registry
+            pdm_profile: FASE 4.2 - PDM structural profile
         """
         if signal_registry is None:
             raise ValueError(
@@ -389,6 +393,8 @@ class ParallelTaskExecutor:
         self.checkpoint_manager = checkpoint_manager
         self.checkpoint_batch_size = checkpoint_batch_size
         self.use_processes = use_processes
+        self.calibration_registry = calibration_registry  # FASE 4.2
+        self.pdm_profile = pdm_profile  # FASE 4.2
 
         # Build question lookup index
         self._question_index = self._build_question_index()
@@ -396,6 +402,9 @@ class ParallelTaskExecutor:
         # Thread-safe executor cache
         self._executor_cache: dict[str, DynamicContractExecutor] = {}
         self._cache_lock = threading.Lock()
+
+        # Calibration cache for resolved calibrations (FASE 4.2)
+        self._calibration_cache: dict[str, dict[str, Any]] = {}
 
     def _build_question_index(self) -> dict[str, dict[str, Any]]:
         """Build index of questions by question_id."""
@@ -560,6 +569,125 @@ class ParallelTaskExecutor:
 
         # Default to level 1
         return 1
+
+    # =========================================================================
+    # FASE 4.2: N1 Calibration Resolution
+    # =========================================================================
+
+    def resolve_n1_calibration(
+        self,
+        method_id: str,
+        contract_type: str = "TYPE_A",
+    ) -> dict[str, Any] | None:
+        """
+        Resolve N1 (Empirical Extraction) calibration for a method.
+
+        FASE 4.2: N1 Calibration Integration
+
+        This method uses the EpistemicCalibrationRegistry to resolve
+        calibration parameters for N1-level methods, applying:
+        - Level defaults (N1-EMP base configuration)
+        - Contract type overrides (TYPE_A-E, SUBTIPO_F)
+        - PDM-driven adjustments (table extraction boost, hierarchy sensitivity)
+
+        Args:
+            method_id: Fully-qualified method name (ClassName.method_name)
+            contract_type: Contract type (TYPE_A, TYPE_B, etc.)
+
+        Returns:
+            Resolved calibration dict with N1 parameters, or None if registry unavailable.
+
+        N1 Calibration Parameters:
+            - table_extraction_boost: Multiplier for tabular data extraction
+            - hierarchy_sensitivity: Multiplier for hierarchical structure handling
+            - pattern_fuzzy_threshold: Fuzzy matching threshold for patterns
+            - deduplication_threshold: Threshold for deduplicating extracted facts
+
+        Raises:
+            CalibrationResolutionError: If calibration resolution fails
+        """
+        if self.calibration_registry is None:
+            logger.debug("n1_calibration_unavailable no_registry")
+            return None
+
+        # Check cache first
+        cache_key = f"{method_id}:{contract_type}"
+        if cache_key in self._calibration_cache:
+            return self._calibration_cache[cache_key]
+
+        try:
+            # Resolve calibration through 8-layer pipeline
+            calibration = self.calibration_registry.resolve_calibration(
+                method_id=method_id,
+                contract_type=contract_type,
+                pdm_profile=self.pdm_profile,
+            )
+
+            # Verify it's N1 calibration
+            if calibration.get("level") != "N1-EMP":
+                logger.warning(
+                    "n1_calibration_level_mismatch method=%s expected=N1-EMP got=%s",
+                    method_id,
+                    calibration.get("level"),
+                )
+
+            # Cache the result
+            self._calibration_cache[cache_key] = calibration
+
+            logger.debug(
+                "n1_calibration_resolved method=%s contract=%s params=%d",
+                method_id,
+                contract_type,
+                len(calibration.get("calibration_parameters", {})),
+            )
+
+            return calibration
+
+        except Exception as e:
+            logger.error(
+                "n1_calibration_failed method=%s contract=%s error=%s",
+                method_id,
+                contract_type,
+                str(e),
+            )
+            # Return None to allow fallback to default behavior
+            return None
+
+    def get_n1_parameter(
+        self,
+        method_id: str,
+        parameter_name: str,
+        default: float = 1.0,
+        contract_type: str = "TYPE_A",
+    ) -> float:
+        """
+        Get a specific N1 calibration parameter for a method.
+
+        FASE 4.2: Convenience method for accessing individual N1 parameters.
+
+        Args:
+            method_id: Fully-qualified method name
+            parameter_name: Parameter name (e.g., "table_extraction_boost")
+            default: Default value if calibration unavailable
+            contract_type: Contract type (TYPE_A, TYPE_B, etc.)
+
+        Returns:
+            Parameter value as float, or default if unavailable.
+
+        Example:
+            boost = executor.get_n1_parameter(
+                "PDETMunicipalPlanAnalyzer._score_indicators",
+                "table_extraction_boost",
+                default=1.0,
+            )
+        """
+        calibration = self.resolve_n1_calibration(method_id, contract_type)
+
+        if calibration is None:
+            return default
+
+        params = calibration.get("calibration_parameters", {})
+        return params.get(parameter_name, default)
 
     def _execute_level(self, tasks: list[ExecutableTask]) -> list[TaskResult]:
         """
@@ -1123,15 +1251,22 @@ class TaskExecutor:
     Iterates over ExecutionPlan.tasks, executes each task with
     DynamicContractExecutor, and collects results.
 
+    FASE 4.2: N1 Calibration Integration
+    - Accepts calibration_registry for epistemic level calibration
+    - Resolves N1 calibration for empirical extraction methods
+    - Applies PDM-driven adjustments based on document structure
+
     SUCCESS_CRITERIA:
         - All 300 tasks execute successfully
         - Each result traces to originating task
         - Results compatible with Carver input
+        - N1 calibration resolved and applied for empirical methods
 
     FAILURE_MODES:
         - TaskExecutionFailure: Individual task fails
         - QuestionLookupFailure: Cannot find question
         - ExecutorFailure: Executor instantiation fails
+        - CalibrationResolutionError: Calibration resolution fails
 
     TERMINATION_CONDITION:
         - All 300 tasks processed
@@ -1148,6 +1283,8 @@ class TaskExecutor:
         signal_registry: Any,
         calibration_orchestrator: Any | None = None,
         validation_orchestrator: Any | None = None,
+        calibration_registry: Any = None,  # FASE 4.2: EpistemicCalibrationRegistry
+        pdm_profile: Any = None,  # FASE 4.2: MockPDMProfile
     ) -> None:
         """
         Initialize TaskExecutor.
@@ -1158,6 +1295,8 @@ class TaskExecutor:
             signal_registry: REQUIRED SISAS signal resolution (must be initialized in Phase 0)
             calibration_orchestrator: Optional calibration
             validation_orchestrator: Optional validation tracking
+            calibration_registry: FASE 4.2 - Epistemic calibration registry for N1/N2/N3
+            pdm_profile: FASE 4.2 - PDM structural profile for dynamic adjustments
 
         Raises:
             ValueError: If signal_registry is None
@@ -1173,12 +1312,17 @@ class TaskExecutor:
         self.signal_registry = signal_registry
         self.calibration_orchestrator = calibration_orchestrator
         self.validation_orchestrator = validation_orchestrator
+        self.calibration_registry = calibration_registry  # FASE 4.2
+        self.pdm_profile = pdm_profile  # FASE 4.2
 
         # Build question lookup index
         self._question_index = self._build_question_index()
 
         # Executor cache
         self._executor_cache: dict[str, DynamicContractExecutor] = {}
+
+        # Calibration cache for resolved calibrations (FASE 4.2)
+        self._calibration_cache: dict[str, dict[str, Any]] = {}
 
     def _build_question_index(self) -> dict[str, dict[str, Any]]:
         """Build index of questions by question_id."""
@@ -1344,6 +1488,125 @@ class TaskExecutor:
             )
         return self._executor_cache[question_id]
 
+    # =========================================================================
+    # FASE 4.2: N1 Calibration Resolution
+    # =========================================================================
+
+    def resolve_n1_calibration(
+        self,
+        method_id: str,
+        contract_type: str = "TYPE_A",
+    ) -> dict[str, Any] | None:
+        """
+        Resolve N1 (Empirical Extraction) calibration for a method.
+
+        FASE 4.2: N1 Calibration Integration
+
+        This method uses the EpistemicCalibrationRegistry to resolve
+        calibration parameters for N1-level methods, applying:
+        - Level defaults (N1-EMP base configuration)
+        - Contract type overrides (TYPE_A-E, SUBTIPO_F)
+        - PDM-driven adjustments (table extraction boost, hierarchy sensitivity)
+
+        Args:
+            method_id: Fully-qualified method name (ClassName.method_name)
+            contract_type: Contract type (TYPE_A, TYPE_B, etc.)
+
+        Returns:
+            Resolved calibration dict with N1 parameters, or None if registry unavailable.
+
+        N1 Calibration Parameters:
+            - table_extraction_boost: Multiplier for tabular data extraction
+            - hierarchy_sensitivity: Multiplier for hierarchical structure handling
+            - pattern_fuzzy_threshold: Fuzzy matching threshold for patterns
+            - deduplication_threshold: Threshold for deduplicating extracted facts
+
+        Raises:
+            CalibrationResolutionError: If calibration resolution fails
+        """
+        if self.calibration_registry is None:
+            logger.debug("n1_calibration_unavailable no_registry")
+            return None
+
+        # Check cache first
+        cache_key = f"{method_id}:{contract_type}"
+        if cache_key in self._calibration_cache:
+            return self._calibration_cache[cache_key]
+
+        try:
+            # Resolve calibration through 8-layer pipeline
+            calibration = self.calibration_registry.resolve_calibration(
+                method_id=method_id,
+                contract_type=contract_type,
+                pdm_profile=self.pdm_profile,
+            )
+
+            # Verify it's N1 calibration
+            if calibration.get("level") != "N1-EMP":
+                logger.warning(
+                    "n1_calibration_level_mismatch method=%s expected=N1-EMP got=%s",
+                    method_id,
+                    calibration.get("level"),
+                )
+
+            # Cache the result
+            self._calibration_cache[cache_key] = calibration
+
+            logger.debug(
+                "n1_calibration_resolved method=%s contract=%s params=%d",
+                method_id,
+                contract_type,
+                len(calibration.get("calibration_parameters", {})),
+            )
+
+            return calibration
+
+        except Exception as e:
+            logger.error(
+                "n1_calibration_failed method=%s contract=%s error=%s",
+                method_id,
+                contract_type,
+                str(e),
+            )
+            # Return None to allow fallback to default behavior
+            return None
+
+    def get_n1_parameter(
+        self,
+        method_id: str,
+        parameter_name: str,
+        default: float = 1.0,
+        contract_type: str = "TYPE_A",
+    ) -> float:
+        """
+        Get a specific N1 calibration parameter for a method.
+
+        FASE 4.2: Convenience method for accessing individual N1 parameters.
+
+        Args:
+            method_id: Fully-qualified method name
+            parameter_name: Parameter name (e.g., "table_extraction_boost")
+            default: Default value if calibration unavailable
+            contract_type: Contract type (TYPE_A, TYPE_B, etc.)
+
+        Returns:
+            Parameter value as float, or default if unavailable.
+
+        Example:
+            boost = executor.get_n1_parameter(
+                "PDETMunicipalPlanAnalyzer._score_indicators",
+                "table_extraction_boost",
+                default=1.0,
+            )
+        """
+        calibration = self.resolve_n1_calibration(method_id, contract_type)
+
+        if calibration is None:
+            return default
+
+        params = calibration.get("calibration_parameters", {})
+        return params.get(parameter_name, default)
+
 
 # === PUBLIC API ===
 
@@ -1355,6 +1618,8 @@ def execute_tasks(
     signal_registry: Any | None = None,
     calibration_orchestrator: Any | None = None,
     validation_orchestrator: Any | None = None,
+    calibration_registry: Any = None,  # FASE 4.2
+    pdm_profile: Any = None,  # FASE 4.2
 ) -> list[TaskResult]:
     """
     Public API for executing tasks from ExecutionPlan.
@@ -1366,6 +1631,8 @@ def execute_tasks(
         signal_registry: SISAS signal resolution
         calibration_orchestrator: Optional calibration
         validation_orchestrator: Optional validation tracking
+        calibration_registry: FASE 4.2 - Epistemic calibration registry
+        pdm_profile: FASE 4.2 - PDM structural profile
 
     Returns:
         List of 300 TaskResult objects
@@ -1379,6 +1646,8 @@ def execute_tasks(
         signal_registry=signal_registry,
         calibration_orchestrator=calibration_orchestrator,
         validation_orchestrator=validation_orchestrator,
+        calibration_registry=calibration_registry,  # FASE 4.2
+        pdm_profile=pdm_profile,  # FASE 4.2
     )
     return executor.execute_plan(execution_plan)
 
@@ -1393,6 +1662,8 @@ def execute_tasks_parallel(
     max_workers: int | None = None,
     checkpoint_dir: Path | str | None = None,
     checkpoint_batch_size: int = 10,
+    calibration_registry: Any = None,  # FASE 4.2
+    pdm_profile: Any = None,  # FASE 4.2
 ) -> list[TaskResult]:
     """
     Public API for executing tasks in parallel with checkpointing.
@@ -1409,6 +1680,8 @@ def execute_tasks_parallel(
         max_workers: Maximum parallel workers (default: CPU count)
         checkpoint_dir: Directory for checkpoints (default: artifacts/checkpoints)
         checkpoint_batch_size: Tasks between checkpoints (default: 10)
+        calibration_registry: FASE 4.2 - Epistemic calibration registry
+        pdm_profile: FASE 4.2 - PDM structural profile
 
     Returns:
         List of TaskResult objects in original task order.

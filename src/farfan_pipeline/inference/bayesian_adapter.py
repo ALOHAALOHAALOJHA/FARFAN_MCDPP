@@ -9,6 +9,11 @@ This adapter integrates:
 - BayesianSamplingEngine (AGUJA II): MCMC sampling with diagnostics
 - BayesianDiagnostics: Model validation and comparison
 
+FASE 4.3: N2 Calibration Integration
+- Accepts EpistemicCalibrationRegistry for N2-level parameter resolution
+- Resolves N2 calibration for Bayesian methods
+- Applies PDM-driven adjustments (prior_strength, hierarchical models, MCMC samples)
+
 Phase 2 SOTA Enhancement - 2026-01-07
 
 Architecture:
@@ -37,6 +42,16 @@ from .bayesian_diagnostics import BayesianDiagnostics
 from .bayesian_prior_builder import BayesianPriorBuilder, PriorParameters
 from .bayesian_sampling_engine import BayesianSamplingEngine, SamplingResult
 
+# FASE 4.3: N2 Calibration imports
+try:
+    from farfan_pipeline.infrastructure.calibration.registry import (
+        EpistemicCalibrationRegistry,
+        CalibrationResolutionError,
+    )
+    CALIBRATION_REGISTRY_AVAILABLE = True
+except ImportError:
+    CALIBRATION_REGISTRY_AVAILABLE = False
+
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
@@ -48,26 +63,46 @@ class BayesianEngineAdapter:
     This class provides a high-level interface to all Bayesian operations,
     integrating prior construction, MCMC sampling, and model diagnostics.
 
+    FASE 4.3: N2 Calibration Integration
+    - Accepts calibration_registry for epistemic level calibration
+    - Resolves N2 (Inferential Computation) calibration for Bayesian methods
+    - Applies PDM-driven adjustments (prior_strength, hierarchical models, MCMC samples)
+
     Attributes:
         config: Configuration object
         nlp: spaCy NLP model (optional, for future text-based priors)
         prior_builder: BayesianPriorBuilder instance (AGUJA I)
         sampling_engine: BayesianSamplingEngine instance (AGUJA II)
         diagnostics: BayesianDiagnostics instance
+        calibration_registry: EpistemicCalibrationRegistry (FASE 4.3)
+        pdm_profile: PDM structural profile (FASE 4.3)
         logger: Logger instance
     """
 
-    def __init__(self, config: Any, nlp_model: Any | None = None):
+    def __init__(
+        self,
+        config: Any,
+        nlp_model: Any | None = None,
+        calibration_registry: Any = None,  # FASE 4.3
+        pdm_profile: Any = None,  # FASE 4.3
+    ):
         """
         Initialize Bayesian Engine Adapter.
 
         Args:
             config: Configuration object with Bayesian thresholds
             nlp_model: Optional spaCy NLP model
+            calibration_registry: FASE 4.3 - Epistemic calibration registry
+            pdm_profile: FASE 4.3 - PDM structural profile
         """
         self.config = config
         self.nlp = nlp_model
+        self.calibration_registry = calibration_registry  # FASE 4.3
+        self.pdm_profile = pdm_profile  # FASE 4.3
         self.logger = logging.getLogger(self.__class__.__name__)
+
+        # Calibration cache (FASE 4.3)
+        self._calibration_cache: dict[str, dict[str, Any]] = {}
 
         # Initialize components
         try:
@@ -115,6 +150,221 @@ class BayesianEngineAdapter:
                 else "✗ no disponible"
             ),
             "overall": "✓ disponible" if self.is_available() else "✗ no disponible",
+        }
+
+    # ========================================================================
+    # FASE 4.3: N2 Calibration Resolution
+    # ========================================================================
+
+    def resolve_n2_calibration(
+        self,
+        method_id: str,
+        contract_type: str = "TYPE_B",
+    ) -> dict[str, Any] | None:
+        """
+        Resolve N2 (Inferential Computation) calibration for a Bayesian method.
+
+        FASE 4.3: N2 Calibration Integration
+
+        This method uses the EpistemicCalibrationRegistry to resolve
+        calibration parameters for N2-level methods, applying:
+        - Level defaults (N2-INF base configuration)
+        - Contract type overrides (TYPE_B is typical for Bayesian inference)
+        - PDM-driven adjustments (prior_strength, hierarchical models, MCMC samples)
+
+        Args:
+            method_id: Fully-qualified method name (ClassName.method_name)
+            contract_type: Contract type (TYPE_A, TYPE_B, etc.)
+
+        Returns:
+            Resolved calibration dict with N2 parameters, or None if registry unavailable.
+
+        N2 Calibration Parameters:
+            - prior_strength: Strength of prior beliefs (0.0-1.0)
+            - use_data_driven_priors: Whether to use historical baselines for priors
+            - enable_hierarchical_models: Enable hierarchical Bayesian models
+            - mcmc_samples: Number of MCMC samples (with PDM multiplier)
+            - likelihood_weight: Weight for likelihood in inference
+
+        Raises:
+            CalibrationResolutionError: If calibration resolution fails
+        """
+        if self.calibration_registry is None:
+            self.logger.debug("n2_calibration_unavailable no_registry")
+            return None
+
+        # Check cache first
+        cache_key = f"{method_id}:{contract_type}"
+        if cache_key in self._calibration_cache:
+            return self._calibration_cache[cache_key]
+
+        try:
+            # Resolve calibration through 8-layer pipeline
+            calibration = self.calibration_registry.resolve_calibration(
+                method_id=method_id,
+                contract_type=contract_type,
+                pdm_profile=self.pdm_profile,
+            )
+
+            # Verify it's N2 calibration
+            if calibration.get("level") != "N2-INF":
+                self.logger.warning(
+                    "n2_calibration_level_mismatch method=%s expected=N2-INF got=%s",
+                    method_id,
+                    calibration.get("level"),
+                )
+
+            # Cache the result
+            self._calibration_cache[cache_key] = calibration
+
+            self.logger.debug(
+                "n2_calibration_resolved method=%s contract=%s params=%d",
+                method_id,
+                contract_type,
+                len(calibration.get("calibration_parameters", {})),
+            )
+
+            return calibration
+
+        except Exception as e:
+            self.logger.error(
+                "n2_calibration_failed method=%s contract=%s error=%s",
+                method_id,
+                contract_type,
+                str(e),
+            )
+            # Return None to allow fallback to default behavior
+            return None
+
+    def get_n2_parameter(
+        self,
+        method_id: str,
+        parameter_name: str,
+        default: float | bool | int = 1.0,
+        contract_type: str = "TYPE_B",
+    ) -> float | bool | int:
+        """
+        Get a specific N2 calibration parameter for a Bayesian method.
+
+        FASE 4.3: Convenience method for accessing individual N2 parameters.
+
+        Args:
+            method_id: Fully-qualified method name
+            parameter_name: Parameter name (e.g., "prior_strength", "mcmc_samples")
+            default: Default value if calibration unavailable
+            contract_type: Contract type (TYPE_B is typical for Bayesian)
+
+        Returns:
+            Parameter value (float, bool, or int), or default if unavailable.
+
+        Example:
+            strength = adapter.get_n2_parameter(
+                "BayesianMechanismInference.test_necessity",
+                "prior_strength",
+                default=0.5,
+            )
+        """
+        calibration = self.resolve_n2_calibration(method_id, contract_type)
+
+        if calibration is None:
+            return default
+
+        params = calibration.get("calibration_parameters", {})
+        return params.get(parameter_name, default)
+
+    def apply_n2_calibration_to_sampling(
+        self,
+        method_id: str,
+        n_successes: int,
+        n_trials: int,
+        prior_alpha: float,
+        prior_beta: float,
+        contract_type: str = "TYPE_B",
+    ) -> dict[str, Any]:
+        """
+        Apply N2 calibration parameters to Bayesian sampling.
+
+        FASE 4.3: Apply PDM-driven adjustments to sampling parameters.
+
+        This method resolves N2 calibration and applies adjustments:
+        - Increases mcmc_samples for high-dimensional evidence
+        - Adjusts likelihood_weight for multi-modal data
+        - Enables hierarchical models for nested structures
+
+        Args:
+            method_id: Fully-qualified method name
+            n_successes: Number of successes
+            n_trials: Total trials
+            prior_alpha: Prior alpha parameter
+            prior_beta: Prior beta parameter
+            contract_type: Contract type
+
+        Returns:
+            Enhanced result with calibration metadata
+
+        Example:
+            result = adapter.apply_n2_calibration_to_sampling(
+                "BayesianMechanismInference.test_necessity",
+                n_successes=5,
+                n_trials=10,
+                prior_alpha=2.0,
+                prior_beta=1.0,
+            )
+        """
+        # Get base calibration
+        calibration = self.resolve_n2_calibration(method_id, contract_type)
+        calibration_applied = False
+        calibration_metadata = {}
+
+        # Apply PDM-driven adjustments if available
+        if calibration is not None:
+            params = calibration.get("calibration_parameters", {})
+
+            # Apply MCMC sample multiplier for high-dimensional evidence
+            if "mcmc_samples_multiplier" in params:
+                multiplier = params["mcmc_samples_multiplier"]
+                calibration_metadata["mcmc_multiplier_applied"] = multiplier
+                calibration_applied = True
+
+            # Apply likelihood weight for multi-modal data
+            if "likelihood_weight" in params:
+                weight = params["likelihood_weight"]
+                calibration_metadata["likelihood_weight_applied"] = weight
+                calibration_applied = True
+
+            # Check for hierarchical model enablement
+            if params.get("enable_hierarchical_models", False):
+                calibration_metadata["hierarchical_models_enabled"] = True
+                calibration_applied = True
+
+            # Check for data-driven priors
+            if params.get("use_data_driven_priors", False):
+                calibration_metadata["data_driven_priors_enabled"] = True
+                prior_strength = params.get("prior_strength", 0.5)
+                # Adjust prior strength
+                prior_alpha = prior_alpha * (1 + prior_strength)
+                prior_beta = prior_beta * (1 + prior_strength)
+                calibration_metadata["prior_strength_applied"] = prior_strength
+                calibration_applied = True
+
+        # Perform sampling with potentially adjusted parameters
+        result = self.sampling_engine.sample_beta_binomial(
+            n_successes=n_successes,
+            n_trials=n_trials,
+            prior_alpha=prior_alpha,
+            prior_beta=prior_beta,
+        )
+
+        # Add calibration metadata to result
+        return {
+            "posterior_mean": result.posterior_mean,
+            "hdi_95": result.hdi_95,
+            "rhat": result.rhat,
+            "converged": result.converged,
+            "calibration_applied": calibration_applied,
+            "calibration_metadata": calibration_metadata,
+            "adjusted_prior_alpha": prior_alpha,
+            "adjusted_prior_beta": prior_beta,
         }
 
     # ========================================================================
