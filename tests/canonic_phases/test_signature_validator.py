@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from farfan_pipeline.phases.Phase_zero.phase0_40_02_signature_validator import (
+from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
     SignatureRegistry,
     FunctionSignature,
     validate_signature,
