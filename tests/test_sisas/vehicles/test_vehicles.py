@@ -7,7 +7,6 @@ from uuid import uuid4
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
     SignalContext, SignalSource
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.base_vehicle import BaseVehicle
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistryVehicle
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoperVehicle
 
