@@ -18,11 +18,7 @@ This document details discrepancies detected during the Phase 1 sequential chain
 
 ```python
 except ImportError:
-<<<<<<< Updated upstream
     from farfan_pipeline.infrastructure.extractors import (
-=======
-    from src.farfan_pipeline.infrastructure.extractors import (
->>>>>>> Stashed changes
 ```
 
 **Impact**: 
