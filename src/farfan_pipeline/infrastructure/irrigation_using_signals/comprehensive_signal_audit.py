@@ -41,7 +41,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irriga
     UtilityAuditor,
     WiringAuditor,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     get_access_audit,
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (

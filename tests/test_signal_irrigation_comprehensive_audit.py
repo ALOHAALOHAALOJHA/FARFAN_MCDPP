@@ -24,11 +24,13 @@ from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionna
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-    SignalConsumptionProof,
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     AccessLevel,
     get_access_audit,
     reset_access_audit,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
+    SignalConsumptionProof,
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
     ConsumptionTracker,
@@ -184,9 +186,9 @@ class TestScopeCoherence:
     
     def test_access_level_hierarchy(self):
         """Test that AccessLevel hierarchy is properly defined."""
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-            AccessLevel,
-        )
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
+    AccessLevel,
+)
         
         assert AccessLevel.FACTORY == AccessLevel(1)
         assert AccessLevel.ORCHESTRATOR == AccessLevel(2)
@@ -418,9 +420,9 @@ class TestProductionReadiness:
         from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
             QuestionnaireSignalRegistry,
         )
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-            SignalConsumptionProof,
-        )
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
+    SignalConsumptionProof,
+)
         from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
             extract_structured_evidence,
         )

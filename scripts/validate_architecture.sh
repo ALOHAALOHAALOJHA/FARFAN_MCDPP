@@ -32,6 +32,7 @@ ORCHESTRATOR_IMPORTS=$(grep -rn "from orchestration\.orchestrator import\|import
     --exclude-dir="__pycache__" \
     --exclude-dir="backups" \
     --exclude-dir="artifacts" \
+    --exclude-dir="scripts" \
     . 2>/dev/null | grep -v "^[^:]*\.py:[^:]*:#" | grep -v "pattern=r\"" || true)
 
 if [ -n "$ORCHESTRATOR_IMPORTS" ]; then
@@ -75,15 +76,18 @@ if grep -rn "from.*signal_consumption import\|import.*signal_consumption" \
     --exclude-dir="backups" \
     --exclude-dir="artifacts" \
     --exclude-dir="_deprecated" \
-    . 2>/dev/null; then
-    echo "⚠️  WARNING: Found imports from deprecated signal_consumption module"
-    echo "   Migrate to: SISAS.core.signal or phase-specific consumers"
-    WARNINGS=$((WARNINGS + 1))
+    --exclude-dir="scripts" \
+    . 2>/dev/null | grep -v "audit/questionnaire_access_audit\|audit/consumption_proof"; then
+    echo "❌ ERROR: Found imports from deprecated _deprecated/signal_consumption module"
+    echo "   These should have been migrated to:"
+    echo "   - SISAS.audit.questionnaire_access_audit (AccessLevel, get_access_audit, etc.)"
+    echo "   - SISAS.audit.consumption_proof (SignalConsumptionProof, etc.)"
+    ERRORS=$((ERRORS + 1))
     if [ "$EXIT_CODE" -eq 0 ]; then
-        EXIT_CODE=3
+        EXIT_CODE=2
     fi
 else
-    echo "✓ No deprecated signal_consumption imports"
+    echo "✓ No deprecated signal_consumption imports (migrated to canonical audit modules)"
 fi
 
 # Check 4: Compatibility shims
