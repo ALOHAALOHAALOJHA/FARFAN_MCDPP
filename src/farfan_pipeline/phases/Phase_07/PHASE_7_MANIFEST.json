@@ -12,24 +12,78 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2025-01-09T00:00:00Z",
-    "authors": ["F.A.R.F.A.N Core Team"],
-    "owners": ["phase7_team"],
+    "modified": "2026-01-17",
+    "authors": [
+      "F.A.R.F.A.N Core Team"
+    ],
+    "owners": [
+      "phase7_team"
+    ],
     "repository": "FARFAN_MPP"
   },
   "description": "Phase 7 evaluates 4 cluster scores and produces a holistic MacroScore with cross-cutting coherence and strategic alignment analysis.",
   "stages": [
     {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
+    },
+    {
       "code": 10,
-      "name": "Macro Evaluation",
-      "description": "Core macro evaluation logic",
-      "execution_order": 1
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase7_10_00_macro_score",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Macro Score"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase7_10_00_phase_7_constants",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 7 Constants"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase7_10_00_systemic_gap_detector",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Systemic Gap Detector"
+        }
+      ]
     },
     {
       "code": 20,
-      "name": "Coherence Analysis",
-      "description": "Cross-cutting coherence and strategic alignment",
-      "execution_order": 2
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase7_20_00_macro_aggregator",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Macro Aggregator"
+        }
+      ]
     }
   ],
   "contracts": {
@@ -52,5 +106,9 @@
   "validation": {
     "compliant": true,
     "last_check": "2025-01-09T00:00:00Z"
+  },
+  "statistics": {
+    "total_modules": 5,
+    "stages": 3
   }
 }

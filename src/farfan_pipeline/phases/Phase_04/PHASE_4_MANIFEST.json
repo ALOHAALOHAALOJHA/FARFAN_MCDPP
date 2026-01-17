@@ -12,25 +12,135 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2026-01-16T00:00:00Z",
-    "authors": ["F.A.R.F.A.N Core Team"],
-    "owners": ["phase4_team"],
+    "modified": "2026-01-17",
+    "authors": [
+      "F.A.R.F.A.N Core Team"
+    ],
+    "owners": [
+      "phase4_team"
+    ],
     "repository": "FARFAN_MCDPP",
     "surgery_note": "Phase 4 surgically separated from meta-phase 4-7 on 2026-01-13"
   },
-  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions × 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
+  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions \u00d7 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
   "stages": [
     {
-      "code": 10,
-      "name": "Dimension Aggregation",
-      "description": "Core dimension aggregation logic",
-      "execution_order": 1
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
     },
     {
-      "code": 20,
-      "name": "Choquet Integration",
-      "description": "Choquet integral for advanced aggregation",
-      "execution_order": 2
+      "code": 10,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 11,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase4_10_00_adaptive_meso_scoring",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Adaptive Meso Scoring"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase4_10_00_aggregation",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase4_10_00_aggregation_enhancements",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation Enhancements"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase4_10_00_aggregation_integration",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation Integration"
+        },
+        {
+          "order": 4,
+          "canonical_name": "phase4_10_00_aggregation_provenance",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation Provenance"
+        },
+        {
+          "order": 5,
+          "canonical_name": "phase4_10_00_aggregation_settings",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation Settings"
+        },
+        {
+          "order": 6,
+          "canonical_name": "phase4_10_00_aggregation_validation",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation Validation"
+        },
+        {
+          "order": 7,
+          "canonical_name": "phase4_10_00_choquet_adapter",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Choquet Adapter"
+        },
+        {
+          "order": 8,
+          "canonical_name": "phase4_10_00_choquet_aggregator",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Choquet Aggregator"
+        },
+        {
+          "order": 9,
+          "canonical_name": "phase4_10_00_signal_enriched_aggregation",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Signal Enriched Aggregation"
+        },
+        {
+          "order": 10,
+          "canonical_name": "phase4_10_00_uncertainty_quantification",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Uncertainty Quantification"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_4_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 4 Constants"
+        }
+      ]
     }
   ],
   "contracts": {
@@ -43,7 +153,7 @@
     ]
   },
   "quality_metrics": {
-    "coverage": 0.90,
+    "coverage": 0.9,
     "complexity": "HIGH"
   },
   "performance_characteristics": {
@@ -53,5 +163,9 @@
   "validation": {
     "compliant": true,
     "last_check": "2025-01-09T00:00:00Z"
+  },
+  "statistics": {
+    "total_modules": 13,
+    "stages": 3
   }
 }
