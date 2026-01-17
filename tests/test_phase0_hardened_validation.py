@@ -28,8 +28,8 @@ from dataclasses import dataclass
 # Add src to path
 
 # Phase 0 imports
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
     GateResult,
     check_questionnaire_integrity_gate,
     check_method_registry_gate,

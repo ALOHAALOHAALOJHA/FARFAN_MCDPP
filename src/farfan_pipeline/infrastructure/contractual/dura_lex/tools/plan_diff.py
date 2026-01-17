@@ -4,7 +4,7 @@ CLI tool for Budget & Monotonicity Contract (BMC) plan diff
 """
 import json
 
-from farfan_pipeline.contracts.budget_monotonicity import BudgetMonotonicityContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.budget_monotonicity import BudgetMonotonicityContract
 
 
 def main():

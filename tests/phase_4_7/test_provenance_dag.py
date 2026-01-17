@@ -19,14 +19,14 @@ class TestProvenanceDAG:
     
     def test_provenance_dag_exists(self):
         """Verify AggregationDAG is available."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
             AggregationDAG
         )
         assert AggregationDAG is not None
     
     def test_dag_node_creation(self):
         """Verify DAG nodes are created for aggregation operations."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode
         )
@@ -47,7 +47,7 @@ class TestProvenanceDAG:
     
     def test_dag_edge_creation(self):
         """Verify edges connect parent to child scores."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
             AggregationDAG
         )
         
@@ -107,7 +107,7 @@ class TestProvenanceExport:
     
     def test_graphml_export_capability(self):
         """Verify GraphML export is supported."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
             AggregationDAG
         )
         
@@ -119,7 +119,7 @@ class TestProvenanceExport:
     
     def test_prov_json_export_capability(self):
         """Verify PROV-JSON export is supported."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
             AggregationDAG
         )
         

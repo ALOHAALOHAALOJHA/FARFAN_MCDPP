@@ -2774,7 +2774,7 @@ class MunicipalAnalyzer:
         """Load and segment document."""
 
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import read_text_file
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import read_text_file
 
         content = read_text_file(document_path)
 
@@ -2881,7 +2881,7 @@ def example_usage():
 
     # Save sample to file
     # Delegate to factory for I/O operation
-    from farfan_pipeline.analysis.factory import write_text_file
+# DELETED_MODULE:     from farfan_pipeline.analysis.factory import write_text_file
 
     write_text_file(sample_text, SAMPLE_MUNICIPAL_PLAN)
 
@@ -3318,7 +3318,7 @@ class DocumentProcessor:
             raise FileNotFoundError(f"Rubric file not found: {rubric_file}")
 
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import load_json
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import load_json
 
         questionnaire_data = load_json(questionnaire_file)
         rubric_data = load_json(rubric_file)
@@ -3532,7 +3532,7 @@ class ResultsExporter:
     def export_to_json(results: dict[str, Any], output_path: str) -> None:
         """Export results to JSON file."""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import save_json
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import save_json
 
         try:
             save_json(results, output_path)
@@ -3684,7 +3684,7 @@ class ResultsExporter:
                     lines.append(f"  Risk Level: {risk.get('overall_risk', 'unknown')}\n")
 
             # Delegate to factory for I/O operation
-            from farfan_pipeline.analysis.factory import write_text_file
+# DELETED_MODULE:             from farfan_pipeline.analysis.factory import write_text_file
 
             write_text_file("".join(lines), output_path)
             logger.info(f"Summary report exported: {output_path}")
@@ -3728,7 +3728,7 @@ class ConfigurationManager:
 
         if Path(self.config_path).exists():
             # Delegate to factory for I/O operation
-            from farfan_pipeline.analysis.factory import load_json
+# DELETED_MODULE:             from farfan_pipeline.analysis.factory import load_json
 
             try:
                 user_config = load_json(self.config_path)
@@ -3746,7 +3746,7 @@ class ConfigurationManager:
     def save_config(self) -> None:
         """Save current configuration to file."""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import save_json
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import save_json
 
         try:
             save_json(self.config, self.config_path)
@@ -3851,7 +3851,7 @@ class BatchProcessor:
                         )
 
             # Delegate to factory for I/O operation
-            from farfan_pipeline.analysis.factory import write_text_file
+# DELETED_MODULE:             from farfan_pipeline.analysis.factory import write_text_file
 
             write_text_file("".join(lines), summary_file)
             logger.info(f"Batch summary created: {summary_file}")

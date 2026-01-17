@@ -20,7 +20,7 @@ Date: 2025-12-11
 import pytest
 from typing import Any
 
-from farfan_pipeline.analysis.scoring.scoring import (
+# DELETED_MODULE: from farfan_pipeline.analysis.scoring.scoring import (
     EvidenceStructureError,
     ModalityConfig,
     ModalityValidationError,
@@ -30,7 +30,7 @@ from farfan_pipeline.analysis.scoring.scoring import (
     apply_scoring,
     determine_quality_level,
 )
-from farfan_pipeline.analysis.scoring.nexus_scoring_validator import (
+# DELETED_MODULE: from farfan_pipeline.analysis.scoring.nexus_scoring_validator import (
     NexusScoringValidator,
     BatchValidator,
     ValidationResult,

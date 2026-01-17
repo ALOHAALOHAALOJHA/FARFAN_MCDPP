@@ -22,7 +22,7 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         QuestionnaireSignalRegistry,
     )
 
@@ -67,7 +67,7 @@ def integrate_context_scoping_in_registry(
         >>> filtered, stats = integrate_context_scoping_in_registry(registry, context)
         >>> print(f"Patterns: {len(filtered)}, Filtered out: {stats['context_filtered']}")
     """
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
         filter_patterns_by_context,
     )
 

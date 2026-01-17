@@ -91,7 +91,7 @@ class RecommendationEngineAdapter:
             Exception: If engine initialization fails
         """
         try:
-            from farfan_pipeline.analysis.recommendation_engine import (
+# DELETED_MODULE:             from farfan_pipeline.analysis.recommendation_engine import (
                 RecommendationEngine,
             )
 

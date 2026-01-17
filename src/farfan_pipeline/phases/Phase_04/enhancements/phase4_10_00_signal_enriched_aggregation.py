@@ -25,7 +25,7 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     try:
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
             QuestionnaireSignalRegistry,
         )
     except ImportError:

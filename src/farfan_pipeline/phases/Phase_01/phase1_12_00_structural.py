@@ -31,12 +31,12 @@ from typing import Any
 # CALIBRATION IMPORTS - FIXED: Use unified calibration module
 # =============================================================================
 try:
-    from farfan_pipeline.calibration.uoa_sensitive import (
+# DELETED_MODULE:     from farfan_pipeline.calibration.uoa_sensitive import (
         fact_aware,
         is_uoa_sensitive,
         get_epistemic_level,
     )
-    from farfan_pipeline.calibration.runtime_context import (
+# DELETED_MODULE:     from farfan_pipeline.calibration.runtime_context import (
         get_calibration_context,
     )
     _CALIBRATION_AVAILABLE = True

@@ -36,7 +36,7 @@ from farfan_pipeline.orchestration.orchestrator import (
     PhaseInstrumentation,
     ResourceLimits,
 )
-from farfan_pipeline.orchestration.task_planner import ExecutableTask
+from farfan_pipeline.phases.Phase_00.interphase.task_planner import ExecutableTask
 
 
 class TestPhase2ExecutionPlan:

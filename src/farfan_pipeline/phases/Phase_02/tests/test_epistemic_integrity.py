@@ -32,7 +32,7 @@ from typing import Any
 import pytest
 
 # Import calibration core
-from farfan_pipeline.calibration.calibration_core import (
+# DELETED_MODULE: from farfan_pipeline.calibration.calibration_core import (
     ClosedInterval,
     EpistemicLevel,
     validate_epistemic_level,
@@ -41,7 +41,7 @@ from farfan_pipeline.calibration.calibration_core import (
 )
 
 # Import epistemic core
-from farfan_pipeline.calibration.epistemic_core import (
+# DELETED_MODULE: from farfan_pipeline.calibration.epistemic_core import (
     N1EmpiricalCalibration,
     N2InferentialCalibration,
     N3AuditCalibration,
@@ -51,7 +51,7 @@ from farfan_pipeline.calibration.epistemic_core import (
 )
 
 # Import registry
-from farfan_pipeline.calibration.registry import (
+# DELETED_MODULE: from farfan_pipeline.calibration.registry import (
     EpistemicCalibrationRegistry,
     CalibrationResolutionError,
     create_registry,

@@ -26,7 +26,7 @@ from unittest.mock import Mock, MagicMock, patch, AsyncMock
 from dataclasses import asdict
 
 # Phase 0 imports
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 
 # Orchestrator imports - use relative imports matching existing tests
 from farfan_pipeline.orchestration.orchestrator import (

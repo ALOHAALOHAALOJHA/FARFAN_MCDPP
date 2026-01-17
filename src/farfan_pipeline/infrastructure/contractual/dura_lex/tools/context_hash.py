@@ -9,11 +9,11 @@ from typing import Any
 
 # Robust import of the frozen QuestionContext and the canonical digester
 try:
-    from farfan_pipeline.question_context import QuestionContext  # preferred (top-level re-export)
+# DELETED_MODULE:     from farfan_pipeline.question_context import QuestionContext  # preferred (top-level re-export)
 except Exception:  # fallback to nested package layout
-    from farfan_pipeline.question_context import QuestionContext  # type: ignore
+# DELETED_MODULE:     from farfan_pipeline.question_context import QuestionContext  # type: ignore
 
-from farfan_pipeline.contracts.context_immutability import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.context_immutability import (
     ContextImmutabilityContract,
 )
 

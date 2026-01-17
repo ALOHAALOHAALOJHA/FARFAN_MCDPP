@@ -16,7 +16,7 @@ from unittest.mock import Mock, MagicMock
 
 # Add src to path
 
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     DimensionAggregator,
     AreaPolicyAggregator,
     ClusterAggregator,
@@ -24,7 +24,7 @@ from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     ScoredResult,
     AggregationSettings,
 )
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
     validate_full_aggregation_pipeline,
     AggregationValidationError,
 )
@@ -182,7 +182,7 @@ class TestFullAggregationPipelineIntegration:
         
         Verifies that the validation catches empty aggregation results.
         """
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import validate_phase4_output
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import validate_phase4_output
         
         scored_results = [
             ScoredResult(

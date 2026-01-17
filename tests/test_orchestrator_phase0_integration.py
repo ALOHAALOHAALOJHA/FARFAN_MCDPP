@@ -27,8 +27,8 @@ import pytest
 # Orchestrator imports
 from farfan_pipeline.orchestration.orchestrator import Orchestrator, Phase0ValidationResult
 
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import GateResult
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import GateResult
 
 # ============================================================================
 # FIXTURES

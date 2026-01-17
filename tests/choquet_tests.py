@@ -26,7 +26,7 @@ from pathlib import Path
 
 # Add src to path for direct module import
 
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,

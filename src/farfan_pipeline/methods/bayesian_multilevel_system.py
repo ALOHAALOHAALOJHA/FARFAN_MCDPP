@@ -439,7 +439,7 @@ class BayesianEvidenceIntegrator:
     def export_to_csv(self, output_path: Path) -> None:
         """Export posterior table to CSV"""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import write_csv
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import write_csv
 
         headers = [
             "test_name",
@@ -776,7 +776,7 @@ class BayesianRollUp:
     def export_to_csv(self, meso_analyses: list[MesoLevelAnalysis], output_path: Path) -> None:
         """Export meso posterior table to CSV"""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import write_csv
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import write_csv
 
         headers = [
             "cluster_id",
@@ -1099,7 +1099,7 @@ class BayesianPortfolioComposer:
     def export_to_csv(self, macro_analysis: MacroLevelAnalysis, output_path: Path) -> None:
         """Export macro posterior table to CSV"""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import write_csv
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import write_csv
 
         headers = ["metric", "value", "penalty", "description"]
 

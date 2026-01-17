@@ -58,12 +58,12 @@ from itertools import combinations
 from typing import Any
 
 # Cross-module integration with Uncertainty Quantification
-from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
     UncertaintyMetrics,
 )
 
 # Import AggregationSettings from dedicated settings module (no circular dependency)
-from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings import (
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
     AggregationSettings,
 )
 

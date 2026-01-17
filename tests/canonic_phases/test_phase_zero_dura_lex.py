@@ -311,7 +311,7 @@ def test_dura_lex_09_gate_results_independent_of_check_order():
         - Each gate checks independent criteria
         - Gate results don't depend on previous gates (except fail-fast)
     """
-    from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
+    from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
         check_bootstrap_gate,
         check_determinism_gate,
     )

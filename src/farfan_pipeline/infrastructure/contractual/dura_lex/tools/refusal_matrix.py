@@ -4,7 +4,7 @@ CLI tool for Refusal Contract (RefC) matrix
 """
 import json
 
-from farfan_pipeline.contracts.refusal import RefusalContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.refusal import RefusalContract
 
 
 def main():

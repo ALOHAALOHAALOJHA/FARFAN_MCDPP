@@ -5,7 +5,7 @@ CLI tool for Risk Certificate Contract (RCC) report
 import json
 
 import numpy as np
-from farfan_pipeline.contracts.risk_certificate import RiskCertificateContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.risk_certificate import RiskCertificateContract
 
 
 def main():

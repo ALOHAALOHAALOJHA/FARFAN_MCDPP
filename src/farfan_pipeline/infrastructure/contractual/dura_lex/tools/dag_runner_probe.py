@@ -4,7 +4,7 @@ CLI tool for Concurrency Determinism Contract (CDC) probe
 """
 import json
 
-from farfan_pipeline.contracts.concurrency_determinism import ConcurrencyDeterminismContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.concurrency_determinism import ConcurrencyDeterminismContract
 
 
 def main():

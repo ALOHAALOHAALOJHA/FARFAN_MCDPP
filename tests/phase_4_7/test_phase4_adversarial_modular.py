@@ -122,7 +122,7 @@ class TestAreaAggregatorWithRealStructure:
             PA01 area scores MUST have cluster_id="CL02"
             etc.
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator,
             DimensionScore,
         )
@@ -172,7 +172,7 @@ class TestAreaAggregatorWithRealStructure:
 
         This validates that aggregation respects REAL cluster boundaries.
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator,
             DimensionScore,
         )
@@ -235,7 +235,7 @@ class TestClusterHermeticityWithRealCounts:
 
         If aggregation receives only 2 areas, it should detect hermeticity violation.
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             ClusterAggregator,
             AreaScore,
         )
@@ -283,7 +283,7 @@ class TestClusterHermeticityWithRealCounts:
 
         CL02 from modular metadata: [PA01, PA05, PA06]
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             ClusterAggregator,
             AreaScore,
         )
@@ -332,7 +332,7 @@ class TestDimensionAggregatorSOTAFeatures:
         VALUE ADDED: Provides confidence intervals for dimension scores
         EQUIPMENT: Tests verify CI is reasonable (not too wide, not too narrow)
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.uncertainty_quantification import (
             BootstrapAggregator,
         )
 
@@ -367,7 +367,7 @@ class TestDimensionAggregatorSOTAFeatures:
         VALUE ADDED: Enables traceability from macro scores to micro questions
         EQUIPMENT: Tests verify lineage is complete and accurate
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode,
         )
@@ -425,7 +425,7 @@ class TestDimensionAggregatorSOTAFeatures:
         VALUE ADDED: Captures non-linear interactions between layers
         EQUIPMENT: Tests verify interaction contribution is meaningful
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_aggregator import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.choquet_aggregator import (
             ChoquetAggregator,
             ChoquetConfig,
         )
@@ -473,7 +473,7 @@ class TestIntermodularWiring:
             Phase 3 outputs (ScoredResult) contain question_global IDs
             Phase 4 outputs (DimensionScore) must preserve these IDs
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionAggregator
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import DimensionAggregator
 
         aggregator = DimensionAggregator(
             monolith=monolith_from_modular, abort_on_insufficient=False
@@ -507,7 +507,7 @@ class TestIntermodularWiring:
             PA02 → CL01 (from modular metadata)
             AreaScore for PA02 must have cluster_id="CL01"
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator,
             DimensionScore,
         )
@@ -567,7 +567,7 @@ class TestValueAddValidation:
 
         EQUIPMENT: Tests verify these outputs are meaningful
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionAggregator
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import DimensionAggregator
 
         aggregator = DimensionAggregator(
             monolith=monolith_from_modular, abort_on_insufficient=False
@@ -615,7 +615,7 @@ class TestValueAddValidation:
 
         This adds value by catching data quality issues early.
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator,
             DimensionScore,
         )
@@ -671,8 +671,8 @@ class TestQualityLevelDetermination:
 
         VALUE ADDED: Provides interpretable quality classification
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionAggregator
-        from farfan_pipeline.phases.Phase_four_five_six_seven.primitives.quality_levels import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import DimensionAggregator
+        from farfan_pipeline.phases.Phase_04_five_six_seven.primitives.quality_levels import (
             QualityLevel,
             QualityLevelThresholds,
         )

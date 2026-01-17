@@ -17,7 +17,7 @@ from pathlib import Path
 import pytest
 
 # Import Phase 0 components from Phase_zero folder
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import (
     ConfigurationError,
     FallbackCategory,
     RuntimeConfig,
@@ -25,7 +25,7 @@ from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
     reset_runtime_config,
 )
 
-from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
+from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
     BootCheckError,
     check_networkx_available,
     get_boot_check_summary,

@@ -45,7 +45,7 @@ if TYPE_CHECKING:
         CanonicalQuestionnaire,
     )
 
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         QuestionnaireSignalRegistry,
     )
     from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import (

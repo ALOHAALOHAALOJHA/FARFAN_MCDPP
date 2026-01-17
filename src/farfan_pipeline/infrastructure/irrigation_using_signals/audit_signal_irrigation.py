@@ -41,7 +41,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questio
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
     SignalConsumptionProof,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -232,7 +232,7 @@ class WiringAuditor:
         # Check if executors have signal_registry attribute
         # This is a structural check - actual usage is checked in utilization audit
         try:
-            from farfan_pipeline.phases.Phase_02.executors.base_executor_with_contract import BaseExecutorWithContract
+            from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import BaseExecutorWithContract
             # TODO: Implement actual connection validation
             # This check should verify that BaseExecutorWithContract instances
             # properly initialize and use the signal_registry attribute

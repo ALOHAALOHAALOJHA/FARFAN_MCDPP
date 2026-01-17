@@ -45,7 +45,7 @@ class TestOrchestratorIntegration:
         executor_config = Mock()
         
         # Mock RuntimeConfig
-        from farfan_pipeline.phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+        from farfan_pipeline.phases.Phase_00.runtime_config import RuntimeConfig, RuntimeMode
         runtime_config = RuntimeConfig(
             mode=RuntimeMode.DEV,
             allow_partial_results=True,
@@ -55,7 +55,7 @@ class TestOrchestratorIntegration:
         
         # Mock Phase0ValidationResult
         from farfan_pipeline.orchestration.orchestrator import Phase0ValidationResult
-        from farfan_pipeline.phases.Phase_zero.exit_gates import GateResult
+        from farfan_pipeline.phases.Phase_00.exit_gates import GateResult
         
         phase0_validation = Phase0ValidationResult(
             all_passed=True,

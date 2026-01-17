@@ -339,7 +339,7 @@ class TeoriaCambio:
             ValueError: If cpp is invalid
         """
         try:
-            from farfan_pipeline.analysis.spc_causal_bridge import SPCCausalBridge
+# DELETED_MODULE:             from farfan_pipeline.analysis.spc_causal_bridge import SPCCausalBridge
 
             bridge = SPCCausalBridge()
             causal_graph = bridge.build_causal_graph_from_cpp(cpp)
@@ -381,7 +381,7 @@ class TeoriaCambio:
             return self.construir_grafo_causal()
 
         try:
-            from farfan_pipeline.analysis.spc_causal_bridge import SPCCausalBridge
+# DELETED_MODULE:             from farfan_pipeline.analysis.spc_causal_bridge import SPCCausalBridge
 
             # Use SPC bridge to construct base graph
             bridge = SPCCausalBridge()
@@ -770,7 +770,7 @@ class AdvancedDAGValidator:
         path = Path(schema_path) if schema_path else cls._NODE_SCHEMA_PATH
 
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import load_json
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import load_json
 
         try:
             schema = load_json(path)

@@ -122,7 +122,7 @@ class TestSISASGoldenPath:
     
     def test_signal_enricher_extract_and_route(self, sample_text: str):
         """Test the complete extract_and_route_signals flow."""
-        from farfan_pipeline.phases.Phase_one.phase1_60_00_signal_enrichment import SignalEnricher
+        from farfan_pipeline.phases.Phase_01.phase1_60_00_signal_enrichment import SignalEnricher
         
         enricher = SignalEnricher()
         result = enricher.extract_and_route_signals(sample_text)
@@ -159,7 +159,7 @@ class TestSISASGoldenPath:
     
     def test_signal_enriched_scorer_adjustments(self):
         """Test Phase 3 signal-driven score adjustments."""
-        from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
+        from farfan_pipeline.phases.Phase_03.phase3_signal_enriched_scoring import SignalEnrichedScorer
         
         scorer = SignalEnrichedScorer()
         
@@ -182,7 +182,7 @@ class TestSISASGoldenPath:
     
     def test_signal_enriched_scorer_penalty(self):
         """Test penalty for missing signals."""
-        from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
+        from farfan_pipeline.phases.Phase_03.phase3_signal_enriched_scoring import SignalEnrichedScorer
         
         scorer = SignalEnrichedScorer()
         
@@ -212,7 +212,7 @@ class TestSISASFailureScenarios:
     
     def test_missing_extractor_graceful_degradation(self):
         """Test that missing extractor doesn't crash the pipeline."""
-        from farfan_pipeline.phases.Phase_one.phase1_60_00_signal_enrichment import SignalEnricher
+        from farfan_pipeline.phases.Phase_01.phase1_60_00_signal_enrichment import SignalEnricher
         
         enricher = SignalEnricher()
         
@@ -240,7 +240,7 @@ class TestSISASFailureScenarios:
     
     def test_empty_enriched_pack_handling(self):
         """Test scorer handles None enriched pack."""
-        from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
+        from farfan_pipeline.phases.Phase_03.phase3_signal_enriched_scoring import SignalEnrichedScorer
         
         scorer = SignalEnrichedScorer()
         

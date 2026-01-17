@@ -4,7 +4,7 @@ CLI tool for Permutation-Invariance Contract (PIC) probe
 """
 import json
 
-from farfan_pipeline.contracts.permutation_invariance import PermutationInvarianceContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.permutation_invariance import PermutationInvarianceContract
 
 
 def main():

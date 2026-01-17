@@ -111,7 +111,7 @@ class ContractHydrator:
     Usage
     -----
     ```python
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import QuestionnaireSignalRegistry
     from farfan_pipeline.phases.Phase_02.phase2_95_00_contract_hydrator import ContractHydrator
     
     signal_registry = QuestionnaireSignalRegistry(questionnaire)

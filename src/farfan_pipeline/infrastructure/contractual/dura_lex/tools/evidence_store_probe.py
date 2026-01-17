@@ -4,7 +4,7 @@ CLI tool for Idempotency & De-dup Contract (IDC) probe
 """
 import json
 
-from farfan_pipeline.contracts.idempotency_dedup import IdempotencyContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.idempotency_dedup import IdempotencyContract
 
 
 def main():

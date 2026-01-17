@@ -93,7 +93,7 @@ except ImportError:
 
 # SISAS Signal Registry - REAL PATHS after repo reorganization
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         QuestionnaireSignalRegistry as SISASSignalRegistry,
         create_signal_registry,
     )
@@ -145,7 +145,7 @@ except ImportError:
 # If not found, try canonic_phases.Phase_zero (bootstrap location)
 if not QUESTIONNAIRE_LOADER_AVAILABLE:
     try:
-        from farfan_pipeline.phases.Phase_zero.phase0_90_02_bootstrap import load_questionnaire
+        from farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap import load_questionnaire
 
         QUESTIONNAIRE_LOADER_AVAILABLE = True
     except ImportError:

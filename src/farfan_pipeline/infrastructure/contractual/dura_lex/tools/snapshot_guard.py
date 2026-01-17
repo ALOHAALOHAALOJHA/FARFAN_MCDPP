@@ -5,7 +5,7 @@ CLI tool for Snapshot Contract (SC) guard
 import json
 import sys
 
-from farfan_pipeline.contracts.snapshot_contract import SnapshotContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.snapshot_contract import SnapshotContract
 
 
 def main():

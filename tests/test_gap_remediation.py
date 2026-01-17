@@ -204,7 +204,7 @@ class TestKeywordsIrrigation:
 
     def test_micro_answering_pack_has_keywords_field(self):
         """Verify MicroAnsweringSignalPack has policy_area_keywords field."""
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
             MicroAnsweringSignalPack,
         )
 
@@ -515,7 +515,7 @@ class TestMicroAnsweringSignalPackFields:
 
     def test_micro_pack_has_cross_cutting_themes_field(self):
         """Verify MicroAnsweringSignalPack has cross_cutting_themes field."""
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
             MicroAnsweringSignalPack,
         )
 
@@ -524,7 +524,7 @@ class TestMicroAnsweringSignalPackFields:
 
     def test_micro_pack_has_interdependency_context_field(self):
         """Verify MicroAnsweringSignalPack has interdependency_context field."""
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
             MicroAnsweringSignalPack,
         )
 

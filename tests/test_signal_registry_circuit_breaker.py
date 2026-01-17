@@ -17,7 +17,7 @@ from unittest.mock import Mock, MagicMock, patch
 import pytest
 
 # Import circuit breaker components
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     CircuitBreaker,
     CircuitState,
     CircuitBreakerConfig,

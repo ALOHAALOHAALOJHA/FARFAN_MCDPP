@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import pytest
 
-from farfan_pipeline.calibration.registry import EpistemicRegistry
+# DELETED_MODULE: from farfan_pipeline.calibration.registry import EpistemicRegistry
 from farfan_pipeline.pdm.profiles import ProfileManager
 
 

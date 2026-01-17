@@ -14,14 +14,14 @@ from pathlib import Path
 
 # Add src to path
 
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     DimensionScore,
     AreaScore,
     ClusterScore,
     MacroScore,
     ScoredResult,
 )
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
@@ -397,7 +397,7 @@ class TestFullPipelineValidation:
     
     def test_enforce_validation_raises_on_failure(self):
         """enforce_validation_or_fail should raise on failures."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import ValidationResult
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import ValidationResult
         
         failed_result = ValidationResult(
             passed=False,
@@ -411,7 +411,7 @@ class TestFullPipelineValidation:
     
     def test_enforce_validation_allows_failure_when_requested(self):
         """enforce_validation_or_fail should not raise when allow_failure=True."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import ValidationResult
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import ValidationResult
         
         failed_result = ValidationResult(
             passed=False,

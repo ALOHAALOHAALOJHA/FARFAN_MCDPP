@@ -4,7 +4,7 @@ CLI tool for Monotone Compliance Contract (MCC) label explain
 """
 import json
 
-from farfan_pipeline.contracts.monotone_compliance import Label, MonotoneComplianceContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.monotone_compliance import Label, MonotoneComplianceContract
 
 
 def main():

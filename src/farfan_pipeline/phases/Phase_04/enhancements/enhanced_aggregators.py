@@ -28,7 +28,7 @@ from farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract im
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.processing.aggregation_provenance import ProvenanceNode
+# DELETED_MODULE:     from farfan_pipeline.processing.aggregation_provenance import ProvenanceNode
 
 logger = logging.getLogger(__name__)
 
@@ -171,7 +171,7 @@ class EnhancedDimensionAggregator:
         if hasattr(self.base, 'bootstrap_aggregator') and self.base.bootstrap_aggregator:
             # Use existing bootstrap aggregator
             try:
-                from farfan_pipeline.processing.uncertainty_quantification import aggregate_with_uncertainty
+# DELETED_MODULE:                 from farfan_pipeline.processing.uncertainty_quantification import aggregate_with_uncertainty
                 _, uq_metrics = aggregate_with_uncertainty(
                     scores,
                     weights or [1.0 / len(scores)] * len(scores),

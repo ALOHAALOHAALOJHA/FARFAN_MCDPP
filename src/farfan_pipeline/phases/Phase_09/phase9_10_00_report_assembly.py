@@ -49,7 +49,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # Calibration parameters - loaded at runtime if calibration system available
 try:
-    from farfan_pipeline.calibration.parameters import ParameterLoaderV2
+# DELETED_MODULE:     from farfan_pipeline.calibration.parameters import ParameterLoaderV2
 except (ImportError, AttributeError):
     # Fallback: use explicit defaults if calibration system not available
     _PARAM_LOADER = None
@@ -942,7 +942,7 @@ class ReportAssembler:
         try:
             # Delegate to factory for I/O
             try:
-                from farfan_pipeline.analysis.factory import save_json, write_text_file
+# DELETED_MODULE:                 from farfan_pipeline.analysis.factory import save_json, write_text_file
             except ImportError:
                 # Fallback implementation if factory not available
                 def save_json(data: dict[str, object], path: str) -> None:

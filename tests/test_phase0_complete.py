@@ -27,7 +27,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 # Phase 0 components
-from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import (
+from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
     CanonicalInput,
     CanonicalInputValidator,
     Phase0Input,
@@ -35,7 +35,7 @@ from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import (
     Phase0ValidationContract,
     PHASE0_VERSION,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
+from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
     BootCheckError,
     check_calibration_files,
     check_contradiction_module_available,
@@ -45,7 +45,7 @@ from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
     get_boot_check_summary,
     run_boot_checks,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import (
     ConfigurationError,
     FallbackCategory,
     RuntimeConfig,

@@ -5,7 +5,7 @@ CLI tool for Routing Contract (RC) check
 import hashlib
 import json
 
-from farfan_pipeline.contracts.routing_contract import RoutingContract, RoutingInput
+from farfan_pipeline.infrastructure.contractual.dura_lex.routing_contract import RoutingContract, RoutingInput
 
 
 def main():

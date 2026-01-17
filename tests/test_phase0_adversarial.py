@@ -32,7 +32,7 @@ from typing import Any, Dict, List
 import pytest
 
 # Phase 0 imports
-from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import (
+from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
     Phase0Input,
     CanonicalInput,
     Phase0ValidationContract,
@@ -40,17 +40,17 @@ from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import (
     CanonicalInputValidator,
     PHASE0_VERSION,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_30_00_resource_controller import (
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (
     ResourceController,
     ResourceLimits,
     ResourceExhausted,
     MemoryWatchdog,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import (
     RuntimeConfig,
     RuntimeMode,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
+from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
     BootCheckError,
     check_calibration_files,
     check_contradiction_module_available,

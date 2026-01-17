@@ -219,7 +219,7 @@ def generate_scored_result_for_pa(pa_to_cluster_mapping: dict):
     """
 
     def _generate(pa_id: str, question_id: int, score: float = 2.0, quality_level: str = "BUENO"):
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import ScoredResult
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import ScoredResult
 
         cluster_id = pa_to_cluster_mapping.get(pa_id, "UNKNOWN")
 
@@ -260,7 +260,7 @@ def generate_dimension_score_for_pa():
         score: float = 2.0,
         contributing_questions: list[int] | None = None,
     ):
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionScore
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import DimensionScore
 
         return DimensionScore(
             dimension_id=dimension,

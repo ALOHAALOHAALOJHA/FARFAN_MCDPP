@@ -32,7 +32,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, TypedDict
 
-from farfan_pipeline.calibration.parameters import ParameterLoaderV2
+# DELETED_MODULE: from farfan_pipeline.calibration.parameters import ParameterLoaderV2
 
 if TYPE_CHECKING:
     from collections.abc import Mapping

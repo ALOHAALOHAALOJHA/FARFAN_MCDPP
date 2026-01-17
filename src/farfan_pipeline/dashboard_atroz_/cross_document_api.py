@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 
-from farfan_pipeline.analysis.cross_document_comparative import (
+# DELETED_MODULE: from farfan_pipeline.analysis.cross_document_comparative import (
     AggregationMethod,
     ComparisonDimension,
     ComparisonOperator,

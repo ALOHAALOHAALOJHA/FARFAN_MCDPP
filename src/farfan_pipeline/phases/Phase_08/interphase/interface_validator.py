@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_eight.phase8_20_00_recommendation_engine import (
+    from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
         Recommendation,
         RecommendationSet,
     )

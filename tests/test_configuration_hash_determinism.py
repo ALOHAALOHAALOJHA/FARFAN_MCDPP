@@ -23,7 +23,7 @@ from typing import Any
 
 import pytest
 
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import (
     ConfigurationError,
     RuntimeConfig,
     RuntimeMode,

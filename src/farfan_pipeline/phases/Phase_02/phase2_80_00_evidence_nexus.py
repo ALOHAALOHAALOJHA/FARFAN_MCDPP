@@ -3933,7 +3933,7 @@ class EvidenceNexus:
         context_filter_stats: dict[str, int] | None = None
         if document_context:
             try:
-                from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+                from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
                     filter_patterns_by_context,
                 )
 
@@ -3950,7 +3950,7 @@ class EvidenceNexus:
         expanded_patterns = filtered_patterns
         expansion_stats: dict[str, Any] | None = None
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_semantic_expander import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.semantic.signal_semantic_expander import (
                 expand_all_patterns,
                 validate_expansion_result,
             )

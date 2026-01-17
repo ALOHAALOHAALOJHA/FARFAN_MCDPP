@@ -4,7 +4,7 @@ CLI tool for Alignment Stability Contract (ASC) digest
 """
 import json
 
-from farfan_pipeline.contracts.alignment_stability import AlignmentStabilityContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.alignment_stability import AlignmentStabilityContract
 
 
 def main():

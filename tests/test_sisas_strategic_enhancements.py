@@ -18,23 +18,23 @@ Date: 2025-12-11
 
 import pytest
 
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method_metadata import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.metadata.signal_method_metadata import (
     MethodMetadata,
     MethodExecutionMetadata,
     extract_method_metadata,
     should_execute_method,
     get_adaptive_execution_plan,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_validation_specs import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.utils.signal_validation_specs import (
     ValidationSpecifications,
     extract_validation_specifications,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_scoring_context import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.utils.signal_scoring_context import (
     ScoringModalityDefinition,
     extract_scoring_context,
     create_default_scoring_context,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_semantic_context import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.utils.signal_semantic_context import (
     SemanticContext,
     DisambiguationRule,
     extract_semantic_context,

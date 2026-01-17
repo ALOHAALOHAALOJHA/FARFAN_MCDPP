@@ -34,7 +34,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consump
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_02.executors.base_executor_with_contract import (
+    from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import (
         BaseExecutorWithContract,
     )
 
@@ -291,7 +291,7 @@ def verify_pattern_scope(
     Returns:
         Tuple of (is_valid, violation_message)
     """
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
         context_matches,
         in_scope,
     )

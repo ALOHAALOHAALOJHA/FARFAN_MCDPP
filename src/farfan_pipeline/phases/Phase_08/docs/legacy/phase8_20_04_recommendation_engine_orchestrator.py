@@ -47,7 +47,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from farfan_pipeline.calibration.decorators import (
+# DELETED_MODULE: from farfan_pipeline.calibration.decorators import (
     calibrated_method,
 )
 
@@ -146,7 +146,7 @@ class RecommendationEngine:
             ValueError: If rules validation fails
         """
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import load_json
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import load_json
 
         try:
             rules = load_json(self.rules_path)
@@ -351,7 +351,7 @@ class RecommendationEngine:
             format: Output format ('json' or 'markdown')
         """
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import save_json, write_text_file
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import save_json, write_text_file
 
         if format == "json":
             save_json(

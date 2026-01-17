@@ -27,10 +27,10 @@ import numpy as np
 import torch
 
 # Check dependency lockdown
-from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
+# DELETED_MODULE: from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
 
 # Import runtime error fixes for defensive programming
-from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
+# DELETED_MODULE: from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
 from scipy.stats import beta
 from sentence_transformers import SentenceTransformer
 from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline

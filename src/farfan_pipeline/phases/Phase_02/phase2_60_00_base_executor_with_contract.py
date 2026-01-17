@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 # FASE 4.4: N3 Calibration imports
 try:
-    from farfan_pipeline.calibration.registry import (
+# DELETED_MODULE:     from farfan_pipeline.calibration.registry import (
         EpistemicCalibrationRegistry,
         CalibrationResolutionError,
     )
@@ -53,10 +53,10 @@ except Exception as e:
 try:
     from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT
 except ImportError:
-    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT
 
 try:
-    from farfan_pipeline.phases.Phase_02.evidence_nexus import process_evidence
+    from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import process_evidence
 except ImportError:
     from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import process_evidence
 
@@ -66,7 +66,7 @@ except ImportError:
     from farfan_pipeline.phases.Phase_02.phase2_90_00_carver import DoctoralCarverSynthesizer
 
 try:
-    from farfan_pipeline.phases.Phase_02.calibration_policy import CalibrationPolicy, create_default_policy
+    from farfan_pipeline.phases.Phase_02.phase2_10_04_calibration_policy import CalibrationPolicy, create_default_policy
 except ImportError:
     try:
         from farfan_pipeline.phases.Phase_02.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
@@ -1349,7 +1349,7 @@ class BaseExecutorWithContract(ABC):
         # Build document context (for scope coherence + context-aware pattern filtering)
         document_context: dict[str, Any] = {}
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
                 create_document_context,
             )
 
@@ -1789,7 +1789,7 @@ class BaseExecutorWithContract(ABC):
         # Build document context (for scope coherence + context-aware pattern filtering)
         document_context: dict[str, Any] = {}
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
                 create_document_context,
             )
 

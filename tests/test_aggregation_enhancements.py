@@ -12,7 +12,7 @@ import pytest
 from unittest.mock import Mock, MagicMock
 from dataclasses import dataclass
 
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
     EnhancedClusterAggregator,

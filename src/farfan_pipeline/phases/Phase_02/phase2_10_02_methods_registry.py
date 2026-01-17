@@ -576,7 +576,7 @@ def setup_default_instantiation_rules(registry: MethodRegistry) -> None:
     # PolicyTextProcessor - needs ProcessorConfig
     def instantiate_policy_processor(cls: type) -> Any:
         try:
-            from farfan_pipeline.processing.policy_processor import ProcessorConfig
+# DELETED_MODULE:             from farfan_pipeline.processing.policy_processor import ProcessorConfig
 
             return cls(ProcessorConfig())
         except ImportError as exc:

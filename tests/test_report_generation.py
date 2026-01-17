@@ -24,7 +24,7 @@ class TestReportGenerator:
 
     def test_markdown_generation(self, tmp_path):
         """Test structured Markdown report generation."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             AnalysisReport,
             ReportMetadata,
             QuestionAnalysis,
@@ -32,7 +32,7 @@ class TestReportGenerator:
             MacroSummary,
             Recommendation,
         )
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             generate_markdown_report,
         )
 
@@ -109,12 +109,12 @@ class TestReportGenerator:
 
     def test_html_template_rendering(self, tmp_path):
         """Test HTML report generation using Jinja2 templates."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             AnalysisReport,
             ReportMetadata,
             QuestionAnalysis,
         )
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             generate_html_report,
         )
 
@@ -159,7 +159,7 @@ class TestReportGenerator:
     )
     def test_pdf_generation(self, tmp_path):
         """Test PDF generation from HTML content."""
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             generate_pdf_report,
         )
 
@@ -183,13 +183,13 @@ class TestReportGenerator:
 
     def test_chart_generation(self, tmp_path):
         """Test chart generation for score distributions."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             AnalysisReport,
             ReportMetadata,
             QuestionAnalysis,
             MesoCluster,
         )
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             generate_charts,
         )
 
@@ -246,12 +246,12 @@ class TestReportGenerator:
 
     def test_manifest_generation(self, tmp_path):
         """Test manifest generation with SHA256 hashes."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             AnalysisReport,
             ReportMetadata,
             QuestionAnalysis,
         )
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             ReportGenerator,
         )
 
@@ -324,7 +324,7 @@ class TestOrchestratorIntegration:
 
     def test_phase9_no_stub_response(self):
         """Regression test: Phase 9 should not return stub response."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             ReportMetadata,
             QuestionAnalysis,
             AnalysisReport,
@@ -365,7 +365,7 @@ class TestOrchestratorIntegration:
 
         # Import the actual method (we'll need to refactor to make it testable)
         # For now, we verify the logic doesn't return stub
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             ReportAssembler,
         )
 
@@ -406,12 +406,12 @@ class TestOrchestratorIntegration:
 
     def test_phase10_artifact_generation(self, tmp_path):
         """Test Phase 10 generates all expected artifacts."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             AnalysisReport,
             ReportMetadata,
             QuestionAnalysis,
         )
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             ReportGenerator,
         )
 
@@ -492,7 +492,7 @@ class TestReportQuality:
 
     def test_report_page_count_estimate(self, tmp_path):
         """Test that report has sufficient content for ~20 pages."""
-        from farfan_pipeline.phases.Phase_nine.report_assembly import (
+        from farfan_pipeline.phases.Phase_09.report_assembly import (
             AnalysisReport,
             ReportMetadata,
             QuestionAnalysis,
@@ -500,7 +500,7 @@ class TestReportQuality:
             MacroSummary,
             Recommendation,
         )
-        from farfan_pipeline.phases.Phase_nine.report_generator import (
+        from farfan_pipeline.phases.Phase_09.report_generator import (
             generate_markdown_report,
             generate_html_report,
         )

@@ -19,7 +19,7 @@ class TestChoquetProperties:
     
     def test_choquet_aggregator_exists(self):
         """Verify ChoquetAggregator is available."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
             ChoquetAggregator
         )
         assert ChoquetAggregator is not None
@@ -42,7 +42,7 @@ class TestChoquetProperties:
     
     def test_choquet_config_validation(self):
         """Verify ChoquetConfig validates parameters."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
             ChoquetConfig
         )
         
@@ -102,7 +102,7 @@ class TestChoquetIntegration:
     
     def test_choquet_with_dimension_aggregator(self):
         """Verify Choquet can be used in DimensionAggregator."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
             DimensionAggregator
         )
         
@@ -143,7 +143,7 @@ class TestChoquetIntegration:
     
     def test_calibration_result_structure(self):
         """Verify CalibrationResult has required fields."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
+# DELETED_MODULE:         from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
             CalibrationResult
         )
         

@@ -28,7 +28,7 @@ from farfan_pipeline.calibration import (
     validate_fusion_strategy_for_type,
     get_contract_type_for_question,
 )
-from farfan_pipeline.calibration.type_defaults import (
+# DELETED_MODULE: from farfan_pipeline.calibration.type_defaults import (
     UnknownContractTypeError,
     VALID_CONTRACT_TYPES,
     PROHIBITED_OPERATIONS,

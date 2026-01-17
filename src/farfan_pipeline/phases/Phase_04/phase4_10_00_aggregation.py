@@ -86,7 +86,7 @@ def _get_systemic_gap_class():
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
 
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         QuestionnaireSignalRegistry,
     )
     from farfan_pipeline.phases.Phase_07.phase7_10_00_systemic_gap_detector import (

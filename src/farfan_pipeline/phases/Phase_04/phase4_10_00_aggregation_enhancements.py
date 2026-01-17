@@ -173,7 +173,7 @@ class EnhancedDimensionAggregator:
         if hasattr(self.base, "bootstrap_aggregator") and self.base.bootstrap_aggregator:
             # Use existing bootstrap aggregator
             try:
-                from farfan_pipeline.processing.uncertainty_quantification import (
+# DELETED_MODULE:                 from farfan_pipeline.processing.uncertainty_quantification import (
                     aggregate_with_uncertainty,
                 )
 

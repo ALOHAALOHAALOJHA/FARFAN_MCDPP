@@ -37,7 +37,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from farfan_pipeline.calibration.decorators import (
+# DELETED_MODULE: from farfan_pipeline.calibration.decorators import (
     calibrated_method,
 )
 

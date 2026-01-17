@@ -167,7 +167,7 @@ except ImportError:
 
 # Signal infrastructure imports
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         create_signal_registry,
     )
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (

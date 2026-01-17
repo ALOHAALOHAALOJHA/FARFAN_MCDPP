@@ -69,7 +69,7 @@ except ImportError as e:
     print(f"Warning: Factory not available: {e}")
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         QuestionnaireSignalRegistry,
         create_signal_registry,
     )

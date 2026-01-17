@@ -73,7 +73,7 @@ except Exception:  # pragma: no cover - lightweight fallback for hermetic import
 
 
 try:
-    from farfan_pipeline.analysis.contradiction_deteccion import (
+# DELETED_MODULE:     from farfan_pipeline.analysis.contradiction_deteccion import (
         PolicyDimension as ContradictionPolicyDimension,
     )
 

@@ -74,7 +74,7 @@ try:
     from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
 except ImportError:
     # Fallback for legacy Phase_zero alias
-    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
 
 from .phase1_03_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
@@ -176,7 +176,7 @@ except ImportError:
 # SISAS Signal Infrastructure - REAL PATH (PRODUCTION)
 # This is the CANONICAL source for all signal extraction in the pipeline
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         QuestionnaireSignalRegistry,
         ChunkingSignalPack,
         MicroAnsweringSignalPack,
@@ -274,7 +274,7 @@ except ImportError:
 
 # Question Anchoring - SISAS enhancement for pre-scan answer probability
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
         scan_document_for_question_anchors,
         enrich_chunk_with_question_anchors,
         weight_signal_irrigation_by_anchors,

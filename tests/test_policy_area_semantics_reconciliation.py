@@ -5,7 +5,7 @@ import json
 import re
 from pathlib import Path
 
-from farfan_pipeline.core.policy_area_canonicalization import canonicalize_policy_area_id
+# DELETED_MODULE: from farfan_pipeline.core.policy_area_canonicalization import canonicalize_policy_area_id
 
 _LEGACY_POLICY_AREA_RE = re.compile(r"\bP(?:10|[1-9])\b")
 

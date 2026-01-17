@@ -3015,7 +3015,7 @@ class PDFProcessor:
         """Load PDF document with retry logic"""
         if self.retry_handler:
             try:
-                from farfan_pipeline.analysis.retry_handler import DependencyType
+# DELETED_MODULE:                 from farfan_pipeline.analysis.retry_handler import DependencyType
 
                 @self.retry_handler.with_retry(
                     DependencyType.PDF_PARSER,
@@ -9286,7 +9286,7 @@ Configuración:
 
     args = parser.parse_args()
 
-    from farfan_pipeline.core.policy_area_canonicalization import (
+# DELETED_MODULE:     from farfan_pipeline.core.policy_area_canonicalization import (
         canonicalize_policy_area_id,
         is_canonical_policy_area_id,
         is_legacy_policy_area_id,

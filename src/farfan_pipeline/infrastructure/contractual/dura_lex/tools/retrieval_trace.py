@@ -4,7 +4,7 @@ CLI tool for Retriever Contract (ReC) trace
 """
 import json
 
-from farfan_pipeline.contracts.retriever_contract import RetrieverContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.retriever_contract import RetrieverContract
 
 
 def main():

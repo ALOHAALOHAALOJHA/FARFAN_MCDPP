@@ -25,7 +25,7 @@ import logging
 import sys
 from typing import Any
 
-from farfan_pipeline.phases.Phase_02.executors.base_executor_with_contract import (
+from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import (
     BaseExecutorWithContract,
 )
 

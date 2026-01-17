@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from farfan_pipeline.phases.Phase_zero.runtime_config_schema import RuntimeConfigSchema, RuntimeMode
+from farfan_pipeline.phases.Phase_00.runtime_config_schema import RuntimeConfigSchema, RuntimeMode
 
 
 class TestRuntimeConfigSchema:

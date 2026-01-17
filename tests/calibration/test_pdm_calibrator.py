@@ -24,7 +24,7 @@ from farfan_pipeline.pdm.profile import (
     PDMStructuralProfile,
     get_default_profile,
 )
-from farfan_pipeline.calibration.pdm_calibrator import (
+# DELETED_MODULE: from farfan_pipeline.calibration.pdm_calibrator import (
     CALIBRABLE_SUBPHASES,
     NON_CALIBRABLE_SUBPHASES,
     GoldAnnotation,

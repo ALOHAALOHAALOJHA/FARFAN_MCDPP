@@ -18,7 +18,7 @@ Note: Calibration types imports are optional. If calibration_types module
 
 # Try to import calibration types if available
 try:
-    from farfan_pipeline.calibration.pdm_calibrator import CalibrationResult
+# DELETED_MODULE:     from farfan_pipeline.calibration.pdm_calibrator import CalibrationResult
     _has_calibration_types = True
 except ImportError:
     _has_calibration_types = False

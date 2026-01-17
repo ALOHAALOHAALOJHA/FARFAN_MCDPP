@@ -51,7 +51,7 @@ from pathlib import Path
 from typing import Any
 
 import jsonschema
-from farfan_pipeline.calibration.decorators import (
+# DELETED_MODULE: from farfan_pipeline.calibration.decorators import (
     calibrated_method,
 )
 from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import (
@@ -1770,7 +1770,7 @@ class RecommendationEngine:
             format: Output format ('json' or 'markdown')
         """
         # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import save_json, write_text_file
+# DELETED_MODULE:         from farfan_pipeline.analysis.factory import save_json, write_text_file
 
         if format == "json":
             save_json(

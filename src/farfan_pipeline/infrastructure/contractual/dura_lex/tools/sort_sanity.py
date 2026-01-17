@@ -4,7 +4,7 @@ CLI tool for Total Ordering Contract (TOC) sort sanity
 """
 import json
 
-from farfan_pipeline.contracts.total_ordering import TotalOrderingContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.total_ordering import TotalOrderingContract
 
 
 def main():

@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from typing import Any
 
-from farfan_pipeline.orchestration.metrics_persistence import (
+from farfan_pipeline.phases.Phase_02.phase2_95_01_metrics_persistence import (
     persist_phase_metrics,
     persist_resource_usage,
     persist_latency_histograms,

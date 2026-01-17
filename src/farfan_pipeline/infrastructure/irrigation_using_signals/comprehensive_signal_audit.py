@@ -50,7 +50,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consum
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
     extract_structured_evidence,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     QuestionnaireSignalRegistry,
 )
 

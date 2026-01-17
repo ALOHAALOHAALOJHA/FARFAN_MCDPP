@@ -44,7 +44,7 @@ from .bayesian_sampling_engine import BayesianSamplingEngine, SamplingResult
 
 # FASE 4.3: N2 Calibration imports
 try:
-    from farfan_pipeline.calibration.registry import (
+# DELETED_MODULE:     from farfan_pipeline.calibration.registry import (
         EpistemicCalibrationRegistry,
         CalibrationResolutionError,
     )

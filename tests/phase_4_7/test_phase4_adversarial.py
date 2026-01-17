@@ -88,7 +88,7 @@ class TestPhase4BoundaryConditions:
 
     def test_all_minimum_scores(self):
         """Test with all scores at minimum boundary (0.0)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator, DimensionScore
         )
 
@@ -113,7 +113,7 @@ class TestPhase4BoundaryConditions:
 
     def test_all_maximum_scores(self):
         """Test with all scores at maximum boundary (3.0)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -136,7 +136,7 @@ class TestPhase4BoundaryConditions:
 
     def test_score_clamping_below_zero(self):
         """Test that negative scores are clamped to 0.0."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -160,7 +160,7 @@ class TestPhase4BoundaryConditions:
 
     def test_score_clamping_above_three(self):
         """Test that scores > 3.0 are clamped to 3.0."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -183,7 +183,7 @@ class TestPhase4BoundaryConditions:
 
     def test_quality_threshold_boundaries(self):
         """Test quality level assignment at threshold boundaries."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -234,7 +234,7 @@ class TestPhase4EmptyMalformedInputs:
 
     def test_empty_input_list(self):
         """Test with completely empty input list."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -256,7 +256,7 @@ class TestPhase4EmptyMalformedInputs:
 
     def test_single_score_input(self):
         """Test with only 1 score (below expected 5)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -278,7 +278,7 @@ class TestPhase4EmptyMalformedInputs:
 
     def test_missing_required_fields(self):
         """Test with ScoredResult objects missing required fields."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             validate_scored_results, ValidationError
         )
 
@@ -299,7 +299,7 @@ class TestPhase4EmptyMalformedInputs:
 
     def test_invalid_score_types(self):
         """Test with invalid score types (e.g., strings, bool)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             validate_scored_results, ValidationError
         )
 
@@ -324,7 +324,7 @@ class TestPhase4EmptyMalformedInputs:
 
     def test_nan_and_infinity_scores(self):
         """Test handling of NaN and Infinity values."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -348,7 +348,7 @@ class TestPhase4EmptyMalformedInputs:
 
     def test_invalid_quality_level(self):
         """Test with invalid quality level type (not string)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             validate_scored_results, ValidationError
         )
 
@@ -382,7 +382,7 @@ class TestPhase4IntermodularWiring:
 
     def test_entry_contract_from_phase3(self):
         """Test entry contract validation for Phase 3 → Phase 4."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.interface.phase4_7_entry_contract import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.interface.phase4_7_entry_contract import (
             Phase4_7EntryContract
         )
 
@@ -415,7 +415,7 @@ class TestPhase4IntermodularWiring:
 
     def test_entry_contract_missing_traceability(self):
         """Test entry contract rejects results without traceability."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.interface.phase4_7_entry_contract import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.interface.phase4_7_entry_contract import (
             validate_phase4_7_entry
         )
 
@@ -443,7 +443,7 @@ class TestPhase4IntermodularWiring:
 
     def test_phase4_output_to_phase5_compatibility(self):
         """Test that Phase 4 output is compatible with Phase 5 input."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator, AreaPolicyAggregator
         )
 
@@ -477,7 +477,7 @@ class TestPhase4IntermodularWiring:
 
     def test_traceability_preservation_across_phases(self):
         """Test that traceability is preserved from Phase 4 → Phase 5."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -509,7 +509,7 @@ class TestPhase4IntermodularWiring:
 
     def test_error_propagation_from_phase4_to_phase5(self):
         """Test that Phase 4 errors properly propagate to Phase 5."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.validation.phase4_7_validation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.validation.phase4_7_validation import (
             validate_phase4_output, validate_phase5_output
         )
 
@@ -537,7 +537,7 @@ class TestPhase4ValueAdd:
 
     def test_aggregation_py_core_value_add(self):
         """Verify aggregation.py provides core aggregation logic."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator, group_by, calculate_weighted_average
         )
 
@@ -559,10 +559,10 @@ class TestPhase4ValueAdd:
 
     def test_aggregation_integration_py_value_add(self):
         """Verify aggregation_integration.py provides orchestration value."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation_integration import (
             macro_score_to_evaluation
         )
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import MacroScore
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import MacroScore
 
         # Create a MacroScore
         macro_score = MacroScore(
@@ -583,12 +583,12 @@ class TestPhase4ValueAdd:
 
     def test_validation_py_value_add(self):
         """Verify validation.py provides comprehensive validation."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.validation.phase4_7_validation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.validation.phase4_7_validation import (
             validate_phase4_output, ValidationResult
         )
 
         # Test with valid data
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionScore
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import DimensionScore
 
         valid_dim_score = DimensionScore(
             dimension_id="DIM01",
@@ -608,7 +608,7 @@ class TestPhase4ValueAdd:
 
     def test_entry_contract_py_value_add(self):
         """Verify entry contract provides input validation value."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.interface.phase4_7_entry_contract import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.interface.phase4_7_entry_contract import (
             Phase4_7EntryContract, extract_entry_provenance
         )
 
@@ -648,10 +648,10 @@ class TestPhase4ValueAdd:
 
     def test_exit_contract_py_value_add(self):
         """Verify exit contract provides output validation value."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.interface.phase4_7_exit_contract import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.interface.phase4_7_exit_contract import (
             Phase4_7ExitContract, extract_exit_delivery_metadata
         )
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import MacroScore, ClusterScore
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import MacroScore, ClusterScore
 
         # Create a MacroScore
         macro_score = MacroScore(
@@ -693,7 +693,7 @@ class TestPhase4HermeticityAndCoverage:
 
     def test_missing_dimension_in_area(self):
         """Test detection of missing dimensions in a policy area."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator, DimensionScore, HermeticityValidationError
         )
 
@@ -741,7 +741,7 @@ class TestPhase4HermeticityAndCoverage:
 
     def test_extra_dimension_in_area(self):
         """Test detection of unexpected dimensions in a policy area."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator, DimensionScore, HermeticityValidationError
         )
 
@@ -788,7 +788,7 @@ class TestPhase4HermeticityAndCoverage:
 
     def test_duplicate_dimension_detection(self):
         """Test detection of duplicate dimensions."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AreaPolicyAggregator, DimensionScore, HermeticityValidationError
         )
 
@@ -841,7 +841,7 @@ class TestPhase4HermeticityAndCoverage:
 
     def test_insufficient_coverage_below_threshold(self):
         """Test coverage validation when below threshold."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator, CoverageError
         )
 
@@ -872,7 +872,7 @@ class TestPhase4WeightValidation:
 
     def test_weight_sum_not_equal_to_one(self):
         """Test that weights not summing to 1.0 fails validation."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator, WeightValidationError
         )
 
@@ -892,7 +892,7 @@ class TestPhase4WeightValidation:
 
     def test_negative_weights_rejected(self):
         """Test that negative weights are rejected."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             AggregationSettings
         )
 
@@ -908,7 +908,7 @@ class TestPhase4WeightValidation:
 
     def test_empty_weights_falls_back_to_equal(self):
         """Test that empty weights falls back to equal weighting."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -940,7 +940,7 @@ class TestPhase4AdversarialStress:
 
     def test_all_insufficient_quality(self):
         """Test with all results having INSUFICIENTE quality."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -961,7 +961,7 @@ class TestPhase4AdversarialStress:
 
     def test_mixed_quality_levels(self):
         """Test with mixed quality levels in input."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -989,7 +989,7 @@ class TestPhase4AdversarialStress:
 
     def test_extreme_score_variance(self):
         """Test with extreme variance in scores."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -1013,7 +1013,7 @@ class TestPhase4AdversarialStress:
 
     def test_many_results_beyond_expected(self):
         """Test with more results than expected (e.g., 10 instead of 5)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 
@@ -1042,7 +1042,7 @@ class TestPhase4AdversarialStress:
 
     def test_concurrent_aggregation_thread_safety(self):
         """Test that aggregation produces deterministic results (thread safety)."""
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+        from farfan_pipeline.phases.Phase_04_five_six_seven.aggregation import (
             DimensionAggregator
         )
 

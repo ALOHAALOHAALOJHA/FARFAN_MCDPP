@@ -8,7 +8,7 @@ import time
 import pytest
 
 from farfan_pipeline.orchestration.orchestrator import ResourceLimits
-from farfan_pipeline.resilience import (
+# DELETED_MODULE: from farfan_pipeline.resilience import (
     CircuitBreaker,
     CircuitBreakerConfig,
     CircuitBreakerOpen,
@@ -208,7 +208,7 @@ class TestCircuitBreaker:
 @pytest.mark.asyncio
 async def test_circuit_breaker_protects_phase2_execution():
     """Integration test: Circuit breaker should prevent cascading failures."""
-    from farfan_pipeline.resilience import CircuitBreaker, CircuitBreakerConfig
+# DELETED_MODULE:     from farfan_pipeline.resilience import CircuitBreaker, CircuitBreakerConfig
 
     cb = CircuitBreaker(
         config=CircuitBreakerConfig(

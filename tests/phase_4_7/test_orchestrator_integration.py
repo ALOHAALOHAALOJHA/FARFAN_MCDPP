@@ -13,11 +13,11 @@ from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
 
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     AggregationSettings,
     ScoredResult,
 )
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
+# DELETED_MODULE: from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,

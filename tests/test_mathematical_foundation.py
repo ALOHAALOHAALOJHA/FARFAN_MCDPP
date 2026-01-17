@@ -21,7 +21,7 @@ import math
 import pytest
 from typing import Any
 
-from farfan_pipeline.analysis.scoring.mathematical_foundation import (
+# DELETED_MODULE: from farfan_pipeline.analysis.scoring.mathematical_foundation import (
     wilson_score_interval,
     weighted_aggregation,
     dempster_combination,

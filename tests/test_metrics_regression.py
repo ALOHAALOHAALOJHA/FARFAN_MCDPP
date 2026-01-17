@@ -20,7 +20,7 @@ def test_metrics_not_only_in_logs(tmp_path: Path) -> None:
         PhaseInstrumentation,
         ResourceLimits
     )
-    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
+    from farfan_pipeline.phases.Phase_02.phase2_95_01_metrics_persistence import persist_all_metrics
     
     # Create orchestrator-like metrics
     resource_limits = ResourceLimits()
@@ -95,7 +95,7 @@ def test_metrics_persistence_in_ci_artifacts_directory(tmp_path: Path) -> None:
         PhaseInstrumentation,
         ResourceLimits
     )
-    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
+    from farfan_pipeline.phases.Phase_02.phase2_95_01_metrics_persistence import persist_all_metrics
     
     # Simulate artifacts/plan1 directory structure
     artifacts_dir = tmp_path / "artifacts" / "plan1"
@@ -151,7 +151,7 @@ def test_metrics_files_have_required_content() -> None:
         PhaseInstrumentation,
         ResourceLimits
     )
-    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
+    from farfan_pipeline.phases.Phase_02.phase2_95_01_metrics_persistence import persist_all_metrics
     from tempfile import TemporaryDirectory
     
     with TemporaryDirectory() as tmpdir:
@@ -223,7 +223,7 @@ def test_metrics_persistence_is_deterministic() -> None:
         PhaseInstrumentation,
         ResourceLimits
     )
-    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
+    from farfan_pipeline.phases.Phase_02.phase2_95_01_metrics_persistence import persist_all_metrics
     from tempfile import TemporaryDirectory
     
     # Create fixed metrics data
@@ -318,7 +318,7 @@ def test_metrics_schema_validation_prevents_invalid_data() -> None:
     
     This prevents silent failures where corrupted metrics are written to disk.
     """
-    from farfan_pipeline.orchestration.metrics_persistence import validate_metrics_schema
+    from farfan_pipeline.phases.Phase_02.phase2_95_01_metrics_persistence import validate_metrics_schema
     
     # Valid metrics should pass
     valid_metrics = {

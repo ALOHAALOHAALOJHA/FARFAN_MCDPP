@@ -4,7 +4,7 @@ CLI tool for Failure & Fallback Contract (FFC) fault injector
 """
 import json
 
-from farfan_pipeline.contracts.failure_fallback import FailureFallbackContract
+from farfan_pipeline.infrastructure.contractual.dura_lex.failure_fallback import FailureFallbackContract
 
 
 def main():
