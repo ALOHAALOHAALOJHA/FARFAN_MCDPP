@@ -260,8 +260,8 @@ async def test_execute_phase_with_timeout_sync_function():
 @pytest.mark.core
 def test_get_phase_timeout_prod_mode(runtime_config_prod):
     """Test _get_phase_timeout applies 1x multiplier in PROD mode."""
-    with patch("farfan_pipeline.orchestration.orchestrator.MethodExecutor"):
-        with patch("farfan_pipeline.orchestration.orchestrator.get_questionnaire_provider"):
+    with patch("farfan_pipeline.orchestration.core_orchestrator.MethodExecutor"):
+        with patch("farfan_pipeline.orchestration.core_orchestrator.get_questionnaire_provider"):
             orchestrator = Mock()
             orchestrator.runtime_config = runtime_config_prod
             orchestrator.PHASE_TIMEOUTS = {2: 600.0}
@@ -281,7 +281,7 @@ def test_get_phase_timeout_dev_mode(runtime_config_dev):
     orchestrator.runtime_config = runtime_config_dev
     orchestrator.PHASE_TIMEOUTS = {2: 600.0}
 
-    with patch("farfan_pipeline.orchestration.orchestrator.RuntimeMode", RuntimeMode):
+    with patch("farfan_pipeline.orchestration.core_orchestrator.RuntimeMode", RuntimeMode):
         from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
         timeout = Orchestrator._get_phase_timeout(orchestrator, 2)
