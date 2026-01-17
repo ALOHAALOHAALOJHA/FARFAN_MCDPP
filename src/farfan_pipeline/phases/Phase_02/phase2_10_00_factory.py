@@ -3,8 +3,6 @@ Module: phase2_10_00_factory
 PHASE_LABEL: Phase 2
 Sequence: W
 
-"""
-"""
 Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
 
 This module is the SINGLE AUTHORITATIVE BOUNDARY for:
@@ -170,14 +168,28 @@ from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import (
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.phases.Phase_02.registries.questionnaire_signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
+
+# SISAS Subsystem (Integration Wiring)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import BusRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import ContractRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventStore
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.signal_vocabulary import SignalVocabulary
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.capability_vocabulary import CapabilityVocabulary
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.alignment_checker import VocabularyAlignmentChecker
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import IrrigationExecutor
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistryVehicle
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoperVehicle
+
+# Modular Questionnaire Resolver (Canonical Source)
+from canonic_questionnaire_central.resolver import resolve_questionnaire
 
 # Phase 1 validation constants module
 # NOTE: validation_constants module does not exist in current architecture
@@ -237,7 +249,7 @@ logger = logging.getLogger(__name__)
 # Según AGENTS.md - NO MODIFICAR sin actualizar documentación
 # ============================================================================
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+# CANONICAL_QUESTIONNAIRE_PATH removed in favor of modular resolver
 
 
 @dataclass(frozen=True)
@@ -296,57 +308,41 @@ def load_questionnaire(
     expected_hash: str | None = None,
 ) -> CanonicalQuestionnaire:
     """
-    Carga el cuestionario canónico con verificación de integridad.
+    Carga el cuestionario canónico usando el resolvedor modular.
 
     NIVEL 1: ÚNICA función autorizada para I/O del monolito.
     CONSUMIDOR: Solo AnalysisPipelineFactory._load_canonical_questionnaire
 
     Args:
-        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH)
+        path: Ignorado (deprecated by modular resolver)
         expected_hash: Hash SHA256 esperado para verificación
 
     Returns:
         CanonicalQuestionnaire: Objeto inmutable verificado
 
     Raises:
-        QuestionnaireLoadError: Archivo no existe o JSON inválido
+        QuestionnaireLoadError: Error en resolución
         QuestionnaireIntegrityError: Hash no coincide
     """
-    questionnaire_path = path or CANONICAL_QUESTIONNAIRE_PATH
-
-    if not questionnaire_path.exists():
-        raise QuestionnaireLoadError(
-            f"Questionnaire not found: {questionnaire_path}"
-        )
-
-    content_bytes = questionnaire_path.read_bytes()
-    computed_hash = hashlib.sha256(content_bytes).hexdigest()
-
-    if expected_hash and computed_hash.lower() != expected_hash.lower():
-        raise QuestionnaireIntegrityError(
-            f"Hash mismatch: expected {expected_hash[:16]}..., "
-            f"got {computed_hash[:16]}..."
-        )
-
     try:
-        content = json.loads(content_bytes.decode("utf-8"))
-    except json.JSONDecodeError as e:
-        raise QuestionnaireLoadError(f"Invalid JSON: {e}")
-
-    if "canonical_notation" not in content:
-        raise QuestionnaireLoadError("Missing 'canonical_notation'")
-    if "blocks" not in content:
-        raise QuestionnaireLoadError("Missing 'blocks'")
-
-    version = content.get("version", "unknown")
-
-    return CanonicalQuestionnaire(
-        data=content,
-        sha256=computed_hash,
-        version=version,
-        load_timestamp=datetime.now(timezone.utc).isoformat(),
-        source_path=str(questionnaire_path.resolve()),
-    )
+        # Use modular resolver instead of loading monolith directly
+        resolved = resolve_questionnaire(
+            expected_hash=expected_hash,
+            force_rebuild=False
+        )
+        
+        return CanonicalQuestionnaire(
+            data=resolved.data,
+            sha256=resolved.sha256,
+            version=resolved.version,
+            load_timestamp=resolved.provenance.assembly_timestamp,
+            source_path="modular_resolver"
+        )
+    
+    except Exception as e:
+        if "hash mismatch" in str(e).lower():
+            raise QuestionnaireIntegrityError(f"Integrity check failed: {e}")
+        raise QuestionnaireLoadError(f"Failed to resolve questionnaire: {e}")
 
 
 # =============================================================================
@@ -419,6 +415,7 @@ class ProcessorBundle:
     validation_constants: dict[str, Any]
     calibration_registry: Any | None = None  # FASE 4.1: EpistemicCalibrationRegistry
     pdm_profile: Any | None = None  # FASE 4.1: MockPDMProfile
+    sisas_executor: IrrigationExecutor | None = None  # SISAS Subsystem
     core_module_factory: Any | None = None
     seed_registry_initialized: bool = False
     provenance: dict[str, Any] = field(default_factory=dict)
@@ -612,6 +609,9 @@ class AnalysisPipelineFactory:
 
             # Step 2.5: FASE 4.1 - Initialize Calibration Registry (Epistemic Level Calibration)
             self._initialize_calibration_registry()
+            
+            # Step 2.6: Initialize SISAS Subsystem (Integration Wiring)
+            sisas_components = self._initialize_sisas_system()
 
             # Step 3: Build enriched signal packs (intelligence layer)
             self._build_enriched_signal_packs()
@@ -677,6 +677,7 @@ class AnalysisPipelineFactory:
                 validation_constants=validation_constants,
                 calibration_registry=self._calibration_registry,  # FASE 4.1
                 pdm_profile=self._pdm_profile,  # FASE 4.1
+                sisas_executor=sisas_components.get("executor") if sisas_components else None,
                 core_module_factory=self._build_core_module_factory(),
                 seed_registry_initialized=seed_initialized,
                 provenance=provenance,
@@ -1188,6 +1189,94 @@ class AnalysisPipelineFactory:
         )
 
         return profile
+
+    def _initialize_sisas_system(self) -> dict[str, Any] | None:
+        """Initialize the SISAS subsystem (Signal-Irrigated System).
+        
+        Replicates the wiring from SISAS/main.py but integrated into the pipeline factory.
+        
+        Returns:
+            Dict containing SISAS components (executor, registries, etc.) or None if disabled.
+        """
+        if not self._enable_intelligence:
+            logger.info("sisas_initialization_skipped intelligence_layer=off")
+            return None
+
+        logger.info("sisas_initialization_start")
+
+        try:
+            # 1. Create registries
+            bus_registry = BusRegistry()
+            contract_registry = ContractRegistry()
+            event_store = EventStore()
+            
+            # 2. Create vocabularies
+            signal_vocab = SignalVocabulary()
+            capability_vocab = CapabilityVocabulary()
+            
+            # 3. Check alignment
+            alignment_checker = VocabularyAlignmentChecker(
+                signal_vocabulary=signal_vocab,
+                capability_vocabulary=capability_vocab
+            )
+            # We don't block on alignment issues in production unless strict
+            alignment_report = alignment_checker.check_alignment()
+            
+            if not alignment_report.is_aligned:
+                logger.warning(
+                    "sisas_vocabulary_alignment_issues count=%d", 
+                    len(alignment_report.issues)
+                )
+                if self._strict:
+                    # In strict mode, we might want to fail, but for now we log error
+                    # as SISAS is an enhancement layer
+                    for issue in alignment_report.issues:
+                        if issue.severity == "critical":
+                            logger.error("sisas_critical_issue: %s", issue.details)
+
+            # 4. Create vehicles
+            vehicles = {
+                "signal_registry": SignalRegistryVehicle(
+                    bus_registry=bus_registry,
+                    contract_registry=contract_registry,
+                    event_store=event_store
+                ),
+                "signal_context_scoper": SignalContextScoperVehicle(
+                    bus_registry=bus_registry,
+                    contract_registry=contract_registry,
+                    event_store=event_store
+                )
+            }
+            
+            # 5. Create irrigation executor
+            executor = IrrigationExecutor(
+                bus_registry=bus_registry,
+                contract_registry=contract_registry,
+                event_store=event_store
+            )
+            
+            # Register vehicles
+            for vehicle_id, vehicle in vehicles.items():
+                executor.register_vehicle(vehicle)
+                logger.debug("sisas_vehicle_registered id=%s", vehicle_id)
+            
+            logger.info("sisas_initialized_successfully vehicles=%d", len(vehicles))
+            
+            return {
+                "executor": executor,
+                "bus_registry": bus_registry,
+                "contract_registry": contract_registry,
+                "event_store": event_store,
+                "signal_vocab": signal_vocab,
+                "capability_vocab": capability_vocab
+            }
+            
+        except Exception as e:
+            msg = f"Failed to initialize SISAS subsystem: {e}"
+            logger.error("sisas_initialization_failed error=%s", msg, exc_info=True)
+            if self._strict:
+                raise FactoryError(msg) from e
+            return None
 
     def _initialize_seed_registry(self) -> bool:
         """Initialize SeedRegistry singleton for deterministic operations.

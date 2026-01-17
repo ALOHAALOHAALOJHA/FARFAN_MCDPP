@@ -1324,7 +1324,7 @@ class IndustrialPolicyProcessor:
         )
 
         if ontology is None or semantic_analyzer is None or performance_analyzer is None:
-            from orchestration.wiring.analysis_factory import (
+            from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import (
                 create_municipal_ontology,
                 create_performance_analyzer,
                 create_semantic_analyzer,
@@ -1335,22 +1335,22 @@ class IndustrialPolicyProcessor:
             performance_analyzer = performance_analyzer or create_performance_analyzer(ontology)
 
         if contradiction_detector is None:
-            from orchestration.wiring.analysis_factory import create_contradiction_detector
+            from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_contradiction_detector
 
             contradiction_detector = create_contradiction_detector()
 
         if temporal_verifier is None:
-            from orchestration.wiring.analysis_factory import create_temporal_logic_verifier
+            from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_temporal_logic_verifier
 
             temporal_verifier = create_temporal_logic_verifier()
 
         if confidence_calculator is None:
-            from orchestration.wiring.analysis_factory import create_bayesian_confidence_calculator
+            from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_bayesian_confidence_calculator
 
             confidence_calculator = create_bayesian_confidence_calculator()
 
         if municipal_analyzer is None:
-            from orchestration.wiring.analysis_factory import create_municipal_analyzer
+            from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_municipal_analyzer
 
             municipal_analyzer = create_municipal_analyzer()
 
@@ -1988,7 +1988,7 @@ class IndustrialPolicyProcessor:
     def export_results(self, results: dict[str, Any], output_path: str | Path) -> None:
         """Export analysis results to JSON with formatted output."""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.processing.factory import save_json
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import save_json
 
         save_json(results, output_path)
         logger.info(f"Results exported to {output_path}")
@@ -2118,7 +2118,7 @@ class ResilientFileHandler:
             IOError: If file cannot be read with any supported encoding
         """
         # Delegate to factory for I/O operation
-        from farfan_pipeline.processing.factory import read_text_file
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import read_text_file
 
         try:
             return read_text_file(file_path, encodings=list(cls.ENCODINGS))
@@ -2129,7 +2129,7 @@ class ResilientFileHandler:
     def write_text(cls, content: str, file_path: str | Path) -> None:
         """Write text content with UTF-8 encoding and directory creation."""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.processing.factory import write_text_file
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import write_text_file
 
         write_text_file(content, file_path)
 
@@ -2154,7 +2154,7 @@ class PolicyAnalysisPipeline:
         self.config = config or ProcessorConfig()
         self.sanitizer = AdvancedTextSanitizer(self.config)
 
-        from orchestration.wiring.analysis_factory import create_analysis_components
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_analysis_components
 
         components = create_analysis_components()
         self.document_loader = components["document_loader"]

@@ -1471,7 +1471,404 @@ class PipelineOrchestrator:
 # EXPORTS
 # =============================================================================
 
+# =============================================================================
+# PHASE 0 VALIDATION TYPES
+# =============================================================================
+
+
+@dataclass(frozen=True)
+class GateResult:
+    """Result of a Phase 0 exit gate check.
+
+    Attributes:
+        gate_name: Name of the gate (e.g., "bootstrap", "input_verification")
+        passed: Whether the gate check passed
+        message: Optional message describing the result
+        check_time: ISO timestamp of when the gate was checked
+        details: Optional dictionary with additional details
+    """
+
+    gate_name: str
+    passed: bool
+    message: str = ""
+    check_time: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    details: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to dictionary."""
+        return {
+            "gate_name": self.gate_name,
+            "passed": self.passed,
+            "message": self.message,
+            "check_time": self.check_time,
+            "details": self.details,
+        }
+
+
+@dataclass
+class Phase0ValidationResult:
+    """Result of Phase 0 boot checks and exit gate validation.
+
+    Attributes:
+        all_passed: Whether all gates passed
+        gate_results: List of GateResult objects for each gate
+        validation_time: ISO timestamp of when validation was performed
+        total_gates: Total number of gates checked
+        passed_gates: Number of gates that passed
+        failed_gates: Number of gates that failed
+    """
+
+    all_passed: bool
+    gate_results: list[GateResult]
+    validation_time: str
+    total_gates: int = field(init=False)
+    passed_gates: int = field(init=False)
+    failed_gates: int = field(init=False)
+
+    def __post_init__(self) -> None:
+        """Compute summary statistics."""
+        self.total_gates = len(self.gate_results)
+        self.passed_gates = sum(1 for g in self.gate_results if g.passed)
+        self.failed_gates = self.total_gates - self.passed_gates
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to dictionary."""
+        return {
+            "all_passed": self.all_passed,
+            "validation_time": self.validation_time,
+            "total_gates": self.total_gates,
+            "passed_gates": self.passed_gates,
+            "failed_gates": self.failed_gates,
+            "gate_results": [g.to_dict() for g in self.gate_results],
+        }
+
+    def get_failed_gates(self) -> list[GateResult]:
+        """Get list of failed gate results."""
+        return [g for g in self.gate_results if not g.passed]
+
+    def get_gate_result(self, gate_name: str) -> GateResult | None:
+        """Get result for a specific gate by name."""
+        for g in self.gate_results:
+            if g.gate_name == gate_name:
+                return g
+        return None
+
+
+# =============================================================================
+# METHOD EXECUTOR
+# =============================================================================
+
+
+class MethodExecutor:
+    """Executes methods from the method registry with argument routing.
+
+    This class bridges the factory's method registry with the executor classes,
+    providing method execution with argument routing and signal registry integration.
+
+    Usage:
+        method_executor = MethodExecutor(
+            method_registry=registry,
+            arg_router=router,
+            signal_registry=signal_registry,
+        )
+        result = method_executor.execute(
+            class_name="PDETMunicipalPlanAnalyzer",
+            method_name="_score_indicators",
+            document=doc,
+            signal_pack=pack,
+            **context
+        )
+    """
+
+    def __init__(
+        self,
+        method_registry: Any,  # MethodRegistry from phase2_10_02_methods_registry
+        arg_router: Any,  # ExtendedArgRouter from phase2_60_02_arg_router
+        signal_registry: Any,  # QuestionnaireSignalRegistry
+    ):
+        """Initialize the method executor.
+
+        Args:
+            method_registry: MethodRegistry for retrieving methods
+            arg_router: ExtendedArgRouter for argument routing
+            signal_registry: Signal registry for signal integration
+        """
+        self._method_registry = method_registry
+        self._arg_router = arg_router
+        self._signal_registry = signal_registry
+        self.logger = structlog.get_logger(f"{__name__}.MethodExecutor")
+
+    def execute(
+        self,
+        class_name: str,
+        method_name: str,
+        **kwargs: Any,
+    ) -> Any:
+        """Execute a method from the registry with argument routing.
+
+        Args:
+            class_name: Name of the class containing the method
+            method_name: Name of the method to execute
+            **kwargs: Arguments to pass to the method (routed via arg_router)
+
+        Returns:
+            Result of the method execution
+
+        Raises:
+            MethodRegistryError: If method cannot be retrieved
+            RuntimeError: If method execution fails
+        """
+        self.logger.debug(
+            "method_execution_start",
+            class_name=class_name,
+            method_name=method_name,
+        )
+
+        # Get method from registry
+        method = self._method_registry.get_method(class_name, method_name)
+
+        # Route arguments using arg_router
+        # ExtendedArgRouter.route() returns (args_tuple, kwargs_dict)
+        payload = dict(kwargs)  # Make mutable copy for routing
+        routed_args, routed_kwargs = self._arg_router.route(
+            class_name=class_name,
+            method_name=method_name,
+            payload=payload,
+        )
+
+        # Execute method with routed args
+        try:
+            result = method(*routed_args, **routed_kwargs)
+            self.logger.debug(
+                "method_execution_complete",
+                class_name=class_name,
+                method_name=method_name,
+            )
+            return result
+        except Exception as e:
+            self.logger.error(
+                "method_execution_failed",
+                class_name=class_name,
+                method_name=method_name,
+                error=str(e),
+            )
+            raise RuntimeError(
+                f"Method execution failed for {class_name}.{method_name}: {e}"
+            ) from e
+
+    @property
+    def method_registry(self) -> Any:
+        """Get the method registry."""
+        return self._method_registry
+
+    @property
+    def arg_router(self) -> Any:
+        """Get the argument router."""
+        return self._arg_router
+
+    @property
+    def signal_registry(self) -> Any:
+        """Get the signal registry."""
+        return self._signal_registry
+
+
+# =============================================================================
+# FACTORY-ALIGNED ORCHESTRATOR
+# =============================================================================
+
+
+class Orchestrator:
+    """Factory-aligned orchestrator for Phase 2 method dispatch.
+
+    This orchestrator bridges the factory's DI pattern with the PipelineOrchestrator,
+    providing the interface expected by AnalysisPipelineFactory.
+
+    The canonical flow:
+        PHASE_0: Bootstrap & Validation (WiringComponents)
+        PHASE_1: CPP Ingestion (CanonPolicyPackage with 300 questions)
+        PHASE_2: Executor Factory & Dispatch (~30 executors)
+        PHASE_3: Layer Scoring (8 layers × 300 questions)
+        PHASE_4: Dimension Aggregation (60 dimensions)
+        PHASE_5: Policy Area Aggregation (10 policy areas)
+        PHASE_6: Cluster Aggregation (4 MESO clusters)
+        PHASE_7: Macro Aggregation (1 holistic score)
+        PHASE_8: Recommendations Engine
+        PHASE_9: Report Assembly
+        PHASE_10: Verification
+
+    Usage:
+        orchestrator = Orchestrator(
+            method_executor=method_executor,
+            questionnaire=questionnaire,
+            executor_config=executor_config,
+            runtime_config=runtime_config,
+            phase0_validation=phase0_validation,
+        )
+    """
+
+    def __init__(
+        self,
+        method_executor: MethodExecutor,
+        questionnaire: Any,  # CanonicalQuestionnaire
+        executor_config: Any,  # ExecutorConfig
+        runtime_config: Any | None = None,  # RuntimeConfig
+        phase0_validation: Phase0ValidationResult | None = None,
+    ):
+        """Initialize the orchestrator with dependency injection.
+
+        Args:
+            method_executor: MethodExecutor for method dispatch
+            questionnaire: CanonicalQuestionnaire with 300 questions
+            executor_config: ExecutorConfig for operational parameters
+            runtime_config: Optional RuntimeConfig for phase control
+            phase0_validation: Optional Phase0ValidationResult from Phase 0
+        """
+        self._method_executor = method_executor
+        self._questionnaire = questionnaire
+        self._executor_config = executor_config
+        self._runtime_config = runtime_config
+        self._phase0_validation = phase0_validation
+        self.logger = structlog.get_logger(f"{__name__}.Orchestrator")
+
+        # Internal state
+        self._phase_outputs: dict[str, Any] = {}
+        self._execution_context: dict[str, Any] = {}
+
+        self.logger.info(
+            "orchestrator_initialized",
+            questionnaire_hash=getattr(questionnaire, "sha256", "unknown")[:16] if questionnaire else "none",
+            phase0_passed=phase0_validation.all_passed if phase0_validation else None,
+        )
+
+    @property
+    def method_executor(self) -> MethodExecutor:
+        """Get the method executor."""
+        return self._method_executor
+
+    @property
+    def questionnaire(self) -> Any:
+        """Get the canonical questionnaire."""
+        return self._questionnaire
+
+    @property
+    def executor_config(self) -> Any:
+        """Get the executor configuration."""
+        return self._executor_config
+
+    @property
+    def runtime_config(self) -> Any | None:
+        """Get the runtime configuration."""
+        return self._runtime_config
+
+    @property
+    def phase0_validation(self) -> Phase0ValidationResult | None:
+        """Get the Phase 0 validation result."""
+        return self._phase0_validation
+
+    def execute_phase(
+        self,
+        phase_id: str,
+        **kwargs: Any,
+    ) -> Any:
+        """Execute a pipeline phase.
+
+        Args:
+            phase_id: Phase identifier (e.g., "P01", "P02")
+            **kwargs: Additional arguments for the phase
+
+        Returns:
+            Phase output
+
+        Raises:
+            ValueError: If phase is invalid
+            RuntimeError: If phase execution fails
+        """
+        self.logger.info("phase_execution_start", phase=phase_id)
+
+        # Phase-specific execution
+        if phase_id == "P01":
+            return self._execute_phase1(**kwargs)
+        elif phase_id == "P02":
+            return self._execute_phase2(**kwargs)
+        elif phase_id == "P03":
+            return self._execute_phase3(**kwargs)
+        else:
+            # Delegate to PipelineOrchestrator for other phases
+            return self._execute_via_pipeline_orchestrator(phase_id, **kwargs)
+
+    def _execute_phase1(self, **kwargs: Any) -> Any:
+        """Execute Phase 1: CPP Ingestion."""
+        self.logger.info("executing_phase1_cpp_ingestion")
+        # TODO: Implement Phase 1 execution
+        # This is a placeholder - actual implementation will integrate
+        # with the Phase 1 module for CPP processing
+        return {"status": "P01_placeholder", "chunks": 300}
+
+    def _execute_phase2(self, **kwargs: Any) -> Any:
+        """Execute Phase 2: Executor Factory & Dispatch."""
+        self.logger.info("executing_phase2_executor_factory")
+        # Phase 2 is handled by the factory itself
+        # This method returns the method_executor for reference
+        return self._method_executor
+
+    def _execute_phase3(self, **kwargs: Any) -> Any:
+        """Execute Phase 3: Layer Scoring."""
+        self.logger.info("executing_phase3_layer_scoring")
+        # TODO: Implement Phase 3 execution
+        return {"status": "P03_placeholder", "layer_scores": []}
+
+    def _execute_via_pipeline_orchestrator(
+        self, phase_id: str, **kwargs: Any
+    ) -> Any:
+        """Execute phase via PipelineOrchestrator for phases P04-P10."""
+        # Lazy import to avoid circular dependency
+        # PipelineOrchestrator is in the same module
+        from farfan_pipeline.orchestration.core_orchestrator import (
+            PipelineOrchestrator,
+            ExecutionContext,
+        )
+
+        if not hasattr(self, "_pipeline_orchestrator"):
+            self._pipeline_orchestrator = PipelineOrchestrator(
+                config={
+                    "executor_config": self._executor_config,
+                    "runtime_config": self._runtime_config,
+                    "phase0_validation": self._phase0_validation,
+                }
+            )
+            # Initialize context with questionnaire
+            self._pipeline_orchestrator.context = ExecutionContext(
+                config=self._pipeline_orchestrator.config,
+            )
+            # Store phase outputs
+            for phase, output in self._phase_outputs.items():
+                self._pipeline_orchestrator.context.phase_outputs[phase] = output
+
+        # Map phase_id to PhaseID enum
+        phase_map = {
+            "P04": PhaseID.PHASE_4,
+            "P05": PhaseID.PHASE_5,
+            "P06": PhaseID.PHASE_6,
+            "P07": PhaseID.PHASE_7,
+            "P08": PhaseID.PHASE_8,
+            "P09": PhaseID.PHASE_9,
+            "P10": PhaseID.PHASE_10,
+        }
+
+        if phase_id not in phase_map:
+            raise ValueError(f"Unknown phase: {phase_id}")
+
+        # Execute the phase
+        result = self._pipeline_orchestrator._execute_phase(phase_map[phase_id])
+
+        # Store output
+        self._phase_outputs[phase_id] = result
+
+        return result
+
+
 __all__ = [
+    # Core orchestrator
     "PipelineOrchestrator",
     "ExecutionContext",
     "PhaseResult",
@@ -1479,4 +1876,11 @@ __all__ = [
     "PhaseID",
     "ContractEnforcer",
     "PHASE_METADATA",
+    # Phase 0 validation
+    "GateResult",
+    "Phase0ValidationResult",
+    # Method execution
+    "MethodExecutor",
+    # Factory-aligned orchestrator
+    "Orchestrator",
 ]
