@@ -28,11 +28,13 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irriga
     UtilityAuditor,
     WiringAuditor,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     AccessLevel,
-    SignalConsumptionProof,
     QuestionnaireAccessAudit,
     reset_access_audit,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
+    SignalConsumptionProof,
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
     ConsumptionTracker,
@@ -404,9 +406,9 @@ class TestAccessAudit:
         # Reset audit for clean test
         reset_access_audit()
 
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-            get_access_audit,
-        )
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
+    get_access_audit,
+)
 
         audit = get_access_audit()
 

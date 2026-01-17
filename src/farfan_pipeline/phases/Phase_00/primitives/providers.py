@@ -13,7 +13,7 @@ from typing import Any, Protocol
 import structlog
 
 from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import DATA_DIR
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     AccessLevel,
     get_access_audit,
 )

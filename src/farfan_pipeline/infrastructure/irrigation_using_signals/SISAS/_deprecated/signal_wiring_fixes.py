@@ -258,10 +258,10 @@ def validate_access_level(
         ... )
         >>> assert is_valid
     """
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-        AccessLevel,
-        get_access_audit,
-    )
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
+    AccessLevel,
+    get_access_audit,
+)
 
     # Factory-level accessors
     factory_modules = ["farfan_pipeline.phases.Phase_02.phase2_10_00_factory"]

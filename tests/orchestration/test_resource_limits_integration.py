@@ -14,11 +14,14 @@ import pytest
 # Add src to path for imports
 
 from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from orchestration.orchestrator import (
-    AbortRequested,
+from farfan_pipeline.orchestration.core_orchestrator import (
     Orchestrator,
+)
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (
     ResourceLimits,
 )
+# AbortRequested - check domain_errors if needed (not found in core_orchestrator)
+from farfan_pipeline.phases.Phase_00.phase0_00_01_domain_errors import AbortRequested
 
 
 class SimulatedStressExecutor:
@@ -272,7 +275,7 @@ class TestResourceLimitsStressIntegration:
             {"D1-Q1": SimulatedStressExecutor}
         ):
             # Create instrumentation for Phase 2
-            from orchestration.orchestrator import PhaseInstrumentation
+            # PhaseInstrumentation  # PHANTOM CLASS - not found in codebase (test needs rewrite)
             instrumentation = PhaseInstrumentation(
                 phase_id=2,
                 name="FASE 2 - Micro Preguntas",

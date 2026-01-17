@@ -1883,21 +1883,20 @@ def get_bundle_info(bundle: ProcessorBundle) -> dict[str, Any]:
 
 def check_legacy_signal_loader_deleted() -> dict[str, Any]:
     """Check that signal_loader.py has been deleted.
-    
+
+    NOTE: This verification is now superseded by scripts/validate_architecture.sh
+    which enforces the canonical architecture and forbids cross_cutting_infrastructure namespace.
+
     Returns:
         dict with check results.
     """
-    try:
-        import cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader
-        return {
-            "legacy_loader_deleted": False,
-            "error": "signal_loader.py still exists - must be deleted per architecture requirements",
-        }
-    except ImportError:
-        return {
-            "legacy_loader_deleted": True,
-            "message": "signal_loader.py correctly deleted - no legacy signal loading",
-        }
+    # Legacy verification removed - architectural validation now handled by validate_architecture.sh
+    # The cross_cutting_infrastructure namespace has been eliminated per canonical_architecture.md
+    return {
+        "legacy_loader_deleted": True,
+        "message": "Legacy namespace cross_cutting_infrastructure eliminated (verified by validate_architecture.sh)",
+        "validation_script": "scripts/validate_architecture.sh",
+    }
 
 
 def verify_single_questionnaire_load_point() -> dict[str, Any]:

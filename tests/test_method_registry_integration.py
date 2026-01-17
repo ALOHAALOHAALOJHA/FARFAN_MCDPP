@@ -23,7 +23,7 @@ from orchestration.method_registry import MethodRegistry
 
 # Try to import MethodExecutor, skip tests if dependencies missing
 try:
-    from orchestration.orchestrator import MethodExecutor
+    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
 
     EXECUTOR_AVAILABLE = True
 except ImportError:
@@ -212,7 +212,7 @@ class TestMultiRunMemory:
         if not EXECUTOR_AVAILABLE:
             pytest.skip("MethodExecutor not available")
 
-        from orchestration.orchestrator import MethodExecutor
+        from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
 
         memory_tracker.record_baseline()
 
