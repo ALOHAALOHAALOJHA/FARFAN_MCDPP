@@ -227,9 +227,7 @@ from farfan_pipeline.phases.Phase_02.phase2_60_01_contract_validator_cqvr import
 
 # Phase 2 - SOTA Evidence & Query
 try:
-    from farfan_pipeline.phases.Phase_02.phase2_80_01_evidence_query_engine import (
-        EvidenceQueryEngine,
-    )
+    import farfan_pipeline.phases.Phase_02.phase2_80_01_evidence_query_engine
     EVIDENCE_QUERY_ENGINE_AVAILABLE = True
 except ImportError:
     EVIDENCE_QUERY_ENGINE_AVAILABLE = False
