@@ -4,6 +4,8 @@ PHASE_LABEL: Phase 2
 Sequence: W
 
 """
+from __future__ import annotations
+
 """
 Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
 
@@ -137,8 +139,6 @@ SIN_CARRETA Compliance:
 - Auditability via immutable ProcessorBundle with provenance metadata
 - Phase 0 validation ensures system readiness before pipeline execution
 """
-
-from __future__ import annotations
 
 import hashlib
 import json
