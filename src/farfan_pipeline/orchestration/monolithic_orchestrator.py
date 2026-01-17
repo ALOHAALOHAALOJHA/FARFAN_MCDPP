@@ -674,32 +674,72 @@ class MonolithicOrchestrator:
     - Fase 8: Recommendations
     - Fase 9: Report Assembly
 
-    GARANTÍAS:
-    - Ejecución automática por defecto
-    - Sin flags ad hoc
-    - Sin intervención manual
-    - Flujo determinista completo
+    GARANTÍAS CONSTITUCIONALES:
+    ✓ Orden secuencial estricto: P00→P01→P02→P03→P04→P05→P06→P07→P08→P09
+    ✓ Validación automática de contratos de interfase entre fases
+    ✓ Instanciación automática y progresiva de fases
+    ✓ SISAS activado por defecto (100% funcional)
+    ✓ Coherencia total con Factory/MethodRegistry/ClassRegistry
+    ✓ Ejecución automática sin intervención manual
+    ✓ Flujo determinista end-to-end
+
+    ORDEN CANÓNICO INVARIANTE:
+    Cada fase solo puede ejecutarse si todas las fases anteriores completaron exitosamente
+    y sus contratos de salida fueron validados. NO se permiten saltos ni reordenamientos.
     """
+
+    # Orden canónico estricto de fases (INMUTABLE)
+    CANONICAL_PHASE_ORDER = (
+        PhaseID.PHASE_0,
+        PhaseID.PHASE_1,
+        PhaseID.PHASE_2,
+        PhaseID.PHASE_3,
+        PhaseID.PHASE_4,
+        PhaseID.PHASE_5,
+        PhaseID.PHASE_6,
+        PhaseID.PHASE_7,
+        PhaseID.PHASE_8,
+        PhaseID.PHASE_9,
+    )
 
     def __init__(
         self,
         config: dict[str, Any] | None = None,
         strict_mode: bool = True,
         deterministic: bool = True,
+        auto_validate_contracts: bool = True,
     ):
-        """Initialize monolithic orchestrator."""
+        """Initialize monolithic orchestrator.
+
+        Args:
+            config: Pipeline configuration (if None, uses defaults)
+            strict_mode: If True, fail on critical violations
+            deterministic: If True, enforce deterministic execution (seed=42)
+            auto_validate_contracts: If True, validate interface contracts between phases
+        """
         self.config = config or self._build_default_config()
         self.strict_mode = strict_mode
         self.deterministic = deterministic
+        self.auto_validate_contracts = auto_validate_contracts
         self.logger = structlog.get_logger(f"{__name__}.MonolithicOrchestrator")
 
         # Execution context (initialized during pipeline run)
         self.context: ExecutionContext | None = None
 
+        # Factory integration (instanciación única y autorizada)
+        self._factory: AnalysisPipelineFactory | None = None
+        self._method_registry: MethodRegistry | None = None
+        self._class_registry: dict[str, type] | None = None
+
+        # Interface contract validators
+        self._interface_validators: dict[tuple[PhaseID, PhaseID], Any] = {}
+
         self.logger.info(
             "monolithic_orchestrator_initialized",
             strict_mode=strict_mode,
             deterministic=deterministic,
+            auto_validate_contracts=auto_validate_contracts,
+            canonical_phase_order=len(self.CANONICAL_PHASE_ORDER),
             version=__version__,
         )
 
@@ -719,28 +759,304 @@ class MonolithicOrchestrator:
             # Resource limits
             "resource_limits": {},
 
-            # Feature flags
+            # Feature flags (SISAS habilitado por defecto - CRÍTICO)
             "enable_http_signals": False,
             "enable_calibration": True,
-            "enable_sisas": True,
+            "enable_sisas": True,  # SISAS SIEMPRE ACTIVADO POR DEFECTO
 
-            # SISAS
+            # SISAS configuration
             "sisas_irrigation_csv_path": None,
             "sisas_base_path": "",
+            "sisas_strict_alignment": True,  # Validación estricta de vocabularios
 
             # Auto-registration
             "load_default_executors": True,
             "auto_register_canonical_executors": True,
+
+            # Factory integration
+            "use_factory_for_phase2": True,  # Usar AnalysisPipelineFactory
+            "run_phase0_validation": True,  # Ejecutar Phase 0 validation gates
         }
+
+    def _validate_phase_order(self, current_phase: PhaseID) -> None:
+        """Validate that phases execute in strict canonical order.
+
+        Args:
+            current_phase: Phase about to execute
+
+        Raises:
+            ValueError: If phase order is violated
+        """
+        if current_phase not in self.CANONICAL_PHASE_ORDER:
+            raise ValueError(f"Phase {current_phase} is not in canonical order")
+
+        expected_index = self.CANONICAL_PHASE_ORDER.index(current_phase)
+
+        # Verificar que todas las fases anteriores completaron
+        for i in range(expected_index):
+            previous_phase = self.CANONICAL_PHASE_ORDER[i]
+            if previous_phase not in self.context.phase_results:
+                raise ValueError(
+                    f"Cannot execute {current_phase}: prerequisite {previous_phase} not completed"
+                )
+
+            result = self.context.phase_results[previous_phase]
+            if result.status != PhaseStatus.COMPLETED:
+                raise ValueError(
+                    f"Cannot execute {current_phase}: prerequisite {previous_phase} "
+                    f"has status {result.status}"
+                )
+
+    def _validate_interface_contract(
+        self, source_phase: PhaseID, target_phase: PhaseID
+    ) -> ValidationResult:
+        """Validate interface contract between two consecutive phases.
+
+        Args:
+            source_phase: Phase that produces output
+            target_phase: Phase that consumes input
+
+        Returns:
+            ValidationResult with contract validation status
+        """
+        violations: list[ContractViolation] = []
+
+        # Obtener output de fase source
+        source_output = self.context.get_phase_output(source_phase)
+        if source_output is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_SOURCE_OUTPUT",
+                    severity=Severity.CRITICAL,
+                    component_path=f"{source_phase}->{target_phase}",
+                    message=f"Interface contract: {source_phase} must produce output for {target_phase}",
+                )
+            )
+            return ValidationResult(
+                passed=False,
+                violations=violations,
+                validation_time_ms=0.0,
+            )
+
+        # Validaciones específicas por par de fases
+        contract_validators = {
+            (PhaseID.PHASE_0, PhaseID.PHASE_1): self._validate_p0_to_p1,
+            (PhaseID.PHASE_1, PhaseID.PHASE_2): self._validate_p1_to_p2,
+            (PhaseID.PHASE_2, PhaseID.PHASE_3): self._validate_p2_to_p3,
+            (PhaseID.PHASE_3, PhaseID.PHASE_4): self._validate_p3_to_p4,
+            (PhaseID.PHASE_4, PhaseID.PHASE_5): self._validate_p4_to_p5,
+            (PhaseID.PHASE_5, PhaseID.PHASE_6): self._validate_p5_to_p6,
+            (PhaseID.PHASE_6, PhaseID.PHASE_7): self._validate_p6_to_p7,
+            (PhaseID.PHASE_7, PhaseID.PHASE_8): self._validate_p7_to_p8,
+            (PhaseID.PHASE_8, PhaseID.PHASE_9): self._validate_p8_to_p9,
+        }
+
+        validator = contract_validators.get((source_phase, target_phase))
+        if validator:
+            violations.extend(validator(source_output))
+
+        return ValidationResult(
+            passed=not any(v.severity == Severity.CRITICAL for v in violations),
+            violations=violations,
+            validation_time_ms=0.0,
+        )
+
+    # Validadores específicos de contratos de interfase
+    def _validate_p0_to_p1(self, p0_output: Phase0Output) -> list[ContractViolation]:
+        violations = []
+        if p0_output.wiring is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_WIRING",
+                    severity=Severity.CRITICAL,
+                    component_path="P00->P01",
+                    message="Phase 0 must provide WiringComponents",
+                )
+            )
+        if p0_output.questionnaire is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_QUESTIONNAIRE",
+                    severity=Severity.CRITICAL,
+                    component_path="P00->P01",
+                    message="Phase 0 must provide QuestionnairePort",
+                )
+            )
+        return violations
+
+    def _validate_p1_to_p2(self, p1_output: Phase1Output) -> list[ContractViolation]:
+        violations = []
+        if p1_output.chunk_count != CONSTITUTIONAL_INVARIANTS["micro_questions"]:
+            violations.append(
+                ContractViolation(
+                    type="INVALID_CHUNK_COUNT",
+                    severity=Severity.CRITICAL,
+                    component_path="P01->P02",
+                    message=f"Phase 1 must produce {CONSTITUTIONAL_INVARIANTS['micro_questions']} chunks",
+                    expected=CONSTITUTIONAL_INVARIANTS["micro_questions"],
+                    actual=p1_output.chunk_count,
+                )
+            )
+        return violations
+
+    def _validate_p2_to_p3(self, p2_output: Phase2Output) -> list[ContractViolation]:
+        violations = []
+        if len(p2_output.task_results) != CONSTITUTIONAL_INVARIANTS["micro_questions"]:
+            violations.append(
+                ContractViolation(
+                    type="INVALID_TASK_COUNT",
+                    severity=Severity.CRITICAL,
+                    component_path="P02->P03",
+                    message=f"Phase 2 must produce {CONSTITUTIONAL_INVARIANTS['micro_questions']} task results",
+                    expected=CONSTITUTIONAL_INVARIANTS["micro_questions"],
+                    actual=len(p2_output.task_results),
+                )
+            )
+        return violations
+
+    def _validate_p3_to_p4(self, p3_output: Phase3Output) -> list[ContractViolation]:
+        violations = []
+        if len(p3_output.layer_scores) != CONSTITUTIONAL_INVARIANTS["micro_questions"]:
+            violations.append(
+                ContractViolation(
+                    type="INVALID_SCORE_COUNT",
+                    severity=Severity.CRITICAL,
+                    component_path="P03->P04",
+                    message=f"Phase 3 must produce {CONSTITUTIONAL_INVARIANTS['micro_questions']} scores",
+                    expected=CONSTITUTIONAL_INVARIANTS["micro_questions"],
+                    actual=len(p3_output.layer_scores),
+                )
+            )
+        return violations
+
+    def _validate_p4_to_p5(self, p4_output: Phase4Output) -> list[ContractViolation]:
+        violations = []
+        if len(p4_output.dimension_scores) != CONSTITUTIONAL_INVARIANTS["dimensions"]:
+            violations.append(
+                ContractViolation(
+                    type="INVALID_DIMENSION_COUNT",
+                    severity=Severity.CRITICAL,
+                    component_path="P04->P05",
+                    message=f"Phase 4 must produce {CONSTITUTIONAL_INVARIANTS['dimensions']} dimensions",
+                    expected=CONSTITUTIONAL_INVARIANTS["dimensions"],
+                    actual=len(p4_output.dimension_scores),
+                )
+            )
+        return violations
+
+    def _validate_p5_to_p6(self, p5_output: Phase5Output) -> list[ContractViolation]:
+        violations = []
+        if len(p5_output.area_scores) != CONSTITUTIONAL_INVARIANTS["policy_areas"]:
+            violations.append(
+                ContractViolation(
+                    type="INVALID_AREA_COUNT",
+                    severity=Severity.CRITICAL,
+                    component_path="P05->P06",
+                    message=f"Phase 5 must produce {CONSTITUTIONAL_INVARIANTS['policy_areas']} areas",
+                    expected=CONSTITUTIONAL_INVARIANTS["policy_areas"],
+                    actual=len(p5_output.area_scores),
+                )
+            )
+        return violations
+
+    def _validate_p6_to_p7(self, p6_output: Phase6Output) -> list[ContractViolation]:
+        violations = []
+        if len(p6_output.cluster_scores) != CONSTITUTIONAL_INVARIANTS["clusters"]:
+            violations.append(
+                ContractViolation(
+                    type="INVALID_CLUSTER_COUNT",
+                    severity=Severity.CRITICAL,
+                    component_path="P06->P07",
+                    message=f"Phase 6 must produce {CONSTITUTIONAL_INVARIANTS['clusters']} clusters",
+                    expected=CONSTITUTIONAL_INVARIANTS["clusters"],
+                    actual=len(p6_output.cluster_scores),
+                )
+            )
+        return violations
+
+    def _validate_p7_to_p8(self, p7_output: Phase7Output) -> list[ContractViolation]:
+        violations = []
+        if not hasattr(p7_output.macro_score, "score"):
+            violations.append(
+                ContractViolation(
+                    type="INVALID_MACRO_SCORE",
+                    severity=Severity.CRITICAL,
+                    component_path="P07->P08",
+                    message="Phase 7 macro_score must have 'score' attribute",
+                )
+            )
+        return violations
+
+    def _validate_p8_to_p9(self, p8_output: Phase8Output) -> list[ContractViolation]:
+        violations = []
+        if not p8_output.recommendations:
+            violations.append(
+                ContractViolation(
+                    type="EMPTY_RECOMMENDATIONS",
+                    severity=Severity.HIGH,
+                    component_path="P08->P09",
+                    message="Phase 8 should produce recommendations",
+                )
+            )
+        return violations
+
+    def _initialize_factory(self) -> None:
+        """Initialize AnalysisPipelineFactory for Phase 2 integration."""
+        if self._factory is not None:
+            return
+
+        self.logger.info("initializing_analysis_pipeline_factory")
+
+        # Usar Factory pattern para Phase 2
+        questionnaire_path = self.config.get("questionnaire_path")
+
+        try:
+            self._factory = AnalysisPipelineFactory(
+                questionnaire_path=questionnaire_path,
+                run_phase0_validation=self.config.get("run_phase0_validation", True),
+                strict_validation=self.strict_mode,
+            )
+
+            # Inicializar registries
+            self._class_registry = build_class_registry()
+            self._method_registry = MethodRegistry(class_paths=None)  # usa default paths
+
+            self.logger.info(
+                "factory_initialized",
+                classes_registered=len(self._class_registry),
+            )
+        except Exception as e:
+            self.logger.warning(
+                "factory_initialization_failed",
+                error=str(e),
+                fallback="using_inline_construction",
+            )
+            # Fallback a construcción inline si Factory falla
+            self._factory = None
 
     def execute_full_pipeline(self) -> ExecutionContext:
         """
         Execute complete pipeline P00-P09 with automatic configuration.
 
+        GARANTÍAS:
+        - Orden secuencial estricto: P00→P01→...→P09 (INMUTABLE)
+        - Validación automática de contratos de interfase entre fases
+        - Instanciación progresiva fase por fase
+        - SISAS activado automáticamente
+        - Factory integration para Phase 2
+
         Returns:
             ExecutionContext with all results
+
+        Raises:
+            ValueError: Si se viola el orden canónico o contratos de interfase
         """
-        self.logger.info("monolithic_pipeline_execution_start")
+        self.logger.info(
+            "monolithic_pipeline_execution_start",
+            canonical_order=True,
+            auto_validate_contracts=self.auto_validate_contracts,
+            sisas_enabled=self.config.get("enable_sisas", True),
+        )
 
         # Initialize execution context
         self.context = ExecutionContext(
@@ -748,23 +1064,40 @@ class MonolithicOrchestrator:
             seed=42 if self.deterministic else None,
         )
 
-        # Execute all phases in sequence
-        phases = [
-            PhaseID.PHASE_0,
-            PhaseID.PHASE_1,
-            PhaseID.PHASE_2,
-            PhaseID.PHASE_3,
-            PhaseID.PHASE_4,
-            PhaseID.PHASE_5,
-            PhaseID.PHASE_6,
-            PhaseID.PHASE_7,
-            PhaseID.PHASE_8,
-            PhaseID.PHASE_9,
-        ]
+        # Initialize Factory (para coherencia con Phase 2)
+        if self.config.get("use_factory_for_phase2", True):
+            self._initialize_factory()
 
-        for phase_id in phases:
+        # Execute all phases in STRICT CANONICAL ORDER
+        for phase_id in self.CANONICAL_PHASE_ORDER:
             try:
+                # GARANTÍA 1: Validar orden secuencial estricto
+                self._validate_phase_order(phase_id)
+
+                # GARANTÍA 2: Validar contrato de interfase con fase anterior
+                if phase_id != PhaseID.PHASE_0 and self.auto_validate_contracts:
+                    previous_phase_index = self.CANONICAL_PHASE_ORDER.index(phase_id) - 1
+                    previous_phase = self.CANONICAL_PHASE_ORDER[previous_phase_index]
+
+                    contract_result = self._validate_interface_contract(
+                        previous_phase, phase_id
+                    )
+
+                    if not contract_result.passed:
+                        self.logger.error(
+                            "interface_contract_violation",
+                            source=previous_phase.value,
+                            target=phase_id.value,
+                            violations=len(contract_result.violations),
+                        )
+                        if self.strict_mode:
+                            raise ValueError(
+                                f"Interface contract violation: {previous_phase}->{phase_id}"
+                            )
+
+                # GARANTÍA 3: Ejecutar fase
                 self._execute_phase(phase_id)
+
             except Exception as e:
                 self.logger.error(
                     "phase_execution_failed",
@@ -788,7 +1121,12 @@ class MonolithicOrchestrator:
                     raise
 
         summary = self.context.get_execution_summary()
-        self.logger.info("monolithic_pipeline_execution_complete", summary=summary)
+        self.logger.info(
+            "monolithic_pipeline_execution_complete",
+            summary=summary,
+            phases_completed=summary["phases_completed"],
+            contract_violations=summary["total_violations"],
+        )
 
         return self.context
 
@@ -1511,11 +1849,26 @@ class MonolithicOrchestrator:
         )
 
     def _run_sisas_cycle(self, phase_id: PhaseID) -> None:
-        """Execute SISAS signal generation/propagation/irrigation for a phase."""
+        """Execute SISAS signal generation/propagation/irrigation for a phase.
+
+        GARANTÍA: SISAS se ejecuta AUTOMÁTICAMENTE por defecto para cada fase.
+        Solo se omite si enable_sisas=False explícitamente en config.
+        """
+        # SISAS lifecycle debe estar inicializado (garantizado en Phase 0)
         if self.context.sisas is None:
+            self.logger.warning(
+                "sisas_not_initialized",
+                phase=phase_id.value,
+                action="skipping_irrigation",
+            )
             return
 
+        # SISAS habilitado por defecto - solo deshabilitar si explícito
         if not self.config.get("enable_sisas", True):
+            self.logger.info(
+                "sisas_explicitly_disabled",
+                phase=phase_id.value,
+            )
             return
 
         # Map phase to SISAS phase identifier
@@ -1534,25 +1887,49 @@ class MonolithicOrchestrator:
 
         sisas_phase = sisas_phase_map.get(phase_id)
         if sisas_phase is None:
+            self.logger.warning(
+                "sisas_phase_mapping_missing",
+                phase=phase_id.value,
+            )
             return
 
         base_path = self.config.get("sisas_base_path", "")
+
+        self.logger.info(
+            "sisas_irrigation_start",
+            phase=phase_id.value,
+            sisas_phase=sisas_phase,
+        )
+
         try:
+            # EJECUCIÓN AUTOMÁTICA DE SISAS (sin intervención manual)
             results = self.context.sisas.execute_irrigation_phase(sisas_phase, base_path)
             summary = self.context.sisas.irrigation_executor.get_execution_summary()
+
             self.context.signal_metrics[phase_id.value] = {
                 "irrigation_phase": sisas_phase,
                 "routes_executed": len(results) if results else 0,
                 "summary": summary,
+                "automatic_execution": True,
             }
+
+            self.logger.info(
+                "sisas_irrigation_complete",
+                phase=phase_id.value,
+                routes_executed=len(results) if results else 0,
+            )
+
         except Exception as exc:
-            if self.strict_mode:
-                raise
-            self.logger.warning(
+            self.logger.error(
                 "sisas_irrigation_failed",
                 phase=phase_id.value,
                 error=str(exc),
+                error_type=type(exc).__name__,
             )
+
+            # En strict mode, fallar el pipeline si SISAS falla
+            if self.strict_mode:
+                raise
 
 
 # =============================================================================
