@@ -335,7 +335,7 @@ def test_macro_aggregator_validation_score_bounds():
     
     # Test with invalid score - this will be caught by ClusterScore validation
     try:
-        invalid_cluster = ClusterScore(
+        ClusterScore(
             cluster_id="CLUSTER_MESO_5",
             cluster_name="Invalid",
             areas=["PA11"],
