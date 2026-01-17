@@ -977,6 +977,17 @@ class MonolithicOrchestrator:
             )
         return violations
 
+    @property
+    def _questionnaire_provider(self):
+        """
+        Get the questionnaire provider from context wiring if available.
+        
+        Returns None if context, wiring, or provider is not available.
+        """
+        if self.context and self.context.wiring and self.context.wiring.provider:
+            return self.context.wiring.provider
+        return None
+
     def _initialize_factory(self) -> None:
         """Initialize AnalysisPipelineFactory for Phase 2 integration."""
         if self._factory is not None:
@@ -1608,12 +1619,9 @@ class MonolithicOrchestrator:
             area_scores = asyncio.run(_run())
         except RuntimeError:
             loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             try:
-                asyncio.set_event_loop(loop)
                 area_scores = loop.run_until_complete(_run())
-            except Exception:
-                # Re-raise after cleanup to ensure proper error propagation
-                raise
             finally:
                 loop.close()
                 asyncio.set_event_loop(None)
@@ -1728,9 +1736,12 @@ class MonolithicOrchestrator:
 
         # Initialize adapter
         try:
+            # Try to use importlib.resources (Python 3.9+) for robust path resolution
             phase8_root = importlib.resources.files("farfan_pipeline").joinpath("phases", "Phase_08")
         except (TypeError, AttributeError):
-            # Fallback for older Python versions
+            # Fallback for Python 3.7-3.8 or when running as a script (not installed package)
+            # TypeError: files() might not support non-string arguments in older versions
+            # AttributeError: files() might not exist in older importlib.resources implementations
             phase8_root = Path(__file__).resolve().parents[1] / "phases" / "Phase_08"
         
         rules_path = phase8_root / RULES_PATH_ENHANCED
@@ -1739,7 +1750,7 @@ class MonolithicOrchestrator:
         adapter = RecommendationEngineAdapter(
             rules_path=rules_path,
             schema_path=schema_path,
-            questionnaire_provider=self.context.wiring.provider if self.context.wiring and self.context.wiring.provider else None,
+            questionnaire_provider=self._questionnaire_provider,
             orchestrator=None,
         )
         node_trace.append("phase8.adapter_init")
@@ -1827,7 +1838,7 @@ class MonolithicOrchestrator:
 
         # Create assembler
         assembler = create_report_assembler(
-            questionnaire_provider=self.context.wiring.provider if self.context.wiring and self.context.wiring.provider else None,
+            questionnaire_provider=self._questionnaire_provider,
             evidence_registry=None,
             qmcm_recorder=None,
             orchestrator=None,
