@@ -156,9 +156,9 @@ from orchestration.class_registry import build_class_registry, get_class_paths
 from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import BaseExecutorWithContract
 
-# Core orchestration
+# Core orchestration - import from core_orchestrator directly
 if TYPE_CHECKING:
-    from orchestration.orchestrator import MethodExecutor, Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor, Orchestrator
 from orchestration.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
@@ -170,11 +170,11 @@ from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import (
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.phases.Phase_02.registries.questionnaire_signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -884,7 +884,7 @@ class AnalysisPipelineFactory:
         Raises:
             FactoryError: If Phase 0 validation fails and strict_validation=True
         """
-        from orchestration.orchestrator import Phase0ValidationResult
+        from farfan_pipeline.orchestration.core_orchestrator import Phase0ValidationResult
         from datetime import datetime, timezone
 
         logger.info("factory_phase0_validation_start")
@@ -1317,7 +1317,7 @@ class AnalysisPipelineFactory:
             # Step 4: Build method executor WITH signal registry injected
             # This is the CORE integration point - executors call methods through this
             # Local import to avoid circular dependency
-            from orchestration.orchestrator import MethodExecutor
+            from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
             method_executor = MethodExecutor(
                 method_registry=method_registry,
                 arg_router=arg_router,
@@ -1480,7 +1480,7 @@ class AnalysisPipelineFactory:
         try:
             # Build orchestrator with FULL dependency injection
             # Local import to avoid circular dependency
-            from orchestration.orchestrator import Orchestrator
+            from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
             orchestrator = Orchestrator(
                 method_executor=self._method_executor,       # 1st parameter - correct order
                 questionnaire=self._canonical_questionnaire,  # 2nd parameter - correct order

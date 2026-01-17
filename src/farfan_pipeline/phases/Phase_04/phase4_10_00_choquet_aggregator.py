@@ -551,10 +551,10 @@ class ChoquetAggregator:
 
             per_interaction_rationales[(layer_i, layer_j)] = (
                 f"Interaction ({layer_i}, {layer_j}): "
-                f"weight={weight:.4f} × min({score_i:. 4f}, {score_j:.4f}) = {contribution:.4f}"
+                f"weight={weight:.4f} × min({score_i:.4f}, {score_j:.4f}) = {contribution:.4f}"
             )
 
-        logger.debug(f"Interaction sum computed:  {interaction_sum:. 6f}")
+        logger.debug(f"Interaction sum computed:  {interaction_sum:.6f}")
         return interaction_sum, per_interaction_contributions, per_interaction_rationales
 
     def _validate_boundedness(self, calibration_score: float) -> ValidationResult:
@@ -707,7 +707,7 @@ class ChoquetAggregator:
         logger.info(
             f"Aggregation complete:  subject={subject!r}, "
             f"Cal(I)={final_score:.4f}, "
-            f"linear={linear_sum:. 4f}, interaction={interaction_sum:. 4f}"
+            f"linear={linear_sum:.4f}, interaction={interaction_sum:.4f}"
         )
 
         return result

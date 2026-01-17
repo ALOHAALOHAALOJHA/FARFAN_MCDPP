@@ -1,0 +1,212 @@
+================================================================================
+                    BROKEN IMPORT PATHS - COMPLETE LIST
+================================================================================
+
+Generated: 2026-01-16
+Repository: FARFAN_MCDPP
+Total Broken Imports: 45+
+
+================================================================================
+CATEGORY 1: orchestration.orchestrator (DELETED FILE)
+================================================================================
+
+The file src/farfan_pipeline/orchestration/orchestrator.py was DELETED.
+All imports from this path are BROKEN.
+
+SOURCE FILES (2 files):
+--------------------------------------------------------------------------------
+1. src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_integration.py:19
+   from orchestration.orchestrator import ScoredMicroQuestion, MacroEvaluation
+
+2. src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:79
+   from orchestration.orchestrator import MethodExecutor
+
+
+TEST FILES (17 files):
+--------------------------------------------------------------------------------
+1. tests/test_orchestrator_signal_validation.py:28
+   from orchestration.orchestrator import Orchestrator, MethodExecutor
+
+2. tests/test_orchestrator_signal_validation.py:100
+   from orchestration.orchestrator import Orchestrator, MethodExecutor
+
+3. tests/test_orchestrator_signal_validation.py:162
+   from orchestration.orchestrator import Orchestrator, MethodExecutor
+
+4. tests/test_orchestrator_signal_validation.py:227
+   from orchestration.orchestrator import Orchestrator, MethodExecutor
+
+5. tests/test_orchestrator_signal_validation.py:304
+   from orchestration.orchestrator import ScoredMicroQuestion
+
+6. tests/test_orchestrator_signal_validation.py:357
+   from orchestration.orchestrator import Orchestrator, MethodExecutor
+
+7. tests/test_orchestrator_signal_validation.py:401
+   from orchestration.orchestrator import Orchestrator, MethodExecutor
+
+8. tests/test_phase2_sisas_checklist.py:52
+   from orchestration.orchestrator import (
+
+9. tests/test_phase2_sisas_checklist.py:65
+   from orchestration.orchestrator import (
+
+10. tests/test_phase2_sisas_checklist.py:83
+    from orchestration.orchestrator import (
+
+11. tests/test_phase2_sisas_checklist.py:95
+    from orchestration.orchestrator import QuestionnaireSignalRegistry
+
+12. tests/test_phase3_contracts.py:18
+    from orchestration.orchestrator import Orchestrator, MicroQuestionRun, ScoredMicroQuestion, Evidence
+
+13. tests/test_method_registry_integration.py:26
+    from orchestration.orchestrator import MethodExecutor
+
+14. tests/test_method_registry_integration.py:215
+    from orchestration.orchestrator import MethodExecutor
+
+15. tests/test_method_registry_memory_management.py:495
+    from orchestration.orchestrator import MethodExecutor
+
+16. tests/orchestration/test_resource_limits.py:15
+    from orchestration.orchestrator import ResourceLimits
+
+17. tests/orchestration/test_resource_limits_integration.py:17
+    from orchestration.orchestrator import (
+
+18. tests/orchestration/test_resource_limits_integration.py:275
+    from orchestration.orchestrator import PhaseInstrumentation
+
+19. tests/orchestration/test_resource_limits_regression.py:17
+    from orchestration.orchestrator import (
+
+20. tests/orchestration/test_resource_limits_regression.py:238
+    from orchestration.orchestrator import PhaseInstrumentation
+
+
+================================================================================
+CATEGORY 2: cross_cutting_infrastructure (DEPRECATED PATH)
+================================================================================
+
+Old path: cross_cutting_infrastructure.irrigation_using_signals.SISAS.*
+New path: farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.*
+
+SOURCE FILES:
+--------------------------------------------------------------------------------
+1. src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py:1807
+   import cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader
+
+2. src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py:36
+   from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalRegistry
+
+3. src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py:92
+   from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
+
+
+================================================================================
+CATEGORY 3: signal_consumption (DEPRECATED MODULE)
+================================================================================
+
+Module moved to: _deprecated/signal_consumption.py
+Status: DEPRECATED but still imported
+
+SOURCE FILES:
+--------------------------------------------------------------------------------
+1. src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py:59
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+2. src/farfan_pipeline/phases/Phase_00/primitives/providers.py:16
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+3. src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/integration/signal_consumption_integration.py:32
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+4. src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/_deprecated/signal_wiring_fixes.py:251
+   >>> from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
+
+5. src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/_deprecated/signal_wiring_fixes.py:261
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+6. src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:44
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+7. src/farfan_pipeline/infrastructure/irrigation_using_signals/audit_signal_irrigation.py:38
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+TEST FILES:
+--------------------------------------------------------------------------------
+8. tests/test_signal_irrigation_audit.py:31
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+9. tests/test_signal_irrigation_audit.py:407
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+10. tests/test_signal_irrigation_comprehensive_audit.py:27
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+11. tests/test_signal_irrigation_comprehensive_audit.py:187
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+12. tests/test_signal_irrigation_comprehensive_audit.py:421
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+
+
+================================================================================
+CATEGORY 4: signal_loader (DELETED/MOVED MODULE)
+================================================================================
+
+Status: DELETED or moved to vehicles/signal_loader.py
+
+SOURCE FILES:
+--------------------------------------------------------------------------------
+1. src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/__init__.py:8
+   from .signal_loader import SignalLoaderVehicle
+   NOTE: This imports from local path (vehicles/signal_loader.py) - may work
+
+TEST FILES:
+--------------------------------------------------------------------------------
+2. tests/test_phase2_sisas_checklist.py:121
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_loader import (
+   NOTE: This uses old path - BROKEN
+
+
+================================================================================
+SUMMARY BY FILE TYPE
+================================================================================
+
+SOURCE FILES (src/):
+- Category 1 (orchestrator.orchestrator): 2 files
+- Category 2 (cross_cutting_infrastructure): 2 files
+- Category 3 (signal_consumption): 7 files
+- Category 4 (signal_loader): 1 file
+TOTAL SOURCE FILES: 12
+
+TEST FILES (tests/):
+- Category 1 (orchestrator.orchestrator): 20 occurrences in ~10 files
+- Category 3 (signal_consumption): 4 files
+- Category 4 (signal_loader): 1 file
+TOTAL TEST FILES: ~15
+
+
+================================================================================
+MISSING CLASSES (imported but never existed)
+================================================================================
+
+These classes are imported from orchestration.orchestrator but were NEVER
+in the deleted file. They need to be created or moved:
+
+1. ScoredMicroQuestion
+2. MacroEvaluation
+3. MicroQuestionRun
+4. Evidence
+5. ResourceLimits
+6. PhaseInstrumentation
+7. QuestionnaireSignalRegistry (should come from phases/Phase_02/registries/)
+8. AbortSignal
+9. execute_phase_with_timeout
+
+
+================================================================================
+END OF BROKEN IMPORTS LIST
+================================================================================

@@ -41,7 +41,6 @@ import blake3
 import structlog
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
-    SignalClient,
     SignalRegistry,
 )
 from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (

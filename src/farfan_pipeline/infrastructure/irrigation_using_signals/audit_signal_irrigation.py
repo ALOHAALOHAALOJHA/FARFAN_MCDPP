@@ -32,7 +32,7 @@ except ImportError:
 if TYPE_CHECKING:
     pass
 
-from orchestration.factory import load_questionnaire
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.ports import QuestionnairePort
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (

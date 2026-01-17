@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pytest
 
-from orchestration.factory import load_questionnaire, create_signal_registry
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire, create_signal_registry
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
 )

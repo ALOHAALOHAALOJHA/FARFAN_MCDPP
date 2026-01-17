@@ -1988,7 +1988,7 @@ class IndustrialPolicyProcessor:
     def export_results(self, results: dict[str, Any], output_path: str | Path) -> None:
         """Export analysis results to JSON with formatted output."""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.processing.factory import save_json
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import save_json
 
         save_json(results, output_path)
         logger.info(f"Results exported to {output_path}")
@@ -2118,7 +2118,7 @@ class ResilientFileHandler:
             IOError: If file cannot be read with any supported encoding
         """
         # Delegate to factory for I/O operation
-        from farfan_pipeline.processing.factory import read_text_file
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import read_text_file
 
         try:
             return read_text_file(file_path, encodings=list(cls.ENCODINGS))
@@ -2129,7 +2129,7 @@ class ResilientFileHandler:
     def write_text(cls, content: str, file_path: str | Path) -> None:
         """Write text content with UTF-8 encoding and directory creation."""
         # Delegate to factory for I/O operation
-        from farfan_pipeline.processing.factory import write_text_file
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import write_text_file
 
         write_text_file(content, file_path)
 

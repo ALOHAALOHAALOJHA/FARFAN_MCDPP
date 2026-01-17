@@ -1071,7 +1071,7 @@ def load_signals_from_monolith_sota(
         Dictionary mapping policy area to signal data
 
     Example:
-        from orchestration.factory import load_questionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire
 
         q = load_questionnaire()
         signals = load_signals_from_monolith_sota(q.data, q.sha256)

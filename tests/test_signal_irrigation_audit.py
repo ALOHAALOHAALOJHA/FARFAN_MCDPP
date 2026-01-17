@@ -49,7 +49,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.visualization_gener
     StateMachineGenerator,
     generate_visualizations,
 )
-from orchestration.factory import load_questionnaire, create_signal_registry
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire, create_signal_registry
 
 
 @pytest.fixture
@@ -217,7 +217,7 @@ class TestWiringFixes:
         """Test access level validation."""
         # Valid access: Factory accessing at FACTORY level
         is_valid = validate_access_level(
-            "orchestration.factory",
+            "farfan_pipeline.phases.Phase_02.phase2_10_00_factory",
             "AnalysisPipelineFactory",
             "_load_canonical_questionnaire",
             AccessLevel.FACTORY,
@@ -413,7 +413,7 @@ class TestAccessAudit:
         # Record some accesses
         audit.record_access(
             AccessLevel.FACTORY,
-            "orchestration.factory",
+            "farfan_pipeline.phases.Phase_02.phase2_10_00_factory",
             "AnalysisPipelineFactory",
             "load_questionnaire",
             "blocks",

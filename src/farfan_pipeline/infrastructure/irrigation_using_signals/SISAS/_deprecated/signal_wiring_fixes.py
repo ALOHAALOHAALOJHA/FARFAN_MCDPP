@@ -60,7 +60,7 @@ def integrate_context_scoping_in_registry(
             - stats_dict: Statistics about filtering (total, filtered, passed)
 
     Example:
-        >>> from orchestration.factory import load_questionnaire, create_signal_registry
+        >>> from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire, create_signal_registry
         >>> q = load_questionnaire()
         >>> registry = create_signal_registry(q)
         >>> context = {"section": "budget", "chapter": 3}
@@ -250,7 +250,7 @@ def validate_access_level(
     Example:
         >>> from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
         >>> is_valid = validate_access_level(
-        ...     "orchestration.factory",
+        ...     "farfan_pipeline.phases.Phase_02.phase2_10_00_factory",
         ...     "AnalysisPipelineFactory",
         ...     "_load_canonical_questionnaire",
         ...     AccessLevel.FACTORY,
@@ -264,7 +264,7 @@ def validate_access_level(
     )
 
     # Factory-level accessors
-    factory_modules = ["orchestration.factory"]
+    factory_modules = ["farfan_pipeline.phases.Phase_02.phase2_10_00_factory"]
     factory_classes = ["AnalysisPipelineFactory"]
 
     # Orchestrator-level accessors
