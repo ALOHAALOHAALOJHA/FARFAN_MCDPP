@@ -1618,13 +1618,14 @@ class MonolithicOrchestrator:
         try:
             area_scores = asyncio.run(_run())
         except RuntimeError:
+            # RuntimeError occurs when event loop is already running
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             try:
                 area_scores = loop.run_until_complete(_run())
             finally:
-                loop.close()
                 asyncio.set_event_loop(None)
+                loop.close()
 
         node_trace.append("phase5.validation")
 
@@ -1739,9 +1740,8 @@ class MonolithicOrchestrator:
             # Try to use importlib.resources (Python 3.9+) for robust path resolution
             phase8_root = importlib.resources.files("farfan_pipeline").joinpath("phases", "Phase_08")
         except (TypeError, AttributeError):
-            # Fallback for Python 3.7-3.8 or when running as a script (not installed package)
-            # TypeError: files() might not support non-string arguments in older versions
-            # AttributeError: files() might not exist in older importlib.resources implementations
+            # Fallback for Python 3.7-3.8 where importlib.resources.files() may not exist (AttributeError)
+            # or when running as a script/uninstalled package (TypeError on traversable operations)
             phase8_root = Path(__file__).resolve().parents[1] / "phases" / "Phase_08"
         
         rules_path = phase8_root / RULES_PATH_ENHANCED
