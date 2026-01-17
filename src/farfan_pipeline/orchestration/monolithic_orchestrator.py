@@ -10,6 +10,23 @@ Fusión completa y explícita de:
 - Subsistema de calibración (registry, core, epistemic)
 - Secuencia completa P00-P09 sin omisiones
 
+COMPONENTES CRÍTICOS INTEGRADOS:
+- Phase 2 Factory (AnalysisPipelineFactory)
+- BaseExecutorWithContract (contratos epistemológicos + N3 veto)
+- EvidenceNexus (Graph-Native Evidence Reasoning, Causal Inference)
+- CalibrationPolicy (políticas de calibración epistémica)
+- ContractValidator (CQVR validation)
+- EvidenceQueryEngine (motor de consultas de evidencia)
+- SOTAEvidenceImplementations (implementaciones state-of-the-art)
+- DoctoralCarverSynthesizer (síntesis doctoral de narrativas)
+
+TEORÍAS FUNDAMENTALES MATERIALIZADAS:
+- Pearl's Causal Inference (do-calculus counterfactuals)
+- Dempster-Shafer Theory (belief functions)
+- Rhetorical Structure Theory (discourse coherence)
+- Popperian Asymmetry (N3 veto integration)
+- Information-Theoretic Validation (mutual information)
+
 GARANTÍAS CONSTITUCIONALES:
 - Ejecución automática por defecto (sin flags ad hoc)
 - Sin activación manual requerida
@@ -18,20 +35,25 @@ GARANTÍAS CONSTITUCIONALES:
 - Flujo determinista end-to-end
 - Materialización explícita de TODAS las fases
 - Subsistemas SISAS y calibración integrados
+- Contratos epistemológicos validados (v4 format)
+- Invariantes constitucionales enforced [INV-001 a INV-005]
 
 Autor: F.A.R.F.A.N Core Team
-Versión: 4.0.0 MONOLITHIC
+Versión: 4.1.0 MONOLITHIC+EPISTEMIC
 """
 
 from __future__ import annotations
 
-__version__ = "4.0.0-MONOLITHIC"
+__version__ = "4.1.0-MONOLITHIC+EPISTEMIC"
 __module_type__ = "MONOLITHIC_ORCHESTRATOR"
 __criticality__ = "CRITICAL"
 __lifecycle__ = "ACTIVE"
 __execution_pattern__ = "Singleton"
 __compliance_status__ = "GNEA_COMPLIANT"
 __sin_carreta_compliant__ = True
+__epistemic_contracts__ = "v4"
+__evidence_system__ = "graph-native"
+__causal_inference__ = "pearl-calculus"
 
 # =============================================================================
 # IMPORTS EXHAUSTIVOS
@@ -169,7 +191,7 @@ from farfan_pipeline.phases.Phase_01.interphase.phase1_08_00_adapter import (
     adapt_cpp_to_orchestrator,
 )
 
-# Phase 2
+# Phase 2 - INTEGRACIÓN COMPLETA
 from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import (
     AnalysisPipelineFactory,
 )
@@ -186,6 +208,49 @@ from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgR
 from farfan_pipeline.phases.Phase_02.registries import (
     QuestionnaireSignalRegistry,
 )
+
+# Phase 2 - Componentes Epistemológicos Críticos
+from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import (
+    BaseExecutorWithContract,
+)
+from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
+    EvidenceNexus,
+    EvidenceType,
+    process_evidence,
+)
+from farfan_pipeline.phases.Phase_02.phase2_60_04_calibration_policy import (
+    CalibrationPolicy,
+    create_default_policy,
+)
+from farfan_pipeline.phases.Phase_02.phase2_60_01_contract_validator_cqvr import (
+    ContractValidator,
+)
+
+# Phase 2 - SOTA Evidence & Query
+try:
+    from farfan_pipeline.phases.Phase_02.phase2_80_01_evidence_query_engine import (
+        EvidenceQueryEngine,
+    )
+    EVIDENCE_QUERY_ENGINE_AVAILABLE = True
+except ImportError:
+    EVIDENCE_QUERY_ENGINE_AVAILABLE = False
+
+try:
+    from farfan_pipeline.phases.Phase_02.phase2_85_00_evidence_nexus_sota_implementations import (
+        SOTAEvidenceImplementations,
+    )
+    SOTA_EVIDENCE_AVAILABLE = True
+except ImportError:
+    SOTA_EVIDENCE_AVAILABLE = False
+
+# Phase 2 - Doctoral Carver Synthesizer
+try:
+    from farfan_pipeline.phases.Phase_02.phase2_90_00_carver import (
+        DoctoralCarverSynthesizer,
+    )
+    DOCTORAL_CARVER_AVAILABLE = True
+except ImportError:
+    DOCTORAL_CARVER_AVAILABLE = False
 
 # Phase 3
 from farfan_pipeline.phases.Phase_03.phase3_20_00_score_extraction import (
@@ -1690,6 +1755,31 @@ __all__ = [
 
     # SISAS lifecycle
     "SisasLifecycle",
+
+    # Phase 2 - Componentes Epistemológicos
+    "BaseExecutorWithContract",
+    "EvidenceNexus",
+    "EvidenceType",
+    "process_evidence",
+    "CalibrationPolicy",
+    "create_default_policy",
+    "ContractValidator",
+    "AnalysisPipelineFactory",
+
+    # Calibration
+    "EpistemicCalibrationRegistry",
+    "ClosedInterval",
+    "EpistemicLevel",
+
+    # SISAS Core
+    "BusRegistry",
+    "SignalBus",
+    "ContractRegistry",
+    "PublicationContract",
+    "ConsumptionContract",
+    "EventStore",
+    "IrrigationExecutor",
+    "IrrigationMap",
 
     # CLI
     "main",
