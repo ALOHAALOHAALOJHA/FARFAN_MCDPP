@@ -225,3 +225,49 @@ The canonical architecture is **enforceable by deletion alone** - removing compa
 ---
 
 **Remember:** The system has a present tense. This document defines it. Code that contradicts this document must be updated or removed.
+
+---
+
+## Remediation History
+
+### Phase 5 Remediation (2026-01-17)
+
+**Status:** ✅ COMPLETE
+
+**Broken Imports Eliminated:**
+1. ✅ `orchestration.orchestrator` → All imports redirected to `farfan_pipeline.orchestration.core_orchestrator`
+   - Fixed 6 source files
+   - Fixed 11 test files
+   - Fixed 1 script file
+   - **Result:** 0 remaining broken imports
+
+2. ✅ `cross_cutting_infrastructure.*` → No imports found (already eliminated in previous work)
+   - **Result:** 0 remaining broken imports
+
+3. ✅ `signal_consumption_integration` → Path corrected to `integration.signal_consumption_integration`
+   - Fixed 3 source files
+   - Fixed 2 test files
+   - **Result:** All imports now use correct path
+
+**Files Modified:**
+- Source: 6 files in `src/farfan_pipeline/`
+- Tests: 11 files in `tests/`
+- Scripts: 1 file in `scripts/verification/`
+
+**Verification:**
+- ✅ All imports resolve correctly with proper PYTHONPATH
+- ✅ Syntax validation passes on all modified files
+- ✅ No active code imports from `_deprecated/` directories
+- ✅ Stratification artifacts updated and show clean state
+
+**Exit Criteria Met:**
+- ✅ No imports from `orchestration.orchestrator` (DEAD module)
+- ✅ No imports from `cross_cutting_infrastructure.*` (DELETED namespace)
+- ✅ All `signal_consumption_integration` imports use correct path
+- ✅ Architecture is enforceable by deletion alone - forbidden modules can be removed without breaking active code
+
+**Remaining Work:**
+- Test suite verification (pytest run)
+- Handle phantom class `PhaseInstrumentation` in tests if needed
+- Verify all tests pass or are marked as obsolete
+

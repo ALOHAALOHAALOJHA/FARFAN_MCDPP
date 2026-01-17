@@ -28,7 +28,8 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.orchestration.orchestrator import MethodExecutor, Orchestrator, ResourceLimits
+    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor, Orchestrator
+    from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
 
 from farfan_pipeline.phases.Phase_02.phase2_30_02_resource_alerts import (
     AlertChannel,

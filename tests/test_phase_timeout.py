@@ -29,7 +29,7 @@ from dataclasses import asdict
 from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 
 # Orchestrator imports - use relative imports matching existing tests
-from farfan_pipeline.orchestration.orchestrator import (
+from farfan_pipeline.orchestration.core_orchestrator import (
     Orchestrator,
     PhaseTimeoutError,
     execute_phase_with_timeout,
@@ -260,13 +260,13 @@ async def test_execute_phase_with_timeout_sync_function():
 @pytest.mark.core
 def test_get_phase_timeout_prod_mode(runtime_config_prod):
     """Test _get_phase_timeout applies 1x multiplier in PROD mode."""
-    with patch("farfan_pipeline.orchestration.orchestrator.MethodExecutor"):
-        with patch("farfan_pipeline.orchestration.orchestrator.get_questionnaire_provider"):
+    with patch("farfan_pipeline.orchestration.core_orchestrator.MethodExecutor"):
+        with patch("farfan_pipeline.orchestration.core_orchestrator.get_questionnaire_provider"):
             orchestrator = Mock()
             orchestrator.runtime_config = runtime_config_prod
             orchestrator.PHASE_TIMEOUTS = {2: 600.0}
 
-            from farfan_pipeline.orchestration.orchestrator import Orchestrator
+            from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
             timeout = Orchestrator._get_phase_timeout(orchestrator, 2)
 
@@ -281,8 +281,8 @@ def test_get_phase_timeout_dev_mode(runtime_config_dev):
     orchestrator.runtime_config = runtime_config_dev
     orchestrator.PHASE_TIMEOUTS = {2: 600.0}
 
-    with patch("farfan_pipeline.orchestration.orchestrator.RuntimeMode", RuntimeMode):
-        from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    with patch("farfan_pipeline.orchestration.core_orchestrator.RuntimeMode", RuntimeMode):
+        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
         timeout = Orchestrator._get_phase_timeout(orchestrator, 2)
 
@@ -297,7 +297,7 @@ def test_get_phase_timeout_exploratory_mode(runtime_config_exploratory):
     orchestrator.runtime_config = runtime_config_exploratory
     orchestrator.PHASE_TIMEOUTS = {2: 600.0}
 
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     timeout = Orchestrator._get_phase_timeout(orchestrator, 2)
 
@@ -312,7 +312,7 @@ def test_get_phase_timeout_no_runtime_config():
     orchestrator.runtime_config = None
     orchestrator.PHASE_TIMEOUTS = {7: 60.0}
 
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     timeout = Orchestrator._get_phase_timeout(orchestrator, 7)
 
@@ -416,7 +416,7 @@ def test_build_execution_manifest_success(runtime_config_prod):
     orchestrator.abort_signal.get_reason = Mock(return_value=None)
     orchestrator.FASES = [(i, "async", f"_handler_{i}", f"Phase {i}") for i in range(11)]
 
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     manifest = Orchestrator._build_execution_manifest(orchestrator)
 
@@ -429,7 +429,7 @@ def test_build_execution_manifest_success(runtime_config_prod):
 @pytest.mark.integration
 def test_build_execution_manifest_timeout_prod_mode(runtime_config_prod):
     """Test _build_execution_manifest reports success=false on timeout in PROD."""
-    from farfan_pipeline.orchestration.orchestrator import PhaseResult
+    from farfan_pipeline.orchestration.core_orchestrator import PhaseResult
 
     timeout_error = PhaseTimeoutError(phase_id=2, phase_name="Phase 2", timeout_s=600.0)
 
@@ -464,7 +464,7 @@ def test_build_execution_manifest_timeout_prod_mode(runtime_config_prod):
     orchestrator.abort_signal.get_reason = Mock(return_value="Phase 2 timed out")
     orchestrator.FASES = [(i, "async", f"_handler_{i}", f"Phase {i}") for i in range(11)]
 
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     manifest = Orchestrator._build_execution_manifest(orchestrator)
 
@@ -481,7 +481,7 @@ def test_build_execution_manifest_timeout_prod_mode(runtime_config_prod):
 @pytest.mark.integration
 def test_build_execution_manifest_timeout_dev_mode(runtime_config_dev):
     """Test _build_execution_manifest allows partial success on timeout in DEV."""
-    from farfan_pipeline.orchestration.orchestrator import PhaseResult
+    from farfan_pipeline.orchestration.core_orchestrator import PhaseResult
 
     timeout_error = PhaseTimeoutError(phase_id=2, phase_name="Phase 2", timeout_s=600.0)
 
@@ -506,7 +506,7 @@ def test_build_execution_manifest_timeout_dev_mode(runtime_config_dev):
     orchestrator.abort_signal.get_reason = Mock(return_value="Phase 2 timed out")
     orchestrator.FASES = [(i, "async", f"_handler_{i}", f"Phase {i}") for i in range(11)]
 
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     manifest = Orchestrator._build_execution_manifest(orchestrator)
 
@@ -523,7 +523,7 @@ def test_build_execution_manifest_timeout_dev_mode(runtime_config_dev):
 @pytest.mark.regression
 def test_regression_all_sync_phases_use_timeout():
     """Regression test: Ensure all sync phases use timeout mechanism."""
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     # Sync phases from FASES definition
     sync_phases_in_fases = {
@@ -542,7 +542,7 @@ def test_regression_all_sync_phases_use_timeout():
 @pytest.mark.regression
 def test_regression_phase_timeouts_defined_for_all_phases():
     """Regression test: Ensure all phases have a timeout defined in PHASE_TIMEOUTS."""
-    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
     # Check all phases 0-10 are in PHASE_TIMEOUTS
     all_phase_ids = set(range(11))

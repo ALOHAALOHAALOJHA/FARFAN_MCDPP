@@ -1329,7 +1329,7 @@ class BaseExecutorWithContract(ABC):
         # SISAS: Inject consumption tracking (utility + proof chain)
         consumption_tracker = None
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
                 inject_consumption_tracking,
             )
 
@@ -1769,7 +1769,7 @@ class BaseExecutorWithContract(ABC):
         # SISAS: Inject consumption tracking (utility + proof chain)
         consumption_tracker = None
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
                 inject_consumption_tracking,
             )
 

@@ -40,7 +40,7 @@ from functools import wraps
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.orchestration.orchestrator import MethodExecutor
+    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
     from farfan_pipeline.phases.Phase_00.phase0_10_00_canonical_questionnaire import (
         CanonicalQuestionnaire,
     )
