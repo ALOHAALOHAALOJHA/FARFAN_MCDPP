@@ -91,14 +91,14 @@ class TestPhase5ModuleImports:
     
     def test_import_area_validation(self):
         """Test importing area validation module."""
-        from farfan_pipeline.phases.Phase_05.phase5_10_00_area_validation import (
+        from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (
             validate_phase5_output,
         )
         assert validate_phase5_output is not None
-    
+
     def test_import_area_integration(self):
         """Test importing area integration module."""
-        from farfan_pipeline.phases.Phase_05.phase5_10_00_area_integration import (
+        from farfan_pipeline.phases.Phase_05.phase5_30_00_area_integration import (
             run_phase5_aggregation,
         )
         assert run_phase5_aggregation is not None
@@ -109,7 +109,7 @@ class TestPhase5Dependencies:
     
     def test_phase5_imports_from_phase4(self):
         """Test that Phase 5 can import DimensionScore from Phase 4."""
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import DimensionScore
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
         from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import AreaScore
         
         assert DimensionScore is not None

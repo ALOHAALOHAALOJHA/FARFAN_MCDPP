@@ -1,12 +1,12 @@
 {
   "$schema": "../../schemas/phase_manifest_schema.json",
-  "manifest_version": "2.0.0",
+  "manifest_version": "2.1.0",
   "phase": {
     "number": 5,
     "name": "Policy Area Aggregation",
     "codename": "AREA",
     "label": "Phase 5",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "ACTIVE",
     "criticality": "HIGH"
   },
@@ -19,10 +19,10 @@
     "owners": [
       "phase5_team"
     ],
-    "repository": "FARFAN_MPP",
-    "surgery_note": "Phase 5 surgically separated from Phase 4 meta-phase on 2026-01-13. AreaScore and AreaPolicyAggregator extracted and fully implemented."
+    "repository": "FARFAN_MCDPP",
+    "surgery_note": "Phase 5 surgically separated from Phase 4 meta-phase on 2026-01-13. Re-sequenced based on dependency analysis on 2026-01-17."
   },
-  "description": "Phase 5 aggregates 60 dimension scores (6 dimensions \u00d7 10 policy areas) into 10 area scores (one per policy area PA01-PA10) using weighted averaging. Implements complete hermeticity validation, bounds checking, and SOTA uncertainty quantification.",
+  "description": "Phase 5 aggregates 60 dimension scores (6 dimensions × 10 policy areas) into 10 area scores (one per policy area PA01-PA10) using weighted averaging. Implements complete hermeticity validation, bounds checking, and SOTA uncertainty quantification.",
   "stages": [
     {
       "code": 0,
@@ -41,55 +41,73 @@
       ]
     },
     {
-      "code": 10,
-      "name": "Configuration",
-      "description": "Configuration and setup",
+      "code": 0,
+      "name": "Data Models",
+      "description": "Data models and type definitions (00 subphase)",
       "execution_order": 2,
-      "module_count": 4,
+      "module_count": 1,
       "modules": [
         {
-          "order": 0,
-          "canonical_name": "phase5_10_00_area_aggregation",
-          "type": "CFG",
-          "criticality": "CRITICAL",
-          "purpose": "Area Aggregation"
-        },
-        {
           "order": 1,
-          "canonical_name": "phase5_10_00_area_integration",
-          "type": "CFG",
+          "canonical_name": "phase5_00_00_area_score",
+          "type": "MODEL",
           "criticality": "CRITICAL",
-          "purpose": "Area Integration"
-        },
-        {
-          "order": 2,
-          "canonical_name": "phase5_10_00_area_score",
-          "type": "CFG",
-          "criticality": "CRITICAL",
-          "purpose": "Area Score"
-        },
-        {
-          "order": 3,
-          "canonical_name": "phase5_10_00_area_validation",
-          "type": "CFG",
-          "criticality": "CRITICAL",
-          "purpose": "Area Validation"
+          "purpose": "AreaScore dataclass definition",
+          "dependencies": ["phase4:DimensionScore"]
         }
       ]
     },
     {
-      "code": 99,
-      "name": "Stage 99",
-      "description": "Stage 99 modules",
+      "code": 10,
+      "name": "Core Aggregation",
+      "description": "Main aggregation logic (10 subphase)",
       "execution_order": 3,
       "module_count": 1,
       "modules": [
         {
-          "order": 0,
-          "canonical_name": "PHASE_5_CONSTANTS",
-          "type": "UTIL",
-          "criticality": "MEDIUM",
-          "purpose": "Phase 5 Constants"
+          "order": 1,
+          "canonical_name": "phase5_10_00_area_aggregation",
+          "type": "CORE",
+          "criticality": "CRITICAL",
+          "purpose": "AreaPolicyAggregator - 60 dimensions → 10 areas",
+          "dependencies": ["phase4:DimensionScore", "PHASE_5_CONSTANTS"]
+        }
+      ]
+    },
+    {
+      "code": 20,
+      "name": "Validation",
+      "description": "Output validation (20 subphase)",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 1,
+          "canonical_name": "phase5_20_00_area_validation",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 5 output validation",
+          "dependencies": ["phase5_10_00_area_aggregation", "PHASE_5_CONSTANTS"]
+        }
+      ]
+    },
+    {
+      "code": 30,
+      "name": "Integration",
+      "description": "Cross-phase integration (30 subphase)",
+      "execution_order": 5,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 1,
+          "canonical_name": "phase5_30_00_area_integration",
+          "type": "INTG",
+          "criticality": "CRITICAL",
+          "purpose": "End-to-end Phase 5 pipeline orchestration",
+          "dependencies": [
+            "phase5_10_00_area_aggregation",
+            "phase5_20_00_area_validation"
+          ]
         }
       ]
     }
@@ -113,10 +131,13 @@
   },
   "validation": {
     "compliant": true,
-    "last_check": "2025-01-09T00:00:00Z"
+    "last_check": "2026-01-17T00:00:00Z"
   },
   "statistics": {
-    "total_modules": 6,
-    "stages": 3
+    "total_modules": 5,
+    "stages": 5
+  },
+  "dependency_graph": {
+    "note": "Subphase numbers indicate sequential execution order. First number = subphase, second = position within subphase."
   }
 }

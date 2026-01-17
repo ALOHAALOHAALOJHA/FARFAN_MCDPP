@@ -509,7 +509,7 @@ class Phase5Executor(PhaseExecutor):
 
     def execute(self, context: ExecutionContext) -> Phase5Output:
         import asyncio
-        from farfan_pipeline.phases.Phase_05.phase5_10_00_area_integration import (
+        from farfan_pipeline.phases.Phase_05.phase5_30_00_area_integration import (
             run_phase5_aggregation,
         )
 

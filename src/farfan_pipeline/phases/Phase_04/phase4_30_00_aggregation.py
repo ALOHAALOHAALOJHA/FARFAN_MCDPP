@@ -28,13 +28,13 @@ from __future__ import annotations
 # METADATA
 # =============================================================================
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __phase__ = 4
-__stage__ = 10
-__order__ = 0
+__stage__ = 30
+__order__ = 2
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2026-01-10"
-__modified__ = "2026-01-10"
+__modified__ = "2026-01-17"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
 
@@ -61,7 +61,7 @@ from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
 )
 
 # Import choquet_adapter directly (no circular dependency after settings extraction)
-from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_adapter import (
+from farfan_pipeline.phases.Phase_04.phase4_20_00_choquet_adapter import (
     create_default_choquet_adapter,
 )
 

@@ -6,22 +6,22 @@ Phase 5 Data Model - AreaScore
 This module defines the AreaScore dataclass for Phase 5 output.
 Phase 5 aggregates 60 DimensionScore objects into 10 AreaScore objects.
 
-Module: src/farfan_pipeline/phases/Phase_5/phase5_10_00_area_score.py
+Module: src/farfan_pipeline/phases/Phase_05/phase5_00_00_area_score.py
 Purpose: Define AreaScore data model for Phase 5
-Owner: phase5_10
+Owner: phase5_00
 Lifecycle: ACTIVE
-Version: 1.0.0
-Effective-Date: 2026-01-13
+Version: 1.1.0
+Effective-Date: 2026-01-17
 """
 
 # METADATA
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __phase__ = 5
-__stage__ = 10
-__order__ = 0
+__stage__ = 0
+__order__ = 1
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2026-01-13T00:00:00Z"
-__modified__ = "2026-01-13T00:00:00Z"
+__modified__ = "2026-01-17T00:00:00Z"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
 

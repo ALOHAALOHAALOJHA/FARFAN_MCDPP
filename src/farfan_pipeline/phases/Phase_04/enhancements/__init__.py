@@ -12,13 +12,13 @@ Area, Cluster, and Macro aggregation enhancements belong to Phases 5, 6, and 7.
 
 from __future__ import annotations
 
-from .phase4_10_00_adaptive_meso_scoring import (
+from .phase4_40_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
     ScoringMetrics,
     create_adaptive_scorer,
 )
-from .phase4_10_00_enhanced_aggregators import (
+from .phase4_40_00_enhanced_aggregators import (
     ConfidenceInterval,
     DispersionMetrics,
     EnhancedAreaAggregator,
@@ -28,7 +28,7 @@ from .phase4_10_00_enhanced_aggregators import (
     HermeticityDiagnosis,
     enhance_aggregator,
 )
-from .phase4_10_00_signal_enriched_aggregation import (
+from .phase4_40_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
     adjust_weights,
     interpret_dispersion,

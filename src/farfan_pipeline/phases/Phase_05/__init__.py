@@ -50,14 +50,14 @@ from .phase5_10_00_area_aggregation import (
 )
 
 # Validation
-from .phase5_10_00_area_validation import (
+from .phase5_20_00_area_validation import (
     validate_phase5_output,
     validate_area_score_hermeticity,
     validate_area_score_bounds,
 )
 
 # Integration
-from .phase5_10_00_area_integration import (
+from .phase5_30_00_area_integration import (
     run_phase5_aggregation,
     group_dimension_scores_by_area,
 )

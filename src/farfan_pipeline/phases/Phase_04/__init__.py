@@ -22,7 +22,7 @@ from __future__ import annotations
 from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_aggregation_settings import (
     AggregationSettings,
 )
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
     # Dataclasses (ScoredResult, DimensionScore)
     ScoredResult,
     DimensionScore,
@@ -44,12 +44,12 @@ from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
 )
 
 # Choquet Integral Aggregator
-from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_aggregator import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
     ChoquetAggregator,
 )
 
 # Choquet Adapter
-from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_adapter import (
+from farfan_pipeline.phases.Phase_04.phase4_20_00_choquet_adapter import (
     create_default_choquet_adapter,
 )
 
@@ -67,7 +67,7 @@ from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import 
 )
 
 # Signal-Enriched Aggregation
-from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
 )
 

@@ -19,7 +19,7 @@ from dataclasses import dataclass, replace, field
 from typing import Any
 
 # Import actual classes from Phase 4
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
     DimensionAggregator,
     DimensionScore as ActualDimensionScore,
     AreaPolicyAggregator,
@@ -30,7 +30,7 @@ from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
     MacroScore,
     validate_scored_results,
 )
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_integration import (
+from farfan_pipeline.phases.Phase_04.phase4_50_00_aggregation_integration import (
     aggregate_dimensions_async,
     aggregate_policy_areas_async,
     aggregate_clusters,
@@ -40,7 +40,7 @@ from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification imp
     BootstrapAggregator,
     aggregate_with_uncertainty,
 )
-from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_aggregator import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,
@@ -69,10 +69,10 @@ from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_enhanced_aggregat
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
 )
-from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_adaptive_meso_scoring import (
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
 )
-from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_signal_enriched_aggregation import (
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
 )
 

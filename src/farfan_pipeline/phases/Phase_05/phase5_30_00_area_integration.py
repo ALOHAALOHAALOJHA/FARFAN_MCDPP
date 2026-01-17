@@ -4,7 +4,7 @@ Phase 5 Area Integration Module
 This module provides integration functions for Phase 5 (Area Aggregation).
 Bridges Phase 4 outputs to Phase 5 processing.
 
-Module: src/farfan_pipeline/phases/Phase_5/phase5_10_00_area_integration.py
+Module: src/farfan_pipeline/phases/Phase_05/phase5_30_00_area_integration.py
 """
 from __future__ import annotations
 
@@ -12,25 +12,25 @@ from __future__ import annotations
 # METADATA
 # =============================================================================
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __phase__ = 5
-__stage__ = 10
-__order__ = 0
+__stage__ = 30
+__order__ = 1
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2026-01-13"
-__modified__ = "2026-01-13"
+__modified__ = "2026-01-17"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
 
 import logging
 from typing import Any
 
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import DimensionScore
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
 from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
     AreaScore,
     aggregate_policy_areas_async,
 )
-from farfan_pipeline.phases.Phase_05.phase5_10_00_area_validation import (
+from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (
     validate_phase5_output,
 )
 

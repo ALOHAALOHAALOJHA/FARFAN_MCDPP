@@ -29,7 +29,7 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_05.phase5_10_00_area_score import AreaScore
+    from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
 
 
 @dataclass

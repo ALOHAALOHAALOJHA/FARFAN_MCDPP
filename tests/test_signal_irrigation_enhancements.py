@@ -95,7 +95,7 @@ class TestPhase47SignalEnrichment:
 
     def test_weight_adjustment_critical_scores(self):
         """Test weight adjustment for critical scores."""
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
 
@@ -131,7 +131,7 @@ class TestPhase47SignalEnrichment:
 
     def test_dispersion_analysis_convergence(self):
         """Test dispersion analysis with convergent scores."""
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
 
@@ -151,7 +151,7 @@ class TestPhase47SignalEnrichment:
 
     def test_dispersion_analysis_high_dispersion(self):
         """Test dispersion analysis with high dispersion."""
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
 
@@ -170,7 +170,7 @@ class TestPhase47SignalEnrichment:
 
     def test_aggregation_method_selection(self):
         """Test aggregation method selection based on dispersion."""
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
 
@@ -409,7 +409,7 @@ class TestSignalIrrigationIntegration:
         from farfan_pipeline.phases.Phase_03.phase3_10_00_phase3_signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
 
@@ -437,7 +437,7 @@ class TestSignalIrrigationIntegration:
 
     def test_phase47_to_phase8_flow(self):
         """Test signal enrichment flow from Phase 4-7 to Phase 8."""
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         from farfan_pipeline.phases.Phase_08.phase8_30_00_signal_enriched_recommendations import (
@@ -478,7 +478,7 @@ class TestSignalIrrigationIntegration:
         from farfan_pipeline.phases.Phase_03.phase3_10_00_phase3_signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
-        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         from farfan_pipeline.phases.Phase_08.phase8_30_00_signal_enriched_recommendations import (

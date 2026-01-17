@@ -10,7 +10,7 @@ Validates:
 - Quality level consistency
 - Cluster assignments (for Phase 6 transition)
 
-Module: src/farfan_pipeline/phases/Phase_5/phase5_10_00_area_validation.py
+Module: src/farfan_pipeline/phases/Phase_05/phase5_20_00_area_validation.py
 """
 from __future__ import annotations
 
@@ -18,13 +18,13 @@ from __future__ import annotations
 # METADATA
 # =============================================================================
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __phase__ = 5
-__stage__ = 10
-__order__ = 0
+__stage__ = 20
+__order__ = 1
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2026-01-13"
-__modified__ = "2026-01-13"
+__modified__ = "2026-01-17"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
 

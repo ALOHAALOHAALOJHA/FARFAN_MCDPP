@@ -42,7 +42,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 # Import DimensionScore from Phase 4
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import DimensionScore
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
 
 # Import Phase 5 constants
 from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (

@@ -30,7 +30,7 @@ import pytest
 from dataclasses import FrozenInstanceError
 
 # Fixed import paths - modules are in Phase_04
-from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_aggregator import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,

@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     MacroEvaluation = MacroScore
 
 # Phase 4 imports
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
     DimensionAggregator,
     DimensionScore,
 )
