@@ -47,6 +47,8 @@ setup(
         "pyarrow>=14.0.0",
         # Configuration
         "python-dotenv>=1.0.0",
+        # Image/table processing
+        "opencv-contrib-python-headless>=4.8.0",
         # Utilities
         "requests>=2.31.0",
         "aiohttp>=3.9.0",
