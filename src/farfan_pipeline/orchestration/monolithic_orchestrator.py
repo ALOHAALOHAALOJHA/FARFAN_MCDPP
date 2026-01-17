@@ -239,9 +239,8 @@ try:
     from farfan_pipeline.phases.Phase_02.phase2_85_00_evidence_nexus_sota_implementations import (
         SOTAEvidenceImplementations,
     )
-    SOTA_EVIDENCE_AVAILABLE = True
 except ImportError:
-    SOTA_EVIDENCE_AVAILABLE = False
+    pass
 
 # Phase 2 - Doctoral Carver Synthesizer
 try:
