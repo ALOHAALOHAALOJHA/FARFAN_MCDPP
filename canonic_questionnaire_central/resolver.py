@@ -751,18 +751,32 @@ class CanonicalQuestionnaireResolver:
             if not dim_dir.is_dir() or dim_dir.name.startswith("_"):
                 continue
 
-            dim_id = dim_dir.name  # e.g., "DIM01"
+            dim_id = dim_dir.name  # e.g., "DIM01_INSUMOS"
+            # Extract just the DIM ID part
+            dim_code = dim_id.split("_")[0] if "_" in dim_id else dim_id
+            
             metadata_path = dim_dir / "metadata.json"
             questions_path = dim_dir / "questions.json"
 
             if metadata_path.exists():
-                dimensions[dim_id] = {
+                questions_data = []
+                if questions_path.exists():
+                    loaded_questions = self._load_json(f"dimensions/{dim_id}/questions.json")
+                    # Extract questions array from wrapper object
+                    if isinstance(loaded_questions, dict):
+                        questions_data = loaded_questions.get("questions", [])
+                    elif isinstance(loaded_questions, list):
+                        questions_data = loaded_questions
+                    else:
+                        logger.warning(
+                            "dimension_questions_invalid_format",
+                            dim_id=dim_code,
+                            type=type(loaded_questions).__name__,
+                        )
+                
+                dimensions[dim_code] = {
                     "metadata": self._load_json(f"dimensions/{dim_id}/metadata.json"),
-                    "questions": (
-                        self._load_json(f"dimensions/{dim_id}/questions.json")
-                        if questions_path.exists()
-                        else []
-                    ),
+                    "questions": questions_data,
                 }
                 self._metrics.files_loaded += 1
 
@@ -794,9 +808,20 @@ class CanonicalQuestionnaireResolver:
                 }
 
                 if questions_path.exists():
-                    pa_data["questions"] = self._load_json(
+                    questions_data = self._load_json(
                         f"policy_areas/{pa_subdir.name}/questions.json"
                     )
+                    # Extract questions array from the wrapper object
+                    if isinstance(questions_data, dict):
+                        pa_data["questions"] = questions_data.get("questions", [])
+                    elif isinstance(questions_data, list):
+                        pa_data["questions"] = questions_data
+                    else:
+                        logger.warning(
+                            "policy_area_questions_invalid_format",
+                            pa_id=pa_id,
+                            type=type(questions_data).__name__,
+                        )
 
                 if keywords_path.exists():
                     keywords_data = self._load_json(f"policy_areas/{pa_subdir.name}/keywords.json")
