@@ -89,7 +89,7 @@ farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts|ERA
 farfan_pipeline.infrastructure.extractors.financial_chain_extractor|ERA_MODERN|LIVE|N/A
 farfan_pipeline.infrastructure.extractors.causal_verb_extractor|ERA_MODERN|LIVE|N/A
 farfan_pipeline.infrastructure.extractors.institutional_ner_extractor|ERA_MODERN|LIVE|N/A
-farfan_pipeline.orchestration.orchestrator|ERA_ORCHESTRATOR|DEAD|N/A
+farfan_pipeline.orchestration.core_orchestrator|ERA_MODERN|LIVE|N/A
 farfan_pipeline.infrastructure.questionnaire.modular_resolver|ERA_MODERN|LIVE|N/A
 canonic_questionnaire_central.scoring.modules.pdet_scoring_enrichment|ERA_UNKNOWN|LIVE|N/A
 farfan_pipeline.infrastructure.calibration.calibration_core|ERA_MODERN|DEAD|N/A
@@ -141,7 +141,6 @@ farfan_pipeline.phases.Phase_01.phase1_03_00_models|ERA_MODERN|LIVE|N/A
 farfan_pipeline.pdm.contracts|ERA_MODERN|LIVE|N/A
 gc|ERA_UNKNOWN|DEAD|N/A
 orchestration.method_registry|ERA_UNKNOWN|DEAD|N/A
-farfan_pipeline.orchestration.core_orchestrator|ERA_MODERN|LIVE|N/A
 psutil|ERA_UNKNOWN|DEAD|N/A
 farfan_pipeline.phases.Phase_01.contracts|ERA_MODERN|LIVE|N/A
 farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract|ERA_MODERN|DEAD|N/A
@@ -160,7 +159,7 @@ orchestration.executor_chunk_synchronizer|ERA_UNKNOWN|DEAD|N/A
 farfan_pipeline.orchestration.metrics_persistence|ERA_MODERN|DEAD|N/A
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit|ERA_MODERN|LIVE|N/A
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof|ERA_MODERN|LIVE|N/A
-farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration|ERA_SIGNAL_CONSUMPTION|DEAD|N/A
+farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration|ERA_SIGNAL_CONSUMPTION|LIVE|N/A
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor|ERA_MODERN|DEAD|N/A
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper|ERA_MODERN|DEAD|N/A
 farfan_pipeline.infrastructure.irrigation_using_signals.comprehensive_signal_audit|ERA_MODERN|LIVE|N/A
@@ -708,6 +707,7 @@ farfan_pipeline.infrastructure.extractors.programmatic_hierarchy_extractor|ERA_M
 .base_extractor|ERA_UNKNOWN|DEAD|N/A
 . signal_vocabulary|ERA_UNKNOWN|DEAD|N/A
 .capability_vocabulary|ERA_UNKNOWN|DEAD|N/A
+farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration|ERA_SIGNAL_CONSUMPTION|DEAD|N/A
 ...core.signal|ERA_UNKNOWN|LIVE|N/A
 ... core.signal|ERA_UNKNOWN|DEAD|N/A
 .structural|ERA_UNKNOWN|DEAD|N/A

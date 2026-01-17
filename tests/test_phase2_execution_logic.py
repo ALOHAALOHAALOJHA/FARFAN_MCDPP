@@ -29,7 +29,7 @@ import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-from farfan_pipeline.orchestration.orchestrator import (
+from farfan_pipeline.orchestration.core_orchestrator import (
     Evidence,
     MicroQuestionRun,
     Orchestrator,

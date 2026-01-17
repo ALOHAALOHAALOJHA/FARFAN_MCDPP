@@ -1,5 +1,5 @@
 # 01_IMPORTS_RAW.txt
-# Generated: 20260117_095122
+# Generated: 20260117_095530
 # All import statements verbatim from Python files
 # Format: <file_path>:<line_number>:<import_statement>
 
@@ -469,7 +469,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_sisas_basic.py:9:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:4:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:5:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:20:        from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:20:        from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:33:    import inspect
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:64:    from dataclasses import fields
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verification/test_simple_alignment.py:132:        import traceback
@@ -816,18 +816,18 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:25:from unittest.mock import Mock, MagicMock, patch, AsyncMock
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:26:from dataclasses import asdict
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:29:from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:32:from farfan_pipeline.orchestration.orchestrator import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:269:            from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:285:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:300:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:315:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:419:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:432:    from farfan_pipeline.orchestration.orchestrator import PhaseResult
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:467:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:484:    from farfan_pipeline.orchestration.orchestrator import PhaseResult
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:509:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:526:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:545:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:32:from farfan_pipeline.orchestration.core_orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:269:            from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:285:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:300:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:315:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:419:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:432:    from farfan_pipeline.orchestration.core_orchestrator import PhaseResult
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:467:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:484:    from farfan_pipeline.orchestration.core_orchestrator import PhaseResult
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:509:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:526:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase_timeout.py:545:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_mathematical_foundation.py:20:import math
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_mathematical_foundation.py:21:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_mathematical_foundation.py:22:from typing import Any
@@ -838,7 +838,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:19:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:20:from unittest.mock import Mock, patch
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:22:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:28:from farfan_pipeline.orchestration.orchestrator import Orchestrator, Phase0ValidationResult
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:28:from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, Phase0ValidationResult
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:30:from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_orchestrator_phase0_integration.py:31:from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import GateResult
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/integration/test_pdm_calibration_integration.py:10:from __future__ import annotations
@@ -1047,15 +1047,15 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:5:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:6:from typing import Any
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:7:from unittest.mock import Mock, patch, MagicMock
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:19:    from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:19:    from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:23:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:74:    from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:94:    from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:74:    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:94:    from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:98:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:150:    from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:150:    from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:154:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:155:    from tempfile import TemporaryDirectory
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:222:    from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:222:    from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:226:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:227:    from tempfile import TemporaryDirectory
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_regression.py:290:    import tempfile
@@ -1078,7 +1078,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:24:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:27:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:32:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:35:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:35:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:39:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:42:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_comprehensive_audit.py:46:from farfan_pipeline.infrastructure.irrigation_using_signals.comprehensive_signal_audit import (
@@ -1138,18 +1138,18 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:14:from unittest.mock import Mock, MagicMock, patch
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:15:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:48:        from farfan_pipeline.phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:57:        from farfan_pipeline.orchestration.orchestrator import Phase0ValidationResult
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:57:        from farfan_pipeline.orchestration.core_orchestrator import Phase0ValidationResult
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:58:        from farfan_pipeline.phases.Phase_zero.exit_gates import GateResult
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:81:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:99:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:116:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:140:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:160:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:190:        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:214:        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:237:        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:273:        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:360:        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:81:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:99:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:116:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:140:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:160:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:190:        from farfan_pipeline.orchestration.core_orchestrator import execute_phase_with_timeout
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:214:        from farfan_pipeline.orchestration.core_orchestrator import execute_phase_with_timeout
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:237:        from farfan_pipeline.orchestration.core_orchestrator import execute_phase_with_timeout
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:273:        from farfan_pipeline.orchestration.core_orchestrator import execute_phase_with_timeout
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_integration.py:360:        from farfan_pipeline.orchestration.core_orchestrator import execute_phase_with_timeout
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase0_runtime_config.py:11:import os
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase0_runtime_config.py:12:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase0_runtime_config.py:13:from pathlib import Path
@@ -1233,7 +1233,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:23:from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irrigation import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:31:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:36:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:39:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:39:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:43:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_wiring_fixes import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:48:from farfan_pipeline.infrastructure.irrigation_using_signals.visualization_generator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_audit.py:54:from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire, create_signal_registry
@@ -1713,15 +1713,15 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:5:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:6:from typing import Any
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:7:from unittest.mock import Mock, MagicMock
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:14:    from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:14:    from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:19:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:110:    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:110:    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:111:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:158:    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:158:    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:159:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:206:    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:206:    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:207:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:275:    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:275:    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_metrics_persistence_integration.py:276:    from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_mypy_fallback_plugin.py:3:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_mypy_fallback_plugin.py:4:from unittest.mock import Mock, MagicMock
@@ -1775,7 +1775,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_execution_logic.py:25:from typing import Any
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_execution_logic.py:26:from unittest.mock import AsyncMock, MagicMock, Mock, patch
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_execution_logic.py:28:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_execution_logic.py:32:from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_execution_logic.py:32:from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_execution_logic.py:39:from farfan_pipeline.orchestration.task_planner import ExecutableTask
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_executor_config_integration.py:11:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_executor_config_integration.py:13:import os
@@ -2081,13 +2081,13 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:10:import asyncio
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:11:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:12:from unittest.mock import Mock, MagicMock
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:13:from farfan_pipeline.orchestration.orchestrator import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:112:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:13:from farfan_pipeline.orchestration.core_orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:112:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:159:        import time
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:180:        import time
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:208:        import time
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:228:        import time
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:282:        from farfan_pipeline.orchestration.orchestrator import AbortSignal
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:282:        from farfan_pipeline.orchestration.core_orchestrator import AbortSignal
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_sync_boundary.py:287:            import time
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_memory_guard_annotations.py:3:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_memory_guard_annotations.py:4:from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
@@ -2145,7 +2145,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/orchestration/test_orchestrator_canonical_phases.py:10:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/orchestration/test_orchestrator_canonical_phases.py:12:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/orchestration/test_orchestrator_canonical_phases.py:13:from unittest.mock import Mock
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/orchestration/test_orchestrator_canonical_phases.py:15:from farfan_pipeline.orchestration.orchestrator import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/orchestration/test_orchestrator_canonical_phases.py:15:from farfan_pipeline.orchestration.core_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/conftest.py:4:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/conftest.py:5:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_signal_irrigation_enhancements.py:7:        from farfan_pipeline.phases.Phase_03.phase3_10_00_phase3_signal_enriched_scoring import (
@@ -2179,7 +2179,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:6:import threading
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:7:import time
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:8:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:10:from farfan_pipeline.orchestration.orchestrator import ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:10:from farfan_pipeline.orchestration.core_orchestrator import ResourceLimits
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:11:from farfan_pipeline.resilience import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_resource_limits_thread_safety.py:211:    from farfan_pipeline.resilience import CircuitBreaker, CircuitBreakerConfig
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_dimension_pdet_enrichment.py:9:import pytest
@@ -3146,7 +3146,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:91:        import importlib
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:92:        importlib.import_module("farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator")
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:119:        import spacy
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:223:        from farfan_pipeline.orchestration.orchestrator import Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:223:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:249:        import networkx
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_40_00_input_validation.py:53:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_40_00_input_validation.py:55:import hashlib
@@ -3726,7 +3726,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_00_resource_manager.py:43:from datetime import UTC, datetime
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_00_resource_manager.py:44:from enum import Enum
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_00_resource_manager.py:45:from typing import TYPE_CHECKING, Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_00_resource_manager.py:48:    from farfan_pipeline.orchestration.orchestrator import ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_00_resource_manager.py:48:    from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py:31:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py:47:import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py:48:import time
@@ -3787,10 +3787,11 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:11:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:27:import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:28:from typing import TYPE_CHECKING, Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:31:    from farfan_pipeline.orchestration.orchestrator import MethodExecutor, Orchestrator, ResourceLimits
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:33:from farfan_pipeline.phases.Phase_02.phase2_30_02_resource_alerts import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:38:from farfan_pipeline.phases.Phase_02.phase2_30_03_resource_aware_executor import ResourceAwareExecutor
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:39:from farfan_pipeline.phases.Phase_02.phase2_30_00_resource_manager import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:31:    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor, Orchestrator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:32:    from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:34:from farfan_pipeline.phases.Phase_02.phase2_30_02_resource_alerts import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:39:from farfan_pipeline.phases.Phase_02.phase2_30_03_resource_aware_executor import ResourceAwareExecutor
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py:40:from farfan_pipeline.phases.Phase_02.phase2_30_00_resource_manager import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/epistemological_assets/audit_v4_rigorous.py:12:import json
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/epistemological_assets/audit_v4_rigorous.py:13:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/epistemological_assets/audit_v4_rigorous.py:14:import argparse
@@ -3854,7 +3855,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:38:from dataclasses import dataclass, field
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:39:from functools import wraps
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:40:from typing import TYPE_CHECKING, Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:43:    from farfan_pipeline.orchestration.orchestrator import MethodExecutor
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:43:    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:44:    from farfan_pipeline.phases.Phase_00.phase0_10_00_canonical_questionnaire import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:48:    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py:51:    from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import (
@@ -4470,7 +4471,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:183:                from orchestration.class_registry import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1107:        from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1173:        from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1332:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1332:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1352:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1428:                    import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1434:                    import logging
@@ -4479,7 +4480,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1605:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1633:                import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1728:            import logging
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1772:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1772:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1792:            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1868:                        import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py:1874:                        import logging
@@ -5605,7 +5606,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:36:from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_signal_registry, load_questionnaire
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:38:from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irrigation import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:44:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:47:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:47:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:50:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:53:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py:185:            from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT

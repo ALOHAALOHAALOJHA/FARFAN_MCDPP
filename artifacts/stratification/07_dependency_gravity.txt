@@ -17,10 +17,10 @@ time|86|79|1.09
 enum|83|83|1.00
 os|71|69|1.03
 unittest.mock|65|61|1.07
+farfan_pipeline.orchestration.core_orchestrator|64|24|2.67
 collections|63|61|1.03
 collections.abc|53|53|1.00
 argparse|49|49|1.00
-farfan_pipeline.orchestration.orchestrator|45|14|3.21
 numpy|44|40|1.10
 farfan_pipeline.phases.Phase_four_five_six_seven.aggregation|40|3|13.33
 farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer|39|10|3.90
@@ -39,7 +39,6 @@ farfan_pipeline.phases.Phase_01|23|7|3.29
 traceback|22|18|1.22
 ast|22|20|1.10
 farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion|21|6|3.50
-farfan_pipeline.orchestration.core_orchestrator|20|11|1.82
 farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus|20|5|4.00
 threading|20|20|1.00
 pydantic|19|19|1.00
@@ -103,10 +102,10 @@ farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event|7|6|1.1
 importlib|7|7|1.00
 farfan_pipeline.phases.Phase_01.phase1_03_00_models|7|5|1.40
 canonic_questionnaire_central.resolver|7|4|1.75
-farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration|7|5|1.40
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper|7|6|1.17
 farfan_pipeline.phases.Phase_nine.report_generator|7|1|7.00
 farfan_pipeline.dashboard_atroz_.signals_service|7|2|3.50
+farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller|7|7|1.00
 farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score|7|7|1.00
 farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS|7|6|1.17
 fastapi|6|6|1.00
@@ -131,6 +130,7 @@ canonic_questionnaire_central.validations.runtime_validators.scope_validator|5|5
 canonic_questionnaire_central.validations.runtime_validators.capability_validator|5|5|1.00
 farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator|5|3|1.67
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof|5|4|1.25
+farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration|5|4|1.25
 itertools|5|5|1.00
 farfan_pipeline.phases.Phase_one.phase1_06_00_questionnaire_mapper|5|1|5.00
 farfan_pipeline.utils.retry|5|5|1.00
@@ -140,7 +140,6 @@ farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation|5|2
 farfan_pipeline.phases.Phase_00.phase0_20_02_determinism|5|5|1.00
 farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates|5|5|1.00
 farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance|5|1|5.00
-farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller|5|5|1.00
 scipy|5|5|1.00
 .calibration_core|5|5|1.00
 farfan_pipeline.utils.paths|5|5|1.00
@@ -377,6 +376,7 @@ farfan_pipeline.question_context|2|1|2.00
 .structural_marker_extractor|2|2|1.00
 .quantitative_triplet_extractor|2|2|1.00
 .normative_reference_extractor|2|2|1.00
+farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration|2|1|2.00
 ... core.signal|2|2|1.00
 .types.structural|2|2|1.00
 .types.integrity|2|2|1.00

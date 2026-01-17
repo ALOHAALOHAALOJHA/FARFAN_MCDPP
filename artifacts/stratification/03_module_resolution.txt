@@ -89,7 +89,7 @@ farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts|LIV
 farfan_pipeline.infrastructure.extractors.financial_chain_extractor|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/extractors/financial_chain_extractor.py
 farfan_pipeline.infrastructure.extractors.causal_verb_extractor|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/extractors/causal_verb_extractor.py
 farfan_pipeline.infrastructure.extractors.institutional_ner_extractor|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py
-farfan_pipeline.orchestration.orchestrator|DEAD|NO_FILE
+farfan_pipeline.orchestration.core_orchestrator|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/orchestration/core_orchestrator.py
 farfan_pipeline.infrastructure.questionnaire.modular_resolver|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/questionnaire/modular_resolver.py
 canonic_questionnaire_central.scoring.modules.pdet_scoring_enrichment|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/canonic_questionnaire_central/scoring/modules/pdet_scoring_enrichment.py
 farfan_pipeline.infrastructure.calibration.calibration_core|DEAD|NO_FILE
@@ -141,7 +141,6 @@ farfan_pipeline.phases.Phase_01.phase1_03_00_models|LIVE|/home/runner/work/FARFA
 farfan_pipeline.pdm.contracts|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/pdm/contracts/__init__.py
 gc|DEAD|NO_FILE
 orchestration.method_registry|DEAD|NO_FILE
-farfan_pipeline.orchestration.core_orchestrator|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/orchestration/core_orchestrator.py
 psutil|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_01.contracts|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/contracts/__init__.py
 farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract|DEAD|NO_FILE
@@ -160,7 +159,7 @@ orchestration.executor_chunk_synchronizer|DEAD|NO_FILE
 farfan_pipeline.orchestration.metrics_persistence|DEAD|NO_FILE
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/questionnaire_access_audit.py
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/consumption_proof.py
-farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration|DEAD|NO_FILE
+farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/integration/signal_consumption_integration.py
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor|DEAD|NO_FILE
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper|DEAD|NO_FILE
 farfan_pipeline.infrastructure.irrigation_using_signals.comprehensive_signal_audit|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py
@@ -708,6 +707,7 @@ farfan_pipeline.infrastructure.extractors.programmatic_hierarchy_extractor|LIVE|
 .base_extractor|DEAD|NO_FILE
 . signal_vocabulary|DEAD|NO_FILE
 .capability_vocabulary|DEAD|NO_FILE
+farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration|DEAD|NO_FILE
 ...core.signal|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/canonic_questionnaire_central/core/signal.py
 ... core.signal|DEAD|NO_FILE
 .structural|DEAD|NO_FILE

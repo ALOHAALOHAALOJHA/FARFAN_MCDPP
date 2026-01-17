@@ -12,7 +12,7 @@ from __future__ import annotations
 import pytest
 from unittest.mock import Mock
 
-from farfan_pipeline.orchestration.orchestrator import (
+from farfan_pipeline.orchestration.core_orchestrator import (
     Orchestrator,
     CanonicalPhase,
     PhaseExecutionResult,
