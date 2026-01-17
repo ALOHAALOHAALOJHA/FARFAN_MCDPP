@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from orchestration.task_planner import ExecutableTask
+    from farfan_pipeline.phases.Phase_02.phase2_50_01_task_planner import ExecutableTask
 from farfan_pipeline.phases.Phase_02.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
 )
