@@ -220,7 +220,7 @@ def check_orchestration_metrics_contract(config: RuntimeConfig) -> bool:
     try:
         # Lazy import to avoid circular dependency:
         # boot_checks → orchestrator → factory → verified_pipeline_runner → boot_checks
-        from farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 
         # Verify phase_2 metrics schema exists
         # This is a placeholder - actual implementation would check the schema

@@ -32,7 +32,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questio
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
     SignalConsumptionProof,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
     ConsumptionTracker,
     create_consumption_tracker,
 )

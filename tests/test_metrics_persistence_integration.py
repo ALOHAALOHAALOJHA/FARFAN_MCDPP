@@ -11,7 +11,7 @@ from unittest.mock import Mock, MagicMock
 @pytest.mark.integration
 def test_metrics_persistence_integration(tmp_path: Path) -> None:
     """Test end-to-end metrics persistence from orchestrator to files."""
-    from farfan_pipeline.orchestration.orchestrator import (
+    from farfan_pipeline.orchestration.core_orchestrator import (
         Orchestrator,
         PhaseInstrumentation,
         ResourceLimits,
@@ -107,7 +107,7 @@ def test_metrics_persistence_integration(tmp_path: Path) -> None:
 @pytest.mark.integration
 def test_metrics_match_in_memory_structures(tmp_path: Path) -> None:
     """Test that persisted metrics match in-memory structures."""
-    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
     from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 
     # Create instrumentation with specific data
@@ -155,7 +155,7 @@ def test_metrics_match_in_memory_structures(tmp_path: Path) -> None:
 @pytest.mark.integration
 def test_metrics_files_are_valid_json(tmp_path: Path) -> None:
     """Test that all persisted metrics files are valid JSON/JSONL."""
-    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
     from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 
     # Create minimal but valid metrics
@@ -203,7 +203,7 @@ def test_metrics_files_are_valid_json(tmp_path: Path) -> None:
 @pytest.mark.integration
 def test_metrics_persistence_handles_multiple_phases(tmp_path: Path) -> None:
     """Test metrics persistence with all 11 phases."""
-    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
     from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 
     resource_limits = ResourceLimits()
@@ -272,7 +272,7 @@ def test_metrics_persistence_handles_multiple_phases(tmp_path: Path) -> None:
 @pytest.mark.integration
 def test_metrics_persistence_with_warnings_and_errors(tmp_path: Path) -> None:
     """Test that warnings and errors are properly persisted."""
-    from farfan_pipeline.orchestration.orchestrator import PhaseInstrumentation, ResourceLimits
+    from farfan_pipeline.orchestration.core_orchestrator import PhaseInstrumentation, ResourceLimits
     from farfan_pipeline.orchestration.metrics_persistence import persist_all_metrics
 
     resource_limits = ResourceLimits()

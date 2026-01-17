@@ -17,7 +17,7 @@ def main():
     # Test 1: Import orchestrator classes directly
     print("\n1. Testing direct orchestrator imports...")
     try:
-        from farfan_pipeline.orchestration.orchestrator import (
+        from farfan_pipeline.orchestration.core_orchestrator import (
             Orchestrator,
             MethodExecutor,
             Phase0ValidationResult,
