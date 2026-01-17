@@ -12,7 +12,7 @@ import pytest
 
 # Add src to path for imports
 
-from orchestration.orchestrator import ResourceLimits
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
 
 
 class TestResourceLimitsDecisionLogic:

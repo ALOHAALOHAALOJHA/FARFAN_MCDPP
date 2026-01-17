@@ -29,7 +29,7 @@ except ImportError:
 
     logger = logging.getLogger(__name__)
 
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
     SignalConsumptionProof,
 )
 

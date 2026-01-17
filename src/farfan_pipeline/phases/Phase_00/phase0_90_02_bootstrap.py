@@ -56,7 +56,7 @@ except ImportError:
     ResourceExhausted = Exception  # type: ignore[misc, assignment]
     PSUTIL_AVAILABLE = False
 
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     AccessLevel,
     get_access_audit,
 )

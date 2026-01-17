@@ -492,7 +492,7 @@ class TestThreadSafety:
 
 # Try to import MethodExecutor, mark tests as skip if dependencies missing
 try:
-    from orchestration.orchestrator import MethodExecutor
+    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
 
     EXECUTOR_AVAILABLE = True
 except ImportError:

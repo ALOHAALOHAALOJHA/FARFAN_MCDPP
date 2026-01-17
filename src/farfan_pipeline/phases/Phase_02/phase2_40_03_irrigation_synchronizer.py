@@ -33,11 +33,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalRegistry
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
 from farfan_pipeline.phases.Phase_02.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
@@ -89,7 +84,7 @@ except ImportError as e:
         pass
 
 try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         SignalRegistry as _SignalRegistry,
     )
 except ImportError:
