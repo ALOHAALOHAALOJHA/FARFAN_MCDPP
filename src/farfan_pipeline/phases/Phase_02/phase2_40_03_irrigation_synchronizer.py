@@ -33,7 +33,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import SignalRegistry as SignalRegistryImpl
     from orchestration.task_planner import ExecutableTask
 from farfan_pipeline.phases.Phase_02.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
