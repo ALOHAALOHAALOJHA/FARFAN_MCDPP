@@ -204,7 +204,6 @@ from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import
 from farfan_pipeline.phases.Phase_02.phase2_50_00_task_executor import (
     TaskExecutor,
 )
-from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
 from farfan_pipeline.phases.Phase_02.registries import (
     QuestionnaireSignalRegistry,
 )
