@@ -158,3 +158,4 @@ new_enhanced_rules.json
 =*.txt
 =[0-9]*
 *.py.bak
+constraints.txt

@@ -274,16 +274,6 @@ class TestResourceLimitsStressIntegration:
             orchestrator.executors,
             {"D1-Q1": SimulatedStressExecutor}
         ):
-            # Create instrumentation for Phase 2
-            # PhaseInstrumentation  # PHANTOM CLASS - not found in codebase (test needs rewrite)
-            instrumentation = PhaseInstrumentation(
-                phase_id=2,
-                name="FASE 2 - Micro Preguntas",
-                items_total=30,
-                resource_limits=resource_limits,
-            )
-            orchestrator._phase_instrumentation[2] = instrumentation
-            
             # Mock document
             mock_document = MagicMock()
             

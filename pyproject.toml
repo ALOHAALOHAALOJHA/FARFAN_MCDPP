@@ -53,6 +53,7 @@ dependencies = [
     "werkzeug>=3.0.0",
     "structlog>=24.1.0",
     "img2table>=1.4.0",
+    "opencv-contrib-python-headless>=4.8.0",
     "pillow>=10.0.0",
     "tabula-py>=2.9.0",
     "typing_extensions>=4.10.0",
@@ -375,4 +376,45 @@ source_modules = [
 forbidden_modules = [
     "farfan_pipeline.phases.Phase_02",
     "farfan_pipeline.phases.Phase_04",
+]
+
+# =============================================================================
+# CANONICAL QUESTIONNAIRE ACCESS CONTRACTS
+# =============================================================================
+
+[[tool.importlinter.contracts]]
+name = "Canonical questionnaire access must use resolver"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline",
+]
+forbidden_modules = [
+    "canonic_questionnaire_central._scripts",
+    "canonic_questionnaire_central._scripts.cqc_loader",
+    "canonic_questionnaire_central._registry",
+    "canonic_questionnaire_central._build",
+]
+
+# =============================================================================
+# SISAS BOUNDARY CONTRACTS
+# =============================================================================
+
+[[tool.importlinter.contracts]]
+name = "SISAS CLI entrypoints are not importable"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline",
+]
+forbidden_modules = [
+    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main",
+]
+
+[[tool.importlinter.contracts]]
+name = "SISAS deprecated modules are forbidden"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline",
+]
+forbidden_modules = [
+    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS._deprecated",
 ]
