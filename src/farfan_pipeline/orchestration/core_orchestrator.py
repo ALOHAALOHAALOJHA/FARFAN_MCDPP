@@ -1,17 +1,18 @@
 """
 Core Orchestrator - Production-Grade Pipeline Coordination.
 
-This module provides comprehensive orchestration for all 11 F.A.R.F.A.N pipeline phases,
-with contract validation, signal integration, determinism enforcement, and error handling.
+This module provides comprehensive orchestration for the canonical F.A.R.F.A.N pipeline
+phases Phase 0 through Phase 9 (no implicit transitions), with contract validation,
+SISAS lifecycle governance, determinism enforcement, and error handling.
 
 Architecture:
-- PipelineOrchestrator: Main coordinator for full pipeline execution
+- PipelineOrchestrator: Main coordinator for full pipeline execution (P00–P09)
 - ExecutionContext: Shared state and metrics across phases
 - ContractEnforcer: Pre/post execution contract validation
-- Phase-specific execution methods for each of the 11 phases
+- Phase specifications: explicit entry conditions, outputs, and handoffs
 
 Author: F.A.R.F.A.N Core Team
-Version: 2.0.0
+Version: 3.0.0
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ from __future__ import annotations
 # METADATA
 # =============================================================================
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 __module_type__ = "ORCH"
 __criticality__ = "CRITICAL"
 __lifecycle__ = "ACTIVE"
@@ -29,6 +30,7 @@ __phase_label__ = "Core Pipeline Orchestrator"
 __compliance_status__ = "GNEA_COMPLIANT"
 __sin_carreta_compliant__ = True
 
+import json
 import logging
 import time
 from dataclasses import dataclass, field
@@ -40,8 +42,42 @@ from typing import Any, Protocol
 import blake3
 import structlog
 
+from canonic_questionnaire_central import (
+    QuestionnairePort,
+    resolve_questionnaire,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import (
+    BusRegistry,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import (
+    ContractRegistry,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
+    EventStore,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import (
+    IrrigationExecutor,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_map import (
+    IrrigationMap,
+)
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     SignalRegistry,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import (
+    SignalContextScoperVehicle,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import (
+    SignalRegistryVehicle,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.alignment_checker import (
+    VocabularyAlignmentChecker,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.capability_vocabulary import (
+    CapabilityVocabulary,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.signal_vocabulary import (
+    SignalVocabulary,
 )
 from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
     ContractViolation,
@@ -86,7 +122,6 @@ class PhaseID(str, Enum):
     PHASE_7 = "P07"  # Macro Aggregation
     PHASE_8 = "P08"  # Recommendations Engine
     PHASE_9 = "P09"  # Report Assembly
-    PHASE_10 = "P10"  # Verification
 
 
 # Phase metadata registry
@@ -149,12 +184,182 @@ PHASE_METADATA = {
         "description": "Final report generation and assembly",
         "constitutional_invariants": ["report_completeness", "schema_compliance"],
     },
-    PhaseID.PHASE_10: {
-        "name": "Verification",
-        "description": "Final verification of reports and manifest generation",
-        "constitutional_invariants": ["manifest_completeness", "output_integrity", "provenance_verification"],
-    },
 }
+
+
+# =============================================================================
+# FLOW SPECIFICATIONS & SISAS LIFECYCLE
+# =============================================================================
+
+
+class MissingPhaseExecutorError(RuntimeError):
+    """Raised when a required phase executor is not registered."""
+
+
+@dataclass(frozen=True)
+class PhaseSpecification:
+    """Explicit phase specification with entry conditions and handoff contract."""
+
+    phase_id: PhaseID
+    name: str
+    entry_conditions: tuple[str, ...]
+    required_phases: tuple[PhaseID, ...]
+    produces: tuple[str, ...]
+    next_phase: PhaseID | None
+    phase_root: Path
+    manifest_path: Path | None
+    inventory_path: Path | None
+
+
+@dataclass(frozen=True)
+class PhaseCoverageReport:
+    """Coverage report for phase file and graph validation."""
+
+    phase_id: PhaseID
+    expected_files: tuple[str, ...]
+    actual_files: tuple[str, ...]
+    missing_files: tuple[str, ...]
+    extra_files: tuple[str, ...]
+    manifest_nodes: tuple[str, ...]
+    stage_order: tuple[int, ...]
+    timestamp: datetime = field(default_factory=datetime.utcnow)
+
+
+@dataclass(frozen=True)
+class PhaseHandoff:
+    """Record of a phase handoff for traceability."""
+
+    from_phase: PhaseID | None
+    to_phase: PhaseID
+    input_keys: tuple[str, ...]
+    output_keys: tuple[str, ...]
+    timestamp: datetime = field(default_factory=datetime.utcnow)
+
+
+@dataclass(frozen=True)
+class Phase0Output:
+    """Phase 0 output containing wiring, questionnaire, and SISAS lifecycle."""
+
+    wiring: WiringComponents
+    questionnaire: QuestionnairePort
+    sisas: "SisasLifecycle"
+    signal_registry_types: tuple[str, ...]
+
+
+@dataclass
+class SisasLifecycle:
+    """Authoritative SISAS lifecycle manager for the pipeline."""
+
+    bus_registry: BusRegistry
+    contract_registry: ContractRegistry
+    event_store: EventStore
+    signal_vocabulary: SignalVocabulary
+    capability_vocabulary: CapabilityVocabulary
+    alignment_checker: VocabularyAlignmentChecker
+    irrigation_executor: IrrigationExecutor
+    irrigation_map: IrrigationMap
+    vehicles: dict[str, Any] = field(default_factory=dict)
+    alignment_report: Any | None = None
+
+    @classmethod
+    def initialize(cls, *, strict_mode: bool = True) -> "SisasLifecycle":
+        """Initialize SISAS core infrastructure with strict alignment checks."""
+        bus_registry = BusRegistry()
+        contract_registry = ContractRegistry()
+        event_store = EventStore()
+
+        signal_vocab = SignalVocabulary()
+        capability_vocab = CapabilityVocabulary()
+        alignment_checker = VocabularyAlignmentChecker(
+            signal_vocabulary=signal_vocab,
+            capability_vocabulary=capability_vocab,
+        )
+        alignment_report = alignment_checker.check_alignment()
+
+        if strict_mode and not alignment_report.is_aligned:
+            critical_issues = [
+                issue for issue in alignment_report.issues if issue.severity == "critical"
+            ]
+            if critical_issues:
+                raise ValueError(
+                    "SISAS vocabulary alignment failed with critical issues: "
+                    f"{len(critical_issues)}"
+                )
+
+        irrigation_executor = IrrigationExecutor(
+            bus_registry=bus_registry,
+            contract_registry=contract_registry,
+            event_store=event_store,
+        )
+
+        lifecycle = cls(
+            bus_registry=bus_registry,
+            contract_registry=contract_registry,
+            event_store=event_store,
+            signal_vocabulary=signal_vocab,
+            capability_vocabulary=capability_vocab,
+            alignment_checker=alignment_checker,
+            irrigation_executor=irrigation_executor,
+            irrigation_map=IrrigationMap(),
+            alignment_report=alignment_report,
+        )
+
+        lifecycle._register_default_vehicles()
+
+        return lifecycle
+
+    def _register_default_vehicles(self) -> None:
+        """Register canonical SISAS vehicles in correct order."""
+        vehicles = [
+            SignalRegistryVehicle(
+                bus_registry=self.bus_registry,
+                contract_registry=self.contract_registry,
+                event_store=self.event_store,
+            ),
+            SignalContextScoperVehicle(
+                bus_registry=self.bus_registry,
+                contract_registry=self.contract_registry,
+                event_store=self.event_store,
+            ),
+        ]
+
+        for vehicle in vehicles:
+            self.irrigation_executor.register_vehicle(vehicle)
+            self.vehicles[vehicle.vehicle_id] = vehicle
+
+    def load_irrigation_map_from_csv(self, csv_path: Path) -> None:
+        """Load irrigation map from a canonical CSV (sabana)."""
+        if not csv_path.exists():
+            raise FileNotFoundError(f"Irrigation CSV not found: {csv_path}")
+
+        import csv
+
+        with csv_path.open("r", encoding="utf-8") as handle:
+            data = list(csv.DictReader(handle))
+
+        self.irrigation_map = IrrigationMap.from_sabana_csv(data)
+        self.irrigation_executor.irrigation_map = self.irrigation_map
+
+    def execute_irrigation_phase(self, phase: str, base_path: str = "") -> Any:
+        """Execute all irrigable SISAS routes for a phase."""
+        return self.irrigation_executor.execute_phase(phase, base_path)
+
+    def execute_all_irrigable(self, base_path: str = "") -> Any:
+        """Execute all currently irrigable SISAS routes."""
+        return self.irrigation_executor.execute_all_irrigable(base_path)
+
+    def get_metrics(self) -> dict[str, Any]:
+        """Return SISAS lifecycle metrics for orchestration telemetry."""
+        alignment_issues = (
+            len(self.alignment_report.issues)
+            if self.alignment_report is not None
+            else 0
+        )
+        return {
+            "alignment_issues": alignment_issues,
+            "registered_vehicles": list(self.vehicles.keys()),
+            "irrigation_stats": self.irrigation_map.get_statistics(),
+        }
 
 
 # =============================================================================
@@ -197,6 +402,8 @@ class ExecutionContext:
 
     This context maintains:
     - Wiring components from Phase 0 bootstrap
+    - Canonical questionnaire (resolved via canonic_questionnaire_central)
+    - SISAS lifecycle manager for signal orchestration
     - Phase outputs for handoff between phases
     - Execution metrics and telemetry
     - Determinism tracking (hashes, seeds)
@@ -204,6 +411,11 @@ class ExecutionContext:
 
     # Core components from bootstrap
     wiring: WiringComponents | None = None
+    questionnaire: QuestionnairePort | None = None
+    sisas: SisasLifecycle | None = None
+
+    # Phase inputs (explicit, no implicit fallback)
+    phase_inputs: dict[PhaseID, dict[str, Any]] = field(default_factory=dict)
 
     # Phase outputs (keyed by PhaseID)
     phase_outputs: dict[PhaseID, Any] = field(default_factory=dict)
@@ -226,12 +438,22 @@ class ExecutionContext:
     # Telemetry
     total_violations: list[ContractViolation] = field(default_factory=list)
     signal_metrics: dict[str, Any] = field(default_factory=dict)
+    phase_handoffs: list[PhaseHandoff] = field(default_factory=list)
+    phase_coverage: dict[PhaseID, PhaseCoverageReport] = field(default_factory=dict)
 
     def add_phase_result(self, result: PhaseResult) -> None:
         """Add a phase execution result."""
         self.phase_results[result.phase_id] = result
         self.phase_outputs[result.phase_id] = result.output
         self.total_violations.extend(result.violations)
+
+    def record_handoff(self, handoff: PhaseHandoff) -> None:
+        """Record explicit handoff between phases for traceability."""
+        self.phase_handoffs.append(handoff)
+
+    def record_phase_coverage(self, report: PhaseCoverageReport) -> None:
+        """Record phase coverage validation report."""
+        self.phase_coverage[report.phase_id] = report
 
     def get_phase_output(self, phase_id: PhaseID) -> Any:
         """Get output from a specific phase."""
@@ -259,6 +481,8 @@ class ExecutionContext:
             "total_violations": len(self.total_violations),
             "critical_violations": critical_violations,
             "deterministic": self.seed is not None,
+            "handoffs_recorded": len(self.phase_handoffs),
+            "sisas_metrics": self.signal_metrics,
         }
 
 
@@ -331,8 +555,6 @@ class ContractEnforcer:
             violations.extend(self._validate_phase8_input(context))
         elif phase_id == PhaseID.PHASE_9:
             violations.extend(self._validate_phase9_input(context))
-        elif phase_id == PhaseID.PHASE_10:
-            violations.extend(self._validate_phase10_input(context))
 
         validation_time_ms = (time.time() - start_time) * 1000
         critical_count = sum(1 for v in violations if v.severity == Severity.CRITICAL)
@@ -390,8 +612,6 @@ class ContractEnforcer:
             violations.extend(self._validate_phase8_output(output, context))
         elif phase_id == PhaseID.PHASE_9:
             violations.extend(self._validate_phase9_output(output, context))
-        elif phase_id == PhaseID.PHASE_10:
-            violations.extend(self._validate_phase10_output(output, context))
 
         validation_time_ms = (time.time() - start_time) * 1000
         critical_count = sum(1 for v in violations if v.severity == Severity.CRITICAL)
@@ -439,6 +659,28 @@ class ContractEnforcer:
                     component_path="Phase_01.input",
                     message="Wiring components not initialized",
                     remediation="Phase 0 bootstrap must provide WiringComponents",
+                )
+            )
+
+        if context.questionnaire is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_QUESTIONNAIRE",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_01.input",
+                    message="Canonical questionnaire not resolved",
+                    remediation="Phase 0 must resolve questionnaire via CQC resolver",
+                )
+            )
+
+        if context.sisas is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_SISAS",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_01.input",
+                    message="SISAS lifecycle not initialized",
+                    remediation="Phase 0 must initialize SISAS lifecycle",
                 )
             )
 
@@ -595,22 +837,6 @@ class ContractEnforcer:
 
         return violations
 
-    def _validate_phase10_input(self, context: ExecutionContext) -> list[ContractViolation]:
-        """Validate Phase 10 input (requires Phase 9 report)."""
-        violations = []
-
-        if PhaseID.PHASE_9 not in context.phase_results:
-            violations.append(
-                ContractViolation(
-                    type="MISSING_PREREQUISITE",
-                    severity=Severity.CRITICAL,
-                    component_path="Phase_10.input",
-                    message="Phase 9 must complete before Phase 10",
-                    remediation="Execute Phase 9 report assembly first",
-                )
-            )
-
-        return violations
 
     # =========================================================================
     # OUTPUT VALIDATION METHODS
@@ -619,18 +845,32 @@ class ContractEnforcer:
     def _validate_phase0_output(
         self, output: Any, context: ExecutionContext
     ) -> list[ContractViolation]:
-        """Validate Phase 0 output (WiringComponents)."""
+        """Validate Phase 0 output (Phase0Output)."""
         violations = []
 
-        if not isinstance(output, WiringComponents):
+        if not isinstance(output, Phase0Output):
             violations.append(
                 ContractViolation(
                     type="INVALID_OUTPUT_TYPE",
                     severity=Severity.CRITICAL,
                     component_path="Phase_00.output",
-                    message="Phase 0 must return WiringComponents",
-                    expected="WiringComponents",
+                    message="Phase 0 must return Phase0Output",
+                    expected="Phase0Output",
                     actual=type(output).__name__,
+                )
+            )
+            return violations
+
+        wiring = output.wiring
+        if not isinstance(wiring, WiringComponents):
+            violations.append(
+                ContractViolation(
+                    type="INVALID_OUTPUT_TYPE",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_00.output.wiring",
+                    message="Phase 0 wiring must be WiringComponents",
+                    expected="WiringComponents",
+                    actual=type(wiring).__name__,
                 )
             )
             return violations
@@ -647,16 +887,38 @@ class ContractEnforcer:
         ]
 
         for component in required_components:
-            if not hasattr(output, component) or getattr(output, component) is None:
+            if not hasattr(wiring, component) or getattr(wiring, component) is None:
                 violations.append(
                     ContractViolation(
                         type="MISSING_COMPONENT",
                         severity=Severity.CRITICAL,
-                        component_path=f"Phase_00.output.{component}",
+                        component_path=f"Phase_00.output.wiring.{component}",
                         message=f"Required component '{component}' is missing or None",
                         remediation="Verify bootstrap initialization completed",
                     )
                 )
+
+        if output.questionnaire is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_QUESTIONNAIRE",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_00.output.questionnaire",
+                    message="Canonical questionnaire is required from resolver",
+                    remediation="Resolve questionnaire via canonic_questionnaire_central",
+                )
+            )
+
+        if output.sisas is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_SISAS",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_00.output.sisas",
+                    message="SISAS lifecycle must be initialized",
+                    remediation="Initialize SISAS lifecycle in Phase 0",
+                )
+            )
 
         return violations
 
@@ -716,25 +978,31 @@ class ContractEnforcer:
     def _validate_phase2_output(
         self, output: Any, context: ExecutionContext
     ) -> list[ContractViolation]:
-        """Validate Phase 2 output (Executor instances)."""
+        """Validate Phase 2 output (ExecutionPlan + TaskResults)."""
         violations = []
 
-        # Validate executor count (should be ~30)
-        expected_min = 25
-        expected_max = 35
-
-        if hasattr(output, "executors"):
-            actual_count = len(output.executors)
-            if actual_count < expected_min or actual_count > expected_max:
+        if hasattr(output, "task_results"):
+            actual_count = len(output.task_results)
+            if actual_count != 300:
                 violations.append(
                     ContractViolation(
-                        type="EXECUTOR_COUNT_VIOLATION",
-                        severity=Severity.HIGH,
-                        component_path="Phase_02.output.executors",
-                        message=f"Executor count outside expected range [{expected_min}, {expected_max}]",
+                        type="TASK_COUNT_VIOLATION",
+                        severity=Severity.CRITICAL,
+                        component_path="Phase_02.output.task_results",
+                        message="Phase 2 must produce 300 task results",
+                        expected=300,
                         actual=actual_count,
                     )
                 )
+        else:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_TASK_RESULTS",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_02.output.task_results",
+                    message="Phase 2 output missing task_results",
+                )
+            )
 
         return violations
 
@@ -759,6 +1027,15 @@ class ContractEnforcer:
                         actual=actual_count,
                     )
                 )
+        else:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_LAYER_SCORES",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_03.output.layer_scores",
+                    message="Phase 3 output missing layer_scores",
+                )
+            )
 
         return violations
 
@@ -770,19 +1047,33 @@ class ContractEnforcer:
 
         expected_count = 60  # 10 PA × 6 DIM
 
-        if isinstance(output, list):
+        if hasattr(output, "dimension_scores"):
+            actual_count = len(output.dimension_scores)
+        elif isinstance(output, list):
             actual_count = len(output)
-            if actual_count != expected_count:
-                violations.append(
-                    ContractViolation(
-                        type="DIMENSION_COUNT_VIOLATION",
-                        severity=Severity.CRITICAL,
-                        component_path="Phase_04.output",
-                        message="Constitutional invariant: 60 dimension scores required",
-                        expected=expected_count,
-                        actual=actual_count,
-                    )
+        else:
+            actual_count = None
+
+        if actual_count is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_DIMENSION_SCORES",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_04.output",
+                    message="Phase 4 output missing dimension scores",
                 )
+            )
+        elif actual_count != expected_count:
+            violations.append(
+                ContractViolation(
+                    type="DIMENSION_COUNT_VIOLATION",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_04.output",
+                    message="Constitutional invariant: 60 dimension scores required",
+                    expected=expected_count,
+                    actual=actual_count,
+                )
+            )
 
         return violations
 
@@ -794,19 +1085,33 @@ class ContractEnforcer:
 
         expected_count = 10  # 10 policy areas
 
-        if isinstance(output, list):
+        if hasattr(output, "area_scores"):
+            actual_count = len(output.area_scores)
+        elif isinstance(output, list):
             actual_count = len(output)
-            if actual_count != expected_count:
-                violations.append(
-                    ContractViolation(
-                        type="POLICY_AREA_COUNT_VIOLATION",
-                        severity=Severity.CRITICAL,
-                        component_path="Phase_05.output",
-                        message="Constitutional invariant: 10 policy area scores required",
-                        expected=expected_count,
-                        actual=actual_count,
-                    )
+        else:
+            actual_count = None
+
+        if actual_count is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_AREA_SCORES",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_05.output",
+                    message="Phase 5 output missing area scores",
                 )
+            )
+        elif actual_count != expected_count:
+            violations.append(
+                ContractViolation(
+                    type="POLICY_AREA_COUNT_VIOLATION",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_05.output",
+                    message="Constitutional invariant: 10 policy area scores required",
+                    expected=expected_count,
+                    actual=actual_count,
+                )
+            )
 
         return violations
 
@@ -818,19 +1123,33 @@ class ContractEnforcer:
 
         expected_count = 4  # 4 MESO clusters
 
-        if isinstance(output, list):
+        if hasattr(output, "cluster_scores"):
+            actual_count = len(output.cluster_scores)
+        elif isinstance(output, list):
             actual_count = len(output)
-            if actual_count != expected_count:
-                violations.append(
-                    ContractViolation(
-                        type="CLUSTER_COUNT_VIOLATION",
-                        severity=Severity.CRITICAL,
-                        component_path="Phase_06.output",
-                        message="Constitutional invariant: 4 cluster scores required",
-                        expected=expected_count,
-                        actual=actual_count,
-                    )
+        else:
+            actual_count = None
+
+        if actual_count is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_CLUSTER_SCORES",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_06.output",
+                    message="Phase 6 output missing cluster scores",
                 )
+            )
+        elif actual_count != expected_count:
+            violations.append(
+                ContractViolation(
+                    type="CLUSTER_COUNT_VIOLATION",
+                    severity=Severity.CRITICAL,
+                    component_path="Phase_06.output",
+                    message="Constitutional invariant: 4 cluster scores required",
+                    expected=expected_count,
+                    actual=actual_count,
+                )
+            )
 
         return violations
 
@@ -842,15 +1161,15 @@ class ContractEnforcer:
 
         # Validate single macro score
         if hasattr(output, "macro_score"):
-            score = output.macro_score
-            if not isinstance(score, (int, float)):
+            score_value = getattr(output.macro_score, "score", output.macro_score)
+            if not isinstance(score_value, (int, float)):
                 violations.append(
                     ContractViolation(
                         type="INVALID_MACRO_SCORE",
                         severity=Severity.CRITICAL,
                         component_path="Phase_07.output.macro_score",
                         message="Macro score must be numeric",
-                        actual=type(score).__name__,
+                        actual=type(score_value).__name__,
                     )
                 )
 
@@ -863,16 +1182,30 @@ class ContractEnforcer:
         violations = []
 
         # Validate recommendations structure
+        recommendations = None
         if hasattr(output, "recommendations"):
-            if not isinstance(output.recommendations, list):
-                violations.append(
-                    ContractViolation(
-                        type="INVALID_RECOMMENDATIONS",
-                        severity=Severity.HIGH,
-                        component_path="Phase_08.output.recommendations",
-                        message="Recommendations must be a list",
-                    )
+            recommendations = output.recommendations
+        elif isinstance(output, dict):
+            recommendations = output
+
+        if recommendations is None:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_RECOMMENDATIONS",
+                    severity=Severity.HIGH,
+                    component_path="Phase_08.output.recommendations",
+                    message="Recommendations output is missing",
                 )
+            )
+        elif not isinstance(recommendations, dict):
+            violations.append(
+                ContractViolation(
+                    type="INVALID_RECOMMENDATIONS",
+                    severity=Severity.HIGH,
+                    component_path="Phase_08.output.recommendations",
+                    message="Recommendations must be a dict keyed by level",
+                )
+            )
 
         return violations
 
@@ -882,11 +1215,15 @@ class ContractEnforcer:
         """Validate Phase 9 output (Final report)."""
         violations = []
 
-        # Validate report completeness
-        required_sections = ["executive_summary", "methodology", "findings", "recommendations"]
+        if hasattr(output, "report"):
+            report = output.report
+        else:
+            report = output
+
+        required_sections = ["micro_analyses", "meso_clusters", "macro_summary"]
 
         for section in required_sections:
-            if not hasattr(output, section) or not getattr(output, section):
+            if not hasattr(report, section) or not getattr(report, section):
                 violations.append(
                     ContractViolation(
                         type="INCOMPLETE_REPORT",
@@ -898,56 +1235,6 @@ class ContractEnforcer:
 
         return violations
 
-    def _validate_phase10_output(
-        self, output: Any, context: ExecutionContext
-    ) -> list[ContractViolation]:
-        """Validate Phase 10 output (Verification manifest)."""
-        violations = []
-
-        # Validate manifest structure
-        if hasattr(output, "manifest"):
-            manifest = output.manifest
-
-            # Check required manifest components
-            required_components = ["verification_status", "output_files", "integrity_hashes", "provenance"]
-
-            for component in required_components:
-                if not hasattr(manifest, component) or not getattr(manifest, component):
-                    violations.append(
-                        ContractViolation(
-                            type="INCOMPLETE_MANIFEST",
-                            severity=Severity.HIGH,
-                            component_path=f"Phase_10.output.manifest.{component}",
-                            message=f"Required manifest component '{component}' is missing or empty",
-                        )
-                    )
-        else:
-            violations.append(
-                ContractViolation(
-                    type="MISSING_MANIFEST",
-                    severity=Severity.CRITICAL,
-                    component_path="Phase_10.output.manifest",
-                    message="Verification manifest is required",
-                    remediation="Ensure Phase 10 generates a complete manifest",
-                )
-            )
-
-        # Validate output integrity
-        if hasattr(output, "verification_status"):
-            status = output.verification_status
-            if status not in ["VERIFIED", "PARTIAL", "FAILED"]:
-                violations.append(
-                    ContractViolation(
-                        type="INVALID_VERIFICATION_STATUS",
-                        severity=Severity.HIGH,
-                        component_path="Phase_10.output.verification_status",
-                        message=f"Invalid verification status: {status}",
-                        expected="VERIFIED, PARTIAL, or FAILED",
-                        actual=status,
-                    )
-                )
-
-        return violations
 
 
 # =============================================================================
@@ -977,6 +1264,9 @@ class PipelineOrchestrator:
         config: dict[str, Any] | None = None,
         strict_mode: bool = True,
         deterministic: bool = True,
+        phase_executors: dict[PhaseID, PhaseExecutor] | None = None,
+        phase_inputs: dict[PhaseID, dict[str, Any]] | None = None,
+        sisas_phase_map: dict[PhaseID, str] | None = None,
     ):
         """Initialize pipeline orchestrator.
 
@@ -990,6 +1280,42 @@ class PipelineOrchestrator:
         self.deterministic = deterministic
         self.logger = structlog.get_logger(f"{__name__}.PipelineOrchestrator")
 
+        # Explicit phase executor registry
+        self._phase_executors: dict[PhaseID, PhaseExecutor] = phase_executors or {}
+
+        # Explicit phase inputs (no implicit fallbacks)
+        self._phase_inputs: dict[PhaseID, dict[str, Any]] = phase_inputs or {}
+
+        # SISAS phase mapping
+        self._sisas_phase_map = sisas_phase_map or {
+            PhaseID.PHASE_0: "phase_0",
+            PhaseID.PHASE_1: "phase_1",
+            PhaseID.PHASE_2: "phase_2",
+            PhaseID.PHASE_3: "phase_3",
+            PhaseID.PHASE_4: "phase_4",
+            PhaseID.PHASE_5: "phase_5",
+            PhaseID.PHASE_6: "phase_6",
+            PhaseID.PHASE_7: "phase_7",
+            PhaseID.PHASE_8: "phase_8",
+            PhaseID.PHASE_9: "phase_9",
+        }
+
+        # Canonical phase flow
+        self._phase_flow = self._build_phase_flow()
+        self._phase_spec_map = {spec.phase_id: spec for spec in self._phase_flow}
+
+        if not self._phase_executors and self.config.get("load_default_executors", True):
+            self._phase_executors = self._load_default_executors()
+
+        if not self._phase_executors and self.config.get(
+            "auto_register_canonical_executors", True
+        ):
+            from farfan_pipeline.orchestration.canonical_executors import (
+                build_canonical_phase_executors,
+            )
+
+            self._phase_executors.update(build_canonical_phase_executors())
+
         # Contract enforcer
         self.enforcer = ContractEnforcer(strict_mode=strict_mode)
 
@@ -1002,10 +1328,137 @@ class PipelineOrchestrator:
             deterministic=deterministic,
         )
 
+    def register_phase_executor(self, phase_id: PhaseID, executor: PhaseExecutor) -> None:
+        """Register an explicit executor for a phase."""
+        self._phase_executors[phase_id] = executor
+
+    def _build_phase_flow(self) -> list[PhaseSpecification]:
+        """Build the explicit canonical flow for Phase 0–9."""
+        phases_root = Path(__file__).resolve().parents[1] / "phases"
+        return [
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_0,
+                name="Bootstrap & Validation",
+                entry_conditions=("bootstrap resources", "initialize SISAS"),
+                required_phases=(),
+                produces=("wiring", "questionnaire", "sisas"),
+                next_phase=PhaseID.PHASE_1,
+                phase_root=phases_root / "Phase_00",
+                manifest_path=phases_root / "Phase_00" / "PHASE_0_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_1,
+                name="CPP Ingestion",
+                entry_conditions=("phase0 completed", "questionnaire resolved"),
+                required_phases=(PhaseID.PHASE_0,),
+                produces=("cpp",),
+                next_phase=PhaseID.PHASE_2,
+                phase_root=phases_root / "Phase_01",
+                manifest_path=phases_root / "Phase_01" / "PHASE_1_MANIFEST.json",
+                inventory_path=phases_root / "Phase_01" / "INVENTORY.json",
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_2,
+                name="Executor Factory & Dispatch",
+                entry_conditions=("phase1 cpp",),
+                required_phases=(PhaseID.PHASE_1,),
+                produces=("executors",),
+                next_phase=PhaseID.PHASE_3,
+                phase_root=phases_root / "Phase_02",
+                manifest_path=phases_root / "Phase_02" / "PHASE_2_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_3,
+                name="Layer Scoring",
+                entry_conditions=("phase2 executors",),
+                required_phases=(PhaseID.PHASE_2,),
+                produces=("layer_scores",),
+                next_phase=PhaseID.PHASE_4,
+                phase_root=phases_root / "Phase_03",
+                manifest_path=phases_root / "Phase_03" / "PHASE_3_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_4,
+                name="Dimension Aggregation",
+                entry_conditions=("phase3 layer scores",),
+                required_phases=(PhaseID.PHASE_3,),
+                produces=("dimension_scores",),
+                next_phase=PhaseID.PHASE_5,
+                phase_root=phases_root / "Phase_04",
+                manifest_path=phases_root / "Phase_04" / "PHASE_4_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_5,
+                name="Policy Area Aggregation",
+                entry_conditions=("phase4 dimension scores",),
+                required_phases=(PhaseID.PHASE_4,),
+                produces=("policy_area_scores",),
+                next_phase=PhaseID.PHASE_6,
+                phase_root=phases_root / "Phase_05",
+                manifest_path=phases_root / "Phase_05" / "PHASE_5_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_6,
+                name="Cluster Aggregation",
+                entry_conditions=("phase5 policy area scores",),
+                required_phases=(PhaseID.PHASE_5,),
+                produces=("cluster_scores",),
+                next_phase=PhaseID.PHASE_7,
+                phase_root=phases_root / "Phase_06",
+                manifest_path=phases_root / "Phase_06" / "PHASE_6_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_7,
+                name="Macro Aggregation",
+                entry_conditions=("phase6 cluster scores",),
+                required_phases=(PhaseID.PHASE_6,),
+                produces=("macro_score",),
+                next_phase=PhaseID.PHASE_8,
+                phase_root=phases_root / "Phase_07",
+                manifest_path=phases_root / "Phase_07" / "PHASE_7_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_8,
+                name="Recommendations Engine",
+                entry_conditions=("phase7 macro score",),
+                required_phases=(PhaseID.PHASE_7,),
+                produces=("recommendations",),
+                next_phase=PhaseID.PHASE_9,
+                phase_root=phases_root / "Phase_08",
+                manifest_path=phases_root / "Phase_08" / "PHASE_8_MANIFEST.json",
+                inventory_path=None,
+            ),
+            PhaseSpecification(
+                phase_id=PhaseID.PHASE_9,
+                name="Report Assembly",
+                entry_conditions=("phase8 recommendations",),
+                required_phases=(PhaseID.PHASE_8,),
+                produces=("report",),
+                next_phase=None,
+                phase_root=phases_root / "Phase_09",
+                manifest_path=phases_root / "Phase_09" / "PHASE_9_MANIFEST.json",
+                inventory_path=None,
+            ),
+        ]
+
+    def _load_default_executors(self) -> dict[PhaseID, PhaseExecutor]:
+        """Load default phase executors without importing analysis into core."""
+        from importlib import import_module
+
+        module = import_module("farfan_pipeline.orchestration.phase_executors")
+        return module.build_default_phase_executors()
+
     def execute_pipeline(
         self,
         start_phase: PhaseID = PhaseID.PHASE_0,
-        end_phase: PhaseID = PhaseID.PHASE_10,
+        end_phase: PhaseID = PhaseID.PHASE_9,
     ) -> ExecutionContext:
         """
         Execute the complete pipeline from start_phase to end_phase.
@@ -1030,13 +1483,17 @@ class PipelineOrchestrator:
         self.context = ExecutionContext(
             config=self.config,
             seed=42 if self.deterministic else None,
+            phase_inputs=self._phase_inputs,
         )
 
         # Determine phases to execute
-        all_phases = list(PhaseID)
-        start_idx = all_phases.index(start_phase)
-        end_idx = all_phases.index(end_phase) + 1
-        phases_to_execute = all_phases[start_idx:end_idx]
+        phase_order = [spec.phase_id for spec in self._phase_flow]
+        if start_phase not in phase_order or end_phase not in phase_order:
+            raise ValueError("start_phase/end_phase must be within canonical Phase 0–9")
+
+        start_idx = phase_order.index(start_phase)
+        end_idx = phase_order.index(end_phase) + 1
+        phases_to_execute = phase_order[start_idx:end_idx]
 
         # Execute each phase in sequence
         for phase_id in phases_to_execute:
@@ -1076,6 +1533,12 @@ class PipelineOrchestrator:
         self.logger.info("phase_execution_start", phase=phase_id.value)
         start_time = time.time()
 
+        phase_spec = self._phase_spec_map.get(phase_id)
+        if phase_spec is None:
+            raise ValueError(f"Phase {phase_id.value} is not in canonical flow")
+
+        self._assert_phase_entry_conditions(phase_spec)
+
         # Validate input contract
         input_validation = self.enforcer.validate_input_contract(phase_id, self.context)
         if not input_validation.passed:
@@ -1084,6 +1547,17 @@ class PipelineOrchestrator:
                 phase=phase_id.value,
                 violations=len(input_validation.violations),
             )
+
+        executor_input_validation = None
+        phase_executor = self._phase_executors.get(phase_id)
+        if phase_executor is not None:
+            executor_input_validation = phase_executor.validate_input(self.context)
+            if not executor_input_validation.passed:
+                self.logger.warning(
+                    "executor_input_violations",
+                    phase=phase_id.value,
+                    violations=len(executor_input_validation.violations),
+                )
 
         # Execute phase-specific logic
         try:
@@ -1107,9 +1581,23 @@ class PipelineOrchestrator:
                 violations=len(output_validation.violations),
             )
 
+        executor_output_validation = None
+        if phase_executor is not None:
+            executor_output_validation = phase_executor.validate_output(output, self.context)
+            if not executor_output_validation.passed:
+                self.logger.warning(
+                    "executor_output_violations",
+                    phase=phase_id.value,
+                    violations=len(executor_output_validation.violations),
+                )
+
         # Record phase result
         execution_time = time.time() - start_time
         all_violations = input_validation.violations + output_validation.violations
+        if executor_input_validation is not None:
+            all_violations += executor_input_validation.violations
+        if executor_output_validation is not None:
+            all_violations += executor_output_validation.violations
 
         result = PhaseResult(
             phase_id=phase_id,
@@ -1120,10 +1608,23 @@ class PipelineOrchestrator:
             metrics={
                 "input_validation_ms": input_validation.validation_time_ms,
                 "output_validation_ms": output_validation.validation_time_ms,
+                "executor_input_validation_ms": (
+                    executor_input_validation.validation_time_ms
+                    if executor_input_validation is not None
+                    else 0.0
+                ),
+                "executor_output_validation_ms": (
+                    executor_output_validation.validation_time_ms
+                    if executor_output_validation is not None
+                    else 0.0
+                ),
             },
         )
 
         self.context.add_phase_result(result)
+
+        self._record_phase_handoff(phase_spec, output)
+        self._run_sisas_cycle(phase_id)
 
         self.logger.info(
             "phase_execution_complete",
@@ -1145,32 +1646,267 @@ class PipelineOrchestrator:
             return self._execute_phase0()
         elif phase_id == PhaseID.PHASE_1:
             return self._execute_phase1()
-        elif phase_id == PhaseID.PHASE_2:
-            return self._execute_phase2()
-        elif phase_id == PhaseID.PHASE_3:
-            return self._execute_phase3()
-        elif phase_id == PhaseID.PHASE_4:
-            return self._execute_phase4()
-        elif phase_id == PhaseID.PHASE_5:
-            return self._execute_phase5()
-        elif phase_id == PhaseID.PHASE_6:
-            return self._execute_phase6()
-        elif phase_id == PhaseID.PHASE_7:
-            return self._execute_phase7()
-        elif phase_id == PhaseID.PHASE_8:
-            return self._execute_phase8()
-        elif phase_id == PhaseID.PHASE_9:
-            return self._execute_phase9()
-        elif phase_id == PhaseID.PHASE_10:
-            return self._execute_phase10()
         else:
-            raise ValueError(f"Unknown phase: {phase_id}")
+            return self._execute_registered_phase(phase_id)
 
     # =========================================================================
     # PHASE EXECUTION METHODS
     # =========================================================================
 
-    def _execute_phase0(self) -> WiringComponents:
+    def _execute_registered_phase(self, phase_id: PhaseID) -> Any:
+        """Execute a phase via an explicitly registered executor."""
+        executor = self._phase_executors.get(phase_id)
+        if executor is None:
+            raise MissingPhaseExecutorError(
+                f"No executor registered for {phase_id.value}. "
+                "Register a PhaseExecutor to execute this phase."
+            )
+
+        return executor.execute(self.context)
+
+    def _assert_phase_entry_conditions(self, spec: PhaseSpecification) -> None:
+        """Enforce explicit entry conditions and required predecessors."""
+        self._validate_phase_coverage(spec)
+
+        missing = [
+            phase_id
+            for phase_id in spec.required_phases
+            if phase_id not in self.context.phase_results
+            or self.context.phase_results[phase_id].status != PhaseStatus.COMPLETED
+        ]
+        if missing:
+            raise ValueError(
+                f"Phase {spec.phase_id.value} cannot start. "
+                f"Missing prerequisites: {[p.value for p in missing]}"
+            )
+
+        if spec.phase_id != PhaseID.PHASE_0:
+            if self.context.questionnaire is None:
+                raise ValueError("Canonical questionnaire missing in ExecutionContext")
+            if self.context.sisas is None:
+                raise ValueError("SISAS lifecycle missing in ExecutionContext")
+
+    def _validate_phase_coverage(self, spec: PhaseSpecification) -> None:
+        """Validate that each phase manifest/inventory matches actual files."""
+        expected_files, manifest_nodes, stage_order = self._collect_expected_files(spec)
+        actual_files = self._collect_actual_files(spec.phase_root)
+
+        missing = sorted(set(expected_files) - set(actual_files))
+        extra = sorted(set(actual_files) - set(expected_files))
+
+        report = PhaseCoverageReport(
+            phase_id=spec.phase_id,
+            expected_files=tuple(sorted(expected_files)),
+            actual_files=tuple(sorted(actual_files)),
+            missing_files=tuple(missing),
+            extra_files=tuple(extra),
+            manifest_nodes=tuple(manifest_nodes),
+            stage_order=tuple(stage_order),
+        )
+        self.context.record_phase_coverage(report)
+
+        violations: list[ContractViolation] = []
+        for path in missing:
+            violations.append(
+                ContractViolation(
+                    type="MISSING_PHASE_FILE",
+                    severity=Severity.CRITICAL,
+                    component_path=f"{spec.phase_id.value}.manifest",
+                    message=f"Expected phase file missing: {path}",
+                    remediation="Sync manifest/inventory with actual phase files",
+                )
+            )
+        for path in extra:
+            violations.append(
+                ContractViolation(
+                    type="UNDECLARED_PHASE_FILE",
+                    severity=Severity.HIGH,
+                    component_path=f"{spec.phase_id.value}.manifest",
+                    message=f"Phase file not declared in manifest/inventory: {path}",
+                    remediation="Declare file in manifest/inventory or remove it",
+                )
+            )
+
+        if violations:
+            self.context.total_violations.extend(violations)
+            if self.strict_mode:
+                raise ValueError(
+                    f"Phase {spec.phase_id.value} coverage validation failed: "
+                    f"{len(violations)} violation(s)"
+                )
+
+    def _collect_expected_files(
+        self, spec: PhaseSpecification
+    ) -> tuple[list[str], list[str], list[int]]:
+        expected_files: list[str] = []
+        manifest_nodes: list[str] = []
+        stage_order: list[int] = []
+
+        if spec.manifest_path and spec.manifest_path.exists():
+            manifest = json.loads(spec.manifest_path.read_text())
+
+            if "stages" in manifest:
+                for stage in manifest.get("stages", []):
+                    stage_order.append(int(stage.get("execution_order", stage.get("code", 0))))
+                    modules = stage.get("modules", [])
+                    for module in modules:
+                        location = module.get("location") or module.get("file")
+                        canonical = module.get("canonical_name")
+                        if location:
+                            expected_files.append(str(Path(location)))
+                        elif canonical:
+                            expected_files.append(f"{canonical}.py")
+                        if canonical:
+                            manifest_nodes.append(canonical)
+
+            if "modules" in manifest:
+                modules = manifest.get("modules", {})
+                for stage_modules in modules.values():
+                    for module in stage_modules:
+                        file_name = module.get("file")
+                        canonical = module.get("canonical_name")
+                        if file_name:
+                            expected_files.append(file_name)
+                        elif canonical:
+                            expected_files.append(f"{canonical}.py")
+                        if canonical:
+                            manifest_nodes.append(canonical)
+
+            if "subphases" in manifest:
+                for subphase in manifest.get("subphases", []):
+                    module = subphase.get("module")
+                    if module:
+                        expected_files.append(f"{module}.py")
+                        manifest_nodes.append(module)
+
+            if "directory_structure" in manifest:
+                structure = manifest.get("directory_structure", {})
+                root_modules = structure.get("root_modules", [])
+                expected_files.extend(root_modules)
+                for folder, detail in structure.get("subfolders", {}).items():
+                    for module in detail.get("modules", []):
+                        expected_files.append(str(Path(folder) / module))
+                    for file_name in detail.get("files", []):
+                        expected_files.append(str(Path(folder) / file_name))
+
+            if "documentation" in manifest:
+                documentation = manifest.get("documentation", {})
+                for doc in documentation.values():
+                    if isinstance(doc, str):
+                        expected_files.append(doc)
+                    elif isinstance(doc, dict):
+                        for subdoc in doc.values():
+                            if isinstance(subdoc, str):
+                                expected_files.append(subdoc)
+
+        if spec.inventory_path and spec.inventory_path.exists():
+            inventory = json.loads(spec.inventory_path.read_text())
+            for module in inventory.get("python_modules", []):
+                filename = module.get("filename")
+                canonical = module.get("canonical_name")
+                if filename:
+                    expected_files.append(filename)
+                if canonical:
+                    manifest_nodes.append(canonical)
+            for meta in inventory.get("metadata_files", []):
+                filename = meta.get("filename")
+                if filename:
+                    expected_files.append(filename)
+
+        if not expected_files:
+            expected_files = self._collect_actual_files(spec.phase_root)
+
+        normalized = [str(Path(path)) for path in expected_files]
+        return normalized, manifest_nodes, stage_order
+
+    def _collect_actual_files(self, phase_root: Path) -> list[str]:
+        if not phase_root.exists():
+            return []
+        files = []
+        for path in phase_root.rglob("*"):
+            if path.is_dir():
+                continue
+            if "__pycache__" in path.parts:
+                continue
+            relative = path.relative_to(phase_root)
+            files.append(str(relative))
+        return files
+
+    def _record_phase_handoff(self, spec: PhaseSpecification, output: Any) -> None:
+        """Record a traceable handoff between phases."""
+        previous_phase = spec.required_phases[-1] if spec.required_phases else None
+
+        handoff = PhaseHandoff(
+            from_phase=previous_phase,
+            to_phase=spec.phase_id,
+            input_keys=tuple(spec.entry_conditions),
+            output_keys=tuple(spec.produces),
+        )
+        self.context.record_handoff(handoff)
+
+    def _run_sisas_cycle(self, phase_id: PhaseID) -> None:
+        """Execute SISAS signal generation/propagation/irrigation for a phase."""
+        if self.context.sisas is None:
+            return
+
+        if not self.config.get("enable_sisas", True):
+            return
+
+        sisas_phase = self._sisas_phase_map.get(phase_id)
+        if sisas_phase is None:
+            return
+
+        base_path = self.config.get("sisas_base_path", "")
+        try:
+            results = self.context.sisas.execute_irrigation_phase(sisas_phase, base_path)
+            summary = self.context.sisas.irrigation_executor.get_execution_summary()
+            self.context.signal_metrics[phase_id.value] = {
+                "irrigation_phase": sisas_phase,
+                "routes_executed": len(results),
+                "summary": summary,
+            }
+        except Exception as exc:
+            if self.strict_mode:
+                raise
+            self.logger.warning(
+                "sisas_irrigation_failed",
+                phase=phase_id.value,
+                error=str(exc),
+            )
+
+    def _require_phase_input(self, phase_id: PhaseID, key: str) -> Any:
+        """Require an explicit phase input key (fail-fast)."""
+        if phase_id not in self.context.phase_inputs:
+            raise ValueError(
+                f"Phase inputs missing for {phase_id.value}. "
+                "Provide explicit inputs; no implicit fallbacks are allowed."
+            )
+        inputs = self.context.phase_inputs[phase_id]
+        if key not in inputs:
+            raise ValueError(
+                f"Required input '{key}' missing for {phase_id.value}."
+            )
+        return inputs[key]
+
+    def _assert_questionnaire_granularity(self, questionnaire: QuestionnairePort) -> None:
+        """Validate questionnaire coverage across micro/meso/macro levels."""
+        data = questionnaire.data
+        blocks = data.get("blocks", {}) if isinstance(data, dict) else {}
+        micro_questions = blocks.get("micro_questions", [])
+        meso_questions = blocks.get("meso_questions", [])
+        macro_question = blocks.get("macro_question", {})
+
+        if len(micro_questions) != 300:
+            raise ValueError(
+                "Canonical questionnaire must contain 300 micro_questions; "
+                f"got {len(micro_questions)}"
+            )
+        if not meso_questions:
+            raise ValueError("Canonical questionnaire missing meso_questions")
+        if not macro_question:
+            raise ValueError("Canonical questionnaire missing macro_question")
+
+    def _execute_phase0(self) -> Phase0Output:
         """
         Execute Phase 0: Bootstrap & Validation.
 
@@ -1209,12 +1945,40 @@ class PipelineOrchestrator:
         # Execute bootstrap
         wiring = bootstrap.bootstrap()
 
-        # Store wiring in context
+        # Resolve canonical questionnaire via authoritative public interface
+        questionnaire = resolve_questionnaire(
+            expected_hash=questionnaire_hash or None,
+            force_rebuild=self.config.get("force_questionnaire_rebuild", False),
+        )
+        self._assert_questionnaire_granularity(questionnaire)
+
+        # Initialize SISAS lifecycle (authoritative infra)
+        sisas = SisasLifecycle.initialize(strict_mode=self.strict_mode)
+
+        irrigation_csv = self.config.get("sisas_irrigation_csv_path")
+        if irrigation_csv:
+            sisas.load_irrigation_map_from_csv(Path(irrigation_csv))
+
+        # Store in context
         self.context.wiring = wiring
+        self.context.questionnaire = questionnaire
+        self.context.sisas = sisas
 
-        self.logger.info("phase0_complete", components=len(wiring.init_hashes))
+        registry_types = tuple(SignalRegistry.get_all_types())
 
-        return wiring
+        self.logger.info(
+            "phase0_complete",
+            components=len(wiring.init_hashes),
+            questionnaire_hash=questionnaire.sha256[:16],
+            sisas_vehicles=len(sisas.vehicles),
+        )
+
+        return Phase0Output(
+            wiring=wiring,
+            questionnaire=questionnaire,
+            sisas=sisas,
+            signal_registry_types=registry_types,
+        )
 
     def _execute_phase1(self) -> Any:
         """
@@ -1225,245 +1989,31 @@ class PipelineOrchestrator:
         """
         self.logger.info("executing_phase1_cpp_ingestion")
 
-        # TODO: Integrate with actual Phase 1 implementation
-        # For now, return a placeholder that satisfies the contract
+        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+            execute_phase_1_with_full_contract,
+        )
 
-        # Placeholder CPP structure
-        class CPPPlaceholder:
-            def __init__(self):
-                self.chunks = [{"id": f"Q{i:03d}"} for i in range(1, 301)]
-                self.metadata = type("Metadata", (), {"schema_version": "CPP-2025.1"})()
-                self.chunk_graph = type("ChunkGraph", (), {"chunks": self.chunks})()
+        canonical_input = self._require_phase_input(PhaseID.PHASE_1, "canonical_input")
+        signal_registry = self._require_phase_input(PhaseID.PHASE_1, "signal_registry")
+        structural_profile = self.context.phase_inputs.get(PhaseID.PHASE_1, {}).get(
+            "structural_profile"
+        )
 
-        cpp = CPPPlaceholder()
+        cpp = execute_phase_1_with_full_contract(
+            canonical_input=canonical_input,
+            signal_registry=signal_registry,
+            structural_profile=structural_profile,
+        )
 
-        self.logger.info("phase1_complete", chunk_count=len(cpp.chunks))
+        chunk_count = (
+            len(cpp.chunk_graph.chunks)
+            if hasattr(cpp, "chunk_graph")
+            else len(getattr(cpp, "chunks", []))
+        )
+        self.logger.info("phase1_complete", chunk_count=chunk_count)
 
         return cpp
 
-    def _execute_phase2(self) -> Any:
-        """
-        Execute Phase 2: Executor Factory & Dispatch.
-
-        Returns:
-            Executor registry with ~30 executor instances
-        """
-        self.logger.info("executing_phase2_executor_factory")
-
-        # TODO: Integrate with actual Phase 2 implementation
-        # Use wiring.factory to create executors
-
-        # Placeholder executor registry
-        class ExecutorRegistry:
-            def __init__(self):
-                self.executors = [{"id": f"executor_{i}"} for i in range(30)]
-
-        registry = ExecutorRegistry()
-
-        self.logger.info("phase2_complete", executor_count=len(registry.executors))
-
-        return registry
-
-    def _execute_phase3(self) -> Any:
-        """
-        Execute Phase 3: Layer Scoring.
-
-        Returns:
-            Layer scores for 300 micro-questions × 8 layers
-        """
-        self.logger.info("executing_phase3_layer_scoring")
-
-        # TODO: Integrate with actual Phase 3 implementation
-
-        # Placeholder layer scores
-        class LayerScores:
-            def __init__(self):
-                self.layer_scores = [
-                    {"question_id": f"Q{i:03d}", "layers": [0.0] * 8}
-                    for i in range(1, 301)
-                ]
-
-        scores = LayerScores()
-
-        self.logger.info("phase3_complete", score_count=len(scores.layer_scores))
-
-        return scores
-
-    def _execute_phase4(self) -> list[Any]:
-        """
-        Execute Phase 4: Dimension Aggregation.
-
-        Returns:
-            60 dimension scores (10 PA × 6 DIM)
-        """
-        self.logger.info("executing_phase4_dimension_aggregation")
-
-        # TODO: Integrate with actual Phase 4 implementation
-        # Use Choquet integral aggregation
-
-        # Placeholder dimension scores
-        dimension_scores = [
-            {
-                "policy_area": f"PA{pa:02d}",
-                "dimension": f"D{dim}",
-                "score": 1.5,
-            }
-            for pa in range(1, 11)
-            for dim in range(1, 7)
-        ]
-
-        self.logger.info("phase4_complete", dimension_count=len(dimension_scores))
-
-        return dimension_scores
-
-    def _execute_phase5(self) -> list[Any]:
-        """
-        Execute Phase 5: Policy Area Aggregation.
-
-        Returns:
-            10 policy area scores
-        """
-        self.logger.info("executing_phase5_policy_area_aggregation")
-
-        # TODO: Integrate with actual Phase 5 implementation
-
-        # Placeholder policy area scores
-        policy_area_scores = [
-            {"policy_area": f"PA{pa:02d}", "score": 1.5}
-            for pa in range(1, 11)
-        ]
-
-        self.logger.info("phase5_complete", policy_area_count=len(policy_area_scores))
-
-        return policy_area_scores
-
-    def _execute_phase6(self) -> list[Any]:
-        """
-        Execute Phase 6: Cluster Aggregation.
-
-        Returns:
-            4 cluster scores
-        """
-        self.logger.info("executing_phase6_cluster_aggregation")
-
-        # TODO: Integrate with actual Phase 6 implementation
-
-        # Placeholder cluster scores
-        cluster_scores = [
-            {"cluster": f"C{i}", "score": 1.5}
-            for i in range(1, 5)
-        ]
-
-        self.logger.info("phase6_complete", cluster_count=len(cluster_scores))
-
-        return cluster_scores
-
-    def _execute_phase7(self) -> Any:
-        """
-        Execute Phase 7: Macro Aggregation.
-
-        Returns:
-            Single macro score with provenance
-        """
-        self.logger.info("executing_phase7_macro_aggregation")
-
-        # TODO: Integrate with actual Phase 7 implementation
-
-        # Placeholder macro score
-        class MacroScore:
-            def __init__(self):
-                self.macro_score = 1.5
-                self.provenance = {"source": "Phase 7"}
-
-        macro = MacroScore()
-
-        self.logger.info("phase7_complete", macro_score=macro.macro_score)
-
-        return macro
-
-    def _execute_phase8(self) -> Any:
-        """
-        Execute Phase 8: Recommendations Engine.
-
-        Returns:
-            Signal-enriched recommendations
-        """
-        self.logger.info("executing_phase8_recommendations")
-
-        # TODO: Integrate with actual Phase 8 implementation
-
-        # Placeholder recommendations
-        class Recommendations:
-            def __init__(self):
-                self.recommendations = [
-                    {"id": f"REC{i:03d}", "text": f"Recommendation {i}"}
-                    for i in range(1, 11)
-                ]
-
-        recs = Recommendations()
-
-        self.logger.info("phase8_complete", recommendation_count=len(recs.recommendations))
-
-        return recs
-
-    def _execute_phase9(self) -> Any:
-        """
-        Execute Phase 9: Report Assembly.
-
-        Returns:
-            Complete final report
-        """
-        self.logger.info("executing_phase9_report_assembly")
-
-        # TODO: Integrate with actual Phase 9 implementation
-
-        # Placeholder report
-        class FinalReport:
-            def __init__(self):
-                self.executive_summary = "Executive Summary"
-                self.methodology = "Methodology"
-                self.findings = "Findings"
-                self.recommendations = "Recommendations"
-
-        report = FinalReport()
-
-        self.logger.info("phase9_complete")
-
-        return report
-
-    def _execute_phase10(self) -> Any:
-        """
-        Execute Phase 10: Verification.
-
-        Returns:
-            Verification manifest with integrity hashes and provenance
-        """
-        self.logger.info("executing_phase10_verification")
-
-        # TODO: Integrate with actual Phase 10 implementation
-
-        # Placeholder verification output
-        class VerificationManifest:
-            def __init__(self):
-                self.verification_status = "VERIFIED"
-                self.output_files = []
-                self.integrity_hashes = {}
-                self.provenance = {
-                    "pipeline_version": "2.0.0",
-                    "execution_id": self.context.execution_id if hasattr(self, 'context') else "unknown",
-                    "phases_completed": list(self.context.phase_results.keys()) if hasattr(self, 'context') else [],
-                }
-
-        class VerificationOutput:
-            def __init__(self):
-                self.verification_status = "VERIFIED"
-                self.manifest = VerificationManifest()
-
-        output = VerificationOutput()
-
-        self.logger.info("phase10_complete", status=output.verification_status)
-
-        return output
 
 
 # =============================================================================
@@ -1693,7 +2243,6 @@ class Orchestrator:
         PHASE_7: Macro Aggregation (1 holistic score)
         PHASE_8: Recommendations Engine
         PHASE_9: Report Assembly
-        PHASE_10: Verification
 
     Usage:
         orchestrator = Orchestrator(
@@ -1819,7 +2368,7 @@ class Orchestrator:
     def _execute_via_pipeline_orchestrator(
         self, phase_id: str, **kwargs: Any
     ) -> Any:
-        """Execute phase via PipelineOrchestrator for phases P04-P10."""
+        """Execute phase via PipelineOrchestrator for phases P04-P09."""
         # Lazy initialization of PipelineOrchestrator
         if not hasattr(self, "_pipeline_orchestrator"):
             self._pipeline_orchestrator = PipelineOrchestrator(
@@ -1845,19 +2394,21 @@ class Orchestrator:
             "P07": PhaseID.PHASE_7,
             "P08": PhaseID.PHASE_8,
             "P09": PhaseID.PHASE_9,
-            "P10": PhaseID.PHASE_10,
         }
 
         if phase_id not in phase_map:
             raise ValueError(f"Unknown phase: {phase_id}")
 
         # Execute the phase
-        result = self._pipeline_orchestrator._execute_phase(phase_map[phase_id])
+        self._pipeline_orchestrator._execute_phase(phase_map[phase_id])
 
         # Store output
-        self._phase_outputs[phase_id] = result
+        output = self._pipeline_orchestrator.context.get_phase_output(
+            phase_map[phase_id]
+        )
+        self._phase_outputs[phase_id] = output
 
-        return result
+        return output
 
 
 __all__ = [
@@ -1869,6 +2420,11 @@ __all__ = [
     "PhaseID",
     "ContractEnforcer",
     "PHASE_METADATA",
+    "PhaseSpecification",
+    "PhaseHandoff",
+    "Phase0Output",
+    "SisasLifecycle",
+    "MissingPhaseExecutorError",
     # Phase 0 validation
     "GateResult",
     "Phase0ValidationResult",
