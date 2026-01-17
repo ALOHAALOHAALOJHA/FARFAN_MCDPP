@@ -184,7 +184,7 @@ class TestPhase0InputContract:
     
     def test_phase0_input_creation(self):
         """Test Phase0Input dataclass creation."""
-        pdf_path = Path(tempfile.gettempdir()) / "test.pdf")
+        pdf_path = Path(tempfile.gettempdir()) / "test.pdf"
         input_data = Phase0Input(
             pdf_path=pdf_path,
             run_id="20251210_120000",

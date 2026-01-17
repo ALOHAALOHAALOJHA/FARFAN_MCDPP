@@ -22,6 +22,8 @@ Version: 1.0.0
 Date: 2026-01-09
 """
 
+from __future__ import annotations
+
 # =============================================================================
 # METADATA
 # =============================================================================
@@ -38,7 +40,6 @@ __execution_pattern__ = "On-Demand"
 
 
 
-from __future__ import annotations
 
 import hashlib
 import json

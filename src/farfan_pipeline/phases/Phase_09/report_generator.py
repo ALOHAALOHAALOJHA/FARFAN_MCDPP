@@ -15,10 +15,12 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import html
 import json
 import logging
 import math
 import random
+
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -27,6 +29,8 @@ if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_09.report_assembly import AnalysisReport
 
 logger = logging.getLogger(__name__)
+
+html_escape = html.escape
 
 __all__ = [
     "ReportGenerator",
@@ -679,6 +683,72 @@ def _generate_atroz_html(
     # Animation scripts
     animations = visualizer.generate_particle_system() + visualizer.generate_glitch_effect() if enable_animations else ""
     
+    # Pre-generate recommendations HTML to avoid complex f-string nesting
+    recommendations_html = ""
+    if report.macro_summary and report.macro_summary.recommendations:
+        recs = report.macro_summary.recommendations[:6]
+        rec_cards = []
+        for rec in recs:
+            severity = html_escape(rec.severity)
+            rec_type = html_escape(rec.type)
+            description = html_escape(rec.description)
+            source = html_escape(rec.source)
+            
+            card = f'''
+                <div class="rec-card">
+                    <div class="rec-severity">{severity}</div>
+                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">{rec_type}</div>
+                    <div style="font-size: 12px; opacity: 0.9;">{description}</div>
+                    <div style="font-size: 10px; opacity: 0.5; margin-top: 10px;">{source}</div>
+                </div>
+            '''
+            rec_cards.append(card)
+            
+        recommendations_html = f'''
+        <div class="section">
+            <div class="section-title">🎯 RECOMENDACIONES</div>
+            <div class="recommendation-grid">
+                {"".join(rec_cards)}
+            </div>
+        </div>
+        '''
+    
+    # Pre-calculate animations script to avoid complex nesting
+    animations_js_html = ""
+    if enable_animations:
+        animations_js_html = '''
+    <script>
+        // Generate particles
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.createElement('div');
+            container.className = 'particle-container';
+            document.body.appendChild(container);
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                container.appendChild(particle);
+            }
+            
+            // Generate pulse lines
+            const pulseContainer = document.createElement('div');
+            pulseContainer.className = 'neural-pulse';
+            document.body.appendChild(pulseContainer);
+            
+            for (let i = 0; i < 5; i++) {
+                const pulseLine = document.createElement('div');
+                pulseLine.className = 'pulse-line';
+                pulseLine.style.top = Math.random() * 100 + 'vh';
+                pulseLine.style.width = Math.random() * 200 + 100 + 'px';
+                pulseLine.style.animationDelay = Math.random() * 3 + 's';
+                pulseContainer.appendChild(pulseLine);
+            }
+        });
+    </script>
+    '''
+
     return f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1108,21 +1178,7 @@ def _generate_atroz_html(
             </div>
         </div>
         
-        {f'''
-        <div class="section">
-            <div class="section-title">🎯 RECOMENDACIONES</div>
-            <div class="recommendation-grid">
-                {' '.join([f'''
-                <div class="rec-card">
-                    <div class="rec-severity">{html_escape(rec.severity)}</div>
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">{html_escape(rec.type)}</div>
-                    <div style="font-size: 12px; opacity: 0.9;">{html_escape(rec.description)}</div>
-                    <div style="font-size: 10px; opacity: 0.5; margin-top: 10px;">{html_escape(rec.source)}</div>
-                </div>
-                ''' for i, rec in enumerate(report.macro_summary.recommendations[:6]) if report.macro_summary])}
-            </div>
-        </div>
-        ''' if report.macro_summary and report.macro_summary.recommendations else ''}
+        {recommendations_html}
         
         <div class="footer">
             <div class="footer-logo">F.A.R.F.A.N</div>
@@ -1137,38 +1193,7 @@ def _generate_atroz_html(
         </div>
     </div>
     
-    {'''
-    <script>
-        // Generate particles
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.createElement('div');
-            container.className = 'particle-container';
-            document.body.appendChild(container);
-            
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                container.appendChild(particle);
-            }
-            
-            // Generate pulse lines
-            const pulseContainer = document.createElement('div');
-            pulseContainer.className = 'neural-pulse';
-            document.body.appendChild(pulseContainer);
-            
-            for (let i = 0; i < 5; i++) {
-                const pulseLine = document.createElement('div');
-                pulseLine.className = 'pulse-line';
-                pulseLine.style.top = Math.random() * 100 + 'vh';
-                pulseLine.style.width = Math.random() * 200 + 100 + 'px';
-                pulseLine.style.animationDelay = Math.random() * 3 + 's';
-                pulseContainer.appendChild(pulseLine);
-            }
-        });
-    </script>
-    ''' if enable_animations else ''}
+    {animations_js_html}
 </body>
 </html>'''
 

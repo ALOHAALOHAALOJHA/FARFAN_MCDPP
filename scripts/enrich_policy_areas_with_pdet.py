@@ -7,6 +7,7 @@ in the policy_areas directory, ensuring compliance with the four validation gate
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import Dict, List, Any
 from datetime import datetime
@@ -306,4 +307,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-    return 0
+    sys.exit(0)

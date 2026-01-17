@@ -72,12 +72,12 @@ class TestPhase0Models:
     def test_phase0_input_instantiation(self):
         """Test Phase0Input can be instantiated with required fields."""
         input_data = Phase0Input(
-            pdf_path=Path(tempfile.gettempdir()) / "test.pdf"),
+            pdf_path=Path(tempfile.gettempdir()) / "test.pdf",
             run_id="test_run_001",
             questionnaire_path=None
         )
         
-        assert input_data.pdf_path == Path(tempfile.gettempdir()) / "test.pdf")
+        assert input_data.pdf_path == Path(tempfile.gettempdir()) / "test.pdf"
         assert input_data.run_id == "test_run_001"
         assert input_data.questionnaire_path is None
     
