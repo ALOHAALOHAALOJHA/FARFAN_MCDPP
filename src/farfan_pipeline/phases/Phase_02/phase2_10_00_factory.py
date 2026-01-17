@@ -243,7 +243,6 @@ _REPO_ROOT = Path(__file__).resolve().parents[2]
 # Import CanonicalQuestionnaire from modular resolver (SISAS 2.0)
 from canonic_questionnaire_central.resolver import (
     CanonicalQuestionnaire,
-    AssemblyProvenance,
     QuestionnairePort,
     ResolverError,
 )
