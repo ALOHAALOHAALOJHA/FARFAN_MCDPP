@@ -1809,6 +1809,18 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
     },
 }
 
+# Pre-compile regex patterns for performance optimization
+# This avoids re-compiling regexes in tight loops (e.g. in _score_d3_q3_expected_elements)
+COMPILED_PATTERNS_D3_Q3: dict[str, dict[str, list[re.Pattern]]] = {}
+
+for policy_area, config in PATTERNS_D3_Q3_BY_POLICY_AREA.items():
+    COMPILED_PATTERNS_D3_Q3[policy_area] = {}
+    for element_type in ["trazabilidad_organizacional", "trazabilidad_presupuestal"]:
+        patterns = config.get(element_type, [])
+        COMPILED_PATTERNS_D3_Q3[policy_area][element_type] = [
+            re.compile(p, re.IGNORECASE) for p in patterns
+        ]
+
 # Expected elements common to all Policy Areas for D3-Q3
 EXPECTED_ELEMENTS_D3_Q3: list[dict[str, Any]] = [
     {"type": "trazabilidad_organizacional", "required": True},
@@ -2128,7 +2140,7 @@ class SemanticAnalyzer:
         return match_count / len(keywords)
 
     def _score_d3_q3_expected_elements(self, segment: str, policy_area_id: str) -> dict[str, float]:
-        patterns_config = PATTERNS_D3_Q3_BY_POLICY_AREA.get(policy_area_id)
+        patterns_config = COMPILED_PATTERNS_D3_Q3.get(policy_area_id)
         if not patterns_config:
             return {}
         scores: dict[str, float] = {}
@@ -2137,7 +2149,7 @@ class SemanticAnalyzer:
             if not patterns:
                 scores[element_type] = 0.0
                 continue
-            match_count = sum(1 for p in patterns if re.search(p, segment, re.IGNORECASE))
+            match_count = sum(1 for p in patterns if p.search(segment))
             scores[element_type] = min(1.0, match_count / max(1, len(patterns)))
         return scores
 
