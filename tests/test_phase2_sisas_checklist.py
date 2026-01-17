@@ -71,25 +71,8 @@ except ImportError:
 TASK_PLANNER_AVAILABLE = False
 ExecutableTask = None
 
-# IrrigationSynchronizer, ExecutionPlan - check Phase_02 irrigation modules
-try:
-    from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import (
-        IrrigationSynchronizer,
-    )
-    IRRIGATION_AVAILABLE = True
-    ExecutionPlan = None  # ExecutionPlan not found - may be phantom class
-except ImportError:
-    IRRIGATION_AVAILABLE = False
-    IrrigationSynchronizer = None
-    ExecutionPlan = None
-
-try:
-    from farfan_pipeline.phases.Phase_02.registries.questionnaire_signal_registry import QuestionnaireSignalRegistry
-
-    SIGNAL_REGISTRY_AVAILABLE = True
-except ImportError:
-    SIGNAL_REGISTRY_AVAILABLE = False
-    QuestionnaireSignalRegistry = None
+# ExecutionPlan not found - may be phantom class
+ExecutionPlan = None
 
 # SISAS Signal Registry - REAL PATHS after repo reorganization
 try:

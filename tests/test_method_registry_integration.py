@@ -21,10 +21,9 @@ from unittest.mock import Mock, patch
 
 from orchestration.method_registry import MethodRegistry
 
-# Try to import MethodExecutor, skip tests if dependencies missing
+# Try to check if MethodExecutor is available, skip tests if dependencies missing
 try:
     from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
-
     EXECUTOR_AVAILABLE = True
 except ImportError:
     EXECUTOR_AVAILABLE = False

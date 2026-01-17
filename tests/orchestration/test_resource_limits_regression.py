@@ -238,15 +238,6 @@ class TestResourceLimitsBypassPrevention:
             orchestrator.executors,
             {"D1-Q1": MockExecutor}
         ):
-            # PhaseInstrumentation  # PHANTOM CLASS - not found in codebase (test needs rewrite)
-            instrumentation = PhaseInstrumentation(
-                phase_id=2,
-                name="FASE 2",
-                items_total=25,
-                resource_limits=resource_limits,
-            )
-            orchestrator._phase_instrumentation[2] = instrumentation
-            
             check_count = 0
             original_check = orchestrator._check_and_enforce_resource_limits
             
