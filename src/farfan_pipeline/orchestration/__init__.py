@@ -6,6 +6,8 @@ Public API for the orchestration layer.
 
 EXPORTS:
     - Core Orchestrator: PipelineOrchestrator, ExecutionContext, PhaseResult
+    - Factory-Aligned Orchestrator: Orchestrator, MethodExecutor
+    - Phase 0 Validation: Phase0ValidationResult, GateResult
     - Configuration: OrchestratorConfig, validation functions, presets
     - Phase Management: PhaseID, PhaseStatus, ContractEnforcer
     - Calibration types: CalibrationResult, CalibrationSubject, etc.
@@ -21,15 +23,7 @@ try:
 except ImportError:
     _has_calibration_types = False
 
-# Always export core orchestration classes
-from farfan_pipeline.orchestration.orchestrator import (
-    Orchestrator,
-    MethodExecutor,
-    Phase0ValidationResult,
-    GateResult,
-)
-
-# Core Orchestrator Components
+# Import all orchestration classes from core_orchestrator
 from farfan_pipeline.orchestration.core_orchestrator import (
     ContractEnforcer,
     ExecutionContext,
@@ -38,6 +32,10 @@ from farfan_pipeline.orchestration.core_orchestrator import (
     PhaseStatus,
     PipelineOrchestrator,
     PHASE_METADATA,
+    Orchestrator,
+    MethodExecutor,
+    Phase0ValidationResult,
+    GateResult,
 )
 
 # Configuration Management
@@ -59,6 +57,14 @@ __all__ = [
     "PhaseID",
     "ContractEnforcer",
     "PHASE_METADATA",
+
+    # Factory-Aligned Orchestrator
+    "Orchestrator",
+    "MethodExecutor",
+
+    # Phase 0 Validation
+    "GateResult",
+    "Phase0ValidationResult",
 
     # Configuration
     "OrchestratorConfig",

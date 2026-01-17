@@ -18,9 +18,12 @@ from __future__ import annotations
 # ==============================================================================
 
 # Core Aggregation Pipeline (Phase 4 only)
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
-    # Dataclasses
+# Import AggregationSettings from primitives module (correct location)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_aggregation_settings import (
     AggregationSettings,
+)
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+    # Dataclasses (ScoredResult, DimensionScore)
     ScoredResult,
     DimensionScore,
     # Aggregators
