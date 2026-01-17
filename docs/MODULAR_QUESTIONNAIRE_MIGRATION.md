@@ -143,13 +143,14 @@ resolver.sdo.register_consumer(
 - [x] CQCLoader with lazy loading
 - [x] Signal Distribution Orchestrator (SDO) integration
 - [x] Removed questionnaire_monolith.json
+- [x] **Resolver bugs fixed** - questions assembly working
+- [x] Factory refactored to use resolver (phase2_10_00_factory.py)
 
 ### In Progress 🔄
-- [ ] Factory refactored to use resolver (phase2_10_00_factory.py)
-- [ ] Fix resolver assembly bugs (_assemble_micro_questions)
 - [ ] SISAS signal registry integration with modular data
 - [ ] Cross-cutting themes validation pipeline
 - [ ] Interdependency rules enforcement
+- [ ] Test coverage for modular architecture
 
 ### Pending ⏳
 - [ ] Contract generator refactored (input_registry.py)
@@ -179,20 +180,21 @@ If ANY of these criteria is not met, refactor is incomplete.
 
 ## Known Issues
 
-1. **Resolver Bug**: `_assemble_micro_questions()` has AttributeError when loading policy_areas
-   - Symptom: `'str' object has no attribute 'get'`
-   - Location: resolver.py line 946
-   - Status: Under investigation
+1. **~~Resolver Bug~~**: ✅ FIXED 
+   - ~~Symptom: `'str' object has no attribute 'get'`~~
+   - ~~Location: resolver.py line 946~~
+   - Status: **RESOLVED** - questions arrays now extracted correctly from wrapper objects
 
-2. **Factory Migration**: phase2_10_00_factory.py partially migrated
+2. **Factory Integration**: phase2_10_00_factory.py fully migrated ✅
    - load_questionnaire() updated to use resolver
-   - Needs testing and validation
-   - May require backward compatibility layer
+   - Syntax errors fixed (from __future__ positioning)
+   - Ready for testing with full dependency stack
 
 3. **Test Coverage**: Original test_critical_json_files.py removed
    - Need new tests for modular architecture
    - Should test resolver assembly
    - Should test CQC loader performance
+   - Should validate QuestionnairePort interface compliance
 
 ---
 
