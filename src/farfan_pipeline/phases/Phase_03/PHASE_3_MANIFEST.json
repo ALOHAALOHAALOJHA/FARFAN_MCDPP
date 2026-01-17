@@ -12,24 +12,128 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2025-01-09T00:00:00Z",
-    "authors": ["F.A.R.F.A.N Core Team"],
-    "owners": ["phase3_team"],
+    "modified": "2026-01-17",
+    "authors": [
+      "F.A.R.F.A.N Core Team"
+    ],
+    "owners": [
+      "phase3_team"
+    ],
     "repository": "FARFAN_MPP"
   },
   "description": "Phase 3 performs scoring and calibration of micro-question responses, converting raw answers into normalized scores for aggregation.",
   "stages": [
     {
-      "code": 10,
-      "name": "Scoring Engine",
-      "description": "Core scoring logic for micro-questions",
-      "execution_order": 1
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
+    },
+    {
+      "code": 15,
+      "name": "Stage 15",
+      "description": "Stage 15 modules",
+      "execution_order": 2,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase3_15_00_empirical_thresholds_loader",
+          "type": "CFG",
+          "criticality": "HIGH",
+          "purpose": "Empirical Thresholds Loader"
+        }
+      ]
     },
     {
       "code": 20,
-      "name": "Calibration",
-      "description": "Score calibration and normalization",
-      "execution_order": 2
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase3_20_00_score_extraction",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Score Extraction"
+        }
+      ]
+    },
+    {
+      "code": 22,
+      "name": "Stage 22",
+      "description": "Stage 22 modules",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase3_22_00_validation",
+          "type": "ENF",
+          "criticality": "LOW",
+          "purpose": "Validation"
+        }
+      ]
+    },
+    {
+      "code": 24,
+      "name": "Stage 24",
+      "description": "Stage 24 modules",
+      "execution_order": 5,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase3_24_00_signal_enriched_scoring",
+          "type": "ENF",
+          "criticality": "LOW",
+          "purpose": "Signal Enriched Scoring"
+        }
+      ]
+    },
+    {
+      "code": 26,
+      "name": "Stage 26",
+      "description": "Stage 26 modules",
+      "execution_order": 6,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase3_26_00_normative_compliance_validator",
+          "type": "ENF",
+          "criticality": "LOW",
+          "purpose": "Normative Compliance Validator"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 7,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_03_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 03 Constants"
+        }
+      ]
     }
   ],
   "contracts": {
@@ -51,5 +155,9 @@
   "validation": {
     "compliant": true,
     "last_check": "2025-01-09T00:00:00Z"
+  },
+  "statistics": {
+    "total_modules": 7,
+    "stages": 7
   }
 }
