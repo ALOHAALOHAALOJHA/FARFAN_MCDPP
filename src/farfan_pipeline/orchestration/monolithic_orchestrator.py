@@ -85,7 +85,7 @@ import os
 import sys
 import time
 from collections import OrderedDict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
@@ -1499,6 +1499,16 @@ class MonolithicOrchestrator:
                 enriched_results.append(task_result)
                 continue
 
+            # Ensure contract has minimum required structure for carver
+            if not isinstance(question_contract, dict):
+                self.logger.warning(
+                    "carver_skipped_invalid_contract",
+                    question_id=question_id,
+                    contract_type=type(question_contract).__name__,
+                )
+                enriched_results.append(task_result)
+                continue
+
             try:
                 # Synthesize doctoral answer
                 doctoral_answer = carver.synthesize(
@@ -1507,9 +1517,6 @@ class MonolithicOrchestrator:
                 )
 
                 # Enrich task result with carver output
-                # Create a new TaskResult with enriched metadata
-                from dataclasses import replace
-
                 enriched_metadata = {
                     **(task_result.metadata or {}),
                     "carver_human_answer": doctoral_answer.human_answer,
@@ -1522,6 +1529,8 @@ class MonolithicOrchestrator:
                     "carver_evidence_count": doctoral_answer.evidence_count,
                     "carver_critical_gaps": doctoral_answer.critical_gap_count,
                     "carver_synthesis_timestamp": doctoral_answer.synthesis_timestamp,
+                    "carver_dimension": doctoral_answer.dimension.value,
+                    "carver_modality": doctoral_answer.modality.value,
                 }
 
                 enriched_result = replace(task_result, metadata=enriched_metadata)
@@ -1532,6 +1541,8 @@ class MonolithicOrchestrator:
                     question_id=question_id,
                     score=f"{doctoral_answer.score:.3f}",
                     quality=doctoral_answer.quality_level.value,
+                    evidence_count=doctoral_answer.evidence_count,
+                    critical_gaps=doctoral_answer.critical_gap_count,
                 )
 
             except Exception as e:
@@ -1539,6 +1550,7 @@ class MonolithicOrchestrator:
                     "carver_synthesis_error",
                     question_id=question_id,
                     error=str(e),
+                    error_type=type(e).__name__,
                 )
                 enriched_results.append(task_result)
 
