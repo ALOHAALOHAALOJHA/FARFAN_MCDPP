@@ -131,7 +131,7 @@ except ImportError:
 
 # CanonicalQuestionnaire - REAL PATH in orchestration/
 try:
-    from orchestration.factory import CanonicalQuestionnaire
+    from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
     CANONICAL_QUESTIONNAIRE_AVAILABLE = True
 except ImportError:
@@ -142,9 +142,9 @@ except ImportError:
 QUESTIONNAIRE_LOADER_AVAILABLE = False
 load_questionnaire = None
 
-# Try orchestration.factory first (primary location after reorg)
+# Try farfan_pipeline.phases.Phase_02.phase2_10_00_factory first (primary location after reorg)
 try:
-    from orchestration.factory import load_questionnaire
+    from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire
 
     QUESTIONNAIRE_LOADER_AVAILABLE = True
 except ImportError:

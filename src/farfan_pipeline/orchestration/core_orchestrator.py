@@ -41,7 +41,6 @@ import blake3
 import structlog
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
-    SignalClient,
     SignalRegistry,
 )
 from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
@@ -1821,13 +1820,7 @@ class Orchestrator:
         self, phase_id: str, **kwargs: Any
     ) -> Any:
         """Execute phase via PipelineOrchestrator for phases P04-P10."""
-        # Lazy import to avoid circular dependency
-        # PipelineOrchestrator is in the same module
-        from farfan_pipeline.orchestration.core_orchestrator import (
-            PipelineOrchestrator,
-            ExecutionContext,
-        )
-
+        # Lazy initialization of PipelineOrchestrator
         if not hasattr(self, "_pipeline_orchestrator"):
             self._pipeline_orchestrator = PipelineOrchestrator(
                 config={

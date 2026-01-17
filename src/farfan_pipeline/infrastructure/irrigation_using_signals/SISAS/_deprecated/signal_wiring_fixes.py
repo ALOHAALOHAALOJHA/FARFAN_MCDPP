@@ -250,7 +250,7 @@ def validate_access_level(
     Example:
         >>> from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
         >>> is_valid = validate_access_level(
-        ...     "orchestration.factory",
+        ...     "farfan_pipeline.phases.Phase_02.phase2_10_00_factory",
         ...     "AnalysisPipelineFactory",
         ...     "_load_canonical_questionnaire",
         ...     AccessLevel.FACTORY,

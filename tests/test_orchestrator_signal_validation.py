@@ -26,7 +26,7 @@ class TestOrchestratorSignalValidationIntegration:
     def test_orchestrator_calls_signal_validation_on_init(self):
         """Orchestrator calls validate_signals_for_questionnaire during init."""
         from orchestration.orchestrator import Orchestrator, MethodExecutor
-        from orchestration.factory import CanonicalQuestionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
@@ -98,7 +98,7 @@ class TestOrchestratorSignalValidationIntegration:
     def test_orchestrator_fails_in_prod_mode_with_invalid_signals(self):
         """Orchestrator raises RuntimeError in PROD mode when signals invalid."""
         from orchestration.orchestrator import Orchestrator, MethodExecutor
-        from orchestration.factory import CanonicalQuestionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
@@ -160,7 +160,7 @@ class TestOrchestratorSignalValidationIntegration:
     def test_orchestrator_warns_in_dev_mode_with_invalid_signals(self, caplog):
         """Orchestrator logs warning in DEV mode but continues."""
         from orchestration.orchestrator import Orchestrator, MethodExecutor
-        from orchestration.factory import CanonicalQuestionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
@@ -225,7 +225,7 @@ class TestOrchestratorSignalValidationIntegration:
     def test_orchestrator_logs_validation_success(self, caplog):
         """Orchestrator logs when signal validation passes."""
         from orchestration.orchestrator import Orchestrator, MethodExecutor
-        from orchestration.factory import CanonicalQuestionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components with valid signals
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
@@ -355,7 +355,7 @@ class TestOrchestratorSignalValidationRobustness:
     def test_orchestrator_handles_validation_exception_gracefully(self):
         """Orchestrator handles exceptions during validation gracefully."""
         from orchestration.orchestrator import Orchestrator, MethodExecutor
-        from orchestration.factory import CanonicalQuestionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
@@ -399,7 +399,7 @@ class TestOrchestratorSignalValidationRobustness:
     def test_orchestrator_requires_signal_registry(self):
         """Orchestrator fails if signal_registry is None."""
         from orchestration.orchestrator import Orchestrator, MethodExecutor
-        from orchestration.factory import CanonicalQuestionnaire
+        from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
         mock_questionnaire.version = "1.0.0"

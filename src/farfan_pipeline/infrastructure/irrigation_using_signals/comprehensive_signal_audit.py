@@ -33,7 +33,7 @@ except ImportError:
 
     logger = logging.getLogger(__name__)
 
-from orchestration.factory import create_signal_registry, load_questionnaire
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import create_signal_registry, load_questionnaire
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irrigation import (
     ScopeCoherenceAuditor,
