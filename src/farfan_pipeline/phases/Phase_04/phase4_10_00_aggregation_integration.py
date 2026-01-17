@@ -16,7 +16,9 @@ import logging
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from orchestration.orchestrator import ScoredMicroQuestion, MacroEvaluation
+    from farfan_pipeline.phases.Phase_03.contracts.phase03_output_contract import ScoredMicroQuestion
+    # MacroEvaluation → Use MacroScore (aliased below for compatibility)
+    MacroEvaluation = MacroScore
 
 # Phase 4 imports
 from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
