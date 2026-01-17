@@ -137,16 +137,25 @@
 ---
 
 ### ❌ PhaseInstrumentation
-- **Status:** MISSING (phantom import)
-- **Justification:** Not found in any source files, only imported in tests
-- **Evidence:** Grep search returned no class definition
-- **Call Sites:**
-  - `tests/orchestration/test_resource_limits_integration.py:275`
-  - `tests/orchestration/test_resource_limits_regression.py:238`
-- **Action:**
-  - **DELETE** test assertions that depend on this class
-  - **INVESTIGATE** if similar instrumentation exists in core_orchestrator
-  - If needed, replace with actual monitoring/instrumentation from core_orchestrator
+- **Status:** PHANTOM CLASS (never implemented)
+- **Justification:** Class was planned but never implemented; referenced only in test-only imports and documentation
+- **Investigation Results (2026-01-17):**
+  - **No class definition found** in entire codebase (src/)
+  - **Referenced in source docs:** `phase2_95_01_metrics_persistence.py` (comments only, no actual usage)
+  - **Test imports fail:** 5 test files attempt to import from `orchestration.orchestrator`
+  - **No `_phase_instrumentation` attribute** in `core_orchestrator.py`
+  - **Alternative exists:** `ExecutorInstrumentationMixin` in `phase2_60_05_executor_instrumentation_mixin.py`
+- **Call Sites (all test-only, all broken):**
+  - `test_resource_limits_integration.py:275,279` (line 278 has comment: "PHANTOM CLASS - not found")
+  - `test_resource_limits_regression.py:238,242` (line 241 has comment: "PHANTOM CLASS - not found")
+  - `test_metrics_persistence_integration.py` (7 locations)
+  - `test_metrics_regression.py:20`
+- **Action per Phase 6 protocol:**
+  - ❌ **CANNOT CREATE** - violates "no placeholders" rule and has ≥0 non-test callers
+  - ✅ **DELETE or SKIP** affected test assertions
+  - ✅ **ALTERNATIVE:** Rewrite tests to use `ExecutorInstrumentationMixin` if monitoring is needed
+  - **Status:** DEFERRED - Tests already marked as broken, no impact on production code
+- **Decision:** Phase0 forbids creating this class. Tests must be rewritten or deleted in future work.
 - **Date:** 2026-01-17
 
 ---
