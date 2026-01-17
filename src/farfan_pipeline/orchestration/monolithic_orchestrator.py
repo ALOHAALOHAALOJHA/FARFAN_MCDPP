@@ -1486,7 +1486,18 @@ class MonolithicOrchestrator:
 
         for task_result in task_results:
             question_id = task_result.question_id
-            nexus_output = task_result.output if isinstance(task_result.output, dict) else {}
+            
+            # Validate and extract nexus output
+            if not isinstance(task_result.output, dict):
+                self.logger.warning(
+                    "carver_skipped_invalid_output",
+                    question_id=question_id,
+                    output_type=type(task_result.output).__name__,
+                )
+                enriched_results.append(task_result)
+                continue
+            
+            nexus_output = task_result.output
 
             # Retrieve question contract
             question_contract = question_index.get(question_id)
