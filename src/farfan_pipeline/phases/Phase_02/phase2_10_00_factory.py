@@ -233,52 +233,20 @@ logger = logging.getLogger(__name__)
 
 
 # ============================================================================
-# RUTA CANÓNICA DEL CUESTIONARIO - NIVEL 1
-# Según AGENTS.md - NO MODIFICAR sin actualizar documentación
+# CANONICAL QUESTIONNAIRE RESOLVER - NIVEL 1
+# Uses modular resolver instead of monolithic file
+# Según AGENTS.md - Migrated to modular architecture per SISAS 2.0
 # ============================================================================
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
-
-
-@dataclass(frozen=True)
-class CanonicalQuestionnaire:
-    """
-    Objeto inmutable del cuestionario monolito.
-
-    NIVEL 1: Acceso Total
-    CONSUMIDOR ÚNICO: AnalysisPipelineFactory (este archivo)
-    PROHIBIDO: Instanciar directamente, usar load_questionnaire()
-    """
-    data: dict[str, Any]
-    sha256: str
-    version: str
-    load_timestamp: str
-    source_path: str
-
-    @property
-    def dimensions(self) -> dict[str, Any]:
-        """6 dimensiones: DIM01-DIM06"""
-        return dict(self.data.get("canonical_notation", {}).get("dimensions", {}))
-
-    @property
-    def policy_areas(self) -> dict[str, Any]:
-        """10 áreas: PA01-PA10"""
-        return dict(self.data.get("canonical_notation", {}).get("policy_areas", {}))
-
-    @property
-    def micro_questions(self) -> list[dict[str, Any]]:
-        """300 micro preguntas"""
-        return list(self.data.get("blocks", {}).get("micro_questions", []))
-
-    @property
-    def meso_questions(self) -> list[dict[str, Any]]:
-        """4 meso preguntas"""
-        return list(self.data.get("blocks", {}).get("meso_questions", []))
-
-    @property
-    def macro_question(self) -> dict[str, Any]:
-        """1 macro pregunta"""
-        return dict(self.data.get("blocks", {}).get("macro_question", {}))
+# DEPRECATED: CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+# NEW: Use CanonicalQuestionnaireResolver for modular assembly
+# Import CanonicalQuestionnaire from modular resolver (SISAS 2.0)
+from canonic_questionnaire_central.resolver import (
+    CanonicalQuestionnaire,
+    AssemblyProvenance,
+    QuestionnairePort,
+    ResolverError,
+)
 
 
 class QuestionnaireLoadError(Exception):
@@ -292,61 +260,71 @@ class QuestionnaireIntegrityError(QuestionnaireLoadError):
 
 
 def load_questionnaire(
-    path: Path | None = None,
     expected_hash: str | None = None,
+    force_rebuild: bool = False,
 ) -> CanonicalQuestionnaire:
     """
-    Carga el cuestionario canónico con verificación de integridad.
+    Carga el cuestionario canónico usando el resolver modular.
 
-    NIVEL 1: ÚNICA función autorizada para I/O del monolito.
+    NIVEL 1: ÚNICA función autorizada para assembly del questionnaire.
     CONSUMIDOR: Solo AnalysisPipelineFactory._load_canonical_questionnaire
 
+    REFACTORED (2026-01-17): Migrated from monolithic file loading to modular resolver.
+    Now uses canonic_questionnaire_central.resolver.CanonicalQuestionnaireResolver
+    which assembles from granular components (dimensions/, policy_areas/, etc.)
+
     Args:
-        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH)
-        expected_hash: Hash SHA256 esperado para verificación
+        expected_hash: Hash SHA256 esperado para verificación (optional)
+        force_rebuild: If True, bypass cache and rebuild from modular sources
 
     Returns:
-        CanonicalQuestionnaire: Objeto inmutable verificado
+        CanonicalQuestionnaire: Objeto inmutable verificado from modular assembly
 
     Raises:
-        QuestionnaireLoadError: Archivo no existe o JSON inválido
-        QuestionnaireIntegrityError: Hash no coincide
+        QuestionnaireLoadError: Si el assembly falla
+        QuestionnaireIntegrityError: Si hash no coincide
     """
-    questionnaire_path = path or CANONICAL_QUESTIONNAIRE_PATH
-
-    if not questionnaire_path.exists():
-        raise QuestionnaireLoadError(
-            f"Questionnaire not found: {questionnaire_path}"
-        )
-
-    content_bytes = questionnaire_path.read_bytes()
-    computed_hash = hashlib.sha256(content_bytes).hexdigest()
-
-    if expected_hash and computed_hash.lower() != expected_hash.lower():
-        raise QuestionnaireIntegrityError(
-            f"Hash mismatch: expected {expected_hash[:16]}..., "
-            f"got {computed_hash[:16]}..."
-        )
-
     try:
-        content = json.loads(content_bytes.decode("utf-8"))
-    except json.JSONDecodeError as e:
-        raise QuestionnaireLoadError(f"Invalid JSON: {e}")
-
-    if "canonical_notation" not in content:
-        raise QuestionnaireLoadError("Missing 'canonical_notation'")
-    if "blocks" not in content:
-        raise QuestionnaireLoadError("Missing 'blocks'")
-
-    version = content.get("version", "unknown")
-
-    return CanonicalQuestionnaire(
-        data=content,
-        sha256=computed_hash,
-        version=version,
-        load_timestamp=datetime.now(timezone.utc).isoformat(),
-        source_path=str(questionnaire_path.resolve()),
-    )
+        # Import modular resolver
+        from canonic_questionnaire_central.resolver import (
+            CanonicalQuestionnaireResolver,
+            AssemblyError,
+            IntegrityError as ResolverIntegrityError,
+        )
+        
+        # Initialize resolver
+        resolver = CanonicalQuestionnaireResolver(
+            root=_REPO_ROOT / "canonic_questionnaire_central",
+            strict_mode=True,
+            cache_enabled=True,
+            sdo_enabled=True,  # Enable SISAS 2.0 Signal Distribution Orchestrator
+        )
+        
+        # Resolve questionnaire from modular sources
+        questionnaire = resolver.resolve(
+            expected_hash=expected_hash,
+            force_rebuild=force_rebuild,
+        )
+        
+        logger.info(
+            "questionnaire_loaded_via_modular_resolver",
+            sha256=questionnaire.sha256[:16],
+            version=questionnaire.version,
+            source=questionnaire.source,
+            question_count=len(questionnaire.micro_questions),
+            assembly_duration_ms=questionnaire.provenance.assembly_duration_ms,
+        )
+        
+        return questionnaire
+        
+    except ResolverIntegrityError as e:
+        raise QuestionnaireIntegrityError(str(e)) from e
+    except AssemblyError as e:
+        raise QuestionnaireLoadError(f"Modular assembly failed: {e}") from e
+    except Exception as e:
+        raise QuestionnaireLoadError(
+            f"Unexpected error loading questionnaire via resolver: {e}"
+        ) from e
 
 
 # =============================================================================
