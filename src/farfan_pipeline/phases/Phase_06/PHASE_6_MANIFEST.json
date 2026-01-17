@@ -12,36 +12,110 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2026-01-16T00:00:00Z",
-    "authors": ["F.A.R.F.A.N Core Team"],
-    "owners": ["phase6_team"],
+    "modified": "2026-01-17",
+    "authors": [
+      "F.A.R.F.A.N Core Team"
+    ],
+    "owners": [
+      "phase6_team"
+    ],
     "repository": "FARFAN_MCDPP"
   },
   "description": "Phase 6 aggregates 10 Policy Area scores into 4 MESO-level Cluster scores with adaptive penalty based on dispersion analysis. Implements strict topological order with zero circular dependencies.",
   "stages": [
     {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
+    },
+    {
       "code": 10,
-      "name": "Foundation & Data Models",
-      "description": "Constants, cluster composition, and ClusterScore data model",
-      "execution_order": 1
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase6_10_00_cluster_score",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Cluster Score"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase6_10_00_phase_6_constants",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 6 Constants"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase6_10_01_scoring_config",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Scoring Config"
+        }
+      ]
     },
     {
       "code": 20,
-      "name": "Adaptive Penalty Mechanism",
-      "description": "Dispersion analysis and adaptive penalty computation",
-      "execution_order": 2
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase6_20_00_adaptive_meso_scoring",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Adaptive Meso Scoring"
+        }
+      ]
     },
     {
       "code": 30,
-      "name": "Cluster Aggregation",
-      "description": "Main orchestrator - 10 AreaScores to 4 ClusterScores",
-      "execution_order": 3
+      "name": "Resource Management",
+      "description": "Resource control and limits",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase6_30_00_cluster_aggregator",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Cluster Aggregator"
+        }
+      ]
     },
     {
-      "code": 40,
-      "name": "Contract Validation",
-      "description": "Input/output validation and Phase 7 compatibility",
-      "execution_order": 4
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 5,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_6_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 6 Constants"
+        }
+      ]
     }
   ],
   "contracts": {
@@ -102,48 +176,74 @@
       {
         "file": "phase6_10_00_phase_6_constants.py",
         "purpose": "Cluster composition and re-exports from unified config",
-        "exports": ["CLUSTERS", "CLUSTER_COMPOSITION", "PENALTY_WEIGHT", "DISPERSION_THRESHOLDS"]
+        "exports": [
+          "CLUSTERS",
+          "CLUSTER_COMPOSITION",
+          "PENALTY_WEIGHT",
+          "DISPERSION_THRESHOLDS"
+        ]
       },
       {
         "file": "phase6_10_01_scoring_config.py",
         "purpose": "Single source of truth for all scoring parameters",
-        "exports": ["PHASE6_CONFIG", "Phase6ScoringConfig", "DispersionScenario", "CoherenceQuality"]
+        "exports": [
+          "PHASE6_CONFIG",
+          "Phase6ScoringConfig",
+          "DispersionScenario",
+          "CoherenceQuality"
+        ]
       },
       {
         "file": "phase6_10_00_cluster_score.py",
         "purpose": "ClusterScore dataclass definition",
-        "exports": ["ClusterScore"]
+        "exports": [
+          "ClusterScore"
+        ]
       }
     ],
     "stage_20": [
       {
         "file": "phase6_20_00_adaptive_meso_scoring.py",
         "purpose": "Adaptive penalty calculation based on dispersion",
-        "exports": ["AdaptiveMesoScoring", "AdaptiveScoringConfig", "ScoringMetrics"]
+        "exports": [
+          "AdaptiveMesoScoring",
+          "AdaptiveScoringConfig",
+          "ScoringMetrics"
+        ]
       }
     ],
     "stage_30": [
       {
         "file": "phase6_30_00_cluster_aggregator.py",
         "purpose": "Main aggregation orchestrator with contract enforcement",
-        "exports": ["ClusterAggregator"]
+        "exports": [
+          "ClusterAggregator"
+        ]
       }
     ],
     "stage_40": [
       {
         "file": "contracts/phase6_input_contract.py",
         "purpose": "Precondition validation for 10 AreaScores",
-        "exports": ["Phase6InputContract"]
+        "exports": [
+          "Phase6InputContract"
+        ]
       },
       {
         "file": "contracts/phase6_mission_contract.py",
         "purpose": "Invariants I1-I6 and mission statement",
-        "exports": ["Phase6MissionContract", "MISSION_STATEMENT"]
+        "exports": [
+          "Phase6MissionContract",
+          "MISSION_STATEMENT"
+        ]
       },
       {
         "file": "contracts/phase6_output_contract.py",
         "purpose": "Postcondition validation and compatibility certificate",
-        "exports": ["Phase6OutputContract", "validate_phase6_output"]
+        "exports": [
+          "Phase6OutputContract",
+          "validate_phase6_output"
+        ]
       }
     ]
   },
@@ -152,5 +252,9 @@
     "last_check": "2026-01-16T00:00:00Z",
     "topological_order_validated": true,
     "contracts_validated": true
+  },
+  "statistics": {
+    "total_modules": 7,
+    "stages": 5
   }
 }

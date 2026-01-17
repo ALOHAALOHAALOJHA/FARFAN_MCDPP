@@ -10,77 +10,152 @@
   },
   "metadata": {
     "created": "2025-12-30",
-    "modified": "2025-12-30",
+    "modified": "2026-01-17",
     "version": "1.0.0",
     "author": "F.A.R.F.A.N Core Architecture Team",
     "status": "ACTIVE"
   },
   "statistics": {
-    "total_modules": 3,
+    "total_modules": 8,
     "stages": 4
   },
   "stages": [
     {
       "code": 0,
-      "name": "Base",
-      "description": "Package init and types",
-      "execution_order": 1
-    },
-    {
-      "code": 10,
-      "name": "Init",
-      "description": "Report initialization",
-      "execution_order": 2
-    },
-    {
-      "code": 20,
-      "name": "Assembly",
-      "description": "Report assembly and composition",
-      "execution_order": 3,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
       "modules": [
         {
-          "canonical_name": "report_assembly",
-          "type": "ASM",
-          "criticality": "CRITICAL",
-          "purpose": "Assemble report components"
-        },
-        {
-          "canonical_name": "report_generator",
-          "type": "GEN",
-          "criticality": "HIGH",
-          "purpose": "Generate final report documents"
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
         }
       ]
     },
     {
-      "code": 30,
-      "name": "Output",
-      "description": "Report output and formatting",
-      "execution_order": 4,
+      "code": 10,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 4,
       "modules": [
         {
-          "canonical_name": "signal_enriched_reporting",
-          "type": "GEN",
+          "order": 0,
+          "canonical_name": "phase9_10_00_phase_9_constants",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 9 Constants"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase9_10_00_report_assembly",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Report Assembly"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase9_10_00_report_generator",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Report Generator"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase9_10_00_signal_enriched_reporting",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Signal Enriched Reporting"
+        }
+      ]
+    },
+    {
+      "code": 15,
+      "name": "Stage 15",
+      "description": "Stage 15 modules",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase9_15_00_institutional_entity_annex",
+          "type": "CFG",
           "criticality": "HIGH",
-          "purpose": "Generate signal-enriched reports"
+          "purpose": "Institutional Entity Annex"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 4,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_9_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 9 Constants"
+        },
+        {
+          "order": 1,
+          "canonical_name": "report_generator",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Report Generator"
         }
       ]
     }
   ],
   "contracts": {
     "inputs": [
-      {"name": "recommendations", "type": "list[Recommendation]", "required": true},
-      {"name": "analysis_summary", "type": "AnalysisSummary", "required": true},
-      {"name": "template_config", "type": "TemplateConfig", "required": false}
+      {
+        "name": "recommendations",
+        "type": "list[Recommendation]",
+        "required": true
+      },
+      {
+        "name": "analysis_summary",
+        "type": "AnalysisSummary",
+        "required": true
+      },
+      {
+        "name": "template_config",
+        "type": "TemplateConfig",
+        "required": false
+      }
     ],
     "outputs": [
-      {"name": "policy_report", "type": "PolicyReport"},
-      {"name": "executive_summary", "type": "ExecutiveSummary"},
-      {"name": "detailed_findings", "type": "DetailedFindings"}
+      {
+        "name": "policy_report",
+        "type": "PolicyReport"
+      },
+      {
+        "name": "executive_summary",
+        "type": "ExecutiveSummary"
+      },
+      {
+        "name": "detailed_findings",
+        "type": "DetailedFindings"
+      }
     ],
     "invariants": [
-      {"id": "INV-P9-1", "name": "Completeness", "formula": "∀ section: is_populated(section)"},
-      {"id": "INV-P9-2", "name": "Traceability", "formula": "∀ finding: has_source_reference(finding)"}
+      {
+        "id": "INV-P9-1",
+        "name": "Completeness",
+        "formula": "\u2200 section: is_populated(section)"
+      },
+      {
+        "id": "INV-P9-2",
+        "name": "Traceability",
+        "formula": "\u2200 finding: has_source_reference(finding)"
+      }
     ]
   },
   "determinism": {
