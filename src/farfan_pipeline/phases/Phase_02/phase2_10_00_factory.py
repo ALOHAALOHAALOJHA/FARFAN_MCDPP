@@ -6,7 +6,7 @@ Sequence: W
 Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
 
 This module is the SINGLE AUTHORITATIVE BOUNDARY for:
-- Canonical monolith access (CanonicalQuestionnaire) - loaded ONCE with integrity verification
+- Canonical questionnaire access (CanonicalQuestionnaire) - assembled ONCE with integrity verification
 - Signal registry construction (QuestionnaireSignalRegistry v2.0) from canonical source ONLY
 - Method injection via MethodExecutor with signal registry DI
 - Orchestrator construction with full DI (questionnaire, method_executor, executor_config)
@@ -76,9 +76,9 @@ Design Principles (Factory Pattern + DI):
    - MethodExecutor receives: method_registry, arg_router, signal_registry
    - BaseExecutor (30 classes) receive: enriched_signal_pack, method_executor, config
    
-3. CANONICAL MONOLITH CONTROL:
+3. CANONICAL QUESTIONNAIRE CONTROL:
    - load_questionnaire() called ONCE by factory only (singleton + integrity hash)
-   - Orchestrator uses self.questionnaire object, NEVER file paths
+   - Orchestrator uses self.questionnaire object (assembled via Modular Resolver), NEVER file paths
    - Search codebase: NO other load_questionnaire() calls should exist
    
 4. SIGNAL REGISTRY CONTROL:
@@ -255,7 +255,7 @@ _REPO_ROOT = Path(__file__).resolve().parents[2]
 @dataclass(frozen=True)
 class CanonicalQuestionnaire:
     """
-    Objeto inmutable del cuestionario monolito.
+    Objeto inmutable del cuestionario canónico (ensamblado modularmente).
 
     NIVEL 1: Acceso Total
     CONSUMIDOR ÚNICO: AnalysisPipelineFactory (este archivo)
@@ -310,7 +310,7 @@ def load_questionnaire(
     """
     Carga el cuestionario canónico usando el resolvedor modular.
 
-    NIVEL 1: ÚNICA función autorizada para I/O del monolito.
+    NIVEL 1: ÚNICA función autorizada para la carga canónica.
     CONSUMIDOR: Solo AnalysisPipelineFactory._load_canonical_questionnaire
 
     Args:
@@ -394,7 +394,7 @@ class ProcessorBundle:
     Attributes:
         orchestrator: Fully configured Orchestrator (main entry point).
         method_executor: MethodExecutor with signal registry injected.
-        questionnaire: Immutable, validated CanonicalQuestionnaire (monolith).
+        questionnaire: Immutable, validated CanonicalQuestionnaire (assembled structure).
         signal_registry: QuestionnaireSignalRegistry v2.0 from canonical source.
         executor_config: ExecutorConfig for operational parameters.
         enriched_signal_packs: Dict of EnrichedSignalPack per policy area.

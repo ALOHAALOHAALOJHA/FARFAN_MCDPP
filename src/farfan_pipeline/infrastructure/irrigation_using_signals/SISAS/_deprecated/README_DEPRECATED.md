@@ -57,4 +57,4 @@ Estos archivos se mantienen solo para:
 
 ---
 
-**Ver:** `SISAS_FINAL_CERTIFICATION_COMPLETE.md` para audit completo
+**Ver:** `SISAS_CERTIFICATION_PACK.md` para audit completo

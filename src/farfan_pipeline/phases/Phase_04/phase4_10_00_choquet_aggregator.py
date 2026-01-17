@@ -247,7 +247,7 @@ class CalibrationBreakdown:
             "Per-Layer Contributions:",
         ]
         for layer_id, contrib in sorted(self.per_layer_contributions.items()):
-            lines. append(f"  {layer_id}:  {contrib:.4f}")
+            lines.append(f"  {layer_id}:  {contrib:.4f}")
 
         if self.per_interaction_contributions:
             lines.append("")

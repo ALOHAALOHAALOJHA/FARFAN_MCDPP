@@ -76,7 +76,7 @@ from SISAS.consumers.phase8.phase8_30_00_signal_enriched_recommendations import 
 
 **Ver:**
 1. `SISAS_SYSTEM_INVENTORY.md` - Inventario completo (84 archivos)
-2. `SISAS_FINAL_CERTIFICATION_COMPLETE.md` - Certificación completa
+2. `SISAS_CERTIFICATION_PACK.md` - Certificación completa
 3. `SISAS_DEPURACION_PLAN.md` - Plan de depuración ejecutado
 4. `SISAS/` - Código fuente productivo
 
