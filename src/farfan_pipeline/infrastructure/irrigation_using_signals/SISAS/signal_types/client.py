@@ -58,6 +58,12 @@ except ImportError:
 
     logger = logging.getLogger(__name__)
 
+# Internal registry of optional dependency availability for introspection/debugging
+_OPTIONAL_DEPENDENCIES = {
+    "blake3": BLAKE3_AVAILABLE,
+    "structlog": STRUCTLOG_AVAILABLE,
+}
+
 from pydantic import BaseModel, Field, field_validator
 
 # Optional dependency - tenacity
