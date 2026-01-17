@@ -4,11 +4,13 @@ PHASE_LABEL: Phase 2
 Sequence: W
 
 """
+from __future__ import annotations
+
 """
 Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
 
 This module is the SINGLE AUTHORITATIVE BOUNDARY for:
-- Canonical monolith access (CanonicalQuestionnaire) - loaded ONCE with integrity verification
+- Canonical questionnaire access (CanonicalQuestionnaire) - assembled ONCE with integrity verification
 - Signal registry construction (QuestionnaireSignalRegistry v2.0) from canonical source ONLY
 - Method injection via MethodExecutor with signal registry DI
 - Orchestrator construction with full DI (questionnaire, method_executor, executor_config)
@@ -78,9 +80,9 @@ Design Principles (Factory Pattern + DI):
    - MethodExecutor receives: method_registry, arg_router, signal_registry
    - BaseExecutor (30 classes) receive: enriched_signal_pack, method_executor, config
    
-3. CANONICAL MONOLITH CONTROL:
+3. CANONICAL QUESTIONNAIRE CONTROL:
    - load_questionnaire() called ONCE by factory only (singleton + integrity hash)
-   - Orchestrator uses self.questionnaire object, NEVER file paths
+   - Orchestrator uses self.questionnaire object (assembled via Modular Resolver), NEVER file paths
    - Search codebase: NO other load_questionnaire() calls should exist
    
 4. SIGNAL REGISTRY CONTROL:
@@ -138,8 +140,6 @@ SIN_CARRETA Compliance:
 - Phase 0 validation ensures system readiness before pipeline execution
 """
 
-from __future__ import annotations
-
 import hashlib
 import json
 import logging
@@ -178,6 +178,20 @@ from farfan_pipeline.phases.Phase_02.registries.questionnaire_signal_registry im
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
+
+# SISAS Subsystem (Integration Wiring)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import BusRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import ContractRegistry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import EventStore
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.signal_vocabulary import SignalVocabulary
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.capability_vocabulary import CapabilityVocabulary
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.alignment_checker import VocabularyAlignmentChecker
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import IrrigationExecutor
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistryVehicle
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoperVehicle
+
+# Modular Questionnaire Resolver (Canonical Source)
+from canonic_questionnaire_central.resolver import resolve_questionnaire
 
 # Phase 1 validation constants module
 # NOTE: validation_constants module does not exist in current architecture
@@ -233,52 +247,19 @@ logger = logging.getLogger(__name__)
 
 
 # ============================================================================
-# RUTA CANÓNICA DEL CUESTIONARIO - NIVEL 1
-# Según AGENTS.md - NO MODIFICAR sin actualizar documentación
+# CANONICAL QUESTIONNAIRE RESOLVER - NIVEL 1
+# Uses modular resolver instead of monolithic file
+# Según AGENTS.md - Migrated to modular architecture per SISAS 2.0
 # ============================================================================
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
-
-
-@dataclass(frozen=True)
-class CanonicalQuestionnaire:
-    """
-    Objeto inmutable del cuestionario monolito.
-
-    NIVEL 1: Acceso Total
-    CONSUMIDOR ÚNICO: AnalysisPipelineFactory (este archivo)
-    PROHIBIDO: Instanciar directamente, usar load_questionnaire()
-    """
-    data: dict[str, Any]
-    sha256: str
-    version: str
-    load_timestamp: str
-    source_path: str
-
-    @property
-    def dimensions(self) -> dict[str, Any]:
-        """6 dimensiones: DIM01-DIM06"""
-        return dict(self.data.get("canonical_notation", {}).get("dimensions", {}))
-
-    @property
-    def policy_areas(self) -> dict[str, Any]:
-        """10 áreas: PA01-PA10"""
-        return dict(self.data.get("canonical_notation", {}).get("policy_areas", {}))
-
-    @property
-    def micro_questions(self) -> list[dict[str, Any]]:
-        """300 micro preguntas"""
-        return list(self.data.get("blocks", {}).get("micro_questions", []))
-
-    @property
-    def meso_questions(self) -> list[dict[str, Any]]:
-        """4 meso preguntas"""
-        return list(self.data.get("blocks", {}).get("meso_questions", []))
-
-    @property
-    def macro_question(self) -> dict[str, Any]:
-        """1 macro pregunta"""
-        return dict(self.data.get("blocks", {}).get("macro_question", {}))
+# DEPRECATED: CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+# NEW: Use CanonicalQuestionnaireResolver for modular assembly
+# Import CanonicalQuestionnaire from modular resolver (SISAS 2.0)
+from canonic_questionnaire_central.resolver import (
+    CanonicalQuestionnaire,
+    QuestionnairePort,
+    ResolverError,
+)
 
 
 class QuestionnaireLoadError(Exception):
@@ -292,61 +273,71 @@ class QuestionnaireIntegrityError(QuestionnaireLoadError):
 
 
 def load_questionnaire(
-    path: Path | None = None,
     expected_hash: str | None = None,
+    force_rebuild: bool = False,
 ) -> CanonicalQuestionnaire:
     """
-    Carga el cuestionario canónico con verificación de integridad.
+    Carga el cuestionario canónico usando el resolver modular.
 
-    NIVEL 1: ÚNICA función autorizada para I/O del monolito.
+    NIVEL 1: ÚNICA función autorizada para assembly del questionnaire.
     CONSUMIDOR: Solo AnalysisPipelineFactory._load_canonical_questionnaire
 
+    REFACTORED (2026-01-17): Migrated from monolithic file loading to modular resolver.
+    Now uses canonic_questionnaire_central.resolver.CanonicalQuestionnaireResolver
+    which assembles from granular components (dimensions/, policy_areas/, etc.)
+
     Args:
-        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH)
-        expected_hash: Hash SHA256 esperado para verificación
+        expected_hash: Hash SHA256 esperado para verificación (optional)
+        force_rebuild: If True, bypass cache and rebuild from modular sources
 
     Returns:
-        CanonicalQuestionnaire: Objeto inmutable verificado
+        CanonicalQuestionnaire: Objeto inmutable verificado from modular assembly
 
     Raises:
-        QuestionnaireLoadError: Archivo no existe o JSON inválido
-        QuestionnaireIntegrityError: Hash no coincide
+        QuestionnaireLoadError: Si el assembly falla
+        QuestionnaireIntegrityError: Si hash no coincide
     """
-    questionnaire_path = path or CANONICAL_QUESTIONNAIRE_PATH
-
-    if not questionnaire_path.exists():
-        raise QuestionnaireLoadError(
-            f"Questionnaire not found: {questionnaire_path}"
-        )
-
-    content_bytes = questionnaire_path.read_bytes()
-    computed_hash = hashlib.sha256(content_bytes).hexdigest()
-
-    if expected_hash and computed_hash.lower() != expected_hash.lower():
-        raise QuestionnaireIntegrityError(
-            f"Hash mismatch: expected {expected_hash[:16]}..., "
-            f"got {computed_hash[:16]}..."
-        )
-
     try:
-        content = json.loads(content_bytes.decode("utf-8"))
-    except json.JSONDecodeError as e:
-        raise QuestionnaireLoadError(f"Invalid JSON: {e}")
-
-    if "canonical_notation" not in content:
-        raise QuestionnaireLoadError("Missing 'canonical_notation'")
-    if "blocks" not in content:
-        raise QuestionnaireLoadError("Missing 'blocks'")
-
-    version = content.get("version", "unknown")
-
-    return CanonicalQuestionnaire(
-        data=content,
-        sha256=computed_hash,
-        version=version,
-        load_timestamp=datetime.now(timezone.utc).isoformat(),
-        source_path=str(questionnaire_path.resolve()),
-    )
+        # Import modular resolver
+        from canonic_questionnaire_central.resolver import (
+            CanonicalQuestionnaireResolver,
+            AssemblyError,
+            IntegrityError as ResolverIntegrityError,
+        )
+        
+        # Initialize resolver
+        resolver = CanonicalQuestionnaireResolver(
+            root=_REPO_ROOT / "canonic_questionnaire_central",
+            strict_mode=True,
+            cache_enabled=True,
+            sdo_enabled=True,  # Enable SISAS 2.0 Signal Distribution Orchestrator
+        )
+        
+        # Resolve questionnaire from modular sources
+        questionnaire = resolver.resolve(
+            expected_hash=expected_hash,
+            force_rebuild=force_rebuild,
+        )
+        
+        logger.info(
+            "questionnaire_loaded_via_modular_resolver",
+            sha256=questionnaire.sha256[:16],
+            version=questionnaire.version,
+            source=questionnaire.source,
+            question_count=len(questionnaire.micro_questions),
+            assembly_duration_ms=questionnaire.provenance.assembly_duration_ms,
+        )
+        
+        return questionnaire
+        
+    except ResolverIntegrityError as e:
+        raise QuestionnaireIntegrityError(str(e)) from e
+    except AssemblyError as e:
+        raise QuestionnaireLoadError(f"Modular assembly failed: {e}") from e
+    except Exception as e:
+        raise QuestionnaireLoadError(
+            f"Unexpected error loading questionnaire via resolver: {e}"
+        ) from e
 
 
 # =============================================================================
@@ -398,7 +389,7 @@ class ProcessorBundle:
     Attributes:
         orchestrator: Fully configured Orchestrator (main entry point).
         method_executor: MethodExecutor with signal registry injected.
-        questionnaire: Immutable, validated CanonicalQuestionnaire (monolith).
+        questionnaire: Immutable, validated CanonicalQuestionnaire (assembled structure).
         signal_registry: QuestionnaireSignalRegistry v2.0 from canonical source.
         executor_config: ExecutorConfig for operational parameters.
         enriched_signal_packs: Dict of EnrichedSignalPack per policy area.
@@ -419,6 +410,7 @@ class ProcessorBundle:
     validation_constants: dict[str, Any]
     calibration_registry: Any | None = None  # FASE 4.1: EpistemicCalibrationRegistry
     pdm_profile: Any | None = None  # FASE 4.1: MockPDMProfile
+    sisas_executor: IrrigationExecutor | None = None  # SISAS Subsystem
     core_module_factory: Any | None = None
     seed_registry_initialized: bool = False
     provenance: dict[str, Any] = field(default_factory=dict)
@@ -612,6 +604,9 @@ class AnalysisPipelineFactory:
 
             # Step 2.5: FASE 4.1 - Initialize Calibration Registry (Epistemic Level Calibration)
             self._initialize_calibration_registry()
+            
+            # Step 2.6: Initialize SISAS Subsystem (Integration Wiring)
+            sisas_components = self._initialize_sisas_system()
 
             # Step 3: Build enriched signal packs (intelligence layer)
             self._build_enriched_signal_packs()
@@ -677,6 +672,7 @@ class AnalysisPipelineFactory:
                 validation_constants=validation_constants,
                 calibration_registry=self._calibration_registry,  # FASE 4.1
                 pdm_profile=self._pdm_profile,  # FASE 4.1
+                sisas_executor=sisas_components.get("executor") if sisas_components else None,
                 core_module_factory=self._build_core_module_factory(),
                 seed_registry_initialized=seed_initialized,
                 provenance=provenance,
@@ -1188,6 +1184,94 @@ class AnalysisPipelineFactory:
         )
 
         return profile
+
+    def _initialize_sisas_system(self) -> dict[str, Any] | None:
+        """Initialize the SISAS subsystem (Signal-Irrigated System).
+        
+        Replicates the wiring from SISAS/main.py but integrated into the pipeline factory.
+        
+        Returns:
+            Dict containing SISAS components (executor, registries, etc.) or None if disabled.
+        """
+        if not self._enable_intelligence:
+            logger.info("sisas_initialization_skipped intelligence_layer=off")
+            return None
+
+        logger.info("sisas_initialization_start")
+
+        try:
+            # 1. Create registries
+            bus_registry = BusRegistry()
+            contract_registry = ContractRegistry()
+            event_store = EventStore()
+            
+            # 2. Create vocabularies
+            signal_vocab = SignalVocabulary()
+            capability_vocab = CapabilityVocabulary()
+            
+            # 3. Check alignment
+            alignment_checker = VocabularyAlignmentChecker(
+                signal_vocabulary=signal_vocab,
+                capability_vocabulary=capability_vocab
+            )
+            # We don't block on alignment issues in production unless strict
+            alignment_report = alignment_checker.check_alignment()
+            
+            if not alignment_report.is_aligned:
+                logger.warning(
+                    "sisas_vocabulary_alignment_issues count=%d", 
+                    len(alignment_report.issues)
+                )
+                if self._strict:
+                    # In strict mode, we might want to fail, but for now we log error
+                    # as SISAS is an enhancement layer
+                    for issue in alignment_report.issues:
+                        if issue.severity == "critical":
+                            logger.error("sisas_critical_issue: %s", issue.details)
+
+            # 4. Create vehicles
+            vehicles = {
+                "signal_registry": SignalRegistryVehicle(
+                    bus_registry=bus_registry,
+                    contract_registry=contract_registry,
+                    event_store=event_store
+                ),
+                "signal_context_scoper": SignalContextScoperVehicle(
+                    bus_registry=bus_registry,
+                    contract_registry=contract_registry,
+                    event_store=event_store
+                )
+            }
+            
+            # 5. Create irrigation executor
+            executor = IrrigationExecutor(
+                bus_registry=bus_registry,
+                contract_registry=contract_registry,
+                event_store=event_store
+            )
+            
+            # Register vehicles
+            for vehicle_id, vehicle in vehicles.items():
+                executor.register_vehicle(vehicle)
+                logger.debug("sisas_vehicle_registered id=%s", vehicle_id)
+            
+            logger.info("sisas_initialized_successfully vehicles=%d", len(vehicles))
+            
+            return {
+                "executor": executor,
+                "bus_registry": bus_registry,
+                "contract_registry": contract_registry,
+                "event_store": event_store,
+                "signal_vocab": signal_vocab,
+                "capability_vocab": capability_vocab
+            }
+            
+        except Exception as e:
+            msg = f"Failed to initialize SISAS subsystem: {e}"
+            logger.error("sisas_initialization_failed error=%s", msg, exc_info=True)
+            if self._strict:
+                raise FactoryError(msg) from e
+            return None
 
     def _initialize_seed_registry(self) -> bool:
         """Initialize SeedRegistry singleton for deterministic operations.

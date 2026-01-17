@@ -1,9 +1,8 @@
-from .phase3_10_00_phase3_nexus_interface_validator import NexusScoringValidator
-from .phase3_10_00_phase3_entry_contract import MicroQuestionRun
-from .phase3_10_00_phase3_exit_contract import ScoredMicroQuestion
+"""
+Phase 3 Interphase (Protocols & Interfaces)
+"""
+from ..contracts.phase03_input_contract import MicroQuestionRun
+from ..contracts.phase03_output_contract import ScoredMicroQuestion
+from .phase3_05_00_nexus_interface_validator import NexusScoringValidator
 
-__all__ = [
-    "NexusScoringValidator",
-    "MicroQuestionRun",
-    "ScoredMicroQuestion",
-]
+__all__ = ["MicroQuestionRun", "ScoredMicroQuestion", "NexusScoringValidator"]

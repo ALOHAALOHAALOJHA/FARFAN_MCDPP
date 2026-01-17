@@ -240,8 +240,8 @@ class CalibrationBreakdown:
     def summary(self) -> str:
         """Generate human-readable summary of breakdown."""
         lines = [
-            f"Linear Contribution: {self.linear_contribution:. 4f}",
-            f"Interaction Contribution: {self.interaction_contribution:. 4f}",
+            f"Linear Contribution: {self.linear_contribution:.4f}",
+            f"Interaction Contribution: {self.interaction_contribution:.4f}",
             f"Total:  {self.total_contribution:.4f}",
             "",
             "Per-Layer Contributions:",
@@ -331,8 +331,8 @@ class CalibrationResult:
             f"Calibration Result: {self.subject}",
             f"  Score: {self.calibration_score:.4f}",
             f"  Validation: {'PASSED' if self.validation_passed else 'FAILED'}",
-            f"  Linear: {self.breakdown.linear_contribution:. 4f}",
-            f"  Interaction: {self. breakdown.interaction_contribution:.4f}",
+            f"  Linear: {self.breakdown.linear_contribution:.4f}",
+            f"  Interaction: {self.breakdown.interaction_contribution:.4f}",
             f"  Layers: {len(self.layer_scores)}",
         ]
         return "\n".join(lines)

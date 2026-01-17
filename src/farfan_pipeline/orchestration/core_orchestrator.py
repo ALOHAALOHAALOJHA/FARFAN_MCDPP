@@ -1829,10 +1829,13 @@ class Orchestrator:
                     "phase0_validation": self._phase0_validation,
                 }
             )
-            # Initialize context
+            # Initialize context with questionnaire
             self._pipeline_orchestrator.context = ExecutionContext(
                 config=self._pipeline_orchestrator.config,
             )
+            # Store phase outputs
+            for phase, output in self._phase_outputs.items():
+                self._pipeline_orchestrator.context.phase_outputs[phase] = output
 
         # Map phase_id to PhaseID enum
         phase_map = {

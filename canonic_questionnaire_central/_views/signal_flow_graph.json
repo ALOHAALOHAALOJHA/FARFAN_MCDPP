@@ -1,6 +1,6 @@
 {
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:40:07.609494+00:00",
+  "_generated_at": "2026-01-16T23:32:10.351304+00:00",
   "nodes": [
     {
       "id": "MC01",
@@ -9,33 +9,21 @@
       "implementation_status": "IMPLEMENTED"
     },
     {
-      "id": "MC10",
-      "type": "MEMBERSHIP_CRITERIA",
-      "signal_type": "SEMANTIC_RELATIONSHIP",
-      "implementation_status": "PARTIAL"
-    },
-    {
-      "id": "MC06",
-      "type": "MEMBERSHIP_CRITERIA",
-      "signal_type": "POPULATION_DISAGGREGATION",
-      "implementation_status": "PARTIAL"
-    },
-    {
       "id": "MC07",
       "type": "MEMBERSHIP_CRITERIA",
       "signal_type": "TEMPORAL_MARKER",
       "implementation_status": "PARTIAL"
     },
     {
-      "id": "MC02",
+      "id": "MC08",
       "type": "MEMBERSHIP_CRITERIA",
-      "signal_type": "QUANTITATIVE_TRIPLET",
-      "implementation_status": "IMPLEMENTED"
+      "signal_type": "CAUSAL_LINK",
+      "implementation_status": "MISSING"
     },
     {
-      "id": "MC04",
+      "id": "MC10",
       "type": "MEMBERSHIP_CRITERIA",
-      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "signal_type": "SEMANTIC_RELATIONSHIP",
       "implementation_status": "PARTIAL"
     },
     {
@@ -51,16 +39,28 @@
       "implementation_status": "MISSING"
     },
     {
+      "id": "MC02",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "QUANTITATIVE_TRIPLET",
+      "implementation_status": "IMPLEMENTED"
+    },
+    {
+      "id": "MC04",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "implementation_status": "PARTIAL"
+    },
+    {
+      "id": "MC06",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "POPULATION_DISAGGREGATION",
+      "implementation_status": "PARTIAL"
+    },
+    {
       "id": "MC03",
       "type": "MEMBERSHIP_CRITERIA",
       "signal_type": "NORMATIVE_REFERENCE",
       "implementation_status": "PARTIAL"
-    },
-    {
-      "id": "MC08",
-      "type": "MEMBERSHIP_CRITERIA",
-      "signal_type": "CAUSAL_LINK",
-      "implementation_status": "MISSING"
     },
     {
       "id": "PHASE_1",
@@ -90,27 +90,17 @@
       "type": "PRODUCES"
     },
     {
-      "source": "MC10",
-      "target": "PHASE_1",
-      "type": "PRODUCES"
-    },
-    {
-      "source": "MC06",
-      "target": "PHASE_1",
-      "type": "PRODUCES"
-    },
-    {
       "source": "MC07",
       "target": "PHASE_1",
       "type": "PRODUCES"
     },
     {
-      "source": "MC02",
+      "source": "MC08",
       "target": "PHASE_1",
       "type": "PRODUCES"
     },
     {
-      "source": "MC04",
+      "source": "MC10",
       "target": "PHASE_1",
       "type": "PRODUCES"
     },
@@ -125,12 +115,22 @@
       "type": "PRODUCES"
     },
     {
-      "source": "MC03",
+      "source": "MC02",
       "target": "PHASE_1",
       "type": "PRODUCES"
     },
     {
-      "source": "MC08",
+      "source": "MC04",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC06",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC03",
       "target": "PHASE_1",
       "type": "PRODUCES"
     }

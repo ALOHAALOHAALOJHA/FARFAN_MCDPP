@@ -1,10 +1,10 @@
 {
-  "_generated_at": "2026-01-06T17:40:07.671369+00:00",
+  "_generated_at": "2026-01-16T23:32:10.390292+00:00",
   "build_duration_seconds": 0.0,
   "metrics": {
-    "patterns_processed": 1728,
+    "patterns_processed": 0,
     "questions_processed": 300,
-    "keywords_processed": 1916,
+    "keywords_processed": 3946,
     "views_generated": 7,
     "integrity_errors": 0,
     "warnings": 0
@@ -18,6 +18,8 @@
     "questionnaire_flat.json",
     "signal_flow_graph.json"
   ],
-  "legacy_artifacts": [],
+  "legacy_artifacts": [
+    "questionnaire_monolith.json"
+  ],
   "success": true
 }
