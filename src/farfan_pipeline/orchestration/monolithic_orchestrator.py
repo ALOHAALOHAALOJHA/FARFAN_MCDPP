@@ -243,9 +243,8 @@ except ImportError:
 
 # Phase 2 - Doctoral Carver Synthesizer
 try:
-    from farfan_pipeline.phases.Phase_02.phase2_90_00_carver import (
-        DoctoralCarverSynthesizer,
-    )
+    from farfan_pipeline.phases.Phase_02 import phase2_90_00_carver as _carver_module
+    DoctoralCarverSynthesizer = _carver_module.DoctoralCarverSynthesizer
     DOCTORAL_CARVER_AVAILABLE = True
 except ImportError:
     DOCTORAL_CARVER_AVAILABLE = False
