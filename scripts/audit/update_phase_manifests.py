@@ -10,7 +10,7 @@ manifest structure while updating the module listings.
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Set
+from typing import Dict, List
 from datetime import datetime
 
 # ANSI color codes
