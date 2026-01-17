@@ -48,7 +48,10 @@ setup(
         # Configuration
         "python-dotenv>=1.0.0",
         # Image/table processing
+        "img2table>=1.4.0",
         "opencv-contrib-python-headless>=4.8.0",
+        "pillow>=10.0.0",
+        "tabula-py>=2.9.0",
         # Utilities
         "requests>=2.31.0",
         "aiohttp>=3.9.0",
