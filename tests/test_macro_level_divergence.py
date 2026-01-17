@@ -380,7 +380,7 @@ class TestMacroAuditTool:
     
     def test_audit_tool_executable(self):
         """Test that audit tool can be imported and run."""
-            
+        try:
             from audit_macro_level_divergence import MacroLevelAuditor, MacroLevelAuditReport
             
             # Check classes exist
