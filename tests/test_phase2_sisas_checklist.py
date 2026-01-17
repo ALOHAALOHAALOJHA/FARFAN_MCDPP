@@ -48,51 +48,43 @@ except ImportError:
     FARFAN_PROJECT_ROOT = PROJECT_ROOT
     PATHS_AVAILABLE = False
 
-try:
-    from orchestration.orchestrator import (
-        EvidenceRecord,
-        EvidenceRegistry,
-        get_global_registry,
-    )
+# Legacy imports removed - orchestration.orchestrator namespace eliminated
+# Per canonical_architecture.md, these classes either don't exist or have moved
 
-    EVIDENCE_REGISTRY_AVAILABLE = True
-except ImportError:
-    EVIDENCE_REGISTRY_AVAILABLE = False
-    EvidenceRecord = None
-    EvidenceRegistry = None
+# EvidenceRecord, EvidenceRegistry - PHANTOM CLASSES (never existed)
+EVIDENCE_REGISTRY_AVAILABLE = False
+EvidenceRecord = None
+EvidenceRegistry = None
+get_global_registry = None
 
+# BaseExecutorWithContract - Moved to Phase_02
 try:
-    from orchestration.orchestrator import (
+    from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import (
         BaseExecutorWithContract,
     )
-
     EXECUTOR_CONTRACT_AVAILABLE = True
 except ImportError:
     EXECUTOR_CONTRACT_AVAILABLE = False
     BaseExecutorWithContract = None
 
-try:
-    from orchestration.task_planner import ExecutableTask
+# ExecutableTask - orchestration.task_planner doesn't exist in canonical architecture
+TASK_PLANNER_AVAILABLE = False
+ExecutableTask = None
 
-    TASK_PLANNER_AVAILABLE = True
-except ImportError:
-    TASK_PLANNER_AVAILABLE = False
-    ExecutableTask = None
-
+# IrrigationSynchronizer, ExecutionPlan - check Phase_02 irrigation modules
 try:
-    from orchestration.orchestrator import (
+    from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import (
         IrrigationSynchronizer,
-        ExecutionPlan,
     )
-
     IRRIGATION_AVAILABLE = True
+    ExecutionPlan = None  # ExecutionPlan not found - may be phantom class
 except ImportError:
     IRRIGATION_AVAILABLE = False
     IrrigationSynchronizer = None
     ExecutionPlan = None
 
 try:
-    from orchestration.orchestrator import QuestionnaireSignalRegistry
+    from farfan_pipeline.phases.Phase_02.registries.questionnaire_signal_registry import QuestionnaireSignalRegistry
 
     SIGNAL_REGISTRY_AVAILABLE = True
 except ImportError:

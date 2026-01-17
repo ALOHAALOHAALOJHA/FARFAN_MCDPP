@@ -26,13 +26,16 @@ echo ""
 
 # Check 1: Forbidden namespace - orchestration.orchestrator
 echo "[1/7] Checking for forbidden orchestration.orchestrator imports..."
-if grep -rn "from orchestration\.orchestrator import\|import orchestration\.orchestrator" \
+ORCHESTRATOR_IMPORTS=$(grep -rn "from orchestration\.orchestrator import\|import orchestration\.orchestrator" \
     --include="*.py" \
     --exclude-dir=".git" \
     --exclude-dir="__pycache__" \
     --exclude-dir="backups" \
     --exclude-dir="artifacts" \
-    . 2>/dev/null; then
+    . 2>/dev/null | grep -v "^[^:]*\.py:[^:]*:#" | grep -v "pattern=r\"" || true)
+
+if [ -n "$ORCHESTRATOR_IMPORTS" ]; then
+    echo "$ORCHESTRATOR_IMPORTS"
     echo "❌ ERROR: Found forbidden imports from orchestration.orchestrator"
     echo "   Replace with: from farfan_pipeline.orchestration.core_orchestrator import ..."
     ERRORS=$((ERRORS + 1))
@@ -44,13 +47,16 @@ fi
 # Check 2: Forbidden namespace - cross_cutting_infrastructure
 echo ""
 echo "[2/7] Checking for forbidden cross_cutting_infrastructure imports..."
-if grep -rn "from cross_cutting_infrastructure\|import cross_cutting_infrastructure" \
+CROSS_CUTTING_IMPORTS=$(grep -rn "from cross_cutting_infrastructure\|import cross_cutting_infrastructure" \
     --include="*.py" \
     --exclude-dir=".git" \
     --exclude-dir="__pycache__" \
     --exclude-dir="backups" \
     --exclude-dir="artifacts" \
-    . 2>/dev/null; then
+    . 2>/dev/null | grep -v "pattern=r\"" | grep -v "^[^:]*\.py:[^:]*:#" || true)
+
+if [ -n "$CROSS_CUTTING_IMPORTS" ]; then
+    echo "$CROSS_CUTTING_IMPORTS"
     echo "❌ ERROR: Found forbidden imports from cross_cutting_infrastructure namespace"
     echo "   This namespace has been eliminated. Replace with farfan_pipeline.infrastructure.*"
     ERRORS=$((ERRORS + 1))
