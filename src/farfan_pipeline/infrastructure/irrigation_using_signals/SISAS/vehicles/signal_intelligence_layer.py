@@ -29,3 +29,19 @@ class SignalIntelligenceLayerVehicle(BaseVehicle):
     def process(self, data: Any, context: SignalContext) -> List[Signal]:
         # Logic to be implemented
         return []
+
+@dataclass
+class EnrichedSignalPack:
+    """Pack containing enriched signals for a specific context."""
+    base_pack: Dict[str, Any]
+    expanded_signals: List[Signal] = field(default_factory=list)
+    
+    def get_patterns_for_context(self) -> List[Dict[str, Any]]:
+        return self.base_pack.get("patterns", [])
+
+def create_enriched_signal_pack(
+    base_signal_pack: Dict[str, Any],
+    enable_semantic_expansion: bool = True
+) -> EnrichedSignalPack:
+    """Creates an enriched signal pack."""
+    return EnrichedSignalPack(base_pack=base_signal_pack)

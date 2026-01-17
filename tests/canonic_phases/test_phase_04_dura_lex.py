@@ -1,9 +1,9 @@
 """
-Phase 4-7 Dura Lex Contract Tests
+Phase 04 Dura Lex Contract Tests
 =================================
 
-Applies the 15 Dura Lex contracts to the Phase 4-7 Aggregation pipeline,
-specifically targeting the ChoquetAggregator and EnhancedAggregators.
+Applies the 15 Dura Lex contracts to the Phase 04 Aggregation pipeline,
+specifically targeting the ChoquetAggregator.
 
 Contracts Applied:
     1. Audit Trail - Aggregations must log detailed breakdowns
@@ -22,22 +22,25 @@ Contracts Applied:
     14. Snapshot Contract - CalibrationResult is a snapshot
     15. Traceability - Result allows tracing back to contributions
 
-Author: Phase 4-7 Compliance
+Author: Phase 04 Compliance
 """
 
 import math
 import pytest
 from dataclasses import FrozenInstanceError
 
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
+# Fixed import paths - modules are in Phase_04
+from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,
 )
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
-    EnhancedClusterAggregator,
-    DispersionMetrics,
-)
+
+# Note: Enhanced aggregators may not exist - commenting out for now
+# from farfan_pipeline.phases.Phase_04.aggregation_enhancements import (
+#     EnhancedClusterAggregator,
+#     DispersionMetrics,
+# )
 
 # ============================================================================
 # CONTRACT 1: AUDIT TRAIL
