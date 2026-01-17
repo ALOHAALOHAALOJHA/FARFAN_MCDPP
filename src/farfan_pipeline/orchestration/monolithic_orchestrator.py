@@ -1135,36 +1135,28 @@ class MonolithicOrchestrator:
         start_time = time.time()
 
         # Phase-specific execution
-        try:
-            if phase_id == PhaseID.PHASE_0:
-                output = self._execute_phase_0()
-            elif phase_id == PhaseID.PHASE_1:
-                output = self._execute_phase_1()
-            elif phase_id == PhaseID.PHASE_2:
-                output = self._execute_phase_2()
-            elif phase_id == PhaseID.PHASE_3:
-                output = self._execute_phase_3()
-            elif phase_id == PhaseID.PHASE_4:
-                output = self._execute_phase_4()
-            elif phase_id == PhaseID.PHASE_5:
-                output = self._execute_phase_5()
-            elif phase_id == PhaseID.PHASE_6:
-                output = self._execute_phase_6()
-            elif phase_id == PhaseID.PHASE_7:
-                output = self._execute_phase_7()
-            elif phase_id == PhaseID.PHASE_8:
-                output = self._execute_phase_8()
-            elif phase_id == PhaseID.PHASE_9:
-                output = self._execute_phase_9()
-            else:
-                raise ValueError(f"Unknown phase: {phase_id}")
-        except Exception as e:
-            self.logger.error(
-                "phase_execution_error",
-                phase=phase_id.value,
-                error=str(e),
-            )
-            raise
+        if phase_id == PhaseID.PHASE_0:
+            output = self._execute_phase_0()
+        elif phase_id == PhaseID.PHASE_1:
+            output = self._execute_phase_1()
+        elif phase_id == PhaseID.PHASE_2:
+            output = self._execute_phase_2()
+        elif phase_id == PhaseID.PHASE_3:
+            output = self._execute_phase_3()
+        elif phase_id == PhaseID.PHASE_4:
+            output = self._execute_phase_4()
+        elif phase_id == PhaseID.PHASE_5:
+            output = self._execute_phase_5()
+        elif phase_id == PhaseID.PHASE_6:
+            output = self._execute_phase_6()
+        elif phase_id == PhaseID.PHASE_7:
+            output = self._execute_phase_7()
+        elif phase_id == PhaseID.PHASE_8:
+            output = self._execute_phase_8()
+        elif phase_id == PhaseID.PHASE_9:
+            output = self._execute_phase_9()
+        else:
+            raise ValueError(f"Unknown phase: {phase_id}")
 
         # Record phase result
         execution_time = time.time() - start_time
