@@ -1,6 +1,6 @@
 """
-ORQUESTADOR MONOLÍTICO UNIFICADO - FARFAN MCDPP
-================================================
+ORQUESTADOR MONOLÍTICO UNIFICADO - FARFAN MCDPP (Macro Constitutional Data Policy Pipeline)
+============================================================================================
 
 Fusión completa y explícita de:
 - canonical_executors.py
@@ -78,10 +78,9 @@ __causal_inference__ = "pearl-calculus"
 
 import argparse
 import asyncio
-import csv
+import importlib.resources
 import json
 import logging
-import os
 import sys
 import time
 from collections import OrderedDict
@@ -89,7 +88,7 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 
 import blake3
 import structlog
@@ -116,13 +115,8 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contract
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
     EventStore,
-    Event,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
-    Signal,
-    SignalCategory,
-    SignalContext,
-)
+# SISAS Core - removed unused imports (Signal, SignalCategory, SignalContext)
 
 # SISAS Irrigation
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import (
@@ -130,7 +124,6 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.ir
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_map import (
     IrrigationMap,
-    IrrigationRoute,
 )
 
 # SISAS Vehicles
@@ -154,17 +147,10 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vocabulary.si
 
 # SISAS Signals
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
-    InMemorySignalSource,
-    SignalClient,
-    SignalPack,
     SignalRegistry,
 )
 
-# SISAS Audit
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
-    AccessLevel,
-    get_access_audit,
-)
+# SISAS Audit - removed unused imports (AccessLevel, get_access_audit)
 
 # =============================================================================
 # SUBSISTEMA DE CALIBRACIÓN - MATERIALIZACIÓN EXPLÍCITA
@@ -191,14 +177,11 @@ from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
     WiringFeatureFlags,
 )
 from farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap import (
-    EnforcedBootstrap,
     WiringBootstrap,
 )
 from farfan_pipeline.phases.Phase_00.primitives.providers import (
-    QuestionnaireResourceProvider,
-    CoreModuleFactory,
+    ResourceProvider,
 )
-from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
 
 # Phase 1
 from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
@@ -214,7 +197,7 @@ from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import (
 )
 from farfan_pipeline.phases.Phase_02.phase2_10_01_class_registry import build_class_registry
 from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import MethodRegistry
-from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
+# Removed unused import: ExecutorConfig
 from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import (
     IrrigationSynchronizer,
 )
@@ -249,12 +232,7 @@ try:
 except ImportError:
     EVIDENCE_QUERY_ENGINE_AVAILABLE = False
 
-try:
-    from farfan_pipeline.phases.Phase_02.phase2_85_00_evidence_nexus_sota_implementations import (
-        SOTAEvidenceImplementations,
-    )
-except ImportError:
-    pass
+# Phase 2 - SOTA Evidence (removed unused import: SOTAEvidenceImplementations)
 
 # Phase 2 - Doctoral Carver Synthesizer
 try:
@@ -318,16 +296,16 @@ logger = structlog.get_logger(__name__)
 # =============================================================================
 
 CANONICAL_POLICY_AREA_DEFINITIONS: OrderedDict[str, dict[str, Any]] = OrderedDict([
-    ("PA01", {"name": "Derechos de las mujeres e igualdad de género", "slug": "genero_mujeres", "aliases": ["fiscal"]}),
-    ("PA02", {"name": "Prevención de la violencia y protección", "slug": "seguridad_violencia", "aliases": ["salud"]}),
-    ("PA03", {"name": "Ambiente sano y cambio climático", "slug": "ambiente", "aliases": ["ambiente"]}),
-    ("PA04", {"name": "Derechos económicos, sociales y culturales", "slug": "derechos_sociales", "aliases": ["energía"]}),
-    ("PA05", {"name": "Derechos de las víctimas y construcción de paz", "slug": "paz_victimas", "aliases": ["transporte"]}),
-    ("PA06", {"name": "Derecho al futuro de la niñez y juventud", "slug": "ninez_juventud", "aliases": []}),
-    ("PA07", {"name": "Tierras y territorios", "slug": "tierras_territorios", "aliases": []}),
-    ("PA08", {"name": "Líderes, lideresas y defensores de DD. HH.", "slug": "liderazgos_ddhh", "aliases": []}),
-    ("PA09", {"name": "Derechos de personas privadas de libertad", "slug": "privados_libertad", "aliases": []}),
-    ("PA10", {"name": "Migración transfronteriza", "slug": "migracion", "aliases": []}),
+    ("PA01", {"name": "Derechos de las mujeres e igualdad de género", "slug": "genero_mujeres", "aliases": ["genero", "mujeres", "igualdad_genero"]}),
+    ("PA02", {"name": "Prevención de la violencia y protección", "slug": "seguridad_violencia", "aliases": ["violencia", "proteccion", "seguridad"]}),
+    ("PA03", {"name": "Ambiente sano y cambio climático", "slug": "ambiente", "aliases": ["ambiente", "medio_ambiente", "cambio_climatico"]}),
+    ("PA04", {"name": "Derechos económicos, sociales y culturales", "slug": "derechos_sociales", "aliases": ["derechos_economicos", "derechos_sociales", "desc"]}),
+    ("PA05", {"name": "Derechos de las víctimas y construcción de paz", "slug": "paz_victimas", "aliases": ["victimas", "paz", "construccion_paz"]}),
+    ("PA06", {"name": "Derecho al futuro de la niñez y juventud", "slug": "ninez_juventud", "aliases": ["ninez", "juventud", "infancia"]}),
+    ("PA07", {"name": "Tierras y territorios", "slug": "tierras_territorios", "aliases": ["tierras", "territorios", "tierra_territorio"]}),
+    ("PA08", {"name": "Líderes, lideresas y defensores de DD. HH.", "slug": "liderazgos_ddhh", "aliases": ["lideres", "lideresas", "defensores_ddhh"]}),
+    ("PA09", {"name": "Derechos de personas privadas de libertad", "slug": "privados_libertad", "aliases": ["privados_de_libertad", "carcel", "prisiones"]}),
+    ("PA10", {"name": "Migración transfronteriza", "slug": "migracion", "aliases": ["migracion", "migracion_transfronteriza", "personas_migrantes"]}),
 ])
 
 CONSTITUTIONAL_INVARIANTS = {
@@ -338,6 +316,10 @@ CONSTITUTIONAL_INVARIANTS = {
     "macro_score": 1,        # 1 holistic score
     "layers": 8,             # 8 epistemic layers
 }
+
+# Deterministic execution seed for reproducibility
+# This value ensures consistent results across runs when deterministic mode is enabled
+DETERMINISTIC_SEED = 42
 
 # =============================================================================
 # ENUMS Y TIPOS BASE
@@ -672,7 +654,7 @@ class ExecutionContext:
 
 class MonolithicOrchestrator:
     """
-    ORQUESTADOR MONOLÍTICO UNIFICADO
+    UNIFIED MONOLITHIC ORCHESTRATOR
 
     Fusiona y ejecuta explícitamente:
     - Fase 0: Bootstrap con SISAS + Calibración
@@ -686,18 +668,18 @@ class MonolithicOrchestrator:
     - Fase 8: Recommendations
     - Fase 9: Report Assembly
 
-    GARANTÍAS CONSTITUCIONALES:
-    ✓ Orden secuencial estricto: P00→P01→P02→P03→P04→P05→P06→P07→P08→P09
-    ✓ Validación automática de contratos de interfase entre fases
-    ✓ Instanciación automática y progresiva de fases
-    ✓ SISAS activado por defecto (100% funcional)
-    ✓ Coherencia total con Factory/MethodRegistry/ClassRegistry
-    ✓ Ejecución automática sin intervención manual
-    ✓ Flujo determinista end-to-end
+    CONSTITUTIONAL GUARANTEES:
+    ✓ Strict sequential order: P00→P01→P02→P03→P04→P05→P06→P07→P08→P09
+    ✓ Automatic validation of interface contracts between phases
+    ✓ Automatic and progressive instantiation of phases
+    ✓ SISAS enabled by default (100% functional)
+    ✓ Total coherence with Factory/MethodRegistry/ClassRegistry
+    ✓ Automatic execution without manual intervention
+    ✓ End-to-end deterministic flow
 
-    ORDEN CANÓNICO INVARIANTE:
-    Cada fase solo puede ejecutarse si todas las fases anteriores completaron exitosamente
-    y sus contratos de salida fueron validados. NO se permiten saltos ni reordenamientos.
+    INVARIANT CANONICAL ORDER:
+    Each phase can only execute if all previous phases completed successfully
+    and their output contracts were validated. Skipping or reordering is NOT allowed.
     """
 
     # Orden canónico estricto de fases (INMUTABLE)
@@ -771,10 +753,10 @@ class MonolithicOrchestrator:
             # Resource limits
             "resource_limits": {},
 
-            # Feature flags (SISAS habilitado por defecto - CRÍTICO)
+            # Feature flags (SISAS enabled by default - CRITICAL, but configurable)
             "enable_http_signals": False,
             "enable_calibration": True,
-            "enable_sisas": True,  # SISAS SIEMPRE ACTIVADO POR DEFECTO
+            "enable_sisas": True,  # SISAS enabled by default (can be disabled via configuration)
 
             # SISAS configuration
             "sisas_irrigation_csv_path": None,
@@ -1012,6 +994,17 @@ class MonolithicOrchestrator:
             )
         return violations
 
+    @property
+    def _questionnaire_provider(self):
+        """
+        Get the questionnaire provider from context wiring if available.
+        
+        Returns None if context, wiring, or provider is not available.
+        """
+        if self.context and self.context.wiring and self.context.wiring.provider:
+            return self.context.wiring.provider
+        return None
+
     def _initialize_factory(self) -> None:
         """Initialize AnalysisPipelineFactory for Phase 2 integration."""
         if self._factory is not None:
@@ -1073,7 +1066,7 @@ class MonolithicOrchestrator:
         # Initialize execution context
         self.context = ExecutionContext(
             config=self.config,
-            seed=42 if self.deterministic else None,
+            seed=DETERMINISTIC_SEED if self.deterministic else None,
         )
 
         # Initialize Factory (para coherencia con Phase 2)
@@ -1195,6 +1188,56 @@ class MonolithicOrchestrator:
     # PHASE EXECUTION METHODS - MATERIALIZACIÓN EXPLÍCITA
     # =========================================================================
 
+    # Helper methods for Phase 9 complex data structures
+    def _build_question_result(self, question: Any) -> dict[str, Any]:
+        """Build a single question result for Phase 9 execution results."""
+        return {
+            "score": question.score,
+            "evidence": question.evidence,
+            "recommendation": None,
+            "human_answer": None,
+        }
+
+    def _build_cluster_result(self, cluster: Any) -> dict[str, Any]:
+        """Build a single cluster result for Phase 9 execution results."""
+        return {
+            "cluster_id": cluster.cluster_id,
+            "raw_meso_score": cluster.score,
+            "adjusted_score": cluster.score,
+            "dispersion_penalty": cluster.penalty_applied,
+            "peer_penalty": 0.0,
+            "total_penalty": cluster.penalty_applied,
+            "dispersion_metrics": {
+                "variance": cluster.variance,
+                "coherence": cluster.coherence,
+            },
+            "micro_scores": [area.score for area in cluster.area_scores],
+            "metadata": cluster.validation_details,
+        }
+
+    def _build_macro_summary(self, macro_score: Any, recommendations: list[Any]) -> dict[str, Any]:
+        """Build macro summary for Phase 9 execution results."""
+        return {
+            "overall_posterior": macro_score.score,
+            "adjusted_score": macro_score.score,
+            "coverage_penalty": 0.0,
+            "dispersion_penalty": 0.0,
+            "contradiction_penalty": 0.0,
+            "total_penalty": 0.0,
+            "contradiction_count": len(getattr(macro_score, "systemic_gaps", [])),
+            "recommendations": recommendations,
+            "metadata": {},
+        }
+
+    def _build_micro_result(self, question: Any) -> dict[str, Any]:
+        """Build a single micro result for Phase 9 execution results."""
+        return {
+            "policy_area_id": question.metadata.get("policy_area_id"),
+            "patterns_used": [],
+            "completeness": question.scoring_details.get("quality_validation", {}).get("completeness"),
+            "validation": {"status": "passed" if question.error is None else "failed"},
+        }
+
     def _execute_phase_0(self) -> Phase0Output:
         """
         PHASE 0: Bootstrap & Validation
@@ -1309,16 +1352,18 @@ class MonolithicOrchestrator:
             else len(getattr(cpp, "chunks", []))
         )
 
+        # Extract document context for debugging and invariants
+        document_id = getattr(cpp, "document_id", "UNKNOWN")
+
         # Validate constitutional invariant
         if chunk_count != CONSTITUTIONAL_INVARIANTS["micro_questions"]:
             raise ValueError(
                 f"Phase 1 must produce {CONSTITUTIONAL_INVARIANTS['micro_questions']} chunks, "
-                f"got {chunk_count}"
+                f"got {chunk_count} for document_id={document_id}, "
+                f"canonical_input_keys={sorted(canonical_input.keys())}"
             )
 
-        document_id = getattr(cpp, "document_id", "UNKNOWN")
-
-        self.logger.info("phase_1_complete", chunk_count=chunk_count)
+        self.logger.info("phase_1_complete", chunk_count=chunk_count, document_id=document_id)
 
         return Phase1Output(
             cpp=cpp,
@@ -1710,7 +1755,7 @@ class MonolithicOrchestrator:
         aggregator = DimensionAggregator(
             monolith=self.context.questionnaire.data,
             abort_on_insufficient=True,
-            signal_registry=getattr(phase2_output, "questionnaire_signal_registry", None),
+            signal_registry=phase2_output.questionnaire_signal_registry,
         )
         node_trace.append("phase4.aggregation_settings")
 
@@ -1759,7 +1804,7 @@ class MonolithicOrchestrator:
             return await run_phase5_aggregation(
                 dimension_scores=phase4_output.dimension_scores,
                 questionnaire=self.context.questionnaire.data,
-                signal_registry=getattr(phase2_output, "questionnaire_signal_registry", None),
+                signal_registry=phase2_output.questionnaire_signal_registry,
                 validate=True,
             )
 
@@ -1767,13 +1812,14 @@ class MonolithicOrchestrator:
         try:
             area_scores = asyncio.run(_run())
         except RuntimeError:
+            # RuntimeError occurs when event loop is already running
             loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             try:
-                asyncio.set_event_loop(loop)
                 area_scores = loop.run_until_complete(_run())
             finally:
-                loop.close()
                 asyncio.set_event_loop(None)
+                loop.close()
 
         node_trace.append("phase5.validation")
 
@@ -1884,23 +1930,35 @@ class MonolithicOrchestrator:
         node_trace: list[str] = []
 
         # Initialize adapter
-        phase8_root = Path(__file__).resolve().parents[1] / "phases" / "Phase_08"
+        try:
+            # Try to use importlib.resources (Python 3.9+) for robust path resolution
+            phase8_root = importlib.resources.files("farfan_pipeline").joinpath("phases", "Phase_08")
+        except (TypeError, AttributeError):
+            # Fallback for Python 3.7-3.8 where importlib.resources.files() may not exist (AttributeError)
+            # or when running as a script/uninstalled package (TypeError on traversable operations)
+            phase8_root = Path(__file__).resolve().parents[1] / "phases" / "Phase_08"
+        
         rules_path = phase8_root / RULES_PATH_ENHANCED
         schema_path = phase8_root / SCHEMA_PATH
 
         adapter = RecommendationEngineAdapter(
             rules_path=rules_path,
             schema_path=schema_path,
-            questionnaire_provider=self.context.wiring.provider if self.context.wiring else None,
+            questionnaire_provider=self._questionnaire_provider,
             orchestrator=None,
         )
         node_trace.append("phase8.adapter_init")
 
         # Prepare data
-        micro_scores = {
+        # Phase 4 produces dimension-level aggregations (area-dimension), not micro-question scores.
+        # We name this map accordingly and keep `micro_scores` as a compatibility alias for downstream code.
+        dimension_scores_map = {
             f"{score.area_id}-{score.dimension_id}": score.score
             for score in phase4_output.dimension_scores
         }
+        # Backwards-compatible alias: historically this was named `micro_scores`, but it actually contains
+        # dimension-level scores. Keep the name to avoid breaking existing consumers.
+        micro_scores = dimension_scores_map
         cluster_data = {
             cluster.cluster_id: {
                 "cluster_id": cluster.cluster_id,
@@ -1952,67 +2010,29 @@ class MonolithicOrchestrator:
 
         node_trace: list[str] = []
 
-        # Prepare execution results
+        # Prepare execution results using helper methods
         execution_results = {
             "questions": {
-                q.question_id: {
-                    "score": q.score,
-                    "evidence": q.evidence,
-                    "recommendation": None,
-                    "human_answer": q.scoring_details.get("carver_human_answer"),  # Include carver answer
-                }
+                q.question_id: self._build_question_result(q)
                 for q in phase3_output.layer_scores
             },
             "meso_clusters": {
-                cluster.cluster_id: {
-                    "cluster_id": cluster.cluster_id,
-                    "raw_meso_score": cluster.score,
-                    "adjusted_score": cluster.score,
-                    "dispersion_penalty": cluster.penalty_applied,
-                    "peer_penalty": 0.0,
-                    "total_penalty": cluster.penalty_applied,
-                    "dispersion_metrics": {
-                        "variance": cluster.variance,
-                        "coherence": cluster.coherence,
-                    },
-                    "micro_scores": [area.score for area in cluster.area_scores],
-                    "metadata": cluster.validation_details,
-                }
+                cluster.cluster_id: self._build_cluster_result(cluster)
                 for cluster in phase6_output.cluster_scores
             },
-            "macro_summary": {
-                "overall_posterior": phase7_output.macro_score.score,
-                "adjusted_score": phase7_output.macro_score.score,
-                "coverage_penalty": 0.0,
-                "dispersion_penalty": 0.0,
-                "contradiction_penalty": 0.0,
-                "total_penalty": 0.0,
-                "contradiction_count": len(
-                    getattr(phase7_output.macro_score, "systemic_gaps", [])
-                ),
-                "recommendations": phase8_output.recommendations,
-                "metadata": {},
-            },
+            "macro_summary": self._build_macro_summary(
+                phase7_output.macro_score,
+                phase8_output.recommendations
+            ),
             "micro_results": {
-                q.question_id: {
-                    "policy_area_id": q.metadata.get("policy_area_id"),
-                    "patterns_used": [],
-                    "completeness": q.scoring_details.get("quality_validation", {}).get("completeness"),
-                    "validation": {"status": "passed" if q.error is None else "failed"},
-                    # Include carver enrichment data for detailed reporting
-                    "carver_quality": q.scoring_details.get("carver_quality_level"),
-                    "carver_score": q.scoring_details.get("carver_score"),
-                    "carver_confidence": q.scoring_details.get("carver_confidence_interval"),
-                    "carver_evidence_count": q.scoring_details.get("carver_evidence_count"),
-                    "carver_critical_gaps": q.scoring_details.get("carver_critical_gaps"),
-                }
+                q.question_id: self._build_micro_result(q)
                 for q in phase3_output.layer_scores
             },
         }
 
         # Create assembler
         assembler = create_report_assembler(
-            questionnaire_provider=self.context.wiring.provider,
+            questionnaire_provider=self._questionnaire_provider,
             evidence_registry=None,
             qmcm_recorder=None,
             orchestrator=None,
@@ -2165,27 +2185,17 @@ Examples:
         help="Name of the municipal development plan",
     )
     parser.add_argument(
-        "--strict",
-        action="store_true",
-        default=True,
-        help="Enable strict mode (fail on critical violations)",
-    )
-    parser.add_argument(
         "--no-strict",
         action="store_false",
         dest="strict",
-        help="Disable strict mode (continue on errors)",
-    )
-    parser.add_argument(
-        "--deterministic",
-        action="store_true",
         default=True,
-        help="Enable deterministic mode (fixed seed)",
+        help="Disable strict mode (continue on errors)",
     )
     parser.add_argument(
         "--no-deterministic",
         action="store_false",
         dest="deterministic",
+        default=True,
         help="Disable deterministic mode",
     )
 
@@ -2193,14 +2203,28 @@ Examples:
     parser.add_argument(
         "--enable-sisas",
         action="store_true",
+        dest="enable_sisas",
         default=True,
         help="Enable SISAS signal system",
     )
     parser.add_argument(
+        "--no-sisas",
+        action="store_false",
+        dest="enable_sisas",
+        help="Disable SISAS signal system",
+    )
+    parser.add_argument(
         "--enable-calibration",
         action="store_true",
+        dest="enable_calibration",
         default=True,
         help="Enable calibration system",
+    )
+    parser.add_argument(
+        "--no-calibration",
+        action="store_false",
+        dest="enable_calibration",
+        help="Disable calibration system",
     )
 
     # Logging
