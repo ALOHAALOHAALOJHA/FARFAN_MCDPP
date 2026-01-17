@@ -18,7 +18,22 @@ COMPONENTES CRÍTICOS INTEGRADOS:
 - ContractValidator (CQVR validation)
 - EvidenceQueryEngine (motor de consultas de evidencia)
 - SOTAEvidenceImplementations (implementaciones state-of-the-art)
-- DoctoralCarverSynthesizer (síntesis doctoral de narrativas)
+- DoctoralCarverSynthesizer (síntesis doctoral de narrativas) ✓ FULLY INTEGRATED
+
+CARVER INTEGRATION (Phase 2.6):
+- Integrated in Phase 2 execution pipeline (post task-execution)
+- Transforms raw evidence outputs into doctoral-quality prose
+- Raymond Carver minimalist style: precision, brevity, evidence-backed assertions
+- Enriches all 300 task results with:
+  * human_answer: Publication-quality Markdown prose
+  * carver_score: Calibrated confidence score [0.0, 1.0]
+  * carver_quality_level: EXCELENTE/BUENO/ACEPTABLE/INSUFICIENTE
+  * carver_confidence_interval: Bayesian 95% CI bounds
+  * carver_evidence_count: Count of evidence items synthesized
+  * carver_critical_gaps: Count of critical evidence gaps identified
+- Connected to Phase 3 scoring (carver metadata flows through)
+- Connected to Phase 9 reporting (human answers appear in final reports)
+- Dependencies verified: textstat>=0.7.3, numpy>=1.26.4, structlog>=24.1.0
 
 TEORÍAS FUNDAMENTALES MATERIALIZADAS:
 - Pearl's Causal Inference (do-calculus counterfactuals)
@@ -26,6 +41,7 @@ TEORÍAS FUNDAMENTALES MATERIALIZADAS:
 - Rhetorical Structure Theory (discourse coherence)
 - Popperian Asymmetry (N3 veto integration)
 - Information-Theoretic Validation (mutual information)
+- Toulmin Argument Model (claim-warrant-backing structure in Carver)
 
 GARANTÍAS CONSTITUCIONALES:
 - Ejecución automática por defecto (sin flags ad hoc)
@@ -37,14 +53,15 @@ GARANTÍAS CONSTITUCIONALES:
 - Subsistemas SISAS y calibración integrados
 - Contratos epistemológicos validados (v4 format)
 - Invariantes constitucionales enforced [INV-001 a INV-005]
+- Carver synthesis integrated in Phase 2 flow (300 doctoral answers)
 
 Autor: F.A.R.F.A.N Core Team
-Versión: 4.1.0 MONOLITHIC+EPISTEMIC
+Versión: 4.2.0 MONOLITHIC+EPISTEMIC+CARVER
 """
 
 from __future__ import annotations
 
-__version__ = "4.1.0-MONOLITHIC+EPISTEMIC"
+__version__ = "4.2.0-MONOLITHIC+EPISTEMIC+CARVER"
 __module_type__ = "MONOLITHIC_ORCHESTRATOR"
 __criticality__ = "CRITICAL"
 __lifecycle__ = "ACTIVE"
@@ -1312,7 +1329,7 @@ class MonolithicOrchestrator:
 
     def _execute_phase_2(self) -> Phase2Output:
         """
-        PHASE 2: Executor Factory & Dispatch
+        PHASE 2: Executor Factory & Dispatch + Carver Synthesis
 
         Materializa explícitamente:
         - QuestionnaireSignalRegistry
@@ -1320,6 +1337,15 @@ class MonolithicOrchestrator:
         - IrrigationSynchronizer
         - ExecutionPlan
         - TaskExecutor con 300 task results
+        - DoctoralCarverSynthesizer (Phase 2.6)
+        - Enriched task results with doctoral human answers
+
+        Carver Integration:
+        - Post-execution synthesis of raw evidence into doctoral prose
+        - 300 human-readable answers following Carver minimalist style
+        - Calibrated scores, quality levels, confidence intervals
+        - Evidence gap identification and critical gap reporting
+        - All enriched data flows to Phase 3 scoring and Phase 9 reporting
         """
         self.logger.info("executing_phase_2_factory_dispatch")
 
@@ -1373,15 +1399,150 @@ class MonolithicOrchestrator:
                 f"got {len(task_results)}"
             )
 
-        self.logger.info("phase_2_complete", task_count=len(task_results))
+        # Step 6: Carver synthesis (doctoral-quality human answers)
+        if DOCTORAL_CARVER_AVAILABLE:
+            try:
+                carver = DoctoralCarverSynthesizer(
+                    strict_mode=self.strict_mode,
+                    enable_readability_check=True,
+                )
+                node_trace.append("phase2.carver_synthesis.initialized")
+
+                # Enrich task results with doctoral answers
+                enriched_task_results = self._enrich_with_carver_answers(
+                    task_results=task_results,
+                    carver=carver,
+                    questionnaire_data=questionnaire_data,
+                )
+                node_trace.append("phase2.carver_synthesis.enrichment_complete")
+
+                self.logger.info(
+                    "carver_synthesis_complete",
+                    enriched_count=len(enriched_task_results),
+                )
+            except Exception as e:
+                self.logger.warning(
+                    "carver_synthesis_failed",
+                    error=str(e),
+                    fallback="using_raw_task_results",
+                )
+                enriched_task_results = task_results
+                node_trace.append("phase2.carver_synthesis.failed")
+        else:
+            self.logger.warning(
+                "carver_unavailable",
+                reason="DOCTORAL_CARVER_AVAILABLE=False",
+            )
+            enriched_task_results = task_results
+            node_trace.append("phase2.carver_synthesis.skipped")
+
+        self.logger.info("phase_2_complete", task_count=len(enriched_task_results))
 
         return Phase2Output(
             execution_plan=execution_plan,
-            task_results=task_results,
+            task_results=enriched_task_results,
             preprocessed_document=preprocessed_document,
             questionnaire_signal_registry=questionnaire_signal_registry,
             node_trace=tuple(node_trace),
         )
+
+    def _enrich_with_carver_answers(
+        self,
+        task_results: list[Any],
+        carver: Any,
+        questionnaire_data: dict[str, Any],
+    ) -> list[Any]:
+        """
+        Enrich task results with doctoral-quality human answers from Carver.
+
+        This method integrates DoctoralCarverSynthesizer to transform raw evidence
+        outputs into publication-quality prose following Raymond Carver's minimalist
+        style.
+
+        Args:
+            task_results: List of TaskResult objects from Phase 2 execution
+            carver: DoctoralCarverSynthesizer instance
+            questionnaire_data: Full questionnaire for contract lookup
+
+        Returns:
+            Enriched task results with human_answer and carver metadata
+
+        Flow:
+            1. Extract contract for each question from questionnaire
+            2. Pass task output (nexus evidence) + contract to carver
+            3. Carver synthesizes doctoral answer with:
+               - Score calibration
+               - Quality level determination
+               - Human-readable prose
+               - Gap identification
+               - Confidence intervals
+            4. Enrich task result metadata with carver output
+        """
+        enriched_results = []
+
+        # Build question -> contract mapping from questionnaire
+        questions = questionnaire_data.get("blocks", {}).get("micro_questions", [])
+        question_index = {q.get("question_id"): q for q in questions if q.get("question_id")}
+
+        for task_result in task_results:
+            question_id = task_result.question_id
+            nexus_output = task_result.output if isinstance(task_result.output, dict) else {}
+
+            # Retrieve question contract
+            question_contract = question_index.get(question_id)
+
+            if not question_contract:
+                self.logger.warning(
+                    "carver_skipped_no_contract",
+                    question_id=question_id,
+                )
+                enriched_results.append(task_result)
+                continue
+
+            try:
+                # Synthesize doctoral answer
+                doctoral_answer = carver.synthesize(
+                    nexus_output=nexus_output,
+                    contract=question_contract,
+                )
+
+                # Enrich task result with carver output
+                # Create a new TaskResult with enriched metadata
+                from dataclasses import replace
+
+                enriched_metadata = {
+                    **(task_result.metadata or {}),
+                    "carver_human_answer": doctoral_answer.human_answer,
+                    "carver_score": doctoral_answer.score,
+                    "carver_quality_level": doctoral_answer.quality_level.value,
+                    "carver_confidence_interval": [
+                        doctoral_answer.confidence.interval_95.lower,
+                        doctoral_answer.confidence.interval_95.upper,
+                    ],
+                    "carver_evidence_count": doctoral_answer.evidence_count,
+                    "carver_critical_gaps": doctoral_answer.critical_gap_count,
+                    "carver_synthesis_timestamp": doctoral_answer.synthesis_timestamp,
+                }
+
+                enriched_result = replace(task_result, metadata=enriched_metadata)
+                enriched_results.append(enriched_result)
+
+                self.logger.debug(
+                    "carver_enriched_task",
+                    question_id=question_id,
+                    score=f"{doctoral_answer.score:.3f}",
+                    quality=doctoral_answer.quality_level.value,
+                )
+
+            except Exception as e:
+                self.logger.warning(
+                    "carver_synthesis_error",
+                    question_id=question_id,
+                    error=str(e),
+                )
+                enriched_results.append(task_result)
+
+        return enriched_results
 
     def _execute_phase_3(self) -> Phase3Output:
         """
@@ -1439,6 +1600,15 @@ class MonolithicOrchestrator:
             question = questions.get(task_result.question_id, {})
             base_slot = task_result.metadata.get("base_slot", task_result.question_id)
 
+            # Extract carver-enriched data if available
+            carver_metadata = {}
+            if task_result.metadata:
+                carver_metadata = {
+                    k: v
+                    for k, v in task_result.metadata.items()
+                    if k.startswith("carver_")
+                }
+
             scored_micro_questions.append(
                 ScoredMicroQuestion(
                     question_id=task_result.question_id,
@@ -1451,6 +1621,7 @@ class MonolithicOrchestrator:
                     scoring_details={
                         "quality_validation": validation_details,
                         "signals_resolved": task_result.metadata.get("resolved_signal_count"),
+                        **carver_metadata,  # Include carver data in scoring details
                     },
                     metadata={
                         "policy_area_id": task_result.policy_area_id,
@@ -1765,7 +1936,7 @@ class MonolithicOrchestrator:
                     "score": q.score,
                     "evidence": q.evidence,
                     "recommendation": None,
-                    "human_answer": None,
+                    "human_answer": q.scoring_details.get("carver_human_answer"),  # Include carver answer
                 }
                 for q in phase3_output.layer_scores
             },
@@ -1805,6 +1976,12 @@ class MonolithicOrchestrator:
                     "patterns_used": [],
                     "completeness": q.scoring_details.get("quality_validation", {}).get("completeness"),
                     "validation": {"status": "passed" if q.error is None else "failed"},
+                    # Include carver enrichment data for detailed reporting
+                    "carver_quality": q.scoring_details.get("carver_quality_level"),
+                    "carver_score": q.scoring_details.get("carver_score"),
+                    "carver_confidence": q.scoring_details.get("carver_confidence_interval"),
+                    "carver_evidence_count": q.scoring_details.get("carver_evidence_count"),
+                    "carver_critical_gaps": q.scoring_details.get("carver_critical_gaps"),
                 }
                 for q in phase3_output.layer_scores
             },
