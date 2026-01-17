@@ -1,301 +1,132 @@
 {
   "phase_id": "1",
-  "phase_name": "CPP Ingestion & Preprocessing",
-  "phase_dir": "src/farfan_pipeline/phases/Phase_1",
-  "phase_prefix": "phase1",
-  "timestamp": "2026-01-13T17:50:00Z",
-  "audit_version": "2.1.0",
-  "normalization_completed": true,
-
-  "summary": {
-    "total_files": 10,
-    "files_in_chain": 10,
-    "orphan_files": 0,
-    "circular_dependencies": 0,
-    "label_position_mismatches": 0,
-    "validation_status": "PASS"
-  },
-
+  "phase_dir": "/app/src/farfan_pipeline/phases/Phase_01",
+  "total_files": 28,
+  "files_in_chain": 16,
+  "orphan_files": [],
+  "allowed_orphans": [
+    "interphase/__init__.py",
+    "interphase/phase1_04_00_phase_protocol.py",
+    "interphase/phase1_08_00_adapter.py",
+    "interphase/phase1_10_00_phase1_protocols.py",
+    "interphase/phase1_10_00_phase1_types.py",
+    "primitives/phase1_10_00_dependency_validator.py",
+    "tests/__init__.py",
+    "tests/conftest.py",
+    "tests/phase1_10_00_conftest.py",
+    "tests/test_constitutional_invariant.py",
+    "tests/test_empirical_extractors.py",
+    "tests/test_sisas_integration.py"
+  ],
+  "circular_dependencies": [],
   "dependency_graph": {
-    "description": "Directed acyclic graph of internal module imports (post-normalization)",
-    "nodes": [
-      "__init__",
-      "PHASE_1_CONSTANTS",
-      "phase1_02_00_phase_1_constants",
-      "phase1_03_00_models",
-      "phase1_05_00_thread_safe_results",
-      "phase1_06_00_questionnaire_mapper",
-      "phase1_07_00_sp4_question_aware",
-      "phase1_09_00_circuit_breaker",
-      "phase1_11_00_signal_enrichment",
-      "phase1_12_00_structural",
-      "phase1_13_00_cpp_ingestion"
+    "__init__.py": [
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_03_00_models.py",
+      "phase1_05_00_thread_safe_results.py",
+      "PHASE_1_CONSTANTS.py",
+      "primitives/__init__.py",
+      "primitives/__init__.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_07_00_sp4_question_aware.py",
+      "phase1_07_00_sp4_question_aware.py",
+      "phase1_12_01_pdm_integration.py"
     ],
-    "edges": [
-      {"from": "__init__", "to": "phase1_02_00_phase_1_constants"},
-      {"from": "__init__", "to": "phase1_03_00_models"},
-      {"from": "__init__", "to": "phase1_05_00_thread_safe_results"},
-      {"from": "__init__", "to": "phase1_06_00_questionnaire_mapper"},
-      {"from": "__init__", "to": "phase1_07_00_sp4_question_aware"},
-      {"from": "__init__", "to": "phase1_13_00_cpp_ingestion"},
-      {"from": "phase1_03_00_models", "to": "phase1_02_00_phase_1_constants"},
-      {"from": "phase1_07_00_sp4_question_aware", "to": "phase1_02_00_phase_1_constants"},
-      {"from": "phase1_07_00_sp4_question_aware", "to": "phase1_03_00_models"},
-      {"from": "phase1_07_00_sp4_question_aware", "to": "phase1_06_00_questionnaire_mapper"},
-      {"from": "phase1_13_00_cpp_ingestion", "to": "PHASE_1_CONSTANTS"},
-      {"from": "phase1_13_00_cpp_ingestion", "to": "phase1_03_00_models"},
-      {"from": "phase1_13_00_cpp_ingestion", "to": "phase1_09_00_circuit_breaker"},
-      {"from": "phase1_13_00_cpp_ingestion", "to": "phase1_11_00_signal_enrichment"},
-      {"from": "phase1_13_00_cpp_ingestion", "to": "phase1_12_00_structural"}
-    ]
-  },
-
-  "topological_analysis": {
-    "description": "Topological ordering based on actual import dependencies (post-normalization)",
-    "layers": [
-      {
-        "layer": 0,
-        "description": "Root modules with no internal dependencies",
-        "modules": [
-          "PHASE_1_CONSTANTS",
-          "phase1_02_00_phase_1_constants",
-          "phase1_05_00_thread_safe_results",
-          "phase1_06_00_questionnaire_mapper",
-          "phase1_09_00_circuit_breaker",
-          "phase1_11_00_signal_enrichment",
-          "phase1_12_00_structural"
-        ]
-      },
-      {
-        "layer": 1,
-        "description": "Modules that depend only on layer 0",
-        "modules": [
-          "phase1_03_00_models"
-        ]
-      },
-      {
-        "layer": 2,
-        "description": "Modules that depend on layers 0-1",
-        "modules": [
-          "phase1_07_00_sp4_question_aware"
-        ]
-      },
-      {
-        "layer": 3,
-        "description": "Main executor that aggregates all components",
-        "modules": [
-          "phase1_13_00_cpp_ingestion"
-        ]
-      },
-      {
-        "layer": 4,
-        "description": "Public API exports (via __init__.py)",
-        "modules": [
-          "__init__"
-        ]
-      }
-    ]
-  },
-
-  "reclassified_modules": {
-    "description": "Modules reclassified during normalization (2026-01-13)",
-    "reclassified": [
-      {
-        "original_file": "phase1_01_00_cpp_models.py",
-        "new_location": "docs/legacy/phase1_01_00_cpp_models.py",
-        "reason": "Superseded by phase1_03_00_models.py"
-      },
-      {
-        "original_file": "phase1_04_00_phase_protocol.py",
-        "new_location": "interphase/phase1_04_00_phase_protocol.py",
-        "reason": "Cross-phase protocol definition, not Phase 1 specific logic"
-      },
-      {
-        "original_file": "phase1_08_00_adapter.py",
-        "new_location": "interphase/phase1_08_00_adapter.py",
-        "reason": "Interphase adapter for downstream consumption"
-      },
-      {
-        "original_file": "phase1_10_00_dependency_validator.py",
-        "new_location": "primitives/phase1_10_00_dependency_validator.py",
-        "reason": "Utility module with cross-phase dependencies"
-      }
-    ]
-  },
-
-  "label_position_analysis": {
-    "description": "Analysis of file naming labels vs actual topological position (post-normalization)",
-    "mismatches": [],
-    "analysis": "After removing reclassified modules, the remaining modules follow a coherent DAG structure. The label order (01, 02, 03...) represents the prescriptive order from the mission contract, which aligns with the logical execution flow."
-  },
-
-  "circular_dependencies": {
-    "description": "Detected circular import chains",
-    "cycles": [],
-    "analysis": "No circular dependencies detected. The dependency graph is a valid DAG."
-  },
-
-  "foldering_compliance": {
-    "description": "Verification of standard folder structure (post-normalization)",
-    "required_folders": ["contracts", "docs", "tests", "primitives", "interphase"],
-    "status": "PASS",
-    "folders_found": {
-      "contracts": {
-        "exists": true,
-        "contract_files": [
-          "phase1_input_contract.py",
-          "phase1_output_contract.py",
-          "phase1_mission_contract.py",
-          "phase1_constitutional_contract.py"
-        ]
-      },
-      "docs": {
-        "exists": true,
-        "documentation_files": [
-          "README.md",
-          "AUDIT_SUMMARY.md",
-          "FORCING_ROUTE.md",
-          "README_AUDIT.md",
-          "TRADE_OFFS.md",
-          "phase1_anomalies_remediation.md",
-          "phase1_audit_checklist.md",
-          "phase1_execution_flow.md",
-          "phase1_import_dag.png",
-          "phase1_dag.dot"
-        ],
-        "legacy_folder": {
-          "exists": true,
-          "files": ["phase1_01_00_cpp_models.py"]
-        }
-      },
-      "tests": {
-        "exists": true,
-        "test_files": ["conftest.py", "test_streaming_pdf_extractor.py"]
-      },
-      "primitives": {
-        "exists": true,
-        "primitive_files": [
-          "streaming_extractor.py",
-          "truncation_audit.py",
-          "phase1_10_00_dependency_validator.py"
-        ]
-      },
-      "interphase": {
-        "exists": true,
-        "interphase_files": [
-          "phase1_10_00_phase1_protocols.py",
-          "phase1_10_00_phase1_types.py",
-          "phase1_04_00_phase_protocol.py",
-          "phase1_08_00_adapter.py"
-        ]
-      }
-    }
-  },
-
-  "contracts_verification": {
-    "description": "Verification of contract files existence and executability",
-    "status": "PASS",
-    "contracts": {
-      "input_contract": {
-        "file": "contracts/phase1_input_contract.py",
-        "exists": true,
-        "executable": true,
-        "exports": ["validate_phase1_input_contract", "PHASE1_INPUT_PRECONDITIONS"]
-      },
-      "mission_contract": {
-        "file": "contracts/phase1_10_00_phase1_mission_contract.py",
-        "exists": true,
-        "executable": true,
-        "exports": ["validate_mission_contract", "PHASE1_SUBPHASE_WEIGHTS", "PHASE1_TOPOLOGICAL_ORDER"],
-        "validation": "PASSED",
-        "topological_order_count": 10
-      },
-      "output_contract": {
-        "file": "contracts/phase1_output_contract.py",
-        "exists": true,
-        "executable": true,
-        "exports": ["validate_phase1_output_contract", "PHASE1_OUTPUT_POSTCONDITIONS"]
-      },
-      "constitutional_contract": {
-        "file": "contracts/phase1_constitutional_contract.py",
-        "exists": true,
-        "executable": true,
-        "note": "Enforces 60-chunk invariant (10 PA × 6 Dim)"
-      }
-    }
-  },
-
-  "documentation_completeness": {
-    "description": "Verification of required documentation (post-normalization)",
-    "status": "PASS",
-    "required": [
-      {
-        "file": "docs/phase1_import_dag.png",
-        "exists": true,
-        "status": "PRESENT"
-      },
-      {
-        "file": "docs/phase1_execution_flow.md",
-        "exists": true,
-        "status": "PRESENT"
-      },
-      {
-        "file": "docs/phase1_anomalies_remediation.md",
-        "exists": true,
-        "status": "PRESENT"
-      },
-      {
-        "file": "docs/phase1_audit_checklist.md",
-        "exists": true,
-        "status": "PRESENT"
-      }
-    ]
-  },
-
-  "issues_summary": {
-    "critical": [],
-    "high": [
-      "Duplicate contract files exist (phase1_*.py and phase1_10_00_*.py) - consider consolidating"
+    "contracts/__init__.py": [
+      "contracts/phase1_constitutional_contract.py",
+      "contracts/phase1_input_contract.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_output_contract.py"
     ],
-    "standard": [
-      "Some primitive files have versioned duplicates (phase1_00_00_*.py and phase1_10_00_*.py)"
-    ]
-  },
-
-  "normalization_actions_taken": {
-    "date": "2026-01-13",
-    "actions": [
-      "Reclassified phase1_01_00_cpp_models.py → docs/legacy/",
-      "Reclassified phase1_04_00_phase_protocol.py → interphase/",
-      "Reclassified phase1_08_00_adapter.py → interphase/",
-      "Reclassified phase1_10_00_dependency_validator.py → primitives/",
-      "Updated mission contract topological order (removed reclassified modules)",
-      "Generated DAG visualization (phase1_import_dag.png)"
-    ]
-  },
-
-  "acceptance_criteria": {
-    "dag_without_orphans": true,
-    "zero_cycles": true,
-    "labels_reflect_order": true,
-    "foldering_complete": true,
-    "contracts_exist": true,
-    "contracts_executable": true,
-    "documentation_complete": true,
-    "dag_visualization_exists": true
-  },
-
-  "overall_status": "PASS",
-
-  "metadata": {
-    "auditor": "Claude Code - Phase Audit Agent",
-    "audit_methodology": "Static AST analysis of import statements",
-    "audit_commands": [
-      "find src/farfan_pipeline/phases/Phase_1 -type f | sort",
-      "python -c \"ast.parse() analysis of imports\"",
-      "Cycle detection via DFS on dependency graph",
-      "dot -Tpng for DAG visualization"
+    "phase1_03_00_models.py": [
+      "PHASE_1_CONSTANTS.py"
     ],
-    "next_audit_review": "After duplicate file consolidation"
-  }
+    "phase1_07_00_sp4_question_aware.py": [
+      "phase1_03_00_models.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "phase1_12_01_pdm_integration.py": [
+      "phase1_03_00_models.py"
+    ],
+    "phase1_13_00_cpp_ingestion.py": [
+      "phase1_03_00_models.py",
+      "primitives/truncation_audit.py",
+      "primitives/streaming_extractor.py",
+      "phase1_05_00_thread_safe_results.py",
+      "PHASE_1_CONSTANTS.py",
+      "phase1_01_00_cpp_models.py",
+      "phase1_09_00_circuit_breaker.py",
+      "phase1_11_00_signal_enrichment.py",
+      "phase1_12_00_structural.py"
+    ],
+    "primitives/__init__.py": [
+      "primitives/streaming_extractor.py",
+      "primitives/truncation_audit.py"
+    ],
+    "primitives/streaming_extractor.py": [
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "primitives/truncation_audit.py": [
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "tests/phase1_10_00_test_streaming_pdf_extractor.py": [
+      "primitives/streaming_extractor.py",
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "tests/test_01_adversarial_models_and_chunks.py": [
+      "__init__.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_09_00_circuit_breaker.py"
+    ],
+    "tests/test_02_circuit_breaker_adversarial.py": [
+      "phase1_09_00_circuit_breaker.py"
+    ],
+    "tests/test_03_chain_encadenamiento_adversarial.py": [
+      "contracts/__init__.py",
+      "contracts/__init__.py",
+      "contracts/__init__.py",
+      "contracts/phase1_mission_contract.py"
+    ],
+    "tests/test_04_question_aware_architecture_adversarial.py": [
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_03_00_models.py",
+      "PHASE_1_CONSTANTS.py",
+      "__init__.py",
+      "phase1_07_00_sp4_question_aware.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_11_00_signal_enrichment.py"
+    ],
+    "tests/test_phase1_e2e_chain.py": [
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_input_contract.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_output_contract.py",
+      "__init__.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "__init__.py",
+      "phase1_09_00_circuit_breaker.py",
+      "phase1_09_00_circuit_breaker.py",
+      "phase1_09_00_circuit_breaker.py",
+      "__init__.py"
+    ],
+    "tests/test_streaming_pdf_extractor.py": [
+      "primitives/streaming_extractor.py",
+      "PHASE_1_CONSTANTS.py"
+    ]
+  },
+  "validation_status": "PASS"
 }

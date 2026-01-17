@@ -227,14 +227,15 @@ def find_orphaned_files(phase_dir: Path, graph: dict[str, list[str]]) -> list[st
     return sorted(orphaned)
 
 def verify_phase_chain(phase_num: int, strict: bool = False, output: str | None = None) -> int:
-    phase_dir = REPO_ROOT / "src" / "farfan_pipeline" / "phases" / f"Phase_{phase_num}"
+    base_phases = REPO_ROOT / "src" / "farfan_pipeline" / "phases"
+    phase_dir = base_phases / f"Phase_{phase_num}"
     
     if not phase_dir.exists():
-        # Try padded version (Phase_00, Phase_01)
-        phase_dir = REPO_ROOT / "src" / "farfan_pipeline" / "phases" / f"Phase_{phase_num:02d}"
+        # Try zero-padded format
+        phase_dir = base_phases / f"Phase_{phase_num:02d}"
 
     if not phase_dir.exists():
-        print(f"Error: Phase directory not found: {phase_dir}", file=sys.stderr)
+        print(f"Error: Phase directory not found: {base_phases / f'Phase_{phase_num}'} or {phase_dir}", file=sys.stderr)
         return 1
     
     print(f"Verifying Phase {phase_num} dependency chain...")

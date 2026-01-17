@@ -15,14 +15,14 @@ from farfan_pipeline.phases.Phase_01.primitives.streaming_extractor import (
     StreamingPDFExtractor,
     PYMUPDF_AVAILABLE,
 )
-from farfan_pipeline.phases.Phase_01.phase1_02_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
+from farfan_pipeline.phases.Phase_01.PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT
 
 
 class TestStreamingPDFExtractorAvailability(unittest.TestCase):
     """Test PyMuPDF availability handling."""
 
     @patch(
-        "farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False
+        "farfan_pipeline.phases.Phase_01.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False
     )
     def test_raises_runtime_error_when_pymupdf_not_available_stream(self):
         extractor = StreamingPDFExtractor(Path("dummy.pdf"))
@@ -31,7 +31,7 @@ class TestStreamingPDFExtractorAvailability(unittest.TestCase):
         self.assertIn("PyMuPDF", str(ctx.exception))
 
     @patch(
-        "farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False
+        "farfan_pipeline.phases.Phase_01.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False
     )
     def test_raises_runtime_error_when_pymupdf_not_available_limit(self):
         extractor = StreamingPDFExtractor(Path("dummy. pdf"))
@@ -55,7 +55,7 @@ class TestStreamingPDFExtractorWithMockPDF(unittest.TestCase):
         self.mock_page3 = MagicMock()
         self.mock_page3.get_text.return_value = "Page three content. " * 100  # 2000 chars
 
-    @patch("farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.fitz")
+    @patch("farfan_pipeline.phases.Phase_01.primitives.streaming_extractor.fitz")
     def test_extract_text_stream_yields_pages(self, mock_fitz):
         mock_doc = MagicMock()
         mock_doc.__iter__ = lambda self: iter([self.mock_page1, self.mock_page2])
@@ -76,7 +76,7 @@ class TestStreamingPDFExtractorWithMockPDF(unittest.TestCase):
         finally:
             temp_path.unlink(missing_ok=True)
 
-    @patch("farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.fitz")
+    @patch("farfan_pipeline.phases.Phase_01.primitives.streaming_extractor.fitz")
     def test_extract_with_limit_truncates_correctly(self, mock_fitz):
         mock_doc = MagicMock()
         # Capture pages from test instance scope
@@ -100,7 +100,7 @@ class TestStreamingPDFExtractorWithMockPDF(unittest.TestCase):
         finally:
             temp_path.unlink(missing_ok=True)
 
-    @patch("farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.fitz")
+    @patch("farfan_pipeline.phases.Phase_01.primitives.streaming_extractor.fitz")
     def test_document_closed_on_iteration_exception(self, mock_fitz):
         mock_doc = MagicMock()
         mock_page_bad = MagicMock()
