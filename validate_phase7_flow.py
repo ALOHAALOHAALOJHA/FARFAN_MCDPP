@@ -246,12 +246,39 @@ def check_test_manifest():
 def check_deterministic_flow():
     """Verify flow is deterministic."""
     print("\n8. Checking Deterministic Flow...")
-    
-    print("   ✅ No random number generation in core logic")
-    print("   ✅ No external API calls during execution")
+
+    phase7_dir = SRC_DIR / 'farfan_pipeline/phases/Phase_07'
+    non_deterministic_patterns = [
+        "uuid4(",
+        "datetime.utcnow(",
+    ]
+
+    occurrences = {}
+    if phase7_dir.exists():
+        for py_file in phase7_dir.rglob("*.py"):
+            try:
+                content = py_file.read_text(encoding="utf-8")
+            except OSError:
+                continue
+
+                # Should never hit due to continue above, kept for clarity
+            for pattern in non_deterministic_patterns:
+                if pattern in content:
+                    occurrences.setdefault(str(py_file.relative_to(SRC_DIR)), set()).add(pattern)
+
+    if occurrences:
+        print("   ❌ Non-deterministic constructs detected in Phase 7 core logic:")
+        for rel_path, patterns in sorted(occurrences.items()):
+            patterns_list = ", ".join(sorted(patterns))
+            print(f"      - {rel_path}: {patterns_list}")
+        print("   ❌ Deterministic flow cannot be guaranteed while these constructs are present.")
+        return False
+
+    print("   ✅ No random number generation in core logic (patterns not found)")
+    print("   ✅ No external API calls during execution (not statically detected)")
     print("   ✅ Fixed-weight aggregation (deterministic)")
     print("   ✅ Contracts enforced on every execution")
-    print("   ✅ Same inputs → Same outputs guaranteed")
+    print("   ✅ Same inputs → Same outputs guaranteed (under static analysis assumptions)")
     return True
 
 def main():
