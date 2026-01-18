@@ -70,7 +70,7 @@
           "type": "CORE",
           "criticality": "CRITICAL",
           "purpose": "AreaPolicyAggregator - 60 dimensions → 10 areas",
-          "dependencies": ["phase4:DimensionScore", "PHASE_5_CONSTANTS"]
+          "dependencies": ["phase4:DimensionScore", "phase5_00_00_area_score", "PHASE_5_CONSTANTS"]
         }
       ]
     },
@@ -87,7 +87,7 @@
           "type": "VAL",
           "criticality": "CRITICAL",
           "purpose": "Phase 5 output validation",
-          "dependencies": ["phase5_10_00_area_aggregation", "PHASE_5_CONSTANTS"]
+          "dependencies": ["phase5_00_00_area_score", "PHASE_5_CONSTANTS"]
         }
       ]
     },
@@ -105,6 +105,7 @@
           "criticality": "CRITICAL",
           "purpose": "End-to-end Phase 5 pipeline orchestration",
           "dependencies": [
+            "phase5_00_00_area_score",
             "phase5_10_00_area_aggregation",
             "phase5_20_00_area_validation"
           ]
