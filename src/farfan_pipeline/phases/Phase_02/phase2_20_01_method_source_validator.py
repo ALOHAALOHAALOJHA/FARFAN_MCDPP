@@ -3,6 +3,18 @@ Module: phase2_20_01_method_source_validator
 PHASE_LABEL: Phase 2
 Sequence: AA
 
+DEPRECATED: This module was designed for the older 30-executor architecture (D1-Q1 through D6-Q5).
+
+The current architecture uses 300 contracts (Q001-Q030 × PA01-PA10) where method bindings
+are embedded directly in each contract JSON file under method_binding.execution_phases.
+
+For method validation in the 300-contract architecture:
+- Each contract contains its own method binding specification
+- Use src/farfan_pipeline/phases/Phase_02/contract_generator/ for contract validation
+- Contracts are validated at generation time in phase2_10_00_contract_assembler.py
+
+Legacy: This validator checks if methods declared in executors_methods.json actually
+exist in the source code (preventing "phantom" method calls).
 """
 
 # =============================================================================

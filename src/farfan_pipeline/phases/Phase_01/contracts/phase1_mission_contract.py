@@ -1,11 +1,12 @@
 """Phase 1 Mission Contract - Weight-Based Execution Contract.
 
-This contract governs the execution of 16 subphases in Phase 1,
+This contract governs the execution of 16 subphases (SP0-SP15) plus SP4.1 in Phase 1,
 enforcing weight-based criticality and execution behavior.
 
 Constitutional Invariants:
-- EXACTLY 60 chunks must be produced (10 Policy Areas × 6 Causal Dimensions)
+- EXACTLY 300 chunks must be produced (10 PA × 6 DIM × 5 Questions per slot)
 - All 16 subphases must complete or fail gracefully according to weight tier
+- SP4.1 (Colombian PDM Enhancement) is MANDATORY and runs as part of SP4
 - Weight-based timeouts: CRITICAL (3x), HIGH (2x), STANDARD (1x)
 
 ═══════════════════════════════════════════════════════════════════════════════
@@ -15,7 +16,7 @@ Constitutional Invariants:
 PARAMETRIZACIÓN (ex ante, diseño-tiempo):
     Subfases: SP2, SP4
     - SP2 recibe PlanStructureProfile (σ, η, μ, τ, k) vía DI
-    - SP4 CONSUME obligatoriamente el profile para grid PA×Dim
+    - SP4 CONSUME obligatoriamente el profile para grid PA×Dim×Q
     - Define chunk_size_multiplier, overlap_ratio por sección
     NAMESPACE: parametrization.sp2.*, parametrization.sp4.*
 
@@ -27,10 +28,11 @@ CALIBRACIÓN (ex post, evidencia-tiempo):
     NAMESPACE: calibration.sp5.*, calibration.sp7.*, ...
 
 INVARIANTE (constitucional, intocable):
-    Subfases: SP4, SP11, SP13 (CRITICAL tier)
-    - 60 chunks = 10 PA × 6 Dim — NUNCA modificar
+    Subfases: SP4, SP4.1, SP11, SP13 (CRITICAL tier)
+    - 300 chunks = 10 PA × 6 Dim × 5 Q — NUNCA modificar
+    - Colombian PDM Enhancement es MANDATORIO para todos los chunks
     - Cualquier "optimización" que altere esto es INCONSTITUCIONAL
-    NAMESPACE: invariant.60_chunks, invariant.grid_spec
+    NAMESPACE: invariant.300_chunks, invariant.grid_spec, invariant.pdm_enhancement
 
 REGLA DE PRECEDENCIA:
     1. Parametrizar PRIMERO (abrir los diales)
@@ -40,7 +42,8 @@ REGLA DE PRECEDENCIA:
 ADVERTENCIA PARA FUTUROS DESARROLLADORES:
     Dentro de 6 meses alguien intentará "optimizar SP4" reduciendo chunks
     para "mejorar performance". ESTO ESTÁ PROHIBIDO CONSTITUCIONALMENTE.
-    Los 60 chunks NO son un parámetro ajustable — son la CONSTITUCIÓN.
+    Los 300 chunks NO son un parámetro ajustable — son la CONSTITUCIÓN.
+    La formula es: 10 PA × 6 DIM × 5 Q = 300 (inmutable)
 ═══════════════════════════════════════════════════════════════════════════════
 """
 

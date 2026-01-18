@@ -62,11 +62,12 @@ result = self.method_executor.execute(
 )
 ```
 
-NOT ALL METHODS ARE USED:
-- Monoliths contain more methods than executors need
-- Only methods in executors_methods.json are actively used
-- Phase 1 (ingestion) uses additional methods not in executor contracts
-- 14 methods in validation failures (deprecated/private)
+METHOD USAGE IN 300-CONTRACT ARCHITECTURE:
+- Monoliths contain more methods than any single contract needs
+- Each of the 300 contracts (Q001-Q030 × PA01-PA10) specifies its own method bindings
+- Method bindings are embedded in each contract JSON file under method_binding.execution_phases
+- Phase 1 (ingestion) uses additional methods not in Phase 2 contracts
+- Some methods may be unused across all contracts (internal/helper methods)
 
 Design Principles (Factory Pattern + DI):
 =========================================
@@ -1922,113 +1923,63 @@ def verify_single_questionnaire_load_point() -> dict[str, Any]:
 
 def get_method_dispensary_info() -> dict[str, Any]:
     """Get information about the method dispensary pattern.
-    
+
+    NOTE: The 300-contract architecture embeds method bindings directly in each
+    contract JSON file (Q001_PA01_contract_v4.json through Q030_PA10_contract_v4.json).
+    This function returns statistics about the dispensary classes themselves.
+
     Returns detailed statistics about:
     - Which monolith classes serve as dispensaries
     - How many methods each dispensary provides
-    - Which executors use which dispensaries
-    - Method reuse patterns
-    
-    Returns:
-        dict with dispensary statistics and usage patterns.
-    """
+    - Which modules contain the dispensaries
 
+    Returns:
+        dict with dispensary statistics.
+    """
 
     class_paths = get_class_paths()
 
-    # Load executor→methods mapping
-    try:
-        import json
-        from pathlib import Path
-        executors_methods_path = Path(__file__).resolve().parent / "executors_methods.json"
-        if executors_methods_path.exists():
-            with open(executors_methods_path) as f:
-                executors_methods = json.load(f)
-        else:
-            executors_methods = []
-    except Exception:
-        executors_methods = []
-
     # Build dispensary statistics
     dispensaries = {}
-    for class_name in class_paths.keys():
+    for class_name, module_path in class_paths.items():
         dispensaries[class_name] = {
-            "module": class_paths[class_name],
-            "methods_provided": [],
-            "used_by_executors": [],
-            "total_usage_count": 0,
+            "module": module_path,
+            "methods_count": 0,  # Would require AST analysis to count accurately
         }
 
-    # Count method usage per dispensary
-    for executor_info in executors_methods:
-        executor_id = executor_info.get("executor_id")
-        methods = executor_info.get("methods", [])
-
-        for method_info in methods:
-            class_name = method_info.get("class")
-            method_name = method_info.get("method")
-
-            if class_name in dispensaries:
-                if method_name not in dispensaries[class_name]["methods_provided"]:
-                    dispensaries[class_name]["methods_provided"].append(method_name)
-
-                if executor_id not in dispensaries[class_name]["used_by_executors"]:
-                    dispensaries[class_name]["used_by_executors"].append(executor_id)
-
-                dispensaries[class_name]["total_usage_count"] += 1
-
-    # Sort by usage count
-    sorted_dispensaries = sorted(
-        dispensaries.items(),
-        key=lambda x: x[1]["total_usage_count"],
-        reverse=True
-    )
-
-    # Build summary statistics
-    total_methods = sum(len(d["methods_provided"]) for _, d in sorted_dispensaries)
-    total_usage = sum(d["total_usage_count"] for _, d in sorted_dispensaries)
+    # Sort by class name
+    sorted_dispensaries = sorted(dispensaries.items())
 
     return {
         "pattern": "method_dispensary",
-        "description": "Monolith classes serve as method dispensaries for 30 executors",
+        "description": "Monolith classes serve as method dispensaries for 300 contracts",
         "total_dispensaries": len(dispensaries),
-        "total_unique_methods": total_methods,
-        "total_method_calls": total_usage,
-        "avg_reuse_per_method": round(total_usage / max(total_methods, 1), 2),
+        "architecture": "300 contracts (Q001-Q030 × PA01-PA10) with embedded method bindings",
         "dispensaries": {
             name: {
-                "methods_count": len(info["methods_provided"]),
-                "executor_count": len(info["used_by_executors"]),
-                "total_calls": info["total_usage_count"],
-                "reuse_factor": round(info["total_usage_count"] / max(len(info["methods_provided"]), 1), 2),
+                "module": info["module"],
             }
             for name, info in sorted_dispensaries[:10]  # Top 10
         },
-        "top_dispensaries": [
-            {
-                "class": name,
-                "methods": len(info["methods_provided"]),
-                "executors": len(info["used_by_executors"]),
-                "calls": info["total_usage_count"],
-            }
-            for name, info in sorted_dispensaries[:5]
-        ],
+        "all_dispensaries": list(dispensaries.keys()),
     }
 
 
 def validate_method_dispensary_pattern() -> dict[str, Any]:
     """Validate that the method dispensary pattern is correctly implemented.
-    
+
+    NOTE: The 300-contract architecture (Q001-Q030 × PA01-PA10) embeds method bindings
+    directly in each contract JSON file. This validation checks the dispensary classes
+    themselves, not the obsolete executors_methods.json mapping.
+
     Checks:
-    1. All executor methods exist in class_registry
-    2. No executor directly imports monolith classes
-    3. All methods route through MethodExecutor
-    4. Signal registry is injected (not globally accessed)
-    
+    1. All dispensary classes exist in class_registry
+    2. Class registry is properly populated
+    3. Contract directory contains expected 300 contract files
+
     Returns:
         dict with validation results.
     """
-
 
     class_paths = get_class_paths()
     validation_results = {
@@ -2036,6 +1987,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         "errors": [],
         "warnings": [],
         "checks": {},
+        "architecture": "300 contracts (Q001-Q030 × PA01-PA10)",
     }
 
     # Check 1: Verify class_registry is populated
@@ -2047,40 +1999,41 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     else:
         validation_results["checks"]["dispensaries_registered"] = len(class_paths)
 
-    # Check 2: Verify executor_methods.json exists
+    # Check 2: Verify contract directory exists and has expected files
     try:
-        import json
         from pathlib import Path
-        executors_methods_path = Path(__file__).resolve().parent / "executors_methods.json"
-        if not executors_methods_path.exists():
-            validation_results["warnings"].append(
-                "executors_methods.json not found - cannot validate method mappings"
-            )
+        contracts_dir = Path(__file__).resolve().parent / "generated_contracts" / "contracts"
+        if contracts_dir.exists():
+            contract_files = list(contracts_dir.glob("*_contract_v4.json"))
+            validation_results["checks"]["contract_files_found"] = len(contract_files)
+            if len(contract_files) < 300:
+                validation_results["warnings"].append(
+                    f"Expected 300 contract files, found {len(contract_files)}"
+                )
+            else:
+                validation_results["checks"]["contracts_complete"] = True
         else:
-            with open(executors_methods_path) as f:
-                executors_methods = json.load(f)
-            validation_results["checks"]["executor_method_mappings"] = len(executors_methods)
+            validation_results["warnings"].append(
+                "Contract directory not found: generated_contracts/contracts/"
+            )
     except Exception as e:
         validation_results["warnings"].append(
-            f"Failed to load executors_methods.json: {e}"
+            f"Failed to verify contract directory: {e}"
         )
 
-    # Check 3: Verify validation file exists
+    # Check 3: Verify validation file exists (if available)
     try:
         validation_path = Path(__file__).resolve().parent / "executor_factory_validation.json"
         if not validation_path.exists():
-            validation_results["warnings"].append(
-                "executor_factory_validation.json not found - cannot validate method catalog"
-            )
+            # This is now optional - contracts have their own validation
+            validation_results["checks"]["legacy_validation_file"] = "not_found"
         else:
             with open(validation_path) as f:
                 validation_data = json.load(f)
             validation_results["checks"]["method_pairs_validated"] = validation_data.get("validated_against_catalog", 0)
             validation_results["checks"]["validation_failures"] = len(validation_data.get("failures", []))
     except Exception as e:
-        validation_results["warnings"].append(
-            f"Failed to load executor_factory_validation.json: {e}"
-        )
+        validation_results["checks"]["legacy_validation_file"] = f"error: {e}"
 
     return validation_results
 

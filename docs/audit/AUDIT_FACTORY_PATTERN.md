@@ -58,21 +58,17 @@ All signal loading now goes through:
 2. Update dashboard service to receive questionnaire via DI
 3. Refactor SISAS signal_loader to use factory-created signal registry
 
-### 4. Method Dispensary Files ⚠️
+### 4. Method Dispensary Files ✅
 
-**Status**: PARTIAL
+**Status**: PASSED
 
 **Found**:
 - ✅ `class_registry.py` - Monolith class paths (~20 dispensaries)
 - ✅ `arg_router.py` - Method routing with special routes
+- ✅ `generated_contracts/contracts/` - 300 contract files (Q001-Q030 × PA01-PA10)
 
-**Missing**:
-- ⚠️ `executors_methods.json` - Executor→methods mapping
-
-The `executors_methods.json` file is referenced in factory documentation but not found at expected location `src/orchestration/executors_methods.json`. This may be:
-- Located elsewhere in the repository
-- Generated dynamically
-- Not yet implemented
+**Architecture Note**:
+The system has evolved from the older 30-executor model (D1-Q1 through D6-Q5) to a 300-contract architecture where method bindings are embedded directly in each contract JSON file under `method_binding.execution_phases`. The older `executors_methods.json` mapping file is no longer needed.
 
 ### 5. Factory Documentation ✅
 
@@ -169,12 +165,7 @@ Each ProcessorBundle includes provenance metadata:
 1. **Enforce Singleton Pattern**:
    - Update tests to use `AnalysisPipelineFactory.create_minimal_pipeline()`
    - Refactor dashboard and SISAS to receive questionnaire via DI
-   - Consider making `load_questionnaire()` private (`_load_questionnaire`)
-
-2. **Locate or Create executors_methods.json**:
-   - Search for file in repository
-   - If missing, generate from executor contracts
-   - Update factory documentation with correct path
+   - Consider making `load_questionnaire()` private (`_load_questionathan`)
 
 ### Medium Priority
 

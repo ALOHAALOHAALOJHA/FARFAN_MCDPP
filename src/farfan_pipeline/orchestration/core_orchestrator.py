@@ -210,13 +210,13 @@ PHASE_METADATA = {
         "produces": ["wiring", "questionnaire", "sisas_lifecycle"],
     },
     PhaseID.PHASE_1: {
-        "name": "CPP Ingestion",
-        "description": "Document processing and semantic assignment",
-        "stages": 4,
-        "sub_phases": 13,
-        "expected_output_count": 300,  # 300 questions
-        "constitutional_invariants": ["300_questions", "10_policy_areas", "6_dimensions"],
-        "produces": ["cpp", "smart_chunks", "chunk_graph"],
+        "name": "CPP Ingestion & Colombian PDM Enhancement",
+        "description": "Question-aware chunking (300 chunks: 10 PA × 6 DIM × 5 Q) with Colombian PDM enhancement",
+        "stages": 11,
+        "sub_phases": 16,  # SP0-SP15, plus SP4.1 as sub-subphase
+        "expected_output_count": 300,  # 300 questions = 10 PA × 6 DIM × 5 Q
+        "constitutional_invariants": ["300_chunks", "10_policy_areas", "6_dimensions", "5_questions_per_slot", "colombian_pdm_mandatory"],
+        "produces": ["cpp", "smart_chunks", "chunk_graph", "pdm_enhancement_metadata"],
     },
     PhaseID.PHASE_2: {
         "name": "Executor Factory & Dispatch",
@@ -3196,18 +3196,49 @@ class CoreOrchestrator:
         for idx in range(300):
             question_id = f"Q{idx+1:03d}"
             
+            # Derive metadata for Phase 4 compatibility
+            q_global = idx + 1
+            pa_num = (idx // 30) + 1
+            q_base = (idx % 30) + 1
+            dim_num = (q_base - 1) // 5 + 1 # 1-6
+            q_in_dim = (q_base - 1) % 5 + 1 # 1-5
+            
+            policy_area = f"PA{pa_num:02d}"
+            dimension = f"DIM{dim_num:02d}"
+            base_slot = f"D{dim_num}-Q{q_in_dim}"
+            
+            # Select primary score and quality (Using Quality Layer with Signal Enrichment)
+            primary_layer = "layer_q_quality"
+            primary_score = adjusted_scores[primary_layer][idx]["score"]
+            primary_quality = adjusted_scores[primary_layer][idx]["quality_level"]
+            
+            # Prepare evidence dict
+            evidence_obj = getattr(task_results[idx], "evidence", {})
+            evidence_dict = {}
+            if hasattr(evidence_obj, "to_dict"):
+                evidence_dict = evidence_obj.to_dict()
+            elif isinstance(evidence_obj, dict):
+                evidence_dict = evidence_obj
+            
             scored_question = {
                 "question_id": question_id,
-                "question_global": idx + 1,
+                "question_global": q_global,
+                "base_slot": base_slot,
+                "policy_area": policy_area,
+                "dimension": dimension,
+                "score": primary_score,
+                "quality_level": primary_quality,
                 "layer_scores": {
                     layer: adjusted_scores[layer][idx]["score"]
                     for layer in layer_scores.keys()
                 },
-                "quality_level": adjusted_scores["layer_b_baseline"][idx]["quality_level"],
+                "evidence": evidence_dict,
+                "raw_results": getattr(task_results[idx], "result", {}),
                 "metadata": {
                     "phase3_timestamp": datetime.utcnow().isoformat(),
                     "empirical_corpus_version": empirical_loader.corpus.get("calibration_config_version"),
                     "signal_adjusted": signal_registry is not None,
+                    "primary_layer_used": primary_layer,
                 }
             }
             scored_micro_questions.append(scored_question)

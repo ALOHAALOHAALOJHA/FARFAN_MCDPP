@@ -650,6 +650,26 @@ Phase 3 is now **production-ready** and unblocked for execution.
 
 ---
 
-**Audit Complete:** 2025-12-11  
-**Sign-off:** F.A.R.F.A.N Pipeline Team  
-**Status:** ✅ ALL ISSUES RESOLVED
+## 2026-01-18: Phase 3-4 Interphase Orchestration Audit
+
+**Status:** ✅ RESOLVED
+**Auditor:** Gemini AI Agent
+
+### Issue Identified
+**Gap in Phase 3 Output / Phase 4 Input Interface:**
+The `_execute_phase_3` method in `src/farfan_pipeline/orchestration/core_orchestrator.py` was generating an output dictionary that did not satisfy the strict validation requirements of Phase 4's `validate_scored_results` function.
+- **Missing Keys:** `base_slot`, `policy_area`, `dimension`, `score`, `evidence`, `raw_results`.
+- **Mismatch:** Phase 3 focused on "layer scores", while Phase 4 required a unified `score` for aggregation.
+
+### Resolution
+Updated `_execute_phase_3` in `core_orchestrator.py` to:
+1.  **Derive Topology:** Deterministically calculate `policy_area`, `dimension`, and `base_slot` from the `question_global` index (1-300).
+2.  **Unified Score Selection:** Selected `layer_q_quality` (Quality Layer) as the primary score passed to Phase 4, as it incorporates signal enrichment adjustments.
+3.  **Data Pass-through:** Explicitly extract and pass `evidence` and `raw_results` from Phase 2 task results to Phase 4.
+
+### Validation
+- Confirmed `scored_micro_questions` dictionary now contains all keys required by `farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation.validate_scored_results`.
+- Preserved existing 8-layer scoring logic within Phase 3.
+- Ensured SISAS signal enrichment is reflected in the passed score.
+
+**Audit Complete.**

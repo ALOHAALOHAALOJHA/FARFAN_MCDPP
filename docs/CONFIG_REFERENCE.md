@@ -801,13 +801,14 @@ canonic_questionnaire_central/
 ├── questionnaire_schema.json                 # JSON schema
 └── pattern_registry.json                     # SISAS patterns
 
-src/canonic_phases/Phase_two/json_files_phase_two/
-├── executors_methods.json                    # Method-executor mappings
-├── executor_factory_validation.json          # Factory validation rules
-└── executor_contracts/specialized/           # Per-executor contracts
-    ├── Q001.v3.json
-    ├── Q002.v3.json
-    └── ... (300 files)
+src/farfan_pipeline/phases/Phase_02/
+├── generated_contracts/contracts/            # 300 contracts (Q001-Q030 × PA01-PA10)
+│   ├── Q001_PA01_contract_v4.json
+│   ├── Q001_PA02_contract_v4.json
+│   └── ... (300 files with embedded method bindings)
+├── phase2_10_00_factory.py                   # Main factory with DI
+├── phase2_10_01_class_registry.py            # Method dispensary registry
+└── phase2_60_02_arg_router.py                # Method argument routing
 ```
 
 ### Loading Conventions

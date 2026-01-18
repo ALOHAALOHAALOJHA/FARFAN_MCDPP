@@ -7,6 +7,7 @@ Public API for the orchestration layer.
 EXPORTS:
     - Core Orchestrator: PipelineOrchestrator, ExecutionContext, PhaseResult
     - Factory-Aligned Orchestrator: Orchestrator, MethodExecutor
+    - SISAS-Aware Orchestrator: MainOrchestrator, signal-driven orchestration
     - Phase 0 Validation: Phase0ValidationResult, GateResult
     - Configuration: OrchestratorConfig, validation functions, presets
     - Phase Management: PhaseID, PhaseStatus, ContractEnforcer
@@ -48,6 +49,23 @@ from farfan_pipeline.orchestration.orchestrator_config import (
     get_testing_config,
 )
 
+# SISAS-Aware Orchestrator (Signal-Driven)
+try:
+    from farfan_pipeline.orchestration.sisas_aware import (
+        MainOrchestrator as SISASMainOrchestrator,
+        OrchestratorConfiguration,
+        OrchestratorMode,
+        DependencyGraph,
+        DependencyStatus,
+        PhaseScheduler,
+        SchedulingStrategy,
+        OrchestrationStateMachine,
+        OrchestrationState,
+    )
+    _has_sisas_aware = True
+except ImportError:
+    _has_sisas_aware = False
+
 __all__ = [
     # Core Orchestrator
     "PipelineOrchestrator",
@@ -61,6 +79,17 @@ __all__ = [
     # Factory-Aligned Orchestrator
     "Orchestrator",
     "MethodExecutor",
+
+    # SISAS-Aware Orchestrator (Signal-Driven)
+    "SISASMainOrchestrator",
+    "OrchestratorConfiguration",
+    "OrchestratorMode",
+    "DependencyGraph",
+    "DependencyStatus",
+    "PhaseScheduler",
+    "SchedulingStrategy",
+    "OrchestrationStateMachine",
+    "OrchestrationState",
 
     # Phase 0 Validation
     "GateResult",

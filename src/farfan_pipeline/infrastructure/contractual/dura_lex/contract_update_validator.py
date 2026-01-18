@@ -2,14 +2,21 @@
 """
 Contract Update Validation & Execution Tool
 
-This tool implements a careful, phased approach to updating executor contracts:
+DEPRECATED: This tool was designed for the older 30-executor architecture (D1-Q1 through D6-Q5).
+
+The current architecture uses 300 contracts (Q001-Q030 × PA01-PA10) where method bindings
+are embedded directly in each contract JSON file. This tool is no longer needed.
+
+For 300-contract architecture updates, see:
+- src/farfan_pipeline/phases/Phase_02/contract_generator/ - Contract generation tools
+- Each contract contains method_binding under execution_phases
+
+Legacy tool behavior (for reference):
 1. Validates method signatures match
 2. Creates detailed change manifest
 3. Updates contracts with hash regeneration
 4. Updates questionnaire_monolith.json
-5. Updates executors_methods.json
-
-Respects the manual effort invested in contract drafting with granular validation.
+5. Updates executors_methods.json (OBSOLETE - replaced by embedded method bindings)
 """
 
 import hashlib

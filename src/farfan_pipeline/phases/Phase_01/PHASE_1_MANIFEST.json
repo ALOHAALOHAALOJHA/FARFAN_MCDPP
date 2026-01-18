@@ -12,82 +12,127 @@
     {
       "id": "SP0",
       "name": "Language Detection",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 900,
+      "tier": "STANDARD"
     },
     {
       "id": "SP1",
       "name": "Advanced Preprocessing",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 2500,
+      "tier": "STANDARD"
     },
     {
       "id": "SP2",
       "name": "Structural Analysis",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 3000,
+      "tier": "STANDARD"
     },
     {
       "id": "SP3",
       "name": "Knowledge Graph Construction",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 4000,
+      "tier": "STANDARD"
     },
     {
       "id": "SP4",
-      "name": "Semantic Segmentation",
-      "module": "phase1_20_00_cpp_ingestion"
+      "name": "Question-Aware Chunking (300 chunks)",
+      "module": "phase1_07_00_sp4_question_aware",
+      "weight": 10000,
+      "tier": "CRITICAL",
+      "constitutional": true
+    },
+    {
+      "id": "SP4.1",
+      "name": "Colombian PDM Enhancement",
+      "module": "phase1_07_01_colombian_pdm_enhancer",
+      "weight": 0,
+      "tier": "CRITICAL",
+      "parent": "SP4",
+      "mandatory": true,
+      "note": "Included in SP4 budget, executes automatically after SP4"
     },
     {
       "id": "SP5",
       "name": "Causal Chain Construction",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 5000,
+      "tier": "HIGH"
     },
     {
       "id": "SP6",
       "name": "Integrated Causal Graph",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 3500,
+      "tier": "STANDARD"
     },
     {
       "id": "SP7",
       "name": "Argumentative Structure",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 4500,
+      "tier": "STANDARD"
     },
     {
       "id": "SP8",
       "name": "Temporal Markers",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 3500,
+      "tier": "STANDARD"
     },
     {
       "id": "SP9",
       "name": "Discourse Mode",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 6000,
+      "tier": "HIGH"
     },
     {
       "id": "SP10",
       "name": "Strategic Integration",
-      "module": "phase1_20_00_cpp_ingestion"
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 8000,
+      "tier": "HIGH"
     },
     {
       "id": "SP11",
-      "name": "SmartChunk Assembly",
-      "module": "phase1_20_00_cpp_ingestion"
+      "name": "SmartChunk Assembly (300 chunks)",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 10000,
+      "tier": "CRITICAL",
+      "constitutional": true
     },
     {
       "id": "SP12",
-      "name": "Irrigation Linking",
-      "module": "phase1_20_00_cpp_ingestion"
+      "name": "SISAS Irrigation Linking",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 7000,
+      "tier": "HIGH"
     },
     {
       "id": "SP13",
-      "name": "Integrity Validation",
-      "module": "phase1_20_00_cpp_ingestion"
+      "name": "CPP Packaging & Integrity Validation",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 10000,
+      "tier": "CRITICAL",
+      "constitutional": true
     },
     {
       "id": "SP14",
-      "name": "Ranking",
-      "module": "phase1_20_00_cpp_ingestion"
+      "name": "Quality Metrics & Ranking",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 5000,
+      "tier": "HIGH"
     },
     {
       "id": "SP15",
-      "name": "Final Output",
-      "module": "phase1_20_00_cpp_ingestion"
+      "name": "Final Output & Integrity Verification",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 9000,
+      "tier": "HIGH"
     }
   ],
   "dependencies": {
@@ -312,10 +357,15 @@
   "statistics": {
     "total_modules": 13,
     "stages": 11,
+    "subphases": 16,
+    "subphases_with_sub": 17,
     "constitutional_chunks": 300,
     "policy_areas": 10,
     "dimensions": 6,
     "questions_per_dimension": 5,
-    "colombian_pdm_enhancement": "MANDATORY"
+    "colombian_pdm_enhancement": "MANDATORY",
+    "critical_subphases": ["SP4", "SP4.1", "SP11", "SP13"],
+    "high_subphases": ["SP5", "SP9", "SP10", "SP12", "SP14", "SP15"],
+    "formula": "10 PA × 6 DIM × 5 Q = 300 chunks"
   }
 }

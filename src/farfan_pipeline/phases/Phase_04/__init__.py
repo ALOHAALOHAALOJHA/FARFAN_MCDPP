@@ -85,7 +85,7 @@ from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_adaptive_meso_sco
 )
 
 # Aggregation Enhancements
-from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_aggregation_enhancements import (
+from farfan_pipeline.phases.Phase_04.enhancements import (
     ConfidenceInterval,
     DispersionMetrics,
     HermeticityDiagnosis,
