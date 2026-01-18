@@ -18,7 +18,7 @@ __author__ = "F.A.R.F.A.N Core Team"
 import logging
 from typing import Any
 
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import DimensionScore
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
 from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (
     DIMENSIONS_PER_AREA,
     DIMENSION_IDS,
