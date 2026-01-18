@@ -215,7 +215,7 @@ class InstantiationValidator:
                 # Try to instantiate (only if no-arg constructor)
                 if req.has_no_arg_constructor:
                     try:
-                        instance = cls()
+                        cls()
                         req.instantiation_tested = True
                         req.instantiation_success = True
                         req.certainty_level = 1.0
