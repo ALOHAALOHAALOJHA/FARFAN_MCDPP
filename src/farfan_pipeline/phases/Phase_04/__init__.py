@@ -22,10 +22,13 @@ from __future__ import annotations
 from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_aggregation_settings import (
     AggregationSettings,
 )
-from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
-    # Dataclasses (ScoredResult, DimensionScore)
-    ScoredResult,
+# Import DimensionScore from primitives (shared with Phase 5)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import (
     DimensionScore,
+)
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
+    # Dataclasses (ScoredResult)
+    ScoredResult,
     # Aggregators
     DimensionAggregator,
     # Provenance (integrated)

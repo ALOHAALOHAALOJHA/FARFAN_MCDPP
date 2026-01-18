@@ -13,7 +13,8 @@ __author__ = "F.A.R.F.A.N Core Team"
 __layer__ = "primitives"
 __dependencies__ = []
 
-from typing import Protocol, TypeAlias, runtime_checkable
+from dataclasses import dataclass, field
+from typing import Any, Protocol, TypeAlias, runtime_checkable
 
 # Type aliases for clarity
 PolicyAreaID: TypeAlias = str  # e.g., "PA01", "PA02"
@@ -126,6 +127,54 @@ def are_weights_normalized(weights: list[Weight]) -> bool:
     return abs(weight_sum - 1.0) < WEIGHT_SUM_TOLERANCE
 
 
+@dataclass
+class DimensionScore:
+    """
+    Aggregated score for a single dimension within a policy area.
+    
+    Output of Phase 4 dimension aggregation. This data structure is shared
+    between Phase 4 (producer) and Phase 5 (consumer) to avoid circular imports.
+
+    SOTA Extensions:
+    - Uncertainty quantification (mean, std, CI)
+    - Provenance tracking (DAG node ID)
+    - Aggregation method recording
+    
+    Attributes:
+        dimension_id: Dimension identifier (e.g., "D1", "D2")
+        area_id: Policy area identifier (e.g., "PA01")
+        score: Aggregated dimension score [0.0, 3.0]
+        quality_level: Quality classification (EXCELENTE/BUENO/ACEPTABLE/INSUFICIENTE)
+        contributing_questions: List of question IDs that contributed to this score
+        validation_passed: Whether validation checks passed
+        validation_details: Details of validation results
+        score_std: Standard deviation of score (uncertainty quantification)
+        confidence_interval_95: 95% confidence interval (lower, upper)
+        epistemic_uncertainty: Uncertainty due to lack of knowledge
+        aleatoric_uncertainty: Inherent randomness uncertainty
+        provenance_node_id: DAG node ID for provenance tracking
+        aggregation_method: Method used for aggregation (weighted_average, choquet, etc.)
+    """
+
+    dimension_id: str
+    area_id: str
+    score: float
+    quality_level: str
+    contributing_questions: list[int | str]
+    validation_passed: bool = True
+    validation_details: dict[str, Any] = field(default_factory=dict)
+
+    # SOTA: Uncertainty quantification
+    score_std: float = 0.0
+    confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
+    epistemic_uncertainty: float = 0.0
+    aleatoric_uncertainty: float = 0.0
+
+    # SOTA: Provenance tracking
+    provenance_node_id: str = ""
+    aggregation_method: str = "weighted_average"
+
+
 __all__ = [
     # Type aliases
     "PolicyAreaID",
@@ -136,6 +185,8 @@ __all__ = [
     "Weight",
     "AggregationMethod",
     "QualityLevel",
+    # Data structures
+    "DimensionScore",
     # Protocols
     "IAggregator",
     "IConfigBuilder",

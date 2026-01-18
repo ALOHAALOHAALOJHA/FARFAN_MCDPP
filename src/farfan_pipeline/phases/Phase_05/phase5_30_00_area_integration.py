@@ -25,7 +25,8 @@ __execution_pattern__ = "On-Demand"
 import logging
 from typing import Any
 
-from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
+# Import DimensionScore from Phase 4 primitives (shared type)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import DimensionScore
 from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
     AreaScore,
     aggregate_policy_areas_async,

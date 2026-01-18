@@ -35,7 +35,12 @@ import time
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    # Import Phase_02 types only for type checking (no runtime circular dependency)
+    from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
+    from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
 
 import structlog
 
@@ -68,9 +73,14 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals impor
 )
 from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
 
-from farfan_pipeline.phases.Phase_02.phase2_10_01_class_registry import build_class_registry
-from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
+# Lazy imports from Phase_02 to avoid circular dependency
+# These are only needed during bootstrap execution, not at module import time
+def _lazy_import_phase2_dependencies():
+    """Lazy import Phase 2 dependencies to break circular import."""
+    from farfan_pipeline.phases.Phase_02.phase2_10_01_class_registry import build_class_registry
+    from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
+    from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
+    return build_class_registry, ExecutorConfig, ExtendedArgRouter
 
 # Imports from refactored modules
 from farfan_pipeline.phases.Phase_00.primitives.providers import (
@@ -439,13 +449,16 @@ class WiringBootstrap:
                 reason=str(e),
             ) from e
 
-    def _create_executor_config(self) -> ExecutorConfig:
+    def _create_executor_config(self) -> "ExecutorConfig":
         """Create executor configuration.
 
         Returns:
             ExecutorConfig with defaults
         """
         logger.info("wiring_init_phase", phase="create_executor_config")
+        
+        # Lazy import to avoid circular dependency
+        _, ExecutorConfig, _ = _lazy_import_phase2_dependencies()
 
         config = ExecutorConfig(
             max_tokens=2048,
@@ -467,7 +480,7 @@ class WiringBootstrap:
         self,
         provider: QuestionnaireResourceProvider,
         registry: SignalRegistry,
-        config: ExecutorConfig,
+        config: "ExecutorConfig",
     ) -> CoreModuleFactory:
         """Create CoreModuleFactory with DI.
 
@@ -513,6 +526,9 @@ class WiringBootstrap:
             WiringInitializationError: If build fails
         """
         logger.info("wiring_init_phase", phase="build_class_registry")
+        
+        # Lazy import to avoid circular dependency
+        build_class_registry, _, _ = _lazy_import_phase2_dependencies()
 
         try:
             registry = build_class_registry()
@@ -534,7 +550,7 @@ class WiringBootstrap:
     def _create_arg_router(
         self,
         class_registry: dict[str, type],
-    ) -> ExtendedArgRouter:
+    ) -> "ExtendedArgRouter":
         """Create ExtendedArgRouter with special routes.
 
         Args:
@@ -547,6 +563,9 @@ class WiringBootstrap:
             WiringInitializationError: If creation fails
         """
         logger.info("wiring_init_phase", phase="create_arg_router")
+        
+        # Lazy import to avoid circular dependency
+        _, _, ExtendedArgRouter = _lazy_import_phase2_dependencies()
 
         try:
             router = ExtendedArgRouter(class_registry)
@@ -774,7 +793,7 @@ class WiringBootstrap:
         provider: QuestionnaireResourceProvider,
         registry: SignalRegistry,
         factory: CoreModuleFactory,
-        router: ExtendedArgRouter,
+        router: "ExtendedArgRouter",
     ) -> dict[str, str]:
         """Compute hashes for initialized components.
 
