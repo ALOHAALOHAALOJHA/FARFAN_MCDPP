@@ -69,8 +69,6 @@ __upgrade__ = "FRONTIER_GRADE_v2.0"
 import logging
 import math
 from collections import defaultdict
-from dataclasses import dataclass, field
-from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
 # Import DimensionScore from Phase 4 primitives (shared type)
@@ -88,70 +86,10 @@ from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (
     QUALITY_THRESHOLDS,
 )
 
-# Import Phase 5 primitives (UPGRADED)
-from farfan_pipeline.phases.Phase_05.primitives.phase5_00_00_types import (
-    AggregationStrategy,
-    DimensionContribution,
-    SensitivityAnalysis,
-    StatisticalMetrics,
-    SynthesisDepth,
-)
-from farfan_pipeline.phases.Phase_05.primitives.phase5_00_00_statistical_primitives import (
-    compute_consistency_score,
-    compute_correlation,
-    compute_robust_mean,
-    compute_statistical_metrics,
-    detect_outliers_iqr,
-    detect_outliers_zscore,
-)
+# Import canonical AreaScore from phase5_00_00_area_score
+from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
 
 logger = logging.getLogger(__name__)
-
-
-# =============================================================================
-# DATA STRUCTURES
-# =============================================================================
-
-
-@dataclass
-class AreaScore:
-    """
-    Aggregated score for a single policy area.
-    
-    Contains 6 DimensionScores aggregated into a single area-level score.
-    This represents the quality of policy implementation for one policy area.
-    
-    Attributes:
-        area_id: Policy area identifier (PA01-PA10)
-        area_name: Human-readable policy area name
-        score: Aggregated score in [0.0, 3.0]
-        quality_level: Quality classification (EXCELENTE, BUENO, ACEPTABLE, INSUFICIENTE)
-        dimension_scores: List of 6 DimensionScore objects
-        validation_passed: Whether validation checks passed
-        validation_details: Detailed validation results
-        cluster_id: Cluster assignment for Phase 6 (optional)
-        score_std: Standard deviation of score (uncertainty)
-        confidence_interval_95: 95% confidence interval (lower, upper)
-        provenance_node_id: DAG node for provenance tracking
-        aggregation_method: Method used for aggregation
-    """
-
-    area_id: str
-    area_name: str
-    score: float
-    quality_level: str
-    dimension_scores: list[DimensionScore] = field(default_factory=list)
-    validation_passed: bool = True
-    validation_details: dict[str, Any] = field(default_factory=dict)
-    cluster_id: str | None = None
-    
-    # SOTA: Uncertainty quantification
-    score_std: float = 0.0
-    confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
-    
-    # SOTA: Provenance tracking
-    provenance_node_id: str = ""
-    aggregation_method: str = "weighted_average"
 
 
 # =============================================================================

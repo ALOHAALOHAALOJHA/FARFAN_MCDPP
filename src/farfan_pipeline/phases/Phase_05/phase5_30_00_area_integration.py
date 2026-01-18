@@ -53,10 +53,9 @@ import logging
 from datetime import datetime
 from typing import Any
 
-# Import DimensionScore from Phase 4 primitives (shared type)
-from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import DimensionScore
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
+from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
 from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
-    AreaScore,
     aggregate_policy_areas_async,
 )
 from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (

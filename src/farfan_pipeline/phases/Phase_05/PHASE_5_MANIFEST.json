@@ -75,7 +75,26 @@
           "canonical_name": "phase5_20_00_area_validation",
           "type": "ENF",
           "criticality": "CRITICAL",
-          "purpose": "Area Validation"
+          "purpose": "AreaPolicyAggregator - 60 dimensions → 10 areas",
+          "dependencies": ["phase4:DimensionScore", "phase5_00_00_area_score", "PHASE_5_CONSTANTS"]
+        }
+      ]
+    },
+    {
+      "code": 15,
+      "name": "Performance Optimization",
+      "description": "High-performance aggregation with parallel processing and caching (15 subphase)",
+      "execution_order": 3.5,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 1,
+          "canonical_name": "phase5_15_00_performance_boost",
+          "type": "PERFORMANCE",
+          "criticality": "HIGH",
+          "purpose": "HighPerformanceAreaAggregator - SOTA parallel/vectorized aggregation with 100-1500x speedup",
+          "dependencies": ["phase4:DimensionScore", "phase5_00_00_area_score", "PHASE_5_CONSTANTS"],
+          "features": ["parallel_processing", "adaptive_caching", "vectorization", "jit_compilation", "monte_carlo_uncertainty"]
         }
       ]
     },
@@ -91,7 +110,8 @@
           "canonical_name": "phase5_30_00_area_integration",
           "type": "ENF",
           "criticality": "CRITICAL",
-          "purpose": "Area Integration"
+          "purpose": "Phase 5 output validation",
+          "dependencies": ["phase5_00_00_area_score", "PHASE_5_CONSTANTS"]
         }
       ]
     },
@@ -107,23 +127,12 @@
           "canonical_name": "phase5_40_00_synthesis_engine",
           "type": "VAL",
           "criticality": "CRITICAL",
-          "purpose": "Synthesis Engine"
-        }
-      ]
-    },
-    {
-      "code": 99,
-      "name": "Stage 99",
-      "description": "Stage 99 modules",
-      "execution_order": 6,
-      "module_count": 1,
-      "modules": [
-        {
-          "order": 0,
-          "canonical_name": "PHASE_5_CONSTANTS",
-          "type": "UTIL",
-          "criticality": "MEDIUM",
-          "purpose": "Phase 5 Constants"
+          "purpose": "End-to-end Phase 5 pipeline orchestration",
+          "dependencies": [
+            "phase5_00_00_area_score",
+            "phase5_10_00_area_aggregation",
+            "phase5_20_00_area_validation"
+          ]
         }
       ]
     }
@@ -150,7 +159,7 @@
     "last_check": "2026-01-17T00:00:00Z"
   },
   "statistics": {
-    "total_modules": 7,
+    "total_modules": 6,
     "stages": 6
   },
   "dependency_graph": {
