@@ -17,7 +17,8 @@ from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_03.contracts.phase03_output_contract import ScoredMicroQuestion
-    # MacroEvaluation → Use MacroScore (aliased below for compatibility)
+    from farfan_pipeline.phases.Phase_07.phase7_10_00_macro_score import MacroScore
+    # MacroEvaluation → Use MacroScore (aliased for compatibility)
     MacroEvaluation = MacroScore
 
 # Phase 4 imports
@@ -189,7 +190,7 @@ async def aggregate_policy_areas_async(
     # Group by area_id
     grouped = group_by(
         dimension_scores,
-        key_func=lambda d: (d.policy_area_id,)
+        key_func=lambda d: (d.area_id,)
     )
     
     logger.info(f"Phase 5: Processing {len(grouped)} policy area groups")

@@ -76,7 +76,14 @@ from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import CONFIG_DIR, DATA_
 # Lazy imports from Phase_02 to avoid circular dependency
 # These are only needed during bootstrap execution, not at module import time
 def _lazy_import_phase2_dependencies():
-    """Lazy import Phase 2 dependencies to break circular import."""
+    """Lazy import Phase 2 dependencies to break circular import.
+    
+    Returns:
+        Tuple of (build_class_registry, ExecutorConfig, ExtendedArgRouter)
+        - build_class_registry: Function to build class registry
+        - ExecutorConfig: Executor configuration dataclass
+        - ExtendedArgRouter: Extended argument router class
+    """
     from farfan_pipeline.phases.Phase_02.phase2_10_01_class_registry import build_class_registry
     from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
     from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
