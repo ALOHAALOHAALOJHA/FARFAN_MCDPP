@@ -45,6 +45,9 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 
 # SOTA imports
+from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import (
+    DimensionScore,
+)
 from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
@@ -731,35 +734,8 @@ class ScoredResult:
     raw_results: dict[str, Any]
 
 
-@dataclass
-class DimensionScore:
-    """
-    Aggregated score for a single dimension within a policy area.
-
-    SOTA Extensions:
-    - Uncertainty quantification (mean, std, CI)
-    - Provenance tracking (DAG node ID)
-    - Aggregation method recording
-    """
-
-    dimension_id: str
-    area_id: str
-    score: float
-    quality_level: str
-    contributing_questions: list[int | str]
-    validation_passed: bool = True
-    validation_details: dict[str, Any] = field(default_factory=dict)
-
-    # SOTA: Uncertainty quantification
-    score_std: float = 0.0
-    confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
-    epistemic_uncertainty: float = 0.0
-    aleatoric_uncertainty: float = 0.0
-
-    # SOTA: Provenance tracking
-    provenance_node_id: str = ""
-    aggregation_method: str = "weighted_average"
-
+# NOTE: DimensionScore has been moved to primitives/phase4_00_00_types.py
+# This allows Phase 5 to import it without creating circular dependencies.
 
 # NOTE: AreaScore, ClusterScore, and MacroScore have been removed from Phase 4.
 # These classes belong to Phases 5, 6, and 7 respectively.
