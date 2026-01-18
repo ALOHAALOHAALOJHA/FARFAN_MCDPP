@@ -4,7 +4,7 @@ Phase 4 Aggregation Types - Shared Type Definitions (Primitives Layer)
 This module contains shared type definitions and type aliases used across Phase 4.
 NO dependencies on other Phase 4 modules.
 
-Module: src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_types.py
+Module: src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_types.py
 """
 from __future__ import annotations
 
