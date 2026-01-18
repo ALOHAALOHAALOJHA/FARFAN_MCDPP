@@ -32,7 +32,6 @@ from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionSc
 from farfan_pipeline.phases.Phase_05 import (
     AreaPolicyAggregator,
     HighPerformanceAreaAggregator,
-    aggregate_with_performance_boost,
     POLICY_AREAS,
     DIMENSION_IDS,
 )
