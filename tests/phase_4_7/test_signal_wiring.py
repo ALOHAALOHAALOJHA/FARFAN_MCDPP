@@ -18,7 +18,7 @@ class TestSignalWiring:
     
     def test_signal_enriched_aggregator_exists(self):
         """Verify SignalEnrichedAggregator is available."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements import (
+        from farfan_pipeline.phases.Phase_04.phase4_10_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator
         )
         assert SignalEnrichedAggregator is not None
@@ -69,8 +69,8 @@ class TestSignalWiring:
         # Signal-derived weights should be traceable
         # This ensures auditability
         
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
-            AggregationSettings
+        from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+            AggregationSettingsFactory as AggregationSettings
         )
         
         # AggregationSettings should track source
@@ -88,8 +88,8 @@ class TestSignalWiring:
     
     def test_fallback_to_legacy_when_no_registry(self):
         """Verify fallback to monolith weights when signal registry unavailable."""
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
-            AggregationSettings
+        from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+            AggregationSettingsFactory as AggregationSettings
         )
         
         mock_monolith = {
@@ -113,8 +113,8 @@ class TestSignalIntegrationPaths:
     def test_sisas_registry_path(self):
         """Document SISAS registry integration path."""
         # AggregationSettings.from_signal_registry should exist
-        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
-            AggregationSettings
+        from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+            AggregationSettingsFactory as AggregationSettings
         )
         
         assert hasattr(AggregationSettings, 'from_monolith')
