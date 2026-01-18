@@ -47,9 +47,8 @@ from farfan_pipeline.phases.Phase_04.phase4_20_00_choquet_adapter import (
 # STAGE 30: AGGREGATORS - Main aggregation engines
 # Main Dimension Aggregation
 from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
-    # Dataclasses (ScoredResult, DimensionScore)
+    # Dataclasses (ScoredResult)
     ScoredResult,
-    DimensionScore,
     # Aggregators
     DimensionAggregator,
     # Provenance (integrated)

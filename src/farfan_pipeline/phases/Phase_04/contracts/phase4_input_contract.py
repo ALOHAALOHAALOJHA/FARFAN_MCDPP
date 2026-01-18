@@ -8,7 +8,7 @@ Input:
 - 5 questions × 6 dimensions × 10 policy areas
 - Each question must have quality scores in appropriate ranges
 
-Module: src/farfan_pipeline/phases/Phase_4/contracts/phase4_input_contract.py
+Module: src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py
 """
 from __future__ import annotations
 
