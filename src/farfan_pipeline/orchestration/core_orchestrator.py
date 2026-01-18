@@ -3205,11 +3205,11 @@ class CoreOrchestrator:
             
             policy_area = f"PA{pa_num:02d}"
             dimension = f"DIM{dim_num:02d}"
-            base_slot = f"D{dim_num}-Q{q_in_dim}"
+            base_slot = f"DIM{dim_num:02d}-Q{q_in_dim:03d}"
             
             # Select primary score and quality (Using Quality Layer with Signal Enrichment)
             primary_layer = "layer_q_quality"
-            primary_score = adjusted_scores[primary_layer][idx]["score"]
+            primary_score = adjusted_scores[primary_layer][idx]["score"] * 3.0 # Denormalize to [0, 3]
             primary_quality = adjusted_scores[primary_layer][idx]["quality_level"]
             
             # Prepare evidence dict
@@ -3229,7 +3229,7 @@ class CoreOrchestrator:
                 "score": primary_score,
                 "quality_level": primary_quality,
                 "layer_scores": {
-                    layer: adjusted_scores[layer][idx]["score"]
+                    layer: adjusted_scores[layer][idx]["score"] * 3.0 # Denormalize to [0, 3]
                     for layer in layer_scores.keys()
                 },
                 "evidence": evidence_dict,
