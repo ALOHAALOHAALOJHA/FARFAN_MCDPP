@@ -48,17 +48,17 @@
       "modules": [
         {
           "order": 0,
-          "canonical_name": "phase7_10_00_macro_score",
-          "type": "CFG",
-          "criticality": "CRITICAL",
-          "purpose": "Macro Score"
-        },
-        {
-          "order": 1,
           "canonical_name": "phase7_10_00_phase_7_constants",
           "type": "CFG",
           "criticality": "CRITICAL",
           "purpose": "Phase 7 Constants"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase7_10_00_macro_score",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Macro Score"
         },
         {
           "order": 2,

@@ -48,6 +48,13 @@ from .phase7_10_00_macro_score import MacroScore
 from .phase7_20_00_macro_aggregator import MacroAggregator
 from .phase7_10_00_systemic_gap_detector import SystemicGapDetector, SystemicGap
 
+# Import contracts to enforce them by default in the flow
+from .contracts import (
+    Phase7InputContract,
+    Phase7MissionContract,
+    Phase7OutputContract,
+)
+
 __all__ = [
     # Constants
     "ALIGNMENT_THRESHOLD_HIGH",
@@ -73,4 +80,8 @@ __all__ = [
     "MacroAggregator",
     "SystemicGapDetector",
     "SystemicGap",
+    # Contracts - Enforced by default
+    "Phase7InputContract",
+    "Phase7MissionContract",
+    "Phase7OutputContract",
 ]
