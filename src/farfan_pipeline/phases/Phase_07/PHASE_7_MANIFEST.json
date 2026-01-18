@@ -12,7 +12,7 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2026-01-17",
+    "modified": "2026-01-18",
     "authors": [
       "F.A.R.F.A.N Core Team"
     ],
@@ -48,17 +48,17 @@
       "modules": [
         {
           "order": 0,
-          "canonical_name": "phase7_10_00_phase_7_constants",
-          "type": "CFG",
-          "criticality": "CRITICAL",
-          "purpose": "Phase 7 Constants"
-        },
-        {
-          "order": 1,
           "canonical_name": "phase7_10_00_macro_score",
           "type": "CFG",
           "criticality": "CRITICAL",
           "purpose": "Macro Score"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase7_10_00_phase_7_constants",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 7 Constants"
         },
         {
           "order": 2,
