@@ -4,7 +4,7 @@ Phase 4 Primitives Layer Tests - Adversarial & Comprehensive
 Tests the primitives layer (Layer 0) with adversarial conditions.
 Covers: phase4_00_00_aggregation_settings.py, phase4_00_00_types.py
 
-Module: src/farfan_pipeline/phases/Phase_4/tests/test_phase4_00_00_primitives.py
+Module: src/farfan_pipeline/phases/Phase_04/tests/test_phase4_00_00_primitives.py
 Version: 1.0.0
 Status: ADVERSARIAL
 """

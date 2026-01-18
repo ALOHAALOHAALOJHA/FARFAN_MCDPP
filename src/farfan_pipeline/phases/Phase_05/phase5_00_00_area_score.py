@@ -28,8 +28,8 @@ __execution_pattern__ = "Per-Task"
 from dataclasses import dataclass, field
 from typing import Any
 
-# Import DimensionScore from Phase 4
-from farfan_pipeline.phases.Phase_04 import DimensionScore
+# Import DimensionScore from Phase 4 primitives (shared type)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import DimensionScore
 
 
 @dataclass
