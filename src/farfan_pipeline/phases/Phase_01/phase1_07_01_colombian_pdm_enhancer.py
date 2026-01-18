@@ -191,6 +191,11 @@ class ColombianPDMChunkEnhancer:
         """
         Analyze chunk content and extract PDM-specific enhancements.
         
+        Note: Pattern matching is performed in separate loops for clarity and maintainability.
+        For most PDM documents (~1000-2000 chars per chunk), this approach is efficient.
+        If performance becomes an issue with very large chunks, consider combining pattern
+        detection into a single pass.
+        
         Args:
             chunk_content: Text content of the chunk
             chunk_metadata: Existing chunk metadata
@@ -240,10 +245,13 @@ class ColombianPDMChunkEnhancer:
                 enhancement.population_groups.extend(matches)
         
         # Calculate quantitative density
+        # Density = (number of quantitative markers) / (text length in hundreds of chars)
+        # This normalizes to "markers per 100 characters" for comparability
+        DENSITY_NORMALIZATION_FACTOR = 100  # chars per unit
         quant_matches = 0
         for pattern in self.patterns.quantitative_markers:
             quant_matches += len(re.findall(pattern, chunk_content, re.IGNORECASE))
-        enhancement.quantitative_density = quant_matches / max(1, content_length / 100)
+        enhancement.quantitative_density = quant_matches / max(1, content_length / DENSITY_NORMALIZATION_FACTOR)
         
         # Detect strategic planning elements
         for pattern in self.patterns.strategic_markers:
@@ -406,8 +414,16 @@ def assert_not_chunked(document: Any, method_name: str = "") -> None:
     """
     if check_if_already_chunked(document):
         method_info = f" in method '{method_name}'" if method_name else ""
+        
+        # Safely get chunk count
+        chunk_count = "unknown"
+        if hasattr(document, 'chunks') and document.chunks:
+            chunk_count = len(document.chunks)
+        elif hasattr(document, 'metadata') and isinstance(document.metadata, dict):
+            chunk_count = document.metadata.get('chunk_count', 'unknown')
+        
         raise AlreadyChunkedError(
             f"Cannot process document that is already chunked{method_info}. "
             f"This method requires an unchunked document as input. "
-            f"Document has {getattr(document, 'chunks', None) and len(document.chunks)} chunks."
+            f"Document has {chunk_count} chunks."
         )
