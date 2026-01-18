@@ -47,16 +47,17 @@ _CANONICAL_INVENTORY_PATH = (
 )
 
 # Mother file to module mapping
+# CRITICAL FIX: Changed from 'methods_dispensary' to 'farfan_pipeline.methods'
 _MOTHER_FILE_TO_MODULE: dict[str, str] = {
-    "derek_beach.py": "methods_dispensary.derek_beach",
-    "policy_processor.py": "methods_dispensary.policy_processor",
-    "teoria_cambio.py": "methods_dispensary.teoria_cambio",
-    "financiero_viabilidad_tablas.py": "methods_dispensary.financiero_viabilidad_tablas",
-    "embedding_policy.py": "methods_dispensary.embedding_policy",
-    "analyzer_one.py": "methods_dispensary.analyzer_one",
-    "contradiction_deteccion.py": "methods_dispensary.contradiction_deteccion",
-    "semantic_chunking_policy.py": "methods_dispensary.semantic_chunking_policy",
-    "bayesian_multilevel_system.py": "methods_dispensary.bayesian_multilevel_system",
+    "derek_beach.py": "farfan_pipeline.methods.derek_beach",
+    "policy_processor.py": "farfan_pipeline.methods.policy_processor",
+    "teoria_cambio.py": "farfan_pipeline.methods.teoria_cambio",
+    "financiero_viabilidad_tablas.py": "farfan_pipeline.methods.financiero_viabilidad_tablas",
+    "embedding_policy.py": "farfan_pipeline.methods.embedding_policy",
+    "analyzer_one.py": "farfan_pipeline.methods.analyzer_one",
+    "contradiction_deteccion.py": "farfan_pipeline.methods.contradiction_deteccion",
+    "semantic_chunking_policy.py": "farfan_pipeline.methods.semantic_chunking_policy",
+    "bayesian_multilevel_system.py": "farfan_pipeline.methods.bayesian_multilevel_system",
 }
 
 
