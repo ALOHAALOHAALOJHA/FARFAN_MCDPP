@@ -42,9 +42,11 @@ from .PHASE_5_CONSTANTS import (
     QualityLevel,
 )
 
-# Core classes
+# Data Model (stage 0 - MODEL)
+from .phase5_00_00_area_score import AreaScore
+
+# Core classes (stage 10 - CORE)
 from .phase5_10_00_area_aggregation import (
-    AreaScore,
     AreaPolicyAggregator,
     aggregate_policy_areas_async,
 )
