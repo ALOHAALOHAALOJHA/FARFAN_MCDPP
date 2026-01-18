@@ -20,9 +20,9 @@
       "phase4_team"
     ],
     "repository": "FARFAN_MCDPP",
-    "surgery_note": "Phase 4 surgically separated from meta-phase 4-7 on 2026-01-13. Re-sequenced based on dependency analysis on 2026-01-17."
+    "surgery_note": "Phase 4 surgically separated from meta-phase 4-7 on 2026-01-13. Re-sequenced based on dependency analysis on 2026-01-17. Integration module (subphase 50) moved to orchestration layer on 2026-01-18."
   },
-  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions × 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
+  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions \u00d7 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
   "stages": [
     {
       "code": 0,
@@ -52,7 +52,7 @@
           "canonical_name": "phase4_00_00_types",
           "type": "PRIM",
           "criticality": "CRITICAL",
-          "purpose": "Base type definitions for Phase 4",
+          "purpose": "Base type definitions and DimensionScore dataclass (shared with Phase 5)",
           "dependencies": []
         },
         {
@@ -110,7 +110,10 @@
           "type": "CORE",
           "criticality": "CRITICAL",
           "purpose": "W3C PROV-compliant DAG provenance tracking",
-          "dependencies": ["external:networkx", "external:numpy"]
+          "dependencies": [
+            "external:networkx",
+            "external:numpy"
+          ]
         },
         {
           "order": 2,
@@ -118,7 +121,10 @@
           "type": "CORE",
           "criticality": "CRITICAL",
           "purpose": "BCa bootstrap and convergence diagnostics",
-          "dependencies": ["external:statistics", "external:random"]
+          "dependencies": [
+            "external:statistics",
+            "external:random"
+          ]
         },
         {
           "order": 3,
@@ -126,7 +132,9 @@
           "type": "REDIR",
           "criticality": "CRITICAL",
           "purpose": "Settings re-export from primitives",
-          "dependencies": ["phase4_00_00_aggregation_settings"]
+          "dependencies": [
+            "phase4_00_00_aggregation_settings"
+          ]
         }
       ]
     },
@@ -170,7 +178,7 @@
           "canonical_name": "phase4_30_00_aggregation",
           "type": "CORE",
           "criticality": "CRITICAL",
-          "purpose": "Main dimension aggregator (300→60)",
+          "purpose": "Main dimension aggregator (300\u219260)",
           "dependencies": [
             "phase4_10_00_aggregation_provenance",
             "phase4_10_00_uncertainty_quantification",
@@ -184,7 +192,9 @@
           "type": "ENH",
           "criticality": "MEDIUM",
           "purpose": "Signal-based aggregation enhancements",
-          "dependencies": ["phase4_00_00_signal_enriched_primitives"]
+          "dependencies": [
+            "phase4_00_00_signal_enriched_primitives"
+          ]
         }
       ]
     },
@@ -209,27 +219,8 @@
           "type": "ENH",
           "criticality": "MEDIUM",
           "purpose": "Performance and telemetry enhancements",
-          "dependencies": ["infrastructure:contractual"]
-        }
-      ]
-    },
-    {
-      "code": 50,
-      "name": "Integration",
-      "description": "Cross-phase integration (50 subphase)",
-      "execution_order": 7,
-      "module_count": 1,
-      "modules": [
-        {
-          "order": 1,
-          "canonical_name": "phase4_50_00_aggregation_integration",
-          "type": "INTG",
-          "criticality": "CRITICAL",
-          "purpose": "Cross-phase integration (P4→P5→P6)",
           "dependencies": [
-            "phase4_30_00_aggregation",
-            "phase5:area_aggregation",
-            "phase6:cluster_score"
+            "infrastructure:contractual"
           ]
         }
       ]
@@ -247,7 +238,9 @@
           "type": "VAL",
           "criticality": "CRITICAL",
           "purpose": "Phase 4 output validation",
-          "dependencies": ["phase4_30_00_aggregation"]
+          "dependencies": [
+            "phase4_30_00_aggregation"
+          ]
         }
       ]
     }
@@ -274,8 +267,8 @@
     "last_check": "2026-01-17T00:00:00Z"
   },
   "statistics": {
-    "total_modules": 18,
-    "stages": 9
+    "total_modules": 17,
+    "stages": 7
   },
   "dependency_graph": {
     "note": "Subphase numbers indicate sequential execution order. First number = subphase, second = position within subphase."
