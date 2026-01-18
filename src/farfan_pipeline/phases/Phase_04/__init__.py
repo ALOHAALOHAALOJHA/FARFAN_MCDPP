@@ -16,12 +16,36 @@ from __future__ import annotations
 # ==============================================================================
 # LOCAL IMPORTS — Files live in this directory
 # ==============================================================================
+# Imports are ordered by manifest execution order (Stage 00 → 10 → 20 → 30 → 40 → 50 → 60)
 
-# Core Aggregation Pipeline (Phase 4 only)
-# Import AggregationSettings from primitives module (correct location)
+# STAGE 00: PRIMITIVES - Foundation types and settings
+# Import AggregationSettings from primitives module
 from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_aggregation_settings import (
     AggregationSettings,
 )
+
+# STAGE 10: FOUNDATION - Core foundational modules
+# Provenance tracking
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
+    AggregationDAG as ProvenanceDAG,
+    ProvenanceNode as ProvenanceEntry,
+)
+
+# Uncertainty Quantification
+from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
+    BootstrapAggregator,
+    UncertaintyMetrics,
+    aggregate_with_uncertainty,
+)
+
+# STAGE 20: CORE PROCESSING
+# Choquet Adapter
+from farfan_pipeline.phases.Phase_04.phase4_20_00_choquet_adapter import (
+    create_default_choquet_adapter,
+)
+
+# STAGE 30: AGGREGATORS - Main aggregation engines
+# Main Dimension Aggregation
 from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
     # Dataclasses (ScoredResult, DimensionScore)
     ScoredResult,
@@ -48,55 +72,38 @@ from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
     ChoquetAggregator,
 )
 
-# Choquet Adapter
-from farfan_pipeline.phases.Phase_04.phase4_20_00_choquet_adapter import (
-    create_default_choquet_adapter,
-)
-
-# Uncertainty Quantification
-from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
-    BootstrapAggregator,
-    UncertaintyMetrics,
-    aggregate_with_uncertainty,
-)
-
-# Provenance (standalone import)
-from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
-    AggregationDAG as ProvenanceDAG,
-    ProvenanceNode as ProvenanceEntry,
-)
-
 # Signal-Enriched Aggregation
 from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
 )
 
-# Adaptive Meso Scoring (Stage 40 - Enhancements)
+# STAGE 40: ENHANCEMENTS - Performance and optimization
+# Adaptive Meso Scoring
 from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
     ScoringMetrics,
 )
 
-# Aggregation Enhancements (Stage 40 - Enhancements)
+# Aggregation Enhancements
 from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_aggregation_enhancements import (
     ConfidenceInterval,
     DispersionMetrics,
     HermeticityDiagnosis,
 )
 
-# Enhanced Aggregation
+# Enhanced Aggregation (composite from enhancements package)
 from farfan_pipeline.phases.Phase_04.enhancements import (
     EnhancedDimensionAggregator,
     enhance_aggregator,
 )
 
-# Integration (Stage 50)
+# STAGE 50: INTEGRATION - Cross-phase integration
 from farfan_pipeline.phases.Phase_04.phase4_50_00_aggregation_integration import (
     ClusterAggregator,
 )
 
-# Validation (Stage 60)
+# STAGE 60: VALIDATION - Output validation
 from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import (
     ValidationResult,
     AggregationValidationError,
