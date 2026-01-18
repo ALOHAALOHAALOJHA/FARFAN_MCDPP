@@ -12,7 +12,7 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2026-01-17",
+    "modified": "2026-01-18",
     "authors": [
       "F.A.R.F.A.N Core Team"
     ],
@@ -27,7 +27,7 @@
     {
       "code": 0,
       "name": "Infrastructure",
-      "description": "Base infrastructure and types (no internal dependencies)",
+      "description": "Base infrastructure and types",
       "execution_order": 1,
       "module_count": 1,
       "modules": [
@@ -41,206 +41,110 @@
       ]
     },
     {
-      "code": 0,
-      "name": "Primitives",
-      "description": "Foundational data structures and types (00 subphase)",
-      "execution_order": 2,
-      "module_count": 6,
-      "modules": [
-        {
-          "order": 1,
-          "canonical_name": "phase4_00_00_types",
-          "type": "PRIM",
-          "criticality": "CRITICAL",
-          "purpose": "Base type definitions and DimensionScore dataclass (shared with Phase 5)",
-          "dependencies": []
-        },
-        {
-          "order": 2,
-          "canonical_name": "phase4_00_00_quality_levels",
-          "type": "PRIM",
-          "criticality": "CRITICAL",
-          "purpose": "Quality level enumerations",
-          "dependencies": []
-        },
-        {
-          "order": 3,
-          "canonical_name": "phase4_00_00_uncertainty_metrics",
-          "type": "PRIM",
-          "criticality": "CRITICAL",
-          "purpose": "Uncertainty quantification types",
-          "dependencies": []
-        },
-        {
-          "order": 4,
-          "canonical_name": "phase4_00_00_choquet_primitives",
-          "type": "PRIM",
-          "criticality": "CRITICAL",
-          "purpose": "Choquet integral mathematical primitives",
-          "dependencies": []
-        },
-        {
-          "order": 5,
-          "canonical_name": "phase4_00_00_signal_enriched_primitives",
-          "type": "PRIM",
-          "criticality": "MEDIUM",
-          "purpose": "Signal-based enrichment primitives",
-          "dependencies": []
-        },
-        {
-          "order": 6,
-          "canonical_name": "phase4_00_00_aggregation_settings",
-          "type": "PRIM",
-          "criticality": "CRITICAL",
-          "purpose": "Aggregation configuration dataclass",
-          "dependencies": []
-        }
-      ]
-    },
-    {
       "code": 10,
-      "name": "Foundation",
-      "description": "Core foundational modules with minimal dependencies (10 subphase)",
-      "execution_order": 3,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
       "module_count": 3,
       "modules": [
         {
-          "order": 1,
+          "order": 0,
           "canonical_name": "phase4_10_00_aggregation_provenance",
-          "type": "CORE",
+          "type": "CFG",
           "criticality": "CRITICAL",
-          "purpose": "W3C PROV-compliant DAG provenance tracking",
-          "dependencies": [
-            "external:networkx",
-            "external:numpy"
-          ]
+          "purpose": "Aggregation Provenance"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase4_10_00_aggregation_settings",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation Settings"
         },
         {
           "order": 2,
           "canonical_name": "phase4_10_00_uncertainty_quantification",
-          "type": "CORE",
+          "type": "CFG",
           "criticality": "CRITICAL",
-          "purpose": "BCa bootstrap and convergence diagnostics",
-          "dependencies": [
-            "external:statistics",
-            "external:random"
-          ]
-        },
-        {
-          "order": 3,
-          "canonical_name": "phase4_10_00_aggregation_settings",
-          "type": "REDIR",
-          "criticality": "CRITICAL",
-          "purpose": "Settings re-export from primitives",
-          "dependencies": [
-            "phase4_00_00_aggregation_settings"
-          ]
+          "purpose": "Uncertainty Quantification"
         }
       ]
     },
     {
       "code": 20,
-      "name": "Core Processing",
-      "description": "Core processing modules depending on foundation (20 subphase)",
-      "execution_order": 4,
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 3,
       "module_count": 1,
       "modules": [
         {
-          "order": 1,
+          "order": 0,
           "canonical_name": "phase4_20_00_choquet_adapter",
-          "type": "CORE",
+          "type": "ENF",
           "criticality": "CRITICAL",
-          "purpose": "Choquet integral fuzzy measure adapter",
-          "dependencies": [
-            "phase4_10_00_uncertainty_quantification",
-            "phase4_10_00_aggregation_settings"
-          ]
+          "purpose": "Choquet Adapter"
         }
       ]
     },
     {
       "code": 30,
-      "name": "Aggregators",
-      "description": "Main aggregation engines (30 subphase)",
-      "execution_order": 5,
+      "name": "Resource Management",
+      "description": "Resource control and limits",
+      "execution_order": 4,
       "module_count": 3,
       "modules": [
         {
+          "order": 0,
+          "canonical_name": "phase4_30_00_aggregation",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Aggregation"
+        },
+        {
           "order": 1,
           "canonical_name": "phase4_30_00_choquet_aggregator",
-          "type": "CORE",
+          "type": "ENF",
           "criticality": "CRITICAL",
-          "purpose": "Multi-layer Choquet aggregation",
-          "dependencies": []
+          "purpose": "Choquet Aggregator"
         },
         {
           "order": 2,
-          "canonical_name": "phase4_30_00_aggregation",
-          "type": "CORE",
-          "criticality": "CRITICAL",
-          "purpose": "Main dimension aggregator (300\u219260)",
-          "dependencies": [
-            "phase4_10_00_aggregation_provenance",
-            "phase4_10_00_uncertainty_quantification",
-            "phase4_10_00_aggregation_settings",
-            "phase4_20_00_choquet_adapter"
-          ]
-        },
-        {
-          "order": 3,
           "canonical_name": "phase4_30_00_signal_enriched_aggregation",
-          "type": "ENH",
-          "criticality": "MEDIUM",
-          "purpose": "Signal-based aggregation enhancements",
-          "dependencies": [
-            "phase4_00_00_signal_enriched_primitives"
-          ]
-        }
-      ]
-    },
-    {
-      "code": 40,
-      "name": "Enhancements",
-      "description": "Enhancement and optimization modules (40 subphase)",
-      "execution_order": 6,
-      "module_count": 2,
-      "modules": [
-        {
-          "order": 1,
-          "canonical_name": "phase4_40_00_adaptive_meso_scoring",
-          "type": "ENH",
-          "criticality": "MEDIUM",
-          "purpose": "Adaptive penalty scoring for meso-level",
-          "dependencies": []
-        },
-        {
-          "order": 2,
-          "canonical_name": "phase4_40_00_aggregation_enhancements",
-          "type": "ENH",
-          "criticality": "MEDIUM",
-          "purpose": "Performance and telemetry enhancements",
-          "dependencies": [
-            "infrastructure:contractual"
-          ]
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Signal Enriched Aggregation"
         }
       ]
     },
     {
       "code": 60,
-      "name": "Validation",
-      "description": "Output validation (60 subphase)",
-      "execution_order": 8,
+      "name": "Integration",
+      "description": "Integration components",
+      "execution_order": 5,
       "module_count": 1,
       "modules": [
         {
-          "order": 1,
+          "order": 0,
           "canonical_name": "phase4_60_00_aggregation_validation",
-          "type": "VAL",
-          "criticality": "CRITICAL",
-          "purpose": "Phase 4 output validation",
-          "dependencies": [
-            "phase4_30_00_aggregation"
-          ]
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Aggregation Validation"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 6,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_4_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 4 Constants"
         }
       ]
     }
@@ -267,8 +171,8 @@
     "last_check": "2026-01-17T00:00:00Z"
   },
   "statistics": {
-    "total_modules": 17,
-    "stages": 7
+    "total_modules": 10,
+    "stages": 6
   },
   "dependency_graph": {
     "note": "Subphase numbers indicate sequential execution order. First number = subphase, second = position within subphase."

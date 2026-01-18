@@ -42,11 +42,21 @@ from .PHASE_5_CONSTANTS import (
     QualityLevel,
 )
 
-# Core classes
+# Data Model (stage 0 - MODEL)
+from .phase5_00_00_area_score import AreaScore
+
+# Core classes (stage 10 - CORE)
 from .phase5_10_00_area_aggregation import (
-    AreaScore,
     AreaPolicyAggregator,
     aggregate_policy_areas_async,
+)
+
+# Performance Boost (stage 15 - PERFORMANCE)
+from .phase5_15_00_performance_boost import (
+    HighPerformanceAreaAggregator,
+    PerformanceMetrics,
+    aggregate_with_performance_boost,
+    AdaptiveCache,
 )
 
 # Validation
@@ -83,6 +93,11 @@ __all__ = [
     "AreaScore",
     "AreaPolicyAggregator",
     "aggregate_policy_areas_async",
+    # Performance Boost
+    "HighPerformanceAreaAggregator",
+    "PerformanceMetrics",
+    "aggregate_with_performance_boost",
+    "AdaptiveCache",
     # Validation
     "validate_phase5_output",
     "validate_area_score_hermeticity",
