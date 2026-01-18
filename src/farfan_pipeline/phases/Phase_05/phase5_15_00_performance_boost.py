@@ -46,7 +46,6 @@ __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
 
 import asyncio
-import functools
 import hashlib
 import logging
 import time
