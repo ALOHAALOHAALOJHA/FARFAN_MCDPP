@@ -4,7 +4,7 @@ Phase 4 Contracts Tests - Adversarial & Comprehensive
 Tests Phase 4 contract execution and validation.
 Covers: phase4_input_contract.py, phase4_mission_contract.py, phase4_output_contract.py
 
-Module: src/farfan_pipeline/phases/Phase_4/tests/test_phase4_10_00_contracts.py
+Module: src/farfan_pipeline/phases/Phase_04/tests/test_phase4_10_00_contracts.py
 Version: 1.0.0
 Status: ADVERSARIAL
 """

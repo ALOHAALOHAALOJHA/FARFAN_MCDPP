@@ -66,16 +66,19 @@ CALIBRATABLE_SUBPHASES: FrozenSet[str] = frozenset({
 # Subphases INVARIANTES — JAMÁS tocar (CRITICAL tier)
 INVARIANT_SUBPHASES: FrozenSet[str] = frozenset({"SP4", "SP11", "SP13"})
 
-# CONSTITUTIONAL INVARIANT: 60 chunks = 10 PA × 6 Dim
-CONSTITUTIONAL_CHUNK_COUNT: int = 60
+# CONSTITUTIONAL INVARIANT: 300 chunks = 10 PA × 6 Dim × 5 Q
+CONSTITUTIONAL_CHUNK_COUNT: int = 300
 CONSTITUTIONAL_POLICY_AREAS: int = 10
 CONSTITUTIONAL_CAUSAL_DIMENSIONS: int = 6
+CONSTITUTIONAL_QUESTIONS_PER_DIMENSION: int = 5
 
 # Assertion at import-time: matemática constitucional
 assert (
-    CONSTITUTIONAL_POLICY_AREAS * CONSTITUTIONAL_CAUSAL_DIMENSIONS 
+    CONSTITUTIONAL_POLICY_AREAS 
+    * CONSTITUTIONAL_CAUSAL_DIMENSIONS 
+    * CONSTITUTIONAL_QUESTIONS_PER_DIMENSION
     == CONSTITUTIONAL_CHUNK_COUNT
-), "CONSTITUTIONAL VIOLATION: 10 PA × 6 Dim ≠ 60 chunks"
+), f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × {CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim × {CONSTITUTIONAL_QUESTIONS_PER_DIMENSION} Q ≠ {CONSTITUTIONAL_CHUNK_COUNT} chunks"
 
 
 class WeightTier(Enum):
@@ -107,14 +110,15 @@ PHASE1_SUBPHASE_WEIGHTS: Dict[str, SubphaseWeight] = {
     "SP1": SubphaseWeight("SP1", 2500, WeightTier.STANDARD, 1.0, False, "Language preprocessing"),
     "SP2": SubphaseWeight("SP2", 3000, WeightTier.STANDARD, 1.0, False, "Structural analysis"),
     "SP3": SubphaseWeight("SP3", 4000, WeightTier.STANDARD, 1.0, False, "Knowledge graph"),
-    "SP4": SubphaseWeight("SP4", 10000, WeightTier.CRITICAL, 3.0, True, "PA×Dim grid specification"),
+    "SP4": SubphaseWeight("SP4", 10000, WeightTier.CRITICAL, 3.0, True, "Question-aware chunking (300 chunks)"),
+    "SP4.1": SubphaseWeight("SP4.1", 0, WeightTier.CRITICAL, 0.0, True, "Colombian PDM enhancement (mandatory sub-subphase)"),
     "SP5": SubphaseWeight("SP5", 5000, WeightTier.HIGH, 2.0, False, "Causal extraction"),
     "SP6": SubphaseWeight("SP6", 3500, WeightTier.STANDARD, 1.0, False, "Arguments extraction"),
     "SP7": SubphaseWeight("SP7", 4500, WeightTier.STANDARD, 1.0, False, "Discourse analysis"),
     "SP8": SubphaseWeight("SP8", 3500, WeightTier.STANDARD, 1.0, False, "Temporal extraction"),
     "SP9": SubphaseWeight("SP9", 6000, WeightTier.HIGH, 2.0, False, "Causal integration"),
     "SP10": SubphaseWeight("SP10", 8000, WeightTier.HIGH, 2.0, False, "Strategic integration"),
-    "SP11": SubphaseWeight("SP11", 10000, WeightTier.CRITICAL, 3.0, True, "Chunk assembly (60 chunks)"),
+    "SP11": SubphaseWeight("SP11", 10000, WeightTier.CRITICAL, 3.0, True, "Chunk assembly (300 chunks)"),
     "SP12": SubphaseWeight("SP12", 7000, WeightTier.HIGH, 2.0, False, "SISAS irrigation"),
     "SP13": SubphaseWeight("SP13", 10000, WeightTier.CRITICAL, 3.0, True, "CPP packaging"),
     "SP14": SubphaseWeight("SP14", 5000, WeightTier.HIGH, 2.0, False, "Quality metrics"),
@@ -131,16 +135,26 @@ def validate_mission_contract() -> bool:
     Raises:
         ValueError: If contract validation fails
     """
-    if len(PHASE1_SUBPHASE_WEIGHTS) != 16:
-        raise ValueError(f"Mission contract must have exactly 16 subphases, got {len(PHASE1_SUBPHASE_WEIGHTS)}")
+    # Include SP4.1 in count but it's a sub-subphase with weight 0
+    if len(PHASE1_SUBPHASE_WEIGHTS) != 17:  # 16 main + 1 sub-subphase
+        raise ValueError(f"Mission contract must have exactly 17 entries (16 SP + SP4.1), got {len(PHASE1_SUBPHASE_WEIGHTS)}")
     
-    critical_subphases = [sp for sp in PHASE1_SUBPHASE_WEIGHTS.values() if sp.tier == WeightTier.CRITICAL]
+    critical_subphases = [sp for sp in PHASE1_SUBPHASE_WEIGHTS.values() if sp.tier == WeightTier.CRITICAL and sp.weight > 0]
     if len(critical_subphases) != 3:
-        raise ValueError(f"Mission contract must have exactly 3 CRITICAL subphases, got {len(critical_subphases)}")
+        raise ValueError(f"Mission contract must have exactly 3 CRITICAL subphases with weight>0, got {len(critical_subphases)}")
     
     # Verify SP4, SP11, SP13 are critical
     if not all(sp in ["SP4", "SP11", "SP13"] for sp in [s.subphase_id for s in critical_subphases]):
         raise ValueError("CRITICAL subphases must be SP4, SP11, SP13")
+    
+    # Verify SP4.1 exists and is CRITICAL but has weight 0 (part of SP4's budget)
+    sp4_1 = PHASE1_SUBPHASE_WEIGHTS.get("SP4.1")
+    if not sp4_1:
+        raise ValueError("SP4.1 (Colombian PDM enhancement) must be in contract")
+    if sp4_1.tier != WeightTier.CRITICAL:
+        raise ValueError("SP4.1 must be CRITICAL tier")
+    if sp4_1.weight != 0:
+        raise ValueError("SP4.1 weight must be 0 (included in SP4's budget)")
     
     return True
 
@@ -191,12 +205,17 @@ def validate_triada_integrity() -> bool:
             "CALIBRATABLE and INVARIANT. This is forbidden."
         )
     
-    # Rule 4: Verify 60 chunks math
-    expected_chunks = CONSTITUTIONAL_POLICY_AREAS * CONSTITUTIONAL_CAUSAL_DIMENSIONS
+    # Rule 4: Verify 300 chunks math (10 PA × 6 Dim × 5 Q)
+    expected_chunks = (
+        CONSTITUTIONAL_POLICY_AREAS 
+        * CONSTITUTIONAL_CAUSAL_DIMENSIONS 
+        * CONSTITUTIONAL_QUESTIONS_PER_DIMENSION
+    )
     if expected_chunks != CONSTITUTIONAL_CHUNK_COUNT:
         raise ValueError(
             f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × "
-            f"{CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim = {expected_chunks}, "
+            f"{CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim × "
+            f"{CONSTITUTIONAL_QUESTIONS_PER_DIMENSION} Q = {expected_chunks}, "
             f"expected {CONSTITUTIONAL_CHUNK_COUNT}"
         )
     
