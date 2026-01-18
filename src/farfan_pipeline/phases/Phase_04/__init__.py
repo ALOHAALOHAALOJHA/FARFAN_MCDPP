@@ -71,12 +71,36 @@ from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation im
     SignalEnrichedAggregator,
 )
 
+# Adaptive Meso Scoring (Stage 40 - Enhancements)
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_adaptive_meso_scoring import (
+    AdaptiveMesoScoring,
+    AdaptiveScoringConfig,
+    ScoringMetrics,
+)
+
+# Aggregation Enhancements (Stage 40 - Enhancements)
+from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_aggregation_enhancements import (
+    ConfidenceInterval,
+    DispersionMetrics,
+    HermeticityDiagnosis,
+)
+
 # Enhanced Aggregation
 from farfan_pipeline.phases.Phase_04.enhancements import (
     EnhancedDimensionAggregator,
-    DispersionMetrics,
-    HermeticityDiagnosis,
     enhance_aggregator,
+)
+
+# Integration (Stage 50)
+from farfan_pipeline.phases.Phase_04.phase4_50_00_aggregation_integration import (
+    ClusterAggregator,
+)
+
+# Validation (Stage 60)
+from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import (
+    ValidationResult,
+    AggregationValidationError,
+    validate_phase4_output,
 )
 
 # Constants
@@ -116,9 +140,14 @@ __all__ = [
     "create_default_choquet_adapter",
     # Enhanced
     "EnhancedDimensionAggregator",
+    "enhance_aggregator",
+    # Enhancement Metrics & Config
+    "ConfidenceInterval",
     "DispersionMetrics",
     "HermeticityDiagnosis",
-    "enhance_aggregator",
+    "AdaptiveMesoScoring",
+    "AdaptiveScoringConfig",
+    "ScoringMetrics",
     # Provenance
     "AggregationDAG",
     "ProvenanceNode",
@@ -130,6 +159,12 @@ __all__ = [
     "aggregate_with_uncertainty",
     # Signal
     "SignalEnrichedAggregator",
+    # Integration (Stage 50)
+    "ClusterAggregator",
+    # Validation (Stage 60)
+    "ValidationResult",
+    "AggregationValidationError",
+    "validate_phase4_output",
     # Exceptions
     "AggregationError",
     "ValidationError",
