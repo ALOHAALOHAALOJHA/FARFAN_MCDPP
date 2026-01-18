@@ -203,7 +203,6 @@ class ColombianPDMChunkEnhancer:
         if not chunk_content:
             return enhancement
         
-        content_lower = chunk_content.lower()
         content_length = len(chunk_content)
         
         # Analyze regulatory references
