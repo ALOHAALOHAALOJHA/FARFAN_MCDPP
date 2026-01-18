@@ -48,6 +48,11 @@ from farfan_pipeline.phases.Phase_07.phase7_10_00_phase_7_constants import (
 from farfan_pipeline.phases.Phase_07.phase7_10_00_systemic_gap_detector import (
     SystemicGapDetector,
 )
+# Import contracts to enforce validation by default
+from farfan_pipeline.phases.Phase_07.contracts import (
+    Phase7InputContract,
+    Phase7OutputContract,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -167,6 +172,12 @@ class MacroAggregator:
             pipeline_version="1.0.0",
         )
         
+        # Validate output contract
+        input_cluster_ids = {cs.cluster_id for cs in cluster_scores}
+        is_valid, error_message = Phase7OutputContract.validate(macro_score, input_cluster_ids)
+        if not is_valid:
+            raise ValueError(f"Phase 7 output contract violation: {error_message}")
+        
         logger.info(
             f"Macro aggregation complete: score={raw_score:.3f}, "
             f"quality={quality_level}, coherence={coherence:.3f}, "
@@ -176,27 +187,14 @@ class MacroAggregator:
         return macro_score
     
     def _validate_input(self, cluster_scores: list[ClusterScore]) -> None:
-        """Validate input preconditions."""
-        # PRE-7.1: Exactly 4 cluster scores
-        if len(cluster_scores) != 4:
-            raise ValueError(f"Expected 4 ClusterScores, got {len(cluster_scores)}")
+        """
+        Validate input preconditions using Phase7InputContract.
         
-        # PRE-7.2: All required clusters present
-        present_clusters = {cs.cluster_id for cs in cluster_scores}
-        expected_clusters = set(INPUT_CLUSTERS)
-        if present_clusters != expected_clusters:
-            missing = expected_clusters - present_clusters
-            extra = present_clusters - expected_clusters
-            raise ValueError(
-                f"Cluster mismatch. Missing: {missing}, Extra: {extra}"
-            )
-        
-        # PRE-7.3: Score bounds validation
-        for cs in cluster_scores:
-            if not (MIN_SCORE <= cs.score <= MAX_SCORE):
-                raise ValueError(
-                    f"ClusterScore {cs.cluster_id} score out of bounds: {cs.score}"
-                )
+        Enforces all preconditions by default as part of the canonical flow.
+        """
+        is_valid, error_message = Phase7InputContract.validate(cluster_scores)
+        if not is_valid:
+            raise ValueError(f"Phase 7 input contract violation: {error_message}")
     
     def _compute_weighted_score(self, cluster_scores: list[ClusterScore]) -> float:
         """Compute weighted average of cluster scores."""
