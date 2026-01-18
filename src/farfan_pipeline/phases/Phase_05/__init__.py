@@ -51,6 +51,14 @@ from .phase5_10_00_area_aggregation import (
     aggregate_policy_areas_async,
 )
 
+# Performance Boost (stage 15 - PERFORMANCE)
+from .phase5_15_00_performance_boost import (
+    HighPerformanceAreaAggregator,
+    PerformanceMetrics,
+    aggregate_with_performance_boost,
+    AdaptiveCache,
+)
+
 # Validation
 from .phase5_20_00_area_validation import (
     validate_phase5_output,
@@ -85,6 +93,11 @@ __all__ = [
     "AreaScore",
     "AreaPolicyAggregator",
     "aggregate_policy_areas_async",
+    # Performance Boost
+    "HighPerformanceAreaAggregator",
+    "PerformanceMetrics",
+    "aggregate_with_performance_boost",
+    "AdaptiveCache",
     # Validation
     "validate_phase5_output",
     "validate_area_score_hermeticity",
