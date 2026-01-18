@@ -40,8 +40,8 @@ import logging
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any
 
-# Import DimensionScore from Phase 4
-from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import DimensionScore
+# Import DimensionScore from Phase 4 primitives (shared type)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import DimensionScore
 
 # Import Phase 5 constants
 from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (

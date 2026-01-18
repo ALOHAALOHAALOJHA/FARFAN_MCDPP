@@ -4,7 +4,7 @@ Phase 4 Topological Order Tests - End-to-End Chain Coverage
 Tests that verify the topological order and module chain integrity.
 Each module in the chain is tested for importability and basic functionality.
 
-Module: src/farfan_pipeline/phases/Phase_4/tests/test_phase4_topological_chain.py
+Module: src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py
 Version: 1.0.0
 Status: ADVERSARIAL
 """
@@ -85,8 +85,8 @@ class TestPhase4ModuleImports:
     
     def test_import_phase4_package(self):
         """Test importing Phase 4 package."""
-        import farfan_pipeline.phases.Phase_4
-        assert farfan_pipeline.phases.Phase_4 is not None
+        import farfan_pipeline.phases.Phase_04
+        assert farfan_pipeline.phases.Phase_04 is not None
     
     def test_import_primitives_layer(self):
         """Test importing primitives layer."""

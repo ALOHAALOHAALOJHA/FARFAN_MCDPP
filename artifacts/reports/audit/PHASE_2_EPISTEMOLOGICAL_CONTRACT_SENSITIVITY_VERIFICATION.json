@@ -1,0 +1,70 @@
+{
+  "verification_date": "2026-01-18",
+  "result": "PASS",
+  "epistemo_structure": {
+    "status": "PASS",
+    "issues": [],
+    "statistics": {
+      "N0-INFRA": {
+        "count": 93,
+        "epistemology": "Instrumentalismo puro",
+        "output_type": "INFRASTRUCTURE"
+      },
+      "N1-EMP": {
+        "count": 122,
+        "epistemology": "Empirismo positivista",
+        "output_type": "FACT"
+      },
+      "N2-INF": {
+        "count": 263,
+        "epistemology": "Bayesianismo subjetivista",
+        "output_type": "PARAMETER"
+      },
+      "N3-AUD": {
+        "count": 108,
+        "epistemology": "Falsacionismo popperiano",
+        "output_type": "CONSTRAINT"
+      },
+      "N4-META": {
+        "count": 22,
+        "epistemology": "Reflexividad cr\u00edtica",
+        "output_type": "META_ANALYSIS"
+      }
+    },
+    "total_classified_methods": 608
+  },
+  "contract_bindings": {
+    "status": "PASS",
+    "contracts_checked": 5,
+    "methods_with_full_metadata": 85,
+    "methods_missing_metadata": 0,
+    "issues": []
+  },
+  "calibration_policy": {
+    "status": "PASS",
+    "issues": []
+  },
+  "fusion_specs": {
+    "status": "PASS",
+    "fusion_behaviors_found": {
+      "additive": 35,
+      "multiplicative": 25,
+      "gate": 25
+    },
+    "contracts_with_fusion_spec": 5,
+    "issues": [
+      "Contract Q001_PA01: missing fusion_strategy",
+      "Contract Q001_PA03: missing fusion_strategy",
+      "Contract Q001_PA09: missing fusion_strategy",
+      "Contract Q001_PA05: missing fusion_strategy",
+      "Contract Q001_PA07: missing fusion_strategy"
+    ]
+  },
+  "evidence_reqs": {
+    "status": "PASS",
+    "methods_with_evidence_reqs": 85,
+    "methods_with_output_claims": 85,
+    "methods_with_constraints": 85,
+    "issues": []
+  }
+}

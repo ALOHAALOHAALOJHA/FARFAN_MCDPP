@@ -9,7 +9,7 @@ Mission:
 - Apply weighted averaging or Choquet integral
 - Maintain complete provenance tracking
 
-Module: src/farfan_pipeline/phases/Phase_4/contracts/phase4_mission_contract.py
+Module: src/farfan_pipeline/phases/Phase_04/contracts/phase4_mission_contract.py
 """
 from __future__ import annotations
 

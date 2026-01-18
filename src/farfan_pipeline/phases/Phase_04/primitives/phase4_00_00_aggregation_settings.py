@@ -13,7 +13,7 @@ This is the foundation of the dependency hierarchy:
 
 Following Clean Architecture and Dependency Inversion Principle.
 
-Module: src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_aggregation_settings.py
+Module: src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_aggregation_settings.py
 """
 from __future__ import annotations
 
