@@ -10,7 +10,7 @@ Import hierarchy (Clean Architecture):
 3. THIS MODULE - Convenience re-export (depends on primitives)
 4. aggregation.py, choquet_adapter.py - Import from THIS MODULE or primitives
 
-Module: src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_settings.py
+Module: src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_settings.py
 """
 from __future__ import annotations
 

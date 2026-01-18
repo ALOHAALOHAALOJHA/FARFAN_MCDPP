@@ -11,8 +11,10 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
+    from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_types import (
         DimensionScore,
+    )
+    from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
         ScoredResult,
     )
     from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore

@@ -9,7 +9,7 @@ Output:
 - Each dimension score in [0.0, 3.0]
 - Complete provenance and uncertainty metrics
 
-Module: src/farfan_pipeline/phases/Phase_4/contracts/phase4_output_contract.py
+Module: src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py
 """
 from __future__ import annotations
 

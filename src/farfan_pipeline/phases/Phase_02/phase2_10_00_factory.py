@@ -152,14 +152,14 @@ from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
 from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
-from orchestration.class_registry import build_class_registry, get_class_paths
+from farfan_pipeline.orchestration.class_registry import build_class_registry, get_class_paths
 from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration - import from core_orchestrator directly
 if TYPE_CHECKING:
     from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor, Orchestrator
-from orchestration.method_registry import (
+from farfan_pipeline.orchestration.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
@@ -223,7 +223,7 @@ CoreModuleFactory = None
 CORE_MODULE_FACTORY_AVAILABLE = False
 
 # SeedRegistry for determinism
-from orchestration.seed_registry import SeedRegistry
+from farfan_pipeline.orchestration.seed_registry import SeedRegistry
 SEED_REGISTRY_AVAILABLE = True
 
 # CP-0.1 & CP-0.2: Phase 1 Validation
