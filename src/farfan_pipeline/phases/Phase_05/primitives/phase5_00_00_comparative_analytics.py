@@ -191,7 +191,6 @@ def identify_outliers(
         return []
 
     scores = list(area_scores.values())
-    area_ids = list(area_scores.keys())
 
     if method == "zscore":
         mean = sum(scores) / len(scores)
