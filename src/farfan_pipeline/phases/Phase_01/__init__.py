@@ -129,6 +129,27 @@ except ImportError:
     enhance_sp2_with_pdm = None
     PDM_INTEGRATION_AVAILABLE = False
 
+# Colombian PDM Enhancement (Phase 1 v2.0) - DEFAULT BEHAVIOR
+try:
+    from .phase1_07_01_colombian_pdm_enhancer import (
+        ColombianPDMChunkEnhancer,
+        ColombianPDMPatterns,
+        PDMChunkEnhancement,
+        AlreadyChunkedError,
+        check_if_already_chunked,
+        assert_not_chunked,
+    )
+
+    COLOMBIAN_PDM_ENHANCER_AVAILABLE = True
+except ImportError:
+    ColombianPDMChunkEnhancer = None
+    ColombianPDMPatterns = None
+    PDMChunkEnhancement = None
+    AlreadyChunkedError = None
+    check_if_already_chunked = None
+    assert_not_chunked = None
+    COLOMBIAN_PDM_ENHANCER_AVAILABLE = False
+
 __all__ = [
     # Executor
     "Phase1Executor",
@@ -187,4 +208,12 @@ __all__ = [
     "assign_pdm_metadata_to_chunks",
     "enhance_sp2_with_pdm",
     "PDM_INTEGRATION_AVAILABLE",
+    # Colombian PDM Enhancement (v2.0) - DEFAULT BEHAVIOR
+    "ColombianPDMChunkEnhancer",
+    "ColombianPDMPatterns",
+    "PDMChunkEnhancement",
+    "AlreadyChunkedError",
+    "check_if_already_chunked",
+    "assert_not_chunked",
+    "COLOMBIAN_PDM_ENHANCER_AVAILABLE",
 ]

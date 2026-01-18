@@ -54,12 +54,12 @@ from .phase4_00_00_types import (
     is_valid_weight,
 )
 
-# Import existing primitive modules using actual file names
+# Import phase4_00_00 primitive modules (from manifest)
 from . import (
-    phase4_10_00_choquet_primitives as choquet_primitives,
-    phase4_10_00_quality_levels as quality_levels,
-    phase4_10_00_signal_enriched_primitives as signal_enriched_primitives,
-    phase4_10_00_uncertainty_metrics as uncertainty_metrics,
+    phase4_00_00_choquet_primitives as choquet_primitives,
+    phase4_00_00_quality_levels as quality_levels,
+    phase4_00_00_signal_enriched_primitives as signal_enriched_primitives,
+    phase4_00_00_uncertainty_metrics as uncertainty_metrics,
 )
 
 __all__ = [
