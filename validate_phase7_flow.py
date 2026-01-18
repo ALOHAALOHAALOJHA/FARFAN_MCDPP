@@ -139,8 +139,12 @@ def check_manifest_equivalence():
     phase7_dir = SRC_DIR / 'farfan_pipeline/phases/Phase_07'
     manifest_path = phase7_dir / 'PHASE_7_MANIFEST.json'
     
-    with open(manifest_path) as f:
-        manifest = json.load(f)
+    try:
+        with open(manifest_path) as f:
+            manifest = json.load(f)
+    except FileNotFoundError:
+        print(f"   ❌ Manifest file not found: {manifest_path}")
+        return False
     
     # Check total modules
     expected_total = 5  # __init__ + 3 in stage 10 + 1 in stage 20
