@@ -42,12 +42,11 @@ from __future__ import annotations
 import asyncio
 import importlib
 import json
-import logging
 import time
+import threading
 from collections import OrderedDict
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from functools import lru_cache, wraps
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar
 
@@ -125,13 +124,14 @@ class FactoryConfig:
 
 class AdaptiveLRUCache:
     """
-    Hybrid LRU+TTL cache with adaptive eviction.
+    Thread-safe hybrid LRU+TTL cache with adaptive eviction.
     
     Features:
     - LRU eviction for size management
     - TTL-based expiration for freshness
     - Access frequency tracking
     - Predictive prefetching hints
+    - Thread-safe operations
     """
     
     def __init__(self, max_size: int = 100, ttl_seconds: int = 300):
@@ -140,55 +140,60 @@ class AdaptiveLRUCache:
         self._cache: OrderedDict = OrderedDict()
         self._timestamps: Dict[str, float] = {}
         self._access_counts: Dict[str, int] = {}
+        self._lock = threading.RLock()  # Reentrant lock for thread safety
         
     def get(self, key: str) -> Optional[Any]:
-        """Get item from cache with LRU update."""
-        if key not in self._cache:
-            return None
-            
-        # Check TTL expiration
-        if time.time() - self._timestamps[key] > self.ttl_seconds:
-            self._evict(key)
-            return None
-            
-        # Update LRU order
-        self._cache.move_to_end(key)
-        self._access_counts[key] = self._access_counts.get(key, 0) + 1
-        return self._cache[key]
+        """Get item from cache with LRU update (thread-safe)."""
+        with self._lock:
+            if key not in self._cache:
+                return None
+                
+            # Check TTL expiration
+            if time.time() - self._timestamps[key] > self.ttl_seconds:
+                self._evict(key)
+                return None
+                
+            # Update LRU order
+            self._cache.move_to_end(key)
+            self._access_counts[key] = self._access_counts.get(key, 0) + 1
+            return self._cache[key]
         
     def set(self, key: str, value: Any) -> None:
-        """Set item in cache with automatic eviction."""
-        if key in self._cache:
-            self._cache.move_to_end(key)
-        else:
-            if len(self._cache) >= self.max_size:
-                # Evict least recently used
-                oldest_key = next(iter(self._cache))
-                self._evict(oldest_key)
-                
-        self._cache[key] = value
-        self._timestamps[key] = time.time()
-        self._access_counts[key] = self._access_counts.get(key, 0) + 1
+        """Set item in cache with automatic eviction (thread-safe)."""
+        with self._lock:
+            if key in self._cache:
+                self._cache.move_to_end(key)
+            else:
+                if len(self._cache) >= self.max_size:
+                    # Evict least recently used
+                    oldest_key = next(iter(self._cache))
+                    self._evict(key=oldest_key)
+                    
+            self._cache[key] = value
+            self._timestamps[key] = time.time()
+            self._access_counts[key] = self._access_counts.get(key, 0) + 1
         
     def _evict(self, key: str) -> None:
-        """Evict item from cache."""
+        """Evict item from cache (must be called within lock)."""
         self._cache.pop(key, None)
         self._timestamps.pop(key, None)
         self._access_counts.pop(key, None)
         
     def get_hot_keys(self, top_n: int = 10) -> List[str]:
-        """Get most frequently accessed keys for prefetching."""
-        return sorted(
-            self._access_counts.keys(),
-            key=lambda k: self._access_counts[k],
-            reverse=True
-        )[:top_n]
+        """Get most frequently accessed keys for prefetching (thread-safe)."""
+        with self._lock:
+            return sorted(
+                self._access_counts.keys(),
+                key=lambda k: self._access_counts[k],
+                reverse=True
+            )[:top_n]
         
     def clear(self) -> None:
-        """Clear all cache entries."""
-        self._cache.clear()
-        self._timestamps.clear()
-        self._access_counts.clear()
+        """Clear all cache entries (thread-safe)."""
+        with self._lock:
+            self._cache.clear()
+            self._timestamps.clear()
+            self._access_counts.clear()
 
 
 # =============================================================================
@@ -264,7 +269,7 @@ class UnifiedFactory:
             logger.info("Parallel execution enabled", max_workers=config.max_workers)
         
         # ==========================================================================
-        # INTERVENTION 1: Performance Metrics
+        # INTERVENTION 1: Performance Metrics (Thread-Safe)
         # ==========================================================================
         self._execution_metrics = {
             "contracts_executed": 0,
@@ -273,7 +278,9 @@ class UnifiedFactory:
             "parallel_executions": 0,
             "total_execution_time": 0.0,
             "average_execution_time": 0.0,
+            "failed_executions": 0,
         }
+        self._metrics_lock = threading.Lock()  # Lock for metrics updates
 
         logger.info(
             "UnifiedFactory initialized",
@@ -283,6 +290,16 @@ class UnifiedFactory:
             parallel_enabled=config.enable_parallel_execution,
             adaptive_cache_enabled=config.enable_adaptive_caching,
         )
+    
+    def _update_metrics(self, **updates: Any) -> None:
+        """Thread-safe metrics update helper."""
+        with self._metrics_lock:
+            for key, value in updates.items():
+                if key in self._execution_metrics:
+                    if isinstance(value, (int, float)) and isinstance(self._execution_metrics[key], (int, float)):
+                        self._execution_metrics[key] += value
+                    else:
+                        self._execution_metrics[key] = value
 
     # ==========================================================================
     # QUESTIONNAIRE ACCESS
@@ -659,262 +676,294 @@ class UnifiedFactory:
             KeyError: If contract_id not found
             ImportError: If executor module cannot be loaded
         """
-        contracts = self.load_contracts()
-
-        if contract_id not in contracts:
-            raise KeyError(
-                f"Contract '{contract_id}' not found. "
-                f"Available contracts: {list(contracts.keys())[:10]}..."
-            )
-
-        contract = contracts[contract_id]
-        executor_binding = contract.get("executor_binding", {})
-        method_binding = contract.get("method_binding", {})
-
-        # Dynamically load executor class
-        module_path = executor_binding.get("executor_module", "")
-        class_name = executor_binding.get("executor_class", "")
-
-        if not module_path or not class_name:
-            logger.error(
-                "Invalid executor binding",
-                contract_id=contract_id,
-                binding=executor_binding,
-            )
-            return {
-                "contract_id": contract_id,
-                "error": "Invalid executor binding",
-                "status": "failed",
-            }
-
+        start_time = time.time()
+        
         try:
-            module = importlib.import_module(module_path)
-            executor_class: Type[T] = getattr(module, class_name)
-        except (ImportError, AttributeError) as e:
-            logger.error(
-                "Failed to load executor",
-                contract_id=contract_id,
-                module=module_path,
-                class_name=class_name,
-                error=str(e),
-            )
-            return {
-                "contract_id": contract_id,
-                "error": f"Failed to load executor: {e}",
-                "status": "failed",
+            contracts = self.load_contracts()
+
+            if contract_id not in contracts:
+                raise KeyError(
+                    f"Contract '{contract_id}' not found. "
+                    f"Available contracts: {list(contracts.keys())[:10]}..."
+                )
+
+            contract = contracts[contract_id]
+            executor_binding = contract.get("executor_binding", {})
+            method_binding = contract.get("method_binding", {})
+
+            # Dynamically load executor class
+            module_path = executor_binding.get("executor_module", "")
+            class_name = executor_binding.get("executor_class", "")
+
+            if not module_path or not class_name:
+                logger.error(
+                    "Invalid executor binding",
+                    contract_id=contract_id,
+                    binding=executor_binding,
+                )
+                return {
+                    "contract_id": contract_id,
+                    "error": "Invalid executor binding",
+                    "status": "failed",
+                }
+
+            try:
+                module = importlib.import_module(module_path)
+                executor_class: Type[T] = getattr(module, class_name)
+            except (ImportError, AttributeError) as e:
+                logger.error(
+                    "Failed to load executor",
+                    contract_id=contract_id,
+                    module=module_path,
+                    class_name=class_name,
+                    error=str(e),
+                    )
+                return {
+                    "contract_id": contract_id,
+                    "error": f"Failed to load executor: {e}",
+                    "status": "failed",
+                }
+
+            # Create executor instance
+            executor = executor_class()
+
+            # =======================================================================
+            # METHOD INJECTION - N1→N2→N3→N4 PIPELINE
+            # =======================================================================
+            # Inject methods based on binding and execute in epistemological order
+
+            execution_phases = method_binding.get("execution_phases", {})
+            orchestration_mode = method_binding.get("orchestration_mode", "epistemological_pipeline")
+
+            # Phase order for epistemological pipeline
+            phase_order = [
+                "phase_A_construction",  # N1 - Build evidence base
+                "phase_B_computation",   # N2 - Calculate scores
+                "phase_C_litigation",    # N3 - Veto gate (can reject N1/N2 results)
+                "phase_D_integration",   # N4 - Cross-layer fusion
+            ]
+
+            pipeline_results = {}
+            execution_context = {
+                "input": input_data,
+                "contract": contract,
+                "phase_results": {},
             }
 
-        # Create executor instance
-        executor = executor_class()
-
-        # ==========================================================================
-        # METHOD INJECTION - N1→N2→N3→N4 PIPELINE
-        # ==========================================================================
-        # Inject methods based on binding and execute in epistemological order
-
-        execution_phases = method_binding.get("execution_phases", {})
-        orchestration_mode = method_binding.get("orchestration_mode", "epistemological_pipeline")
-
-        # Phase order for epistemological pipeline
-        phase_order = [
-            "phase_A_construction",  # N1 - Build evidence base
-            "phase_B_computation",   # N2 - Calculate scores
-            "phase_C_litigation",    # N3 - Veto gate (can reject N1/N2 results)
-            "phase_D_integration",   # N4 - Cross-layer fusion
-        ]
-
-        pipeline_results = {}
-        execution_context = {
-            "input": input_data,
-            "contract": contract,
-            "phase_results": {},
-        }
-
-        for phase_name in phase_order:
-            if phase_name not in execution_phases:
-                logger.debug(
-                    "Phase not in execution_phases, skipping",
-                    phase=phase_name,
-                )
-                continue
-
-            phase_config = execution_phases[phase_name]
-            phase_level = phase_config.get("level", "UNKNOWN")
-            phase_methods = phase_config.get("methods", [])
-
-            logger.info(
-                "Executing epistemological phase",
-                contract_id=contract_id,
-                phase=phase_name,
-                level=phase_level,
-                method_count=len(phase_methods),
-            )
-
-            phase_results = []
-
-            for method_spec in phase_methods:
-                method_id = method_spec.get("method_id", "")
-                provides = method_spec.get("provides", "")
-                confidence = method_spec.get("confidence_score", 0.0)
-
-                if not method_id:
+            for phase_name in phase_order:
+                if phase_name not in execution_phases:
+                    logger.debug(
+                        "Phase not in execution_phases, skipping",
+                        phase=phase_name,
+                    )
                     continue
 
-                # Parse module.method format
-                if "." in method_id:
-                    module_name, method_name = method_id.rsplit(".", 1)
-                    try:
-                        method_module = importlib.import_module(module_name)
-                        method = getattr(method_module, method_name)
+                phase_config = execution_phases[phase_name]
+                phase_level = phase_config.get("level", "UNKNOWN")
+                phase_methods = phase_config.get("methods", [])
 
-                        # Inject method onto executor
-                        setattr(executor, method_name, method)
+                logger.info(
+                    "Executing epistemological phase",
+                    contract_id=contract_id,
+                    phase=phase_name,
+                    level=phase_level,
+                    method_count=len(phase_methods),
+                )
 
-                        logger.debug(
-                            "Method injected",
-                            method_id=method_id,
-                            phase=phase_name,
-                            provides=provides,
-                            confidence=confidence,
-                        )
+                phase_results = []
 
-                        # Execute the method
+                for method_spec in phase_methods:
+                    method_id = method_spec.get("method_id", "")
+                    provides = method_spec.get("provides", "")
+                    confidence = method_spec.get("confidence_score", 0.0)
+
+                    if not method_id:
+                        continue
+
+                    # Parse module.method format
+                    if "." in method_id:
+                        module_name, method_name = method_id.rsplit(".", 1)
                         try:
-                            # Prepare method-specific inputs
-                            method_input = {
-                                **input_data,
-                                "execution_context": execution_context,
-                                "phase": phase_name,
-                                "method_id": method_id,
-                            }
+                            method_module = importlib.import_module(module_name)
+                            method = getattr(method_module, method_name)
 
-                            # Call the method
-                            method_result = method(**method_input)
+                            # Inject method onto executor
+                            setattr(executor, method_name, method)
 
-                            phase_results.append({
-                                "method_id": method_id,
-                                "provides": provides,
-                                "confidence": confidence,
-                                "result": method_result,
-                                "status": "completed",
-                            })
+                            logger.debug(
+                                "Method injected",
+                                method_id=method_id,
+                                phase=phase_name,
+                                provides=provides,
+                                confidence=confidence,
+                            )
 
-                            # Update execution context
-                            execution_context["phase_results"][phase_name] = phase_results
+                            # Execute the method
+                            try:
+                                # Prepare method-specific inputs
+                                method_input = {
+                                    **input_data,
+                                    "execution_context": execution_context,
+                                    "phase": phase_name,
+                                    "method_id": method_id,
+                                }
 
-                        except Exception as e:
+                                # Call the method
+                                method_result = method(**method_input)
+
+                                phase_results.append({
+                                    "method_id": method_id,
+                                    "provides": provides,
+                                    "confidence": confidence,
+                                    "result": method_result,
+                                    "status": "completed",
+                                })
+
+                                # Update execution context
+                                execution_context["phase_results"][phase_name] = phase_results
+
+                            except Exception as e:
+                                logger.warning(
+                                    "Method execution failed",
+                                    method_id=method_id,
+                                    phase=phase_name,
+                                    error=str(e),
+                                )
+                                phase_results.append({
+                                    "method_id": method_id,
+                                    "provides": provides,
+                                    "error": str(e),
+                                    "status": "failed",
+                                })
+
+                        except (ImportError, AttributeError) as e:
                             logger.warning(
-                                "Method execution failed",
+                                "Failed to inject method",
                                 method_id=method_id,
                                 phase=phase_name,
                                 error=str(e),
                             )
                             phase_results.append({
                                 "method_id": method_id,
-                                "provides": provides,
                                 "error": str(e),
-                                "status": "failed",
+                                "status": "injection_failed",
                             })
 
-                    except (ImportError, AttributeError) as e:
-                        logger.warning(
-                            "Failed to inject method",
-                            method_id=method_id,
-                            phase=phase_name,
-                            error=str(e),
-                        )
-                        phase_results.append({
-                            "method_id": method_id,
-                            "error": str(e),
-                            "status": "injection_failed",
-                        })
+                pipeline_results[phase_name] = {
+                    "level": phase_level,
+                    "methods": phase_results,
+                    "status": "completed" if phase_results else "skipped",
+                }
 
-            pipeline_results[phase_name] = {
-                "level": phase_level,
-                "methods": phase_results,
-                "status": "completed" if phase_results else "skipped",
+                # ===================================================================
+                # VETO GATE CHECK (N3 - Litigation)
+                # ===================================================================
+                # If phase_C_litigation has veto power and results are negative,
+                # we may need to abort or adjust the pipeline
+                if phase_name == "phase_C_litigation":
+                    has_veto_power = phase_config.get("has_veto_power", False)
+                    if has_veto_power:
+                        # Check if any litigation method vetoed the result
+                        veto_triggered = any(
+                            r.get("result", {}).get("veto", False)
+                            for r in phase_results
+                            if r.get("status") == "completed"
+                        )
+
+                        if veto_triggered:
+                            logger.warning(
+                                "Veto gate triggered in litigation phase",
+                                contract_id=contract_id,
+                            )
+                            pipeline_results["veto_triggered"] = True
+                            # Optionally break here if veto is absolute
+                            # break
+
+            # ====================================================================
+            # CROSS-LAYER FUSION (N4 - Integration)
+            # ====================================================================
+            # Apply fusion specification if defined in contract
+            fusion_spec = contract.get("fusion_specification", {})
+            if fusion_spec:
+                fusion_rule = fusion_spec.get("fusion_rule", "TYPE_A")
+                logger.debug(
+                    "Applying cross-layer fusion",
+                    fusion_rule=fusion_rule,
+                )
+                pipeline_results["fusion"] = {
+                    "rule": fusion_rule,
+                    "applied": True,
+                }
+
+            # ====================================================================
+            # FINAL RESULT
+            # ====================================================================
+            result = {
+                "contract_id": contract_id,
+                "status": "completed",
+                "pipeline_results": pipeline_results,
+                "execution_metadata": {
+                    "orchestration_mode": orchestration_mode,
+                    "phases_executed": list(pipeline_results.keys()),
+                    "total_methods": sum(
+                        len(p.get("methods", []))
+                        for p in pipeline_results.values()
+                    ),
+                },
             }
 
-            # ==========================================================================
-            # VETO GATE CHECK (N3 - Litigation)
-            # ==========================================================================
-            # If phase_C_litigation has veto power and results are negative,
-            # we may need to abort or adjust the pipeline
-            if phase_name == "phase_C_litigation":
-                has_veto_power = phase_config.get("has_veto_power", False)
-                if has_veto_power:
-                    # Check if any litigation method vetoed the result
-                    veto_triggered = any(
-                        r.get("result", {}).get("veto", False)
-                        for r in phase_results
-                        if r.get("status") == "completed"
+            # If executor has an execute method, call it as final integration step
+            if hasattr(executor, "execute"):
+                try:
+                    integrated_result = executor.execute({
+                        **input_data,
+                        "pipeline_results": pipeline_results,
+                    })
+                    result["integrated_result"] = integrated_result
+                except Exception as e:
+                    logger.warning(
+                        "Executor integration failed",
+                        error=str(e),
+                    )
+                    result["integration_error"] = str(e)
+
+            logger.info(
+                "Contract executed successfully",
+                contract_id=contract_id,
+                phases_executed=result["execution_metadata"]["phases_executed"],
+                total_methods=result["execution_metadata"]["total_methods"],
+            )
+            
+            # Update metrics
+            execution_time = time.time() - start_time
+            self._update_metrics(
+                contracts_executed=1,
+                total_execution_time=execution_time,
+            )
+            
+            # Update average execution time
+            with self._metrics_lock:
+                if self._execution_metrics["contracts_executed"] > 0:
+                    self._execution_metrics["average_execution_time"] = (
+                        self._execution_metrics["total_execution_time"] / 
+                        self._execution_metrics["contracts_executed"]
                     )
 
-                    if veto_triggered:
-                        logger.warning(
-                            "Veto gate triggered in litigation phase",
-                            contract_id=contract_id,
-                        )
-                        pipeline_results["veto_triggered"] = True
-                        # Optionally break here if veto is absolute
-                        # break
-
-        # ==========================================================================
-        # CROSS-LAYER FUSION (N4 - Integration)
-        # ==========================================================================
-        # Apply fusion specification if defined in contract
-        fusion_spec = contract.get("fusion_specification", {})
-        if fusion_spec:
-            fusion_rule = fusion_spec.get("fusion_rule", "TYPE_A")
-            logger.debug(
-                "Applying cross-layer fusion",
-                fusion_rule=fusion_rule,
+            return result
+            
+        except Exception as e:
+            execution_time = time.time() - start_time
+            self._update_metrics(
+                failed_executions=1,
+                total_execution_time=execution_time,
             )
-            pipeline_results["fusion"] = {
-                "rule": fusion_rule,
-                "applied": True,
-            }
-
-        # ==========================================================================
-        # FINAL RESULT
-        # ==========================================================================
-        result = {
-            "contract_id": contract_id,
-            "status": "completed",
-            "pipeline_results": pipeline_results,
-            "execution_metadata": {
-                "orchestration_mode": orchestration_mode,
-                "phases_executed": list(pipeline_results.keys()),
-                "total_methods": sum(
-                    len(p.get("methods", []))
-                    for p in pipeline_results.values()
-                ),
-            },
-        }
-
-        # If executor has an execute method, call it as final integration step
-        if hasattr(executor, "execute"):
-            try:
-                integrated_result = executor.execute({
-                    **input_data,
-                    "pipeline_results": pipeline_results,
-                })
-                result["integrated_result"] = integrated_result
-            except Exception as e:
-                logger.warning(
-                    "Executor integration failed",
-                    error=str(e),
-                )
-                result["integration_error"] = str(e)
-
-        logger.info(
-            "Contract executed successfully",
-            contract_id=contract_id,
-            phases_executed=result["execution_metadata"]["phases_executed"],
-            total_methods=result["execution_metadata"]["total_methods"],
-        )
-
-        return result
+            logger.error(
+                "Contract execution failed",
+                contract_id=contract_id,
+                error=str(e),
+                execution_time=execution_time,
+            )
+            raise
 
     def execute_contracts_batch(
         self, contract_ids: List[str], input_data: Dict[str, Any]
@@ -976,7 +1025,7 @@ class UnifiedFactory:
             contract_id = futures[future]
             try:
                 results[contract_id] = future.result()
-                self._execution_metrics["parallel_executions"] += 1
+                self._update_metrics(parallel_executions=1)
             except Exception as e:
                 logger.error(
                     "Parallel contract execution failed",
@@ -988,6 +1037,7 @@ class UnifiedFactory:
                     "error": str(e),
                     "status": "failed",
                 }
+                self._update_metrics(failed_executions=1)
         
         return results
     
@@ -1009,11 +1059,17 @@ class UnifiedFactory:
         results = {}
         for contract_id, result in zip(contract_ids, results_list):
             if isinstance(result, Exception):
+                logger.error(
+                    "Async contract execution failed",
+                    contract_id=contract_id,
+                    error=str(result),
+                )
                 results[contract_id] = {
                     "contract_id": contract_id,
                     "error": str(result),
                     "status": "failed",
                 }
+                self._update_metrics(failed_executions=1)
             else:
                 results[contract_id] = result
                 
@@ -1025,20 +1081,21 @@ class UnifiedFactory:
     
     def get_performance_metrics(self) -> Dict[str, Any]:
         """
-        Get comprehensive performance metrics.
+        Get comprehensive performance metrics (thread-safe).
         
         Returns:
             Dict with execution metrics, cache stats, and performance indicators
         """
-        cache_efficiency = (
-            self._execution_metrics["cache_hits"] / 
-            max(1, self._execution_metrics["cache_hits"] + self._execution_metrics["cache_misses"])
-        ) * 100
-        
-        metrics = {
-            **self._execution_metrics,
-            "cache_efficiency_percent": cache_efficiency,
-        }
+        with self._metrics_lock:
+            cache_efficiency = (
+                self._execution_metrics["cache_hits"] / 
+                max(1, self._execution_metrics["cache_hits"] + self._execution_metrics["cache_misses"])
+            ) * 100
+            
+            metrics = {
+                **self._execution_metrics,
+                "cache_efficiency_percent": cache_efficiency,
+            }
         
         if self._method_cache:
             metrics["method_cache_size"] = len(self._method_cache._cache)
@@ -1050,15 +1107,17 @@ class UnifiedFactory:
         return metrics
     
     def reset_metrics(self) -> None:
-        """Reset performance metrics."""
-        self._execution_metrics = {
-            "contracts_executed": 0,
-            "cache_hits": 0,
-            "cache_misses": 0,
-            "parallel_executions": 0,
-            "total_execution_time": 0.0,
-            "average_execution_time": 0.0,
-        }
+        """Reset performance metrics (thread-safe)."""
+        with self._metrics_lock:
+            self._execution_metrics = {
+                "contracts_executed": 0,
+                "cache_hits": 0,
+                "cache_misses": 0,
+                "parallel_executions": 0,
+                "total_execution_time": 0.0,
+                "average_execution_time": 0.0,
+                "failed_executions": 0,
+            }
         
     def optimize_caches(self) -> Dict[str, Any]:
         """
