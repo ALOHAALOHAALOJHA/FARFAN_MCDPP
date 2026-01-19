@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional CV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Screen-only full-page sections */
+        @media screen {
+            section {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+        }
+
+        /* Utility classes - Tailwind-like */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+
+        .text-center { text-align: center; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-6xl { font-size: 3.75rem; }
+        
+        .font-light { font-weight: 300; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+        
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .items-start { align-items: flex-start; }
+        
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        
+        .list-disc { list-style-type: disc; }
+        .list-inside { list-style-position: inside; }
+        
+        /* Background colors and gradients */
+        .bg-hero {
+            background: linear-gradient(135deg, #2563eb 0%, #9333ea 50%, #4f46e5 100%);
+        }
+        
+        .bg-experience {
+            background: linear-gradient(90deg, #111827 0%, #1f2937 100%);
+        }
+        
+        .bg-skills {
+            background: linear-gradient(135deg, #4338ca 0%, #7e22ce 50%, #db2777 100%);
+        }
+        
+        .bg-education {
+            background: linear-gradient(90deg, #0f766e 0%, #0891b2 100%);
+        }
+        
+        .bg-projects {
+            background: linear-gradient(135deg, #ea580c 0%, #dc2626 50%, #db2777 100%);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            color: white;
+        }
+        
+        .tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            display: inline-block;
+        }
+        
+        .tag-sm {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            display: inline-block;
+        }
+        
+        section {
+            color: white;
+        }
+        
+
+        .text-gray-200 { color: #e5e7eb; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+
+        /* Print-specific styles */
+        @media print {
+            /* Force each section to start on a new page */
+            section {
+                page-break-before: always !important;
+                page-break-inside: avoid !important;
+                break-before: page !important;
+                break-inside: avoid !important;
+            }
+
+            /* First section should not have page break before */
+            section:first-of-type {
+                page-break-before: auto !important;
+                break-before: auto !important;
+            }
+
+            /* Ensure backgrounds print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            /* Disable animations and transforms */
+            * {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+
+            /* Remove blend modes that break PDF rendering */
+            * {
+                mix-blend-mode: normal !important;
+                background-blend-mode: normal !important;
+            }
+
+            /* Prevent content overflow */
+            body {
+                overflow: visible !important;
+            }
+
+            section {
+                overflow: visible !important;
+                height: auto !important;
+                min-height: 100vh !important;
+                max-height: none !important;
+            }
+
+            /* Stable print-safe typography */
+            html {
+                font-size: 12pt !important;
+            }
+
+            h1 {
+                font-size: 24pt !important;
+                line-height: 1.2 !important;
+            }
+
+            h2 {
+                font-size: 20pt !important;
+                line-height: 1.3 !important;
+            }
+
+            h3 {
+                font-size: 16pt !important;
+                line-height: 1.4 !important;
+            }
+
+            p, li {
+                font-size: 11pt !important;
+                line-height: 1.5 !important;
+            }
+
+            /* Consistent margins for A4 format */
+            @page {
+                size: A4;
+                margin: 1.5cm 2cm;
+            }
+
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            section {
+                margin: 0 !important;
+                padding: 2cm 2cm !important;
+            }
+
+            /* Hide interactive elements */
+            button, .no-print {
+                display: none !important;
+            }
+
+            /* Ensure proper spacing */
+            .print-spacing {
+                margin-bottom: 1cm !important;
+            }
+
+            /* Fix background overlays for print */
+            .bg-gradient-to-br,
+            .bg-gradient-to-r {
+                background: none !important;
+            }
+
+            /* Simplify backgrounds for print readability */
+            .bg-hero { background-color: #2563eb !important; }
+            .bg-experience { background-color: #111827 !important; }
+            .bg-skills { background-color: #4338ca !important; }
+            .bg-education { background-color: #0f766e !important; }
+            .bg-projects { background-color: #ea580c !important; }
+        }
+
+        @media (min-width: 768px) {
+            .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="bg-hero">
+        <div class="container text-center">
+            <h1 class="text-6xl font-bold mb-4">John Doe</h1>
+            <h2 class="text-3xl font-light mb-6">Senior Software Engineer</h2>
+            <p class="text-xl mb-8">
+                Passionate about building scalable web applications and leading high-performance teams
+            </p>
+            <div class="flex justify-center gap-6 text-xl flex-wrap">
+                <div>📧 john.doe@email.com</div>
+                <div>📱 +1 (555) 123-4567</div>
+                <div>🔗 linkedin.com/in/johndoe</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="bg-experience">
+        <div class="container py-16">
+            <h2 class="text-4xl font-bold mb-12 text-center">Professional Experience</h2>
+            
+            <div class="space-y-8">
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-2xl font-semibold">Senior Software Engineer</h3>
+                            <p class="text-xl text-gray-300">TechCorp Inc.</p>
+                        </div>
+                        <span class="text-gray-400">2020 - Present</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-gray-200">
+                        <li>Led development of microservices architecture serving 1M+ users</li>
+                        <li>Reduced API response time by 60% through optimization</li>
+                        <li>Mentored team of 5 junior developers</li>
+                        <li>Implemented CI/CD pipeline reducing deployment time by 75%</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-2xl font-semibold">Software Engineer</h3>
+                            <p class="text-xl text-gray-300">StartupXYZ</p>
+                        </div>
+                        <span class="text-gray-400">2017 - 2020</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-gray-200">
+                        <li>Built responsive web applications using React and Node.js</li>
+                        <li>Collaborated with design team to implement pixel-perfect UIs</li>
+                        <li>Integrated third-party APIs and payment systems</li>
+                        <li>Participated in code reviews and architectural decisions</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-2xl font-semibold">Junior Developer</h3>
+                            <p class="text-xl text-gray-300">WebSolutions Ltd.</p>
+                        </div>
+                        <span class="text-gray-400">2015 - 2017</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-gray-200">
+                        <li>Developed and maintained client websites using modern web technologies</li>
+                        <li>Fixed bugs and implemented new features based on client feedback</li>
+                        <li>Worked in agile environment with bi-weekly sprints</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="bg-skills">
+        <div class="container py-16">
+            <h2 class="text-4xl font-bold mb-12 text-center">Technical Skills</h2>
+            
+            <div class="grid grid-cols-1 grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4">Frontend</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag">React</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Tailwind CSS</span>
+                        <span class="tag">Next.js</span>
+                        <span class="tag">Vue.js</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4">Backend</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">GraphQL</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4">DevOps</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag">Docker</span>
+                        <span class="tag">Kubernetes</span>
+                        <span class="tag">AWS</span>
+                        <span class="tag">CI/CD</span>
+                        <span class="tag">Git</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4">Soft Skills</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag">Team Leadership</span>
+                        <span class="tag">Agile/Scrum</span>
+                        <span class="tag">Communication</span>
+                        <span class="tag">Problem Solving</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="bg-education">
+        <div class="container py-16">
+            <h2 class="text-4xl font-bold mb-12 text-center">Education</h2>
+            
+            <div class="space-y-6">
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-2xl font-semibold">Master of Science in Computer Science</h3>
+                            <p class="text-xl text-gray-200">Stanford University</p>
+                        </div>
+                        <span class="text-gray-300">2013 - 2015</span>
+                    </div>
+                    <p class="text-gray-200">
+                        Focus: Distributed Systems and Machine Learning
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-2xl font-semibold">Bachelor of Science in Computer Engineering</h3>
+                            <p class="text-xl text-gray-200">MIT</p>
+                        </div>
+                        <span class="text-gray-300">2009 - 2013</span>
+                    </div>
+                    <p class="text-gray-200">
+                        GPA: 3.8/4.0, Magna Cum Laude
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-12"></div>
+            <h3 class="text-2xl font-semibold mb-6">Certifications</h3>
+            <div class="grid grid-cols-1 grid-cols-2 gap-4">
+                <div class="card">
+                    <p class="font-semibold">AWS Certified Solutions Architect</p>
+                    <p class="text-gray-300">Amazon Web Services - 2022</p>
+                </div>
+                <div class="card">
+                    <p class="font-semibold">Certified Kubernetes Administrator</p>
+                    <p class="text-gray-300">Cloud Native Computing Foundation - 2021</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="bg-projects">
+        <div class="container py-16">
+            <h2 class="text-4xl font-bold mb-12 text-center">Notable Projects</h2>
+            
+            <div class="grid grid-cols-1 grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-3">E-Commerce Platform</h3>
+                    <p class="text-gray-200 mb-4">
+                        Built scalable e-commerce solution handling 100K+ daily transactions with real-time inventory management.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag-sm">React</span>
+                        <span class="tag-sm">Node.js</span>
+                        <span class="tag-sm">PostgreSQL</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-3">Real-Time Analytics Dashboard</h3>
+                    <p class="text-gray-200 mb-4">
+                        Created interactive dashboard processing millions of data points with sub-second latency.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag-sm">Vue.js</span>
+                        <span class="tag-sm">Python</span>
+                        <span class="tag-sm">Redis</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-3">Mobile Banking App</h3>
+                    <p class="text-gray-200 mb-4">
+                        Developed secure mobile banking application with biometric authentication for 50K+ users.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag-sm">React Native</span>
+                        <span class="tag-sm">GraphQL</span>
+                        <span class="tag-sm">AWS</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-3">AI Content Generator</h3>
+                    <p class="text-gray-200 mb-4">
+                        Built AI-powered content generation tool using machine learning models and natural language processing.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag-sm">Python</span>
+                        <span class="tag-sm">TensorFlow</span>
+                        <span class="tag-sm">Next.js</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
