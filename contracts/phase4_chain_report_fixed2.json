@@ -1,0 +1,90 @@
+{
+  "phase_id": "4",
+  "phase_dir": "/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04",
+  "total_files": 26,
+  "files_in_chain": 10,
+  "orphan_files": [
+    "validation/__init__.py"
+  ],
+  "allowed_orphans": [
+    "interphase/__init__.py",
+    "primitives/adaptive_meso_scoring.py",
+    "primitives/enhanced_aggregators.py",
+    "primitives/phase4_00_00_choquet_primitives.py",
+    "primitives/phase4_00_00_signal_enriched_primitives.py",
+    "primitives/phase4_00_00_uncertainty_metrics.py",
+    "primitives/phase4_10_00_choquet_primitives.py",
+    "primitives/phase4_10_00_signal_enriched_primitives.py",
+    "primitives/phase4_10_00_uncertainty_metrics.py",
+    "primitives/phase4_40_00_aggregation_enhancements.py",
+    "primitives/phase4_95_00_adaptive_meso_scoring.py",
+    "primitives/phase4_95_00_enhanced_aggregators.py",
+    "primitives/phase4_95_00_signal_enriched_aggregation.py",
+    "primitives/signal_enriched_aggregation.py",
+    "tests/__init__.py"
+  ],
+  "circular_dependencies": [],
+  "dependency_graph": {
+    "__init__.py": [
+      "primitives/phase4_00_00_aggregation_settings.py",
+      "phase4_10_00_aggregation_provenance.py",
+      "phase4_10_00_uncertainty_quantification.py",
+      "phase4_20_00_choquet_adapter.py",
+      "phase4_30_00_aggregation.py",
+      "phase4_30_00_choquet_aggregator.py",
+      "phase4_30_00_signal_enriched_aggregation.py",
+      "phase4_60_00_aggregation_validation.py",
+      "PHASE_4_CONSTANTS.py"
+    ],
+    "phase4_10_00_aggregation_settings.py": [
+      "primitives/phase4_00_00_aggregation_settings.py"
+    ],
+    "phase4_20_00_choquet_adapter.py": [
+      "phase4_10_00_uncertainty_quantification.py",
+      "phase4_10_00_aggregation_settings.py"
+    ],
+    "phase4_30_00_aggregation.py": [
+      "primitives/phase4_00_00_types.py",
+      "phase4_10_00_aggregation_provenance.py",
+      "phase4_10_00_uncertainty_quantification.py",
+      "phase4_10_00_aggregation_settings.py",
+      "phase4_20_00_choquet_adapter.py"
+    ],
+    "primitives/__init__.py": [
+      "primitives/phase4_40_00_adaptive_meso_scoring.py",
+      "primitives/phase4_40_00_enhanced_aggregators.py",
+      "primitives/phase4_40_00_signal_enriched_aggregation.py"
+    ],
+    "primitives/phase4_00_00_quality_levels.py": [
+      "PHASE_4_CONSTANTS.py"
+    ],
+    "primitives/phase4_10_00_quality_levels.py": [
+      "PHASE_4_CONSTANTS.py"
+    ],
+    "tests/test_phase4_00_00_primitives.py": [
+      "primitives/phase4_00_00_aggregation_settings.py",
+      "primitives/phase4_00_00_types.py"
+    ],
+    "tests/test_phase4_10_00_contracts.py": [
+      "contracts/phase4_input_contract.py",
+      "contracts/phase4_mission_contract.py",
+      "contracts/phase4_output_contract.py"
+    ],
+    "tests/test_phase4_topological_chain.py": [
+      "__init__.py",
+      "primitives/__init__.py",
+      "contracts/phase4_input_contract.py",
+      "contracts/phase4_mission_contract.py",
+      "contracts/phase4_output_contract.py",
+      "phase4_10_00_aggregation_settings.py",
+      "primitives/phase4_00_00_aggregation_settings.py",
+      "primitives/phase4_00_00_types.py",
+      "contracts/phase4_input_contract.py",
+      "primitives/__init__.py",
+      "primitives/__init__.py",
+      "primitives/__init__.py",
+      "primitives/__init__.py"
+    ]
+  },
+  "validation_status": "FAIL"
+}

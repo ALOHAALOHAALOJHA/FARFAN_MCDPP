@@ -2,10 +2,14 @@
 """
 SISAS Signals Module
 
-Este módulo expone todos los tipos de señales del sistema SISAS.
+Este módulo expone los tipos de señales del sistema SISAS que están
+activamente implementados y en uso.
+
+NOTA: Las señales de orquestación (orchestration.py) fueron eliminadas
+porque no estaban siendo utilizadas por ningún componente del sistema.
 
 Exports:
-    - Todas las 18 clases de señales
+    - 17 clases de señales activas
     - SignalRegistry para introspección y factory
 """
 

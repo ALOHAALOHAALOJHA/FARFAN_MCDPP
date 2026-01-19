@@ -8,6 +8,26 @@ Authors: FARFAN Pipeline Architecture Team
 
 ---
 
+## ⚠️ IMPORTANT DISCLAIMER
+
+**This documentation describes a system that is PARTIALLY IMPLEMENTED.**
+
+**What IS working:**
+- Core signal infrastructure (`SISAS/core/`)
+- Signal consumers for phases 0-9
+- 17 signal types (structural, integrity, epistemic, contrast, operational, consumption)
+- Contract loading and execution
+
+**What is NOT working (orphan code removed):**
+- Orchestration signal types (`orchestration.py`) - REMOVED as unused
+- Integration between orchestrator and SISAS signals - NOT IMPLEMENTED
+- Signal emission from orchestrator - NOT IMPLEMENTED
+
+**Reality:** The SISAS signal types exist but the orchestrator does NOT emit them.
+The system has signal infrastructure but lacks actual signal flow from orchestration.
+
+---
+
 ## TABLE OF CONTENTS
 
 1. [Introduction](#chapter-1-introduction)

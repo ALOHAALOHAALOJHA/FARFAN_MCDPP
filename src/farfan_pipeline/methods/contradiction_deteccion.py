@@ -26,16 +26,24 @@ import networkx as nx
 import numpy as np
 import torch
 
-# Check dependency lockdown
-from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
-
 # Import runtime error fixes for defensive programming
-from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
+try:
+    from farfan_pipeline.phases.Phase_00.phase0_00_02_runtime_error_fixes import ensure_list_return
+except ImportError:
+    # Fallback if the module doesn't exist
+    def ensure_list_return(func):
+        """Decorator that ensures functions always return a list."""
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if result is None:
+                return []
+            if not isinstance(result, list):
+                return [result]
+            return result
+        return wrapper
 from scipy.stats import beta
 from sentence_transformers import SentenceTransformer
 from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline
-
-_lockdown = get_dependency_lockdown()
 
 # Configure logging with structured format
 logging.basicConfig(
