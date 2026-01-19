@@ -49,7 +49,7 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_compl
 from dataclasses import dataclass, field
 from functools import lru_cache, wraps
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar, Callable
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar
 
 import structlog
 
