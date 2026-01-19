@@ -23,14 +23,14 @@ from typing import List, Dict
 import tempfile
 
 # Phase 0 Models
-from farfan_pipeline.phases.Phase_one.phase0_input_validation import (
+from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
     Phase0Input,
     CanonicalInput,
     Phase0ValidationContract,
 )
 
 # Phase 1 Models
-from farfan_pipeline.phases.Phase_one.phase1_models import (
+from farfan_pipeline.phases.Phase_01.phase1_03_00_models import (
     LanguageData,
     PreprocessedDoc,
     StructureData,
@@ -50,7 +50,7 @@ from farfan_pipeline.phases.Phase_one.phase1_models import (
 )
 
 # CPP Models
-from farfan_pipeline.phases.Phase_one.cpp_models import (
+from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
     CanonPolicyPackage,
     ChunkGraph,
     QualityMetrics,

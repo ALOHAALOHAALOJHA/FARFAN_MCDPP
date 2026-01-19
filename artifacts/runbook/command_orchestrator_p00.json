@@ -1,0 +1,23 @@
+{
+  "execution_id": "315434be47ec1738",
+  "elapsed_timeFP'-Ñ´+P'+_s": 18.847,
+  "phases_completed": 0,
+  "phases_failed": 1,
+  "total_phases": 1,
+  "total_violations": 0,
+  "critical_violations": 0,
+  "deterministic": true,
+  "handoffs_recorded": 0,
+  "sisas_metrics": {},
+  "phase_breakdown": [
+    {
+      "phase_id": "P00",
+      "phase_name": "P00",
+      "status": "FAILED",
+      "execution_time_s": 0.0,
+      "violations": 0,
+      "critical_violations": 0
+    }
+  ],
+  "violations": {}
+}

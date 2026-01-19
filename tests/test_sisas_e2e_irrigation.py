@@ -122,7 +122,7 @@ class TestSISASGoldenPath:
     
     def test_signal_enricher_extract_and_route(self, sample_text: str):
         """Test the complete extract_and_route_signals flow."""
-        from farfan_pipeline.phases.Phase_one.phase1_60_00_signal_enrichment import SignalEnricher
+        from farfan_pipeline.phases.Phase_01.phase1_11_00_signal_enrichment import SignalEnricher
         
         enricher = SignalEnricher()
         result = enricher.extract_and_route_signals(sample_text)
@@ -159,7 +159,7 @@ class TestSISASGoldenPath:
     
     def test_signal_enriched_scorer_adjustments(self):
         """Test Phase 3 signal-driven score adjustments."""
-        from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
+        from farfan_pipeline.phases.Phase_03.phase3_24_00_signal_enriched_scoring import SignalEnrichedScorer
         
         scorer = SignalEnrichedScorer()
         
@@ -182,7 +182,7 @@ class TestSISASGoldenPath:
     
     def test_signal_enriched_scorer_penalty(self):
         """Test penalty for missing signals."""
-        from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
+        from farfan_pipeline.phases.Phase_03.phase3_24_00_signal_enriched_scoring import SignalEnrichedScorer
         
         scorer = SignalEnrichedScorer()
         
