@@ -51,6 +51,32 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+# Import all modules to connect them to the DAG
+from . import (
+    PHASE_2_CONSTANTS,
+    phase2_10_00_phase_2_constants,
+    phase2_20_00_method_signature_validator,
+    phase2_20_01_method_source_validator,
+    phase2_30_05_distributed_cache,
+    phase2_50_01_chunk_processor,
+    phase2_50_02_batch_optimizer,
+    phase2_60_01_contract_validator_cqvr,
+    phase2_60_02_arg_router,
+    phase2_60_03_signature_runtime_validator,
+    phase2_85_00_evidence_nexus_sota_implementations,
+    phase2_95_00_executor_profiler,
+    phase2_95_01_metrics_persistence,
+    phase2_95_02_precision_tracking,
+    phase2_95_04_metrics_exporter,
+    phase2_95_05_execution_predictor,
+    phase2_95_06_benchmark_performance_optimizations,
+    phase2_96_00_contract_migrator,
+)
+
+# Import constants
+from .PHASE_2_CONSTANTS import *
+from .phase2_10_00_phase_2_constants import *
+
 # Executor configuration and base class
 from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.phases.Phase_02.phase2_60_00_base_executor_with_contract import (
@@ -72,6 +98,24 @@ from farfan_pipeline.phases.Phase_02.phase2_95_00_contract_hydrator import (
     ContractHydrator,
 )
 
+# Import additional modules
+from .phase2_20_00_method_signature_validator import *
+from .phase2_20_01_method_source_validator import *
+from .phase2_30_05_distributed_cache import *
+from .phase2_50_01_chunk_processor import *
+from .phase2_50_02_batch_optimizer import *
+from .phase2_60_01_contract_validator_cqvr import *
+from .phase2_60_02_arg_router import *
+from .phase2_60_03_signature_runtime_validator import *
+from .phase2_85_00_evidence_nexus_sota_implementations import *
+from .phase2_95_00_executor_profiler import *
+from .phase2_95_01_metrics_persistence import *
+from .phase2_95_02_precision_tracking import *
+from .phase2_95_04_metrics_exporter import *
+from .phase2_95_05_execution_predictor import *
+from .phase2_95_06_benchmark_performance_optimizations import *
+from .phase2_96_00_contract_migrator import *
+
 __all__ = [
     # Evidence processing (EvidenceNexus)
     "EvidenceNexus",
@@ -88,4 +132,27 @@ __all__ = [
     # Executor configuration
     "ExecutorConfig",
     "BaseExecutorWithContract",
+    # Constants
+    "PHASE_2_CONSTANTS",
+    "phase2_10_00_phase_2_constants",
+    # Validators
+    "phase2_20_00_method_signature_validator",
+    "phase2_20_01_method_source_validator",
+    "phase2_60_01_contract_validator_cqvr",
+    "phase2_60_02_arg_router",
+    "phase2_60_03_signature_runtime_validator",
+    # Utilities
+    "phase2_30_05_distributed_cache",
+    "phase2_50_01_chunk_processor",
+    "phase2_50_02_batch_optimizer",
+    # Profilers and metrics
+    "phase2_95_00_executor_profiler",
+    "phase2_95_01_metrics_persistence",
+    "phase2_95_02_precision_tracking",
+    "phase2_95_04_metrics_exporter",
+    "phase2_95_05_execution_predictor",
+    "phase2_95_06_benchmark_performance_optimizations",
+    "phase2_96_00_contract_migrator",
+    # SOTA implementations
+    "phase2_85_00_evidence_nexus_sota_implementations",
 ]

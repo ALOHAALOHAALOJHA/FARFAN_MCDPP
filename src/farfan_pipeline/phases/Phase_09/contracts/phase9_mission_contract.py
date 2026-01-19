@@ -142,13 +142,15 @@ class Phase9ExecutionFlow:
     )
 
     # Quality assurance
-    QA_CHECKPOINTS: Final[list[str]] = [
-        "Input validation",
-        "Signal integrity check", 
-        "Entity validation",
-        "Report completeness",
-        "Institutional compliance"
-    ]
+    QA_CHECKPOINTS: Final[list[str]] = field(
+        default_factory=lambda: [
+            "Input validation",
+            "Signal integrity check",
+            "Entity validation",
+            "Report completeness",
+            "Institutional compliance",
+        ]
+    )
 
 
 # =============================================================================
