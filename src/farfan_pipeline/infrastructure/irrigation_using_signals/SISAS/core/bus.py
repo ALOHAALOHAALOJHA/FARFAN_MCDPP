@@ -22,6 +22,7 @@ class BusType(Enum):
     CONTRAST = "contrast_bus"
     OPERATIONAL = "operational_bus"
     CONSUMPTION = "consumption_bus"
+    ORCHESTRATION = "orchestration_bus"  # Orchestration signals
     UNIVERSAL = "universal_bus"  # Recibe todo
 
 
@@ -248,6 +249,7 @@ class BusRegistry:
             SignalCategory.CONTRAST:  BusType.CONTRAST,
             SignalCategory.OPERATIONAL:  BusType.OPERATIONAL,
             SignalCategory.CONSUMPTION:  BusType.CONSUMPTION,
+            SignalCategory.ORCHESTRATION: BusType.ORCHESTRATION,
         }
         bus_type = category_to_bus.get(signal.category, BusType.UNIVERSAL)
         return self.buses[bus_type. value]

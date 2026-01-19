@@ -72,9 +72,10 @@ class SignalVocabulary:
         self._register_integrity_signals()
         self._register_epistemic_signals()
         self._register_contrast_signals()
+        self._register_orchestration_signals()
         self._register_operational_signals()
         self._register_consumption_signals()
-        
+
         # Construir índices
         self._build_indices()
 
@@ -200,6 +201,123 @@ class SignalVocabulary:
             description="Indica cambios entre evaluaciones en diferentes momentos",
             required_fields=["item_id", "baseline_timestamp", "current_timestamp"],
             optional_fields=["baseline_state", "current_state", "changes_detected"]
+        ))
+
+    def _register_orchestration_signals(self):
+        """Registra señales de orquestación SISAS"""
+        # Phase Lifecycle Signals
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseStartSignal",
+            category="orchestration",
+            description="Signal emitted when a phase is ready to start",
+            required_fields=["run_id", "phase_id"],
+            optional_fields=["execution_context", "upstream_dependencies", "expected_signals", "timeout_seconds"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseCompleteSignal",
+            category="orchestration",
+            description="Signal emitted when a phase completes execution",
+            required_fields=["run_id", "phase_id", "status"],
+            optional_fields=["completion_metadata", "error_message", "execution_duration_seconds", "attempt_number"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseProgressSignal",
+            category="orchestration",
+            description="Signal emitted when a phase reports progress",
+            required_fields=["run_id", "phase_id", "progress_percent"],
+            optional_fields=["current_step", "estimated_remaining_seconds", "metadata"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseRetrySignal",
+            category="orchestration",
+            description="Signal emitted when a phase is being retried",
+            required_fields=["run_id", "phase_id", "attempt_number"],
+            optional_fields=["max_attempts", "previous_error"]
+        ))
+
+        # Orchestration Decision Signals
+        self.register(SignalTypeDefinition(
+            signal_type="OrchestrationInitializedSignal",
+            category="orchestration",
+            description="Signal emitted when orchestration is initialized",
+            required_fields=["run_id"],
+            optional_fields=["configuration", "dependency_graph_summary", "validation_passed"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="OrchestrationCompleteSignal",
+            category="orchestration",
+            description="Signal emitted when orchestration completes",
+            required_fields=["run_id", "final_status"],
+            optional_fields=["total_phases", "completed_successfully", "completed_partially", "failed", "execution_summary"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="OrchestrationDecisionSignal",
+            category="orchestration",
+            description="Signal emitted for every orchestration decision",
+            required_fields=["run_id", "decision_type", "decision_rationale"],
+            optional_fields=["phases_selected", "phases_waiting", "phases_blocked", "dependency_state"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="ConstitutionalValidationSignal",
+            category="orchestration",
+            description="Signal emitted when constitutional/contract validation occurs",
+            required_fields=["run_id", "validation_passed"],
+            optional_fields=["validation_errors", "contracts_validated", "timestamp"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="DependencyGraphLoadedSignal",
+            category="orchestration",
+            description="Signal emitted when dependency graph is loaded/initialized",
+            required_fields=["run_id"],
+            optional_fields=["total_nodes", "total_edges", "graph_structure"]
+        ))
+
+        # Coordination Signals
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseReadyToStartSignal",
+            category="orchestration",
+            description="Signal emitted when a phase is ready to start",
+            required_fields=["run_id", "phase_id", "dependencies_satisfied"],
+            optional_fields=["unsatisfied_dependencies"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="DependencyGraphUpdatedSignal",
+            category="orchestration",
+            description="Signal emitted when the dependency graph is updated",
+            required_fields=["run_id", "updated_node", "new_status"],
+            optional_fields=["newly_unblocked_phases", "impact_summary"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseBlockedSignal",
+            category="orchestration",
+            description="Signal emitted when a phase is blocked",
+            required_fields=["run_id", "phase_id"],
+            optional_fields=["blocking_dependencies", "blocking_status"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="ParallelExecutionLimitSignal",
+            category="orchestration",
+            description="Signal emitted when parallel execution limit is reached",
+            required_fields=["run_id", "current_parallel_count"],
+            optional_fields=["max_parallel", "waiting_phases"]
+        ))
+
+        self.register(SignalTypeDefinition(
+            signal_type="PhaseDependencySatisfiedSignal",
+            category="orchestration",
+            description="Signal emitted when a dependency is satisfied",
+            required_fields=["run_id", "dependency_phase_id"],
+            optional_fields=["downstream_phases_affected", "newly_ready_phases"]
         ))
 
     def _register_operational_signals(self):

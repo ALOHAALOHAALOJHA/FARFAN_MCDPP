@@ -1,0 +1,296 @@
+{
+  "task": "Tarea #5: Validar contratos",
+  "timestamp": "2026-01-18T20:00:00Z",
+  "agent": "claude-code",
+  "summary": {
+    "contract_types_defined": 3,
+    "contract_registry_exists": true,
+    "validation_status": "CONTRACTS_DEFINED_BUT_MOSTLY_UNUSED",
+    "usage_percentage": 15
+  },
+  "contract_types": {
+    "PublicationContract": {
+      "description": "Define QUÉ puede publicar un vehículo y CÓMO",
+      "fields": [
+        "contract_id",
+        "publisher_vehicle",
+        "allowed_signal_types",
+        "allowed_buses",
+        "max_signals_per_second",
+        "require_context",
+        "require_source",
+        "pre_publish_validators"
+      ],
+      "validation_method": "validate_signal(signal) -> (bool, errors)"
+    },
+    "ConsumptionContract": {
+      "description": "Define QUÉ puede consumir un consumidor y CÓMO",
+      "fields": [
+        "contract_id",
+        "consumer_id",
+        "consumer_phase",
+        "subscribed_signal_types",
+        "subscribed_buses",
+        "context_filters",
+        "max_processing_time_ms",
+        "required_capabilities",
+        "on_receive",
+        "on_process_complete",
+        "on_process_error"
+      ],
+      "validation_method": "matches_signal(signal) -> bool"
+    },
+    "IrrigationContract": {
+      "description": "Define relación completa entre archivo, vehículos y consumidores",
+      "fields": [
+        "contract_id",
+        "source_file",
+        "source_path",
+        "source_phase",
+        "vehicles",
+        "consumers",
+        "generated_signals",
+        "vocabulary_aligned",
+        "gaps"
+      ],
+      "validation_method": "is_irrigable() -> bool"
+    }
+  },
+  "contract_registry": {
+    "file": "SISAS/core/contracts.py",
+    "methods": [
+      "register_publication(contract)",
+      "register_consumption(contract)",
+      "register_irrigation(contract)",
+      "get_contracts_for_vehicle(vehicle)",
+      "get_contracts_for_consumer(consumer)",
+      "get_irrigation_for_file(source_path)",
+      "get_irrigable_contracts()",
+      "get_blocked_contracts()"
+    ],
+    "storage": {
+      "publication_contracts": "Dict[str, PublicationContract]",
+      "consumption_contracts": "Dict[str, ConsumptionContract]",
+      "irrigation_contracts": "Dict[str, IrrigationContract]"
+    }
+  },
+  "contract_usage_analysis": {
+    "vehicles_with_publication_contracts": {
+      "defined_in_base_vehicle": true,
+      "actually_configured": 0,
+      "vehicles_checked": 11,
+      "issue": "BaseVehicle has publication_contract field but NO vehicle actually configures it"
+    },
+    "consumers_with_consumption_contracts": {
+      "consumers_checked": 11,
+      "actually_configured": 11,
+      "usage_percentage": 100,
+      "details": "ALL consumers properly configure ConsumptionContract in __post_init__"
+    }
+  },
+  "consumption_contract_validation": {
+    "valid_contracts": [
+      {
+        "consumer": "phase0_bootstrap",
+        "contract_id": "CC_PHASE0_BOOTSTRAP",
+        "subscribed_signal_types": [
+          "StructuralAlignmentSignal",
+          "CanonicalMappingSignal",
+          "EventPresenceSignal",
+          "EventCompletenessSignal",
+          "DataIntegritySignal"
+        ],
+        "subscribed_buses": ["structural_bus", "integrity_bus"],
+        "context_filters": {
+          "phase": ["phase_0"],
+          "consumer_scope": ["Phase_0", "Cross-Phase"]
+        },
+        "status": "VALID"
+      },
+      {
+        "consumer": "phase2_factory_consumer",
+        "contract_id": "CC_PHASE2_FACTORY",
+        "subscribed_signal_types": [
+          "ExecutionAttemptSignal",
+          "FailureModeSignal",
+          "FrequencySignal",
+          "ConsumerHealthSignal"
+        ],
+        "subscribed_buses": ["operational_bus", "consumption_bus"],
+        "context_filters": {
+          "phase": ["phase_2"],
+          "consumer_scope": ["Phase_2"]
+        },
+        "status": "VALID but producers missing (FrequencySignal, ConsumerHealthSignal not produced)"
+      },
+      {
+        "consumer": "phase8_recommendations",
+        "contract_id": "implied from code",
+        "subscribed_signal_types": [
+          "DecisionDivergenceSignal",
+          "ConfidenceDropSignal",
+          "TemporalContrastSignal",
+          "AnswerDeterminacySignal",
+          "AnswerSpecificitySignal",
+          "EmpiricalSupportSignal",
+          "DataIntegritySignal"
+        ],
+        "subscribed_buses": ["contrast_bus", "epistemic_bus", "integrity_bus"],
+        "status": "VALID but MOSTLY ORPHAN (contrast signals not produced)"
+      }
+    ],
+    "contract_gaps": [
+      {
+        "gap": "Consumers subscribe to signals with no producers",
+        "affected_consumers": [
+          "phase0_wiring_types (SchemaConflictSignal, TemporalCouplingSignal)",
+          "phase2_factory_consumer (FrequencySignal, ConsumerHealthSignal)",
+          "phase8_recommendations (DecisionDivergenceSignal, ConfidenceDropSignal, TemporalContrastSignal, EmpiricalSupportSignal)"
+        ],
+        "severity": "HIGH",
+        "impact": "Signals never reach these consumers"
+      },
+      {
+        "gap": "No publication contracts configured",
+        "affected_vehicles": "ALL 11 vehicles",
+        "severity": "CRITICAL",
+        "impact": "No validation of what vehicles can publish"
+      },
+      {
+        "gap": "No irrigation contracts defined",
+        "affected_files": "ALL 475 canonical files",
+        "severity": "CRITICAL",
+        "impact": "No end-to-end validation of irrigation flow"
+      }
+    ]
+  },
+  "publication_contract_gap": {
+    "expected_structure": {
+      "each_vehicle_should_have": {
+        "PublicationContract": {
+          "contract_id": "PC_{vehicle_id}",
+          "publisher_vehicle": "{vehicle_id}",
+          "allowed_signal_types": ["From VehicleCapabilities.signal_types_produced"],
+          "allowed_buses": ["Based on signal categories"],
+          "require_context": true,
+          "require_source": true
+        }
+      }
+    },
+    "actual_state": {
+      "vehicles_checked": 11,
+      "vehicles_with_contracts": 0,
+      "issue": "NO vehicle creates PublicationContract in __post_init__"
+    },
+    "recommendation": "Add PublicationContract creation to each vehicle's __post_init__ method"
+  },
+  "irrigation_contract_gap": {
+    "expected_structure": {
+      "each_canonical_file_should_have": {
+        "IrrigationContract": {
+          "contract_id": "IC_{file_path_hash}",
+          "source_file": "{file_name}",
+          "source_path": "{relative_path}",
+          "vehicles": ["List of vehicles that process this file type"],
+          "consumers": ["List of consumers that should receive signals"],
+          "generated_signals": ["List of signals this file generates"],
+          "vocabulary_aligned": true,
+          "gaps": []
+        }
+      }
+    },
+    "actual_state": {
+      "canonical_files": 475,
+      "irrigation_contracts_defined": 0,
+      "issue": "NO irrigation contracts exist in the system"
+    },
+    "blocking_gaps": [
+      "No mapping from canonical files to vehicles",
+      "No mapping from vehicles to consumers",
+      "No validation of complete signal flow",
+      "Cannot determine which files are irrigable"
+    ]
+  },
+  "contract_validation_methods": {
+    "PublicationContract": {
+      "validate_signal": {
+        "checks": [
+          "Signal type in allowed_signal_types",
+          "Signal has context (if required)",
+          "Signal has source (if required)",
+          "Custom validators pass"
+        ],
+        "return_type": "tuple[bool, List[str]]"
+      }
+    },
+    "ConsumptionContract": {
+      "matches_signal": {
+        "checks": [
+          "Signal type in subscribed_signal_types",
+          "Signal passes context_filters"
+        ],
+        "return_type": "bool"
+      }
+    },
+    "IrrigationContract": {
+      "is_irrigable": {
+        "checks": [
+          "Has vehicles (> 0)",
+          "Has consumers (> 0)",
+          "Vocabulary aligned (true)",
+          "No gaps (empty list)",
+          "Status is ACTIVE"
+        ],
+        "return_type": "bool"
+      },
+      "get_blocking_gaps": {
+        "returns": "List of gap strings that prevent irrigation"
+      }
+    }
+  },
+  "bus_subscription_validation": {
+    "buses_defined": {
+      "structural_bus": "For StructuralAlignmentSignal, SchemaConflictSignal, CanonicalMappingSignal",
+      "integrity_bus": "For EventPresenceSignal, EventCompletenessSignal, DataIntegritySignal",
+      "epistemic_bus": "For AnswerDeterminacySignal, AnswerSpecificitySignal, EmpiricalSupportSignal, MethodApplicationSignal",
+      "operational_bus": "For ExecutionAttemptSignal, FailureModeSignal, LegacyActivitySignal, LegacyDependencySignal",
+      "consumption_bus": "For FrequencySignal, TemporalCouplingSignal, ConsumerHealthSignal",
+      "contrast_bus": "For DecisionDivergenceSignal, ConfidenceDropSignal, TemporalContrastSignal",
+      "orchestration_bus": "For PhaseStartSignal, PhaseCompleteSignal, OrchestrationInitializedSignal, etc."
+    },
+    "bus_subscription_coverage": {
+      "structural_bus": "7 consumers subscribed",
+      "integrity_bus": "7 consumers subscribed",
+      "operational_bus": "5 consumers subscribed",
+      "epistemic_bus": "3 consumers subscribed",
+      "consumption_bus": "2 consumers subscribed",
+      "contrast_bus": "1 consumer subscribed",
+      "orchestration_bus": "0 consumers subscribed (NOT used by SISAS consumers, only by MainOrchestrator)"
+    }
+  },
+  "recommendations": {
+    "critical": [
+      "Create PublicationContract for each of 11 vehicles in __post_init__",
+      "Create IrrigationContract for each of 475 canonical files",
+      "Implement ContractRegistry population at system startup"
+    ],
+    "short_term": [
+      "Auto-generate PublicationContract from VehicleCapabilities.signal_types_produced",
+      "Auto-generate IrrigationContract from SISAS_IRRIGATION_SPEC.json",
+      "Add validation of contracts at system initialization"
+    ],
+    "long_term": [
+      "Create contract validation suite that checks all contracts at startup",
+      "Implement contract versioning and evolution strategy",
+      "Create contract-to-code synchronization tools"
+    ]
+  },
+  "statistics": {
+    "contract_classes_defined": 3,
+    "contract_registry_methods": 8,
+    "consumption_contracts_in_use": 11,
+    "publication_contracts_in_use": 0,
+    "irrigation_contracts_in_use": 0,
+    "overall_contract_utilization": "15%"
+  }
+}

@@ -19,6 +19,7 @@ class SignalCategory(Enum):
     CONTRAST = "contrast"
     OPERATIONAL = "operational"
     CONSUMPTION = "consumption"
+    ORCHESTRATION = "orchestration"
 
 
 class SignalConfidence(Enum):

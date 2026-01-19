@@ -43,8 +43,8 @@ from .orchestration_core import (
     PhaseScheduler,
 )
 
-# Signal Contracts (Consolidated: All signal types in one module)
-from .signal_contracts import (
+# Signal Contracts - Now imported from SISAS
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types import (
     # Phase Lifecycle
     PhaseCompletionStatus,
     PhaseStartSignal,

@@ -31,27 +31,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal i
     SignalContext,
     SignalSource,
 )
-
-# Orchestration Core (Consolidated: State Machine, Dependency Graph, Phase Scheduler, Exceptions)
-from .orchestration_core import (
-    # Exceptions
-    OrchestrationError,
-    DependencyResolutionError,
-    SchedulingError,
-    StateTransitionError,
-    # State Machine
-    OrchestrationStateMachine,
-    OrchestrationState,
-    # Dependency Graph
-    DependencyGraph,
-    DependencyStatus,
-    # Phase Scheduler
-    PhaseScheduler,
-    SchedulingStrategy,
-)
-
-# Signal Contracts (Consolidated: All signal types)
-from .signal_contracts import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types import (
     # Phase Lifecycle
     PhaseStartSignal,
     PhaseCompleteSignal,
@@ -71,6 +51,24 @@ from .signal_contracts import (
     DependencyGraphUpdatedSignal,
     create_phase_ready_to_start_signal,
     create_dependency_graph_updated_signal,
+)
+
+# Orchestration Core (Consolidated: State Machine, Dependency Graph, Phase Scheduler, Exceptions)
+from .orchestration_core import (
+    # Exceptions
+    OrchestrationError,
+    DependencyResolutionError,
+    SchedulingError,
+    StateTransitionError,
+    # State Machine
+    OrchestrationStateMachine,
+    OrchestrationState,
+    # Dependency Graph
+    DependencyGraph,
+    DependencyStatus,
+    # Phase Scheduler
+    PhaseScheduler,
+    SchedulingStrategy,
 )
 
 # Additional exceptions not in orchestration_core

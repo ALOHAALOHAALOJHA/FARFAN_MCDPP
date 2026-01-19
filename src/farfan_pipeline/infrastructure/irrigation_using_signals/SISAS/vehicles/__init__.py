@@ -11,6 +11,10 @@ from .signal_enhancement_integrator import SignalEnhancementIntegratorVehicle
 from .signal_irrigator import SignalIrrigatorVehicle
 from .signals import SignalsAggregatorVehicle
 
+# New vehicles for orphan signals
+from .contrast.contrast_signals_vehicle import ContrastSignalsVehicle
+from .structural.schema_validator_vehicle import SchemaValidatorVehicle
+
 __all__ = [
     "BaseVehicle",
     "VehicleCapabilities",
@@ -23,4 +27,7 @@ __all__ = [
     "SignalEnhancementIntegratorVehicle",
     "SignalIrrigatorVehicle",
     "SignalsAggregatorVehicle",
+    # New vehicles for orphan signals
+    "ContrastSignalsVehicle",
+    "SchemaValidatorVehicle",
 ]
