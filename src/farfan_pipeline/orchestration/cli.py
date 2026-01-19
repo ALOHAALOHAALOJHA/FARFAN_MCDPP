@@ -32,12 +32,10 @@ from typing import Any
 
 import structlog
 
-from farfan_pipeline.orchestration.core_orchestrator import (
-    PipelineOrchestrator,
+from farfan_pipeline.orchestration.orchestrator import (
+    UnifiedOrchestrator as PipelineOrchestrator,
     PhaseID,
     PhaseStatus,
-)
-from farfan_pipeline.orchestration.orchestrator_config import (
     OrchestratorConfig,
     ConfigValidationError,
     get_development_config,
