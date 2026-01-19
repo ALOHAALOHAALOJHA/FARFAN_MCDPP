@@ -1,7 +1,7 @@
 {
   "phase_id": 6,
   "phase_name": "Cluster Aggregation (MESO)",
-  "phase_dir": "src/farfan_pipeline/phases/Phase_6",
+  "phase_dir": "src/farfan_pipeline/phases/Phase_06",
   "report_version": "2.0.0",
   "generated_date": "2026-01-13",
   "total_files": 10,

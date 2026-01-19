@@ -24,7 +24,7 @@ import re
 from dataclasses import FrozenInstanceError
 from typing import Any, Dict, List
 
-# Phase 1 imports - Canonical path is Phase_1 (not Phase_one)
+# Phase 1 imports - Canonical path is Phase_01 (not Phase_one)
 from farfan_pipeline.phases.Phase_01 import (
     SmartChunk,
     Chunk,

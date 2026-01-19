@@ -1,5 +1,5 @@
 Verifying Phase 0 dependency chain...
-Phase directory: /Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_0
+Phase directory: /Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_00
 ============================================================
 
 ✓ Built dependency graph with 0 modules

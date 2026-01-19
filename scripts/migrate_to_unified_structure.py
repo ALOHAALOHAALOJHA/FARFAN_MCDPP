@@ -59,16 +59,16 @@ class FARFANMigration:
         }
 
         self.phase_rename_map = {
-            "Phase_0": "Phase_00",
-            "Phase_1": "Phase_01",
-            "Phase_2": "Phase_02",
-            "Phase_3": "Phase_03",
-            "Phase_4": "Phase_04",
-            "Phase_5": "Phase_05",
-            "Phase_6": "Phase_06",
-            "Phase_7": "Phase_07",
-            "Phase_8": "Phase_08",
-            "Phase_9": "Phase_09",
+            "Phase_00": "Phase_00",
+            "Phase_01": "Phase_01",
+            "Phase_02": "Phase_02",
+            "Phase_03": "Phase_03",
+            "Phase_04": "Phase_04",
+            "Phase_05": "Phase_05",
+            "Phase_06": "Phase_06",
+            "Phase_07": "Phase_07",
+            "Phase_08": "Phase_08",
+            "Phase_09": "Phase_09",
         }
 
     def log(self, message: str, level: str = "INFO"):

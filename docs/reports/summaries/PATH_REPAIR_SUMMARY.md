@@ -148,7 +148,7 @@ Most remaining medium severity issues are in files that **need** sys.path manipu
 
 4. **Test Patterns** (not actual paths):
    - `tests/test_phase0_adversarial.py:74`: Pattern for adversarial testing
-   - `tests/phase_5/test_phase5_extreme_adversarial.py:106`: Pattern for adversarial testing
+   - `tests/phase_05/test_phase5_extreme_adversarial.py:106`: Pattern for adversarial testing
 
 ### Low Severity (14 issues - Minimal Impact)
 These are minor style issues or acceptable patterns in specific contexts.

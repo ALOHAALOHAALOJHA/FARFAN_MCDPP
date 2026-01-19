@@ -9,7 +9,7 @@ Input Specification:
 - Each AreaScore must have 6 DimensionScore objects
 - All scores must be in range [0.0, 3.0]
 
-Module: src/farfan_pipeline/phases/Phase_6/contracts/phase6_input_contract.py
+Module: src/farfan_pipeline/phases/Phase_06/contracts/phase6_input_contract.py
 Phase: 6 (Cluster Aggregation - MESO)
 Owner: phase6_contracts
 """

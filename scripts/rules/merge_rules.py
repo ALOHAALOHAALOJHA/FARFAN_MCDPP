@@ -43,7 +43,7 @@ def parse_args():
         "--existing",
         default=os.environ.get(
             "EXISTING_RULES_PATH",
-            "src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json"
+            "src/farfan_pipeline/phases/Phase_08/json_phase_eight/recommendation_rules_enhanced.json"
         ),
         help="Path to existing rules file"
     )

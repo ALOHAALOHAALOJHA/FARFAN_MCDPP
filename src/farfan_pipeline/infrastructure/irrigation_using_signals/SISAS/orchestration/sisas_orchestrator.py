@@ -731,12 +731,12 @@ class SISASOrchestrator:
         """Construye el grafo de dependencias entre fases"""
         # Configuración de dependencias según especificación
         dependencies = {
-            "phase_0": [],  # Bootstrap - sin dependencias
-            "phase_1": ["phase_0"],  # Enrichment - necesita bootstrap
-            "phase_2": ["phase_1"],  # Factory - necesita enrichment
-            "phase_3": ["phase_1", "phase_2"],  # Scoring - necesita enrichment y factory
-            "phase_7": ["phase_2"],  # Meso - necesita factory
-            "phase_8": ["phase_3"],  # Recommendations - necesita scoring
+            "phase_00": [],  # Bootstrap - sin dependencias
+            "phase_01": ["phase_00"],  # Enrichment - necesita bootstrap
+            "phase_02": ["phase_01"],  # Factory - necesita enrichment
+            "phase_03": ["phase_01", "phase_02"],  # Scoring - necesita enrichment y factory
+            "phase_07": ["phase_02"],  # Meso - necesita factory
+            "phase_08": ["phase_03"],  # Recommendations - necesita scoring
         }
 
         # Construir grafo
@@ -806,35 +806,35 @@ class SISASOrchestrator:
     def _get_default_phase_config(self) -> Dict[str, Dict[str, Any]]:
         """Configuración predeterminada de fases"""
         return {
-            "phase_0": {
+            "phase_00": {
                 "name": "Bootstrap",
                 "critical": True,
-                "files": self._discover_files("phase_0")
+                "files": self._discover_files("phase_00")
             },
-            "phase_1": {
+            "phase_01": {
                 "name": "Enrichment",
                 "critical": True,
-                "files": self._discover_files("phase_1")
+                "files": self._discover_files("phase_01")
             },
-            "phase_2": {
+            "phase_02": {
                 "name": "Factory",
                 "critical": True,
-                "files": self._discover_files("phase_2")
+                "files": self._discover_files("phase_02")
             },
-            "phase_3": {
+            "phase_03": {
                 "name": "Scoring",
                 "critical": False,
-                "files": self._discover_files("phase_3")
+                "files": self._discover_files("phase_03")
             },
-            "phase_7": {
+            "phase_07": {
                 "name": "Meso",
                 "critical": False,
-                "files": self._discover_files("phase_7")
+                "files": self._discover_files("phase_07")
             },
-            "phase_8": {
+            "phase_08": {
                 "name": "Recommendations",
                 "critical": False,
-                "files": self._discover_files("phase_8")
+                "files": self._discover_files("phase_08")
             },
         }
 
@@ -842,12 +842,12 @@ class SISASOrchestrator:
         """Descubre archivos para una fase"""
         # Mapeo de fase → patrones de archivo
         phase_patterns = {
-            "phase_0": ["_registry/**/*.json", "config/**/*.json"],
-            "phase_1": ["dimensions/**/*.json", "policy_areas/**/*.json"],
-            "phase_2": ["patterns/**/*.json", "membership_criteria/**/*.json", "questions/**/*.json"],
-            "phase_3": ["scoring_system.json"],
-            "phase_7": ["clusters/**/*.json"],
-            "phase_8": ["governance.json"]
+            "phase_00": ["_registry/**/*.json", "config/**/*.json"],
+            "phase_01": ["dimensions/**/*.json", "policy_areas/**/*.json"],
+            "phase_02": ["patterns/**/*.json", "membership_criteria/**/*.json", "questions/**/*.json"],
+            "phase_03": ["scoring_system.json"],
+            "phase_07": ["clusters/**/*.json"],
+            "phase_08": ["governance.json"]
         }
 
         patterns = phase_patterns.get(phase_id, [])
@@ -880,10 +880,10 @@ class SISASOrchestrator:
     def _get_default_consumer_assignments(self) -> Dict[str, List[str]]:
         """Asignaciones predeterminadas de consumidores"""
         return {
-            "phase_0": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types"],
-            "phase_1": ["phase1_signal_enrichment", "phase1_cpp_ingestion"],
-            "phase_2": ["phase2_factory_consumer", "phase2_evidence_consumer", "phase2_contract_consumer"],
-            "phase_3": ["phase3_scoring"],
-            "phase_7": ["phase7_meso_consumer"],
-            "phase_8": ["phase8_recommendations"],
+            "phase_00": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types"],
+            "phase_01": ["phase1_signal_enrichment", "phase1_cpp_ingestion"],
+            "phase_02": ["phase2_factory_consumer", "phase2_evidence_consumer", "phase2_contract_consumer"],
+            "phase_03": ["phase3_scoring"],
+            "phase_07": ["phase7_meso_consumer"],
+            "phase_08": ["phase8_recommendations"],
         }

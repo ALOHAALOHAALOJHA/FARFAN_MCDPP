@@ -4,7 +4,7 @@ Phase 7: Macro Evaluation
 This module provides the Phase 7 macro evaluation components for the FARFAN pipeline.
 Phase 7 evaluates 4 ClusterScore inputs and produces a holistic MacroScore.
 
-Module: src/farfan_pipeline/phases/Phase_7/__init__.py
+Module: src/farfan_pipeline/phases/Phase_07/__init__.py
 Purpose: Package façade for Phase 7
 Owner: phase7_00
 Lifecycle: ACTIVE

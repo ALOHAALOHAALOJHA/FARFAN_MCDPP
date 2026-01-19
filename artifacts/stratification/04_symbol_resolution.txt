@@ -516,7 +516,7 @@ typing|Iterable|MISSING|MODULE_DEAD
 typing|List|MISSING|MODULE_DEAD
 typing|Set|MISSING|MODULE_DEAD
 typing|Tuple|MISSING|MODULE_DEAD
-farfan_pipeline.phases.Phase_6|ClusterAggregator|MISSING|MODULE_DEAD
+farfan_pipeline.phases.Phase_06|ClusterAggregator|MISSING|MODULE_DEAD
 pathlib|Path|MISSING|MODULE_DEAD
 canonic_questionnaire_central.validations.pdet_validator|PDETValidator|FOUND|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/canonic_questionnaire_central/validations/pdet_validator.py:60
 canonic_questionnaire_central.validations.pdet_validator|PDETValidator|FOUND|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/canonic_questionnaire_central/validations/pdet_validator.py:60
@@ -1424,7 +1424,7 @@ pathlib|Path|MISSING|MODULE_DEAD
 typing|Any|MISSING|MODULE_DEAD
 typing|Dict|MISSING|MODULE_DEAD
 typing|List|MISSING|MODULE_DEAD
-farfan_pipeline.phases|Phase_1|MISSING|MODULE_DEAD
+farfan_pipeline.phases|Phase_01|MISSING|MODULE_DEAD
 farfan_pipeline.phases.Phase_01|execute_sp4_question_aware|FOUND|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/__init__.py:111
 farfan_pipeline.phases.Phase_01|Phase1Executor|FOUND|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/__init__.py:25
 farfan_pipeline.phases.Phase_01|CHUNK_ID_PATTERN|MISSING|NOT_IN_AST
@@ -2438,7 +2438,7 @@ pathlib|Path|MISSING|MODULE_DEAD
 typing|Any|MISSING|MODULE_DEAD
 typing|Dict|MISSING|MODULE_DEAD
 typing|List|MISSING|MODULE_DEAD
-farfan_pipeline.phases|Phase_1|MISSING|MODULE_DEAD
+farfan_pipeline.phases|Phase_01|MISSING|MODULE_DEAD
 farfan_pipeline.phases.Phase_01|execute_sp4_question_aware|FOUND|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/__init__.py:111
 farfan_pipeline.phases.Phase_01|Phase1Executor|FOUND|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/__init__.py:25
 farfan_pipeline.phases.Phase_01|CHUNK_ID_PATTERN|MISSING|NOT_IN_AST

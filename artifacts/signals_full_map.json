@@ -5,13 +5,13 @@
       "consumers": [
         {
           "consumer_module": "phase0_90_02_bootstrap",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
-          "phase": "Phase_0"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py",
+          "phase": "Phase_00"
         },
         {
           "consumer_module": "providers",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_0/primitives/providers.py",
-          "phase": "Phase_0"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_00/primitives/providers.py",
+          "phase": "Phase_00"
         }
       ],
       "assets_loaded": []
@@ -21,8 +21,8 @@
       "consumers": [
         {
           "consumer_module": "phase2_60_00_base_executor_with_contract",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
+          "phase": "Phase_02"
         }
       ],
       "assets_loaded": []
@@ -32,18 +32,18 @@
       "consumers": [
         {
           "consumer_module": "phase1_13_00_cpp_ingestion",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase2_60_00_base_executor_with_contract",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
+          "phase": "Phase_02"
         },
         {
           "consumer_module": "phase2_80_00_evidence_nexus",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+          "phase": "Phase_02"
         }
       ],
       "assets_loaded": []
@@ -53,8 +53,8 @@
       "consumers": [
         {
           "consumer_module": "phase2_60_00_base_executor_with_contract",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
+          "phase": "Phase_02"
         }
       ],
       "assets_loaded": []
@@ -64,13 +64,13 @@
       "consumers": [
         {
           "consumer_module": "phase2_10_00_factory",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py",
+          "phase": "Phase_02"
         },
         {
           "consumer_module": "phase2_95_02_precision_tracking",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_02_precision_tracking.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_02_precision_tracking.py",
+          "phase": "Phase_02"
         }
       ],
       "assets_loaded": []
@@ -80,18 +80,18 @@
       "consumers": [
         {
           "consumer_module": "phase1_01_00_cpp_models",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/docs/legacy/phase1_01_00_cpp_models.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/docs/legacy/phase1_01_00_cpp_models.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase1_11_00_signal_enrichment",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_11_00_signal_enrichment.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase1_13_00_cpp_ingestion",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_01"
         }
       ],
       "assets_loaded": []
@@ -101,78 +101,78 @@
       "consumers": [
         {
           "consumer_module": "phase1_11_00_signal_enrichment",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_11_00_signal_enrichment.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase1_13_00_cpp_ingestion",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase2_10_00_factory",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py",
+          "phase": "Phase_02"
         },
         {
           "consumer_module": "phase2_30_03_resource_aware_executor",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_30_03_resource_aware_executor.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py",
+          "phase": "Phase_02"
         },
         {
           "consumer_module": "phase2_95_00_contract_hydrator",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_contract_hydrator.py",
+          "phase": "Phase_02"
         },
         {
           "consumer_module": "phase3_10_00_phase3_signal_enriched_scoring",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
-          "phase": "Phase_3"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py",
+          "phase": "Phase_03"
         },
         {
           "consumer_module": "phase4_00_00_signal_enriched_primitives",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_signal_enriched_primitives.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "phase4_10_00_aggregation",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "phase4_10_00_signal_enriched_aggregation",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_10_00_signal_enriched_aggregation.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/enhancements/phase4_10_00_signal_enriched_aggregation.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "phase4_10_00_signal_enriched_aggregation",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_signal_enriched_aggregation.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_signal_enriched_aggregation.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "phase4_10_00_signal_enriched_primitives",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_10_00_signal_enriched_primitives.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_10_00_signal_enriched_primitives.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "phase4_95_00_signal_enriched_aggregation",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_95_00_signal_enriched_aggregation.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/enhancements/phase4_95_00_signal_enriched_aggregation.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "signal_enriched_aggregation",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_4/enhancements/signal_enriched_aggregation.py",
-          "phase": "Phase_4"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_04/enhancements/signal_enriched_aggregation.py",
+          "phase": "Phase_04"
         },
         {
           "consumer_module": "phase8_30_00_signal_enriched_recommendations",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_8/phase8_30_00_signal_enriched_recommendations.py",
-          "phase": "Phase_8"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_08/phase8_30_00_signal_enriched_recommendations.py",
+          "phase": "Phase_08"
         },
         {
           "consumer_module": "phase9_10_00_signal_enriched_reporting",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_signal_enriched_reporting.py",
-          "phase": "Phase_9"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_signal_enriched_reporting.py",
+          "phase": "Phase_09"
         }
       ],
       "assets_loaded": [
@@ -186,8 +186,8 @@
       "consumers": [
         {
           "consumer_module": "phase2_80_00_evidence_nexus",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+          "phase": "Phase_02"
         }
       ],
       "assets_loaded": []
@@ -197,33 +197,33 @@
       "consumers": [
         {
           "consumer_module": "phase0_90_02_bootstrap",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
-          "phase": "Phase_0"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py",
+          "phase": "Phase_00"
         },
         {
           "consumer_module": "wiring_types",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_0/interphase/wiring_types.py",
-          "phase": "Phase_0"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_00/interphase/wiring_types.py",
+          "phase": "Phase_00"
         },
         {
           "consumer_module": "phase1_01_00_cpp_models",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/docs/legacy/phase1_01_00_cpp_models.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/docs/legacy/phase1_01_00_cpp_models.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase1_11_00_signal_enrichment",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_11_00_signal_enrichment.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase1_13_00_cpp_ingestion",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
-          "phase": "Phase_1"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_01"
         },
         {
           "consumer_module": "phase2_40_03_irrigation_synchronizer",
-          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py",
-          "phase": "Phase_2"
+          "consumer_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py",
+          "phase": "Phase_02"
         }
       ],
       "assets_loaded": []
@@ -244,7 +244,7 @@
     ]
   },
   "phase_summary": {
-    "Phase_0": {
+    "Phase_00": {
       "vehicles": [
         "signal_consumption",
         "signals"
@@ -259,7 +259,7 @@
       "consumer_count": 3,
       "asset_count": 0
     },
-    "Phase_1": {
+    "Phase_01": {
       "vehicles": [
         "signal_context_scoper",
         "signal_quality_metrics",
@@ -280,7 +280,7 @@
       "consumer_count": 3,
       "asset_count": 3
     },
-    "Phase_2": {
+    "Phase_02": {
       "vehicles": [
         "signal_consumption_integration",
         "signal_context_scoper",
@@ -308,7 +308,7 @@
       "consumer_count": 7,
       "asset_count": 3
     },
-    "Phase_3": {
+    "Phase_03": {
       "vehicles": [
         "signal_registry"
       ],
@@ -324,7 +324,7 @@
       "consumer_count": 1,
       "asset_count": 3
     },
-    "Phase_4": {
+    "Phase_04": {
       "vehicles": [
         "signal_registry"
       ],
@@ -345,7 +345,7 @@
       "consumer_count": 6,
       "asset_count": 3
     },
-    "Phase_8": {
+    "Phase_08": {
       "vehicles": [
         "signal_registry"
       ],
@@ -361,7 +361,7 @@
       "consumer_count": 1,
       "asset_count": 3
     },
-    "Phase_9": {
+    "Phase_09": {
       "vehicles": [
         "signal_registry"
       ],

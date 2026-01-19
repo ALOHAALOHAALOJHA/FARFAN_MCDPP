@@ -21,17 +21,17 @@
     "phase8_30_00_signal_enriched_recommendations.py"
   ],
   "canonical_paths": {
-    "rules": "src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json",
-    "schema": "src/farfan_pipeline/phases/Phase_8/rules/recommendation_rules.schema.json"
+    "rules": "src/farfan_pipeline/phases/Phase_08/json_phase_eight/recommendation_rules_enhanced.json",
+    "schema": "src/farfan_pipeline/phases/Phase_08/rules/recommendation_rules.schema.json"
   },
   "manifest": {
-    "path": "src/farfan_pipeline/phases/Phase_8/PHASE_8_MANIFEST.json",
+    "path": "src/farfan_pipeline/phases/Phase_08/PHASE_8_MANIFEST.json",
     "version": "2.0.1",
     "gnea_labels_applied": true
   },
   "contracts": {
-    "input_contract": "src/farfan_pipeline/phases/Phase_8/contracts/phase8_input_contract.py",
-    "output_contract": "src/farfan_pipeline/phases/Phase_8/contracts/phase8_output_contract.py",
+    "input_contract": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_input_contract.py",
+    "output_contract": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_output_contract.py",
     "updates": [
       "Schema precondition added",
       "Policy area derivation aligned to metadata/rule_id"

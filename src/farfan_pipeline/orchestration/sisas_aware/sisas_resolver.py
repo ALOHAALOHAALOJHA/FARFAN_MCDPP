@@ -249,7 +249,7 @@ class SISASQuestionnaireResolver:
             context = SignalContext(
                 node_type=entity_type,
                 node_id=entity_id,
-                phase="phase_0",  # Loading happens in phase 0
+                phase="phase_00",  # Loading happens in phase 0
                 consumer_scope="resolver",
             )
 
@@ -263,7 +263,7 @@ class SISASQuestionnaireResolver:
                 },
                 source_file=str(slice_obj.path),
                 source_path=f"{entity_type}/{entity_id}",
-                phase="phase_0",
+                phase="phase_00",
                 consumer_scope="resolver",
             )
 

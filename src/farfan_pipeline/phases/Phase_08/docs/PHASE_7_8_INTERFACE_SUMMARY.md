@@ -115,7 +115,7 @@ Phase8Input = adapt_phase7_to_phase8(
 
 **Usage**:
 ```python
-from farfan_pipeline.phases.Phase_8.contracts.phase7_to_phase8_adapter import (
+from farfan_pipeline.phases.Phase_08.contracts.phase7_to_phase8_adapter import (
     adapt_phase7_to_phase8
 )
 

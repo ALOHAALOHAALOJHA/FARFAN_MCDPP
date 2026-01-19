@@ -39,7 +39,7 @@ class InstitutionalNERExtractor(BaseSignalExtractor):
     SIGNAL_TYPE = SignalType.MC09_INSTITUTIONAL
     CAPABILITIES_REQUIRED = ["NER_EXTRACTION", "ENTITY_RESOLUTION", "COREFERENCE"]
     EMPIRICAL_AVAILABILITY = 0.68
-    DEFAULT_PHASE = "phase_1"
+    DEFAULT_PHASE = "phase_01"
     DEFAULT_SLOT = "D2-Q2"  # Institutional actors dimension
     
     # Institution type hierarchy

@@ -102,7 +102,7 @@ class QuestionnaireSignalRegistry:
             integration_map_file: Path to integration_map.json (optional)
         """
         if integration_map_file is None:
-            # Navigate from src/farfan_pipeline/phases/Phase_2/registries/ to repo root
+            # Navigate from src/farfan_pipeline/phases/Phase_02/registries/ to repo root
             integration_map_file = (
                 Path(__file__).resolve().parent.parent.parent.parent.parent.parent
                 / "canonic_questionnaire_central"

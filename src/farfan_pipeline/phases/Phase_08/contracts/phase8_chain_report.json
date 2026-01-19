@@ -1,7 +1,7 @@
 {
   "phase_id": "8",
   "phase_name": "Recommendation Engine",
-  "phase_dir": "src/farfan_pipeline/phases/Phase_8",
+  "phase_dir": "src/farfan_pipeline/phases/Phase_08",
   "phase_prefix": "phase8",
   "timestamp": "2026-01-13T22:58:23.355116+00:00",
   "audit_version": "3.0.0-STRICT",

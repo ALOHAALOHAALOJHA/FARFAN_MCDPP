@@ -379,7 +379,7 @@ print(report.to_dict())
 
 ### 📖 Documentación Adicional
 
-- **Specification Detallada**: [docs/phases/phase_2/P02-ES_v1.0.md](docs/phases/phase_2/P02-ES_v1.0.md) *(pendiente)*
+- **Specification Detallada**: [docs/phases/phase_02/P02-ES_v1.0.md](docs/phases/phase_02/P02-ES_v1.0.md) *(pendiente)*
 - **Contract Schema**: [docs/schemas/executor_contract_v3.json](docs/schemas/executor_contract_v3.json)
 - **Dispensary Pattern**: [docs/architecture/method_dispensary.md](docs/architecture/method_dispensary.md)
 - **ArgRouter Routes**: [docs/architecture/arg_router_routes.md](docs/architecture/arg_router_routes.md)

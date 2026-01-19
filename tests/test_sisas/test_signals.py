@@ -25,8 +25,8 @@ def sample_context():
     return SignalContext(
         node_type="question",
         node_id="Q147",
-        phase="phase_0",
-        consumer_scope="Phase_0"
+        phase="phase_00",
+        consumer_scope="Phase_00"
     )
 
 

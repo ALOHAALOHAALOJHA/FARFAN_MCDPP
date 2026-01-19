@@ -4,7 +4,7 @@ Script: verify_phase2_labels.py
 Purpose: Verify that all Phase 2 files have correct PHASE_LABEL metadata
 
 This script checks that:
-- All .py files in Phase_2 contain "PHASE_LABEL: Phase 2"
+- All .py files in Phase_02 contain "PHASE_LABEL: Phase 2"
 - Phase labels are consistent
 - No mismatched phase labels exist
 
@@ -122,7 +122,7 @@ def verify_phase2_labels(fix: bool = False) -> int:
     Returns:
         Exit code (0 = success, 1 = failure)
     """
-    phase_dir = REPO_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_2"
+    phase_dir = REPO_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_02"
     
     if not phase_dir.exists():
         print(f"Error: Phase directory not found: {phase_dir}", file=sys.stderr)

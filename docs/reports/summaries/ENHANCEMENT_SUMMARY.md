@@ -2,7 +2,7 @@
 
 **Version:** 3.0
 **Date:** 2026-01-10
-**File:** `/src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json`
+**File:** `/src/farfan_pipeline/phases/Phase_08/json_phase_eight/recommendation_rules_enhanced.json`
 
 ## Overview
 

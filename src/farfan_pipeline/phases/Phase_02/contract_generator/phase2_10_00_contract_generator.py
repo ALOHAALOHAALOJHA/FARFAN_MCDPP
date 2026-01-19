@@ -2,7 +2,7 @@
 Módulo: contract_generator.py
 Propósito: Orquestador principal de generación de 300 contratos ejecutores
 
-Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_generator.py
+Ubicación: src/farfan_pipeline/phases/Phase_02/contract_generator/contract_generator.py
 
 RESPONSABILIDADES:
 1. Cargar y validar todos los inputs (método, contratos, sectores)
@@ -525,7 +525,7 @@ def main() -> int:
     Punto de entrada principal. 
 
     USO:
-        python -m farfan_pipeline.phases.Phase_2.contract_generator. contract_generator \
+        python -m farfan_pipeline.phases.Phase_02.contract_generator. contract_generator \
             --assets /path/to/epistemological_assets \
             --output /path/to/output \
             [--strict | --no-strict]

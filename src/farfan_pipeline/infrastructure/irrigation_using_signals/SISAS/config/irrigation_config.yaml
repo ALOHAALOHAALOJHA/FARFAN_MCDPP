@@ -4,64 +4,64 @@ irrigation:
   base_path: "src/farfan_pipeline/data"
 
   phases:
-    phase_0:
+    phase_00:
       description: "Bootstrap y carga inicial"
       priority: 1
       parallel_routes:  10
 
-    phase_1:
+    phase_01:
       description: "Signal enrichment e ingestion"
       priority: 2
       parallel_routes: 5
-      depends_on: [phase_0]
+      depends_on: [phase_00]
 
-    phase_2:
+    phase_02:
       description:  "Factory, execution, synchronization"
       priority: 3
       parallel_routes: 7
-      depends_on: [phase_1]
+      depends_on: [phase_01]
 
-    phase_3:
+    phase_03:
       description: "Signal enriched scoring"
       priority: 4
       parallel_routes: 3
-      depends_on: [phase_2]
+      depends_on: [phase_02]
 
-    phase_4:
+    phase_04:
       description: "Signal-enriched aggregation and Choquet"
       priority: 5
       parallel_routes: 3
-      depends_on: [phase_3]
+      depends_on: [phase_03]
 
-    phase_5:
+    phase_05:
       description: "Uncertainty quantification"
       priority: 6
       parallel_routes: 2
-      depends_on: [phase_4]
+      depends_on: [phase_04]
 
-    phase_6:
+    phase_06:
       description: "Configuration validation"
       priority: 7
       parallel_routes: 2
-      depends_on: [phase_5]
+      depends_on: [phase_05]
 
-    phase_7:
+    phase_07:
       description: "Meso questions processing"
       priority: 8
       parallel_routes: 2
-      depends_on: [phase_3]
+      depends_on: [phase_03]
 
-    phase_8:
+    phase_08:
       description: "Signal enriched recommendations"
       priority: 9
       parallel_routes: 1
-      depends_on: [phase_7]
+      depends_on: [phase_07]
 
-    phase_9:
+    phase_09:
       description: "Signal-enriched reporting"
       priority: 10
       parallel_routes: 1
-      depends_on: [phase_8]
+      depends_on: [phase_08]
 
   vehicles:
     # Core vehicles

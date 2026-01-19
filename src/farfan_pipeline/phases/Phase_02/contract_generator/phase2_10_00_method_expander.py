@@ -2,7 +2,7 @@
 Módulo:  method_expander.py
 Propósito: Expandir cada método asignado en una unidad semántica completa
 
-Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/method_expander.py
+Ubicación: src/farfan_pipeline/phases/Phase_02/contract_generator/method_expander.py
 
 RESPONSABILIDADES:
 1. Transformar MethodAssignment en ExpandedMethodUnit

@@ -72,7 +72,7 @@ The Phase 6 (Cluster Aggregation - MESO) has been successfully extracted, audite
 - `__init__.py` - Added ClusterAggregator export
 - `contracts/phase6_chain_report.json` - v2.0.0 with complete topology
 - `PHASE_6_MANIFEST.json` - Updated with all 4 stages
-- `tests/phase_6/test_phase6_integration.py` - Updated imports
+- `tests/phase_06/test_phase6_integration.py` - Updated imports
 
 ---
 
@@ -116,7 +116,7 @@ Position 5-7: Contracts (stage 40)
 
 **Verification Command**:
 ```bash
-PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_6 import ClusterAggregator"
+PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_06 import ClusterAggregator"
 # Result: ✅ SUCCESS
 ```
 
@@ -137,7 +137,7 @@ PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_6 impor
 ### 3.1 Mandatory Directories
 
 ```
-Phase_6/
+Phase_06/
 ├── contracts/           ✅ [4 files]
 │   ├── phase6_input_contract.py
 │   ├── phase6_mission_contract.py
@@ -160,7 +160,7 @@ Phase_6/
 ### 3.2 Root-Level Files
 
 ```
-Phase_6/
+Phase_06/
 ├── __init__.py                              ✅ [Exports API]
 ├── PHASE_6_CONSTANTS.py                     ✅ [Re-export wrapper]
 ├── PHASE_6_MANIFEST.json                    ✅ [Updated v2.0]
@@ -245,13 +245,13 @@ Phase_6/
 **Lines of Code**: 390
 
 **Dependencies**:
-- `Phase_6.phase6_10_00_phase_6_constants`
-- `Phase_6.phase6_10_00_cluster_score`
-- `Phase_6.phase6_20_00_adaptive_meso_scoring`
+- `Phase_06.phase6_10_00_phase_6_constants`
+- `Phase_06.phase6_10_00_cluster_score`
+- `Phase_06.phase6_20_00_adaptive_meso_scoring`
 
 **Validation Test**:
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterAggregator
+from farfan_pipeline.phases.Phase_06 import ClusterAggregator
 
 aggregator = ClusterAggregator()
 # ✅ Initialization successful
@@ -313,9 +313,9 @@ Output: 4 ClusterScore (to Phase 7)
 ### 7.1 Import Tests
 
 ```bash
-✅ from farfan_pipeline.phases.Phase_6 import ClusterAggregator
-✅ from farfan_pipeline.phases.Phase_6 import ClusterScore
-✅ from farfan_pipeline.phases.Phase_6 import CLUSTERS, CLUSTER_COMPOSITION
+✅ from farfan_pipeline.phases.Phase_06 import ClusterAggregator
+✅ from farfan_pipeline.phases.Phase_06 import ClusterScore
+✅ from farfan_pipeline.phases.Phase_06 import CLUSTERS, CLUSTER_COMPOSITION
 ```
 
 ### 7.2 Instantiation Tests
@@ -332,7 +332,7 @@ aggregator = ClusterAggregator()
 
 ### 7.3 Test Files Updated
 
-- `tests/phase_6/test_phase6_integration.py` - Updated imports from Phase 4 to Phase 5/6
+- `tests/phase_06/test_phase6_integration.py` - Updated imports from Phase 4 to Phase 5/6
 
 ---
 

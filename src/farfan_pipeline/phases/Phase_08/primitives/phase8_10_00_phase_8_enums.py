@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_8.primitives.PHASE_8_ENUMS
+Module: src.farfan_pipeline.phases.Phase_08.primitives.PHASE_8_ENUMS
 Purpose: Enumeration types for Phase 8 - Recommendation Engine
 Owner: phase8_core
 Lifecycle: ACTIVE

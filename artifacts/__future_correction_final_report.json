@@ -7,7 +7,7 @@
   "idempotent": true,
   "corrections": [
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_00_03_primitives.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_primitives.py",
       "action": "relocate",
       "old_line_number": 44,
       "new_line_number": 27,
@@ -17,7 +17,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_00_03_protocols.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_protocols.py",
       "action": "relocate",
       "old_line_number": 59,
       "new_line_number": 42,
@@ -27,7 +27,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_10_00_paths.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_00_paths.py",
       "action": "relocate",
       "old_line_number": 33,
       "new_line_number": 16,
@@ -37,7 +37,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_10_01_runtime_config_typed.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_01_runtime_config_typed.py",
       "action": "relocate",
       "old_line_number": 60,
       "new_line_number": 43,
@@ -47,7 +47,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_10_02_json_logger.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_02_json_logger.py",
       "action": "relocate",
       "old_line_number": 32,
       "new_line_number": 15,
@@ -57,7 +57,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_10_03_runtime_config_schema.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_03_runtime_config_schema.py",
       "action": "relocate",
       "old_line_number": 19,
       "new_line_number": 2,
@@ -67,7 +67,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_20_02_determinism.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_20_02_determinism.py",
       "action": "relocate",
       "old_line_number": 36,
       "new_line_number": 19,
@@ -77,7 +77,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_20_03_determinism_helpers.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_20_03_determinism_helpers.py",
       "action": "relocate",
       "old_line_number": 31,
       "new_line_number": 14,
@@ -87,7 +87,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_30_00_resource_controller.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_30_00_resource_controller.py",
       "action": "relocate",
       "old_line_number": 59,
       "new_line_number": 42,
@@ -97,7 +97,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_40_00_input_validation.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_40_00_input_validation.py",
       "action": "relocate",
       "old_line_number": 69,
       "new_line_number": 52,
@@ -107,7 +107,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_40_01_schema_monitor.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_40_01_schema_monitor.py",
       "action": "relocate",
       "old_line_number": 28,
       "new_line_number": 11,
@@ -117,7 +117,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_50_01_exit_gates.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_50_01_exit_gates.py",
       "action": "relocate",
       "old_line_number": 40,
       "new_line_number": 23,
@@ -127,7 +127,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_00_main.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_00_main.py",
       "action": "relocate",
       "old_line_number": 43,
       "new_line_number": 26,
@@ -137,7 +137,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_01_verified_pipeline_runner.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py",
       "action": "relocate",
       "old_line_number": 58,
       "new_line_number": 41,
@@ -147,7 +147,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py",
       "action": "relocate",
       "old_line_number": 33,
       "new_line_number": 16,
@@ -157,7 +157,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_03_wiring_validator.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_03_wiring_validator.py",
       "action": "relocate",
       "old_line_number": 39,
       "new_line_number": 22,
@@ -167,7 +167,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_cpp_models.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_cpp_models.py",
       "action": "relocate",
       "old_line_number": 33,
       "new_line_number": 16,
@@ -177,7 +177,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_models.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_models.py",
       "action": "relocate",
       "old_line_number": 25,
       "new_line_number": 8,
@@ -187,7 +187,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_phase_protocol.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_phase_protocol.py",
       "action": "relocate",
       "old_line_number": 59,
       "new_line_number": 42,
@@ -197,7 +197,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_15_00_questionnaire_mapper.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_15_00_questionnaire_mapper.py",
       "action": "relocate",
       "old_line_number": 33,
       "new_line_number": 16,
@@ -207,7 +207,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_20_00_cpp_ingestion.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_20_00_cpp_ingestion.py",
       "action": "relocate",
       "old_line_number": 71,
       "new_line_number": 54,
@@ -217,7 +217,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_25_00_sp4_question_aware.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_25_00_sp4_question_aware.py",
       "action": "relocate",
       "old_line_number": 41,
       "new_line_number": 24,
@@ -227,7 +227,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_30_00_adapter.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_30_00_adapter.py",
       "action": "relocate",
       "old_line_number": 40,
       "new_line_number": 23,
@@ -237,7 +237,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_40_00_circuit_breaker.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_40_00_circuit_breaker.py",
       "action": "relocate",
       "old_line_number": 44,
       "new_line_number": 27,
@@ -247,7 +247,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_1/phase1_60_00_signal_enrichment.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_60_00_signal_enrichment.py",
       "action": "relocate",
       "old_line_number": 37,
       "new_line_number": 20,
@@ -257,7 +257,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_01_class_registry.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_01_class_registry.py",
       "action": "relocate",
       "old_line_number": 24,
       "new_line_number": 7,
@@ -267,7 +267,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_02_methods_registry.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_02_methods_registry.py",
       "action": "relocate",
       "old_line_number": 32,
       "new_line_number": 15,
@@ -277,7 +277,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_03_executor_config.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_03_executor_config.py",
       "action": "relocate",
       "old_line_number": 39,
       "new_line_number": 22,
@@ -287,7 +287,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_30_01_resource_integration.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py",
       "action": "relocate",
       "old_line_number": 28,
       "new_line_number": 11,
@@ -297,7 +297,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_30_02_resource_alerts.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_02_resource_alerts.py",
       "action": "relocate",
       "old_line_number": 31,
       "new_line_number": 14,
@@ -307,7 +307,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_30_04_circuit_breaker.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_04_circuit_breaker.py",
       "action": "relocate",
       "old_line_number": 37,
       "new_line_number": 20,
@@ -317,7 +317,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_30_05_distributed_cache.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_05_distributed_cache.py",
       "action": "relocate",
       "old_line_number": 41,
       "new_line_number": 24,
@@ -327,7 +327,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_40_00_synchronization.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_00_synchronization.py",
       "action": "relocate",
       "old_line_number": 32,
       "new_line_number": 15,
@@ -337,7 +337,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_40_01_executor_chunk_synchronizer.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_01_executor_chunk_synchronizer.py",
       "action": "relocate",
       "old_line_number": 32,
       "new_line_number": 15,
@@ -347,7 +347,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_40_02_schema_validation.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_02_schema_validation.py",
       "action": "relocate",
       "old_line_number": 64,
       "new_line_number": 47,
@@ -357,7 +357,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py",
       "action": "relocate",
       "old_line_number": 38,
       "new_line_number": 21,
@@ -367,7 +367,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_50_00_task_executor.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_00_task_executor.py",
       "action": "relocate",
       "old_line_number": 69,
       "new_line_number": 52,
@@ -377,7 +377,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_50_01_chunk_processor.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_chunk_processor.py",
       "action": "relocate",
       "old_line_number": 27,
       "new_line_number": 10,
@@ -387,7 +387,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_50_01_task_planner.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_task_planner.py",
       "action": "relocate",
       "old_line_number": 24,
       "new_line_number": 7,
@@ -397,7 +397,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_50_02_batch_optimizer.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py",
       "action": "relocate",
       "old_line_number": 48,
       "new_line_number": 31,
@@ -407,7 +407,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
       "action": "relocate",
       "old_line_number": 24,
       "new_line_number": 7,
@@ -417,7 +417,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_01_contract_validator_cqvr.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
       "action": "relocate",
       "old_line_number": 24,
       "new_line_number": 7,
@@ -427,7 +427,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_02_arg_router.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_02_arg_router.py",
       "action": "relocate",
       "old_line_number": 38,
       "new_line_number": 21,
@@ -437,7 +437,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_04_calibration_policy.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_04_calibration_policy.py",
       "action": "relocate",
       "old_line_number": 47,
       "new_line_number": 30,
@@ -447,7 +447,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_05_executor_instrumentation_mixin.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_05_executor_instrumentation_mixin.py",
       "action": "relocate",
       "old_line_number": 35,
       "new_line_number": 18,
@@ -457,7 +457,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
       "action": "relocate",
       "old_line_number": 54,
       "new_line_number": 37,
@@ -467,7 +467,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_80_01_evidence_query_engine.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_01_evidence_query_engine.py",
       "action": "relocate",
       "old_line_number": 60,
       "new_line_number": 43,
@@ -477,7 +477,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_85_00_evidence_nexus_sota_implementations.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_85_00_evidence_nexus_sota_implementations.py",
       "action": "relocate",
       "old_line_number": 44,
       "new_line_number": 27,
@@ -487,7 +487,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_90_00_carver.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_90_00_carver.py",
       "action": "relocate",
       "old_line_number": 187,
       "new_line_number": 170,
@@ -497,7 +497,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_contract_hydrator.py",
       "action": "relocate",
       "old_line_number": 55,
       "new_line_number": 38,
@@ -507,7 +507,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_executor_profiler.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_executor_profiler.py",
       "action": "relocate",
       "old_line_number": 64,
       "new_line_number": 47,
@@ -517,7 +517,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_01_metrics_persistence.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_01_metrics_persistence.py",
       "action": "relocate",
       "old_line_number": 28,
       "new_line_number": 11,
@@ -527,7 +527,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_03_executor_calibration_integration.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
       "action": "relocate",
       "old_line_number": 44,
       "new_line_number": 27,
@@ -537,7 +537,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_04_metrics_exporter.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_04_metrics_exporter.py",
       "action": "relocate",
       "old_line_number": 45,
       "new_line_number": 28,
@@ -547,7 +547,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_05_execution_predictor.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
       "action": "relocate",
       "old_line_number": 48,
       "new_line_number": 31,
@@ -557,7 +557,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_96_00_contract_migrator.py",
       "action": "relocate",
       "old_line_number": 45,
       "new_line_number": 28,
@@ -567,7 +567,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_score_extraction.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_score_extraction.py",
       "action": "relocate",
       "old_line_number": 34,
       "new_line_number": 17,
@@ -577,7 +577,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py",
       "action": "relocate",
       "old_line_number": 36,
       "new_line_number": 19,
@@ -587,7 +587,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_validation.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_validation.py",
       "action": "relocate",
       "old_line_number": 27,
       "new_line_number": 10,
@@ -597,7 +597,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_adaptive_meso_scoring.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_adaptive_meso_scoring.py",
       "action": "relocate",
       "old_line_number": 48,
       "new_line_number": 31,
@@ -607,7 +607,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation.py",
       "action": "relocate",
       "old_line_number": 40,
       "new_line_number": 23,
@@ -617,7 +617,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_enhancements.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_enhancements.py",
       "action": "relocate",
       "old_line_number": 35,
       "new_line_number": 18,
@@ -627,7 +627,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_integration.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_integration.py",
       "action": "relocate",
       "old_line_number": 29,
       "new_line_number": 12,
@@ -637,7 +637,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_provenance.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_provenance.py",
       "action": "relocate",
       "old_line_number": 38,
       "new_line_number": 21,
@@ -647,7 +647,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_validation.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_validation.py",
       "action": "relocate",
       "old_line_number": 29,
       "new_line_number": 12,
@@ -657,7 +657,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_aggregator.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_aggregator.py",
       "action": "relocate",
       "old_line_number": 45,
       "new_line_number": 28,
@@ -667,7 +667,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_phase_4_7_constants.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_phase_4_7_constants.py",
       "action": "relocate",
       "old_line_number": 36,
       "new_line_number": 19,
@@ -677,7 +677,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_signal_enriched_aggregation.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_signal_enriched_aggregation.py",
       "action": "relocate",
       "old_line_number": 37,
       "new_line_number": 20,
@@ -687,7 +687,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_uncertainty_quantification.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_uncertainty_quantification.py",
       "action": "relocate",
       "old_line_number": 42,
       "new_line_number": 25,
@@ -697,7 +697,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_8/phase8_30_00_signal_enriched_recommendations.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_08/phase8_30_00_signal_enriched_recommendations.py",
       "action": "relocate",
       "old_line_number": 44,
       "new_line_number": 27,
@@ -707,7 +707,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_report_assembly.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_assembly.py",
       "action": "relocate",
       "old_line_number": 42,
       "new_line_number": 25,
@@ -717,7 +717,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_report_generator.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
       "action": "relocate",
       "old_line_number": 36,
       "new_line_number": 19,
@@ -727,7 +727,7 @@
       "lines_changed": 17
     },
     {
-      "file_path": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_signal_enriched_reporting.py",
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_signal_enriched_reporting.py",
       "action": "relocate",
       "old_line_number": 36,
       "new_line_number": 19,

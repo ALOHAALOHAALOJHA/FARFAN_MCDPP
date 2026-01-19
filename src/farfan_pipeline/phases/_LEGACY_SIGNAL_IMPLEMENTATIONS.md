@@ -11,7 +11,7 @@
 
 ### Phase 1
 ```
-./Phase_1/phase1_11_00_signal_enrichment.py  ⚠️ LEGACY
+./Phase_01/phase1_11_00_signal_enrichment.py  ⚠️ LEGACY
 ```
 **Usar en su lugar:**
 ```python
@@ -20,7 +20,7 @@ from SISAS.consumers.phase1.phase1_11_00_signal_enrichment import SignalEnrichme
 
 ### Phase 3
 ```
-./Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py  ⚠️ LEGACY
+./Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py  ⚠️ LEGACY
 ```
 **Usar en su lugar:**
 ```python
@@ -29,7 +29,7 @@ from SISAS.consumers.phase3.phase3_10_00_signal_enriched_scoring import SignalEn
 
 ### Phase 8
 ```
-./Phase_8/phase8_30_00_signal_enriched_recommendations.py  ⚠️ LEGACY
+./Phase_08/phase8_30_00_signal_enriched_recommendations.py  ⚠️ LEGACY
 ```
 **Usar en su lugar:**
 ```python
@@ -38,17 +38,17 @@ from SISAS.consumers.phase8.phase8_30_00_signal_enriched_recommendations import 
 
 ### Phase 4
 ```
-./Phase_4/phase4_10_00_signal_enriched_aggregation.py  ⚠️ LEGACY
-./Phase_4/primitives/phase4_00_00_signal_enriched_primitives.py  ⚠️ LEGACY
-./Phase_4/primitives/phase4_10_00_signal_enriched_primitives.py  ⚠️ LEGACY
-./Phase_4/enhancements/phase4_10_00_signal_enriched_aggregation.py  ⚠️ LEGACY
-./Phase_4/enhancements/signal_enriched_aggregation.py  ⚠️ LEGACY
-./Phase_4/enhancements/phase4_95_00_signal_enriched_aggregation.py  ⚠️ LEGACY
+./Phase_04/phase4_10_00_signal_enriched_aggregation.py  ⚠️ LEGACY
+./Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py  ⚠️ LEGACY
+./Phase_04/primitives/phase4_10_00_signal_enriched_primitives.py  ⚠️ LEGACY
+./Phase_04/enhancements/phase4_10_00_signal_enriched_aggregation.py  ⚠️ LEGACY
+./Phase_04/enhancements/signal_enriched_aggregation.py  ⚠️ LEGACY
+./Phase_04/enhancements/phase4_95_00_signal_enriched_aggregation.py  ⚠️ LEGACY
 ```
 
 ### Phase 9
 ```
-./Phase_9/phase9_10_00_signal_enriched_reporting.py  ⚠️ LEGACY
+./Phase_09/phase9_10_00_signal_enriched_reporting.py  ⚠️ LEGACY
 ```
 
 ---
@@ -107,7 +107,7 @@ grep -r "from.*Phase_.*signal" . --include="*.py"
 ### Paso 2: Reemplazar con imports SISAS
 ```python
 # ANTES (LEGACY):
-from phases.Phase_1.phase1_11_00_signal_enrichment import SignalEnrichment
+from phases.Phase_01.phase1_11_00_signal_enrichment import SignalEnrichment
 
 # DESPUÉS (PRODUCTIVO):
 from SISAS.consumers.phase1.phase1_11_00_signal_enrichment import SignalEnrichmentConsumer

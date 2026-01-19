@@ -30,7 +30,7 @@ class Phase9ReportingConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase9_reporting_consumer"
-    consumer_phase: str = "phase_9"
+    consumer_phase: str = "phase_09"
 
     def __post_init__(self):
         super().__post_init__()
@@ -50,8 +50,8 @@ class Phase9ReportingConsumer(BaseConsumer):
             ],
             subscribed_buses=["epistemic_bus", "integrity_bus", "contrast_bus"],
             context_filters={
-                "phase": ["phase_3", "phase_4", "phase_5", "phase_8", "phase_9"],
-                "consumer_scope": ["Phase_9", "Cross-Phase"]
+                "phase": ["phase_03", "phase_04", "phase_05", "phase_08", "phase_09"],
+                "consumer_scope": ["Phase_09", "Cross-Phase"]
             },
             required_capabilities=["can_enrich", "can_validate", "can_transform"]
         )
@@ -69,7 +69,7 @@ class Phase9ReportingConsumer(BaseConsumer):
             "processed": True,
             "report_components": {},
             "report_section": self._determine_report_section(signal),
-            "phase": "phase_9"
+            "phase": "phase_09"
         }
 
         if signal.signal_type == "AnswerDeterminacySignal":

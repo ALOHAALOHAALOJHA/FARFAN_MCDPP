@@ -215,7 +215,7 @@ assert is_valid, f"Invalid profile: {errors}"
 
 ### 2. PDMMetadata
 
-**Location**: `src/farfan_pipeline/phases/Phase_1/phase1_03_00_models.py`
+**Location**: `src/farfan_pipeline/phases/Phase_01/phase1_03_00_models.py`
 
 **Purpose**: PDM-specific metadata for chunks
 
@@ -721,7 +721,7 @@ python -c "from farfan_pipeline.infrastructure.parametrization.pdm_structural_pr
 2. **Run Phase 1 with PDM Recognition**:
 
 ```python
-from farfan_pipeline.phases.Phase_1.phase1_13_00_cpp_ingestion import (
+from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
     execute_phase_1_with_full_contract
 )
 from farfan_pipeline.infrastructure.contractual.pdm_contracts import (

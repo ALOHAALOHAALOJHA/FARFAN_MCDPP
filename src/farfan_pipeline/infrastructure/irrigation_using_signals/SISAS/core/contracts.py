@@ -136,7 +136,7 @@ class ConsumptionContract:
     
     # Filtros
     context_filters: Dict[str, List[str]] = field(default_factory=dict)
-    # Ejemplo: {"node_type": ["policy_area", "dimension"], "phase": ["phase_0"]}
+    # Ejemplo: {"node_type": ["policy_area", "dimension"], "phase": ["phase_00"]}
     
     # Restricciones de procesamiento
     max_processing_time_ms: int = 5000

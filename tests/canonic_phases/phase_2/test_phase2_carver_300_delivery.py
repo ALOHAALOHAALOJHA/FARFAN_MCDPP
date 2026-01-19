@@ -1,7 +1,7 @@
 """
 Tests for Phase 2 Carver - 300 micro-answer delivery contract.
 
-Run with: pytest tests/canonic_phases/phase_2/test_phase2_carver_300_delivery.py -v
+Run with: pytest tests/canonic_phases/phase_02/test_phase2_carver_300_delivery.py -v
 """
 
 from __future__ import annotations

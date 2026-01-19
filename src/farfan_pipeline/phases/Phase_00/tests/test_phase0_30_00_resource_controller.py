@@ -22,7 +22,7 @@ def test_controller_initialization(mock_limits):
     controller = ResourceController(mock_limits)
     assert controller.limits == mock_limits
 
-@patch("farfan_pipeline.phases.Phase_0.phase0_30_00_resource_controller.resource")
+@patch("farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller.resource")
 def test_enforce_limits(mock_resource, mock_limits):
     """Test setting resource limits (mocked)."""
     # Configure mock resource

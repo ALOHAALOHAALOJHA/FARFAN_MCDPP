@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_0.phase0_30_00_resource_controller
+Module: src.farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller
 PHASE_LABEL: Phase 0
 Purpose: Hard kernel-level resource enforcement for Phase Zero
 Owner: phase0_resources

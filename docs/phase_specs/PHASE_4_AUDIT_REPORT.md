@@ -28,7 +28,7 @@ Phase 4 employs `validate_scored_results` (in `phase4_30_00_aggregation.py`) to 
 
 ---
 
-## 2. Orchestration Logic Audit (`_execute_phase_4`)
+## 2. Orchestration Logic Audit (`_execute_phase_04`)
 
 ### 2.1 Initialization & Configuration
 - **Aggregator:** Correctly initializes `DimensionAggregator` with the questionnaire monolith.
@@ -56,7 +56,7 @@ Phase 4 employs `validate_scored_results` (in `phase4_30_00_aggregation.py`) to 
 Phase 4 produces a list of `DimensionScore` objects (`src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_types.py`).
 
 ### 3.2 Phase 5 Compatibility
-Phase 5 (`_execute_phase_5`) expects exactly this list.
+Phase 5 (`_execute_phase_05`) expects exactly this list.
 - **Count Check:** Phase 5 validates it receives exactly 60 items.
 - **Hermeticity:** Phase 5 groups these 60 items into 10 Policy Areas (6 dimensions each).
 - **Status:** The `DimensionScore` objects produced by Phase 4 contain the necessary `area_id` and `dimension_id` fields for Phase 5's grouping logic.

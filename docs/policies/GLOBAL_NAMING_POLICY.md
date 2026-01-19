@@ -2342,8 +2342,8 @@ src/farfan_pipeline/phases/Phase_{name}/
       "methods_dispensary"
     ],
     "phase_dependencies": {
-      "requires": ["Phase_1"],
-      "provides_to": ["Phase_3"]
+      "requires": ["Phase_01"],
+      "provides_to": ["Phase_03"]
     }
   },
   "contracts": {
@@ -2709,7 +2709,7 @@ class Stage{NN}TestSuite(unittest.TestCase):
   },
   "signature_alignment": {
     "output_signature": {
-      "phase_1":  {
+      "phase_01":  {
         "type": "ProcessorBundle",
         "schema": {
           "documents": "List[Document]",
@@ -2721,7 +2721,7 @@ class Stage{NN}TestSuite(unittest.TestCase):
       }
     },
     "input_signature": {
-      "phase_2": {
+      "phase_02": {
         "type":  "ProcessorBundle",
         "schema":  {
           "documents": "List[Document]",
@@ -2738,13 +2738,13 @@ class Stage{NN}TestSuite(unittest.TestCase):
   "contract_mappings": {
     "field_mappings": [
       {
-        "from":  "phase_1.output.documents",
-        "to": "phase_2.input. documents",
+        "from":  "phase_01.output.documents",
+        "to": "phase_02.input. documents",
         "transform": "identity"
       },
       {
-        "from":  "phase_1.output.metadata",
-        "to": "phase_2.input.metadata",
+        "from":  "phase_01.output.metadata",
+        "to": "phase_02.input.metadata",
         "transform": "identity"
       }
     ],

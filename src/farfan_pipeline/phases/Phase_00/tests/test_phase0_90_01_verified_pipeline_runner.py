@@ -17,7 +17,7 @@ async def test_runner_flow(temp_dir):
     with patch.object(runner, 'verify_input', return_value=True), \
          patch.object(runner, 'run_boot_checks', return_value=True), \
          patch.object(runner, 'initialize_determinism', return_value=True), \
-         patch('farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner.check_all_gates') as mock_gates:
+         patch('farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner.check_all_gates') as mock_gates:
          
          # Mock check_all_gates to return Passed
          mock_gate_result = MagicMock()

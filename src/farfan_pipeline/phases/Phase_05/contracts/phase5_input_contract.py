@@ -8,7 +8,7 @@ Input:
 - 6 dimensions × 10 policy areas
 - Each dimension must be in [0.0, 3.0]
 
-Module: src/farfan_pipeline/phases/Phase_5/contracts/phase5_input_contract.py
+Module: src/farfan_pipeline/phases/Phase_05/contracts/phase5_input_contract.py
 """
 from __future__ import annotations
 

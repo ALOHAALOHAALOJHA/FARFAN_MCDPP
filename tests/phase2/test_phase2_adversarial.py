@@ -193,11 +193,11 @@ class TestPhase2Adversarial:
         }
         
         # Mock ChunkMatrix to bypass invariant validation
-        with patch("farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer.ChunkMatrix") as MockChunkMatrix:
+        with patch("farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer.ChunkMatrix") as MockChunkMatrix:
             MockChunkMatrix.EXPECTED_CHUNK_COUNT = 60 # Set to int to avoid JSON serialization error
             
             # Mock validation_orchestrator and signal_registry stuff
-            with patch("farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer.validate_phase6_schema_compatibility"):
+            with patch("farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer.validate_phase6_schema_compatibility"):
                  # We need to mock chunk routing to return success
                  with patch.object(IrrigationSynchronizer, 'validate_chunk_routing') as mock_routing:
                     mock_routing.return_value = Mock(

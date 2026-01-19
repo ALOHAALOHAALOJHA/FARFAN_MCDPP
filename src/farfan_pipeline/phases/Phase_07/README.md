@@ -1105,7 +1105,7 @@ integration_tests:
 ## 14. Directory Structure
 
 ```
-Phase_7/
+Phase_07/
 ├── __init__.py                          # Package façade
 ├── README.md                            # This document
 ├── PHASE_7_MANIFEST.json                # Phase metadata
@@ -1141,9 +1141,9 @@ Phase_7/
 
 | Document | Description |
 |----------|-------------|
-| [Phase 4 README](../Phase_4/README.md) | Dimension aggregation (micro → dimension) |
-| [Phase 5 README](../Phase_5/README.md) | Policy area aggregation (dimension → area) |
-| [Phase 6 README](../Phase_6/README.md) | Cluster aggregation (area → cluster) |
+| [Phase 4 README](../Phase_04/README.md) | Dimension aggregation (micro → dimension) |
+| [Phase 5 README](../Phase_05/README.md) | Policy area aggregation (dimension → area) |
+| [Phase 6 README](../Phase_06/README.md) | Cluster aggregation (area → cluster) |
 | [AGGREGATION_QUICK_REFERENCE](../../../../docs/AGGREGATION_QUICK_REFERENCE.md) | Quick reference for aggregation usage |
 | [ARCHITECTURE](../../../../docs/ARCHITECTURE.md) | System architecture overview |
 

@@ -375,7 +375,7 @@ Successfully extracted, audited, and structured Phase 6 (Cluster Aggregation - M
 
 **Phase 6 Structure Created**:
 ```
-src/farfan_pipeline/phases/Phase_6/
+src/farfan_pipeline/phases/Phase_06/
 ├── phase6_10_00_phase_6_constants.py          [Existing]
 ├── phase6_10_00_cluster_score.py              [Created]
 ├── phase6_20_00_adaptive_meso_scoring.py      [Migrated from Phase 4]
@@ -485,14 +485,14 @@ src/farfan_pipeline/phases/Phase_6/
 
 ✅ **All imports functional**:
 ```python
-from farfan_pipeline.phases.Phase_5 import AreaScore
-from farfan_pipeline.phases.Phase_6 import ClusterScore, CLUSTERS, Phase6Invariants
+from farfan_pipeline.phases.Phase_05 import AreaScore
+from farfan_pipeline.phases.Phase_06 import ClusterScore, CLUSTERS, Phase6Invariants
 ```
 
 ✅ **Contracts executable**:
 ```python
-from Phase_6.contracts.phase6_input_contract import Phase6InputContract
-from Phase_6.contracts.phase6_output_contract import Phase6OutputContract
+from Phase_06.contracts.phase6_input_contract import Phase6InputContract
+from Phase_06.contracts.phase6_output_contract import Phase6OutputContract
 ```
 
 ✅ **Data models validated**:
@@ -509,8 +509,8 @@ from Phase_6.contracts.phase6_output_contract import Phase6OutputContract
 **File**: `phase6_30_00_cluster_aggregator.py` (not yet created)
 
 **Source Material**:
-- `Phase_4/phase4_10_00_aggregation_integration.py` (lines 133-165)
-- `Phase_4/phase4_10_00_aggregation_validation.py` (Phase 6 validation logic)
+- `Phase_04/phase4_10_00_aggregation_integration.py` (lines 133-165)
+- `Phase_04/phase4_10_00_aggregation_validation.py` (Phase 6 validation logic)
 
 **Requirements**:
 1. Group 10 AreaScores by cluster_id
@@ -525,7 +525,7 @@ from Phase_6.contracts.phase6_output_contract import Phase6OutputContract
 ### Non-Critical Items
 
 1. **Import DAG Visualization** - Generate PNG/SVG using pyreverse
-2. **Test Migration** - Update imports in `tests/phase_6/`
+2. **Test Migration** - Update imports in `tests/phase_06/`
 3. **Integration Tests** - Blocked on Phase 5 aggregator
 4. **Remove Phase 4 Duplicates** - Clean up 3 duplicate adaptive_meso_scoring files
 
@@ -725,7 +725,7 @@ Phase 7 (Macro Evaluation) has been **successfully migrated, implemented, and ce
 
 ```
 Layer 0 (External):
-  ← Phase_6/phase6_10_00_cluster_score.py (ClusterScore)
+  ← Phase_06/phase6_10_00_cluster_score.py (ClusterScore)
 
 Layer 1 (Foundation):
   phase7_10_00_phase_7_constants.py
@@ -741,7 +741,7 @@ Layer 4 (Public API):
   __init__.py
     ↓
 Layer 5 (External):
-  → Phase_8 (consumes MacroScore)
+  → Phase_08 (consumes MacroScore)
 ```
 
 **Analysis**: Clean layered architecture, no cycles, proper dependency flow.
@@ -783,14 +783,14 @@ Layer 5 (External):
 
 #### Upstream (Phase 6)
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterScore
+from farfan_pipeline.phases.Phase_06 import ClusterScore
 # Phase 7 consumes 4 ClusterScore objects
 ```
 **Status**: ✅ Validated
 
 #### Downstream (Phase 8)
 ```python
-from farfan_pipeline.phases.Phase_7 import MacroScore
+from farfan_pipeline.phases.Phase_07 import MacroScore
 # Phase 8 consumes 1 MacroScore object
 ```
 **Status**: ✅ Ready for integration
@@ -804,9 +804,9 @@ from farfan_pipeline.phases.Phase_7 import MacroScore
 
 #### Import Tests
 ```
-✅ from farfan_pipeline.phases.Phase_7 import MacroScore
-✅ from farfan_pipeline.phases.Phase_7 import MacroAggregator
-✅ from farfan_pipeline.phases.Phase_7 import SystemicGapDetector
+✅ from farfan_pipeline.phases.Phase_07 import MacroScore
+✅ from farfan_pipeline.phases.Phase_07 import MacroAggregator
+✅ from farfan_pipeline.phases.Phase_07 import SystemicGapDetector
 ✅ All contract imports successful
 ✅ All constant imports successful
 ```
@@ -862,7 +862,7 @@ from farfan_pipeline.phases.Phase_7 import MacroScore
 
 #### Modified (2 files)
 1. `__init__.py` - Added exports
-2. `../Phase_4/phase4_10_00_aggregation_integration.py` - Fixed imports
+2. `../Phase_04/phase4_10_00_aggregation_integration.py` - Fixed imports
 
 #### Existed (2 files - not modified)
 1. `phase7_10_00_phase_7_constants.py` (already correct)
@@ -982,7 +982,7 @@ Phase 7 migration is **COMPLETE and SUCCESSFUL**. The phase:
 
 **Version:** 3.0
 **Date:** 2026-01-10
-**File:** `/src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json`
+**File:** `/src/farfan_pipeline/phases/Phase_08/json_phase_eight/recommendation_rules_enhanced.json`
 
 ## Overview
 

@@ -476,7 +476,7 @@ class ComprehensiveSignalAuditor:
 
         for trace in self.flow_trace:
             pa_id = trace.get("policy_area", "UNKNOWN")
-            phase = "Phase_2"  # Micro answering phase
+            phase = "Phase_02"  # Micro answering phase
 
             # Utilization ratio
             patterns_injected = trace.get("signal_pack", {}).get("patterns_count", 0)

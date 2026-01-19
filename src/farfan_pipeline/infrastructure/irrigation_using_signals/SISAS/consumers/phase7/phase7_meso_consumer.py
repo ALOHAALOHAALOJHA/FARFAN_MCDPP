@@ -17,7 +17,7 @@ class Phase7MesoConsumer(BaseConsumer):
     """
     
     consumer_id: str = "phase7_meso_consumer.py"
-    consumer_phase: str = "phase_7"
+    consumer_phase: str = "phase_07"
     
     def __post_init__(self):
         super().__post_init__()
@@ -33,7 +33,7 @@ class Phase7MesoConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus"],
             context_filters={
-                "phase":  ["phase_7"],
+                "phase":  ["phase_07"],
                 "node_type": ["question"]
             },
             required_capabilities=["can_scope_context"]

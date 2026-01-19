@@ -10,7 +10,7 @@
     "consumer_id_mismatch": "Matrix consumer strings are code refs; capability declarations use consumer_id. This report lists both and highlights per-stage coverage."
   },
   "stages": {
-    "phase_0": {
+    "phase_00": {
       "expected_signal_types": [
         "SIGNAL_PACK",
         "STATIC_LOAD"
@@ -37,7 +37,7 @@
         "expected_signal_types_count": 2
       }
     },
-    "phase_1": {
+    "phase_01": {
       "expected_signal_types": [
         "MC01",
         "MC02",
@@ -89,7 +89,7 @@
         "expected_signal_types_count": 10
       }
     },
-    "phase_2": {
+    "phase_02": {
       "expected_signal_types": [
         "PATTERN_ENRICHMENT",
         "KEYWORD_ENRICHMENT",
@@ -177,7 +177,7 @@
         "expected_signal_types_count": 3
       }
     },
-    "phase_3": {
+    "phase_03": {
       "expected_signal_types": [
         "NORMATIVE_VALIDATION",
         "ENTITY_VALIDATION",
@@ -294,8 +294,8 @@
         "phase_3_validation"
       ],
       "matrix_consumers": [
-        "Phase_3.NormativeComplianceValidator",
-        "Phase_3.PDETContextProvider"
+        "Phase_03.NormativeComplianceValidator",
+        "Phase_03.PDETContextProvider"
       ],
       "summary": {
         "matrix_consumers_count": 2,
@@ -304,7 +304,7 @@
         "expected_signal_types_count": 3
       }
     },
-    "phase_4": {
+    "phase_04": {
       "expected_signal_types": [
         "MICRO_SCORE"
       ],
@@ -331,7 +331,7 @@
         "expected_signal_types_count": 1
       }
     },
-    "phase_5": {
+    "phase_05": {
       "expected_signal_types": [
         "MICRO_SCORE"
       ],
@@ -358,7 +358,7 @@
         "expected_signal_types_count": 1
       }
     },
-    "phase_6": {
+    "phase_06": {
       "expected_signal_types": [
         "MICRO_SCORE"
       ],
@@ -387,7 +387,7 @@
         "expected_signal_types_count": 1
       }
     },
-    "phase_7": {
+    "phase_07": {
       "expected_signal_types": [
         "MESO_SCORE",
         "MESO_AGGREGATION"
@@ -411,7 +411,7 @@
         "phase_7_meso"
       ],
       "matrix_consumers": [
-        "Phase_7.MesoAggregator"
+        "Phase_07.MesoAggregator"
       ],
       "summary": {
         "matrix_consumers_count": 1,
@@ -420,7 +420,7 @@
         "expected_signal_types_count": 2
       }
     },
-    "phase_8": {
+    "phase_08": {
       "expected_signal_types": [
         "MACRO_SCORE",
         "MACRO_AGGREGATION"
@@ -435,7 +435,7 @@
         "phase_8_macro"
       ],
       "matrix_consumers": [
-        "Phase_8.MacroAggregator"
+        "Phase_08.MacroAggregator"
       ],
       "summary": {
         "matrix_consumers_count": 1,
@@ -444,7 +444,7 @@
         "expected_signal_types_count": 2
       }
     },
-    "phase_9": {
+    "phase_09": {
       "expected_signal_types": [
         "REPORT_ASSEMBLY"
       ],

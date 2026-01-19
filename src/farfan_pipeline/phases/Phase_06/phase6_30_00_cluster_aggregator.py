@@ -13,7 +13,7 @@ Mathematical Framework:
     penalty_factor = adaptive_penalty(dispersion_metrics)
     final_score = raw_score × penalty_factor
 
-Module: src/farfan_pipeline/phases/Phase_6/phase6_30_00_cluster_aggregator.py
+Module: src/farfan_pipeline/phases/Phase_06/phase6_30_00_cluster_aggregator.py
 Phase: 6 (Cluster Aggregation - MESO)
 Stage: 30
 Owner: phase6_30

@@ -1,7 +1,7 @@
 {
   "test_suite_version": "1.0.0",
   "phase": 1,
-  "phase_name": "Phase_1",
+  "phase_name": "Phase_01",
   "generated_at": "2026-01-10T20:22:39.554996",
   "test_framework": "pytest",
   "modules": [

@@ -58,19 +58,19 @@ except ImportError as e:
     class ExecutorChunkBinding:  # type: ignore
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             raise ImportError(
-                "farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer is not available. "
+                "farfan_pipeline.phases.Phase_02.phase2_40_01_executor_chunk_synchronizer is not available. "
                 "Please ensure the dependency is installed and importable."
             ) from _import_error
     
     def build_join_table(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_02.phase2_40_01_executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_02.phase2_40_01_executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
@@ -1372,7 +1372,7 @@ class IrrigationSynchronizer:
                     "chunk_count": self.chunk_count,
                     "mode": "chunk_matrix",
                     "join_table_enabled": self.enable_join_table,
-                    "phase": "synchronization_phase_2",
+                    "phase": "synchronization_phase_02",
                     "timestamp": time.time(),
                 }
             )
@@ -1692,7 +1692,7 @@ class IrrigationSynchronizer:
                     "question_count": self.question_count,
                     "chunk_count": self.chunk_count,
                     "mode": "legacy_chunks",
-                    "phase": "synchronization_phase_0",
+                    "phase": "synchronization_phase_00",
                 }
             )
         )

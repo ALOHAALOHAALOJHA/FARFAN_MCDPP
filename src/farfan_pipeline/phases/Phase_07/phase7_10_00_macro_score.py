@@ -6,7 +6,7 @@ Phase 7 Data Model - MacroScore
 This module defines the MacroScore dataclass for Phase 7 output.
 Phase 7 aggregates 4 ClusterScore objects into 1 MacroScore object (holistic evaluation).
 
-Module: src/farfan_pipeline/phases/Phase_7/phase7_10_00_macro_score.py
+Module: src/farfan_pipeline/phases/Phase_07/phase7_10_00_macro_score.py
 Purpose: Define MacroScore data model for Phase 7
 Owner: phase7_10
 Lifecycle: ACTIVE

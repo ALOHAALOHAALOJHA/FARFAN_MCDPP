@@ -118,8 +118,8 @@ Artefactos: artifacts/plan1/verification_manifest.json
 
 #### 📚 Documentación
 
-- **Especificación Detallada**: [docs/phases/phase_0/P00-ES_v1.0.md](docs/phases/phase_0/P00-ES_v1.0.md)
-- **Versión en Inglés**: [docs/phases/phase_0/P00-EN_v1.0.md](docs/phases/phase_0/P00-EN_v1.0.md)
+- **Especificación Detallada**: [docs/phases/phase_00/P00-ES_v1.0.md](docs/phases/phase_00/P00-ES_v1.0.md)
+- **Versión en Inglés**: [docs/phases/phase_00/P00-EN_v1.0.md](docs/phases/phase_00/P00-EN_v1.0.md)
 
 ---
 

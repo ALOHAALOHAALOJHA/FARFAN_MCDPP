@@ -21,7 +21,7 @@ class Phase0WiringTypesConsumer(BaseConsumer):
     """
 
     consumer_id: str = "wiring_types.py"
-    consumer_phase: str = "phase_0"
+    consumer_phase: str = "phase_00"
 
     def __post_init__(self):
         super().__post_init__()
@@ -37,8 +37,8 @@ class Phase0WiringTypesConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus", "consumption_bus"],
             context_filters={
-                "phase": ["phase_0"],
-                "consumer_scope": ["Phase_0"]
+                "phase": ["phase_00"],
+                "consumer_scope": ["Phase_00"]
             },
             required_capabilities=["can_validate", "can_scope"]
         )

@@ -243,12 +243,12 @@
   "statistics": {
     "total_consumers": 13,
     "by_phase": {
-      "phase_2": 2,
-      "phase_3": 6,
-      "phase_4": 1,
-      "phase_5": 1,
-      "phase_6": 1,
-      "phase_7": 1
+      "phase_02": 2,
+      "phase_03": 6,
+      "phase_04": 1,
+      "phase_05": 1,
+      "phase_06": 1,
+      "phase_07": 1
     },
     "full_capability_consumers": [
       "EvidenceNexus"

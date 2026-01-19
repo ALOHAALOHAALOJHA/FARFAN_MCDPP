@@ -59,7 +59,7 @@ RECLASSIFIED_MODULES = {
 def phase1_dir() -> Path:
     """Get Phase 1 directory path."""
     repo_root = Path(__file__).resolve().parent.parent.parent
-    return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_1"
+    return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_01"
 
 
 @pytest.fixture(scope="session")
@@ -431,7 +431,7 @@ class TestEdgeCases:
                 continue
 
             content = filepath.read_text()
-            # Check for internal imports (relative or absolute from Phase_1)
+            # Check for internal imports (relative or absolute from Phase_01)
             has_internal_import = False
             for line in content.split("\n"):
                 if "from ." in line or "from farfan_pipeline.phases.Phase_01" in line:
@@ -455,11 +455,11 @@ class TestEdgeCases:
 
     def test_duplicate_imports_allowed(self):
         """Duplicate import statements should not cause issues."""
-        # This test may fail if Phase 1 dependencies (pydot, Phase_2) are not available
+        # This test may fail if Phase 1 dependencies (pydot, Phase_02) are not available
         try:
             # This is more of a style check, but duplicates are technically valid
-            import farfan_pipeline.phases.Phase_1 as p1
-            import farfan_pipeline.phases.Phase_1 as p1_again
+            import farfan_pipeline.phases.Phase_01 as p1
+            import farfan_pipeline.phases.Phase_01 as p1_again
             assert p1 is p1_again
         except (ImportError, SystemExit):
             pytest.skip("Phase 1 not importable due to missing dependencies")

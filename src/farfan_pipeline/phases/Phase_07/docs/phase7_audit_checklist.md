@@ -217,11 +217,11 @@ Layer 4 (API):
 ### 8.1 Import Tests
 ```python
 # Test 1: Import Phase 7 module
-from farfan_pipeline.phases.Phase_7 import MacroScore, MacroAggregator
+from farfan_pipeline.phases.Phase_07 import MacroScore, MacroAggregator
 Status: ✓ PASS
 
 # Test 2: Import contracts
-from farfan_pipeline.phases.Phase_7.contracts import (
+from farfan_pipeline.phases.Phase_07.contracts import (
     phase7_input_contract,
     phase7_mission_contract,
     phase7_output_contract,

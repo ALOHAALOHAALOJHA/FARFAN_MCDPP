@@ -240,7 +240,7 @@ class Phase7To8Adapter:
             Dict with metadata
         """
         return {
-            "source_phase": "Phase_7",
+            "source_phase": "Phase_07",
             "source_output_type": "MacroScore",
             "adapter_version": "1.0.0",
             "evaluation_id": macro_score.evaluation_id,

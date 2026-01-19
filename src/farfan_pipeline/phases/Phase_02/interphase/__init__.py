@@ -82,8 +82,8 @@ __all__ = [
 
 
 # Phase boundaries
-PHASE2_RECEIVES_FROM: Final[str] = "Phase_1"
-PHASE2_DELIVERS_TO: Final[str] = "Phase_3"
+PHASE2_RECEIVES_FROM: Final[str] = "Phase_01"
+PHASE2_DELIVERS_TO: Final[str] = "Phase_03"
 
 
 @runtime_checkable

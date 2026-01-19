@@ -275,8 +275,8 @@ def validate_access_level(
 
     # Consumer-level accessors
     consumer_modules = [
-        "farfan_pipeline.phases.Phase_2",
-        "farfan_pipeline.phases.Phase_3",
+        "farfan_pipeline.phases.Phase_02",
+        "farfan_pipeline.phases.Phase_03",
     ]
 
     # Determine expected level from accessor

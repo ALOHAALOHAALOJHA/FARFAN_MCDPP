@@ -74,7 +74,7 @@
       "received_as": "questionnaire_mapper"
     }
   ],
-  "inherited_from_phase_0": [
+  "inherited_from_phase_00": [
     {"name": "RuntimeConfig", "received_as": "runtime_config"},
     {"name": "ResourceController", "received_as": "resource_controller"},
     {"name": "validated_paths", "received_as": "paths"},
@@ -82,7 +82,7 @@
     {"name": "seed_snapshot", "received_as": "seed_snapshot"},
     {"name": "questionnaire_sha256", "received_as": "questionnaire_hash"}
   ],
-  "wiring_components_from_phase_0": [
+  "wiring_components_from_phase_00": [
     {"name": "CanonicalQuestionnaire", "accessed_via": "factory"},
     {"name": "MethodRegistry", "accessed_via": "methods_registry"},
     {"name": "ExecutorConfig", "accessed_via": "executor_config"},

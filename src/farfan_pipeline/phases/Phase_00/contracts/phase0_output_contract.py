@@ -320,7 +320,7 @@ Related Contracts
 -----------------
 - `phase0_input_contract.py` - Phase 0 user inputs
 - `phase0_mission_contract.py` - Phase 0 internal execution
-- Phase 1 Input Contract (in Phase_1/ directory)
+- Phase 1 Input Contract (in Phase_01/ directory)
 
 References
 ----------

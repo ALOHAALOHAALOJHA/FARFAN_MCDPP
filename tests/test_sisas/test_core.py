@@ -33,8 +33,8 @@ class TestSignalContext:
         context = SignalContext(
             node_type="question",
             node_id="Q147",
-            phase="phase_0",
-            consumer_scope="Phase_0"
+            phase="phase_00",
+            consumer_scope="Phase_00"
         )
         assert context.node_type == "question"
         assert context.node_id == "Q147"
@@ -43,8 +43,8 @@ class TestSignalContext:
         context = SignalContext(
             node_type="policy_area",
             node_id="PA03",
-            phase="phase_2",
-            consumer_scope="Phase_2"
+            phase="phase_02",
+            consumer_scope="Phase_02"
         )
         d = context.to_dict()
         assert d["node_type"] == "policy_area"
@@ -54,8 +54,8 @@ class TestSignalContext:
         data = {
             "node_type": "dimension",
             "node_id":  "DIM01",
-            "phase": "phase_0",
-            "consumer_scope": "Phase_0"
+            "phase": "phase_00",
+            "consumer_scope": "Phase_00"
         }
         context = SignalContext.from_dict(data)
         assert context.node_type == "dimension"
@@ -95,7 +95,7 @@ class TestEventStore:
         event = Event(
             event_type=EventType.CANONICAL_DATA_LOADED,
             source_file="test.json",
-            phase="phase_0"
+            phase="phase_00"
         )
         event_id = store.append(event)
         assert event_id == event.event_id
@@ -118,15 +118,15 @@ class TestEventStore:
     def test_get_by_phase(self):
         store = EventStore()
         
-        e1 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_0")
-        e2 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_1")
-        e3 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_0")
+        e1 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_00")
+        e2 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_01")
+        e3 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_00")
         
         store.append(e1)
         store.append(e2)
         store.append(e3)
         
-        phase0 = store.get_by_phase("phase_0")
+        phase0 = store.get_by_phase("phase_00")
         assert len(phase0) == 2
     
     def test_events_never_lost(self):
@@ -162,7 +162,7 @@ class TestContracts:
         context = SignalContext(
             node_type="test",
             node_id="test-1",
-            phase="phase_0",
+            phase="phase_00",
             consumer_scope="Test"
         )
         source = SignalSource(
@@ -190,10 +190,10 @@ class TestContracts:
         contract = ConsumptionContract(
             contract_id="CC_TEST",
             consumer_id="test_consumer",
-            consumer_phase="phase_0",
+            consumer_phase="phase_00",
             subscribed_signal_types=["StructuralAlignmentSignal"],
             context_filters={
-                "phase": ["phase_0", "phase_1"],
+                "phase": ["phase_00", "phase_01"],
                 "node_type": ["question", "dimension"]
             }
         )
@@ -201,8 +201,8 @@ class TestContracts:
         context = SignalContext(
             node_type="question",
             node_id="Q001",
-            phase="phase_0",
-            consumer_scope="Phase_0"
+            phase="phase_00",
+            consumer_scope="Phase_00"
         )
         source = SignalSource(
             event_id="evt-1",
@@ -239,7 +239,7 @@ class TestContracts:
             contract_id="IC_COMPLETE",
             source_file="test.json",
             source_path="test/test.json",
-            source_phase="phase_0",
+            source_phase="phase_00",
             vehicles=["signal_registry"],
             consumers=["consumer_1"],
             vocabulary_aligned=True,
@@ -253,7 +253,7 @@ class TestContracts:
             contract_id="IC_NO_VEHICLE",
             source_file="test2.json",
             source_path="test/test2.json",
-            source_phase="phase_0",
+            source_phase="phase_00",
             vehicles=[],
             consumers=["consumer_1"],
             vocabulary_aligned=True,
@@ -290,7 +290,7 @@ class TestBus:
         contract = ConsumptionContract(
             contract_id="CC_SUB_TEST",
             consumer_id="test_consumer",
-            consumer_phase="phase_0",
+            consumer_phase="phase_00",
             subscribed_signal_types=["StructuralAlignmentSignal"],
             subscribed_buses=["structural_bus"]
         )

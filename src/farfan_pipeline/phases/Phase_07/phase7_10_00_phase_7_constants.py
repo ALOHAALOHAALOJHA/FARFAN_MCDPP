@@ -4,7 +4,7 @@ Phase 7 Constants - Macro Evaluation
 This module defines constants and configuration for Phase 7 of the FARFAN pipeline:
 Macro Evaluation (4 ClusterScore → 1 MacroScore).
 
-Module: src/farfan_pipeline/phases/Phase_7/PHASE_7_CONSTANTS.py
+Module: src/farfan_pipeline/phases/Phase_07/PHASE_7_CONSTANTS.py
 Purpose: Define constants for Phase 7
 Owner: phase7_10
 Lifecycle: ACTIVE

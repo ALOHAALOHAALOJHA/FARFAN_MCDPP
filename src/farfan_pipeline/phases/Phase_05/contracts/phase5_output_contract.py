@@ -8,7 +8,7 @@ Output:
 - Each AreaScore contains 6 DimensionScores
 - All scores in [0.0, 3.0]
 
-Module: src/farfan_pipeline/phases/Phase_5/contracts/phase5_output_contract.py
+Module: src/farfan_pipeline/phases/Phase_05/contracts/phase5_output_contract.py
 """
 from __future__ import annotations
 

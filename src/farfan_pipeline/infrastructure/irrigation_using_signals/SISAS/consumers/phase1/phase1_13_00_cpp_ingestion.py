@@ -23,7 +23,7 @@ class Phase1CppIngestionConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase1_13_00_cpp_ingestion.py"
-    consumer_phase: str = "phase_1"
+    consumer_phase: str = "phase_01"
 
     def __post_init__(self):
         super().__post_init__()
@@ -40,8 +40,8 @@ class Phase1CppIngestionConsumer(BaseConsumer):
             ],
             subscribed_buses=["integrity_bus", "operational_bus"],
             context_filters={
-                "phase": ["phase_1"],
-                "consumer_scope": ["Phase_1"]
+                "phase": ["phase_01"],
+                "consumer_scope": ["Phase_01"]
             },
             required_capabilities=["can_load", "can_validate"]
         )

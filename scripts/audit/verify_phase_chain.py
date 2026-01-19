@@ -79,7 +79,7 @@ def resolve_import(base_file: Path, module_name: str, level: int, root_pkg: str)
         base_file: Path to the file doing the import
         module_name: The module name being imported (e.g. "utils" or "farfan.utils")
         level: Relative import level (0=absolute, 1='.', 2='..')
-        root_pkg: The root package path (e.g. src/farfan_pipeline/phases/Phase_0)
+        root_pkg: The root package path (e.g. src/farfan_pipeline/phases/Phase_00)
         
     Returns:
         Absolute path to the imported file if it exists in the phase, else None.

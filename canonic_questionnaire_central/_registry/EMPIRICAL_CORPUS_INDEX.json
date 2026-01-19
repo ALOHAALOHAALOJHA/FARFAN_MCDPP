@@ -234,13 +234,13 @@
         "✅ Created SystemicGapDetector with normative baseline for Phase 7 (phase7_10_00_systemic_gap_detector.py)"
       ],
       "files_created": [
-        "src/farfan_pipeline/phases/Phase_3/phase3_10_00_normative_compliance_validator.py",
-        "src/farfan_pipeline/phases/Phase_3/phase3_10_00_empirical_thresholds_loader.py",
-        "src/farfan_pipeline/phases/Phase_7/phase7_10_00_systemic_gap_detector.py"
+        "src/farfan_pipeline/phases/Phase_03/phase3_10_00_normative_compliance_validator.py",
+        "src/farfan_pipeline/phases/Phase_03/phase3_10_00_empirical_thresholds_loader.py",
+        "src/farfan_pipeline/phases/Phase_07/phase7_10_00_systemic_gap_detector.py"
       ],
       "files_modified": [
-        "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
-        "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py"
+        "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py",
+        "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation.py"
       ],
       "value_added": [
         "Phase 3: Normative compliance validation with penalty calculation (score = 1.0 - SUM(penalties))",

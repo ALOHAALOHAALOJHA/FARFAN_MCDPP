@@ -11,7 +11,7 @@ from pathlib import Path
 
 def test_no_stub_in_report_generator():
     """Verify report_generator has no stub responses."""
-    code = Path("src/farfan_pipeline/phases/Phase_9/report_generator.py").read_text()
+    code = Path("src/farfan_pipeline/phases/Phase_09/report_generator.py").read_text()
     
     # Should not have stub status
     assert 'status": "stub"' not in code, "report_generator contains stub response"
@@ -22,7 +22,7 @@ def test_no_stub_in_report_generator():
 
 def test_required_functions_present():
     """Verify all required functions are present."""
-    code = Path("src/farfan_pipeline/phases/Phase_9/report_generator.py").read_text()
+    code = Path("src/farfan_pipeline/phases/Phase_09/report_generator.py").read_text()
     
     required_functions = [
         "generate_markdown_report",
@@ -93,7 +93,7 @@ def test_orchestrator_phase10_not_stub():
 
 def test_html_template_exists():
     """Verify HTML template exists and has required structure."""
-    template_path = Path("src/farfan_pipeline/phases/Phase_9/templates/report.html.j2")
+    template_path = Path("src/farfan_pipeline/phases/Phase_09/templates/report.html.j2")
     assert template_path.exists(), "HTML template not found"
     
     template_content = template_path.read_text()

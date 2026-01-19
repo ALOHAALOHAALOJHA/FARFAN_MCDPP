@@ -6,7 +6,7 @@ Phase 6 Data Model - ClusterScore
 This module defines the ClusterScore dataclass for Phase 6 output.
 Phase 6 aggregates 10 AreaScore objects into 4 ClusterScore objects.
 
-Module: src/farfan_pipeline/phases/Phase_6/phase6_10_00_cluster_score.py
+Module: src/farfan_pipeline/phases/Phase_06/phase6_10_00_cluster_score.py
 Purpose: Define ClusterScore data model for Phase 6
 Owner: phase6_10
 Lifecycle: ACTIVE

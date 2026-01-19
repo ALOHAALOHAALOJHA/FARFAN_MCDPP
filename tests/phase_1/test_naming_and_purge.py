@@ -21,7 +21,7 @@ class TestNamingConventions:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
         )
         assert canonical_path.exists(), f"Canonical path must exist: {canonical_path}"
         assert canonical_path.is_dir(), f"Canonical path must be a directory"
@@ -33,7 +33,7 @@ class TestNamingConventions:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
         )
 
         for file_path in canonical_path.rglob("*"):
@@ -47,7 +47,7 @@ class TestNamingConventions:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
         )
 
         for file_path in canonical_path.rglob("*"):
@@ -63,7 +63,7 @@ class TestNamingConventions:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
         )
 
         phase_specific_files = [
@@ -87,7 +87,7 @@ class TestNamingConventions:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
         )
 
         for file_path in canonical_path.rglob("*.py"):
@@ -154,7 +154,7 @@ class TestPurgeVerification:
                 ")",
                 "!",
                 "-path",
-                "*/Phase_1/*",
+                "*/Phase_01/*",
                 "!",
                 "-path",
                 "*/__pycache__/*",
@@ -208,7 +208,7 @@ class TestImportPaths:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
         )
         assert canonical_path.exists(), f"Canonical path must exist: {canonical_path}"
 

@@ -418,7 +418,7 @@ class TestFactoryMigration:
         q.source == "modular_resolver" or source_path contains "modular_resolver"
         """
         # Patch the CANONICAL_QUESTIONNAIRE_PATH to use test data
-        import farfan_pipeline.phases.Phase_2.phase2_10_00_factory as factory_module
+        import farfan_pipeline.phases.Phase_02.phase2_10_00_factory as factory_module
 
         original_path = factory_module.CANONICAL_QUESTIONNAIRE_PATH
 
@@ -446,7 +446,7 @@ class TestFactoryMigration:
         Load twice, same instance.
         """
         # This test verifies the factory's singleton behavior
-        import farfan_pipeline.phases.Phase_2.phase2_10_00_factory as factory_module
+        import farfan_pipeline.phases.Phase_02.phase2_10_00_factory as factory_module
 
         # Reset singleton
         factory_module.AnalysisPipelineFactory._questionnaire_loaded = False
@@ -480,7 +480,7 @@ class TestFactoryMigration:
 
         Reject unknown sources.
         """
-        import farfan_pipeline.phases.Phase_2.phase2_10_00_factory as factory_module
+        import farfan_pipeline.phases.Phase_02.phase2_10_00_factory as factory_module
 
         # Create factory
         factory = factory_module.AnalysisPipelineFactory()

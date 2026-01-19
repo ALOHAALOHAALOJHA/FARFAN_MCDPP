@@ -7,13 +7,13 @@
       "distinct_consumers": 25,
       "by_consumer_scope": {
         "External": 2,
-        "Phase_1": 15,
+        "Phase_01": 15,
         "Cross-Phase": 17,
-        "Phase_3": 15,
-        "Phase_2": 45,
-        "Phase_0": 379,
-        "Phase_8": 1,
-        "Phase_7": 1
+        "Phase_03": 15,
+        "Phase_02": 45,
+        "Phase_00": 379,
+        "Phase_08": 1,
+        "Phase_07": 1
       },
       "by_scope_alignment": {
         "PARTIAL": 29,
@@ -51,13 +51,13 @@
       "distinct_consumers": 25,
       "by_consumer_scope": {
         "External": 2,
-        "Phase_1": 15,
+        "Phase_01": 15,
         "Cross-Phase": 17,
-        "Phase_3": 15,
-        "Phase_2": 45,
-        "Phase_0": 379,
-        "Phase_8": 1,
-        "Phase_7": 1
+        "Phase_03": 15,
+        "Phase_02": 45,
+        "Phase_00": 379,
+        "Phase_08": 1,
+        "Phase_07": 1
       },
       "by_scope_alignment": {
         "PARTIAL": 29,

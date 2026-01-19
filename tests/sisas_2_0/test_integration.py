@@ -121,7 +121,7 @@ class TestFullPipelineIntegration:
         from canonic_questionnaire_central.core.signal import SignalProvenance
         
         # Create a signal manually
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="TestExtractor", source_file="test.txt")
         
         signal = Signal.create(
@@ -137,7 +137,7 @@ class TestFullPipelineIntegration:
         # Dispatch through resolver
         delivered = resolver.dispatch_signal(signal)
         
-        assert delivered, "Signal should be delivered to phase_1 consumer"
+        assert delivered, "Signal should be delivered to phase_01 consumer"
         
         # Check audit
         audit = resolver.sdo.get_audit_log(signal.signal_id)
@@ -150,7 +150,7 @@ class TestFullPipelineIntegration:
         from canonic_questionnaire_central.core.signal import SignalProvenance
         
         # Create a low-value signal (should be rejected)
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="TestExtractor", source_file="test.txt")
         
         low_value_signal = Signal.create(
@@ -177,7 +177,7 @@ class TestFullPipelineIntegration:
         from canonic_questionnaire_central import Signal, SignalType, SignalScope
         from canonic_questionnaire_central.core.signal import SignalProvenance
         
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="TestExtractor", source_file="test.txt")
         
         signal = Signal.create(

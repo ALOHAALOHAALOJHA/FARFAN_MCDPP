@@ -9,9 +9,9 @@ Phase 5 (Area Policy Aggregation) has been **successfully extracted** from the "
 ### Source Materials
 - **Base Reference**: PR #588 SURGERY_REPORT.md
 - **Extracted From**: 
-  - `Phase_4/phase4_10_00_aggregation.py` (removed code: AreaScore, AreaPolicyAggregator)
-  - `Phase_4/phase4_10_00_aggregation_integration.py` (aggregate_policy_areas_async)
-  - `Phase_4/phase4_10_00_aggregation_validation.py` (validate_phase5_output)
+  - `Phase_04/phase4_10_00_aggregation.py` (removed code: AreaScore, AreaPolicyAggregator)
+  - `Phase_04/phase4_10_00_aggregation_integration.py` (aggregate_policy_areas_async)
+  - `Phase_04/phase4_10_00_aggregation_validation.py` (validate_phase5_output)
 
 ### Files Created (11 Total)
 
@@ -88,10 +88,10 @@ Phase 5 (Area Policy Aggregation) has been **successfully extracted** from the "
    - Phase 5 focus documented
    - Contract specifications
 
-### Files Modified (1 file in Phase_4)
-1. **`Phase_4/phase4_10_00_aggregation_integration.py`**
+### Files Modified (1 file in Phase_04)
+1. **`Phase_04/phase4_10_00_aggregation_integration.py`**
    - Fixed broken imports
-   - Now imports AreaScore, AreaPolicyAggregator from Phase_5
+   - Now imports AreaScore, AreaPolicyAggregator from Phase_05
    - Updated import paths
 
 ## Phase 5 Clean Contract
@@ -223,7 +223,7 @@ Phase 5 (Area Policy Aggregation) has been **successfully extracted** from the "
 
 | Aspect | Before (meta-phase 4-7) | After (Phase 5 extracted) |
 |--------|-------------------------|---------------------------|
-| Location | Mixed in Phase_4 | Dedicated Phase_5/ |
+| Location | Mixed in Phase_04 | Dedicated Phase_05/ |
 | Files | Embedded in 1 file | 11 dedicated files |
 | AreaScore | In phase4_10_00_aggregation.py | In phase5_10_00_area_aggregation.py |
 | AreaPolicyAggregator | In phase4_10_00_aggregation.py | In phase5_10_00_area_aggregation.py |
@@ -247,7 +247,7 @@ Phase 5 (Area Policy Aggregation) has been **successfully extracted** from the "
 - **Entry Point**: `aggregate_policy_areas_async()` in `phase5_10_00_area_integration.py`
 - **Usage**:
   ```python
-  from farfan_pipeline.phases.Phase_5 import aggregate_policy_areas_async
+  from farfan_pipeline.phases.Phase_05 import aggregate_policy_areas_async
   
   area_scores = await aggregate_policy_areas_async(
       dimension_scores=dimension_scores,  # 60 DimensionScore
@@ -261,7 +261,7 @@ Phase 5 (Area Policy Aggregation) has been **successfully extracted** from the "
 
 - **Extraction Duration**: ~90 minutes (including custom agent time)
 - **Files Created**: 11
-- **Files Modified**: 5 (4 in Phase_5, 1 in Phase_4)
+- **Files Modified**: 5 (4 in Phase_05, 1 in Phase_04)
 - **Lines Added**: ~1,387
 - **Orphan Files**: 0 ✅
 - **Circular Dependencies**: 0 ✅
@@ -275,7 +275,7 @@ Phase 5 (Area Policy Aggregation) has been **successfully extracted** from the "
 1. ✅ Phase 5 extraction **COMPLETE**
 2. ✅ Contracts created and validated
 3. ✅ Chain report generated (0 orphans, 0 cycles)
-4. ✅ Integration fixed in Phase_4
+4. ✅ Integration fixed in Phase_04
 
 ### Short-Term (Optimization)
 1. 📝 Complete technical documentation (DAG, flow, anomalies)

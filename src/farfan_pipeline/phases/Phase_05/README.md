@@ -16,7 +16,7 @@
 | **Pipeline Position** | Phase 4 (Dimension) → **Phase 5** → Phase 6 (Cluster) |
 | **Criticality** | `HIGH` |
 | **Surgery Date** | 2026-01-13 (Extracted from Phase 4 meta-phase) |
-| **Certification** | [CERTIFICATE_02_PHASE5_COUNT_10](../Phase_4/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) |
+| **Certification** | [CERTIFICATE_02_PHASE5_COUNT_10](../Phase_04/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) |
 
 ---
 
@@ -855,7 +855,7 @@ QUALITY_THRESHOLDS = {
 ### 9.2 Stage Directory Structure
 
 ```
-Phase_5/
+Phase_05/
 ├── __init__.py                          # Package façade
 ├── README.md                            # This document
 ├── PHASE_5_MANIFEST.json                # Phase metadata
@@ -1014,7 +1014,7 @@ Each AreaScore maintains:
 │                  PHASE 5 MODULE DEPENDENCIES                    │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  Phase_5/__init__.py                                           │
+│  Phase_05/__init__.py                                           │
 │       │                                                         │
 │       ├── phase5_10_00_phase_5_constants.py                    │
 │       │       ├── POLICY_AREAS                                 │
@@ -1026,18 +1026,18 @@ Each AreaScore maintains:
 │       └── [DELEGATED TO PHASE 4]                               │
 │               │                                                 │
 │               ▼                                                 │
-│       Phase_4/phase4_10_00_aggregation.py                      │
+│       Phase_04/phase4_10_00_aggregation.py                      │
 │               ├── AreaPolicyAggregator                         │
 │               ├── AreaScore                                    │
 │               ├── DimensionScore                               │
 │               ├── AggregationSettings                          │
 │               └── calculate_weighted_average()                 │
 │                                                                 │
-│       Phase_4/aggregation_provenance.py                        │
+│       Phase_04/aggregation_provenance.py                        │
 │               ├── AggregationDAG                               │
 │               └── ProvenanceNode                               │
 │                                                                 │
-│       Phase_4/uncertainty_quantification.py                    │
+│       Phase_04/uncertainty_quantification.py                    │
 │               ├── BootstrapAggregator                          │
 │               └── UncertaintyMetrics                           │
 │                                                                 │
@@ -1046,7 +1046,7 @@ Each AreaScore maintains:
 
 ### 12.2 Integration with Phase 4
 
-Phase 5 logic is primarily implemented in `Phase_4/phase4_10_00_aggregation.py` via the `AreaPolicyAggregator` class. The Phase_5 directory provides:
+Phase 5 logic is primarily implemented in `Phase_04/phase4_10_00_aggregation.py` via the `AreaPolicyAggregator` class. The Phase_05 directory provides:
 
 1. **Constants and Configuration**: Phase-specific constants in `phase5_10_00_phase_5_constants.py`
 2. **Documentation**: This README and manifest files
@@ -1085,11 +1085,11 @@ async def aggregate_policy_areas_async(
 
 | Category | Purpose | Location |
 |----------|---------|----------|
-| **Unit Tests** | Individual function validation | `tests/phase_5/test_phase5_unit.py` |
-| **Integration Tests** | Cross-module validation | `tests/phase_5/test_phase5_integration.py` |
-| **Adversarial Tests** | Edge cases and malformed input | `tests/phase_5/test_phase5_adversarial.py` |
-| **Extreme Tests** | Boundary conditions | `tests/phase_5/test_phase5_extreme_adversarial.py` |
-| **Contract Tests** | DbC verification | `tests/phase_5/test_phase5_contracts.py` |
+| **Unit Tests** | Individual function validation | `tests/phase_05/test_phase5_unit.py` |
+| **Integration Tests** | Cross-module validation | `tests/phase_05/test_phase5_integration.py` |
+| **Adversarial Tests** | Edge cases and malformed input | `tests/phase_05/test_phase5_adversarial.py` |
+| **Extreme Tests** | Boundary conditions | `tests/phase_05/test_phase5_extreme_adversarial.py` |
+| **Contract Tests** | DbC verification | `tests/phase_05/test_phase5_contracts.py` |
 
 ### 13.2 Key Test Cases
 
@@ -1153,7 +1153,7 @@ class TestPipelineFlowValidation:
 
 ### 13.3 Compliance Certificate
 
-**Certificate ID**: [CERTIFICATE_02_PHASE5_COUNT_10](../Phase_4/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md)
+**Certificate ID**: [CERTIFICATE_02_PHASE5_COUNT_10](../Phase_04/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md)
 
 | Requirement | Status |
 |-------------|--------|
@@ -1229,12 +1229,12 @@ When `abort_on_insufficient=False`:
 
 | Document | Description |
 |----------|-------------|
-| [Phase 4 README](../Phase_4/README.md) | Dimension aggregation (micro → dimension) |
-| [Phase 6 README](../Phase_6/README.md) | Cluster aggregation (area → cluster) |
-| [Phase 7 README](../Phase_7/README.md) | Macro evaluation (cluster → global) |
+| [Phase 4 README](../Phase_04/README.md) | Dimension aggregation (micro → dimension) |
+| [Phase 6 README](../Phase_06/README.md) | Cluster aggregation (area → cluster) |
+| [Phase 7 README](../Phase_07/README.md) | Macro evaluation (cluster → global) |
 | [AGGREGATION_QUICK_REFERENCE](../../../../docs/AGGREGATION_QUICK_REFERENCE.md) | Quick reference for aggregation usage |
 | [ARCHITECTURE](../../../../docs/ARCHITECTURE.md) | System architecture overview |
-| [CERTIFICATE_02](../Phase_4/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) | Phase 5 compliance certificate |
+| [CERTIFICATE_02](../Phase_04/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) | Phase 5 compliance certificate |
 
 ### 16.2 Academic References
 
@@ -1251,10 +1251,10 @@ When `abort_on_insufficient=False`:
 | File | Purpose |
 |------|---------|
 | `phase5_10_00_phase_5_constants.py` | Constants and enums |
-| `../Phase_4/phase4_10_00_aggregation.py` | Core aggregator implementation |
-| `../Phase_4/phase4_10_00_aggregation_validation.py` | Validation functions |
-| `../Phase_4/aggregation_provenance.py` | Provenance DAG implementation |
-| `tests/phase_5/test_phase5_integration.py` | Integration tests |
+| `../Phase_04/phase4_10_00_aggregation.py` | Core aggregator implementation |
+| `../Phase_04/phase4_10_00_aggregation_validation.py` | Validation functions |
+| `../Phase_04/aggregation_provenance.py` | Provenance DAG implementation |
+| `tests/phase_05/test_phase5_integration.py` | Integration tests |
 
 ---
 
@@ -1328,8 +1328,8 @@ When `abort_on_insufficient=False`:
 ║                                                                           ║
 ║  KEY FILES:                                                               ║
 ║    Constants: phase5_10_00_phase_5_constants.py                          ║
-║    Aggregator: Phase_4/phase4_10_00_aggregation.py::AreaPolicyAggregator ║
-║    Validation: Phase_4/phase4_10_00_aggregation_validation.py            ║
+║    Aggregator: Phase_04/phase4_10_00_aggregation.py::AreaPolicyAggregator ║
+║    Validation: Phase_04/phase4_10_00_aggregation_validation.py            ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 ```

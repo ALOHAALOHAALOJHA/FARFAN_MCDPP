@@ -22,7 +22,7 @@ class Phase2ContractConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase2_contract_consumer.py"
-    consumer_phase: str = "phase_2"
+    consumer_phase: str = "phase_02"
 
     def __post_init__(self):
         super().__post_init__()
@@ -38,8 +38,8 @@ class Phase2ContractConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus", "integrity_bus", "operational_bus"],
             context_filters={
-                "phase": ["phase_2"],
-                "consumer_scope": ["Phase_2"]
+                "phase": ["phase_02"],
+                "consumer_scope": ["Phase_02"]
             },
             required_capabilities=["can_validate", "can_enrich"]
         )

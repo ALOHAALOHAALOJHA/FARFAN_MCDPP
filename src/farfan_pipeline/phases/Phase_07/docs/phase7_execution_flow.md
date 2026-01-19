@@ -165,7 +165,7 @@ Implemented in: `contracts/phase7_output_contract.py`
 
 ### Upstream (Phase 6)
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterScore
+from farfan_pipeline.phases.Phase_06 import ClusterScore
 
 # Phase 6 produces 4 ClusterScore objects
 cluster_scores: list[ClusterScore] = phase6_output
@@ -173,7 +173,7 @@ cluster_scores: list[ClusterScore] = phase6_output
 
 ### Downstream (Phase 8)
 ```python
-from farfan_pipeline.phases.Phase_7 import MacroScore
+from farfan_pipeline.phases.Phase_07 import MacroScore
 
 # Phase 7 produces 1 MacroScore object
 macro_score: MacroScore = phase7_output

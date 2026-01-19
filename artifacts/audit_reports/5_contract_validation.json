@@ -102,8 +102,8 @@
         ],
         "subscribed_buses": ["structural_bus", "integrity_bus"],
         "context_filters": {
-          "phase": ["phase_0"],
-          "consumer_scope": ["Phase_0", "Cross-Phase"]
+          "phase": ["phase_00"],
+          "consumer_scope": ["Phase_00", "Cross-Phase"]
         },
         "status": "VALID"
       },
@@ -118,8 +118,8 @@
         ],
         "subscribed_buses": ["operational_bus", "consumption_bus"],
         "context_filters": {
-          "phase": ["phase_2"],
-          "consumer_scope": ["Phase_2"]
+          "phase": ["phase_02"],
+          "consumer_scope": ["Phase_02"]
         },
         "status": "VALID but producers missing (FrequencySignal, ConsumerHealthSignal not produced)"
       },

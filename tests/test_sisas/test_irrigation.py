@@ -26,8 +26,8 @@ class TestIrrigationMap:
     def test_create_route(self):
         source = IrrigationSource(
             file_path="clusters/CL01/metadata.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["phase0_bootstrap.py"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -41,7 +41,7 @@ class TestIrrigationMap:
             vehicles=["signal_registry"],
             targets=[IrrigationTarget(
                 consumer_id="phase0_bootstrap.py",
-                consumer_phase="phase_0"
+                consumer_phase="phase_00"
             )],
             is_active=True
         )
@@ -54,8 +54,8 @@ class TestIrrigationMap:
         
         source = IrrigationSource(
             file_path="test/test.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["consumer1"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -65,7 +65,7 @@ class TestIrrigationMap:
         route = IrrigationRoute(
             source=source,
             vehicles=["signal_registry"],
-            targets=[IrrigationTarget(consumer_id="consumer1", consumer_phase="phase_0")],
+            targets=[IrrigationTarget(consumer_id="consumer1", consumer_phase="phase_00")],
             is_active=True
         )
         
@@ -78,7 +78,7 @@ class TestIrrigationMap:
         irrigation_map = IrrigationMap()
         
         # Agregar rutas de diferentes fases
-        for phase in ["Phase_0", "Phase_1", "Phase_0"]:
+        for phase in ["Phase_00", "Phase_01", "Phase_00"]:
             source = IrrigationSource(
                 file_path=f"test/{phase}/file.json",
                 stage=phase.lower(),
@@ -91,7 +91,7 @@ class TestIrrigationMap:
             route = IrrigationRoute(source=source, vehicles=["signal_registry"])
             irrigation_map.add_route(route)
         
-        phase0_routes = irrigation_map.get_routes_for_phase("Phase_0")
+        phase0_routes = irrigation_map.get_routes_for_phase("Phase_00")
         assert len(phase0_routes) == 2
     
     def test_get_blocked_routes(self):
@@ -100,8 +100,8 @@ class TestIrrigationMap:
         # Ruta bloqueada
         source1 = IrrigationSource(
             file_path="blocked/file.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=[],  # Sin vehículo
             consumers=[],
             irrigability=IrrigabilityStatus.NOT_IRRIGABLE_YET,
@@ -113,8 +113,8 @@ class TestIrrigationMap:
         # Ruta no bloqueada
         source2 = IrrigationSource(
             file_path="ok/file.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["consumer1"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -141,8 +141,8 @@ class TestIrrigationMap:
         for i, status in enumerate(statuses):
             source = IrrigationSource(
                 file_path=f"test/file_{i}.json",
-                stage="phase_0",
-                phase="Phase_0",
+                stage="phase_00",
+                phase="Phase_00",
                 vehicles=["v1"] if status == IrrigabilityStatus.IRRIGABLE_NOW else [],
                 consumers=[],
                 irrigability=status,
@@ -206,8 +206,8 @@ class TestIrrigationExecutor:
     def test_execute_route_success(self, executor, temp_canonical_file):
         source = IrrigationSource(
             file_path=temp_canonical_file,
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["test_consumer"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -219,7 +219,7 @@ class TestIrrigationExecutor:
             vehicles=["signal_registry"],
             targets=[IrrigationTarget(
                 consumer_id="test_consumer",
-                consumer_phase="phase_0"
+                consumer_phase="phase_00"
             )],
             is_active=True
         )
@@ -233,8 +233,8 @@ class TestIrrigationExecutor:
     def test_execute_route_blocked(self, executor):
         source = IrrigationSource(
             file_path="nonexistent/file.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=[],  # Sin vehículo
             consumers=[],
             irrigability=IrrigabilityStatus.NOT_IRRIGABLE_YET,
@@ -253,8 +253,8 @@ class TestIrrigationExecutor:
         for i in range(3):
             source = IrrigationSource(
                 file_path=temp_canonical_file,
-                stage="phase_0",
-                phase="Phase_0",
+                stage="phase_00",
+                phase="Phase_00",
                 vehicles=["signal_registry"],
                 consumers=["consumer"],
                 irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -263,7 +263,7 @@ class TestIrrigationExecutor:
             route = IrrigationRoute(
                 source=source,
                 vehicles=["signal_registry"],
-                targets=[IrrigationTarget(consumer_id="consumer", consumer_phase="phase_0")]
+                targets=[IrrigationTarget(consumer_id="consumer", consumer_phase="phase_00")]
             )
             executor.execute_route(route)
         

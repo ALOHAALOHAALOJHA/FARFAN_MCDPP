@@ -25,7 +25,7 @@ class TestConstitutionalInvariant:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "contracts"
             / "phase1_10_00_phase1_constitutional_contract.py"
         )
@@ -53,7 +53,7 @@ class TestConstitutionalInvariant:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "contracts"
         )
 
@@ -79,7 +79,7 @@ class TestConstitutionalInvariant:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "contracts"
             / "phase1_10_00_phase1_mission_contract.py"
         )
@@ -108,7 +108,7 @@ class TestConstitutionalInvariant:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "contracts"
             / "phase1_10_00_phase1_mission_contract.py"
         )
@@ -152,7 +152,7 @@ class TestCertificates:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "contracts"
             / "certificates"
         )
@@ -174,7 +174,7 @@ class TestCertificates:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "contracts"
             / "certificates"
         )

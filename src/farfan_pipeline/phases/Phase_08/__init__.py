@@ -2,7 +2,7 @@
 Phase Eight: Recommendation Engine
 ===================================
 
-Module: src.farfan_pipeline.phases.Phase_8
+Module: src.farfan_pipeline.phases.Phase_08
 Purpose: Phase 8 of F.A.R.F.A.N pipeline - Rule-based recommendation generation
 Owner: phase8_core
 Lifecycle: ACTIVE
@@ -22,7 +22,7 @@ based on scoring results from Phase 7. Uses enhanced rule templates with:
 
 Directory Structure (GNEA Compliant):
 -------------------------------------
-Phase_8/
+Phase_08/
 ├── __init__.py                                     # This file
 ├── PHASE_8_MANIFEST.json                           # Phase manifest
 ├── phase8_00_00_data_models.py                     # Data models

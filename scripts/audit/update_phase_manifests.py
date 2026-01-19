@@ -26,7 +26,7 @@ def get_canonical_phases(phases_dir: Path) -> List[Path]:
     """Get all canonical phase directories."""
     canonical_phases = []
     for d in sorted(phases_dir.iterdir()):
-        if d.is_dir() and d.name.startswith("Phase_") and d.name not in ["Phase_4", "Phase_zero"]:
+        if d.is_dir() and d.name.startswith("Phase_") and d.name not in ["Phase_04", "Phase_zero"]:
             canonical_phases.append(d)
     return canonical_phases
 

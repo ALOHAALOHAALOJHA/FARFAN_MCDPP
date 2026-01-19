@@ -38,10 +38,10 @@ Este documento presenta la **especificación técnica armonizada** del sistema d
 src/farfan_pipeline/infrastructure/extractors/
 └── sota_transformer_ner_extractor.py                    (1,100 líneas) ✅ NUEVO
 
-src/farfan_pipeline/phases/Phase_8/
+src/farfan_pipeline/phases/Phase_08/
 └── phase8_35_00_entity_targeted_recommendations.py      (800 líneas) ✅ NUEVO
 
-src/farfan_pipeline/phases/Phase_9/
+src/farfan_pipeline/phases/Phase_09/
 └── phase9_15_00_institutional_entity_annex.py           (950 líneas) ✅ NUEVO
 
 canonic_questionnaire_central/cross_cutting/
@@ -606,10 +606,10 @@ def validate_cross_cutting_coverage(self, entities, cross_cutting_themes):
 src/farfan_pipeline/infrastructure/extractors/
 └── sota_transformer_ner_extractor.py (1,100 líneas)
 
-src/farfan_pipeline/phases/Phase_8/
+src/farfan_pipeline/phases/Phase_08/
 └── phase8_35_00_entity_targeted_recommendations.py (800 líneas)
 
-src/farfan_pipeline/phases/Phase_9/
+src/farfan_pipeline/phases/Phase_09/
 └── phase9_15_00_institutional_entity_annex.py (950 líneas)
 
 canonic_questionnaire_central/cross_cutting/

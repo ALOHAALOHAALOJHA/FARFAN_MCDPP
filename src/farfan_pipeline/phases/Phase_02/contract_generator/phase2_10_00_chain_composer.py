@@ -2,7 +2,7 @@
 Módulo:  chain_composer.py
 Propósito: Componer cadena epistémica ordenada a partir de unidades expandidas
 
-Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/chain_composer.py
+Ubicación: src/farfan_pipeline/phases/Phase_02/contract_generator/chain_composer.py
 
 RESPONSABILIDADES:
 1. Validar coherencia nivel-fase antes de composición (E-001)

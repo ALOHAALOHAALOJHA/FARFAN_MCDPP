@@ -157,7 +157,7 @@ Automated chain analyzer that:
 **Usage**:
 ```bash
 python scripts/audit/verify_phase_chain.py --phase 1 --strict \
-  --output src/farfan_pipeline/phases/Phase_1/contracts/phase1_chain_report.json
+  --output src/farfan_pipeline/phases/Phase_01/contracts/phase1_chain_report.json
 ```
 
 **Output**: `phase1_chain_report.json` with complete analysis
@@ -195,7 +195,7 @@ Fixed 3 files with git merge conflict markers:
 
 #### Contract Validation ✅
 ```python
->>> from farfan_pipeline.phases.Phase_1.contracts import *
+>>> from farfan_pipeline.phases.Phase_01.contracts import *
 ✅ Input contract: 5 preconditions
 ✅ Mission contract: 16 subphases, 14 modules in topological order
 ✅ Output contract: 6 postconditions
@@ -275,9 +275,9 @@ Fixed 3 files with git merge conflict markers:
 4. Run `verify_phase_chain.py` after structural changes
 
 ### For Reviewers
-1. Verify contracts: `python -c "from farfan_pipeline.phases.Phase_1.contracts import *"`
+1. Verify contracts: `python -c "from farfan_pipeline.phases.Phase_01.contracts import *"`
 2. Run tests: `pytest tests/test_phase1_encadenamiento.py -v`
-3. Check chain report: `cat src/farfan_pipeline/phases/Phase_1/contracts/phase1_chain_report.json`
+3. Check chain report: `cat src/farfan_pipeline/phases/Phase_01/contracts/phase1_chain_report.json`
 
 ### For Future Audits
 1. Use `scripts/audit/verify_phase_chain.py --phase N` for other phases

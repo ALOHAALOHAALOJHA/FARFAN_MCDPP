@@ -186,14 +186,14 @@ def test_metrics_files_have_required_content() -> None:
             phase_data = json.load(f)
         
         assert "0" in phase_data, "REGRESSION: phase_metrics.json missing phase data"
-        phase_0 = phase_data["0"]
+        phase_00 = phase_data["0"]
         
         required_fields = [
             "phase_id", "name", "duration_ms", "items_processed",
             "items_total", "throughput", "latency_histogram"
         ]
         for field in required_fields:
-            assert field in phase_0, \
+            assert field in phase_00, \
                 f"REGRESSION: phase_metrics.json missing required field: {field}"
         
         # Check latency_histograms.json has percentiles

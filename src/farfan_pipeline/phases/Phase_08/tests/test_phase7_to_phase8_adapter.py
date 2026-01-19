@@ -280,7 +280,7 @@ def test_adapter_metadata_provenance(valid_macro_score, valid_phase5_output):
     
     metadata = result["metadata"]
     
-    assert metadata["source_phase"] == "Phase_7"
+    assert metadata["source_phase"] == "Phase_07"
     assert metadata["evaluation_id"] == valid_macro_score.evaluation_id
     assert "provenance_chain" in metadata
 

@@ -4,23 +4,15 @@ SISAS-Aware Orchestration Module
 This module provides signal-driven orchestration for the FARFAN pipeline.
 All phase coordination is handled through signals, not direct invocation.
 
-Architecture:
-- MainOrchestrator: Core signal-driven orchestrator
-- Orchestration Core: Consolidated state machine, dependency graph, and scheduler
-- Signal Contracts: All orchestration signals (lifecycle, decision, coordination)
+NOTE: The orchestrator files (main_orchestrator.py, orchestration_core.py) have been
+consolidated into the unified orchestrator.py. This module now re-exports the
+relevant components from the unified orchestrator.
 
-Version: 1.0.0
+Version: 2.0.0 (Unified)
 """
 
-# Core Orchestrator
-from .main_orchestrator import (
-    MainOrchestrator,
-    OrchestratorConfiguration,
-    OrchestratorMode,
-)
-
-# Orchestration Core (Consolidated: State Machine, Dependency Graph, Phase Scheduler)
-from .orchestration_core import (
+# Import from unified orchestrator
+from farfan_pipeline.orchestration.orchestrator import (
     # Exceptions
     OrchestrationError,
     DependencyResolutionError,
@@ -29,7 +21,6 @@ from .orchestration_core import (
     # State Machine
     OrchestrationState,
     StateTransition,
-    VALID_TRANSITIONS,
     OrchestrationStateMachine,
     # Dependency Graph
     DependencyStatus,
@@ -41,9 +32,11 @@ from .orchestration_core import (
     SchedulingStrategy,
     SchedulingDecision,
     PhaseScheduler,
+    # Configuration
+    OrchestratorConfig,
 )
 
-# Signal Contracts - Now imported from SISAS
+# Signal Contracts - Imported from SISAS
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types import (
     # Phase Lifecycle
     PhaseCompletionStatus,
@@ -72,20 +65,20 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types
     create_dependency_graph_updated_signal,
 )
 
-__version__ = "1.0.0"
+# Aliases for backward compatibility
+MainOrchestrator = None  # TODO: Implement signal-driven orchestrator in unified module
+OrchestratorConfiguration = OrchestratorConfig
+OrchestratorMode = None  # Use SchedulingStrategy instead
+
+__version__ = "2.0.0"
 __all__ = [
-    # Core Orchestrator
-    "MainOrchestrator",
-    "OrchestratorConfiguration",
-    "OrchestratorMode",
-    # Orchestration Core (State Machine, Dependency Graph, Phase Scheduler)
+    # Unified Orchestrator imports
     "OrchestrationError",
     "DependencyResolutionError",
     "SchedulingError",
     "StateTransitionError",
     "OrchestrationState",
     "StateTransition",
-    "VALID_TRANSITIONS",
     "OrchestrationStateMachine",
     "DependencyStatus",
     "DependencyNode",
@@ -95,6 +88,13 @@ __all__ = [
     "SchedulingStrategy",
     "SchedulingDecision",
     "PhaseScheduler",
+    "OrchestratorConfig",
+
+    # Backward compatibility aliases
+    "MainOrchestrator",
+    "OrchestratorConfiguration",
+    "OrchestratorMode",
+
     # Signals
     "PhaseCompletionStatus",
     "PhaseStartSignal",

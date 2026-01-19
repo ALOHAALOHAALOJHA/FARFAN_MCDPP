@@ -36,7 +36,7 @@ import hashlib
 @pytest.fixture(scope="module")
 def phase8_path():
     """Get Phase 8 source path."""
-    return Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_8"
+    return Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_08"
 
 
 @pytest.fixture(scope="module")
@@ -612,7 +612,7 @@ class TestPhase8Integration:
 
     def test_phase8_importable(self):
         """Test Phase 8 package is importable."""
-        import farfan_pipeline.phases.Phase_8 as phase8
+        import farfan_pipeline.phases.Phase_08 as phase8
         
         assert hasattr(phase8, "__version__")
         assert hasattr(phase8, "__phase__")

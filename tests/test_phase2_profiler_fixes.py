@@ -21,14 +21,14 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-# Import directly to avoid syntax errors in other Phase_2 files
+# Import directly to avoid syntax errors in other Phase_02 files
 spec = importlib.util.spec_from_file_location(
     "executor_profiler",
     Path(__file__).resolve().parent.parent
     / "src"
     / "farfan_pipeline"
     / "phases"
-    / "Phase_2"
+    / "Phase_02"
     / "executor_profiler.py",
 )
 assert spec is not None and spec.loader is not None

@@ -625,12 +625,12 @@ class HarmonizationValidator:
 
         # Configuración de dependencias correcta
         correct_deps = {
-            "phase_0": [],
-            "phase_1": ["phase_0"],
-            "phase_2": ["phase_1"],
-            "phase_3": ["phase_1", "phase_2"],
-            "phase_7": ["phase_2"],
-            "phase_8": ["phase_3"],
+            "phase_00": [],
+            "phase_01": ["phase_00"],
+            "phase_02": ["phase_01"],
+            "phase_03": ["phase_01", "phase_02"],
+            "phase_07": ["phase_02"],
+            "phase_08": ["phase_03"],
         }
 
         # Detectar violaciones

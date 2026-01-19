@@ -591,7 +591,7 @@ class WiringConfiguration:
             "phase0_bootstrap": ConsumptionContract(
                 contract_id="cons_phase0_bootstrap",
                 consumer_id="phase0_bootstrap",
-                consumer_phase="phase_0",
+                consumer_phase="phase_00",
                 subscribed_signal_types=[
                     "StructuralAlignmentSignal",
                     "EventPresenceSignal",
@@ -602,7 +602,7 @@ class WiringConfiguration:
             "phase0_providers": ConsumptionContract(
                 contract_id="cons_phase0_providers",
                 consumer_id="phase0_providers",
-                consumer_phase="phase_0",
+                consumer_phase="phase_00",
                 subscribed_signal_types=[
                     "CanonicalMappingSignal",
                     "EventCompletenessSignal"
@@ -612,7 +612,7 @@ class WiringConfiguration:
             "phase1_signal_enrichment": ConsumptionContract(
                 contract_id="cons_phase1_signal_enrichment",
                 consumer_id="phase1_signal_enrichment",
-                consumer_phase="phase_1",
+                consumer_phase="phase_01",
                 subscribed_signal_types=[
                     "MethodApplicationSignal",
                     "EmpiricalSupportSignal",
@@ -623,7 +623,7 @@ class WiringConfiguration:
             "phase2_factory_consumer": ConsumptionContract(
                 contract_id="cons_phase2_factory_consumer",
                 consumer_id="phase2_factory_consumer",
-                consumer_phase="phase_2",
+                consumer_phase="phase_02",
                 subscribed_signal_types=[
                     "CanonicalMappingSignal",
                     "EventPresenceSignal"
@@ -633,7 +633,7 @@ class WiringConfiguration:
             "phase2_evidence_consumer": ConsumptionContract(
                 contract_id="cons_phase2_evidence_consumer",
                 consumer_id="phase2_evidence_consumer",
-                consumer_phase="phase_2",
+                consumer_phase="phase_02",
                 subscribed_signal_types=[
                     "EmpiricalSupportSignal",
                     "MethodApplicationSignal"
@@ -643,7 +643,7 @@ class WiringConfiguration:
             "phase3_scoring": ConsumptionContract(
                 contract_id="cons_phase3_scoring",
                 consumer_id="phase3_scoring",
-                consumer_phase="phase_3",
+                consumer_phase="phase_03",
                 subscribed_signal_types=[
                     "DataIntegritySignal",
                     "EventCompletenessSignal"
@@ -653,7 +653,7 @@ class WiringConfiguration:
             "phase8_recommendations": ConsumptionContract(
                 contract_id="cons_phase8_recommendations",
                 consumer_id="phase8_recommendations",
-                consumer_phase="phase_8",
+                consumer_phase="phase_08",
                 subscribed_signal_types=[
                     "EmpiricalSupportSignal",
                     "MethodApplicationSignal",

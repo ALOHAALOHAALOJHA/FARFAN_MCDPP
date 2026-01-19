@@ -9,8 +9,8 @@ from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
 def test_boot_checks_dev_mode(mock_config):
     """Test boot checks pass/warn in DEV mode."""
     # Mock all checks to fail or pass
-    with patch("farfan_pipeline.phases.Phase_0.phase0_50_00_boot_checks.check_contradiction_module_available", return_value=False), \
-         patch("farfan_pipeline.phases.Phase_0.phase0_50_00_boot_checks.check_wiring_validator_available", return_value=True):
+    with patch("farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks.check_contradiction_module_available", return_value=False), \
+         patch("farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks.check_wiring_validator_available", return_value=True):
          
          results = run_boot_checks(mock_config)
          assert results["wiring_validator"] is True
@@ -23,6 +23,6 @@ def test_boot_checks_prod_fatal(mock_config):
     object.__setattr__(mock_config, 'mode', RuntimeMode.PROD)
     object.__setattr__(mock_config, 'allow_contradiction_fallback', False)
     
-    with patch("farfan_pipeline.phases.Phase_0.phase0_50_00_boot_checks.check_contradiction_module_available", side_effect=BootCheckError("mod", "reason", "code")):
+    with patch("farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks.check_contradiction_module_available", side_effect=BootCheckError("mod", "reason", "code")):
         with pytest.raises(BootCheckError):
             run_boot_checks(mock_config)

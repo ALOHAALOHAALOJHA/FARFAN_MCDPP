@@ -35,12 +35,12 @@ class ContractPurgeAuditor:
         self.contract_directories = [
             "artifacts/data/contracts",
             "src/farfan_pipeline/infrastructure/contractual",
-            "src/farfan_pipeline/phases/Phase_1/contracts",
-            "src/farfan_pipeline/phases/Phase_2/contract_generator",
-            "src/farfan_pipeline/phases/Phase_2/contracts",
-            "src/farfan_pipeline/phases/Phase_2/generated_contracts",
-            "src/farfan_pipeline/phases/Phase_3/contracts",
-            "src/farfan_pipeline/phases/Phase_4/contracts",
+            "src/farfan_pipeline/phases/Phase_01/contracts",
+            "src/farfan_pipeline/phases/Phase_02/contract_generator",
+            "src/farfan_pipeline/phases/Phase_02/contracts",
+            "src/farfan_pipeline/phases/Phase_02/generated_contracts",
+            "src/farfan_pipeline/phases/Phase_03/contracts",
+            "src/farfan_pipeline/phases/Phase_04/contracts",
             "tests/phase2_contracts",
         ]
         

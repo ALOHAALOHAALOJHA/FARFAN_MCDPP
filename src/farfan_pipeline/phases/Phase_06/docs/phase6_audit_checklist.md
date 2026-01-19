@@ -17,7 +17,7 @@ This checklist must be completed before Phase 6 is considered "Definition of Don
 ## 1. File Identification & Inventory
 
 - [x] **1.1** Identified all Phase 6 files from SURGERY_REPORT.md
-  - Evidence: `src/farfan_pipeline/phases/Phase_4/SURGERY_REPORT.md` lines 69-73
+  - Evidence: `src/farfan_pipeline/phases/Phase_04/SURGERY_REPORT.md` lines 69-73
   - Files: adaptive_meso_scoring.py (4 copies)
 
 - [x] **1.2** Created comprehensive file inventory
@@ -29,26 +29,26 @@ This checklist must be completed before Phase 6 is considered "Definition of Don
 ## 2. Data Model Reconstruction
 
 - [x] **2.1** AreaScore dataclass created
-  - Evidence: `src/farfan_pipeline/phases/Phase_5/phase5_10_00_area_score.py`
+  - Evidence: `src/farfan_pipeline/phases/Phase_05/phase5_10_00_area_score.py`
   - Lines: 110 (complete with __post_init__ validation)
 
 - [x] **2.2** ClusterScore dataclass created
-  - Evidence: `src/farfan_pipeline/phases/Phase_6/phase6_10_00_cluster_score.py`
+  - Evidence: `src/farfan_pipeline/phases/Phase_06/phase6_10_00_cluster_score.py`
   - Lines: 138 (complete with __post_init__ validation)
 
 - [x] **2.3** Data models match test expectations
-  - Evidence: `tests/phase_6/conftest.py` MockClusterScore structure aligned
+  - Evidence: `tests/phase_06/conftest.py` MockClusterScore structure aligned
   - Verification: Field-by-field comparison completed
 
 - [x] **2.4** Import tests pass
-  - Command: `python3 -c "from farfan_pipeline.phases.Phase_5 import AreaScore; from farfan_pipeline.phases.Phase_6 import ClusterScore"`
+  - Command: `python3 -c "from farfan_pipeline.phases.Phase_05 import AreaScore; from farfan_pipeline.phases.Phase_06 import ClusterScore"`
   - Result: ✅ SUCCESS
 
 ## 3. Core Logic Migration
 
 - [x] **3.1** Migrated adaptive_meso_scoring.py to Phase 6
-  - Source: `Phase_4/phase4_10_00_adaptive_meso_scoring.py`
-  - Destination: `Phase_6/phase6_20_00_adaptive_meso_scoring.py`
+  - Source: `Phase_04/phase4_10_00_adaptive_meso_scoring.py`
+  - Destination: `Phase_06/phase6_20_00_adaptive_meso_scoring.py`
   - Status: Copied and metadata updated
 
 - [x] **3.2** Updated metadata in migrated file
@@ -64,8 +64,8 @@ This checklist must be completed before Phase 6 is considered "Definition of Don
   - File: `phase6_30_00_cluster_aggregator.py`
   - Status: ✅ COMPLETE
   - Lines: 390
-  - Evidence: `from farfan_pipeline.phases.Phase_6 import ClusterAggregator` succeeds
-  - Source:  Extracted from `Phase_4/phase4_10_00_aggregation_integration.py`
+  - Evidence: `from farfan_pipeline.phases.Phase_06 import ClusterAggregator` succeeds
+  - Source:  Extracted from `Phase_04/phase4_10_00_aggregation_integration.py`
 
 - [x] **3.5** Updated all imports to Phase 6 paths
   - Status:  ✅ COMPLETE
@@ -74,23 +74,23 @@ This checklist must be completed before Phase 6 is considered "Definition of Don
 ## 4. Foldering Standardization
 
 - [x] **4.1** Created `contracts/` directory
-  - Evidence: `ls Phase_6/contracts/`
+  - Evidence: `ls Phase_06/contracts/`
   - Contents: 4 files (3 contracts + chain_report.json)
 
 - [x] **4.2** Created `docs/` directory
-  - Evidence: `ls Phase_6/docs/`
+  - Evidence: `ls Phase_06/docs/`
   - Contents: 2 files (execution_flow.md, anomalies.md)
 
 - [x] **4.3** Created `tests/` directory
-  - Evidence: `ls Phase_6/tests/`
+  - Evidence: `ls Phase_06/tests/`
   - Contents: Empty (tests pending migration)
 
 - [x] **4.4** Created `primitives/` directory
-  - Evidence: `ls Phase_6/primitives/`
+  - Evidence: `ls Phase_06/primitives/`
   - Contents: Empty (no primitives yet)
 
 - [x] **4.5** Created `interphase/` directory
-  - Evidence: `ls Phase_6/interphase/`
+  - Evidence: `ls Phase_06/interphase/`
   - Contents: Empty (no interfaces yet)
 
 ## 5. Contract Creation
@@ -157,11 +157,11 @@ This checklist must be completed before Phase 6 is considered "Definition of Don
 ## 8. Testing & Validation
 
 - [x] **8.1** Run Phase 6 test suite
-  - Command: `pytest tests/phase_6/ -v`
+  - Command: `pytest tests/phase_06/ -v`
   - Status: ✅ COMPLETE
 
 - [x] **8.2** Fix import errors in tests
-  - Files affected: tests/phase_6/*.py
+  - Files affected: tests/phase_06/*.py
   - Status: ✅ COMPLETE
 
 - [x] **8.3** Verify contracts are executable

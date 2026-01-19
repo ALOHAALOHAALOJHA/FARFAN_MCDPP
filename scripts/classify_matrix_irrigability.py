@@ -110,8 +110,8 @@ def _classify_row(
     declared_count = (stage_info or {}).get("declared_consumers_count", 0)
     registered_count = (stage_info or {}).get("registered_consumers_count", 0)
 
-    # phase_0 is special: it is resolver assembly; we allow registered consumer to count as operational.
-    has_operational_consumer = declared_count > 0 or (stage == "phase_0" and registered_count > 0)
+    # phase_00 is special: it is resolver assembly; we allow registered consumer to count as operational.
+    has_operational_consumer = declared_count > 0 or (stage == "phase_00" and registered_count > 0)
 
     if stage.startswith("phase_") and not has_operational_consumer:
         reasons.append("no_equipped_consumer_for_stage")

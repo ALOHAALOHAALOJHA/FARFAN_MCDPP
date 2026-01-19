@@ -28,7 +28,7 @@ Where penalty_factor is computed adaptively using:
     sensitivity_multiplier: Adaptive [0.8-2.0] based on CV and DI
     shape_factor: Non-linear scaling [1.0-2.5] for extreme cases
 
-Module: src/farfan_pipeline/phases/Phase_6/phase6_20_00_adaptive_meso_scoring.py
+Module: src/farfan_pipeline/phases/Phase_06/phase6_20_00_adaptive_meso_scoring.py
 Phase: 6 (Cluster Aggregation - MESO)
 Owner: phase6_20
 """

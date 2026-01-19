@@ -272,15 +272,15 @@ class TestPhaseExecutionBoundaries:
         """Test sequential execution of multiple phases with mixed sync/async."""
         from farfan_pipeline.orchestration.core_orchestrator import execute_phase_with_timeout
         
-        def sync_phase_1():
+        def sync_phase_01():
             time.sleep(0.05)
             return "sync1"
         
-        async def async_phase_2():
+        async def async_phase_02():
             await asyncio.sleep(0.05)
             return "async2"
         
-        def sync_phase_3():
+        def sync_phase_03():
             time.sleep(0.05)
             return "sync3"
         
@@ -288,7 +288,7 @@ class TestPhaseExecutionBoundaries:
         result1 = await execute_phase_with_timeout(
             phase_id=0,
             phase_name="Sync 1",
-            handler=sync_phase_1,
+            handler=sync_phase_01,
             args=(),
             timeout_s=5.0
         )
@@ -296,7 +296,7 @@ class TestPhaseExecutionBoundaries:
         result2 = await execute_phase_with_timeout(
             phase_id=1,
             phase_name="Async 2",
-            handler=async_phase_2,
+            handler=async_phase_02,
             args=(),
             timeout_s=5.0
         )
@@ -304,7 +304,7 @@ class TestPhaseExecutionBoundaries:
         result3 = await execute_phase_with_timeout(
             phase_id=2,
             phase_name="Sync 3",
-            handler=sync_phase_3,
+            handler=sync_phase_03,
             args=(),
             timeout_s=5.0
         )

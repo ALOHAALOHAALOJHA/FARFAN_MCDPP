@@ -1108,7 +1108,7 @@ Assembles **comprehensive policy evaluation reports** with multiple output forma
 │  └─────────────────────────────────────────────────────────────────────┘   │
 │                                                                             │
 │  Contract Location:                                                         │
-│  src/farfan_pipeline/phases/Phase_2/generated_contracts/                    │
+│  src/farfan_pipeline/phases/Phase_02/generated_contracts/                    │
 │    ├── Q001_PA01_contract_v4.json                                           │
 │    ├── Q001_PA02_contract_v4.json                                           │
 │    ├── ...                                                                  │
@@ -1126,7 +1126,7 @@ Assembles **comprehensive policy evaluation reports** with multiple output forma
 │    └── phase8_chain_report.json                                             │
 │                                                                             │
 │  Certificates (Compliance):                                                  │
-│  src/farfan_pipeline/phases/Phase_2/contracts/certificates/                  │
+│  src/farfan_pipeline/phases/Phase_02/contracts/certificates/                  │
 │    ├── CERTIFICATE_DURALEX_00_SUMMARY.json                                  │
 │    ├── CERTIFICATE_DURALEX_01_BMC.json                                      │
 │    ├── ...                                                                  │

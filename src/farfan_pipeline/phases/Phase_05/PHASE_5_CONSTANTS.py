@@ -4,7 +4,7 @@ Phase 5 Constants - Policy Area Aggregation
 This module defines constants and configuration for Phase 5 of the FARFAN pipeline:
 Policy Area Aggregation (60 DimensionScore → 10 AreaScore).
 
-Module: src/farfan_pipeline/phases/Phase_5/PHASE_5_CONSTANTS.py
+Module: src/farfan_pipeline/phases/Phase_05/PHASE_5_CONSTANTS.py
 Purpose: Define constants for Phase 5
 Owner: phase5_10
 Lifecycle: ACTIVE

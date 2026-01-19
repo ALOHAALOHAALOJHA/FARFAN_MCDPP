@@ -24,7 +24,7 @@ This version implements **5 windows of exponential enhancement** that deliver **
 ## QUICK START
 
 ```python
-from src.farfan_pipeline.phases.Phase_8 import get_recommendation_engine_v3
+from src.farfan_pipeline.phases.Phase_08 import get_recommendation_engine_v3
 
 # Initialize exponentially enhanced engine
 engine = get_recommendation_engine_v3()
@@ -48,7 +48,7 @@ print(f"Generated {len(micro_recs.recommendations)} recommendations")
 ### Modular Structure
 
 ```
-Phase_8/
+Phase_08/
 ├── phase8_00_00_data_models.py                    # Data structures (Window 1)
 ├── phase8_10_00_schema_validation.py              # Schema-driven validation (Window 1)
 ├── phase8_20_02_generic_rule_engine.py            # Generic engine (Window 2)
@@ -83,7 +83,7 @@ Declare schema ONCE → auto-generate validators, tests, and documentation.
 ### Usage
 
 ```python
-from src.farfan_pipeline.phases.Phase_8 import get_schema_validator
+from src.farfan_pipeline.phases.Phase_08 import get_schema_validator
 
 # Get universal validator
 validator = get_schema_validator()
@@ -119,7 +119,7 @@ Single algorithm handles ALL rule types via strategy injection.
 ### Usage
 
 ```python
-from src.farfan_pipeline.phases.Phase_8 import create_rule_engine, STRATEGIES
+from src.farfan_pipeline.phases.Phase_08 import create_rule_engine, STRATEGIES
 
 # Add new level by registering strategy (10 lines!)
 class MyCustomStrategy(MatchingStrategy):
@@ -150,7 +150,7 @@ Compile templates once → execute millions of times with bytecode.
 ### Usage
 
 ```python
-from src.farfan_pipeline.phases.Phase_8 import get_template_compiler
+from src.farfan_pipeline.phases.Phase_08 import get_template_compiler
 
 # Get compiler
 compiler = get_template_compiler()
@@ -225,7 +225,7 @@ Define properties ONCE → generate THOUSANDS of test cases automatically.
 ### Usage
 
 ```python
-from src.farfan_pipeline.phases.Phase_8 import get_generative_test_suite
+from src.farfan_pipeline.phases.Phase_08 import get_generative_test_suite
 
 # Get test suite
 engine = get_recommendation_engine_v3()
@@ -261,15 +261,15 @@ print(f"Examples tested: {results['examples_tested']}")
 
 ```python
 # Old way (still works)
-from src.farfan_pipeline.phases.Phase_8 import get_recommendation_engine_v2
+from src.farfan_pipeline.phases.Phase_08 import get_recommendation_engine_v2
 engine_v2 = get_recommendation_engine_v2()
 
 # New way (recommended)
-from src.farfan_pipeline.phases.Phase_8 import get_recommendation_engine_v3
+from src.farfan_pipeline.phases.Phase_08 import get_recommendation_engine_v3
 engine_v3 = get_recommendation_engine_v3()
 
 # Or just use get_recommendation_engine (defaults to v3)
-from src.farfan_pipeline.phases.Phase_8 import get_recommendation_engine
+from src.farfan_pipeline.phases.Phase_08 import get_recommendation_engine
 engine = get_recommendation_engine()  # Returns v3!
 ```
 

@@ -75,19 +75,19 @@
     },
     "phase_directories": {
       "pattern": "^Phase_(?P<number>[0-9])$",
-      "description": "Phase directories must be Phase_0 through Phase_9",
+      "description": "Phase directories must be Phase_00 through Phase_09",
       "severity": "ERROR",
       "valid_names": [
-        "Phase_0",
-        "Phase_1",
-        "Phase_2",
-        "Phase_3",
-        "Phase_4",
-        "Phase_5",
-        "Phase_6",
-        "Phase_7",
-        "Phase_8",
-        "Phase_9"
+        "Phase_00",
+        "Phase_01",
+        "Phase_02",
+        "Phase_03",
+        "Phase_04",
+        "Phase_05",
+        "Phase_06",
+        "Phase_07",
+        "Phase_08",
+        "Phase_09"
       ]
     },
     "contracts": {

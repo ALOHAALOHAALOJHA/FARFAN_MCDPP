@@ -6,7 +6,7 @@
     "name": "Signal Enrichment"
   },
   "inventory_date": "2026-01-12",
-  "root_path": "src/farfan_pipeline/phases/Phase_1",
+  "root_path": "src/farfan_pipeline/phases/Phase_01",
   "directories": [
     {
       "path": ".",

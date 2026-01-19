@@ -21,7 +21,7 @@ $ python scripts/audit/verify_phase_chain.py --phase 2
 
 **Verification**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import verify_dag_acyclicity
+from farfan_pipeline.phases.Phase_02.contracts import verify_dag_acyclicity
 assert verify_dag_acyclicity() == True
 ```
 
@@ -36,16 +36,16 @@ assert verify_dag_acyclicity() == True
 **Evidence**: Fixed 6 files with incorrect imports, verified no circular dependencies
 
 **Files Fixed**:
-1. `phase2_60_00_base_executor_with_contract.py` - Phase_two → Phase_2
-2. `phase2_10_00_factory.py` - Phase_two → Phase_2
-3. `phase2_40_03_irrigation_synchronizer.py` - Phase_two → Phase_2
-4. `phase2_50_01_task_planner.py` - Phase_two → Phase_2
-5. `phase2_95_00_contract_hydrator.py` - Phase_two → Phase_2
-6. `contract_generator/run.py` - Phase_two → Phase_2
+1. `phase2_60_00_base_executor_with_contract.py` - Phase_two → Phase_02
+2. `phase2_10_00_factory.py` - Phase_two → Phase_02
+3. `phase2_40_03_irrigation_synchronizer.py` - Phase_two → Phase_02
+4. `phase2_50_01_task_planner.py` - Phase_two → Phase_02
+5. `phase2_95_00_contract_hydrator.py` - Phase_two → Phase_02
+6. `contract_generator/run.py` - Phase_two → Phase_02
 
 **Verification**:
 ```bash
-$ python3 -c "from farfan_pipeline.phases.Phase_2 import EvidenceNexus"
+$ python3 -c "from farfan_pipeline.phases.Phase_02 import EvidenceNexus"
 Phase 2 imported successfully
 ```
 
@@ -62,7 +62,7 @@ Phase 2 imported successfully
 
 **Evidence**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import Phase2ExecutionFlow
+from farfan_pipeline.phases.Phase_02.contracts import Phase2ExecutionFlow
 flow = Phase2ExecutionFlow()
 assert flow.TOTAL_CONTRACTS == 300
 assert flow.TOTAL_METHODS == 240
@@ -70,7 +70,7 @@ assert flow.TOTAL_METHODS == 240
 
 **Method Registry**:
 ```python
-from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistry
+from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import MethodRegistry
 registry = MethodRegistry()
 # Registry contains 240 methods from 40 dispensary classes
 ```
@@ -85,15 +85,15 @@ registry = MethodRegistry()
 
 | Carpeta | Status | Path | Purpose |
 |---------|--------|------|---------|
-| `contracts/` | ✅ EXISTS | `Phase_2/contracts/` | Contratos de entrada, fase y salida |
-| `docs/` | ✅ CREATED | `Phase_2/docs/` | Documentación técnica, DAG, diagramas |
-| `tests/` | ✅ EXISTS | `Phase_2/tests/` | Tests unitarios e integrales |
-| `epistemological_assets/` | ✅ EXISTS | `Phase_2/epistemological_assets/` | Guías epistémicas y metodológicas |
+| `contracts/` | ✅ EXISTS | `Phase_02/contracts/` | Contratos de entrada, fase y salida |
+| `docs/` | ✅ CREATED | `Phase_02/docs/` | Documentación técnica, DAG, diagramas |
+| `tests/` | ✅ EXISTS | `Phase_02/tests/` | Tests unitarios e integrales |
+| `epistemological_assets/` | ✅ EXISTS | `Phase_02/epistemological_assets/` | Guías epistémicas y metodológicas |
 | `executors/` | ⚠️ N/A | - | Not needed (300 JSON contracts instead) |
 
 **Verification**:
 ```bash
-$ ls -d src/farfan_pipeline/phases/Phase_2/*/
+$ ls -d src/farfan_pipeline/phases/Phase_02/*/
 contracts/ docs/ epistemological_assets/ tests/
 ```
 
@@ -113,7 +113,7 @@ contracts/ docs/ epistemological_assets/ tests/
 
 **Validation**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import Phase2InputValidator
+from farfan_pipeline.phases.Phase_02.contracts import Phase2InputValidator
 validator = Phase2InputValidator()
 is_valid, errors = validator.validate_all(cpp, certificate, questionnaire, registry)
 ```
@@ -141,7 +141,7 @@ Stage 95: PROFILING (9 modules)
 
 **Verification**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import verify_phase2_mission_contract
+from farfan_pipeline.phases.Phase_02.contracts import verify_phase2_mission_contract
 verify_phase2_mission_contract()  # Prints full topology
 ```
 
@@ -159,7 +159,7 @@ verify_phase2_mission_contract()  # Prints full topology
 
 **Certificate Generation**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import generate_phase3_compatibility_certificate
+from farfan_pipeline.phases.Phase_02.contracts import generate_phase3_compatibility_certificate
 certificate = generate_phase3_compatibility_certificate(output)
 assert certificate.status == "VALID"
 ```
@@ -177,7 +177,7 @@ assert certificate.status == "VALID"
 - Topological ordering from mission contract
 - Dependency graph structure
 
-**Path**: `Phase_2/PHASE_2_MANIFEST.json`
+**Path**: `Phase_02/PHASE_2_MANIFEST.json`
 
 ---
 
@@ -189,7 +189,7 @@ assert certificate.status == "VALID"
 
 **Test Results**:
 ```bash
-$ PYTHONPATH=src python3 -m pytest src/farfan_pipeline/phases/Phase_2/tests/test_phase2_contracts.py -v
+$ PYTHONPATH=src python3 -m pytest src/farfan_pipeline/phases/Phase_02/tests/test_phase2_contracts.py -v
 
 ============================== 20 passed in 0.16s ==============================
 ```
@@ -226,7 +226,7 @@ class Phase3CompatibilityCertificate:
 
 **Generation**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import generate_phase3_compatibility_certificate
+from farfan_pipeline.phases.Phase_02.contracts import generate_phase3_compatibility_certificate
 certificate = generate_phase3_compatibility_certificate(output)
 certificate_dict = certificate.to_dict()
 ```
@@ -279,7 +279,7 @@ python scripts/audit/verify_phase_chain.py --phase 2 --output phase2_dag.json
 ### 2. Verificar orden de imports
 ```bash
 # Check imports are sorted (if using isort)
-# isort --check-only --diff src/farfan_pipeline/phases/Phase_2/
+# isort --check-only --diff src/farfan_pipeline/phases/Phase_02/
 # Note: isort not currently in requirements
 ```
 
@@ -298,7 +298,7 @@ python scripts/verify_phase2_labels.py
 ```bash
 python3 -c "
 import sys; sys.path.insert(0, 'src')
-from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistry
+from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import MethodRegistry
 registry = MethodRegistry()
 print(f'Methods registered: {len(registry._registry)}')
 # Expected: 240 methods
@@ -332,18 +332,18 @@ Run complete verification suite:
 
 ```bash
 # 1. Import integrity
-python3 -c "from farfan_pipeline.phases.Phase_2 import EvidenceNexus"
+python3 -c "from farfan_pipeline.phases.Phase_02 import EvidenceNexus"
 
 # 2. DAG acyclicity
 python scripts/audit/verify_phase_chain.py --phase 2
 
 # 3. Contract tests
-PYTHONPATH=src python3 -m pytest src/farfan_pipeline/phases/Phase_2/tests/test_phase2_contracts.py -v
+PYTHONPATH=src python3 -m pytest src/farfan_pipeline/phases/Phase_02/tests/test_phase2_contracts.py -v
 
 # 4. Mission contract
 python3 -c "
 import sys; sys.path.insert(0, 'src')
-from farfan_pipeline.phases.Phase_2.contracts import verify_phase2_mission_contract
+from farfan_pipeline.phases.Phase_02.contracts import verify_phase2_mission_contract
 verify_phase2_mission_contract()
 "
 

@@ -22,13 +22,13 @@ def sample_csv():
         ])
         # Active contract
         writer.writerow([
-            "active.json", "phase_0", "Phase_0",
+            "active.json", "phase_00", "Phase_00",
             "v1", "c1",
             "irrigable_now", "", "YES", "100"
         ])
         # Pending contract
         writer.writerow([
-            "pending.json", "phase_0", "Phase_0",
+            "pending.json", "phase_00", "Phase_00",
             "NINGUNO", "c1",
             "not_irrigable_yet", "NECESITA_VEHICULO", "YES", "100"
         ])

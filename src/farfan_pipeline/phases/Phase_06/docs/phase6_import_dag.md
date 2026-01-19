@@ -195,7 +195,7 @@ graph TD
 ### Input (from Phase 5)
 
 ```python
-from farfan_pipeline.phases.Phase_5 import AreaScore
+from farfan_pipeline.phases.Phase_05 import AreaScore
 
 # Phase 6 expects:
 area_scores: list[AreaScore]  # Length = 10, IDs = PA01-PA10
@@ -204,7 +204,7 @@ area_scores: list[AreaScore]  # Length = 10, IDs = PA01-PA10
 ### Output (to Phase 7)
 
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterScore
+from farfan_pipeline.phases.Phase_06 import ClusterScore
 
 # Phase 6 produces:
 cluster_scores: list[ClusterScore]  # Length = 4, IDs = CLUSTER_MESO_1 to CLUSTER_MESO_4
@@ -213,8 +213,8 @@ cluster_scores: list[ClusterScore]  # Length = 4, IDs = CLUSTER_MESO_1 to CLUSTE
 ### Usage Example
 
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterAggregator
-from farfan_pipeline.phases.Phase_5 import AreaScore
+from farfan_pipeline.phases.Phase_06 import ClusterAggregator
+from farfan_pipeline.phases.Phase_05 import AreaScore
 
 # Initialize
 aggregator = ClusterAggregator()

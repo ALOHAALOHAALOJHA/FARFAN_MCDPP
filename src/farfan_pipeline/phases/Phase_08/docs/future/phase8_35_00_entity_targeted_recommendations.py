@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_8.phase8_35_00_entity_targeted_recommendations
+Module: src.farfan_pipeline.phases.Phase_08.phase8_35_00_entity_targeted_recommendations
 Purpose: Entity-targeted recommendation generation using NER data
 Owner: phase8_core
 Stage: 35 (Entity Enhancement)

@@ -806,11 +806,11 @@ The provenance DAG supports export in multiple formats:
 
 | Category | Purpose | Location |
 |----------|---------|----------|
-| **Unit Tests** | Individual function validation | `tests/phase_4/test_phase4_unit.py` |
-| **Integration Tests** | Cross-module validation | `tests/phase_4/test_phase4_integration.py` |
-| **Property Tests** | Mathematical invariant verification | `tests/phase_4/test_phase4_properties.py` |
-| **Contract Tests** | DbC verification | `tests/phase_4/test_phase4_contracts.py` |
-| **Choquet Tests** | Choquet-specific properties | `tests/phase_4/test_choquet_properties.py` |
+| **Unit Tests** | Individual function validation | `tests/phase_04/test_phase4_unit.py` |
+| **Integration Tests** | Cross-module validation | `tests/phase_04/test_phase4_integration.py` |
+| **Property Tests** | Mathematical invariant verification | `tests/phase_04/test_phase4_properties.py` |
+| **Contract Tests** | DbC verification | `tests/phase_04/test_phase4_contracts.py` |
+| **Choquet Tests** | Choquet-specific properties | `tests/phase_04/test_choquet_properties.py` |
 
 ### 12.2 Key Test Cases
 
@@ -921,9 +921,9 @@ def aggregate_with_degradation(questions: list, expected: int = 5) -> float:
 
 | Document | Description |
 |----------|-------------|
-| [Phase 5 README](../Phase_5/README.md) | Policy Area Aggregation |
-| [Phase 6 README](../Phase_6/README.md) | Cluster Aggregation |
-| [Phase 7 README](../Phase_7/README.md) | Macro Evaluation |
+| [Phase 5 README](../Phase_05/README.md) | Policy Area Aggregation |
+| [Phase 6 README](../Phase_06/README.md) | Cluster Aggregation |
+| [Phase 7 README](../Phase_07/README.md) | Macro Evaluation |
 | [AGGREGATION_QUICK_REFERENCE](../../../../docs/AGGREGATION_QUICK_REFERENCE.md) | Quick reference guide |
 | [CERTIFICATE_01](contracts/certificates/CERTIFICATE_01_PHASE4_COUNT_60.md) | Phase 4 compliance certificate |
 

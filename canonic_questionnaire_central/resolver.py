@@ -308,7 +308,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 0: Assembly (this resolver handles static load)
         self._sdo.register_consumer(
             consumer_id="phase_0_assembly",
-            scopes=[{"phase": "phase_0", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_00", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["STATIC_LOAD", "SIGNAL_PACK"],
             handler=self._handle_phase_0_signal
         )
@@ -316,7 +316,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 1: Extraction (MC01-MC10)
         self._sdo.register_consumer(
             consumer_id="phase_1_extraction",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=[
                 "NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CURRENCY_NORMALIZATION",
                 "CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION", "VERB_ANALYSIS",
@@ -335,7 +335,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 2: Enrichment
         self._sdo.register_consumer(
             consumer_id="phase_2_enrichment",
-            scopes=[{"phase": "phase_2", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_02", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["PATTERN_MATCHING", "REGEX_ENGINE", "KEYWORD_MATCHING", "TF_IDF", "ENTITY_LINKING"],
             handler=self._handle_phase_2_signal
         )
@@ -343,7 +343,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 3: Validation
         self._sdo.register_consumer(
             consumer_id="phase_3_validation",
-            scopes=[{"phase": "phase_3", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_03", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NORMATIVE_LOOKUP", "COMPLIANCE_CHECK", "ENTITY_RESOLUTION", "EXISTENCE_CHECK", "CONSISTENCY_CHECK"],
             handler=self._handle_phase_3_signal
         )
@@ -360,7 +360,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 7: MESO Aggregation
         self._sdo.register_consumer(
             consumer_id="phase_7_meso",
-            scopes=[{"phase": "phase_7", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_07", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["AGGREGATION_ENGINE", "CLUSTER_SCORING", "CLUSTER_ROUTING"],
             handler=self._handle_meso_signal
         )
@@ -368,7 +368,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 8: MACRO Aggregation
         self._sdo.register_consumer(
             consumer_id="phase_8_macro",
-            scopes=[{"phase": "phase_8", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_08", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["AGGREGATION_ENGINE", "HOLISTIC_SCORING", "FINAL_ASSEMBLY"],
             handler=self._handle_macro_signal
         )
@@ -376,7 +376,7 @@ class CanonicalQuestionnaireResolver:
         # Phase 9: Report
         self._sdo.register_consumer(
             consumer_id="phase_9_report",
-            scopes=[{"phase": "phase_9", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_09", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["TEMPLATE_ENGINE", "MARKDOWN_GENERATION"],
             handler=self._handle_report_signal
         )

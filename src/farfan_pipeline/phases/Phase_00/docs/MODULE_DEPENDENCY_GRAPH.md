@@ -355,14 +355,14 @@ When modifying dependencies:
 To generate the dependency graph:
 ```bash
 # Using pyreverse (from pylint)
-pyreverse -o dot -p Phase0 src/farfan_pipeline/phases/Phase_0/*.py
+pyreverse -o dot -p Phase0 src/farfan_pipeline/phases/Phase_00/*.py
 dot -Tpng classes_Phase0.dot -o docs/phase0_dependency_graph.png
 
 # Using Python AST
 python -c "
 import ast
 from pathlib import Path
-phase_dir = Path('src/farfan_pipeline/phases/Phase_0')
+phase_dir = Path('src/farfan_pipeline/phases/Phase_00')
 for f in phase_dir.glob('*.py'):
     tree = ast.parse(f.read_text())
     imports = [node.module for node in ast.walk(tree) 

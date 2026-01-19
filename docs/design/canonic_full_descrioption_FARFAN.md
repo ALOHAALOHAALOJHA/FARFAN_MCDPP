@@ -116,7 +116,7 @@ A continuación, se describe cada una de las capas, desde la más externa (inter
 
 *Nota: La siguiente es una descripción textual del gráfico canónico de la arquitectura. El script para generar la imagen `.png` correspondiente se encuentra en la Sección 9. El gráfico debe mostrar cinco cajas horizontales apiladas, etiquetadas de "Capa 0" a "Capa 4", con flechas que indican las dependencias permitidas, apuntando siempre hacia abajo.*
 
-![Arquitectura de capas](../phases/phase_1/images/canonical_architecture.png)
+![Arquitectura de capas](../phases/phase_01/images/canonical_architecture.png)
 
 ## 3.3. Detalle de las Capas
 
@@ -187,9 +187,9 @@ La ejecución del pipeline es gestionada por la clase `Orchestrator` (ubicada en
 
 ## 4.2. Visualización del Pipeline
 
-*Nota: El gráfico canónico del pipeline ya está generado en `docs/phases/phase_1/images/canonical_pipeline.png`.*
+*Nota: El gráfico canónico del pipeline ya está generado en `docs/phases/phase_01/images/canonical_pipeline.png`.*
 
-![Pipeline de 11 fases](../phases/phase_1/images/canonical_pipeline.png)
+![Pipeline de 11 fases](../phases/phase_01/images/canonical_pipeline.png)
 
 ## 4.3. Detalle de las Fases
 
@@ -2732,7 +2732,7 @@ class Orchestrator:
             # Store metrics for verification manifest
             if not hasattr(self, '_execution_metrics'):
                 self._execution_metrics = {}
-            self._execution_metrics['phase_2'] = {
+            self._execution_metrics['phase_02'] = {
                 'chunk_executions': execution_metrics['chunk_executions'],
                 'full_doc_executions': execution_metrics['full_doc_executions'],
                 'total_possible_executions': total_possible,

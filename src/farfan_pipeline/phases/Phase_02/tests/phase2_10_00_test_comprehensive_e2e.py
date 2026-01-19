@@ -775,7 +775,7 @@ class TestPhase2Adversarial:
         )
 
         # With Mock ChunkMatrix that allows empty chunks
-        with patch("farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer.ChunkMatrix") as MockChunkMatrix:
+        with patch("farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer.ChunkMatrix") as MockChunkMatrix:
             MockChunkMatrix.EXPECTED_CHUNK_COUNT = 0
 
             synchronizer = IrrigationSynchronizer(

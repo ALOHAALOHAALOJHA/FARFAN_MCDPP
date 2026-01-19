@@ -26,7 +26,7 @@ Applied 5 code review fixes based on automated review comments and user feedback
 
 **Fix**: Changed all Protocol method bodies to use `...` per Python convention.
 
-**File**: `src/canonic_phases/phase_2/phase2_a_arg_router.py`
+**File**: `src/canonic_phases/phase_02/phase2_a_arg_router.py`
 
 **Before**:
 ```python
@@ -59,7 +59,7 @@ def contract_type(self) -> str:
 
 **Fix**: Added `threading.Lock` for thread-safe cache access.
 
-**File**: `src/canonic_phases/phase_2/phase2_e_task_executor.py`
+**File**: `src/canonic_phases/phase_02/phase2_e_task_executor.py`
 
 **Changes**:
 1. Added import: `import threading`
@@ -94,7 +94,7 @@ with cls._cache_lock:
 
 **Fix**: Changed to `tuple[str, ...]` for true immutability.
 
-**File**: `src/canonic_phases/phase_2/constants/phase2_constants.py`
+**File**: `src/canonic_phases/phase_02/constants/phase2_constants.py`
 
 **Before**:
 ```python
@@ -140,7 +140,7 @@ EXECUTOR_REGISTRY: Final[dict[str, ExecutorRegistryEntry]] = {
 
 **Result**: Code was already correct - uses "DIM{j:02d}" format consistently.
 
-**File**: `src/canonic_phases/phase_2/phase2_d_irrigation_orchestrator.py`
+**File**: `src/canonic_phases/phase_02/phase2_d_irrigation_orchestrator.py`
 
 **Current (Correct) Implementation**:
 ```python
@@ -163,7 +163,7 @@ expected = {
 
 **Fix**: Updated documentation to reflect operational status.
 
-**File**: `src/canonic_phases/phase_2/phase2_e_task_executor.py`
+**File**: `src/canonic_phases/phase_02/phase2_e_task_executor.py`
 
 **Before**:
 ```python

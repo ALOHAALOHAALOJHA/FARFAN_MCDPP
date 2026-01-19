@@ -12,7 +12,7 @@ Exports:
     - QuestionnaireMap, load_questionnaire_map: Question-level mapping (v2.0)
     - execute_sp4_question_aware: Question-aware segmentation (v2.0)
 
-Owner: farfan_pipeline.phases.Phase_1
+Owner: farfan_pipeline.phases.Phase_01
 Version: 2.0.0 - Question-Aware Architecture
 """
 

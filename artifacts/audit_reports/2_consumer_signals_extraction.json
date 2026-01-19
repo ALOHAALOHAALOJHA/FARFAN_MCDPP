@@ -7,19 +7,19 @@
     "base_consumer": "BaseConsumer (ABC)",
     "unique_signal_types_consumed": 18,
     "consumers_by_phase": {
-      "phase_0": 4,
-      "phase_1": 2,
-      "phase_2": 4,
-      "phase_3": 1,
-      "phase_7": 1,
-      "phase_8": 1
+      "phase_00": 4,
+      "phase_01": 2,
+      "phase_02": 4,
+      "phase_03": 1,
+      "phase_07": 1,
+      "phase_08": 1
     }
   },
   "consumers": {
     "phase0_bootstrap": {
       "file": "phase0/phase0_90_02_bootstrap.py",
       "consumer_id": "phase0_90_02_bootstrap.py",
-      "consumer_phase": "phase_0",
+      "consumer_phase": "phase_00",
       "subscribed_signal_types": [
         "StructuralAlignmentSignal",
         "CanonicalMappingSignal",
@@ -29,15 +29,15 @@
       ],
       "subscribed_buses": ["structural_bus", "integrity_bus"],
       "context_filters": {
-        "phase": ["phase_0"],
-        "consumer_scope": ["Phase_0", "Cross-Phase"]
+        "phase": ["phase_00"],
+        "consumer_scope": ["Phase_00", "Cross-Phase"]
       },
       "required_capabilities": ["can_load", "can_scope"]
     },
     "phase0_providers": {
       "file": "phase0/providers.py",
       "consumer_id": "providers.py",
-      "consumer_phase": "phase_0",
+      "consumer_phase": "phase_00",
       "subscribed_signal_types": [
         "StructuralAlignmentSignal",
         "DataIntegritySignal",
@@ -45,15 +45,15 @@
       ],
       "subscribed_buses": ["structural_bus", "integrity_bus", "operational_bus"],
       "context_filters": {
-        "phase": ["phase_0"],
-        "consumer_scope": ["Phase_0"]
+        "phase": ["phase_00"],
+        "consumer_scope": ["Phase_00"]
       },
       "required_capabilities": ["can_validate"]
     },
     "phase0_wiring_types": {
       "file": "phase0/wiring_types.py",
       "consumer_id": "wiring_types.py",
-      "consumer_phase": "phase_0",
+      "consumer_phase": "phase_00",
       "subscribed_signal_types": [
         "StructuralAlignmentSignal",
         "SchemaConflictSignal",
@@ -61,15 +61,15 @@
       ],
       "subscribed_buses": ["structural_bus", "consumption_bus"],
       "context_filters": {
-        "phase": ["phase_0"],
-        "consumer_scope": ["Phase_0"]
+        "phase": ["phase_00"],
+        "consumer_scope": ["Phase_00"]
       },
       "required_capabilities": ["can_validate", "can_scope"]
     },
     "phase1_signal_enrichment": {
       "file": "phase1/phase1_11_00_signal_enrichment.py",
       "consumer_id": "phase1_11_00_signal_enrichment.py",
-      "consumer_phase": "phase_1",
+      "consumer_phase": "phase_01",
       "subscribed_signal_types": [
         "StructuralAlignmentSignal",
         "EventPresenceSignal",
@@ -78,14 +78,14 @@
       ],
       "subscribed_buses": ["structural_bus", "integrity_bus", "epistemic_bus"],
       "context_filters": {
-        "phase": ["phase_1"],
-        "consumer_scope": ["Phase_1"]
+        "phase": ["phase_01"],
+        "consumer_scope": ["Phase_01"]
       }
     },
     "phase1_cpp_ingestion": {
       "file": "phase1/phase1_13_00_cpp_ingestion.py",
       "consumer_id": "phase1_13_00_cpp_ingestion.py",
-      "consumer_phase": "phase_1",
+      "consumer_phase": "phase_01",
       "subscribed_signal_types": [
         "EventCompletenessSignal",
         "DataIntegritySignal",
@@ -94,14 +94,14 @@
       ],
       "subscribed_buses": ["integrity_bus", "operational_bus"],
       "context_filters": {
-        "phase": ["phase_1"],
-        "consumer_scope": ["Phase_1"]
+        "phase": ["phase_01"],
+        "consumer_scope": ["Phase_01"]
       }
     },
     "phase2_factory_consumer": {
       "file": "phase2/phase2_factory_consumer.py",
       "consumer_id": "phase2_factory_consumer.py",
-      "consumer_phase": "phase_2",
+      "consumer_phase": "phase_02",
       "subscribed_signal_types": [
         "ExecutionAttemptSignal",
         "FailureModeSignal",
@@ -110,15 +110,15 @@
       ],
       "subscribed_buses": ["operational_bus", "consumption_bus"],
       "context_filters": {
-        "phase": ["phase_2"],
-        "consumer_scope": ["Phase_2"]
+        "phase": ["phase_02"],
+        "consumer_scope": ["Phase_02"]
       },
       "required_capabilities": ["can_transform", "can_validate"]
     },
     "phase2_evidence_consumer": {
       "file": "phase2/phase2_evidence_consumer.py",
       "consumer_id": "phase2_evidence_consumer.py",
-      "consumer_phase": "phase_2",
+      "consumer_phase": "phase_02",
       "subscribed_signal_types": [
         "EmpiricalSupportSignal",
         "AnswerDeterminacySignal",
@@ -126,14 +126,14 @@
       ],
       "subscribed_buses": ["epistemic_bus"],
       "context_filters": {
-        "phase": ["phase_2"],
-        "consumer_scope": ["Phase_2"]
+        "phase": ["phase_02"],
+        "consumer_scope": ["Phase_02"]
       }
     },
     "phase2_contract_consumer": {
       "file": "phase2/phase2_contract_consumer.py",
       "consumer_id": "phase2_contract_consumer.py",
-      "consumer_phase": "phase_2",
+      "consumer_phase": "phase_02",
       "subscribed_signal_types": [
         "StructuralAlignmentSignal",
         "DataIntegritySignal",
@@ -141,51 +141,51 @@
       ],
       "subscribed_buses": ["structural_bus", "integrity_bus", "operational_bus"],
       "context_filters": {
-        "phase": ["phase_2"],
-        "consumer_scope": ["Phase_2"]
+        "phase": ["phase_02"],
+        "consumer_scope": ["Phase_02"]
       },
       "required_capabilities": ["can_validate", "can_enrich"]
     },
     "phase2_executor_consumer": {
       "file": "phase2/phase2_executor_consumer.py",
       "consumer_id": "phase2_executor_consumer.py",
-      "consumer_phase": "phase_2",
+      "consumer_phase": "phase_02",
       "subscribed_signal_types": [
         "ExecutionAttemptSignal",
         "FailureModeSignal"
       ],
       "subscribed_buses": ["operational_bus"],
       "context_filters": {
-        "phase": ["phase_2"],
-        "consumer_scope": ["Phase_2"]
+        "phase": ["phase_02"],
+        "consumer_scope": ["Phase_02"]
       },
       "required_capabilities": ["can_validate"]
     },
     "phase3_scoring": {
       "file": "phase3/phase3_10_00_signal_enriched_scoring.py",
       "consumer_id": "phase3_10_00_signal_enriched_scoring.py",
-      "consumer_phase": "phase_3",
+      "consumer_phase": "phase_03",
       "subscribed_signal_types": [
         "DataIntegritySignal",
         "EventCompletenessSignal"
       ],
       "subscribed_buses": ["integrity_bus"],
       "context_filters": {
-        "phase": ["phase_3"],
-        "consumer_scope": ["Phase_3"]
+        "phase": ["phase_03"],
+        "consumer_scope": ["Phase_03"]
       }
     },
     "phase7_meso_consumer": {
       "file": "phase7/phase7_meso_consumer.py",
       "consumer_id": "phase7_meso_consumer.py",
-      "consumer_phase": "phase_7",
+      "consumer_phase": "phase_07",
       "subscribed_signal_types": [
         "CanonicalMappingSignal",
         "StructuralAlignmentSignal"
       ],
       "subscribed_buses": ["structural_bus"],
       "context_filters": {
-        "phase": ["phase_7"],
+        "phase": ["phase_07"],
         "node_type": ["question"]
       },
       "required_capabilities": ["can_scope_context"]
@@ -193,7 +193,7 @@
     "phase8_recommendations": {
       "file": "phase8/phase8_30_00_signal_enriched_recommendations.py",
       "consumer_id": "phase8_30_00_signal_enriched_recommendations.py",
-      "consumer_phase": "phase_8",
+      "consumer_phase": "phase_08",
       "subscribed_signal_types": [
         "DecisionDivergenceSignal",
         "ConfidenceDropSignal",
@@ -205,8 +205,8 @@
       ],
       "subscribed_buses": ["contrast_bus", "epistemic_bus", "integrity_bus"],
       "context_filters": {
-        "phase": ["phase_8"],
-        "consumer_scope": ["Phase_8"]
+        "phase": ["phase_08"],
+        "consumer_scope": ["Phase_08"]
       }
     }
   },
@@ -214,91 +214,91 @@
     "STRUCTURAL": {
       "StructuralAlignmentSignal": {
         "consumed_by": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types", "phase1_signal_enrichment", "phase2_contract_consumer", "phase7_meso_consumer"],
-        "phases": ["phase_0", "phase_1", "phase_2", "phase_7"]
+        "phases": ["phase_00", "phase_01", "phase_02", "phase_07"]
       },
       "CanonicalMappingSignal": {
         "consumed_by": ["phase0_bootstrap", "phase7_meso_consumer"],
-        "phases": ["phase_0", "phase_7"]
+        "phases": ["phase_00", "phase_07"]
       },
       "SchemaConflictSignal": {
         "consumed_by": ["phase0_wiring_types"],
-        "phases": ["phase_0"]
+        "phases": ["phase_00"]
       }
     },
     "INTEGRITY": {
       "EventPresenceSignal": {
         "consumed_by": ["phase0_bootstrap", "phase1_signal_enrichment"],
-        "phases": ["phase_0", "phase_1"]
+        "phases": ["phase_00", "phase_01"]
       },
       "EventCompletenessSignal": {
         "consumed_by": ["phase0_bootstrap", "phase1_cpp_ingestion", "phase3_scoring"],
-        "phases": ["phase_0", "phase_1", "phase_3"]
+        "phases": ["phase_00", "phase_01", "phase_03"]
       },
       "DataIntegritySignal": {
         "consumed_by": ["phase0_bootstrap", "phase0_providers", "phase1_cpp_ingestion", "phase2_contract_consumer", "phase3_scoring", "phase8_recommendations"],
-        "phases": ["phase_0", "phase_1", "phase_2", "phase_3", "phase_8"]
+        "phases": ["phase_00", "phase_01", "phase_02", "phase_03", "phase_08"]
       }
     },
     "EPISTEMIC": {
       "AnswerDeterminacySignal": {
         "consumed_by": ["phase2_evidence_consumer", "phase8_recommendations"],
-        "phases": ["phase_2", "phase_8"]
+        "phases": ["phase_02", "phase_08"]
       },
       "AnswerSpecificitySignal": {
         "consumed_by": ["phase1_signal_enrichment", "phase2_evidence_consumer", "phase8_recommendations"],
-        "phases": ["phase_1", "phase_2", "phase_8"]
+        "phases": ["phase_01", "phase_02", "phase_08"]
       },
       "EmpiricalSupportSignal": {
         "consumed_by": ["phase2_evidence_consumer", "phase8_recommendations"],
-        "phases": ["phase_2", "phase_8"]
+        "phases": ["phase_02", "phase_08"]
       },
       "MethodApplicationSignal": {
         "consumed_by": ["phase1_signal_enrichment"],
-        "phases": ["phase_1"]
+        "phases": ["phase_01"]
       }
     },
     "OPERATIONAL": {
       "ExecutionAttemptSignal": {
         "consumed_by": ["phase1_cpp_ingestion", "phase2_contract_consumer", "phase2_executor_consumer", "phase2_factory_consumer"],
-        "phases": ["phase_1", "phase_2"]
+        "phases": ["phase_01", "phase_02"]
       },
       "FailureModeSignal": {
         "consumed_by": ["phase1_cpp_ingestion", "phase2_executor_consumer", "phase2_factory_consumer"],
-        "phases": ["phase_1", "phase_2"]
+        "phases": ["phase_01", "phase_02"]
       }
     },
     "CONTRAST": {
       "DecisionDivergenceSignal": {
         "consumed_by": ["phase8_recommendations"],
-        "phases": ["phase_8"]
+        "phases": ["phase_08"]
       },
       "ConfidenceDropSignal": {
         "consumed_by": ["phase8_recommendations"],
-        "phases": ["phase_8"]
+        "phases": ["phase_08"]
       },
       "TemporalContrastSignal": {
         "consumed_by": ["phase8_recommendations"],
-        "phases": ["phase_8"]
+        "phases": ["phase_08"]
       }
     },
     "CONSUMPTION": {
       "FrequencySignal": {
         "consumed_by": ["phase2_factory_consumer"],
-        "phases": ["phase_2"]
+        "phases": ["phase_02"]
       },
       "ConsumerHealthSignal": {
         "consumed_by": ["phase2_factory_consumer"],
-        "phases": ["phase_2"]
+        "phases": ["phase_02"]
       },
       "TemporalCouplingSignal": {
         "consumed_by": ["phase0_wiring_types"],
-        "phases": ["phase_0"]
+        "phases": ["phase_00"]
       }
     },
     "OPERATIONAL_LEGACY": {
       "LegacyDependencySignal": {
         "consumed_by": ["phase0_providers"],
-        "phases": ["phase_0"]
+        "phases": ["phase_00"]
       }
     }
   },
@@ -307,22 +307,22 @@
       {
         "signal": "StructuralAlignmentSignal",
         "consumer_count": 6,
-        "phases": ["phase_0", "phase_1", "phase_2", "phase_7"]
+        "phases": ["phase_00", "phase_01", "phase_02", "phase_07"]
       },
       {
         "signal": "DataIntegritySignal",
         "consumer_count": 6,
-        "phases": ["phase_0", "phase_1", "phase_2", "phase_3", "phase_8"]
+        "phases": ["phase_00", "phase_01", "phase_02", "phase_03", "phase_08"]
       },
       {
         "signal": "AnswerSpecificitySignal",
         "consumer_count": 3,
-        "phases": ["phase_1", "phase_2", "phase_8"]
+        "phases": ["phase_01", "phase_02", "phase_08"]
       },
       {
         "signal": "ExecutionAttemptSignal",
         "consumer_count": 4,
-        "phases": ["phase_1", "phase_2"]
+        "phases": ["phase_01", "phase_02"]
       }
     ],
     "orphan_signals_declared_but_never_consumed": [
@@ -337,15 +337,15 @@
       "Varios vehicles declaran señales que no tienen consumers activos"
     ],
     "phase_coverage": {
-      "phase_0": "FULL (4 consumers)",
-      "phase_1": "FULL (2 consumers)",
-      "phase_2": "FULL (4 consumers)",
-      "phase_3": "PARTIAL (1 consumer)",
-      "phase_4": "NO CONSUMERS",
-      "phase_5": "NO CONSUMERS",
-      "phase_6": "NO CONSUMERS",
-      "phase_7": "MINIMAL (1 consumer)",
-      "phase_8": "MINIMAL (1 consumer)"
+      "phase_00": "FULL (4 consumers)",
+      "phase_01": "FULL (2 consumers)",
+      "phase_02": "FULL (4 consumers)",
+      "phase_03": "PARTIAL (1 consumer)",
+      "phase_04": "NO CONSUMERS",
+      "phase_05": "NO CONSUMERS",
+      "phase_06": "NO CONSUMERS",
+      "phase_07": "MINIMAL (1 consumer)",
+      "phase_08": "MINIMAL (1 consumer)"
     }
   },
   "statistics": {

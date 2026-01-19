@@ -2,7 +2,7 @@
 Módulo: contract_validator.py
 Propósito: Validar contratos generados antes de emisión
 
-Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_validator.py
+Ubicación: src/farfan_pipeline/phases/Phase_02/contract_generator/contract_validator.py
 
 RESPONSABILIDADES:
 1. Validación estructural: campos requeridos presentes

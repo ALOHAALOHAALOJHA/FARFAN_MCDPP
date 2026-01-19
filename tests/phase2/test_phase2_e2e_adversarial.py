@@ -94,7 +94,7 @@ def test_phase2_e2e_adversarial_flow(adversarial_setup):
     
     # We mock ChunkMatrix to avoid strict 60-chunk invariant for this specific test
     # allowing us to test partial/garbage documents
-    with patch("farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer.ChunkMatrix") as MockChunkMatrix:
+    with patch("farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer.ChunkMatrix") as MockChunkMatrix:
         MockChunkMatrix.EXPECTED_CHUNK_COUNT = 3 # Override constraint
         
         # Mock matrix behavior
@@ -108,7 +108,7 @@ def test_phase2_e2e_adversarial_flow(adversarial_setup):
         matrix_instance.get_chunk.side_effect = get_chunk
 
         # Mock validate_phase6_schema_compatibility to pass (we test execution failure, not schema)
-        with patch("farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer.validate_phase6_schema_compatibility"):
+        with patch("farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer.validate_phase6_schema_compatibility"):
             
             synchronizer = IrrigationSynchronizer(
                 questionnaire=questionnaire,
@@ -131,7 +131,7 @@ def test_phase2_e2e_adversarial_flow(adversarial_setup):
     # Now we execute this plan using TaskExecutor.
     # We simulate an executor that crashes on binary data.
 
-    with patch("farfan_pipeline.phases.Phase_2.phase2_50_00_task_executor.DynamicContractExecutor") as MockExecutorClass:
+    with patch("farfan_pipeline.phases.Phase_02.phase2_50_00_task_executor.DynamicContractExecutor") as MockExecutorClass:
         mock_executor_instance = MockExecutorClass.return_value
         
         # Define a side effect that crashes

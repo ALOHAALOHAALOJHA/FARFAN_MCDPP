@@ -233,7 +233,7 @@ src/farfan_pipeline/infrastructure/extractors/
 
 #### Phase 8 Integration
 ```
-src/farfan_pipeline/phases/Phase_8/
+src/farfan_pipeline/phases/Phase_08/
 └── phase8_35_00_entity_targeted_recommendations.py   (800 lines)
     ├── EntityTargetedRecommendationEngine
     ├── EntityTargetedRecommendation
@@ -243,7 +243,7 @@ src/farfan_pipeline/phases/Phase_8/
 
 #### Phase 9 Integration
 ```
-src/farfan_pipeline/phases/Phase_9/
+src/farfan_pipeline/phases/Phase_09/
 └── phase9_15_00_institutional_entity_annex.py        (950 lines)
     ├── InstitutionalEntityAnnexGenerator
     ├── InstitutionalProfile
@@ -360,7 +360,7 @@ for match in result.matches:
 ### 6.2 Entity-Targeted Recommendations (Phase 8)
 
 ```python
-from farfan_pipeline.phases.Phase_8 import EntityTargetedRecommendationEngine
+from farfan_pipeline.phases.Phase_08 import EntityTargetedRecommendationEngine
 
 # Initialize engine
 engine = EntityTargetedRecommendationEngine(
@@ -394,7 +394,7 @@ for rec in recommendations:
 ### 6.3 Institutional Annex Generation (Phase 9)
 
 ```python
-from farfan_pipeline.phases.Phase_9 import InstitutionalEntityAnnexGenerator
+from farfan_pipeline.phases.Phase_09 import InstitutionalEntityAnnexGenerator
 
 # Initialize generator
 generator = InstitutionalEntityAnnexGenerator(

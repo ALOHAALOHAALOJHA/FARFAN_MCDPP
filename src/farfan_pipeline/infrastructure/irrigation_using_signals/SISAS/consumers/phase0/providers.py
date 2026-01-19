@@ -21,7 +21,7 @@ class Phase0ProvidersConsumer(BaseConsumer):
     """
 
     consumer_id: str = "providers.py"
-    consumer_phase: str = "phase_0"
+    consumer_phase: str = "phase_00"
 
     def __post_init__(self):
         super().__post_init__()
@@ -37,8 +37,8 @@ class Phase0ProvidersConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus", "integrity_bus", "operational_bus"],
             context_filters={
-                "phase": ["phase_0"],
-                "consumer_scope": ["Phase_0"]
+                "phase": ["phase_00"],
+                "consumer_scope": ["Phase_00"]
             },
             required_capabilities=["can_validate"]
         )

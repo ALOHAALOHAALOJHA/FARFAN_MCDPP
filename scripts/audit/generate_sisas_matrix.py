@@ -31,28 +31,28 @@ VEHICLE_ASSIGNMENTS = {
 
 # Mapeo de consumidores según fase y tipo de archivo
 CONSUMER_ASSIGNMENTS = {
-    "phase_0": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types"],
-    "phase_1": ["phase1_signal_enrichment", "phase1_cpp_ingestion"],
-    "phase_2": ["phase2_factory_consumer", "phase2_evidence_consumer", "phase2_contract_consumer"],
-    "phase_3": ["phase3_scoring"],
-    "phase_7": ["phase7_meso_consumer"],
-    "phase_8": ["phase8_recommendations"],
+    "phase_00": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types"],
+    "phase_01": ["phase1_signal_enrichment", "phase1_cpp_ingestion"],
+    "phase_02": ["phase2_factory_consumer", "phase2_evidence_consumer", "phase2_contract_consumer"],
+    "phase_03": ["phase3_scoring"],
+    "phase_07": ["phase7_meso_consumer"],
+    "phase_08": ["phase8_recommendations"],
 }
 
 # Fases asignadas por tipo de archivo
 PHASE_ASSIGNMENTS = {
-    "policy_areas": "phase_1",
-    "dimensions": "phase_1",
-    "clusters": "phase_2",
-    "questions": "phase_2",
-    "micro_questions": "phase_2",
-    "atomized_questions": "phase_2",
-    "CORE_DATA": "phase_0",
-    "REGISTRY_DATA": "phase_0",
-    "DOMAIN_DATA": "phase_1",
-    "OPERATIONAL_DATA": "phase_2",
-    "config": "phase_0",
-    "validations": "phase_0",
+    "policy_areas": "phase_01",
+    "dimensions": "phase_01",
+    "clusters": "phase_02",
+    "questions": "phase_02",
+    "micro_questions": "phase_02",
+    "atomized_questions": "phase_02",
+    "CORE_DATA": "phase_00",
+    "REGISTRY_DATA": "phase_00",
+    "DOMAIN_DATA": "phase_01",
+    "OPERATIONAL_DATA": "phase_02",
+    "config": "phase_00",
+    "validations": "phase_00",
 }
 
 
@@ -136,7 +136,7 @@ def get_assigned_consumers(file_path: str) -> List[str]:
     else:
         base_category = category
 
-    phase = PHASE_ASSIGNMENTS.get(base_category, "phase_1")
+    phase = PHASE_ASSIGNMENTS.get(base_category, "phase_01")
     return CONSUMER_ASSIGNMENTS.get(phase, [])
 
 

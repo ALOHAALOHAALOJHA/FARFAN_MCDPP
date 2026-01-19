@@ -59,16 +59,16 @@ RUN COMMANDS
 ═══════════════════════════════════════════════════════════════════════════════
 
 # Run all tests:
-pytest src/farfan_pipeline/phases/Phase_2/tests/ -v --tb=short
+pytest src/farfan_pipeline/phases/Phase_02/tests/ -v --tb=short
 
 # Run adversarial tests only:
-pytest src/farfan_pipeline/phases/Phase_2/tests/ -v -k "adversarial"
+pytest src/farfan_pipeline/phases/Phase_02/tests/ -v -k "adversarial"
 
 # Run security tests only:
-pytest src/farfan_pipeline/phases/Phase_2/tests/ -v -k "security or injection"
+pytest src/farfan_pipeline/phases/Phase_02/tests/ -v -k "security or injection"
 
 # Run interphase tests only:
-pytest src/farfan_pipeline/phases/Phase_2/tests/ -v -k "interphase or adapter"
+pytest src/farfan_pipeline/phases/Phase_02/tests/ -v -k "interphase or adapter"
 
 ═══════════════════════════════════════════════════════════════════════════════
 """

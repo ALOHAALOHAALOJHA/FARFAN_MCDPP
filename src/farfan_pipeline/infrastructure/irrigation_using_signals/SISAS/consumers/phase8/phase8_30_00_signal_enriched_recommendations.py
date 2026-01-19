@@ -24,7 +24,7 @@ class Phase8SignalEnrichedRecommendationsConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase8_30_00_signal_enriched_recommendations.py"
-    consumer_phase: str = "phase_8"
+    consumer_phase: str = "phase_08"
 
     def __post_init__(self):
         super().__post_init__()
@@ -52,8 +52,8 @@ class Phase8SignalEnrichedRecommendationsConsumer(BaseConsumer):
                 "integrity_bus"
             ],
             context_filters={
-                "phase": ["phase_8"],
-                "consumer_scope": ["Phase_8"]
+                "phase": ["phase_08"],
+                "consumer_scope": ["Phase_08"]
             },
             required_capabilities=["can_enrich", "can_transform"]
         )

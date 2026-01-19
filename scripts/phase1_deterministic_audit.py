@@ -589,8 +589,8 @@ class NodeExecutor:
         
         # Critical imports for Phase 1
         critical_deps = [
-            ("farfan_pipeline.phases.Phase_1", "Phase 1 core"),
-            ("farfan_pipeline.phases.Phase_0", "Phase 0 foundation"),
+            ("farfan_pipeline.phases.Phase_01", "Phase 1 core"),
+            ("farfan_pipeline.phases.Phase_00", "Phase 0 foundation"),
             ("farfan_pipeline.orchestration", "Orchestration"),
         ]
         
@@ -630,7 +630,7 @@ class NodeExecutor:
     
     def _exec_n04_static_analysis(self, node: DAGNode, ctx: dict) -> dict:
         """Run static analysis."""
-        phase1_path = self.project_root / "src/farfan_pipeline/phases/Phase_1"
+        phase1_path = self.project_root / "src/farfan_pipeline/phases/Phase_01"
         
         lint_results = {
             "files_analyzed": 0,
@@ -679,7 +679,7 @@ class NodeExecutor:
         }
         
         # Check for contract files
-        contracts_path = self.project_root / "src/farfan_pipeline/phases/Phase_1/contracts"
+        contracts_path = self.project_root / "src/farfan_pipeline/phases/Phase_01/contracts"
         if contracts_path.exists():
             contract_files = list(contracts_path.glob("*.py"))
             contract_report["contracts_defined"] = len(contract_files)
@@ -694,7 +694,7 @@ class NodeExecutor:
     
     def _exec_n06_unit_tests(self, node: DAGNode, ctx: dict) -> dict:
         """Run unit tests."""
-        tests_path = self.project_root / "tests/phase_1"
+        tests_path = self.project_root / "tests/phase_01"
         
         test_results = {
             "total": 0,

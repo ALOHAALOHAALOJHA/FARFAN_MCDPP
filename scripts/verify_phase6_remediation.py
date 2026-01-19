@@ -35,7 +35,7 @@ def main() -> int:
     # === CHECK 1: Unified Config Exists ===
     print("\n[1] Configuration Unification")
     try:
-        from farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config import (
+        from farfan_pipeline.phases.Phase_06.phase6_10_01_scoring_config import (
             PHASE6_CONFIG,
             Phase6ScoringConfig,
             DispersionScenario,
@@ -56,7 +56,7 @@ def main() -> int:
     # === CHECK 2: Constants Re-export ===
     print("\n[2] Constants Backwards Compatibility")
     try:
-        from farfan_pipeline.phases.Phase_6.phase6_10_00_phase_6_constants import (
+        from farfan_pipeline.phases.Phase_06.phase6_10_00_phase_6_constants import (
             PENALTY_WEIGHT,
             DISPERSION_THRESHOLDS,
             MIN_SCORE,
@@ -85,7 +85,7 @@ def main() -> int:
     # === CHECK 3: Adaptive Scoring Uses Config ===
     print("\n[3] Adaptive Scoring Integration")
     try:
-        from farfan_pipeline.phases.Phase_6.phase6_20_00_adaptive_meso_scoring import (
+        from farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring import (
             AdaptiveScoringConfig,
         )
 
@@ -104,7 +104,7 @@ def main() -> int:
     # === CHECK 4: Contract Integration ===
     print("\n[4] Contract Integration")
     try:
-        from farfan_pipeline.phases.Phase_6 import ClusterAggregator
+        from farfan_pipeline.phases.Phase_06 import ClusterAggregator
         import inspect
 
         sig = inspect.signature(ClusterAggregator.__init__)
@@ -122,7 +122,7 @@ def main() -> int:
     # === CHECK 5: Coherence Classification ===
     print("\n[5] Coherence Classification")
     try:
-        from farfan_pipeline.phases.Phase_6.contracts.phase6_output_contract import (
+        from farfan_pipeline.phases.Phase_06.contracts.phase6_output_contract import (
             Phase6OutputContract,
         )
 
@@ -143,7 +143,7 @@ def main() -> int:
 
     # === CHECK 6: Documentation Updated ===
     print("\n[6] Documentation Drift Resolved")
-    docs_path = "src/farfan_pipeline/phases/Phase_6/docs"
+    docs_path = "src/farfan_pipeline/phases/Phase_06/docs"
 
     exec_flow = docs_path / "phase6_execution_flow.md"
     if os.path.exists(exec_flow):

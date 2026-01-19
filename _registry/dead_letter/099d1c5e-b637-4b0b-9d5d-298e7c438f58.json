@@ -4,7 +4,7 @@
     "signal_id": "277932ca-4f84-41f4-9472-3f6f81a0cc18",
     "signal_type": "MC05",
     "scope": {
-      "phase": "phase_1",
+      "phase": "phase_01",
       "policy_area": "PA01",
       "slot": "D1-Q1"
     },

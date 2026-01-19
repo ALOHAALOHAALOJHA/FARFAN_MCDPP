@@ -89,7 +89,7 @@ def check_wiring_validator_available(config: RuntimeConfig) -> bool:
     """
     try:
         import importlib
-        importlib.import_module("farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator")
+        importlib.import_module("farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator")
         return True
     except ImportError as e:
         if config.mode == RuntimeMode.PROD and not config.allow_validator_disable:
@@ -205,7 +205,7 @@ def check_orchestration_metrics_contract(config: RuntimeConfig) -> bool:
     """
     Check that orchestration metrics contract is properly defined.
 
-    This validates that the _execution_metrics['phase_2'] schema exists
+    This validates that the _execution_metrics['phase_02'] schema exists
     and is properly structured.
 
     Args:
@@ -220,9 +220,9 @@ def check_orchestration_metrics_contract(config: RuntimeConfig) -> bool:
     try:
         # Lazy import to avoid circular dependency:
         # boot_checks → orchestrator → factory → verified_pipeline_runner → boot_checks
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import UnifiedOrchestrator as Orchestrator
 
-        # Verify phase_2 metrics schema exists
+        # Verify phase_02 metrics schema exists
         # This is a placeholder - actual implementation would check the schema
         return True
     except ImportError as e:

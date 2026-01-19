@@ -99,7 +99,7 @@
     "phases_with_code": 10,
     "phases_with_sisas_consumers": 6,
     "orphaned_phases_in_config": [],
-    "missing_phases_in_config": ["phase_4", "phase_5", "phase_6", "phase_9"],
+    "missing_phases_in_config": ["phase_04", "phase_05", "phase_06", "phase_09"],
     "gap": "Config doesn't list phases 4-6, 9 even though they have code"
   },
   "vehicle_configuration_validation": {

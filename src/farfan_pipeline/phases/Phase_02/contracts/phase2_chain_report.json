@@ -1,6 +1,6 @@
 {
   "phase_id": "2",
-  "phase_dir": "src/farfan_pipeline/phases/Phase_2",
+  "phase_dir": "src/farfan_pipeline/phases/Phase_02",
   "total_files": 41,
   "files_in_chain": 41,
   "orphan_files": [],

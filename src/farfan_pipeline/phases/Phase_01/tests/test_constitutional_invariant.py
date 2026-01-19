@@ -21,7 +21,7 @@ class TestConstitutionalInvariant:
     def test_expected_constants_defined(self):
         """Verify expected constants are defined in constitutional contract."""
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Phase 1 directory is parent.parent (go up to Phase_1)
+        # Phase 1 directory is parent.parent (go up to Phase_01)
         phase1_dir = Path(__file__).resolve().parent.parent
         constitutional_contract_path = (
             phase1_dir
@@ -48,7 +48,7 @@ class TestConstitutionalInvariant:
     def test_contract_files_exist(self):
         """Verify all 4 contract files exist."""
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Phase 1 directory is parent.parent (go up to Phase_1)
+        # Phase 1 directory is parent.parent (go up to Phase_01)
         phase1_dir = Path(__file__).resolve().parent.parent
         contracts_dir = phase1_dir / "contracts"
 
@@ -70,7 +70,7 @@ class TestConstitutionalInvariant:
     def test_subphase_weights_defined(self):
         """Verify all 16 subphase weights are defined in mission contract."""
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Phase 1 directory is parent.parent (go up to Phase_1)
+        # Phase 1 directory is parent.parent (go up to Phase_01)
         phase1_dir = Path(__file__).resolve().parent.parent
         mission_contract_path = (
             phase1_dir
@@ -98,7 +98,7 @@ class TestConstitutionalInvariant:
     def test_mission_contract_has_validation_function(self):
         """Verify mission contract has validation function."""
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Phase 1 directory is parent.parent (go up to Phase_1)
+        # Phase 1 directory is parent.parent (go up to Phase_01)
         phase1_dir = Path(__file__).resolve().parent.parent
         mission_contract_path = (
             phase1_dir
@@ -141,7 +141,7 @@ class TestCertificates:
         from pathlib import Path
 
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Phase 1 directory is parent.parent (go up to Phase_1)
+        # Phase 1 directory is parent.parent (go up to Phase_01)
         phase1_dir = Path(__file__).resolve().parent.parent
         cert_dir = phase1_dir / "contracts" / "certificates"
 
@@ -158,7 +158,7 @@ class TestCertificates:
         from pathlib import Path
 
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Phase 1 directory is parent.parent (go up to Phase_1)
+        # Phase 1 directory is parent.parent (go up to Phase_01)
         phase1_dir = Path(__file__).resolve().parent.parent
         cert_dir = phase1_dir / "contracts" / "certificates"
 
@@ -186,7 +186,7 @@ class TestOrchestratorIntegration:
     def test_orchestrator_has_60_chunk_assertion(self):
         """Verify orchestrator enforces 60-chunk invariant."""
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Go to Phase_1 (parent.parent), then to phases (parent), then to farfan_pipeline (parent), then to orchestration
+        # Go to Phase_01 (parent.parent), then to phases (parent), then to farfan_pipeline (parent), then to orchestration
         phase1_dir = Path(__file__).resolve().parent.parent
         orchestrator_path = (
             phase1_dir.parent.parent / "orchestration" / "orchestrator.py"
@@ -213,7 +213,7 @@ class TestOrchestratorIntegration:
     def test_orchestrator_structure(self):
         """Verify orchestrator has basic DAG/execution structure."""
         # We're in src/farfan_pipeline.phases.Phase_01/tests/
-        # Go to Phase_1 (parent.parent), then to phases (parent), then to farfan_pipeline (parent), then to orchestration
+        # Go to Phase_01 (parent.parent), then to phases (parent), then to farfan_pipeline (parent), then to orchestration
         phase1_dir = Path(__file__).resolve().parent.parent
         orchestrator_path = (
             phase1_dir.parent.parent / "orchestration" / "orchestrator.py"

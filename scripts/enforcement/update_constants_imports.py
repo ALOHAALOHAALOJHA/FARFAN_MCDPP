@@ -32,47 +32,47 @@ def update_constants_imports(repo_root: Path) -> dict[str, list[str]]:
     import_mappings = [
         # Phase 0
         (
-            r"from\s+farfan_pipeline\.phases\.Phase_0\.PHASE_0_CONSTANTS\s+import",
-            "from farfan_pipeline.phases.Phase_0.phase0_10_00_phase_0_constants import"
+            r"from\s+farfan_pipeline\.phases\.Phase_00\.PHASE_0_CONSTANTS\s+import",
+            "from farfan_pipeline.phases.Phase_00.phase0_10_00_phase_0_constants import"
         ),
         (
             r"from\s+\.PHASE_0_CONSTANTS\s+import",
             "from .phase0_10_00_phase_0_constants import"
         ),
         (
-            r"import\s+farfan_pipeline\.phases\.Phase_0\.PHASE_0_CONSTANTS",
-            "import farfan_pipeline.phases.Phase_0.phase0_10_00_phase_0_constants"
+            r"import\s+farfan_pipeline\.phases\.Phase_00\.PHASE_0_CONSTANTS",
+            "import farfan_pipeline.phases.Phase_00.phase0_10_00_phase_0_constants"
         ),
         # Phase 1
         (
-            r"from\s+farfan_pipeline\.phases\.Phase_1\.PHASE_1_CONSTANTS\s+import",
-            "from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import"
+            r"from\s+farfan_pipeline\.phases\.Phase_01\.PHASE_1_CONSTANTS\s+import",
+            "from farfan_pipeline.phases.Phase_01.phase1_10_00_phase_1_constants import"
         ),
         (
             r"from\s+\.PHASE_1_CONSTANTS\s+import",
             "from .phase1_10_00_phase_1_constants import"
         ),
         (
-            r"import\s+farfan_pipeline\.phases\.Phase_1\.PHASE_1_CONSTANTS",
-            "import farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants"
+            r"import\s+farfan_pipeline\.phases\.Phase_01\.PHASE_1_CONSTANTS",
+            "import farfan_pipeline.phases.Phase_01.phase1_10_00_phase_1_constants"
         ),
         # Phase 2
         (
-            r"from\s+farfan_pipeline\.phases\.Phase_2\.PHASE_2_CONSTANTS\s+import",
-            "from farfan_pipeline.phases.Phase_2.phase2_10_00_phase_2_constants import"
+            r"from\s+farfan_pipeline\.phases\.Phase_02\.PHASE_2_CONSTANTS\s+import",
+            "from farfan_pipeline.phases.Phase_02.phase2_10_00_phase_2_constants import"
         ),
         (
             r"from\s+\.PHASE_2_CONSTANTS\s+import",
             "from .phase2_10_00_phase_2_constants import"
         ),
         (
-            r"import\s+farfan_pipeline\.phases\.Phase_2\.PHASE_2_CONSTANTS",
-            "import farfan_pipeline.phases.Phase_2.phase2_10_00_phase_2_constants"
+            r"import\s+farfan_pipeline\.phases\.Phase_02\.PHASE_2_CONSTANTS",
+            "import farfan_pipeline.phases.Phase_02.phase2_10_00_phase_2_constants"
         ),
         # Phase 4-7
         (
-            r"from\s+farfan_pipeline\.phases\.Phase_4\.PHASE_4_7_CONSTANTS\s+import",
-            "from farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants import"
+            r"from\s+farfan_pipeline\.phases\.Phase_04\.PHASE_4_7_CONSTANTS\s+import",
+            "from farfan_pipeline.phases.Phase_04.phase4_10_00_phase_4_7_constants import"
         ),
         (
             r"from\s+\.\.PHASE_4_7_CONSTANTS\s+import",
@@ -83,21 +83,21 @@ def update_constants_imports(repo_root: Path) -> dict[str, list[str]]:
             "from .phase4_10_00_phase_4_7_constants import"
         ),
         (
-            r"import\s+farfan_pipeline\.phases\.Phase_4\.PHASE_4_7_CONSTANTS",
-            "import farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants"
+            r"import\s+farfan_pipeline\.phases\.Phase_04\.PHASE_4_7_CONSTANTS",
+            "import farfan_pipeline.phases.Phase_04.phase4_10_00_phase_4_7_constants"
         ),
         # Phase 9
         (
-            r"from\s+farfan_pipeline\.phases\.Phase_9\.PHASE_9_CONSTANTS\s+import",
-            "from farfan_pipeline.phases.Phase_9.phase9_10_00_phase_9_constants import"
+            r"from\s+farfan_pipeline\.phases\.Phase_09\.PHASE_9_CONSTANTS\s+import",
+            "from farfan_pipeline.phases.Phase_09.phase9_10_00_phase_9_constants import"
         ),
         (
             r"from\s+\.PHASE_9_CONSTANTS\s+import",
             "from .phase9_10_00_phase_9_constants import"
         ),
         (
-            r"import\s+farfan_pipeline\.phases\.Phase_9\.PHASE_9_CONSTANTS",
-            "import farfan_pipeline.phases.Phase_9.phase9_10_00_phase_9_constants"
+            r"import\s+farfan_pipeline\.phases\.Phase_09\.PHASE_9_CONSTANTS",
+            "import farfan_pipeline.phases.Phase_09.phase9_10_00_phase_9_constants"
         ),
     ]
 

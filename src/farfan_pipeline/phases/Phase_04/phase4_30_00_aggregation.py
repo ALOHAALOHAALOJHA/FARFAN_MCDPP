@@ -68,7 +68,7 @@ from farfan_pipeline.phases.Phase_04.phase4_20_00_choquet_adapter import (
     create_default_choquet_adapter,
 )
 
-# Lazy import for SystemicGapDetector to avoid circular dependency with Phase_7 __init__
+# Lazy import for SystemicGapDetector to avoid circular dependency with Phase_07 __init__
 def _get_systemic_gap_detector():
     """Lazy import SystemicGapDetector from Phase 7."""
     from farfan_pipeline.phases.Phase_07.phase7_10_00_systemic_gap_detector import (

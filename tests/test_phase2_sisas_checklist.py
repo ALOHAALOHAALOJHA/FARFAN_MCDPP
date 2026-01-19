@@ -226,7 +226,7 @@ def executor_contracts_dir(project_root: Path) -> Path:
         / "src"
         / "farfan_pipeline"
         / "phases"
-        / "Phase_2"
+        / "Phase_02"
         / "json_files_phase_two"
         / "executor_contracts"
         / "specialized"

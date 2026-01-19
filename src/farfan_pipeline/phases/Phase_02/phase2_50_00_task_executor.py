@@ -3,7 +3,7 @@ Module: phase2_50_00_task_executor
 PHASE_LABEL: Phase 2
 Sequence: Z
 
-Module: src.farfan_pipeline.phases.phase_2.phase2_e_task_executor
+Module: src.farfan_pipeline.phases.phase_02.phase2_e_task_executor
 Purpose: Phase 2.2 Task Execution - Execute 300 tasks from ExecutionPlan
 Owner: phase2_orchestration
 Lifecycle: ACTIVE
@@ -1230,7 +1230,7 @@ class DynamicContractExecutor:
         - Simplified execution for canonical Phase 2 pipeline
         - Full MethodRegistry integration available via orchestrator
         - See: farfan_pipeline/orchestration/method_registry.py
-        - See: farfan_pipeline/phases/Phase_2/calibration_policy.py
+        - See: farfan_pipeline/phases/Phase_02/calibration_policy.py
         """
         # Simplified execution - full integration via orchestrator's MethodRegistry
         return {

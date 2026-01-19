@@ -430,7 +430,7 @@ class Phase7ToPhase8Adapter:
             "cluster_data": cluster_data,
             "macro_data": macro_data,
             "metadata": {
-                "source_phase": "Phase_7",
+                "source_phase": "Phase_07",
                 "evaluation_id": macro_score.evaluation_id,
                 "evaluation_timestamp": macro_score.evaluation_timestamp,
                 "pipeline_version": macro_score.pipeline_version,

@@ -61,7 +61,7 @@ class BaseSignalExtractor(ABC):
     SIGNAL_TYPE: SignalType = None
     CAPABILITIES_REQUIRED: List[str] = []
     EMPIRICAL_AVAILABILITY: float = 0.5
-    DEFAULT_PHASE: str = "phase_1"
+    DEFAULT_PHASE: str = "phase_01"
     DEFAULT_SLOT: str = "ALL"
     
     def __init__(self, sdo: SignalDistributionOrchestrator):

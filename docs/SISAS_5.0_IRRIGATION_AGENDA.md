@@ -128,16 +128,16 @@ def depurate_phase_input(phase_id: str, file_paths: List[str]) -> DepurationResu
 
 | Fase | Archivos a Depurar | FileRole | Ubicación de Llamada |
 |------|-------------------|----------|---------------------|
-| **Phase 0** | Config files | `config_file` | `execute_phase_0()` antes de cargar config |
+| **Phase 0** | Config files | `config_file` | `execute_phase_00()` antes de cargar config |
 | **Phase 1** | PDF input | `source_document` | `Phase1Executor.execute()` antes de chunking |
-| **Phase 2** | CPP (60 chunks) | `canon_policy_package` | `execute_phase_2()` antes de crear ExecutionPlan |
-| **Phase 3** | ExecutorResults (300) | `phase2_result` | `execute_phase_3()` antes de scoring |
-| **Phase 4** | ScoredMicroQuestions (300) | `phase3_output` | `execute_phase_4()` antes de aggregation |
-| **Phase 5** | DimensionScores (60) | `dimension_score` | `execute_phase_5()` antes de area integration |
-| **Phase 6** | AreaScores (10) | `area_score` | `execute_phase_6()` antes de weighting |
-| **Phase 7** | PolicyIndex | `policy_index` | `execute_phase_7()` antes de synthesis |
-| **Phase 8** | Recommendations | `recommendation` | `execute_phase_8()` antes de report gen |
-| **Phase 9** | Report artifacts | `report_artifact` | `execute_phase_9()` antes de final output |
+| **Phase 2** | CPP (60 chunks) | `canon_policy_package` | `execute_phase_02()` antes de crear ExecutionPlan |
+| **Phase 3** | ExecutorResults (300) | `phase2_result` | `execute_phase_03()` antes de scoring |
+| **Phase 4** | ScoredMicroQuestions (300) | `phase3_output` | `execute_phase_04()` antes de aggregation |
+| **Phase 5** | DimensionScores (60) | `dimension_score` | `execute_phase_05()` antes de area integration |
+| **Phase 6** | AreaScores (10) | `area_score` | `execute_phase_06()` antes de weighting |
+| **Phase 7** | PolicyIndex | `policy_index` | `execute_phase_07()` antes de synthesis |
+| **Phase 8** | Recommendations | `recommendation` | `execute_phase_08()` antes de report gen |
+| **Phase 9** | Report artifacts | `report_artifact` | `execute_phase_09()` antes de final output |
 
 ### Código de Integración (MainOrchestrator)
 
@@ -357,7 +357,7 @@ class PhaseWiringLoader:
     """
 
     PHASE_WIRING_CONFIGS = {
-        "phase_1": {
+        "phase_01": {
             "vehicles": ["ChunkVehicle", "PDMVehicle"],
             "consumers": ["QualityConsumer", "SP12IrrigationConsumer"],
             "signal_types": ["ChunkSignal", "PDMSignal", "QualitySignal"],
@@ -366,7 +366,7 @@ class PhaseWiringLoader:
                 "pdm_*.json": "PDMVehicle"
             }
         },
-        "phase_2": {
+        "phase_02": {
             "vehicles": ["QuestionVehicle", "EvidenceVehicle", "MethodVehicle"],
             "consumers": ["EvidenceConsumer", "MethodConsumer", "SynthesisConsumer"],
             "signal_types": ["QuestionSignal", "EvidenceSignal", "MethodSignal"],
@@ -698,7 +698,7 @@ async def execute_phase_2_complete(
     if orchestrator_config.enable_pillar_3_wiring:
         logger.info("Phase 2: Ejecutando PILAR 3 WIRING")
 
-        wiring_config = PhaseWiringLoader.load_wiring_for_phase("phase_2")
+        wiring_config = PhaseWiringLoader.load_wiring_for_phase("phase_02")
         wiring_report = wiring_config.validate_wiring()
 
         if not wiring_report.is_valid:

@@ -211,7 +211,7 @@ EvidenceNexus: Final output
 
 2. **Create Comprehensive Integration Tests**
    - **Task**: Write tests for all Phase 2 components and integration
-   - **Files**: `tests/canonic_phases/phase_2/`
+   - **Files**: `tests/canonic_phases/phase_02/`
    - **Coverage**: Phase 2.1, 2.2, 2a, 2b, 2c, error handling
    - **Effort**: 3-4 days
    - **Blocker**: Yes - without tests, stability unverified

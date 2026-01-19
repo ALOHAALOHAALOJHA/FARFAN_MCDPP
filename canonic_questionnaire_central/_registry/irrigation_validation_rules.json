@@ -14,16 +14,16 @@
   },
   
   "routing": {
-    "phase_0": ["SIGNAL_PACK", "STATIC_LOAD"],
-    "phase_1": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"],
-    "phase_2": ["PATTERN_ENRICHMENT", "KEYWORD_ENRICHMENT", "ENTITY_ENRICHMENT"],
-    "phase_3": ["NORMATIVE_VALIDATION", "ENTITY_VALIDATION", "COHERENCE_VALIDATION"],
-    "phase_4": ["MICRO_SCORE"],
-    "phase_5": ["MICRO_SCORE"],
-    "phase_6": ["MICRO_SCORE"],
-    "phase_7": ["MESO_SCORE", "MESO_AGGREGATION"],
-    "phase_8": ["MACRO_SCORE", "MACRO_AGGREGATION"],
-    "phase_9": ["REPORT_ASSEMBLY"]
+    "phase_00": ["SIGNAL_PACK", "STATIC_LOAD"],
+    "phase_01": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"],
+    "phase_02": ["PATTERN_ENRICHMENT", "KEYWORD_ENRICHMENT", "ENTITY_ENRICHMENT"],
+    "phase_03": ["NORMATIVE_VALIDATION", "ENTITY_VALIDATION", "COHERENCE_VALIDATION"],
+    "phase_04": ["MICRO_SCORE"],
+    "phase_05": ["MICRO_SCORE"],
+    "phase_06": ["MICRO_SCORE"],
+    "phase_07": ["MESO_SCORE", "MESO_AGGREGATION"],
+    "phase_08": ["MACRO_SCORE", "MACRO_AGGREGATION"],
+    "phase_09": ["REPORT_ASSEMBLY"]
   },
   
   "capabilities_required": {

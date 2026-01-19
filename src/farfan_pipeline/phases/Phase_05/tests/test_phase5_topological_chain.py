@@ -3,7 +3,7 @@ Phase 5 Topological Order Tests - End-to-End Chain Coverage
 
 Tests that verify the topological order and module chain integrity.
 
-Module: src/farfan_pipeline/phases/Phase_5/tests/test_phase5_topological_chain.py
+Module: src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py
 Version: 1.0.0
 Status: ADVERSARIAL
 """
@@ -58,8 +58,8 @@ class TestPhase5ModuleImports:
     
     def test_import_phase5_package(self):
         """Test importing Phase 5 package."""
-        import farfan_pipeline.phases.Phase_5
-        assert farfan_pipeline.phases.Phase_5 is not None
+        import farfan_pipeline.phases.Phase_05
+        assert farfan_pipeline.phases.Phase_05 is not None
     
     def test_import_constants(self):
         """Test importing Phase 5 constants."""

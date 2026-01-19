@@ -9,7 +9,7 @@ Mission:
 - Apply weighted averaging
 - Validate all bounds and constraints
 
-Module: src/farfan_pipeline/phases/Phase_5/contracts/phase5_mission_contract.py
+Module: src/farfan_pipeline/phases/Phase_05/contracts/phase5_mission_contract.py
 """
 from __future__ import annotations
 

@@ -501,16 +501,16 @@ class DependencyGraph:
         {
             "phases": [
                 {
-                    "id": "phase_0",
+                    "id": "phase_00",
                     "name": "Bootstrap Phase",
                     "depends_on": [],
                     "expected_signals": ["StructuralAlignmentSignal"],
                     "config": {... }
                 },
                 {
-                    "id": "phase_1",
+                    "id": "phase_01",
                     "name": "Enrichment Phase",
-                    "depends_on": ["phase_0"],
+                    "depends_on": ["phase_00"],
                     ... 
                 }
             ]

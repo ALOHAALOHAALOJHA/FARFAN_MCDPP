@@ -428,9 +428,9 @@ flowchart TB
         subgraph PHASE_SEEDS["░░ PHASE-SPECIFIC SEEDS ░░"]
             direction LR
             
-            SP0["<b>S<sub>phase_0</sub></b><br/>🔷 Bootstrap"]
-            SP1["<b>S<sub>phase_1</sub></b><br/>🔷 Extract"]
-            SP2["<b>S<sub>phase_2</sub></b><br/>🔷 Execute"]
+            SP0["<b>S<sub>phase_00</sub></b><br/>🔷 Bootstrap"]
+            SP1["<b>S<sub>phase_01</sub></b><br/>🔷 Extract"]
+            SP2["<b>S<sub>phase_02</sub></b><br/>🔷 Execute"]
             SPN["<b>S<sub>phase_n</sub></b><br/>🔷 ..."]
         end
     end

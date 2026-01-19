@@ -6,7 +6,7 @@ Phase 6 aggregates 10 AreaScore outputs into 4 ClusterScore values.
 
 All files participate in the default flow by canonical imports in deterministic order.
 
-Module: src/farfan_pipeline/phases/Phase_6/__init__.py
+Module: src/farfan_pipeline/phases/Phase_06/__init__.py
 Purpose: Package façade for Phase 6
 Owner: phase6_00
 Lifecycle: ACTIVE

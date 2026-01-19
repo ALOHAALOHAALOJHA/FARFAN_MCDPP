@@ -2,7 +2,7 @@
 Phase 8 Interface Validator
 ============================
 
-Module: src.farfan_pipeline.phases.Phase_8.interfaces.interface_validator
+Module: src.farfan_pipeline.phases.Phase_08.interfaces.interface_validator
 Purpose: Validates all inputs and outputs for Phase 8 - Recommendation Engine
 Owner: phase8_interfaces
 Lifecycle: ACTIVE

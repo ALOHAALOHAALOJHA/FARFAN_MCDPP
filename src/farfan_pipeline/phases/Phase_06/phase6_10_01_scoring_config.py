@@ -1,7 +1,7 @@
 """
 Phase 6 Unified Scoring Configuration
 
-Module:  src/farfan_pipeline/phases/Phase_6/phase6_10_01_scoring_config.py
+Module:  src/farfan_pipeline/phases/Phase_06/phase6_10_01_scoring_config.py
 Purpose: Single source of truth for all Phase 6 scoring parameters
 Owner: phase6_10
 Lifecycle: ACTIVE

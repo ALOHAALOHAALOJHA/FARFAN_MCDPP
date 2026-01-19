@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_9.PHASE_9_CONSTANTS
+Module: src.farfan_pipeline.phases.Phase_09.PHASE_9_CONSTANTS
 Purpose: Global constants for Phase 9 - Report Generation
 Owner: phase9_core
 Lifecycle: ACTIVE

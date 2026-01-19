@@ -51,7 +51,7 @@ Phase 2 testing revealed **18 test failures/errors** out of 96 total tests. The 
 from orchestration.resource_manager import ResourcePressureEvent
 
 # After (CORRECT):
-from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import ResourcePressureEvent
+from farfan_pipeline.phases.Phase_02.phase2_30_00_resource_manager import ResourcePressureEvent
 ```
 
 **Impact:** These import errors were blocking test collection.
@@ -163,7 +163,7 @@ NameError: name 'get_runtime_config' is not defined
 **Fix Required:**
 ```python
 # Add import at top of phase2_10_00_factory.py
-from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import get_runtime_config
+from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import get_runtime_config
 ```
 
 **Tests Affected:**
@@ -182,10 +182,10 @@ from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import get_runti
 **Errors:**
 ```python
 # Cannot import ClassRegistry
-ImportError: cannot import name 'ClassRegistry' from 'farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry'
+ImportError: cannot import name 'ClassRegistry' from 'farfan_pipeline.phases.Phase_02.phase2_10_01_class_registry'
 
 # Cannot import MethodsRegistry
-ImportError: cannot import name 'MethodsRegistry' from 'farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry'
+ImportError: cannot import name 'MethodsRegistry' from 'farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry'
 ```
 
 **Root Cause:** The actual classes in these files may have different names.

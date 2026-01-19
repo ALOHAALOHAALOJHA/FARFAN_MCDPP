@@ -895,7 +895,7 @@ consumer.track_evidence_quality()
 
 ### 5.9 Contract System
 
-**Contract Location**: `src/farfan_pipeline/phases/Phase_2/generated_contracts/`
+**Contract Location**: `src/farfan_pipeline/phases/Phase_02/generated_contracts/`
 
 **Contract Schema**:
 ```json
@@ -2449,7 +2449,7 @@ exporter = MetricsExporter(
 
 # Export metrics
 exporter.export_phase_metrics(
-    phase_id="phase_2",
+    phase_id="phase_02",
     metrics=profiler.get_all_reports()
 )
 
@@ -2514,8 +2514,8 @@ curl http://localhost:8000/api/v1/status
         "orchestrator": "healthy",
         "method_executor": "healthy",
         "signal_registry": "healthy",
-        "phase_0": "completed",
-        "phase_1": "completed",
+        "phase_00": "completed",
+        "phase_01": "completed",
         # ... (other phases)
     },
     "metrics": {
@@ -2667,7 +2667,7 @@ monitor = SchemaMonitor(
 monitor.observe_payload(
     payload=evidence_bundle,
     schema_name="EvidenceBundle",
-    phase="phase_2"
+    phase="phase_02"
 )
 
 # Get drift report
@@ -2972,8 +2972,8 @@ result = orchestrator.execute_pipeline()
     "phases_skipped": [],
     "total_duration_ms": 15000,
     "artifacts": {
-        "phase_0": "artifacts/phase0/gates.json",
-        "phase_1": "artifacts/phase1/chunk_manifest.json",
+        "phase_00": "artifacts/phase0/gates.json",
+        "phase_01": "artifacts/phase1/chunk_manifest.json",
         # ... (other phases)
     },
     "macro_score": {

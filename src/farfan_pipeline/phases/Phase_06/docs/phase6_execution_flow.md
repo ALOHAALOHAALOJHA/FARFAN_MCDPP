@@ -203,7 +203,7 @@ Phase 6 implements Design by Contract (DbC) with configurable enforcement:
 ### Configuration
 
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterAggregator
+from farfan_pipeline.phases.Phase_06 import ClusterAggregator
 
 # Strict mode (default) - fail fast on contract violations
 agg = ClusterAggregator(enforce_contracts=True, contract_mode="strict")
@@ -265,7 +265,7 @@ Each ClusterScore includes:
    - Test contract validation (input/output)
    - Test invariant enforcement
 
-3. **Adversarial Tests** (tests/phase_6/):
+3. **Adversarial Tests** (tests/phase_06/):
    - Test extreme dispersion scenarios
    - Test boundary conditions (min/max scores)
    - Test malformed inputs
@@ -292,9 +292,9 @@ No runtime configuration required - all parameters are compile-time constants.
 
 **Verification:**
 ```bash
-PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_6 import ClusterAggregator; print('✅ ClusterAggregator available')"
+PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_06 import ClusterAggregator; print('✅ ClusterAggregator available')"
 ```
 
 **Next Steps**:
-1. Migrate tests from tests/phase_6/
+1. Migrate tests from tests/phase_06/
 2. Generate import DAG visualization

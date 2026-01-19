@@ -4,7 +4,7 @@
     "signal_id": "712bac3a-d632-47bc-b621-449a76c28818",
     "signal_type": "MC05",
     "scope": {
-      "phase": "phase_1",
+      "phase": "phase_01",
       "policy_area": "PA01",
       "slot": "D1-Q1"
     },
@@ -28,6 +28,6 @@
     "content_hash": "acdb507c08851bfa7bfc034b03578dd1781c10fc35f785e5133978349cd0eae0"
   },
   "reason": "NO_CONSUMER",
-  "detail": "No consumer for scope={'phase': 'phase_1', 'policy_area': 'PA01', 'slot': 'D1-Q1'}",
+  "detail": "No consumer for scope={'phase': 'phase_01', 'policy_area': 'PA01', 'slot': 'D1-Q1'}",
   "timestamp": "2026-01-14T01:49:38.766893+00:00"
 }

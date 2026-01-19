@@ -40,7 +40,7 @@ class ContractUpdateValidator:
             SRC_ROOT
             / "farfan_pipeline"
             / "phases"
-            / "Phase_2"
+            / "Phase_02"
             / "json_files_phase_two"
             / "executor_contracts"
             / "specialized"
@@ -49,7 +49,7 @@ class ContractUpdateValidator:
             SRC_ROOT
             / "farfan_pipeline"
             / "phases"
-            / "Phase_2"
+            / "Phase_02"
             / "json_files_phase_two"
             / "executors_methods.json"
         )

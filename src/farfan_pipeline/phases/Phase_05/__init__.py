@@ -9,7 +9,7 @@ Phase 5 Contract:
 - Output: 10 AreaScore (one per policy area)
 - Process: Weighted average of 6 dimensions per policy area
 
-Module: src/farfan_pipeline/phases/Phase_5/__init__.py
+Module: src/farfan_pipeline/phases/Phase_05/__init__.py
 Purpose: Package façade for Phase 5
 Owner: phase5_00
 Lifecycle: ACTIVE

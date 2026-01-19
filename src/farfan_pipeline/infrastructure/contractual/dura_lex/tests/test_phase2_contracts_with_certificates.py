@@ -27,7 +27,7 @@ print("=" * 90)
 
 # Configuration
 CONTRACT_DIR = Path(
-    "src/farfan_pipeline/phases/Phase_2/json_files_phase_two/executor_contracts/specialized"
+    "src/farfan_pipeline/phases/Phase_02/json_files_phase_two/executor_contracts/specialized"
 )
 OUTPUT_DIR = Path("test_output/certificates")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

@@ -14,7 +14,7 @@ import pytest
 
 @pytest.fixture(scope="module")
 def phase8_path() -> Path:
-    return Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_8"
+    return Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_08"
 
 
 def _load_rules(phase8_path: Path) -> dict[str, Any]:

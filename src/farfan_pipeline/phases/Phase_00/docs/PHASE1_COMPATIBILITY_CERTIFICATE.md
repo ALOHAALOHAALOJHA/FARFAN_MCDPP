@@ -282,7 +282,7 @@ For questions about this compatibility certificate:
 - phase0_output_contract.py (Output specification)
 - phase0_40_00_input_validation.py (CanonicalInput implementation)
 - PHASE_0_MANIFEST.json (Complete specification)
-- Phase 1 Input Contract (in Phase_1/ directory)
+- Phase 1 Input Contract (in Phase_01/ directory)
 
 ---
 **END OF CERTIFICATE**

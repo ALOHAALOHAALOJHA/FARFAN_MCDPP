@@ -28,7 +28,7 @@ Primitives provide:
 ## Usage Example
 
 ```python
-from farfan_pipeline.phases.Phase_0.primitives.phase0_00_03_primitives import (
+from farfan_pipeline.phases.Phase_00.primitives.phase0_00_03_primitives import (
     HashStr,
     PolicyAreaID,
     validate_hash_str
@@ -44,16 +44,16 @@ policy_area: PolicyAreaID = "PA01"  # Agricultural Development
 
 ## Import Pattern
 
-Primitives are re-exported by Phase_0/__init__.py for convenience:
+Primitives are re-exported by Phase_00/__init__.py for convenience:
 
 ```python
-from farfan_pipeline.phases.Phase_0 import HashStr, PolicyAreaID
+from farfan_pipeline.phases.Phase_00 import HashStr, PolicyAreaID
 ```
 
 Or import directly from primitives:
 
 ```python
-from farfan_pipeline.phases.Phase_0.primitives.phase0_00_03_primitives import (
+from farfan_pipeline.phases.Phase_00.primitives.phase0_00_03_primitives import (
     HashStr,
     PolicyAreaID
 )

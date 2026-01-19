@@ -43,11 +43,11 @@ Archivos duplicados entre raíz SISAS y vehicles/:
 
 ```
 ⚠️ LEGACY (No usar - mantener para compatibilidad):
-./phases/Phase_1/phase1_11_00_signal_enrichment.py
-./phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py
-./phases/Phase_8/phase8_30_00_signal_enriched_recommendations.py
-./phases/Phase_4/signal_enriched_aggregation.py
-./phases/Phase_9/phase9_10_00_signal_enriched_reporting.py
+./phases/Phase_01/phase1_11_00_signal_enrichment.py
+./phases/Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py
+./phases/Phase_08/phase8_30_00_signal_enriched_recommendations.py
+./phases/Phase_04/signal_enriched_aggregation.py
+./phases/Phase_09/phase9_10_00_signal_enriched_reporting.py
 
 ✅ PRODUCCIÓN (usar desde SISAS):
 ./SISAS/consumers/phase1/phase1_11_00_signal_enrichment.py

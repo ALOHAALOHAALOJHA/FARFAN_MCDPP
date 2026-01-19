@@ -23,7 +23,7 @@ def test_bootstrap_initialization(temp_dir):
     )
     assert bootstrap.questionnaire_hash == "hash"
 
-@patch("farfan_pipeline.phases.Phase_0.phase0_90_02_bootstrap.Phase0Validator")
+@patch("farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap.Phase0Validator")
 def test_bootstrap_execution(mock_validator, temp_dir):
     # Mock resources
     (temp_dir / "q.json").write_text("{}")

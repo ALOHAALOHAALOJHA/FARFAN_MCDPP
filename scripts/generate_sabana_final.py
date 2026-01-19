@@ -88,16 +88,16 @@ VEHICLE_ASSET_PATTERNS = {
 
 # Mapeo: fase → consumidores principales (módulos de fase que usan Signals)
 PHASE_CONSUMERS = {
-    "Phase_0": [
+    "Phase_00": [
         "phase0_90_02_bootstrap.py",
         "providers.py",
         "wiring_types.py",
     ],
-    "Phase_1": [
+    "Phase_01": [
         "phase1_11_00_signal_enrichment.py",
         "phase1_13_00_cpp_ingestion.py",
     ],
-    "Phase_2": [
+    "Phase_02": [
         "phase2_10_00_factory.py",
         "phase2_30_03_resource_aware_executor.py",
         "phase2_40_03_irrigation_synchronizer.py",
@@ -106,21 +106,21 @@ PHASE_CONSUMERS = {
         "phase2_95_00_contract_hydrator.py",
         "phase2_95_02_precision_tracking.py",
     ],
-    "Phase_3": [
+    "Phase_03": [
         "phase3_10_00_phase3_signal_enriched_scoring.py",
     ],
-    "Phase_4": [
+    "Phase_04": [
         "phase4_10_00_aggregation.py",
         "phase4_10_00_signal_enriched_aggregation.py",
         "phase4_10_00_signal_enriched_primitives.py",
     ],
-    "Phase_5": [],  # Sin consumidores Signals detectados
-    "Phase_6": [],  # Sin consumidores Signals detectados
-    "Phase_7": [],  # Sin consumidores Signals detectados
-    "Phase_8": [
+    "Phase_05": [],  # Sin consumidores Signals detectados
+    "Phase_06": [],  # Sin consumidores Signals detectados
+    "Phase_07": [],  # Sin consumidores Signals detectados
+    "Phase_08": [
         "phase8_30_00_signal_enriched_recommendations.py",
     ],
-    "Phase_9": [
+    "Phase_09": [
         "phase9_10_00_signal_enriched_reporting.py",
     ],
 }
@@ -233,7 +233,7 @@ def generate(sabana_path: Path) -> dict[str, Any]:
         "por_fase": {},
     }
     
-    for phase in ["Phase_0", "Phase_1", "Phase_2", "Phase_3", "Phase_4", "Phase_5", "Phase_6", "Phase_7", "Phase_8", "Phase_9", "N/A"]:
+    for phase in ["Phase_00", "Phase_01", "Phase_02", "Phase_03", "Phase_04", "Phase_05", "Phase_06", "Phase_07", "Phase_08", "Phase_09", "N/A"]:
         phase_rows = [r for r in enriched_rows if r["phase"] == phase]
         if phase_rows:
             summary["por_fase"][phase] = {

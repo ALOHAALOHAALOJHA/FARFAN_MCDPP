@@ -238,7 +238,7 @@ class TestConstitutionalInvariants:
         project_root = Path(__file__).resolve().parent.parent
 
         # Buscar en TaskExecutor (N1)
-        task_executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_50_00_task_executor.py"
+        task_executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "phase2_50_00_task_executor.py"
 
         if task_executor_path.exists():
             content = task_executor_path.read_text(encoding="utf-8")
@@ -261,7 +261,7 @@ class TestConstitutionalInvariants:
                             pass  # Podría ser falso positivo, revisar manualmente si es necesario
 
         # Verificar que existe código que implementa N3 veto
-        base_executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_60_00_base_executor_with_contract.py"
+        base_executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "phase2_60_00_base_executor_with_contract.py"
 
         if base_executor_path.exists():
             content = base_executor_path.read_text(encoding="utf-8")
@@ -705,7 +705,7 @@ class TestFASE4Integration:
     def test_factory_has_calibration_integration(self):
         """Verificar que Factory tiene integración de calibración."""
         project_root = Path(__file__).resolve().parent.parent
-        factory_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_10_00_factory.py"
+        factory_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "phase2_10_00_factory.py"
 
         if not factory_path.exists():
             pytest.skip("Factory file not found")
@@ -729,7 +729,7 @@ class TestFASE4Integration:
     def test_task_executor_has_n1_calibration(self):
         """Verificar que TaskExecutor tiene resolución N1."""
         project_root = Path(__file__).resolve().parent.parent
-        executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_50_00_task_executor.py"
+        executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "phase2_50_00_task_executor.py"
 
         if not executor_path.exists():
             pytest.skip("TaskExecutor file not found")
@@ -769,7 +769,7 @@ class TestFASE4Integration:
     def test_base_executor_has_n3_veto(self):
         """Verificar que BaseExecutor tiene veto gate N3."""
         project_root = Path(__file__).resolve().parent.parent
-        executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "phase2_60_00_base_executor_with_contract.py"
+        executor_path = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "phase2_60_00_base_executor_with_contract.py"
 
         if not executor_path.exists():
             pytest.skip("BaseExecutor file not found")

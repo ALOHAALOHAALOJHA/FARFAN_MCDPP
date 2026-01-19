@@ -2,7 +2,7 @@
 """
 Script ejecutable para generar 300 contratos epistemológicos.
 
-Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/run.py
+Ubicación: src/farfan_pipeline/phases/Phase_02/contract_generator/run.py
 
 USO:
     # Desde el directorio del script
@@ -15,7 +15,7 @@ USO:
     python3 run.py --verbose --no-strict
 
 ESTRUCTURA ESPERADA:
-    src/farfan_pipeline/phases/Phase_2/
+    src/farfan_pipeline/phases/Phase_02/
     ├── epistemological_assets/
     │   ├── classified_methods.json
     │   ├── contratos_clasificados.json

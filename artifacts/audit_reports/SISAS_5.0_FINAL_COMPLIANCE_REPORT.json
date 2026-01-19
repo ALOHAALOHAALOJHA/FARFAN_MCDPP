@@ -170,25 +170,25 @@
     "total_consumers": 15,
     "new_consumers": [
       {
-        "phase": "phase_4",
+        "phase": "phase_04",
         "consumer": "Phase4AggregationConsumer",
         "location": "SISAS/consumers/phase4/phase4_aggregation_consumer.py",
         "signals": ["AnswerDeterminacySignal", "AnswerSpecificitySignal", "DataIntegritySignal", "EventCompletenessSignal"]
       },
       {
-        "phase": "phase_5",
+        "phase": "phase_05",
         "consumer": "Phase5UncertaintyConsumer",
         "location": "SISAS/consumers/phase5/phase5_uncertainty_consumer.py",
         "signals": ["DataIntegritySignal", "EventCompletenessSignal", "EmpiricalSupportSignal"]
       },
       {
-        "phase": "phase_6",
+        "phase": "phase_06",
         "consumer": "Phase6ConfigurationConsumer",
         "location": "SISAS/consumers/phase6/phase6_configuration_consumer.py",
         "signals": ["StructuralAlignmentSignal", "DataIntegritySignal", "SchemaConflictSignal"]
       },
       {
-        "phase": "phase_9",
+        "phase": "phase_09",
         "consumer": "Phase9ReportingConsumer",
         "location": "SISAS/consumers/phase9/phase9_reporting_consumer.py",
         "signals": ["AnswerDeterminacySignal", "EmpiricalSupportSignal", "DecisionDivergenceSignal"]

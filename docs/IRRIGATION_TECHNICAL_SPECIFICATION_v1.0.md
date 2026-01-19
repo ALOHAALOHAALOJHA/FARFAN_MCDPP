@@ -583,7 +583,7 @@ $ grep -r "empirical_weights" src/farfan_pipeline/phases/
 
 #### 5.2.1 `NormativeComplianceValidator`
 
-**File to Create:** `src/farfan_pipeline/phases/Phase_3/validators/normative_compliance_validator.py`
+**File to Create:** `src/farfan_pipeline/phases/Phase_03/validators/normative_compliance_validator.py`
 
 **Responsibilities:**
 1. Load `normative_compliance.json`
@@ -725,7 +725,7 @@ class NormativeComplianceValidator:
 
 #### 5.2.2 `QuestionnaireSignalRegistry`
 
-**File to Create:** `src/farfan_pipeline/phases/Phase_2/registries/questionnaire_signal_registry.py`
+**File to Create:** `src/farfan_pipeline/phases/Phase_02/registries/questionnaire_signal_registry.py`
 
 **Interface Specification:**
 
@@ -821,11 +821,11 @@ class QuestionnaireSignalRegistry:
 ### 5.3 Priority 2 (Medium): Connect Scorers to `empirical_weights.json`
 
 **Files to Modify:**
-- `src/farfan_pipeline/phases/Phase_3/scorers/baseline_scorer.py`
-- `src/farfan_pipeline/phases/Phase_3/scorers/policy_area_scorer.py`
-- `src/farfan_pipeline/phases/Phase_3/scorers/quality_scorer.py`
-- `src/farfan_pipeline/phases/Phase_3/scorers/dimension_scorer.py`
-- `src/farfan_pipeline/phases/Phase_3/scorers/causal_scorer.py`
+- `src/farfan_pipeline/phases/Phase_03/scorers/baseline_scorer.py`
+- `src/farfan_pipeline/phases/Phase_03/scorers/policy_area_scorer.py`
+- `src/farfan_pipeline/phases/Phase_03/scorers/quality_scorer.py`
+- `src/farfan_pipeline/phases/Phase_03/scorers/dimension_scorer.py`
+- `src/farfan_pipeline/phases/Phase_03/scorers/causal_scorer.py`
 
 **Implementation Pattern:**
 

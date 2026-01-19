@@ -29,12 +29,12 @@ python purge_contratos.py --force
 #### Directorios (9)
 1. `artifacts/data/contracts` (2 archivos)
 2. `src/farfan_pipeline/infrastructure/contractual` (60 archivos)
-3. `src/farfan_pipeline/phases/Phase_1/contracts` (20 archivos)
-4. `src/farfan_pipeline/phases/Phase_2/contract_generator` (9 archivos)
-5. `src/farfan_pipeline/phases/Phase_2/contracts` (16 archivos)
-6. `src/farfan_pipeline/phases/Phase_2/generated_contracts` (604 archivos)
-7. `src/farfan_pipeline/phases/Phase_3/contracts` (15 archivos)
-8. `src/farfan_pipeline/phases/Phase_4/contracts` (15 archivos)
+3. `src/farfan_pipeline/phases/Phase_01/contracts` (20 archivos)
+4. `src/farfan_pipeline/phases/Phase_02/contract_generator` (9 archivos)
+5. `src/farfan_pipeline/phases/Phase_02/contracts` (16 archivos)
+6. `src/farfan_pipeline/phases/Phase_02/generated_contracts` (604 archivos)
+7. `src/farfan_pipeline/phases/Phase_03/contracts` (15 archivos)
+8. `src/farfan_pipeline/phases/Phase_04/contracts` (15 archivos)
 9. `tests/phase2_contracts` (18 archivos)
 
 **Total de archivos en directorios:** 759 archivos
@@ -53,25 +53,25 @@ python purge_contratos.py --force
 - `tests/test_phase2_contract_modules.py`
 - `tests/test_phase3_contracts.py`
 - `tests/test_phase2_executor_contracts_cqvr_gate.py`
-- `tests/phase_1/test_contracts_and_certificates.py`
+- `tests/phase_01/test_contracts_and_certificates.py`
 - `tests/phases/phase_two/test_phase2_95_00_contract_hydrator.py`
-- `tests/canonic_phases/phase_2/test_phase2_router_contracts.py`
+- `tests/canonic_phases/phase_02/test_phase2_router_contracts.py`
 
 **Código Fuente:**
 - `src/farfan_pipeline/data_models/handoff_contracts.py`
-- `src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py`
-- `src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py`
-- `src/farfan_pipeline/phases/Phase_2/phase2_60_01_contract_validator_cqvr.py`
-- `src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py`
-- `src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_exit_contract.py`
-- `src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_entry_contract.py`
-- `src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_entry_contract.py`
-- `src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_exit_contract.py`
-- `src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_entry_contract.py`
-- `src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_exit_contract.py`
-- `src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_exit_contract.py`
-- `src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_entry_contract.py`
-- `src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_contract_integrity.py`
+- `src/farfan_pipeline/phases/Phase_02/phase2_96_00_contract_migrator.py`
+- `src/farfan_pipeline/phases/Phase_02/phase2_95_00_contract_hydrator.py`
+- `src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py`
+- `src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py`
+- `src/farfan_pipeline/phases/Phase_04/interface/phase4_10_00_phase4_7_exit_contract.py`
+- `src/farfan_pipeline/phases/Phase_04/interface/phase4_10_00_7_entry_contract.py`
+- `src/farfan_pipeline/phases/Phase_04/interface/phase4_10_00_phase4_7_entry_contract.py`
+- `src/farfan_pipeline/phases/Phase_04/interface/phase4_10_00_7_exit_contract.py`
+- `src/farfan_pipeline/phases/Phase_03/interface/phase3_10_00_phase3_entry_contract.py`
+- `src/farfan_pipeline/phases/Phase_03/interface/phase3_10_00_exit_contract.py`
+- `src/farfan_pipeline/phases/Phase_03/interface/phase3_10_00_phase3_exit_contract.py`
+- `src/farfan_pipeline/phases/Phase_03/interface/phase3_10_00_entry_contract.py`
+- `src/farfan_pipeline/phases/Phase_02/tests/phase2_10_00_test_contract_integrity.py`
 - `src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_contract_validator.py`
 
 ### Auditoría

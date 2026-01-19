@@ -7,15 +7,15 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types
 
 class TestPhase7MesoConsumer:
     def test_initialization(self):
-        consumer = Phase7MesoConsumer(consumer_id="test", consumer_phase="phase_7")
+        consumer = Phase7MesoConsumer(consumer_id="test", consumer_phase="phase_07")
         assert consumer.consumption_contract is not None
         assert "CanonicalMappingSignal" in consumer.consumption_contract.subscribed_signal_types
 
     def test_process_signal(self):
-        consumer = Phase7MesoConsumer(consumer_id="test", consumer_phase="phase_7")
+        consumer = Phase7MesoConsumer(consumer_id="test", consumer_phase="phase_07")
 
         # Mock signal
-        context = SignalContext("question", "Q1", "phase_7", "Phase_7")
+        context = SignalContext("question", "Q1", "phase_07", "Phase_07")
         # Mock source
         from datetime import datetime
         source = SignalSource("evt1", "file.json", "path/file.json", datetime.utcnow(), "vehicle1")

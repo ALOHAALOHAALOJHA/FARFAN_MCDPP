@@ -34,7 +34,7 @@ class FinancialChainExtractor(BaseSignalExtractor):
     SIGNAL_TYPE = SignalType.MC05_FINANCIAL
     CAPABILITIES_REQUIRED = ["NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CURRENCY_NORMALIZATION"]
     EMPIRICAL_AVAILABILITY = 0.85
-    DEFAULT_PHASE = "phase_1"
+    DEFAULT_PHASE = "phase_01"
     DEFAULT_SLOT = "D1-Q1"  # Financial inputs dimension
     
     # Colombian peso patterns

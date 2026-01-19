@@ -24,7 +24,7 @@ def contracts_base_path() -> Path:
 @pytest.fixture(scope="session")
 def phase2_base_path() -> Path:
     """Path to Phase 2 module."""
-    return Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "Phase_2"
+    return Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "Phase_02"
 
 
 @pytest.fixture(scope="session")
@@ -34,7 +34,7 @@ def executor_contracts_path() -> Path:
         Path(__file__).resolve().parent.parent.parent
         / "src"
         / "canonic_phases"
-        / "Phase_2"
+        / "Phase_02"
         / "json_files_phase_two"
         / "executor_contracts"
         / "specialized"

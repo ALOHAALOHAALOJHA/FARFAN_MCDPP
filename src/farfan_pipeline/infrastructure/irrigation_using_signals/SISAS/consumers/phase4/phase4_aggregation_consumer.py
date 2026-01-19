@@ -29,7 +29,7 @@ class Phase4AggregationConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase4_aggregation_consumer"
-    consumer_phase: str = "phase_4"
+    consumer_phase: str = "phase_04"
 
     def __post_init__(self):
         super().__post_init__()
@@ -48,8 +48,8 @@ class Phase4AggregationConsumer(BaseConsumer):
             ],
             subscribed_buses=["epistemic_bus", "structural_bus", "integrity_bus"],
             context_filters={
-                "phase": ["phase_3", "phase_4"],
-                "consumer_scope": ["Phase_4", "Cross-Phase"]
+                "phase": ["phase_03", "phase_04"],
+                "consumer_scope": ["Phase_04", "Cross-Phase"]
             },
             required_capabilities=["can_enrich", "can_transform", "can_validate"]
         )
@@ -68,7 +68,7 @@ class Phase4AggregationConsumer(BaseConsumer):
             "aggregation_components": {},
             "aggregated_value": 0.0,
             "uncertainty_bounds": {},
-            "phase": "phase_4"
+            "phase": "phase_04"
         }
 
         if signal.signal_type == "AnswerDeterminacySignal":

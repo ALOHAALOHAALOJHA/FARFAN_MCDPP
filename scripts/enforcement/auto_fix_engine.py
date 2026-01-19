@@ -95,7 +95,7 @@ __execution_pattern__ = "{execution_pattern}"
         self.backup_dir = self.repo_root / ".gnea_backup"
 
     def fix_phase_directory_naming(self, old_name: str, new_name: str) -> bool:
-        """Fix phase directory naming (e.g., Phase_zero → Phase_0)."""
+        """Fix phase directory naming (e.g., Phase_zero → Phase_00)."""
         phases_dir = self.repo_root / "src/farfan_pipeline/phases"
         old_path = phases_dir / old_name
         new_path = phases_dir / new_name
@@ -440,10 +440,10 @@ __execution_pattern__ = "{execution_pattern}"
             "Phase_one": "phase1",
             "Phase_two": "phase2",
             "Phase_three": "phase3",
-            "Phase_0": "phase0",
-            "Phase_1": "phase1",
-            "Phase_2": "phase2",
-            "Phase_3": "phase3",
+            "Phase_00": "phase0",
+            "Phase_01": "phase1",
+            "Phase_02": "phase2",
+            "Phase_03": "phase3",
         }
 
         old_prefix = phase_map.get(old_phase)
@@ -487,7 +487,7 @@ def main():
         "--rename-phase",
         nargs=2,
         metavar=("OLD", "NEW"),
-        help="Rename a phase directory (e.g., Phase_zero Phase_0)",
+        help="Rename a phase directory (e.g., Phase_zero Phase_00)",
     )
 
     parser.add_argument(

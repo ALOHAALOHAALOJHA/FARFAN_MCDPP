@@ -7,7 +7,7 @@ This module implements the MacroAggregator for Phase 7, which aggregates
 4 ClusterScore objects into 1 MacroScore with cross-cutting coherence analysis,
 systemic gap detection, and strategic alignment metrics.
 
-Module: src/farfan_pipeline/phases/Phase_7/phase7_20_00_macro_aggregator.py
+Module: src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py
 Purpose: Implement macro-level aggregation logic
 Owner: phase7_20
 Lifecycle: ACTIVE

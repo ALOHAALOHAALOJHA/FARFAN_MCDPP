@@ -15,7 +15,7 @@ Topological Order:
 3. phase6_20_00_adaptive_meso_scoring.py - Adaptive penalty logic
 4. phase6_30_00_cluster_aggregator.py - Main aggregation logic
 
-Module: src/farfan_pipeline/phases/Phase_6/contracts/phase6_mission_contract.py
+Module: src/farfan_pipeline/phases/Phase_06/contracts/phase6_mission_contract.py
 Phase: 6 (Cluster Aggregation - MESO)
 Owner: phase6_contracts
 """

@@ -34,8 +34,8 @@ class TestSignalScope:
     
     def test_valid_scope_creation(self):
         """Test creating a valid scope."""
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
-        assert scope.phase == "phase_1"
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
+        assert scope.phase == "phase_01"
         assert scope.policy_area == "PA01"
         assert scope.slot == "D1-Q1"
     
@@ -47,25 +47,25 @@ class TestSignalScope:
     def test_invalid_policy_area_raises(self):
         """Test that invalid policy area raises ValueError."""
         with pytest.raises(ValueError, match="Invalid policy_area"):
-            SignalScope(phase="phase_1", policy_area="PA99", slot="D1-Q1")
+            SignalScope(phase="phase_01", policy_area="PA99", slot="D1-Q1")
     
     def test_scope_matching_exact(self):
         """Test exact scope matching."""
-        scope1 = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
-        scope2 = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope1 = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
+        scope2 = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         assert scope1.matches(scope2)
     
     def test_scope_matching_wildcard(self):
         """Test wildcard scope matching."""
-        scope1 = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
-        scope2 = SignalScope(phase="phase_1", policy_area="ALL", slot="ALL")
+        scope1 = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
+        scope2 = SignalScope(phase="phase_01", policy_area="ALL", slot="ALL")
         assert scope1.matches(scope2)
     
     def test_scope_to_dict(self):
         """Test scope serialization."""
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         d = scope.to_dict()
-        assert d == {"phase": "phase_1", "policy_area": "PA01", "slot": "D1-Q1"}
+        assert d == {"phase": "phase_01", "policy_area": "PA01", "slot": "D1-Q1"}
 
 
 class TestSignalProvenance:
@@ -100,7 +100,7 @@ class TestSignal:
     @pytest.fixture
     def sample_signal(self):
         """Create a sample signal for testing."""
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="Test", source_file="test.txt")
         return Signal.create(
             signal_type=SignalType.MC05_FINANCIAL,
@@ -137,7 +137,7 @@ class TestSignal:
     
     def test_signal_validation_invalid_availability(self):
         """Test validation catches invalid empirical_availability."""
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="Test", source_file="test.txt")
         signal = Signal.create(
             signal_type=SignalType.MC05_FINANCIAL,
@@ -184,7 +184,7 @@ class TestSignalDistributionOrchestrator:
     @pytest.fixture
     def sample_signal(self):
         """Create a sample signal."""
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="Test", source_file="test.txt")
         return Signal.create(
             signal_type=SignalType.MC05_FINANCIAL,
@@ -211,7 +211,7 @@ class TestSignalDistributionOrchestrator:
         
         sdo.register_consumer(
             consumer_id="test_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NUMERIC_PARSING"],
             handler=handler
         )
@@ -228,7 +228,7 @@ class TestSignalDistributionOrchestrator:
         
         sdo.register_consumer(
             consumer_id="test_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NUMERIC_PARSING"],
             handler=handler
         )
@@ -257,7 +257,7 @@ class TestSignalDistributionOrchestrator:
         
         sdo.register_consumer(
             consumer_id="test_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NUMERIC_PARSING"],
             handler=handler
         )
@@ -272,7 +272,7 @@ class TestSignalDistributionOrchestrator:
     def test_value_gating(self, sdo):
         """Test value gating based on empirical availability."""
         # Create signal with low availability
-        scope = SignalScope(phase="phase_1", policy_area="PA01", slot="D1-Q1")
+        scope = SignalScope(phase="phase_01", policy_area="PA01", slot="D1-Q1")
         prov = SignalProvenance(extractor="Test", source_file="test.txt")
         low_value_signal = Signal.create(
             signal_type=SignalType.MC05_FINANCIAL,
@@ -286,7 +286,7 @@ class TestSignalDistributionOrchestrator:
         
         sdo.register_consumer(
             consumer_id="test_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NUMERIC_PARSING"],
             handler=lambda s: None
         )
@@ -302,7 +302,7 @@ class TestSignalDistributionOrchestrator:
         # Register consumer without required capability
         sdo.register_consumer(
             consumer_id="limited_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["DIFFERENT_CAPABILITY"],  # Missing NUMERIC_PARSING
             handler=lambda s: None
         )
@@ -317,7 +317,7 @@ class TestSignalDistributionOrchestrator:
         """Test health check."""
         sdo.register_consumer(
             consumer_id="test_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NUMERIC_PARSING"],
             handler=lambda s: None
         )
@@ -334,7 +334,7 @@ class TestSignalDistributionOrchestrator:
         """Test audit log entries."""
         sdo.register_consumer(
             consumer_id="test_consumer",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["NUMERIC_PARSING"],
             handler=lambda s: None
         )
@@ -356,11 +356,11 @@ class TestExtractors:
     
     @pytest.fixture
     def sdo(self):
-        """Create SDO with phase_1 consumer."""
+        """Create SDO with phase_01 consumer."""
         sdo = SignalDistributionOrchestrator()
         sdo.register_consumer(
-            consumer_id="phase_1",
-            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            consumer_id="phase_01",
+            scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=[
                 "NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CURRENCY_NORMALIZATION",
                 "CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION", "VERB_ANALYSIS",

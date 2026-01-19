@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_0.PHASE_0_CONSTANTS
+Module: src.farfan_pipeline.phases.Phase_00.PHASE_0_CONSTANTS
 Purpose: Canonical constants for Phase 0 - Validation, Hardening & Bootstrap
 Owner: phase0_core
 Lifecycle: ACTIVE

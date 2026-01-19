@@ -22,7 +22,7 @@ Validates that Phase 2 receives valid input from Phase 1.
 
 **Usage**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import (
+from farfan_pipeline.phases.Phase_02.contracts import (
     Phase2InputValidator,
     verify_phase2_input_contract
 )
@@ -60,7 +60,7 @@ Defines the execution flow and topological order of all Phase 2 modules.
 
 **Usage**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import (
+from farfan_pipeline.phases.Phase_02.contracts import (
     verify_phase2_mission_contract,
     get_topological_sort,
     verify_dag_acyclicity
@@ -92,7 +92,7 @@ Validates that Phase 2 produces complete output compatible with Phase 3.
 
 **Usage**:
 ```python
-from farfan_pipeline.phases.Phase_2.contracts import (
+from farfan_pipeline.phases.Phase_02.contracts import (
     Phase2Output,
     Phase2OutputValidator,
     generate_phase3_compatibility_certificate,
@@ -152,7 +152,7 @@ All contracts have comprehensive unit tests in `../tests/test_phase2_contracts.p
 Run tests:
 ```bash
 PYTHONPATH=src python3 -m pytest \
-  src/farfan_pipeline/phases/Phase_2/tests/test_phase2_contracts.py -v
+  src/farfan_pipeline/phases/Phase_02/tests/test_phase2_contracts.py -v
 ```
 
 Expected output:
@@ -169,15 +169,15 @@ python3 -c "
 import sys; sys.path.insert(0, 'src')
 
 # Input contract
-from farfan_pipeline.phases.Phase_2.contracts import Phase2InputPreconditions
+from farfan_pipeline.phases.Phase_02.contracts import Phase2InputPreconditions
 print('Input preconditions:', Phase2InputPreconditions())
 
 # Mission contract  
-from farfan_pipeline.phases.Phase_2.contracts import verify_phase2_mission_contract
+from farfan_pipeline.phases.Phase_02.contracts import verify_phase2_mission_contract
 verify_phase2_mission_contract()
 
 # Output contract
-from farfan_pipeline.phases.Phase_2.contracts import Phase2OutputPostconditions
+from farfan_pipeline.phases.Phase_02.contracts import Phase2OutputPostconditions
 print('Output postconditions:', Phase2OutputPostconditions())
 "
 ```
@@ -185,7 +185,7 @@ print('Output postconditions:', Phase2OutputPostconditions())
 ### Individual Contract Verification
 ```python
 # Input Contract
-from farfan_pipeline.phases.Phase_2.contracts import verify_phase2_input_contract
+from farfan_pipeline.phases.Phase_02.contracts import verify_phase2_input_contract
 try:
     verify_phase2_input_contract(cpp, cert, questionnaire, registry)
     print("✓ Input contract satisfied")
@@ -193,12 +193,12 @@ except Exception as e:
     print(f"✗ Input contract failed: {e}")
 
 # Mission Contract
-from farfan_pipeline.phases.Phase_2.contracts import verify_phase2_mission_contract
+from farfan_pipeline.phases.Phase_02.contracts import verify_phase2_mission_contract
 result = verify_phase2_mission_contract()
 print(f"✓ Mission contract verified: DAG is acyclic")
 
 # Output Contract
-from farfan_pipeline.phases.Phase_2.contracts import verify_phase2_output_contract
+from farfan_pipeline.phases.Phase_02.contracts import verify_phase2_output_contract
 try:
     verify_phase2_output_contract(output)
     print("✓ Output contract satisfied")

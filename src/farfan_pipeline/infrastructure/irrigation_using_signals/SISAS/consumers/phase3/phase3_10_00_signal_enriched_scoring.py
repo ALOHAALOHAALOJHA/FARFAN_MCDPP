@@ -26,7 +26,7 @@ class Phase3SignalEnrichedScoringConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase3_10_00_phase3_signal_enriched_scoring.py"
-    consumer_phase: str = "phase_3"
+    consumer_phase: str = "phase_03"
 
     def __post_init__(self):
         super().__post_init__()
@@ -45,8 +45,8 @@ class Phase3SignalEnrichedScoringConsumer(BaseConsumer):
             ],
             subscribed_buses=["epistemic_bus", "structural_bus", "integrity_bus"],
             context_filters={
-                "phase": ["phase_3"],
-                "consumer_scope": ["Phase_3"]
+                "phase": ["phase_03"],
+                "consumer_scope": ["Phase_03"]
             },
             required_capabilities=["can_enrich", "can_transform"]
         )

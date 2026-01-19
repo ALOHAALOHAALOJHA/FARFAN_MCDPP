@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_9.phase9_15_00_institutional_entity_annex
+Module: src.farfan_pipeline.phases.Phase_09.phase9_15_00_institutional_entity_annex
 Purpose: Institutional entity annex generation for comprehensive reporting
 Owner: phase9_core
 Stage: 15 (Entity Reporting)

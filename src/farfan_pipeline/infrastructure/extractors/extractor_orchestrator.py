@@ -397,7 +397,7 @@ class ExtractorOrchestrator:
             slot = f"{config['slot_prefix']}-Q1"  # Default, can be refined
             
             scope = SignalScope(
-                phase="phase_1",
+                phase="phase_01",
                 policy_area=context.policy_area,
                 slot=slot
             )

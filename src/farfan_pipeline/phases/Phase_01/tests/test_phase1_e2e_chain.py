@@ -34,7 +34,7 @@ import pytest
 def phase1_dir() -> Path:
     """Get Phase 1 directory path."""
     # We're in src/farfan_pipeline.phases.Phase_01/tests/
-    # Phase 1 directory is parent.parent (go up to Phase_1)
+    # Phase 1 directory is parent.parent (go up to Phase_01)
     return Path(__file__).resolve().parent.parent
 
 
@@ -70,10 +70,10 @@ class TestImportChain:
     def test_phase1_root_importable(self, src_added):
         """Phase 1 root package must be importable."""
         try:
-            from farfan_pipeline.phases import Phase_1
-            assert Phase_1 is not None
+            from farfan_pipeline.phases import Phase_01
+            assert Phase_01 is not None
         except (ImportError, SystemExit):
-            pytest.skip("Phase 1 not importable due to missing dependencies (pydot, Phase_2, etc.)")
+            pytest.skip("Phase 1 not importable due to missing dependencies (pydot, Phase_02, etc.)")
 
     def test_phase1_public_api_exports(self, src_added):
         """Phase 1 must export all public API components."""
@@ -160,7 +160,7 @@ class TestImportChain:
         """Main executor (Phase1Executor/Phase1MissionContract) must be importable."""
         import sys
 
-        # The main executor may have external dependencies (Phase_2, pydot, etc.)
+        # The main executor may have external dependencies (Phase_02, pydot, etc.)
         # If those aren't available, we can't import the full module
         # Test the import is available when dependencies are met
         try:

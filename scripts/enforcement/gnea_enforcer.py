@@ -502,7 +502,7 @@ class GNEAEnforcer:
                         rule="PHASE-DIR-001",
                         severity=Severity.ERROR,
                         message=f"Combined phase directory must be split: {dir_name}",
-                        suggestion="Split into separate Phase_4, Phase_5, Phase_6, Phase_7 directories",
+                        suggestion="Split into separate Phase_04, Phase_05, Phase_06, Phase_07 directories",
                         auto_fixable=False,
                     )
                 )
@@ -546,7 +546,7 @@ class GNEAEnforcer:
                             rule="PHASE-DIR-003",
                             severity=Severity.ERROR,
                             message=f"Invalid phase directory name: {dir_name}",
-                            suggestion="Use Phase_0 through Phase_9 naming",
+                            suggestion="Use Phase_00 through Phase_09 naming",
                             auto_fixable=False,
                         )
                     )

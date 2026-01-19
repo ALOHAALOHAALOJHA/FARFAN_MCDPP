@@ -143,25 +143,25 @@
   },
 
   "consumer_implementation_verification": {
-    "phase_4": {
+    "phase_04": {
       "file_path": "SISAS/consumers/phase4/phase4_aggregation_consumer.py",
       "consumer_class": "Phase4AggregationConsumer",
       "consumes": ["AnswerDeterminacySignal", "AnswerSpecificitySignal", "DataIntegritySignal", "EventCompletenessSignal"],
       "status": "VERIFIED_PASS"
     },
-    "phase_5": {
+    "phase_05": {
       "file_path": "SISAS/consumers/phase5/phase5_uncertainty_consumer.py",
       "consumer_class": "Phase5UncertaintyConsumer",
       "consumes": ["DataIntegritySignal", "EventCompletenessSignal", "EmpiricalSupportSignal"],
       "status": "VERIFIED_PASS"
     },
-    "phase_6": {
+    "phase_06": {
       "file_path": "SISAS/consumers/phase6/phase6_configuration_consumer.py",
       "consumer_class": "Phase6ConfigurationConsumer",
       "consumes": ["StructuralAlignmentSignal", "DataIntegritySignal", "SchemaConflictSignal"],
       "status": "VERIFIED_PASS"
     },
-    "phase_9": {
+    "phase_09": {
       "file_path": "SISAS/consumers/phase9/phase9_reporting_consumer.py",
       "consumer_class": "Phase9ReportingConsumer",
       "consumes": ["AnswerDeterminacySignal", "EmpiricalSupportSignal", "DecisionDivergenceSignal"],
@@ -208,7 +208,7 @@
     },
     "irrigation_config_yaml": {
       "file_path": "SISAS/config/irrigation_config.yaml",
-      "phases_configured": ["phase_0", "phase_1", "phase_2", "phase_3", "phase_4", "phase_5", "phase_6", "phase_7", "phase_8", "phase_9"],
+      "phases_configured": ["phase_00", "phase_01", "phase_02", "phase_03", "phase_04", "phase_05", "phase_06", "phase_07", "phase_08", "phase_09"],
       "vehicles_configured": 12,
       "status": "VERIFIED_PASS"
     }

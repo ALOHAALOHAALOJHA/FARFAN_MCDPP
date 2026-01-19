@@ -365,7 +365,7 @@ def get_global_thresholds_loader(corpus_path: Path | str | None = None) -> Empir
     # PHASE 3: LAYER SCORING - COMPLETE IMPLEMENTATION
     # =========================================================================
     
-    def _execute_phase_3(self) -> dict[str, Any]:
+    def _execute_phase_03(self) -> dict[str, Any]:
         """
         Execute Phase 3: 8-Layer Quality Assessment.
         

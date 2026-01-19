@@ -76,7 +76,9 @@ except ImportError:
             return CalibrationPolicy()
 
 if TYPE_CHECKING:
-    from farfan_pipeline.orchestration.core_orchestrator import MethodExecutor
+    # MethodExecutor not yet implemented in unified orchestrator
+    # from farfan_pipeline.orchestration.orchestrator import MethodExecutor
+    MethodExecutor = Any  # Temporary placeholder
     from farfan_pipeline.core.types import PreprocessedDocument
 else:  # pragma: no cover - runtime avoids import to break cycles
     MethodExecutor = Any

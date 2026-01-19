@@ -3,7 +3,7 @@
 
 Maps:
 - Vehículo: módulo SISAS en infrastructure/irrigation_using_signals/SISAS/
-- Consumidor: módulo de fase (Phase_0..Phase_9) que importa ese vehículo
+- Consumidor: módulo de fase (Phase_00..Phase_09) que importa ese vehículo
 - Assets: archivos de canonic_questionnaire_central que el vehículo carga/transmite
 
 Outputs:
@@ -76,7 +76,7 @@ def _extract_cqc_references(py_file: Path) -> list[str]:
 
 
 def _infer_phase(py_file: Path) -> str | None:
-    """Infer phase from path like .../Phase_2/..."""
+    """Infer phase from path like .../Phase_02/..."""
     parts = py_file.parts
     for p in parts:
         if p.startswith("Phase_"):

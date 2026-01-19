@@ -4,7 +4,7 @@ Phase 6 Constants - Cluster Aggregation (MESO)
 This module re-exports constants from the implementation module for backward compatibility
 and standardized naming conventions.
 
-Module: src/farfan_pipeline/phases/Phase_6/PHASE_6_CONSTANTS.py
+Module: src/farfan_pipeline/phases/Phase_06/PHASE_6_CONSTANTS.py
 Purpose: Constants re-export for Phase 6
 Owner: phase6_00
 Lifecycle: ACTIVE

@@ -65,7 +65,7 @@ This catalogue provides a sophisticated collection of report templates for Phase
 
 **Usage:**
 ```python
-from farfan_pipeline.phases.Phase_9.report_generator import ReportGenerator
+from farfan_pipeline.phases.Phase_09.report_generator import ReportGenerator
 
 generator = ReportGenerator(output_dir="./reports", plan_name="my_plan")
 artifacts = generator.generate_all(
@@ -361,7 +361,7 @@ All templates follow the F.A.R.F.A.N brand color palette:
 
 ### Adding a New Template
 
-1. Create Jinja2 template in `src/farfan_pipeline/phases/Phase_9/templates/`
+1. Create Jinja2 template in `src/farfan_pipeline/phases/Phase_09/templates/`
 2. Use `.html.j2` extension
 3. Ensure compatibility with `AnalysisReport` data structure
 4. Follow F.A.R.F.A.N color scheme

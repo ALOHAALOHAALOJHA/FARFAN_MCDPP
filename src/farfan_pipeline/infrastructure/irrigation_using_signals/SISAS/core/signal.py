@@ -79,8 +79,8 @@ class SignalContext:
     """
     node_type: str          # tipo de nodo:  "policy_area", "dimension", "question", "cluster"
     node_id: str            # identificador del nodo:  "PA03", "DIM02", "Q147"
-    phase: str              # fase del pipeline: "phase_0", "phase_1", etc.
-    consumer_scope: str     # alcance del consumidor: "Phase_0", "Phase_2", "Cross-Phase"
+    phase: str              # fase del pipeline: "phase_00", "phase_01", etc.
+    consumer_scope: str     # alcance del consumidor: "Phase_00", "Phase_02", "Cross-Phase"
     
     def to_dict(self) -> Dict[str, str]:
         return {

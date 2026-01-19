@@ -1155,10 +1155,10 @@ def is_subphase_calibratable(sp_id: str) -> bool:
 **Standard Phase 1 Execution**:
 ```python
 from farfan_pipeline.phases.Phase_01 import Phase1Executor
-from farfan_pipeline.phases.Phase_00 import execute_phase_0
+from farfan_pipeline.phases.Phase_00 import execute_phase_00
 
 # Phase 0: Validation and bootstrapping
-canonical_input = execute_phase_0(
+canonical_input = execute_phase_00(
     pdf_path="pdm_municipality_2024.pdf",
     questionnaire_path="questionnaire_300q.json",
     run_id="RUN_2024_001"
@@ -1277,7 +1277,7 @@ municipalities = ["Bogotá", "Medellín", "Cali", "Barranquilla"]
 cpps = {}
 
 for municipality in municipalities:
-    canonical_input = execute_phase_0(
+    canonical_input = execute_phase_00(
         pdf_path=f"pdm_{municipality}_2024.pdf",
         questionnaire_path="questionnaire_300q.json",
         run_id=f"RUN_{municipality}_2024"

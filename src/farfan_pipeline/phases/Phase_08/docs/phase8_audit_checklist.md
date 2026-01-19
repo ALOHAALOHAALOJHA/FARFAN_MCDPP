@@ -1,7 +1,7 @@
 # Phase 8 Audit Checklist
 
 ## Audit Metadata
-- **Phase**: Phase_8 (Recommendation Engine)
+- **Phase**: Phase_08 (Recommendation Engine)
 - **Audit Date**: 2026-01-13
 - **Auditor**: F.A.R.F.A.N Automated Audit System
 - **Audit Tool**: `contracts/phase8_chain_report.json`
@@ -14,7 +14,7 @@
 ### 1.1 DAG Generation
 - [x] Generated import dependency graph
 - [x] Verified graph is acyclic (no circular dependencies)
-- [x] Identified all 27 Python modules in Phase_8
+- [x] Identified all 27 Python modules in Phase_08
 - [x] Computed topological order
 - [ ] Generated visual DAG (PNG/SVG) - **RECOMMENDED** (requires graphviz)
 
@@ -268,7 +268,7 @@ Stage 00 (Foundation) → Stage 10 (Validation) → Stage 20 (Core) → Stage 30
 
 **Note**: Requires graphviz/pydeps installation. Can be generated with:
 ```bash
-pyreverse -o dot -p Phase8 src/farfan_pipeline/phases/Phase_8/*.py
+pyreverse -o dot -p Phase8 src/farfan_pipeline/phases/Phase_08/*.py
 dot -Tpng classes_Phase8.dot -o docs/phase8_import_dag.png
 ```
 
@@ -308,7 +308,7 @@ dot -Tpng classes_Phase8.dot -o docs/phase8_import_dag.png
 
 **Command**:
 ```bash
-find src/farfan_pipeline/phases/Phase_8 -name "*.py" -exec python -m py_compile {} \;
+find src/farfan_pipeline/phases/Phase_08 -name "*.py" -exec python -m py_compile {} \;
 ```
 
 **Status**: ✅ PASS

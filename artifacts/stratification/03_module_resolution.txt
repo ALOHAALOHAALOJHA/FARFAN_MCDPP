@@ -95,11 +95,11 @@ canonic_questionnaire_central.scoring.modules.pdet_scoring_enrichment|LIVE|/home
 farfan_pipeline.infrastructure.calibration.calibration_core|DEAD|NO_FILE
 farfan_pipeline.infrastructure.calibration|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/calibration/__init__.py
 importlib|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_6.phase6_10_00_phase_6_constants|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_6.phase6_20_00_adaptive_meso_scoring|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_6|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_6.contracts.phase6_output_contract|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_06.phase6_10_01_scoring_config|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_06.phase6_10_00_phase_6_constants|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_06|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_06.contracts.phase6_output_contract|DEAD|NO_FILE
 canonic_questionnaire_central.validations.pdet_validator|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/canonic_questionnaire_central/validations/pdet_validator.py
 numpy|DEAD|NO_FILE
 resource|DEAD|NO_FILE
@@ -150,7 +150,7 @@ farfan_pipeline.phases.Phase_01.docs.legacy.phase1_01_00_cpp_models|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py
 farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/phase1_09_00_circuit_breaker.py
 farfan_pipeline.infrastructure.irrigation_using_signals.ports|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/ports.py
-farfan_pipeline.phases.Phase_2.phase2_10_00_factory|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_02.phase2_10_00_factory|DEAD|NO_FILE
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method_metadata|DEAD|NO_FILE
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_validation_specs|DEAD|NO_FILE
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_scoring_context|DEAD|NO_FILE
@@ -309,7 +309,7 @@ psutil  # noqa: F401|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_one.phase1_09_00_circuit_breaker|DEAD|NO_FILE
 executor_calibration_integration|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_08/phase8_20_00_recommendation_engine.py
-farfan_pipeline.phases.Phase_8|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_08|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_08|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_08/__init__.py
 farfan_pipeline.phases.Phase_01.phase1_12_01_pdm_integration|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/phase1_12_01_pdm_integration.py
 farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_30_00_resource_controller.py
@@ -327,7 +327,7 @@ orchestration.meta_layer|DEAD|NO_FILE
 farfan_pipeline.phases|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_01.contracts.phase1_input_contract|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/contracts/phase1_input_contract.py
 farfan_pipeline.phases.Phase_01.contracts.phase1_output_contract|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/contracts/phase1_output_contract.py
-farfan_pipeline.phases.Phase_1|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_01|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_01.interphase|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/interphase/__init__.py
 scipy|DEAD|NO_FILE
 .calibration_core|DEAD|NO_FILE
@@ -362,8 +362,8 @@ farfan_pipeline.phases.Phase_03.phase3_10_00_normative_compliance_validator|DEAD
 .phase7_10_00_macro_score|DEAD|NO_FILE
 .phase7_20_00_macro_aggregator|DEAD|NO_FILE
 .phase7_10_00_systemic_gap_detector|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_settings.py
 collections. abc|DEAD|NO_FILE
 farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/contractual/dura_lex/aggregation_contract.py
@@ -372,9 +372,9 @@ farfan_pipeline.processing.aggregation_provenance|DEAD|NO_FILE
 .phase4_10_00_adaptive_meso_scoring|DEAD|NO_FILE
 .phase4_10_00_enhanced_aggregators|DEAD|NO_FILE
 .phase4_10_00_signal_enriched_aggregation|DEAD|NO_FILE
-farfan_pipeline.phases.Phase_5|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_05|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/contracts/phase5_input_contract.py
-farfan_pipeline.phases.Phase_3|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_03|DEAD|NO_FILE
 ..phase4_10_00_phase_4_7_constants|DEAD|NO_FILE
 ..PHASE_4_CONSTANTS|DEAD|NO_FILE
 .phase4_00_00_aggregation_settings|DEAD|NO_FILE
@@ -385,7 +385,7 @@ farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation|LIVE|/home/runner/
 farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py
 orchestration.aggregation_integration|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_05.phase5_10_00_area_score|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/phase5_10_00_area_score.py
-farfan_pipeline.phases.Phase_4|DEAD|NO_FILE
+farfan_pipeline.phases.Phase_04|DEAD|NO_FILE
 farfan_pipeline.phases.Phase_04.primitives|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/primitives/__init__.py
 farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py
 farfan_pipeline.phases.Phase_04.contracts.phase4_mission_contract|LIVE|/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_mission_contract.py

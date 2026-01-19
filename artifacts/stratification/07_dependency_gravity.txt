@@ -208,7 +208,7 @@ canonic_questionnaire_central.validations.runtime_validators.value_add_validator
 canonic_questionnaire_central.validations.audit_trail|3|1|3.00
 string|3|3|1.00
 farfan_pipeline.pdm.contracts|3|3|1.00
-farfan_pipeline.phases.Phase_2.phase2_10_00_factory|3|1|3.00
+farfan_pipeline.phases.Phase_02.phase2_10_00_factory|3|1|3.00
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor|3|2|1.50
 farfan_pipeline.phases.Phase_zero.phase0_10_00_paths|3|3|1.00
 farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks|3|3|1.00
@@ -307,7 +307,7 @@ farfan_pipeline.orchestration.canonical_executors|2|2|1.00
 farfan_pipeline.resilience|2|1|2.00
 orchestration.meta_layer|2|1|2.00
 farfan_pipeline.phases|2|2|1.00
-farfan_pipeline.phases.Phase_1|2|1|2.00
+farfan_pipeline.phases.Phase_01|2|1|2.00
 .type_defaults|2|2|1.00
 .pdm_calibrator|2|2|1.00
 .pdm_structural_profile|2|2|1.00
@@ -316,7 +316,7 @@ farfan_pipeline.phases.Phase_1|2|1|2.00
 .bayesian_sampling_engine|2|2|1.00
 arviz|2|2|1.00
 pymc|2|2|1.00
-farfan_pipeline.phases.Phase_5|2|2|1.00
+farfan_pipeline.phases.Phase_05|2|2|1.00
 .|2|2|1.00
 farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator|2|2|1.00
 farfan_pipeline.phases.Phase_04.contracts.phase4_mission_contract|2|2|1.00
@@ -416,11 +416,11 @@ farfan_pipeline.infrastructure.questionnaire.modular_resolver|1|1|1.00
 canonic_questionnaire_central.scoring.modules.pdet_scoring_enrichment|1|1|1.00
 farfan_pipeline.infrastructure.calibration.calibration_core|1|1|1.00
 farfan_pipeline.infrastructure.calibration|1|1|1.00
-farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config|1|1|1.00
-farfan_pipeline.phases.Phase_6.phase6_10_00_phase_6_constants|1|1|1.00
-farfan_pipeline.phases.Phase_6.phase6_20_00_adaptive_meso_scoring|1|1|1.00
-farfan_pipeline.phases.Phase_6|1|1|1.00
-farfan_pipeline.phases.Phase_6.contracts.phase6_output_contract|1|1|1.00
+farfan_pipeline.phases.Phase_06.phase6_10_01_scoring_config|1|1|1.00
+farfan_pipeline.phases.Phase_06.phase6_10_00_phase_6_constants|1|1|1.00
+farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring|1|1|1.00
+farfan_pipeline.phases.Phase_06|1|1|1.00
+farfan_pipeline.phases.Phase_06.contracts.phase6_output_contract|1|1|1.00
 click|1|1|1.00
 canonic_questionnaire_central.validations.configuration|1|1|1.00
 farfan_pipeline.analysis.scoring.mathematical_foundation|1|1|1.00
@@ -498,7 +498,7 @@ farfan_pipeline.phases.Phase_four_five_six_seven.primitives.quality_levels|1|1|1
 audit_macro_level_divergence|1|1|1.00
 farfan_pipeline.phases.Phase_one.phase1_09_00_circuit_breaker|1|1|1.00
 executor_calibration_integration|1|1|1.00
-farfan_pipeline.phases.Phase_8|1|1|1.00
+farfan_pipeline.phases.Phase_08|1|1|1.00
 farfan_pipeline.phases.Phase_08|1|1|1.00
 farfan_pipeline.phases.Phase_01.phase1_12_01_pdm_integration|1|1|1.00
 farfan_pipeline.phases.Phase_01.interphase|1|1|1.00
@@ -514,20 +514,20 @@ farfan_pipeline.phases.Phase_03.phase3_10_00_normative_compliance_validator|1|1|
 .phase7_10_00_macro_score|1|1|1.00
 .phase7_20_00_macro_aggregator|1|1|1.00
 .phase7_10_00_systemic_gap_detector|1|1|1.00
-farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification|1|1|1.00
-farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings|1|1|1.00
+farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification|1|1|1.00
+farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings|1|1|1.00
 collections. abc|1|1|1.00
 farfan_pipeline.processing.aggregation_provenance|1|1|1.00
 .phase4_10_00_adaptive_meso_scoring|1|1|1.00
 .phase4_10_00_enhanced_aggregators|1|1|1.00
 .phase4_10_00_signal_enriched_aggregation|1|1|1.00
-farfan_pipeline.phases.Phase_3|1|1|1.00
+farfan_pipeline.phases.Phase_03|1|1|1.00
 ..phase4_10_00_phase_4_7_constants|1|1|1.00
 ..PHASE_4_CONSTANTS|1|1|1.00
 .phase4_00_00_aggregation_settings|1|1|1.00
 .phase4_00_00_types|1|1|1.00
 orchestration.aggregation_integration|1|1|1.00
-farfan_pipeline.phases.Phase_4|1|1|1.00
+farfan_pipeline.phases.Phase_04|1|1|1.00
 farfan_pipeline.phases.Phase_03.phase3_10_00_empirical_thresholds_loader|1|1|1.00
 farfan_pipeline.phases.Phase_04.enhancements|1|1|1.00
 farfan_pipeline.phases.Phase_04.PHASE_4_CONSTANTS|1|1|1.00

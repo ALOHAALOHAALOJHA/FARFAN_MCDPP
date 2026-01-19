@@ -177,7 +177,7 @@ class Phase4OutputContract:
 
         # Check 1: Phase 5 module is importable
         try:
-            import farfan_pipeline.phases.Phase_5
+            import farfan_pipeline.phases.Phase_05
             report["checks"].append({
                 "name": "Phase 5 module importable",
                 "status": "PASS",

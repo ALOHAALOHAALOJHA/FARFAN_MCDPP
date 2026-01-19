@@ -33,7 +33,7 @@ class CausalVerbExtractor(BaseSignalExtractor):
     SIGNAL_TYPE = SignalType.MC08_CAUSAL
     CAPABILITIES_REQUIRED = ["CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION", "VERB_ANALYSIS"]
     EMPIRICAL_AVAILABILITY = 0.72
-    DEFAULT_PHASE = "phase_1"
+    DEFAULT_PHASE = "phase_01"
     DEFAULT_SLOT = "D6-Q1"  # Causal explanation dimension
     
     # Causal action verbs (Spanish - Colombian administrative context)

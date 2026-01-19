@@ -4,7 +4,7 @@ Phase 5 Tests - Adversarial & Comprehensive
 Tests Phase 5 aggregation and contracts with adversarial conditions.
 Covers all Phase 5 modules and topological order.
 
-Module: src/farfan_pipeline/phases/Phase_5/tests/test_phase5_10_00_comprehensive.py
+Module: src/farfan_pipeline/phases/Phase_05/tests/test_phase5_10_00_comprehensive.py
 Version: 1.0.0
 Status: ADVERSARIAL
 """

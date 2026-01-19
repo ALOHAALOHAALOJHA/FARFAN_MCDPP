@@ -100,7 +100,7 @@ Phase 7 (Macro Evaluation) has been **successfully migrated, implemented, and ce
 
 ```
 Layer 0 (External):
-  ← Phase_6/phase6_10_00_cluster_score.py (ClusterScore)
+  ← Phase_06/phase6_10_00_cluster_score.py (ClusterScore)
 
 Layer 1 (Foundation):
   phase7_10_00_phase_7_constants.py
@@ -116,7 +116,7 @@ Layer 4 (Public API):
   __init__.py
     ↓
 Layer 5 (External):
-  → Phase_8 (consumes MacroScore)
+  → Phase_08 (consumes MacroScore)
 ```
 
 **Analysis**: Clean layered architecture, no cycles, proper dependency flow.
@@ -158,14 +158,14 @@ Layer 5 (External):
 
 #### Upstream (Phase 6)
 ```python
-from farfan_pipeline.phases.Phase_6 import ClusterScore
+from farfan_pipeline.phases.Phase_06 import ClusterScore
 # Phase 7 consumes 4 ClusterScore objects
 ```
 **Status**: ✅ Validated
 
 #### Downstream (Phase 8)
 ```python
-from farfan_pipeline.phases.Phase_7 import MacroScore
+from farfan_pipeline.phases.Phase_07 import MacroScore
 # Phase 8 consumes 1 MacroScore object
 ```
 **Status**: ✅ Ready for integration
@@ -179,9 +179,9 @@ from farfan_pipeline.phases.Phase_7 import MacroScore
 
 #### Import Tests
 ```
-✅ from farfan_pipeline.phases.Phase_7 import MacroScore
-✅ from farfan_pipeline.phases.Phase_7 import MacroAggregator
-✅ from farfan_pipeline.phases.Phase_7 import SystemicGapDetector
+✅ from farfan_pipeline.phases.Phase_07 import MacroScore
+✅ from farfan_pipeline.phases.Phase_07 import MacroAggregator
+✅ from farfan_pipeline.phases.Phase_07 import SystemicGapDetector
 ✅ All contract imports successful
 ✅ All constant imports successful
 ```
@@ -237,7 +237,7 @@ from farfan_pipeline.phases.Phase_7 import MacroScore
 
 #### Modified (2 files)
 1. `__init__.py` - Added exports
-2. `../Phase_4/phase4_10_00_aggregation_integration.py` - Fixed imports
+2. `../Phase_04/phase4_10_00_aggregation_integration.py` - Fixed imports
 
 #### Existed (2 files - not modified)
 1. `phase7_10_00_phase_7_constants.py` (already correct)

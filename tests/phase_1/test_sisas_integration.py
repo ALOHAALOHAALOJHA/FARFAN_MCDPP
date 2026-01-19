@@ -21,7 +21,7 @@ class TestSISASIntegration:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "phase1_11_00_signal_enrichment.py"
         )
         assert signal_enrichment_path.exists(), "phase1_11_00_signal_enrichment.py must exist"
@@ -39,7 +39,7 @@ class TestSISASIntegration:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "phase1_13_00_cpp_ingestion.py"
         )
 
@@ -60,7 +60,7 @@ class TestSISASIntegration:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "README.md"
         )
 
@@ -82,7 +82,7 @@ class TestSISASIntegration:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "README.md"
         )
         readme_content = readme_path.read_text()
@@ -104,7 +104,7 @@ class TestSP12IrrigationOutputs:
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_1"
+            / "Phase_01"
             / "README.md"
         )
         readme_content = readme_path.read_text()

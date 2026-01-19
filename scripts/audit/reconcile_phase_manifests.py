@@ -34,8 +34,8 @@ def get_canonical_phases(phases_dir: Path) -> List[Path]:
     """Get all canonical phase directories (Phase_XX format)."""
     canonical_phases = []
     for d in sorted(phases_dir.iterdir()):
-        if d.is_dir() and d.name.startswith("Phase_") and d.name != "Phase_4" and d.name != "Phase_zero":
-            # Exclude Phase_4 (duplicate of Phase_04) and Phase_zero (duplicate of Phase_00)
+        if d.is_dir() and d.name.startswith("Phase_") and d.name != "Phase_04" and d.name != "Phase_zero":
+            # Exclude Phase_04 (duplicate of Phase_04) and Phase_zero (duplicate of Phase_00)
             canonical_phases.append(d)
     return canonical_phases
 

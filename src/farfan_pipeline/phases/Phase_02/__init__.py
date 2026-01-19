@@ -1,5 +1,5 @@
 """
-Module: Phase_2/__init__
+Module: Phase_02/__init__
 PHASE_LABEL: Phase 2
 Sequence: Package Init
 Description: Phase 2 package interface and exports

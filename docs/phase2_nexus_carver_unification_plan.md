@@ -676,7 +676,7 @@ class EvidenceNexus(DualReadMixin):
 
 **CI Gate Implementation:**
 ```python
-# tests/phase_2/test_dual_read_coverage.py
+# tests/phase_02/test_dual_read_coverage.py
 import pytest
 from pathlib import Path
 
@@ -724,7 +724,7 @@ def test_canonic_coverage_threshold():
 
 **CI Gate Implementation:**
 ```python
-# tests/phase_2/test_fallback_rate.py
+# tests/phase_02/test_fallback_rate.py
 def test_contract_fallback_rate_threshold():
     """
     CI Gate: Ensure contract fallback rate is below 10%.
@@ -768,7 +768,7 @@ def test_contract_fallback_rate_threshold():
 
 **CI Gate Implementation:**
 ```python
-# tests/phase_2/test_canonic_only_enforcement.py
+# tests/phase_02/test_canonic_only_enforcement.py
 def test_no_contract_fallback():
     """
     CI Gate: Ensure NO contract fallback occurs.
@@ -810,7 +810,7 @@ def test_no_contract_fallback():
 ### 5.1 PA Mismatch Test (Context Requirement Gating)
 
 ```python
-# tests/phase_2/test_context_requirement_gating.py
+# tests/phase_02/test_context_requirement_gating.py
 import pytest
 from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus
 
@@ -905,7 +905,7 @@ def test_section_mismatch_returns_na(mock_canonic_question):
 ### 5.2 Expected Elements Mapping Test
 
 ```python
-# tests/phase_2/test_expected_elements_mapping.py
+# tests/phase_02/test_expected_elements_mapping.py
 import pytest
 from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus
 
@@ -962,7 +962,7 @@ def test_contract_fallback_for_expected_elements():
 ### 5.3 Validation Rule Parsing Test
 
 ```python
-# tests/phase_2/test_validation_rule_parsing.py
+# tests/phase_02/test_validation_rule_parsing.py
 import pytest
 from farfan_pipeline.phases.Phase_two.phase2_60_01_contract_validator_cqvr import ContractValidatorCQVR
 
@@ -1104,13 +1104,13 @@ def test_validation_rule_merge():
 
 ### Test Files Created
 
-1. `tests/phase_2/test_dual_read_coverage.py`
-2. `tests/phase_2/test_fallback_rate.py`
-3. `tests/phase_2/test_canonic_only_enforcement.py`
-4. `tests/phase_2/test_contract_schema_purity.py`
-5. `tests/phase_2/test_context_requirement_gating.py`
-6. `tests/phase_2/test_expected_elements_mapping.py`
-7. `tests/phase_2/test_validation_rule_parsing.py`
+1. `tests/phase_02/test_dual_read_coverage.py`
+2. `tests/phase_02/test_fallback_rate.py`
+3. `tests/phase_02/test_canonic_only_enforcement.py`
+4. `tests/phase_02/test_contract_schema_purity.py`
+5. `tests/phase_02/test_context_requirement_gating.py`
+6. `tests/phase_02/test_expected_elements_mapping.py`
+7. `tests/phase_02/test_validation_rule_parsing.py`
 
 ---
 

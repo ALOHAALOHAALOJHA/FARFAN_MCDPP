@@ -22,7 +22,7 @@ class TestPhase1Encadenamiento:
     @pytest.fixture(scope="class")
     def phase1_dir(self) -> Path:
         """Get Phase 1 directory path."""
-        return Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_1"
+        return Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_01"
 
     @pytest.fixture(scope="class")
     def chain_report(self, phase1_dir: Path) -> Dict:
@@ -33,9 +33,9 @@ class TestPhase1Encadenamiento:
         return json.loads(report_path.read_text())
 
     def test_phase1_directory_exists(self, phase1_dir: Path):
-        """Test that Phase_1 directory exists."""
-        assert phase1_dir.exists(), f"Phase_1 directory not found: {phase1_dir}"
-        assert phase1_dir.is_dir(), f"Phase_1 is not a directory: {phase1_dir}"
+        """Test that Phase_01 directory exists."""
+        assert phase1_dir.exists(), f"Phase_01 directory not found: {phase1_dir}"
+        assert phase1_dir.is_dir(), f"Phase_01 is not a directory: {phase1_dir}"
 
     def test_mandatory_subdirectories_exist(self, phase1_dir: Path):
         """Test that all mandatory subdirectories exist."""
@@ -271,7 +271,7 @@ class TestPhase1ContractIntegration:
         """Get Phase 1 directory path."""
         # Get the repository root (parent of tests directory)
         repo_root = Path(__file__).resolve().parent.parent
-        return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_1"
+        return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_01"
 
     def test_contracts_can_be_imported(self, phase1_dir: Path):
         """Test that contract modules can be imported."""

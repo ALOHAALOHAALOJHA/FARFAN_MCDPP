@@ -15,8 +15,8 @@ def sample_context():
     return SignalContext(
         node_type="question",
         node_id="Q147",
-        phase="phase_0",
-        consumer_scope="Phase_0"
+        phase="phase_00",
+        consumer_scope="Phase_00"
     )
 
 class TestSignalRegistryVehicle:
@@ -30,8 +30,8 @@ class TestSignalRegistryVehicle:
         context = SignalContext(
             node_type="dimension",
             node_id="dimensions/DIM01/questions.json",
-            phase="phase_0",
-            consumer_scope="Phase_0"
+            phase="phase_00",
+            consumer_scope="Phase_00"
         )
 
         signals = vehicle.process(data, context)
@@ -55,8 +55,8 @@ class TestSignalContextScoperVehicle:
         context = SignalContext(
             node_type="question",
             node_id="Q147",
-            phase="phase_0",
-            consumer_scope="Phase_0"
+            phase="phase_00",
+            consumer_scope="Phase_00"
         )
 
         signals = vehicle.process(data, context)

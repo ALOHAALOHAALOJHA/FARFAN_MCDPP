@@ -937,7 +937,7 @@ integration_tests:
 ## 14. Directory Structure
 
 ```
-Phase_6/
+Phase_06/
 ├── __init__.py                          # Package façade
 ├── README.md                            # This document
 ├── PHASE_6_MANIFEST.json                # Phase metadata
@@ -971,9 +971,9 @@ Phase_6/
 
 | Document | Description |
 |----------|-------------|
-| [Phase 4 README](../Phase_4/README.md) | Dimension aggregation (micro → dimension) |
-| [Phase 5 README](../Phase_5/README.md) | Policy area aggregation (dimension → area) |
-| [Phase 7 README](../Phase_7/README.md) | Macro evaluation (cluster → global) |
+| [Phase 4 README](../Phase_04/README.md) | Dimension aggregation (micro → dimension) |
+| [Phase 5 README](../Phase_05/README.md) | Policy area aggregation (dimension → area) |
+| [Phase 7 README](../Phase_07/README.md) | Macro evaluation (cluster → global) |
 | [AGGREGATION_QUICK_REFERENCE](../../../../docs/AGGREGATION_QUICK_REFERENCE.md) | Quick reference for aggregation usage |
 | [ARCHITECTURE](../../../../docs/ARCHITECTURE.md) | System architecture overview |
 
@@ -995,7 +995,7 @@ Phase_6/
 |------|---------|
 | `phase6_10_00_phase_6_constants.py` | Constants and enumerations |
 | `PHASE_6_MANIFEST.json` | Phase metadata and contracts |
-| `../Phase_4/contracts/certificates/` | Cross-phase compliance certificates |
+| `../Phase_04/contracts/certificates/` | Cross-phase compliance certificates |
 
 ---
 

@@ -28,7 +28,7 @@ class Phase5UncertaintyConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase5_uncertainty_consumer"
-    consumer_phase: str = "phase_5"
+    consumer_phase: str = "phase_05"
 
     def __post_init__(self):
         super().__post_init__()
@@ -46,8 +46,8 @@ class Phase5UncertaintyConsumer(BaseConsumer):
             ],
             subscribed_buses=["integrity_bus", "epistemic_bus"],
             context_filters={
-                "phase": ["phase_4", "phase_5"],
-                "consumer_scope": ["Phase_5", "Cross-Phase"]
+                "phase": ["phase_04", "phase_05"],
+                "consumer_scope": ["Phase_05", "Cross-Phase"]
             },
             required_capabilities=["can_validate", "can_enrich"]
         )
@@ -65,7 +65,7 @@ class Phase5UncertaintyConsumer(BaseConsumer):
             "processed": True,
             "uncertainty_metrics": {},
             "confidence_level": "UNKNOWN",
-            "phase": "phase_5"
+            "phase": "phase_05"
         }
 
         if signal.signal_type == "DataIntegritySignal":

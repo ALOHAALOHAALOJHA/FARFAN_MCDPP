@@ -12,7 +12,7 @@ CONTRACTS_DIR = (
     / "src"
     / "farfan_pipeline"
     / "phases"
-    / "Phase_2"
+    / "Phase_02"
     / "json_files_phase_two"
     / "executor_contracts"
     / "specialized"

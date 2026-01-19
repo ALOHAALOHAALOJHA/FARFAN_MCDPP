@@ -17,7 +17,7 @@ YAML
 
 TIER_1_CRITICAL:  # Sin estos, el sistema no puede operar
   - path: "_registry/EMPIRICAL_CORPUS_INDEX.json"
-    stage: phase_1
+    stage: phase_01
     irrigability:  not_irrigable_yet
     gap:  NECESITA_VEHICULO
     consumers: [phase1_11_00_signal_enrichment. py, phase1_13_00_cpp_ingestion.py]
@@ -51,21 +51,21 @@ TIER_2_CAPABILITIES: # Definiciones de capacidades del sistema
 
 TIER_3_ENTITIES: # Corpus empírico y entidades canónicas (12 items)
   - path: "_registry/entities/corpus_empirico_calibracion_extractores.json"
-    stage: phase_3
+    stage: phase_03
     irrigability: irrigable_now
     gap: [NECESITA_VEHICULO, VOCAB_SEÑALES_NO_ALINEADO, VOCAB_CAPACIDADES_NO_ALINEADO]
     consumers: [phase3_10_00_phase3_signal_enriched_scoring.py]
     bytes: 25394
     
   - path: "_registry/entities/corpus_empirico_integrado. json"
-    stage: phase_3
+    stage: phase_03
     irrigability: irrigable_now
     gap: [NECESITA_VEHICULO, VOCAB_SEÑALES_NO_ALINEADO, VOCAB_CAPACIDADES_NO_ALINEADO]
     consumers: [phase3_10_00_phase3_signal_enriched_scoring.py]
     bytes: 47605
     
   - path: "_registry/entities/corpus_empirico_normatividad.json"
-    stage: phase_3
+    stage: phase_03
     bytes: 8702
     
   - path: "_registry/entities/index. json"
@@ -97,7 +97,7 @@ TIER_3_ENTITIES: # Corpus empírico y entidades canónicas (12 items)
 
 TIER_4_MEMBERSHIP_CRITERIA: # Criterios de membresía (13 items)
   - path: "_registry/membership_criteria/MC01_structural_markers.json"
-    stage: phase_1
+    stage: phase_01
     irrigability: not_irrigable_yet
     gap: NECESITA_VEHICULO
     consumers: [phase1_11_00_signal_enrichment.py, phase1_13_00_cpp_ingestion.py]
@@ -153,7 +153,7 @@ TIER_5_QUESTIONS: # Preguntas canónicas (3 items)
     bytes: 47605
     
   - path:  "_registry/questions/macro_question. json"
-    stage: phase_8
+    stage: phase_08
     irrigability: not_irrigable_yet
     gap: NINGUNO  # ¡LISTO PARA IRRIGAR!
     vehiculos: [signal_context_scoper, signal_registry]
@@ -161,7 +161,7 @@ TIER_5_QUESTIONS: # Preguntas canónicas (3 items)
     bytes: 920
     
   - path: "_registry/questions/meso_questions.json"
-    stage: phase_7
+    stage: phase_07
     irrigability: irrigable_now
     gap:  NECESITA_CONSUMIDOR
     vehiculos: [signal_context_scoper, signal_registry]
@@ -358,13 +358,13 @@ CROSS_CUTTING:
 YAML
 CONFIG_AND_SCORING:
   - path: "config/canonical_notation.json"
-    stage: phase_0
+    stage: phase_00
     consumers: [phase0_90_02_bootstrap.py, providers.py, wiring_types.py]
     gap: NECESITA_VEHICULO
     bytes: 67014
     
   - path: "_registry/questionnaire_index.json"
-    stage: phase_0
+    stage: phase_00
     consumers: [phase0_90_02_bootstrap. py, providers.py, wiring_types.py]
     gap: NECESITA_VEHICULO
     bytes: 30652
@@ -389,7 +389,7 @@ GOVERNANCE:
 
 YAML
 COLOMBIA_CONTEXT:
-  stage: phase_3
+  stage: phase_03
   consumers: [phase3_10_00_phase3_signal_enriched_scoring.py]
   gap: [NECESITA_VEHICULO, VOCAB_SEÑALES_NO_ALINEADO, VOCAB_CAPACIDADES_NO_ALINEADO]
   
@@ -611,8 +611,8 @@ class SignalContext:
     """
     node_type: str          # tipo de nodo:  "policy_area", "dimension", "question", "cluster"
     node_id: str            # identificador del nodo:  "PA03", "DIM02", "Q147"
-    phase: str              # fase del pipeline: "phase_0", "phase_1", etc.
-    consumer_scope: str     # alcance del consumidor: "Phase_0", "Phase_2", "Cross-Phase"
+    phase: str              # fase del pipeline: "phase_00", "phase_01", etc.
+    consumer_scope: str     # alcance del consumidor: "Phase_00", "Phase_02", "Cross-Phase"
     
     def to_dict(self) -> Dict[str, str]:
         return {
@@ -1118,7 +1118,7 @@ class ConsumptionContract:
     
     # Filtros
     context_filters: Dict[str, List[str]] = field(default_factory=dict)
-    # Ejemplo: {"node_type": ["policy_area", "dimension"], "phase": ["phase_0"]}
+    # Ejemplo: {"node_type": ["policy_area", "dimension"], "phase": ["phase_00"]}
     
     # Restricciones de procesamiento
     max_processing_time_ms: int = 5000
@@ -4326,40 +4326,40 @@ irrigation:
   base_path: "src/farfan_pipeline/data"
   
   phases:
-    phase_0:
+    phase_00:
       description: "Bootstrap y carga inicial"
       priority: 1
       parallel_routes:  10
       
-    phase_1:
+    phase_01:
       description: "Signal enrichment e ingestion"
       priority: 2
       parallel_routes: 5
-      depends_on: [phase_0]
+      depends_on: [phase_00]
       
-    phase_2:
+    phase_02:
       description:  "Factory, execution, synchronization"
       priority: 3
       parallel_routes: 7
-      depends_on: [phase_1]
+      depends_on: [phase_01]
       
-    phase_3:
+    phase_03:
       description: "Signal enriched scoring"
       priority: 4
       parallel_routes: 3
-      depends_on: [phase_2]
+      depends_on: [phase_02]
       
-    phase_7:
+    phase_07:
       description: "Meso questions processing"
       priority: 5
       parallel_routes: 2
-      depends_on: [phase_3]
+      depends_on: [phase_03]
       
-    phase_8:
+    phase_08:
       description: "Signal enriched recommendations"
       priority: 6
       parallel_routes: 1
-      depends_on: [phase_7]
+      depends_on: [phase_07]
 
   vehicles:
     signal_registry:
@@ -4759,15 +4759,15 @@ FASE_5:
     con_gaps: 14
     
   ejecución_por_fases:
-    phase_0:
+    phase_00:
       archivos:  89
       consumidores: ["phase0_90_02_bootstrap.py", "providers. py", "wiring_types.py"]
       
-    phase_1:
+    phase_01:
       archivos:  14
       consumidores: ["phase1_11_00_signal_enrichment.py", "phase1_13_00_cpp_ingestion.py"]
       
-    phase_2:
+    phase_02:
       archivos: 43
       consumidores: 
         - "phase2_10_00_factory. py"
@@ -4778,15 +4778,15 @@ FASE_5:
         - "phase2_95_00_contract_hydrator.py"
         - "phase2_95_02_precision_tracking.py"
         
-    phase_3:
+    phase_03:
       archivos: 15
       consumidores: ["phase3_10_00_phase3_signal_enriched_scoring.py"]
       
-    phase_7:
+    phase_07:
       archivos: 1
       consumidores: ["PENDIENTE_DECLARAR"]
       
-    phase_8:
+    phase_08:
       archivos: 1
       consumidores: ["phase8_30_00_signal_enriched_recommendations.py"]
       
@@ -4809,12 +4809,12 @@ FASE_6:
   
   entregables:
     - consumers/base_consumer.py: "Clase base para consumidores"
-    - consumers/phase0/*. py: "Consumidores de phase_0"
-    - consumers/phase1/*.py: "Consumidores de phase_1"
-    - consumers/phase2/*.py: "Consumidores de phase_2"
-    - consumers/phase3/*.py: "Consumidores de phase_3"
-    - consumers/phase7/*.py: "Consumidores de phase_7 (NUEVO)"
-    - consumers/phase8/*.py: "Consumidores de phase_8"
+    - consumers/phase0/*. py: "Consumidores de phase_00"
+    - consumers/phase1/*.py: "Consumidores de phase_01"
+    - consumers/phase2/*.py: "Consumidores de phase_02"
+    - consumers/phase3/*.py: "Consumidores de phase_03"
+    - consumers/phase7/*.py: "Consumidores de phase_07 (NUEVO)"
+    - consumers/phase8/*.py: "Consumidores de phase_08"
     
   implementación_base_consumer:
     capacidades: 
@@ -4825,7 +4825,7 @@ FASE_6:
       - "Reporte de salud"
       
   consumidores_por_fase:
-    phase_0:
+    phase_00:
       phase0_90_02_bootstrap. py: 
         señales_consumidas: 
           - StructuralAlignmentSignal
@@ -4848,7 +4848,7 @@ FASE_6:
         capacidades_requeridas: 
           - can_validate_contracts
           
-    phase_1:
+    phase_01:
       phase1_11_00_signal_enrichment.py:
         señales_consumidas:
           - StructuralAlignmentSignal
@@ -4864,7 +4864,7 @@ FASE_6:
         capacidades_requeridas: 
           - can_load_canonical
           
-    phase_2:
+    phase_02:
       phase2_10_00_factory.py:
         señales_consumidas:
           - StructuralAlignmentSignal
@@ -4915,7 +4915,7 @@ FASE_6:
           - can_extract_determinacy
           - can_extract_specificity
           
-    phase_3:
+    phase_03:
       phase3_10_00_phase3_signal_enriched_scoring.py:
         señales_consumidas:
           - AnswerDeterminacySignal
@@ -4927,7 +4927,7 @@ FASE_6:
           - can_enrich_with_signals
           - can_extract_evidence
           
-    phase_7:
+    phase_07:
       NUEVO_CONSUMIDOR_REQUERIDO:
         descripción: "Consumidor para meso_questions.json"
         señales_consumidas:
@@ -4936,7 +4936,7 @@ FASE_6:
         capacidades_requeridas: 
           - can_scope_context
           
-    phase_8:
+    phase_08:
       phase8_30_00_signal_enriched_recommendations.py:
         señales_consumidas:
           - AnswerDeterminacySignal
@@ -5052,12 +5052,12 @@ FASE_8:
       
     2_migración_gradual:
       orden: 
-        - phase_0: "Primero - Bootstrap"
-        - phase_1: "Segundo - Enrichment"
-        - phase_2: "Tercero - Execution"
-        - phase_3: "Cuarto - Scoring"
-        - phase_7: "Quinto - Meso"
-        - phase_8: "Sexto - Recommendations"
+        - phase_00: "Primero - Bootstrap"
+        - phase_01: "Segundo - Enrichment"
+        - phase_02: "Tercero - Execution"
+        - phase_03: "Cuarto - Scoring"
+        - phase_07: "Quinto - Meso"
+        - phase_08: "Sexto - Recommendations"
         
     3_contraste_paralelo:
       duración: "48 horas mínimo"
@@ -5106,7 +5106,7 @@ IRRIGATION_CONTRACTS = {
     # === CLUSTERS (12 archivos) - LISTOS ===
     "clusters/CL01_seguridad_paz/aggregation_rules.json":  {
         "contract_id": "IC_CL01_AGG",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal", "CanonicalMappingSignal"],
@@ -5115,7 +5115,7 @@ IRRIGATION_CONTRACTS = {
     },
     "clusters/CL01_seguridad_paz/metadata.json": {
         "contract_id": "IC_CL01_META",
-        "source_phase":  "phase_0",
+        "source_phase":  "phase_00",
         "vehicles": ["signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal"],
@@ -5124,7 +5124,7 @@ IRRIGATION_CONTRACTS = {
     },
     "clusters/CL01_seguridad_paz/questions.json": {
         "contract_id": "IC_CL01_Q",
-        "source_phase":  "phase_0",
+        "source_phase":  "phase_00",
         "vehicles": ["signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal", "EventCompletenessSignal"],
@@ -5136,7 +5136,7 @@ IRRIGATION_CONTRACTS = {
     # === DIMENSIONS (18 archivos core) - LISTOS ===
     "dimensions/DIM01_INSUMOS/metadata.json": {
         "contract_id": "IC_DIM01_META",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal"],
@@ -5145,7 +5145,7 @@ IRRIGATION_CONTRACTS = {
     },
     "dimensions/DIM01_INSUMOS/pdet_context.json": {
         "contract_id": "IC_DIM01_PDET",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "CanonicalMappingSignal"],
@@ -5154,7 +5154,7 @@ IRRIGATION_CONTRACTS = {
     },
     "dimensions/DIM01_INSUMOS/questions.json": {
         "contract_id": "IC_DIM01_Q",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers. py", "wiring_types. py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal", "EventCompletenessSignal"],
@@ -5166,7 +5166,7 @@ IRRIGATION_CONTRACTS = {
     # === POLICY AREAS (30 archivos) - LISTOS ===
     "policy_areas/PA01_mujeres_genero/metadata.json": {
         "contract_id": "IC_PA01_META",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_quality_metrics", "signal_registry", "signals"],
         "consumers": ["phase0_90_02_bootstrap. py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal"],
@@ -5175,7 +5175,7 @@ IRRIGATION_CONTRACTS = {
     },
     "policy_areas/PA01_mujeres_genero/keywords.json": {
         "contract_id": "IC_PA01_KW",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_quality_metrics", "signal_registry", "signals"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers. py", "wiring_types. py"],
         "signals": ["StructuralAlignmentSignal", "DataIntegritySignal"],
@@ -5185,7 +5185,7 @@ IRRIGATION_CONTRACTS = {
     },
     "policy_areas/PA01_mujeres_genero/questions.json": {
         "contract_id": "IC_PA01_Q",
-        "source_phase":  "phase_0",
+        "source_phase":  "phase_00",
         "vehicles": ["signal_quality_metrics", "signal_registry", "signals"],
         "consumers": ["phase0_90_02_bootstrap. py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "EventPresenceSignal", "EventCompletenessSignal"],
@@ -5197,7 +5197,7 @@ IRRIGATION_CONTRACTS = {
     # === PATTERNS (22 archivos) - NECESITAN ALINEACIÓN VOCAB ===
     "_registry/patterns/by_category/GENERAL.json": {
         "contract_id": "IC_PAT_GENERAL",
-        "source_phase": "phase_2",
+        "source_phase": "phase_02",
         "vehicles": ["signal_context_scoper", "signal_evidence_extractor", "signal_intelligence_layer", 
                      "signal_loader", "signal_quality_metrics", "signal_registry", "signals"],
         "consumers":  ["phase2_10_00_factory.py", "phase2_30_03_resource_aware_executor.py",
@@ -5214,7 +5214,7 @@ IRRIGATION_CONTRACTS = {
     # === REGISTRY/ENTITIES (12 archivos) - NECESITAN VEHÍCULO Y ALINEACIÓN ===
     "_registry/entities/corpus_empirico_integrado.json": {
         "contract_id": "IC_ENT_CORPUS",
-        "source_phase": "phase_3",
+        "source_phase": "phase_03",
         "vehicles": [],  # NECESITA VEHÍCULO
         "consumers": ["phase3_10_00_phase3_signal_enriched_scoring.py"],
         "signals": ["MethodApplicationSignal", "EmpiricalSupportSignal"],
@@ -5226,7 +5226,7 @@ IRRIGATION_CONTRACTS = {
     # === REGISTRY/QUESTIONS (3 archivos) ===
     "_registry/questions/macro_question.json": {
         "contract_id": "IC_Q_MACRO",
-        "source_phase": "phase_8",
+        "source_phase": "phase_08",
         "vehicles": ["signal_context_scoper", "signal_registry"],
         "consumers": ["phase8_30_00_signal_enriched_recommendations.py"],
         "signals": ["CanonicalMappingSignal", "AnswerDeterminacySignal"],
@@ -5235,7 +5235,7 @@ IRRIGATION_CONTRACTS = {
     },
     "_registry/questions/meso_questions.json": {
         "contract_id": "IC_Q_MESO",
-        "source_phase": "phase_7",
+        "source_phase": "phase_07",
         "vehicles": ["signal_context_scoper", "signal_registry"],
         "consumers":  [],  # NECESITA CONSUMIDOR
         "signals": ["CanonicalMappingSignal", "StructuralAlignmentSignal"],
@@ -5247,7 +5247,7 @@ IRRIGATION_CONTRACTS = {
     # === CROSS-CUTTING (11 archivos) - LISTOS ===
     "cross_cutting/cross_cutting_themes.json": {
         "contract_id": "IC_CC_THEMES",
-        "source_phase": "phase_0",
+        "source_phase": "phase_00",
         "vehicles": ["signal_enhancement_integrator", "signal_registry"],
         "consumers": ["phase0_90_02_bootstrap.py", "providers.py", "wiring_types.py"],
         "signals": ["StructuralAlignmentSignal", "CanonicalMappingSignal"],
@@ -5548,7 +5548,7 @@ CONSUMER_DECLARATIONS = {
     # _registry/patterns/MASTER_INDEX.json → phase2_pattern_consumer.py
     "_registry/patterns/MASTER_INDEX.json": {
         "consumer_id": "phase2_pattern_consumer.py",
-        "consumer_phase": "phase_2",
+        "consumer_phase": "phase_02",
         "signals_consumed": ["StructuralAlignmentSignal", "CanonicalMappingSignal"],
         "capabilities_required": ["can_load_canonical", "can_scope_context"]
     },
@@ -5564,7 +5564,7 @@ CONSUMER_DECLARATIONS = {
     # _registry/questions/meso_questions.json → phase7_meso_consumer.py (NUEVO)
     "_registry/questions/meso_questions.json": {
         "consumer_id": "phase7_meso_consumer. py",
-        "consumer_phase": "phase_7",
+        "consumer_phase": "phase_07",
         "signals_consumed": ["CanonicalMappingSignal", "StructuralAlignmentSignal"],
         "capabilities_required": ["can_scope_context"]
     },
@@ -5624,7 +5624,7 @@ class Phase7MesoConsumer(BaseConsumer):
     """
     
     consumer_id: str = "phase7_meso_consumer.py"
-    consumer_phase: str = "phase_7"
+    consumer_phase: str = "phase_07"
     
     def __post_init__(self):
         super().__post_init__()
@@ -5640,7 +5640,7 @@ class Phase7MesoConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus"],
             context_filters={
-                "phase":  ["phase_7"],
+                "phase":  ["phase_07"],
                 "node_type": ["question"]
             },
             required_capabilities=["can_scope_context"]
@@ -6153,7 +6153,7 @@ python -m src. farfan_pipeline.infrastructure. irrigation_using_signals.SISAS.ma
 python -m src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
     run --csv-path sabana_final_decisiones.csv \
     --base-path src/farfan_pipeline/data \
-    --phase phase_0
+    --phase phase_00
 
 # 5. Ejecutar todas las rutas irrigables
 python -m src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
@@ -6199,8 +6199,8 @@ class TestSignalContext:
         context = SignalContext(
             node_type="question",
             node_id="Q147",
-            phase="phase_0",
-            consumer_scope="Phase_0"
+            phase="phase_00",
+            consumer_scope="Phase_00"
         )
         assert context.node_type == "question"
         assert context.node_id == "Q147"
@@ -6209,8 +6209,8 @@ class TestSignalContext:
         context = SignalContext(
             node_type="policy_area",
             node_id="PA03",
-            phase="phase_2",
-            consumer_scope="Phase_2"
+            phase="phase_02",
+            consumer_scope="Phase_02"
         )
         d = context.to_dict()
         assert d["node_type"] == "policy_area"
@@ -6220,8 +6220,8 @@ class TestSignalContext:
         data = {
             "node_type": "dimension",
             "node_id":  "DIM01",
-            "phase": "phase_0",
-            "consumer_scope": "Phase_0"
+            "phase": "phase_00",
+            "consumer_scope": "Phase_00"
         }
         context = SignalContext.from_dict(data)
         assert context.node_type == "dimension"
@@ -6261,7 +6261,7 @@ class TestEventStore:
         event = Event(
             event_type=EventType.CANONICAL_DATA_LOADED,
             source_file="test.json",
-            phase="phase_0"
+            phase="phase_00"
         )
         event_id = store.append(event)
         assert event_id == event.event_id
@@ -6284,15 +6284,15 @@ class TestEventStore:
     def test_get_by_phase(self):
         store = EventStore()
         
-        e1 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_0")
-        e2 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_1")
-        e3 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_0")
+        e1 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_00")
+        e2 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_01")
+        e3 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_00")
         
         store.append(e1)
         store.append(e2)
         store.append(e3)
         
-        phase0 = store.get_by_phase("phase_0")
+        phase0 = store.get_by_phase("phase_00")
         assert len(phase0) == 2
     
     def test_events_never_lost(self):
@@ -6333,7 +6333,7 @@ class TestContracts:
         context = SignalContext(
             node_type="test",
             node_id="test-1",
-            phase="phase_0",
+            phase="phase_00",
             consumer_scope="Test"
         )
         source = SignalSource(
@@ -6358,10 +6358,10 @@ class TestContracts:
         contract = ConsumptionContract(
             contract_id="CC_TEST",
             consumer_id="test_consumer",
-            consumer_phase="phase_0",
+            consumer_phase="phase_00",
             subscribed_signal_types=["StructuralAlignmentSignal"],
             context_filters={
-                "phase": ["phase_0", "phase_1"],
+                "phase": ["phase_00", "phase_01"],
                 "node_type": ["question", "dimension"]
             }
         )
@@ -6372,8 +6372,8 @@ class TestContracts:
             context = SignalContext(
                 node_type="question",
                 node_id="Q001",
-                phase="phase_0",
-                consumer_scope="Phase_0"
+                phase="phase_00",
+                consumer_scope="Phase_00"
             )
         
         assert contract.matches_signal(MockSignal())
@@ -6384,8 +6384,8 @@ class TestContracts:
             context = SignalContext(
                 node_type="question",
                 node_id="Q001",
-                phase="phase_0",
-                consumer_scope="Phase_0"
+                phase="phase_00",
+                consumer_scope="Phase_00"
             )
         
         assert not contract.matches_signal(MockSignal2())
@@ -6396,7 +6396,7 @@ class TestContracts:
             contract_id="IC_COMPLETE",
             source_file="test.json",
             source_path="test/test.json",
-            source_phase="phase_0",
+            source_phase="phase_00",
             vehicles=["signal_registry"],
             consumers=["consumer_1"],
             vocabulary_aligned=True,
@@ -6410,7 +6410,7 @@ class TestContracts:
             contract_id="IC_NO_VEHICLE",
             source_file="test2.json",
             source_path="test/test2.json",
-            source_phase="phase_0",
+            source_phase="phase_00",
             vehicles=[],
             consumers=["consumer_1"],
             vocabulary_aligned=True,
@@ -6447,7 +6447,7 @@ class TestBus:
         contract = ConsumptionContract(
             contract_id="CC_SUB_TEST",
             consumer_id="test_consumer",
-            consumer_phase="phase_0",
+            consumer_phase="phase_00",
             subscribed_signal_types=["StructuralAlignmentSignal"],
             subscribed_buses=["structural_bus"]
         )
@@ -6494,8 +6494,8 @@ def sample_context():
     return SignalContext(
         node_type="question",
         node_id="Q147",
-        phase="phase_0",
-        consumer_scope="Phase_0"
+        phase="phase_00",
+        consumer_scope="Phase_00"
     )
 
 
@@ -6721,8 +6721,8 @@ class TestIrrigationMap:
     def test_create_route(self):
         source = IrrigationSource(
             file_path="clusters/CL01/metadata.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["phase0_bootstrap. py"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -6736,7 +6736,7 @@ class TestIrrigationMap:
             vehicles=["signal_registry"],
             targets=[IrrigationTarget(
                 consumer_id="phase0_bootstrap. py",
-                consumer_phase="phase_0"
+                consumer_phase="phase_00"
             )],
             is_active=True
         )
@@ -6749,8 +6749,8 @@ class TestIrrigationMap:
         
         source = IrrigationSource(
             file_path="test/test.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["consumer1"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -6760,7 +6760,7 @@ class TestIrrigationMap:
         route = IrrigationRoute(
             source=source,
             vehicles=["signal_registry"],
-            targets=[IrrigationTarget(consumer_id="consumer1", consumer_phase="phase_0")],
+            targets=[IrrigationTarget(consumer_id="consumer1", consumer_phase="phase_00")],
             is_active=True
         )
         
@@ -6773,7 +6773,7 @@ class TestIrrigationMap:
         irrigation_map = IrrigationMap()
         
         # Agregar rutas de diferentes fases
-        for phase in ["Phase_0", "Phase_1", "Phase_0"]:
+        for phase in ["Phase_00", "Phase_01", "Phase_00"]:
             source = IrrigationSource(
                 file_path=f"test/{phase}/file.json",
                 stage=phase. lower(),
@@ -6786,7 +6786,7 @@ class TestIrrigationMap:
             route = IrrigationRoute(source=source, vehicles=["signal_registry"])
             irrigation_map.add_route(route)
         
-        phase0_routes = irrigation_map.get_routes_for_phase("Phase_0")
+        phase0_routes = irrigation_map.get_routes_for_phase("Phase_00")
         assert len(phase0_routes) == 2
     
     def test_get_blocked_routes(self):
@@ -6795,8 +6795,8 @@ class TestIrrigationMap:
         # Ruta bloqueada
         source1 = IrrigationSource(
             file_path="blocked/file. json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=[],  # Sin vehículo
             consumers=[],
             irrigability=IrrigabilityStatus.NOT_IRRIGABLE_YET,
@@ -6808,8 +6808,8 @@ class TestIrrigationMap:
         # Ruta no bloqueada
         source2 = IrrigationSource(
             file_path="ok/file.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["consumer1"],
             irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -6836,8 +6836,8 @@ class TestIrrigationMap:
         for i, status in enumerate(statuses):
             source = IrrigationSource(
                 file_path=f"test/file_{i}.json",
-                stage="phase_0",
-                phase="Phase_0",
+                stage="phase_00",
+                phase="Phase_00",
                 vehicles=["v1"] if status == IrrigabilityStatus. IRRIGABLE_NOW else [],
                 consumers=[],
                 irrigability=status,
@@ -6901,8 +6901,8 @@ class TestIrrigationExecutor:
     def test_execute_route_success(self, executor, temp_canonical_file):
         source = IrrigationSource(
             file_path=temp_canonical_file,
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=["signal_registry"],
             consumers=["test_consumer"],
             irrigability=IrrigabilityStatus. IRRIGABLE_NOW,
@@ -6914,7 +6914,7 @@ class TestIrrigationExecutor:
             vehicles=["signal_registry"],
             targets=[IrrigationTarget(
                 consumer_id="test_consumer",
-                consumer_phase="phase_0"
+                consumer_phase="phase_00"
             )],
             is_active=True
         )
@@ -6928,8 +6928,8 @@ class TestIrrigationExecutor:
     def test_execute_route_blocked(self, executor):
         source = IrrigationSource(
             file_path="nonexistent/file.json",
-            stage="phase_0",
-            phase="Phase_0",
+            stage="phase_00",
+            phase="Phase_00",
             vehicles=[],  # Sin vehículo
             consumers=[],
             irrigability=IrrigabilityStatus.NOT_IRRIGABLE_YET,
@@ -6948,8 +6948,8 @@ class TestIrrigationExecutor:
         for i in range(3):
             source = IrrigationSource(
                 file_path=temp_canonical_file,
-                stage="phase_0",
-                phase="Phase_0",
+                stage="phase_00",
+                phase="Phase_00",
                 vehicles=["signal_registry"],
                 consumers=["consumer"],
                 irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
@@ -6958,7 +6958,7 @@ class TestIrrigationExecutor:
             route = IrrigationRoute(
                 source=source,
                 vehicles=["signal_registry"],
-                targets=[IrrigationTarget(consumer_id="consumer", consumer_phase="phase_0")]
+                targets=[IrrigationTarget(consumer_id="consumer", consumer_phase="phase_00")]
             )
             executor.execute_route(route)
         

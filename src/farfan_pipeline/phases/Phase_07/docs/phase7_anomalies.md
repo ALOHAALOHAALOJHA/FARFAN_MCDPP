@@ -20,7 +20,7 @@ Prior to this implementation, Phase 7 existed in a minimal state with only:
 - `README.md` (comprehensive documentation)
 
 ### Placeholder Classes
-The file `src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_integration.py` contained placeholder classes:
+The file `src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_integration.py` contained placeholder classes:
 ```python
 class MacroScore:
     """Placeholder for Phase 7 MacroScore (to be extracted)."""
@@ -127,7 +127,7 @@ __init__.py (depends: all above)
 ```
 
 ### External Dependencies
-- `farfan_pipeline.phases.Phase_6.phase6_10_00_cluster_score.ClusterScore` (input type)
+- `farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score.ClusterScore` (input type)
 - Standard library: `logging`, `statistics`, `datetime`, `uuid`, `dataclasses`
 
 ### Circular Dependency Check

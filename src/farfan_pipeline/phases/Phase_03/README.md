@@ -78,7 +78,7 @@ The validation function **V** must satisfy:
 ### 2.1 Component Hierarchy
 
 ```
-Phase_3/
+Phase_03/
 ├── primitives/
 │   ├── phase3_00_00_mathematical_foundation.py    # Weighted aggregation, Wilson score
 │   ├── phase3_00_00_quality_levels.py              # QualityLevel enum

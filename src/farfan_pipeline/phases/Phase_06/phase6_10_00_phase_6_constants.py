@@ -4,7 +4,7 @@ Phase 6 Constants - Cluster Aggregation (MESO)
 This module re-exports configuration from the unified scoring config
 and defines cluster composition constants.
 
-Module: src/farfan_pipeline/phases/Phase_6/PHASE_6_CONSTANTS.py
+Module: src/farfan_pipeline/phases/Phase_06/PHASE_6_CONSTANTS.py
 Purpose: Define constants for Phase 6
 Owner: phase6_10
 Lifecycle: ACTIVE

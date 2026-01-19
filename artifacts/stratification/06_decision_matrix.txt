@@ -95,11 +95,11 @@ canonic_questionnaire_central.scoring.modules.pdet_scoring_enrichment|ERA_UNKNOW
 farfan_pipeline.infrastructure.calibration.calibration_core|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.infrastructure.calibration|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 importlib|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_6.phase6_10_00_phase_6_constants|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_6.phase6_20_00_adaptive_meso_scoring|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_6|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_6.contracts.phase6_output_contract|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_06.phase6_10_01_scoring_config|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_06.phase6_10_00_phase_6_constants|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_06|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_06.contracts.phase6_output_contract|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 canonic_questionnaire_central.validations.pdet_validator|ERA_UNKNOWN|LIVE|N/A|INVESTIGATE|UNKNOWN
 numpy|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 resource|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
@@ -150,7 +150,7 @@ farfan_pipeline.phases.Phase_01.docs.legacy.phase1_01_00_cpp_models|ERA_MODERN|D
 farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.infrastructure.irrigation_using_signals.ports|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
-farfan_pipeline.phases.Phase_2.phase2_10_00_factory|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_02.phase2_10_00_factory|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method_metadata|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_validation_specs|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_scoring_context|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
@@ -309,7 +309,7 @@ psutil  # noqa: F401|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_one.phase1_09_00_circuit_breaker|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 executor_calibration_integration|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
-farfan_pipeline.phases.Phase_8|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_08|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_08|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.phases.Phase_01.phase1_12_01_pdm_integration|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
@@ -327,7 +327,7 @@ orchestration.meta_layer|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_01.contracts.phase1_input_contract|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.phases.Phase_01.contracts.phase1_output_contract|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
-farfan_pipeline.phases.Phase_1|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_01|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_01.interphase|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 scipy|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 .calibration_core|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
@@ -362,8 +362,8 @@ farfan_pipeline.phases.Phase_03.phase3_10_00_normative_compliance_validator|ERA_
 .phase7_10_00_macro_score|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 .phase7_20_00_macro_aggregator|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 .phase7_10_00_systemic_gap_detector|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 collections. abc|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
@@ -372,9 +372,9 @@ farfan_pipeline.processing.aggregation_provenance|ERA_MODERN|DEAD|N/A|DELETE|ARC
 .phase4_10_00_adaptive_meso_scoring|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 .phase4_10_00_enhanced_aggregators|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 .phase4_10_00_signal_enriched_aggregation|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
-farfan_pipeline.phases.Phase_5|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_05|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
-farfan_pipeline.phases.Phase_3|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_03|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 ..phase4_10_00_phase_4_7_constants|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 ..PHASE_4_CONSTANTS|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 .phase4_00_00_aggregation_settings|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
@@ -385,7 +385,7 @@ farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation|ERA_MODERN|LIVE|N/
 farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 orchestration.aggregation_integration|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_05.phase5_10_00_area_score|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
-farfan_pipeline.phases.Phase_4|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
+farfan_pipeline.phases.Phase_04|ERA_MODERN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.phases.Phase_04.primitives|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 farfan_pipeline.phases.Phase_04.contracts.phase4_mission_contract|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL

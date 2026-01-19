@@ -78,7 +78,7 @@ class SignalScope:
     - slot: Which question slot (D1-Q1 format or wildcard)
     """
     
-    phase: str  # phase_0, phase_1, ..., phase_9
+    phase: str  # phase_00, phase_01, ..., phase_09
     policy_area: str  # PA01-PA10, ALL, CROSS_CUTTING
     slot: str  # D1-Q1, D2-Q5, ALL, etc.
     

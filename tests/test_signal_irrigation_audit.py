@@ -229,7 +229,7 @@ class TestWiringFixes:
 
         # Invalid access: Consumer trying to access at FACTORY level
         is_valid = validate_access_level(
-            "canonic_phases.Phase_2",
+            "canonic_phases.Phase_02",
             "BaseExecutor",
             "execute",
             AccessLevel.FACTORY,
@@ -424,7 +424,7 @@ class TestAccessAudit:
 
         audit.record_access(
             AccessLevel.CONSUMER,
-            "canonic_phases.Phase_2",
+            "canonic_phases.Phase_02",
             "BaseExecutor",
             "execute",
             "patterns",

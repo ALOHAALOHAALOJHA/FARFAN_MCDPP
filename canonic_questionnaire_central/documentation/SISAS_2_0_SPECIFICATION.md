@@ -122,7 +122,7 @@ class Signal:
 ```python
 @dataclass
 class SignalScope:
-    phase: str       # phase_0 through phase_9
+    phase: str       # phase_00 through phase_09
     policy_area: str # PA01-PA10, ALL, CROSS_CUTTING
     slot: str        # D1-Q1 format or ALL
 ```
@@ -150,7 +150,7 @@ Signal → VALIDATE → DEDUP → VALUE_GATE → ROUTE → DELIVER
     "empirical_availability_min": 0.30
   },
   "routing": {
-    "phase_1": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"]
+    "phase_01": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"]
   },
   "capabilities_required": {
     "MC05": ["NUMERIC_PARSING", "FINANCIAL_ANALYSIS"]
@@ -163,7 +163,7 @@ Signal → VALIDATE → DEDUP → VALUE_GATE → ROUTE → DELIVER
 ```python
 sdo.register_consumer(
     consumer_id="phase_1_extraction",
-    scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+    scopes=[{"phase": "phase_01", "policy_area": "ALL", "slot": "ALL"}],
     capabilities=["NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CAUSAL_INFERENCE", ...],
     handler=phase_1_handler_function
 )
@@ -230,7 +230,7 @@ class AuditEntry:
 ```json
 {
   "signal_type": "MC05",
-  "scope": {"phase": "phase_1", "policy_area": "PA01", "slot": "D1-Q1"},
+  "scope": {"phase": "phase_01", "policy_area": "PA01", "slot": "D1-Q1"},
   "payload": {
     "amount": 150000000000,
     "currency": "COP",
@@ -255,7 +255,7 @@ class AuditEntry:
 ```json
 {
   "signal_type": "MC08",
-  "scope": {"phase": "phase_1", "policy_area": "PA02", "slot": "D6-Q1"},
+  "scope": {"phase": "phase_01", "policy_area": "PA02", "slot": "D6-Q1"},
   "payload": {
     "action_verb": "fortalecer",
     "connector": "mediante",
@@ -282,7 +282,7 @@ class AuditEntry:
 ```json
 {
   "signal_type": "MC09",
-  "scope": {"phase": "phase_1", "policy_area": "PA05", "slot": "D2-Q2"},
+  "scope": {"phase": "phase_01", "policy_area": "PA05", "slot": "D2-Q2"},
   "payload": {
     "entity_name": "Agencia de Renovación del Territorio",
     "entity_type": "PDET_SPECIFIC",
@@ -315,9 +315,9 @@ class CanonicalQuestionnaireResolver:
     def _register_consumers(self):
         self.sdo.register_consumer(
             consumer_id="phase_0_assembly",
-            scopes=[{"phase": "phase_0", "policy_area": "ALL", "slot": "ALL"}],
+            scopes=[{"phase": "phase_00", "policy_area": "ALL", "slot": "ALL"}],
             capabilities=["STATIC_LOAD", "SIGNAL_PACK"],
-            handler=self._handle_phase_0
+            handler=self._handle_phase_00
         )
         # ... more consumers
 ```
@@ -407,7 +407,7 @@ src/farfan_pipeline/infrastructure/irrigation_using_signals/
 
 ### Phase 3: Resolver Integration (Week 3) ✅ COMPLETED
 - [x] Modify `resolver.py` to initialize SDO (v2.0.0)
-- [x] Register 10 phase consumers (phase_0 through phase_9)
+- [x] Register 10 phase consumers (phase_00 through phase_09)
 - [x] Wire extractors via `ExtractorOrchestrator`
 - [x] Add `dispatch_signal()` and `get_sdo_health()` methods
 

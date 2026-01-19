@@ -23,20 +23,20 @@ This document records all anomalies, deviations, and special circumstances encou
 
 **Resolution**: 
 - Reconstructed AreaScore from validation scripts (`validation/scripts/run_validation.py`)
-- Reconstructed ClusterScore from test fixtures (`tests/phase_6/conftest.py`)
+- Reconstructed ClusterScore from test fixtures (`tests/phase_06/conftest.py`)
 - Created new modules:
-  - `src/farfan_pipeline/phases/Phase_5/phase5_10_00_area_score.py`
-  - `src/farfan_pipeline/phases/Phase_6/phase6_10_00_cluster_score.py`
+  - `src/farfan_pipeline/phases/Phase_05/phase5_10_00_area_score.py`
+  - `src/farfan_pipeline/phases/Phase_06/phase6_10_00_cluster_score.py`
 
 **Impact**: No loss of functionality - data models reconstructed with full fidelity.
 
 ### 1.2 Duplicate adaptive_meso_scoring Files
 
 **Issue**: Found 4 copies of adaptive_meso_scoring in Phase 4:
-- `src/farfan_pipeline/phases/Phase_4/phase4_10_00_adaptive_meso_scoring.py`
-- `src/farfan_pipeline/phases/Phase_4/enhancements/phase4_10_00_adaptive_meso_scoring.py`
-- `src/farfan_pipeline/phases/Phase_4/enhancements/phase4_95_00_adaptive_meso_scoring.py`
-- `src/farfan_pipeline/phases/Phase_4/enhancements/adaptive_meso_scoring.py`
+- `src/farfan_pipeline/phases/Phase_04/phase4_10_00_adaptive_meso_scoring.py`
+- `src/farfan_pipeline/phases/Phase_04/enhancements/phase4_10_00_adaptive_meso_scoring.py`
+- `src/farfan_pipeline/phases/Phase_04/enhancements/phase4_95_00_adaptive_meso_scoring.py`
+- `src/farfan_pipeline/phases/Phase_04/enhancements/adaptive_meso_scoring.py`
 
 **Root Cause**: Multiple copies created during enhancement iterations, never cleaned up.
 
@@ -64,7 +64,7 @@ This document records all anomalies, deviations, and special circumstances encou
 
 **Verification**:
 ```bash
-PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_6 import ClusterAggregator; agg = ClusterAggregator(); print(f'Cluster weights: {list(agg.cluster_weights.keys())}')"
+PYTHONPATH=src:$PYTHONPATH python3 -c "from farfan_pipeline.phases.Phase_06 import ClusterAggregator; agg = ClusterAggregator(); print(f'Cluster weights: {list(agg.cluster_weights.keys())}')"
 ```
 
 Blockers: None - all dependencies satisfied.
@@ -158,7 +158,7 @@ Blockers: None - all dependencies satisfied.
 ### 5.1 Empty Subdirectories
 
 **Current State**:
-- `tests/` - empty (tests still in `tests/phase_6/`)
+- `tests/` - empty (tests still in `tests/phase_06/`)
 - `primitives/` - empty (no helper functions yet)
 - `interphase/` - empty (no interfaces defined yet)
 
@@ -178,7 +178,7 @@ Blockers: None - all dependencies satisfied.
 
 ### 6.1 Tests Not Yet Migrated
 
-**Issue**: Tests still in `tests/phase_6/` (repository root), not in `src/farfan_pipeline/phases/Phase_6/tests/`.
+**Issue**: Tests still in `tests/phase_06/` (repository root), not in `src/farfan_pipeline/phases/Phase_06/tests/`.
 
 **Root Cause**: Tests were not part of initial extraction scope.
 

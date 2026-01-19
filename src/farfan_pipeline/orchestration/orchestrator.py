@@ -1383,25 +1383,25 @@ class UnifiedOrchestrator:
 
             # Execute phase-specific logic
             if phase_id == PhaseID.PHASE_0:
-                output = self._execute_phase_0()
+                output = self._execute_phase_00()
             elif phase_id == PhaseID.PHASE_1:
-                output = self._execute_phase_1()
+                output = self._execute_phase_01()
             elif phase_id == PhaseID.PHASE_2:
-                output = self._execute_phase_2()
+                output = self._execute_phase_02()
             elif phase_id == PhaseID.PHASE_3:
-                output = self._execute_phase_3()
+                output = self._execute_phase_03()
             elif phase_id == PhaseID.PHASE_4:
-                output = self._execute_phase_4()
+                output = self._execute_phase_04()
             elif phase_id == PhaseID.PHASE_5:
-                output = self._execute_phase_5()
+                output = self._execute_phase_05()
             elif phase_id == PhaseID.PHASE_6:
-                output = self._execute_phase_6()
+                output = self._execute_phase_06()
             elif phase_id == PhaseID.PHASE_7:
-                output = self._execute_phase_7()
+                output = self._execute_phase_07()
             elif phase_id == PhaseID.PHASE_8:
-                output = self._execute_phase_8()
+                output = self._execute_phase_08()
             elif phase_id == PhaseID.PHASE_9:
-                output = self._execute_phase_9()
+                output = self._execute_phase_09()
             else:
                 raise ValueError(f"Unknown phase: {phase_id}")
 
@@ -1447,52 +1447,52 @@ class UnifiedOrchestrator:
     # PHASE EXECUTION METHODS (simplified placeholders)
     # =========================================================================
 
-    def _execute_phase_0(self) -> Any:
+    def _execute_phase_00(self) -> Any:
         """Execute Phase 0: Bootstrap & Validation."""
         self.logger.info("Phase 0: Bootstrap & Validation")
         return {"status": "bootstrapped", "validation": "passed"}
 
-    def _execute_phase_1(self) -> Any:
+    def _execute_phase_01(self) -> Any:
         """Execute Phase 1: CPP Ingestion."""
         self.logger.info("Phase 1: CPP Ingestion")
         return {"cpp_chunks": 300}
 
-    def _execute_phase_2(self) -> Any:
+    def _execute_phase_02(self) -> Any:
         """Execute Phase 2: Executor Factory & Dispatch."""
         self.logger.info("Phase 2: Executor Factory & Dispatch")
         return {"task_results": []}
 
-    def _execute_phase_3(self) -> Any:
+    def _execute_phase_03(self) -> Any:
         """Execute Phase 3: Layer Scoring."""
         self.logger.info("Phase 3: Layer Scoring")
         return {"scored_results": []}
 
-    def _execute_phase_4(self) -> Any:
+    def _execute_phase_04(self) -> Any:
         """Execute Phase 4: Dimension Aggregation."""
         self.logger.info("Phase 4: Dimension Aggregation")
         return []
 
-    def _execute_phase_5(self) -> Any:
+    def _execute_phase_05(self) -> Any:
         """Execute Phase 5: Policy Area Aggregation."""
         self.logger.info("Phase 5: Policy Area Aggregation")
         return []
 
-    def _execute_phase_6(self) -> Any:
+    def _execute_phase_06(self) -> Any:
         """Execute Phase 6: Cluster Aggregation."""
         self.logger.info("Phase 6: Cluster Aggregation")
         return []
 
-    def _execute_phase_7(self) -> Any:
+    def _execute_phase_07(self) -> Any:
         """Execute Phase 7: Macro Aggregation."""
         self.logger.info("Phase 7: Macro Aggregation")
         return {"score": 0.0}
 
-    def _execute_phase_8(self) -> Any:
+    def _execute_phase_08(self) -> Any:
         """Execute Phase 8: Recommendations Engine."""
         self.logger.info("Phase 8: Recommendations Engine")
         return {"recommendations": {}}
 
-    def _execute_phase_9(self) -> Any:
+    def _execute_phase_09(self) -> Any:
         """Execute Phase 9: Report Assembly."""
         self.logger.info("Phase 9: Report Assembly")
         return {"report": {}}

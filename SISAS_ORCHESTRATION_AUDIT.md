@@ -110,7 +110,7 @@ class SignalDistributionOrchestrator:
 
 ### 1.3 IrrigationSynchronizer
 
-**Location**: `src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py`
+**Location**: `src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py`
 **Lines**: 800+
 **SISAS Integration**: 🟡 **PARTIAL**
 
@@ -638,9 +638,9 @@ class BusRegistry:
 - `src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core/contracts.py` - Publication/Consumption contracts
 
 ### Phase Integration
-- `src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py` - ✅ Uses SignalClient
-- `src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py` - 🟡 Optional SignalRegistry
-- `src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py` - 🟡 Some SISAS usage
+- `src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py` - ✅ Uses SignalClient
+- `src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py` - 🟡 Optional SignalRegistry
+- `src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py` - 🟡 Some SISAS usage
 - (Multiple phase files with "signal_enriched" in name)
 
 ---

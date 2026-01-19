@@ -586,12 +586,12 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:15:import importlib
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:16:import os
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:17:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:38:        from farfan_pipeline.phases.Phase_6.phase6_10_01_scoring_config import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:59:        from farfan_pipeline.phases.Phase_6.phase6_10_00_phase_6_constants import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:88:        from farfan_pipeline.phases.Phase_6.phase6_20_00_adaptive_meso_scoring import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:107:        from farfan_pipeline.phases.Phase_6 import ClusterAggregator
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:38:        from farfan_pipeline.phases.Phase_06.phase6_10_01_scoring_config import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:59:        from farfan_pipeline.phases.Phase_06.phase6_10_00_phase_6_constants import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:88:        from farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:107:        from farfan_pipeline.phases.Phase_06 import ClusterAggregator
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:108:        import inspect
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:125:        from farfan_pipeline.phases.Phase_6.contracts.phase6_output_contract import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/verify_phase6_remediation.py:125:        from farfan_pipeline.phases.Phase_06.contracts.phase6_output_contract import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/demo_pdet_enrichment.py:9:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/demo_pdet_enrichment.py:10:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/demo_pdet_enrichment.py:24:    from canonic_questionnaire_central.validations.pdet_validator import PDETValidator
@@ -905,37 +905,37 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_policy_area_semantics_reconciliation.py:5:import re
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_policy_area_semantics_reconciliation.py:6:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_policy_area_semantics_reconciliation.py:8:from farfan_pipeline.core.policy_area_canonicalization import canonicalize_policy_area_id
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:17:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:19:import copy
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:20:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:21:import random
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:22:import string
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:23:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:24:from typing import Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:26:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_extreme_adversarial.py:28:from .conftest import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_adversarial.py:19:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_adversarial.py:21:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_adversarial.py:22:import random
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_adversarial.py:23:from typing import TYPE_CHECKING
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_adversarial.py:25:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_adversarial.py:27:from .conftest import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:22:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:24:import json
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:25:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:26:import random
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:27:from dataclasses import dataclass, field
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:28:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:29:from typing import Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/conftest.py:31:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:15:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:17:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:21:    from farfan_pipeline.phases.Phase_04 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:25:    from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:36:    from farfan_pipeline.phases.Phase_05 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:49:from .conftest import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:358:        from .conftest import MockDimensionScore
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_5/test_phase5_integration.py:374:        from .conftest import MockAreaScore, MockDimensionScore
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:17:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:19:import copy
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:20:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:21:import random
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:22:import string
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:23:import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:24:from typing import Any
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:26:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_extreme_adversarial.py:28:from .conftest import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_adversarial.py:19:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_adversarial.py:21:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_adversarial.py:22:import random
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_adversarial.py:23:from typing import TYPE_CHECKING
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_adversarial.py:25:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_adversarial.py:27:from .conftest import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:22:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:24:import json
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:25:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:26:import random
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:27:from dataclasses import dataclass, field
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:28:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:29:from typing import Any
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/conftest.py:31:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:15:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:17:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:21:    from farfan_pipeline.phases.Phase_04 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:25:    from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:36:    from farfan_pipeline.phases.Phase_05 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:49:from .conftest import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:358:        from .conftest import MockDimensionScore
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_05/test_phase5_integration.py:374:        from .conftest import MockAreaScore, MockDimensionScore
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_helpers_standalone.py:6:import asyncio
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_helpers_standalone.py:7:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_async_helpers_standalone.py:12:    import inspect
@@ -1031,9 +1031,9 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:76:    from farfan_pipeline.infrastructure.irrigation_using_signals.ports import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:360:            import shutil
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:377:            import shutil
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:421:        import farfan_pipeline.phases.Phase_2.phase2_10_00_factory as factory_module
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:449:        import farfan_pipeline.phases.Phase_2.phase2_10_00_factory as factory_module
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:483:        import farfan_pipeline.phases.Phase_2.phase2_10_00_factory as factory_module
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:421:        import farfan_pipeline.phases.Phase_02.phase2_10_00_factory as factory_module
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:449:        import farfan_pipeline.phases.Phase_02.phase2_10_00_factory as factory_module
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_modular_resolver.py:483:        import farfan_pipeline.phases.Phase_02.phase2_10_00_factory as factory_module
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_sisas_strategic_enhancements.py:6:from questionnaire JSON to Phase 2 nodes.
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_sisas_strategic_enhancements.py:19:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_sisas_strategic_enhancements.py:21:from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method_metadata import (
@@ -1653,37 +1653,37 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_cl03_enrichment.py:16:from canonic_questionnaire_central.colombia_context import get_pdet_municipalities
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_cl03_enrichment.py:17:from canonic_questionnaire_central.colombia_context.enrichment_orchestrator import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_cl03_enrichment.py:21:from canonic_questionnaire_central.validations.runtime_validators import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_adversarial.py:20:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_adversarial.py:22:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_adversarial.py:23:import random
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_adversarial.py:24:import statistics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_adversarial.py:26:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_adversarial.py:28:from .conftest import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:22:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:24:import json
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:25:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:26:import random
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:27:import statistics
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:28:from dataclasses import dataclass, field
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:29:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:30:from typing import Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/conftest.py:32:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:15:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:17:import copy
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:18:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:19:import random
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:20:import string
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:21:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:23:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_extreme_adversarial.py:25:from .conftest import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:14:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:16:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:20:    from farfan_pipeline.phases.Phase_05 import AreaScore
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:27:    from farfan_pipeline.phases.Phase_06 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:38:    from farfan_pipeline.phases.Phase_06 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:55:from .conftest import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:303:        from .conftest import MockAreaScore
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_6/test_phase6_integration.py:318:        from .conftest import MockClusterScore
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_adversarial.py:20:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_adversarial.py:22:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_adversarial.py:23:import random
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_adversarial.py:24:import statistics
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_adversarial.py:26:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_adversarial.py:28:from .conftest import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:22:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:24:import json
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:25:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:26:import random
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:27:import statistics
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:28:from dataclasses import dataclass, field
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:29:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:30:from typing import Any
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/conftest.py:32:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:15:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:17:import copy
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:18:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:19:import random
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:20:import string
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:21:import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:23:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_extreme_adversarial.py:25:from .conftest import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:14:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:16:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:20:    from farfan_pipeline.phases.Phase_05 import AreaScore
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:27:    from farfan_pipeline.phases.Phase_06 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:38:    from farfan_pipeline.phases.Phase_06 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:55:from .conftest import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:303:        from .conftest import MockAreaScore
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_06/test_phase6_integration.py:318:        from .conftest import MockClusterScore
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_carver_macro_synthesis.py:10:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_carver_macro_synthesis.py:11:from typing import Dict, List, Tuple
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_carver_macro_synthesis.py:23:            from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
@@ -1823,10 +1823,10 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/choquet_tests.py:24:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/choquet_tests.py:25:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/choquet_tests.py:29:from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_carver_300_delivery.py:7:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_carver_300_delivery.py:9:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_carver_300_delivery.py:10:from typing import List
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_carver_300_delivery.py:12:from farfan_pipeline.phases.Phase_02.phase2_90_00_carver import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_02/test_phase2_carver_300_delivery.py:7:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_02/test_phase2_carver_300_delivery.py:9:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_02/test_phase2_carver_300_delivery.py:10:from typing import List
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_02/test_phase2_carver_300_delivery.py:12:from farfan_pipeline.phases.Phase_02.phase2_90_00_carver import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/test_signature_validator.py:1:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/test_signature_validator.py:2:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/test_signature_validator.py:3:from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
@@ -2044,32 +2044,32 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_carver_v3_extraction.py:672:        from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_carver_v3_extraction.py:755:        from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_carver_v3_extraction.py:804:        from farfan_pipeline.phases.Phase_02.carver import DoctoralCarverSynthesizer
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_end_to_end.py:8:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_end_to_end.py:9:import json
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_end_to_end.py:10:from typing import Any, cast
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_end_to_end.py:12:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_end_to_end.py:26:    from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:25:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:26:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:27:from datetime import datetime, UTC
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:28:import json
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:29:import hashlib
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:218:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:237:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:259:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:281:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:311:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:350:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:366:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:386:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:443:        import re
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:450:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:469:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:503:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:524:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:582:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:615:        import farfan_pipeline.phases.Phase_8 as phase8
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_8/test_phase8_adversarial.py:623:        from farfan_pipeline.phases.Phase_08 import get_recommendation_engine
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_end_to_end.py:8:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_end_to_end.py:9:import json
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_end_to_end.py:10:from typing import Any, cast
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_end_to_end.py:12:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_end_to_end.py:26:    from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:25:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:26:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:27:from datetime import datetime, UTC
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:28:import json
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:29:import hashlib
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:218:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:237:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:259:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:281:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:311:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:350:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:366:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:386:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:443:        import re
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:450:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:469:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:503:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:524:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:582:        from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import Recommendation
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:615:        import farfan_pipeline.phases.Phase_08 as phase8
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_08/test_phase8_adversarial.py:623:        from farfan_pipeline.phases.Phase_08 import get_recommendation_engine
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/infrastructure/integration/test_pdm_phase1_integration.py:11:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/infrastructure/integration/test_pdm_phase1_integration.py:13:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/infrastructure/integration/test_pdm_phase1_integration.py:14:from unittest.mock import Mock
@@ -2205,94 +2205,94 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase0_complete.py:30:from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase0_complete.py:38:from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase0_complete.py:48:from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_empirical_extractors.py:2:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_empirical_extractors.py:3:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_empirical_extractors.py:4:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_empirical_extractors.py:9:from farfan_pipeline.infrastructure.extractors.financial_chain_extractor import FinancialChainExtractor, extract_financial_chains
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_empirical_extractors.py:10:from farfan_pipeline.infrastructure.extractors.causal_verb_extractor import CausalVerbExtractor, extract_causal_links
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_empirical_extractors.py:11:from farfan_pipeline.infrastructure.extractors.institutional_ner_extractor import InstitutionalNERExtractor, extract_institutional_entities
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:21:import json
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:22:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:23:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:24:from typing import Any, Dict, List
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:26:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:70:            from farfan_pipeline.phases import Phase_1
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:78:            from farfan_pipeline.phases.Phase_01 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:98:            from farfan_pipeline.phases.Phase_01 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:112:            from farfan_pipeline.phases.Phase_01 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:139:            from farfan_pipeline.phases.Phase_01 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:151:            from farfan_pipeline.phases.Phase_01 import execute_sp4_question_aware
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:158:        import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:164:            from farfan_pipeline.phases.Phase_01 import Phase1Executor
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:169:            import pytest as pt
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:192:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:205:            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:223:            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:253:            from farfan_pipeline.phases.Phase_01.contracts.phase1_input_contract import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:271:            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:289:            from farfan_pipeline.phases.Phase_01.contracts.phase1_output_contract import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:315:            from farfan_pipeline.phases.Phase_01 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:328:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:341:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:354:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:366:            import re
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:368:            from farfan_pipeline.phases.Phase_01 import CHUNK_ID_PATTERN
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:414:        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:422:        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:432:        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:444:            import pytest as pt
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_chain.py:446:            from farfan_pipeline.phases.Phase_01 import Chunk, ASSIGNMENT_METHOD_SEMANTIC
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:20:import hashlib
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:21:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:22:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:23:from datetime import datetime
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:55:    from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:97:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:156:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:177:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:190:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:217:        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:218:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:247:        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:248:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:282:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:300:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:320:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_e2e_adversarial.py:345:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:21:import ast
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:22:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:23:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:24:from typing import Dict, List, Set, Tuple
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:26:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:379:        imported_modules = {
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:461:            import farfan_pipeline.phases.Phase_1 as p1
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_topological_order.py:462:            import farfan_pipeline.phases.Phase_1 as p1_again
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:21:import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:22:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:23:from typing import Dict, List
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:25:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:157:        import ast
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:202:        import ast
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:264:        import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:275:            from farfan_pipeline.phases.Phase_01.interphase import phase1_04_00_phase_protocol
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:282:        import json
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:304:        import sys
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:311:            from farfan_pipeline.phases.Phase_01 import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:328:        import ast
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_phase1_reclassified_modules.py:346:                            imported = alias.name
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_sisas_integration.py:9:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_sisas_integration.py:10:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_sisas_integration.py:11:import ast
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_sisas_integration.py:56:        from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_sisas_integration.py:78:        from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_sisas_integration.py:100:        from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_naming_and_purge.py:9:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_naming_and_purge.py:10:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_naming_and_purge.py:11:import subprocess
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_constitutional_invariant.py:14:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_constitutional_invariant.py:15:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_constitutional_invariant.py:148:        from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_constitutional_invariant.py:170:        from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_empirical_extractors.py:2:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_empirical_extractors.py:3:import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_empirical_extractors.py:4:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_empirical_extractors.py:9:from farfan_pipeline.infrastructure.extractors.financial_chain_extractor import FinancialChainExtractor, extract_financial_chains
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_empirical_extractors.py:10:from farfan_pipeline.infrastructure.extractors.causal_verb_extractor import CausalVerbExtractor, extract_causal_links
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_empirical_extractors.py:11:from farfan_pipeline.infrastructure.extractors.institutional_ner_extractor import InstitutionalNERExtractor, extract_institutional_entities
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:21:import json
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:22:import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:23:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:24:from typing import Any, Dict, List
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:26:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:70:            from farfan_pipeline.phases import Phase_01
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:78:            from farfan_pipeline.phases.Phase_01 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:98:            from farfan_pipeline.phases.Phase_01 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:112:            from farfan_pipeline.phases.Phase_01 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:139:            from farfan_pipeline.phases.Phase_01 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:151:            from farfan_pipeline.phases.Phase_01 import execute_sp4_question_aware
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:158:        import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:164:            from farfan_pipeline.phases.Phase_01 import Phase1Executor
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:169:            import pytest as pt
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:192:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:205:            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:223:            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:253:            from farfan_pipeline.phases.Phase_01.contracts.phase1_input_contract import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:271:            from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_phase1_mission_contract import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:289:            from farfan_pipeline.phases.Phase_01.contracts.phase1_output_contract import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:315:            from farfan_pipeline.phases.Phase_01 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:328:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:341:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:354:            from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:366:            import re
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:368:            from farfan_pipeline.phases.Phase_01 import CHUNK_ID_PATTERN
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:414:        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:422:        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:432:        from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:444:            import pytest as pt
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_chain.py:446:            from farfan_pipeline.phases.Phase_01 import Chunk, ASSIGNMENT_METHOD_SEMANTIC
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:20:import hashlib
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:21:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:22:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:23:from datetime import datetime
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:55:    from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:97:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:156:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:177:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:190:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:217:        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:218:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:247:        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:248:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:282:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:300:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:320:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_e2e_adversarial.py:345:        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:21:import ast
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:22:import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:23:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:24:from typing import Dict, List, Set, Tuple
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:26:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:379:        imported_modules = {
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:461:            import farfan_pipeline.phases.Phase_01 as p1
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_topological_order.py:462:            import farfan_pipeline.phases.Phase_01 as p1_again
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:21:import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:22:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:23:from typing import Dict, List
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:25:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:157:        import ast
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:202:        import ast
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:264:        import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:275:            from farfan_pipeline.phases.Phase_01.interphase import phase1_04_00_phase_protocol
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:282:        import json
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:304:        import sys
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:311:            from farfan_pipeline.phases.Phase_01 import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:328:        import ast
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_phase1_reclassified_modules.py:346:                            imported = alias.name
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_sisas_integration.py:9:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_sisas_integration.py:10:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_sisas_integration.py:11:import ast
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_sisas_integration.py:56:        from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_sisas_integration.py:78:        from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_sisas_integration.py:100:        from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_naming_and_purge.py:9:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_naming_and_purge.py:10:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_naming_and_purge.py:11:import subprocess
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_constitutional_invariant.py:14:import pytest
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_constitutional_invariant.py:15:from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_constitutional_invariant.py:148:        from pathlib import Path
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_01/test_constitutional_invariant.py:170:        from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_execution_plan_consumption.py:16:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_execution_plan_consumption.py:18:import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_execution_plan_consumption.py:19:from dataclasses import dataclass
@@ -2495,14 +2495,14 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_07/__init__.py:47:from .phase7_10_00_macro_score import MacroScore
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_07/__init__.py:48:from .phase7_20_00_macro_aggregator import MacroAggregator
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_07/__init__.py:49:from .phase7_10_00_systemic_gap_detector import SystemicGapDetector, SystemicGap
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:34:from __future__ import annotations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:54:import logging
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:55:import math
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:56:from dataclasses import dataclass, field
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:57:from itertools import combinations
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:58:from typing import Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:61:from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py:66:from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:34:from __future__ import annotations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:54:import logging
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:55:import math
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:56:from dataclasses import dataclass, field
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:57:from itertools import combinations
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:58:from typing import Any
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:61:from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py:66:from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_aggregator.py:36:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_aggregator.py:56:import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_aggregator.py:57:from dataclasses import dataclass, field
@@ -2598,13 +2598,13 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:14:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:19:import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:20:from typing import Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:180:            import farfan_pipeline.phases.Phase_5
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:180:            import farfan_pipeline.phases.Phase_05
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:196:            from farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_output_contract.py:279:    import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py:13:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py:18:import logging
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py:19:from typing import Any
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py:161:            import farfan_pipeline.phases.Phase_3
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py:161:            import farfan_pipeline.phases.Phase_03
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_input_contract.py:207:    import sys
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_mission_contract.py:14:from __future__ import annotations
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/contracts/phase4_mission_contract.py:19:import logging
@@ -2692,7 +2692,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:14:import importlib
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:15:import json
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:16:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:88:        import farfan_pipeline.phases.Phase_4
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:88:        import farfan_pipeline.phases.Phase_04
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:93:        from farfan_pipeline.phases.Phase_04.primitives import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:104:        from farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract import Phase4InputContract
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_04/tests/test_phase4_topological_chain.py:105:        from farfan_pipeline.phases.Phase_04.contracts.phase4_mission_contract import Phase4MissionContract
@@ -2800,7 +2800,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:12:import pytest
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:13:import json
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:14:from pathlib import Path
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:61:        import farfan_pipeline.phases.Phase_5
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:61:        import farfan_pipeline.phases.Phase_05
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:66:        from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:75:        from farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract import Phase5InputContract
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_05/tests/test_phase5_topological_chain.py:76:        from farfan_pipeline.phases.Phase_05.contracts.phase5_mission_contract import Phase5MissionContract
@@ -3144,7 +3144,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:28:from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:62:        from farfan_pipeline.methods.contradiction_deteccion import PolicyContradictionDetector
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:91:        import importlib
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:92:        importlib.import_module("farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator")
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:92:        importlib.import_module("farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator")
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:119:        import spacy
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:223:        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py:249:        import networkx
@@ -3611,7 +3611,7 @@
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:23:from pathlib import Path
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:24:from typing import Any, Dict, List
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:26:import pytest
-/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:73:            from farfan_pipeline.phases import Phase_1
+/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:73:            from farfan_pipeline.phases import Phase_01
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:81:            from farfan_pipeline.phases.Phase_01 import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:101:            from farfan_pipeline.phases.Phase_01 import (
 /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01/tests/test_phase1_e2e_chain.py:115:            from farfan_pipeline.phases.Phase_01 import (

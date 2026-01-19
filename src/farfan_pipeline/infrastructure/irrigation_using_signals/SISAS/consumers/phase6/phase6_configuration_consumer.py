@@ -28,7 +28,7 @@ class Phase6ConfigurationConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase6_configuration_consumer"
-    consumer_phase: str = "phase_6"
+    consumer_phase: str = "phase_06"
 
     def __post_init__(self):
         super().__post_init__()
@@ -45,8 +45,8 @@ class Phase6ConfigurationConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus", "integrity_bus"],
             context_filters={
-                "phase": ["phase_5", "phase_6"],
-                "consumer_scope": ["Phase_6", "Cross-Phase"]
+                "phase": ["phase_05", "phase_06"],
+                "consumer_scope": ["Phase_06", "Cross-Phase"]
             },
             required_capabilities=["can_validate", "can_scope"]
         )
@@ -64,7 +64,7 @@ class Phase6ConfigurationConsumer(BaseConsumer):
             "processed": True,
             "validation_results": {},
             "configuration_status": "UNKNOWN",
-            "phase": "phase_6"
+            "phase": "phase_06"
         }
 
         if signal.signal_type == "StructuralAlignmentSignal":

@@ -24,7 +24,7 @@ class Phase0BootstrapConsumer(BaseConsumer):
     """
 
     consumer_id: str = "phase0_90_02_bootstrap.py"
-    consumer_phase: str = "phase_0"
+    consumer_phase: str = "phase_00"
 
     def __post_init__(self):
         super().__post_init__()
@@ -43,8 +43,8 @@ class Phase0BootstrapConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus", "integrity_bus"],
             context_filters={
-                "phase": ["phase_0"],
-                "consumer_scope": ["Phase_0", "Cross-Phase"]
+                "phase": ["phase_00"],
+                "consumer_scope": ["Phase_00", "Cross-Phase"]
             },
             required_capabilities=["can_load", "can_scope"]
         )

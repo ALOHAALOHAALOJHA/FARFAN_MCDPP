@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Map current vs potential SISAS consumers by stage (phase_0..phase_9).
+"""Map current vs potential SISAS consumers by stage (phase_00..phase_09).
 
 Inputs:
 - canonic_questionnaire_central/_registry/CQC_AUDIT_MATRIX.csv
@@ -178,8 +178,8 @@ def main() -> int:
 
     stages: Dict[str, Any] = {}
 
-    # Normalize matrix consumer scopes: they are "Phase_3" style (capital P)
-    # while rules use "phase_3".
+    # Normalize matrix consumer scopes: they are "Phase_03" style (capital P)
+    # while rules use "phase_03".
     def norm_scope(scope: str) -> str:
         scope = scope.strip()
         m = re.match(r"^Phase_(\d+)$", scope)
