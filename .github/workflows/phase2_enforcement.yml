@@ -3,10 +3,10 @@ name: Phase 2 Enforcement
 on:
   push:
     paths:
-      - 'src/canonic_phases/phase_2/**'
+      - 'src/farfan_pipeline/phases/Phase_02/**'
   pull_request:
     paths:
-      - 'src/canonic_phases/phase_2/**'
+      - 'src/farfan_pipeline/phases/Phase_02/**'
 
 env:
   PYTHON_VERSION: '3.11'
@@ -22,7 +22,7 @@ jobs:
       - name: Validate Phase 2 file names
         run: |
           # Check phase-root files match pattern
-          for f in src/canonic_phases/phase_2/*.py; do
+          for f in src/farfan_pipeline/phases/Phase_02/*.py; do
             basename=$(basename "$f")
             if [[ "$basename" != "__init__.py" ]] && [[ ! "$basename" =~ ^phase2_[a-z]_[a-z0-9_]+\.py$ ]]; then
               echo "NAMING_VIOLATION: $f"
@@ -50,7 +50,7 @@ jobs:
         run: |
           # Find phase2-related files outside canonical location
           find src -name "*phase2*" -o -name "*Phase2*" | \
-            grep -v "src/canonic_phases/phase_2" && \
+            grep -v "src/farfan_pipeline/phases/Phase_02" && \
             { echo "PHASE2_FILE_OUTSIDE_CANONICAL"; exit 1; } || \
             echo "Canonical root check: PASS"
 
@@ -76,7 +76,7 @@ jobs:
           import jsonschema
           from pathlib import Path
           
-          schemas_dir = Path('src/canonic_phases/phase_2/schemas')
+          schemas_dir = Path('src/farfan_pipeline/phases/Phase_02/schemas')
           for schema_file in schemas_dir.glob('*.schema.json'):
               with open(schema_file) as f:
                   schema = json.load(f)
@@ -100,7 +100,7 @@ jobs:
           )
           
           for pattern in "${FORBIDDEN_IMPORTS[@]}"; do
-            if grep -r "$pattern" src/canonic_phases/phase_2 --include="*.py"; then
+            if grep -r "$pattern" src/farfan_pipeline/phases/Phase_02 --include="*.py"; then
               echo "FORBIDDEN_IMPORT: $pattern"
               exit 1
             fi
@@ -126,18 +126,18 @@ jobs:
       
       - name: Run mypy strict
         run: |
-          mypy src/canonic_phases/phase_2 --strict --ignore-missing-imports
+          mypy src/farfan_pipeline/phases/Phase_02 --strict --ignore-missing-imports
       
       - name: Run Phase 2 tests with fixed seed
         env:
           PHASE2_RANDOM_SEED: ${{ env.PHASE2_RANDOM_SEED }}
         run: |
-          pytest src/canonic_phases/phase_2/tests/ -v --tb=short
+          pytest src/farfan_pipeline/phases/Phase_02/tests/ -v --tb=short
       
       - name: Verify determinism (run tests twice)
         run: |
-          pytest src/canonic_phases/phase_2/tests/test_phase2_carver_300_delivery.py -v
-          pytest src/canonic_phases/phase_2/tests/test_phase2_carver_300_delivery.py -v
+          pytest src/farfan_pipeline/phases/Phase_02/tests/test_phase2_carver_300_delivery.py -v
+          pytest src/farfan_pipeline/phases/Phase_02/tests/test_phase2_carver_300_delivery.py -v
 
   certificate-check:
     name: Certificate Presence Check
@@ -147,7 +147,7 @@ jobs:
       
       - name: Verify 15 certificates exist
         run: |
-          CERT_DIR="src/canonic_phases/phase_2/contracts/certificates"
+          CERT_DIR="src/farfan_pipeline/phases/Phase_02/contracts/certificates"
           EXPECTED=15
           ACTUAL=$(ls -1 "$CERT_DIR"/CERTIFICATE_*.md 2>/dev/null | wc -l)
           
@@ -159,7 +159,7 @@ jobs:
       
       - name: Verify certificate format
         run: |
-          for cert in src/canonic_phases/phase_2/contracts/certificates/CERTIFICATE_*.md; do
+          for cert in src/farfan_pipeline/phases/Phase_02/contracts/certificates/CERTIFICATE_*.md; do
             # Check required fields
             for field in "Status" "Effective Date" "Verification Method"; do
               if ! grep -q "$field" "$cert"; then
