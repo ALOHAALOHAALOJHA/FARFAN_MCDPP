@@ -1,0 +1,45 @@
+{
+  "phase_id": "6",
+  "phase_dir": "/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_06",
+  "total_files": 9,
+  "files_in_chain": 6,
+  "orphan_files": [],
+  "allowed_orphans": [
+    "interphase/__init__.py",
+    "primitives/__init__.py",
+    "tests/__init__.py"
+  ],
+  "circular_dependencies": [],
+  "dependency_graph": {
+    "PHASE_6_CONSTANTS.py": [
+      "phase6_10_00_phase_6_constants.py"
+    ],
+    "__init__.py": [
+      "phase6_10_01_scoring_config.py",
+      "phase6_10_00_phase_6_constants.py",
+      "phase6_10_00_cluster_score.py",
+      "phase6_20_00_adaptive_meso_scoring.py",
+      "phase6_30_00_cluster_aggregator.py",
+      "contracts/phase6_input_contract.py",
+      "contracts/phase6_mission_contract.py",
+      "contracts/phase6_output_contract.py"
+    ],
+    "contracts/phase6_output_contract.py": [
+      "phase6_10_01_scoring_config.py"
+    ],
+    "phase6_10_00_phase_6_constants.py": [
+      "phase6_10_01_scoring_config.py"
+    ],
+    "phase6_20_00_adaptive_meso_scoring.py": [
+      "phase6_10_01_scoring_config.py"
+    ],
+    "phase6_30_00_cluster_aggregator.py": [
+      "phase6_10_00_phase_6_constants.py",
+      "phase6_10_00_cluster_score.py",
+      "phase6_20_00_adaptive_meso_scoring.py",
+      "contracts/phase6_input_contract.py",
+      "contracts/phase6_output_contract.py"
+    ]
+  },
+  "validation_status": "PASS"
+}

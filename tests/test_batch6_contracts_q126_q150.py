@@ -6,6 +6,9 @@ from pathlib import Path
 
 from farfan_pipeline.phases.Phase_02.contract_validator_cqvr import CQVRValidator  # noqa: E402
 
+# Use modular questionnaire helper instead of monolith
+from tests.test_helpers.questionnaire_compat import get_questionnaire_data, get_questionnaire_sha256
+
 
 CONTRACTS_DIR = (
     REPO_ROOT
@@ -17,13 +20,24 @@ CONTRACTS_DIR = (
     / "executor_contracts"
     / "specialized"
 )
-MONOLITH_PATH = REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
 
 
 def _monolith_source_hash() -> str:
-    monolith = json.loads(MONOLITH_PATH.read_text(encoding="utf-8"))
-    monolith_str = json.dumps(monolith, sort_keys=True)
-    return hashlib.sha256(monolith_str.encode()).hexdigest()
+    """
+    Get source hash from modular questionnaire.
+
+    Previously loaded from questionnaire_monolith.json, now uses
+    the modular CQC via the compatibility helper.
+    """
+    # Try to get SHA256 from CQC loader first
+    sha256 = get_questionnaire_sha256()
+    if sha256:
+        return sha256
+
+    # Fallback: compute hash from assembled questionnaire data
+    questionnaire = get_questionnaire_data()
+    questionnaire_str = json.dumps(questionnaire, sort_keys=True)
+    return hashlib.sha256(questionnaire_str.encode()).hexdigest()
 
 
 def test_batch6_contracts_are_production_ready() -> None:

@@ -56,11 +56,23 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, cast
 from uuid import uuid4
 
 import blake3
 import structlog
+
+# =============================================================================
+# UNIFIED FACTORY IMPORT
+# =============================================================================
+# Import the unified factory for all component creation and questionnaire loading
+try:
+    from .factory import UnifiedFactory, FactoryConfig
+    FACTORY_AVAILABLE = True
+except ImportError:
+    FACTORY_AVAILABLE = False
+    UnifiedFactory = None  # type: ignore
+    FactoryConfig = None  # type: ignore
 
 # =============================================================================
 # LOGGER CONFIGURATION
@@ -1227,6 +1239,40 @@ class UnifiedOrchestrator:
         self._failed_phases: Dict[str, List[Any]] = {}
         self._phase_retry_counts: Dict[str, int] = {}
 
+        # ==========================================================================
+        # UNIFIED FACTORY INITIALIZATION
+        # ==========================================================================
+        # Initialize the unified factory for questionnaire loading, component creation,
+        # and contract execution
+        if FACTORY_AVAILABLE:
+            self.factory: Optional[UnifiedFactory] = UnifiedFactory(
+                config=FactoryConfig(
+                    project_root=Path(config.output_dir).parent.parent,
+                    questionnaire_path=Path(config.questionnaire_path) if config.questionnaire_path else None,
+                    sisas_enabled=config.enable_sisas,
+                    lazy_load_questions=True,
+                )
+            )
+            # Initialize questionnaire through factory
+            self.context.questionnaire = self.factory.load_questionnaire()
+            # Initialize signal registry
+            self.context.signal_registry = self.factory.create_signal_registry()
+            # Initialize SISAS if enabled
+            if config.enable_sisas:
+                self.context.sisas = self.factory.get_sisas_central()
+
+            self.logger.info(
+                "UnifiedFactory initialized",
+                questionnaire_available=self.context.questionnaire is not None,
+                signal_registry_available=self.context.signal_registry is not None,
+                sisas_available=self.context.sisas is not None,
+            )
+        else:
+            self.factory = None
+            self.logger.warning(
+                "UnifiedFactory not available, questionnaire and components will be limited"
+            )
+
     def _build_default_dependency_graph(self) -> DependencyGraph:
         """Build default dependency graph for all phases."""
         graph = DependencyGraph()
@@ -1457,10 +1503,82 @@ class UnifiedOrchestrator:
         self.logger.info("Phase 1: CPP Ingestion")
         return {"cpp_chunks": 300}
 
-    def _execute_phase_02(self) -> Any:
-        """Execute Phase 2: Executor Factory & Dispatch."""
+    def _execute_phase_02(self, plan_text: Optional[str] = None, **kwargs) -> Any:
+        """
+        Execute Phase 2: Executor Factory & Dispatch.
+
+        This phase now uses the UnifiedFactory to:
+        1. Load analysis components (detectors, calculators, analyzers)
+        2. Load contracts
+        3. Execute contracts with method injection
+
+        Args:
+            plan_text: Optional plan text for contract execution
+            **kwargs: Additional arguments for contract execution
+
+        Returns:
+            Dict with task results from contract execution
+        """
         self.logger.info("Phase 2: Executor Factory & Dispatch")
-        return {"task_results": []}
+
+        if self.factory is None:
+            self.logger.warning("Factory not available, returning empty results")
+            return {
+                "task_results": [],
+                "status": "factory_unavailable",
+                "contracts_executed": 0,
+            }
+
+        # Create analysis components via factory
+        components = self.factory.create_analysis_components()
+        self.logger.debug(
+            "Analysis components created",
+            components=list(components.keys()),
+        )
+
+        # Load contracts via factory
+        contracts = self.factory.load_contracts()
+        active_contracts = {
+            cid: c for cid, c in contracts.items()
+            if c.get("status") == "ACTIVE"
+        }
+
+        self.logger.info(
+            "Contracts loaded for execution",
+            total_contracts=len(contracts),
+            active_contracts=len(active_contracts),
+        )
+
+        # Execute contracts with method injection
+        task_results = []
+        input_data = {"plan_text": plan_text, **kwargs}
+
+        for contract_id, contract in list(active_contracts.items())[:10]:  # Limit to 10 for now
+            try:
+                result = self.factory.execute_contract(contract_id, input_data)
+                task_results.append({
+                    "contract_id": contract_id,
+                    "result": result,
+                    "status": "completed" if "error" not in result else "failed",
+                })
+            except Exception as e:
+                self.logger.warning(
+                    "Contract execution failed",
+                    contract_id=contract_id,
+                    error=str(e),
+                )
+                task_results.append({
+                    "contract_id": contract_id,
+                    "error": str(e),
+                    "status": "error",
+                })
+
+        return {
+            "task_results": task_results,
+            "status": "completed",
+            "contracts_executed": len(task_results),
+            "components_available": list(components.keys()),
+        }
 
     def _execute_phase_03(self) -> Any:
         """Execute Phase 3: Layer Scoring."""

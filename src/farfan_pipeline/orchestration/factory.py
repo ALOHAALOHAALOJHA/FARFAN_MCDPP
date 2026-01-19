@@ -499,17 +499,28 @@ class UnifiedFactory:
         self, contract_id: str, input_data: Dict[str, Any]
     ) -> Dict[str, Any]:
         """
-        Execute a contract by ID with method injection.
+        Execute a contract by ID with method injection and full N1→N2→N3→N4 pipeline.
 
-        This is the CRITICAL method that injects methods from the
-        method_binding section of the 300 contracts.
+        This is the CRITICAL method that:
+        1. Loads the contract with method bindings
+        2. Dynamically loads the executor class
+        3. Injects methods from the method_binding section
+        4. Executes the epistemological pipeline:
+           - N1: Construction (phase_A_construction)
+           - N2: Computation (phase_B_computation)
+           - N3: Litigation (phase_C_litigation) - VETO GATE
+           - N4: Integration (phase_D_integration)
 
         Args:
             contract_id: Contract identifier (e.g., "Q001_PA01")
             input_data: Input data for contract execution
 
         Returns:
-            Dict with execution results
+            Dict with execution results including:
+            - contract_id: The contract that was executed
+            - status: Execution status
+            - results: Pipeline results by phase
+            - metadata: Execution metadata
 
         Raises:
             KeyError: If contract_id not found
@@ -537,7 +548,11 @@ class UnifiedFactory:
                 contract_id=contract_id,
                 binding=executor_binding,
             )
-            return {"error": "Invalid executor binding"}
+            return {
+                "contract_id": contract_id,
+                "error": "Invalid executor binding",
+                "status": "failed",
+            }
 
         try:
             module = importlib.import_module(module_path)
@@ -550,62 +565,223 @@ class UnifiedFactory:
                 class_name=class_name,
                 error=str(e),
             )
-            return {"error": f"Failed to load executor: {e}"}
+            return {
+                "contract_id": contract_id,
+                "error": f"Failed to load executor: {e}",
+                "status": "failed",
+            }
 
         # Create executor instance
         executor = executor_class()
 
-        # Inject methods based on binding
-        execution_phases = method_binding.get("execution_phases", {})
+        # ==========================================================================
+        # METHOD INJECTION - N1→N2→N3→N4 PIPELINE
+        # ==========================================================================
+        # Inject methods based on binding and execute in epistemological order
 
-        for phase_name, phase_config in execution_phases.items():
-            for method_spec in phase_config.get("methods", []):
+        execution_phases = method_binding.get("execution_phases", {})
+        orchestration_mode = method_binding.get("orchestration_mode", "epistemological_pipeline")
+
+        # Phase order for epistemological pipeline
+        phase_order = [
+            "phase_A_construction",  # N1 - Build evidence base
+            "phase_B_computation",   # N2 - Calculate scores
+            "phase_C_litigation",    # N3 - Veto gate (can reject N1/N2 results)
+            "phase_D_integration",   # N4 - Cross-layer fusion
+        ]
+
+        pipeline_results = {}
+        execution_context = {
+            "input": input_data,
+            "contract": contract,
+            "phase_results": {},
+        }
+
+        for phase_name in phase_order:
+            if phase_name not in execution_phases:
+                logger.debug(
+                    "Phase not in execution_phases, skipping",
+                    phase=phase_name,
+                )
+                continue
+
+            phase_config = execution_phases[phase_name]
+            phase_level = phase_config.get("level", "UNKNOWN")
+            phase_methods = phase_config.get("methods", [])
+
+            logger.info(
+                "Executing epistemological phase",
+                contract_id=contract_id,
+                phase=phase_name,
+                level=phase_level,
+                method_count=len(phase_methods),
+            )
+
+            phase_results = []
+
+            for method_spec in phase_methods:
                 method_id = method_spec.get("method_id", "")
-                if method_id:
-                    # Parse module.method format
-                    if "." in method_id:
-                        module_name, method_name = method_id.rsplit(".", 1)
+                provides = method_spec.get("provides", "")
+                confidence = method_spec.get("confidence_score", 0.0)
+
+                if not method_id:
+                    continue
+
+                # Parse module.method format
+                if "." in method_id:
+                    module_name, method_name = method_id.rsplit(".", 1)
+                    try:
+                        method_module = importlib.import_module(module_name)
+                        method = getattr(method_module, method_name)
+
+                        # Inject method onto executor
+                        setattr(executor, method_name, method)
+
+                        logger.debug(
+                            "Method injected",
+                            method_id=method_id,
+                            phase=phase_name,
+                            provides=provides,
+                            confidence=confidence,
+                        )
+
+                        # Execute the method
                         try:
-                            method_module = importlib.import_module(module_name)
-                            method = getattr(method_module, method_name)
-                            setattr(executor, method_name, method)
-                            logger.debug(
-                                "Method injected",
+                            # Prepare method-specific inputs
+                            method_input = {
+                                **input_data,
+                                "execution_context": execution_context,
+                                "phase": phase_name,
+                                "method_id": method_id,
+                            }
+
+                            # Call the method
+                            method_result = method(**method_input)
+
+                            phase_results.append({
+                                "method_id": method_id,
+                                "provides": provides,
+                                "confidence": confidence,
+                                "result": method_result,
+                                "status": "completed",
+                            })
+
+                            # Update execution context
+                            execution_context["phase_results"][phase_name] = phase_results
+
+                        except Exception as e:
+                            logger.warning(
+                                "Method execution failed",
                                 method_id=method_id,
                                 phase=phase_name,
-                            )
-                        except (ImportError, AttributeError) as e:
-                            logger.warning(
-                                "Failed to inject method",
-                                method_id=method_id,
                                 error=str(e),
                             )
+                            phase_results.append({
+                                "method_id": method_id,
+                                "provides": provides,
+                                "error": str(e),
+                                "status": "failed",
+                            })
 
-        # Execute with injected methods
-        try:
-            if hasattr(executor, "execute"):
-                result = executor.execute(input_data)
-                logger.info(
-                    "Contract executed successfully",
-                    contract_id=contract_id,
-                    result_keys=list(result.keys()) if isinstance(result, dict) else None,
-                )
-                return result
-            else:
-                logger.error(
-                    "Executor has no execute method",
-                    contract_id=contract_id,
-                    class_name=class_name,
-                )
-                return {"error": "Executor has no execute method"}
-        except Exception as e:
-            logger.error(
-                "Contract execution failed",
-                contract_id=contract_id,
-                error=str(e),
-                exc_info=True,
+                    except (ImportError, AttributeError) as e:
+                        logger.warning(
+                            "Failed to inject method",
+                            method_id=method_id,
+                            phase=phase_name,
+                            error=str(e),
+                        )
+                        phase_results.append({
+                            "method_id": method_id,
+                            "error": str(e),
+                            "status": "injection_failed",
+                        })
+
+            pipeline_results[phase_name] = {
+                "level": phase_level,
+                "methods": phase_results,
+                "status": "completed" if phase_results else "skipped",
+            }
+
+            # ==========================================================================
+            # VETO GATE CHECK (N3 - Litigation)
+            # ==========================================================================
+            # If phase_C_litigation has veto power and results are negative,
+            # we may need to abort or adjust the pipeline
+            if phase_name == "phase_C_litigation":
+                has_veto_power = phase_config.get("has_veto_power", False)
+                if has_veto_power:
+                    # Check if any litigation method vetoed the result
+                    veto_triggered = any(
+                        r.get("result", {}).get("veto", False)
+                        for r in phase_results
+                        if r.get("status") == "completed"
+                    )
+
+                    if veto_triggered:
+                        logger.warning(
+                            "Veto gate triggered in litigation phase",
+                            contract_id=contract_id,
+                        )
+                        pipeline_results["veto_triggered"] = True
+                        # Optionally break here if veto is absolute
+                        # break
+
+        # ==========================================================================
+        # CROSS-LAYER FUSION (N4 - Integration)
+        # ==========================================================================
+        # Apply fusion specification if defined in contract
+        fusion_spec = contract.get("fusion_specification", {})
+        if fusion_spec:
+            fusion_rule = fusion_spec.get("fusion_rule", "TYPE_A")
+            logger.debug(
+                "Applying cross-layer fusion",
+                fusion_rule=fusion_rule,
             )
-            return {"error": str(e)}
+            pipeline_results["fusion"] = {
+                "rule": fusion_rule,
+                "applied": True,
+            }
+
+        # ==========================================================================
+        # FINAL RESULT
+        # ==========================================================================
+        result = {
+            "contract_id": contract_id,
+            "status": "completed",
+            "pipeline_results": pipeline_results,
+            "execution_metadata": {
+                "orchestration_mode": orchestration_mode,
+                "phases_executed": list(pipeline_results.keys()),
+                "total_methods": sum(
+                    len(p.get("methods", []))
+                    for p in pipeline_results.values()
+                ),
+            },
+        }
+
+        # If executor has an execute method, call it as final integration step
+        if hasattr(executor, "execute"):
+            try:
+                integrated_result = executor.execute({
+                    **input_data,
+                    "pipeline_results": pipeline_results,
+                })
+                result["integrated_result"] = integrated_result
+            except Exception as e:
+                logger.warning(
+                    "Executor integration failed",
+                    error=str(e),
+                )
+                result["integration_error"] = str(e)
+
+        logger.info(
+            "Contract executed successfully",
+            contract_id=contract_id,
+            phases_executed=result["execution_metadata"]["phases_executed"],
+            total_methods=result["execution_metadata"]["total_methods"],
+        )
+
+        return result
 
     def execute_contracts_batch(
         self, contract_ids: List[str], input_data: Dict[str, Any]

@@ -10,14 +10,19 @@ from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     ScoredResult,
 )
 
+# Use modular questionnaire helper instead of monolith
+from tests.test_helpers.questionnaire_compat import get_questionnaire_data
+
 
 def test_dimension_clamps_scores_to_range() -> None:
-    monolith_path = (
-        REPO_ROOT / "canonic_questionnaire_central"
-        / "questionnaire_monolith.json"
-    )
-    monolith = json.loads(monolith_path.read_text(encoding="utf-8"))
-    settings = AggregationSettings.from_monolith(monolith)
+    """
+    Test dimension score clamping using modular questionnaire.
+
+    Previously loaded from questionnaire_monolith.json, now uses
+    the modular CQC via the compatibility helper.
+    """
+    questionnaire = get_questionnaire_data()
+    settings = AggregationSettings.from_monolith(questionnaire)
 
     results = [
         ScoredResult(

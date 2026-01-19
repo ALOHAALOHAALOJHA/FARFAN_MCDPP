@@ -1,0 +1,141 @@
+{
+  "phase_id": "1",
+  "phase_dir": "/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_01",
+  "total_files": 30,
+  "files_in_chain": 18,
+  "orphan_files": [],
+  "allowed_orphans": [
+    "interphase/__init__.py",
+    "interphase/phase1_04_00_phase_protocol.py",
+    "interphase/phase1_08_00_adapter.py",
+    "interphase/phase1_10_00_phase1_protocols.py",
+    "interphase/phase1_10_00_phase1_types.py",
+    "primitives/phase1_10_00_dependency_validator.py",
+    "tests/__init__.py",
+    "tests/conftest.py",
+    "tests/phase1_10_00_conftest.py",
+    "tests/test_constitutional_invariant.py",
+    "tests/test_empirical_extractors.py",
+    "tests/test_sisas_integration.py"
+  ],
+  "circular_dependencies": [],
+  "dependency_graph": {
+    "__init__.py": [
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_03_00_models.py",
+      "phase1_05_00_thread_safe_results.py",
+      "PHASE_1_CONSTANTS.py",
+      "primitives/__init__.py",
+      "primitives/__init__.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_07_00_sp4_question_aware.py",
+      "phase1_07_00_sp4_question_aware.py",
+      "phase1_12_01_pdm_integration.py",
+      "phase1_07_01_colombian_pdm_enhancer.py"
+    ],
+    "contracts/__init__.py": [
+      "contracts/phase1_constitutional_contract.py",
+      "contracts/phase1_input_contract.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_output_contract.py"
+    ],
+    "contracts/phase1_output_contract.py": [
+      "phase1_03_00_models.py"
+    ],
+    "phase1_03_00_models.py": [
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "phase1_07_00_sp4_question_aware.py": [
+      "phase1_03_00_models.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "phase1_12_01_pdm_integration.py": [
+      "phase1_03_00_models.py"
+    ],
+    "phase1_13_00_cpp_ingestion.py": [
+      "phase1_03_00_models.py",
+      "primitives/truncation_audit.py",
+      "primitives/streaming_extractor.py",
+      "phase1_05_00_thread_safe_results.py",
+      "PHASE_1_CONSTANTS.py",
+      "phase1_01_00_cpp_models.py",
+      "phase1_09_00_circuit_breaker.py",
+      "phase1_11_00_signal_enrichment.py",
+      "phase1_12_00_structural.py"
+    ],
+    "primitives/__init__.py": [
+      "primitives/streaming_extractor.py",
+      "primitives/truncation_audit.py",
+      "primitives/colombian_pdm_guards.py",
+      "phase1_07_01_colombian_pdm_enhancer.py"
+    ],
+    "primitives/streaming_extractor.py": [
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "primitives/truncation_audit.py": [
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "tests/phase1_10_00_test_streaming_pdf_extractor.py": [
+      "primitives/streaming_extractor.py",
+      "PHASE_1_CONSTANTS.py"
+    ],
+    "tests/test_01_adversarial_models_and_chunks.py": [
+      "__init__.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_09_00_circuit_breaker.py"
+    ],
+    "tests/test_02_circuit_breaker_adversarial.py": [
+      "phase1_09_00_circuit_breaker.py"
+    ],
+    "tests/test_03_chain_encadenamiento_adversarial.py": [
+      "contracts/__init__.py",
+      "contracts/__init__.py",
+      "contracts/__init__.py",
+      "contracts/phase1_mission_contract.py"
+    ],
+    "tests/test_04_question_aware_architecture_adversarial.py": [
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_03_00_models.py",
+      "PHASE_1_CONSTANTS.py",
+      "__init__.py",
+      "phase1_07_00_sp4_question_aware.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_06_00_questionnaire_mapper.py",
+      "phase1_11_00_signal_enrichment.py"
+    ],
+    "tests/test_colombian_pdm_enhancer.py": [
+      "phase1_07_01_colombian_pdm_enhancer.py"
+    ],
+    "tests/test_phase1_e2e_chain.py": [
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "__init__.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_input_contract.py",
+      "contracts/phase1_mission_contract.py",
+      "contracts/phase1_output_contract.py",
+      "__init__.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "phase1_13_00_cpp_ingestion.py",
+      "__init__.py",
+      "phase1_09_00_circuit_breaker.py",
+      "phase1_09_00_circuit_breaker.py",
+      "phase1_09_00_circuit_breaker.py",
+      "__init__.py"
+    ],
+    "tests/test_streaming_pdf_extractor.py": [
+      "primitives/streaming_extractor.py",
+      "PHASE_1_CONSTANTS.py"
+    ]
+  },
+  "validation_status": "PASS"
+}
