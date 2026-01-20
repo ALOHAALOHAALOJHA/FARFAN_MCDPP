@@ -32,6 +32,7 @@ from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (
     MIN_SCORE,
     POLICY_AREAS,
 )
+from farfan_pipeline.phases.Phase_05.primitives.phase5_00_00_types import AggregationStrategy
 
 logger = logging.getLogger(__name__)
 

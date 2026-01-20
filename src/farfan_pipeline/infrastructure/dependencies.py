@@ -67,7 +67,7 @@ class DependencyStatus(Enum):
     CANDIDATE = "candidate"  # Under evaluation
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class DependencySpec:
     """
     Specification for a single dependency.

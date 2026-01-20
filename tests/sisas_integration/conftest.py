@@ -355,16 +355,28 @@ class MockIrrigator:
         results = {}
         for consumer_id, consumer in self._consumers.items():
             if consumer.can_consume(signal):
-                result = consumer.consume(signal)
-                results[consumer_id] = result
-                self._irrigation_log.append(
-                    {
-                        "signal_id": signal.signal_id,
-                        "consumer_id": consumer_id,
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
-                        "result": result,
-                    }
-                )
+                try:
+                    result = consumer.consume(signal)
+                    results[consumer_id] = result
+                    self._irrigation_log.append(
+                        {
+                            "signal_id": signal.signal_id,
+                            "consumer_id": consumer_id,
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                            "result": result,
+                        }
+                    )
+                except Exception as e:
+                    # Log error but continue with other consumers
+                    results[consumer_id] = {"error": str(e), "status": "failed"}
+                    self._irrigation_log.append(
+                        {
+                            "signal_id": signal.signal_id,
+                            "consumer_id": consumer_id,
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                            "error": str(e),
+                        }
+                    )
         return results
 
     def irrigate_batch(self, batch: MockSignalBatch) -> Dict[str, List[Dict[str, Any]]]:

@@ -69,7 +69,7 @@ class CalibrationBoundsError(ValidationError):
 # =============================================================================
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class ClosedInterval:
     """
     An immutable closed interval [lower, upper] for parameter bounds.
