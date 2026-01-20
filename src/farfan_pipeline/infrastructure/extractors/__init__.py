@@ -94,14 +94,9 @@ from .extractor_validator import (
     ValidationMetrics
 )
 
-# SISAS 2.0 Orchestrator
-from .extractor_orchestrator import (
-    ExtractorOrchestrator,
-    ExtractionContext,
-    OrchestrationResult,
-    create_orchestrator_from_resolver,
-    EXTRACTOR_SIGNAL_MAP
-)
+# NOTE: ExtractorOrchestrator is DEPRECATED
+# Use UnifiedOrchestrator from farfan_pipeline.orchestration.orchestrator instead
+# See DEPRECATED_ORCHESTRATORS.md for migration guide
 
 __version__ = "2.0.0"
 
@@ -141,13 +136,6 @@ __all__ = [
     # Utilities
     'load_all_extractors_from_calibration',
     'generate_test_suite',
-    
-    # SISAS 2.0 Orchestrator
-    'ExtractorOrchestrator',
-    'ExtractionContext',
-    'OrchestrationResult',
-    'create_orchestrator_from_resolver',
-    'EXTRACTOR_SIGNAL_MAP'
 ]
 
 
