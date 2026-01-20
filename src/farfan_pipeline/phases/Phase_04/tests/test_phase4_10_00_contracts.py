@@ -95,7 +95,7 @@ class TestPhase4MissionContract:
         """Test that topological order is properly defined."""
         assert len(Phase4MissionContract.TOPOLOGICAL_ORDER) > 0
         # Should contain key files
-        assert "PHASE_4_CONSTANTS.py" in Phase4MissionContract.TOPOLOGICAL_ORDER
+        assert "PHASE_04_CONSTANTS.py" in Phase4MissionContract.TOPOLOGICAL_ORDER
         assert "__init__.py" in Phase4MissionContract.TOPOLOGICAL_ORDER
     
     def test_circular_dependencies_documented(self):

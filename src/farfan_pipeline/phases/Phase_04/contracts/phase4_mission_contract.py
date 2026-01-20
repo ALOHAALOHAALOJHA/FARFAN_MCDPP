@@ -36,7 +36,7 @@ class Phase4MissionContract:
     # Topological execution order (based on dependency analysis)
     TOPOLOGICAL_ORDER = [
         # Layer 0: Constants and primitives (no dependencies)
-        "PHASE_4_CONSTANTS.py",
+        "PHASE_04_CONSTANTS.py",
         "primitives/phase4_00_00_quality_levels.py",
         "primitives/phase4_10_00_quality_levels.py",
         "primitives/phase4_00_00_uncertainty_metrics.py",

@@ -54,7 +54,7 @@ class TestPhase4TopologicalOrder:
         # Key files should be in the order
         topo_order = chain_report["topological_order"]
         assert "__init__.py" in topo_order
-        # PHASE_4_CONSTANTS.py is not in dependency graph but primitives/__init__.py uses it
+        # PHASE_04_CONSTANTS.py is not in dependency graph but primitives/__init__.py uses it
         # Check if at least some key modules are present
         assert any("primitives" in f for f in topo_order)
     
@@ -104,7 +104,7 @@ class TestPhase4ModuleImports:
         from farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract import Phase4InputContract
         from farfan_pipeline.phases.Phase_04.contracts.phase4_mission_contract import Phase4MissionContract
         from farfan_pipeline.phases.Phase_04.contracts.phase4_output_contract import Phase4OutputContract
-        
+
         assert Phase4InputContract is not None
         assert Phase4MissionContract is not None
         assert Phase4OutputContract is not None

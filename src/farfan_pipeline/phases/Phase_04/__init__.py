@@ -110,7 +110,7 @@ from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import 
 )
 
 # Constants
-from farfan_pipeline.phases.Phase_04.PHASE_4_CONSTANTS import (
+from farfan_pipeline.phases.Phase_04.PHASE_04_CONSTANTS import (
     PHASE_ID,
     PHASE_NAME,
     EXPECTED_INPUT_MICRO_QUESTIONS,

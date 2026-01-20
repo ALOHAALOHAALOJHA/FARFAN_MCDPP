@@ -1,0 +1,293 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 4,
+    "name": "Dimension Aggregation"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_04",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 4 modules"
+    },
+    {
+      "path": "contracts",
+      "purpose": "Input, mission, and output contracts for Phase 4",
+      "contains_subdirs": true
+    },
+    {
+      "path": "primitives",
+      "purpose": "Primitive types, utilities, and low-level components"
+    },
+    {
+      "path": "interphase",
+      "purpose": "Phase boundary interfaces and adapters"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 4 unit and integration tests"
+    },
+    {
+      "path": "docs",
+      "purpose": "Phase 4 documentation and reports"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase4_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 201,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "PHASE_04_CONSTANTS.py",
+      "canonical_name": "PHASE_04_CONSTANTS",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "lines_of_code": 445,
+      "purpose": "Phase 4 constants and configuration values"
+    },
+    {
+      "filename": "phase4_10_00_aggregation_provenance.py",
+      "canonical_name": "phase4_10_00_aggregation_provenance",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 444,
+      "purpose": "Aggregation provenance tracking and DAG construction"
+    },
+    {
+      "filename": "phase4_10_00_aggregation_settings.py",
+      "canonical_name": "phase4_10_00_aggregation_settings",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 33,
+      "purpose": "Aggregation settings configuration"
+    },
+    {
+      "filename": "phase4_10_00_uncertainty_quantification.py",
+      "canonical_name": "phase4_10_00_uncertainty_quantification",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1183,
+      "purpose": "Uncertainty quantification via bootstrap resampling"
+    },
+    {
+      "filename": "phase4_20_00_choquet_adapter.py",
+      "canonical_name": "phase4_20_00_choquet_adapter",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 705,
+      "purpose": "Choquet integral adapter for non-additive aggregation"
+    },
+    {
+      "filename": "phase4_30_00_aggregation.py",
+      "canonical_name": "phase4_30_00_aggregation",
+      "type": "PROC",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1406,
+      "purpose": "Core dimension aggregation logic"
+    },
+    {
+      "filename": "phase4_30_00_choquet_aggregator.py",
+      "canonical_name": "phase4_30_00_choquet_aggregator",
+      "type": "PROC",
+      "criticality": "CRITICAL",
+      "lines_of_code": 794,
+      "purpose": "Choquet-based aggregation implementation"
+    },
+    {
+      "filename": "phase4_30_00_signal_enriched_aggregation.py",
+      "canonical_name": "phase4_30_00_signal_enriched_aggregation",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "lines_of_code": 544,
+      "purpose": "Signal-enriched aggregation with enhanced metadata"
+    },
+    {
+      "filename": "phase4_60_00_aggregation_validation.py",
+      "canonical_name": "phase4_60_00_aggregation_validation",
+      "type": "VAL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 363,
+      "purpose": "Aggregation output validation"
+    },
+    {
+      "filename": "primitives/__init__.py",
+      "canonical_name": "primitives_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 93,
+      "purpose": "Primitives package initialization"
+    },
+    {
+      "filename": "primitives/phase4_00_00_aggregation_settings.py",
+      "canonical_name": "phase4_00_00_aggregation_settings",
+      "type": "UTIL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 118,
+      "purpose": "Aggregation settings primitive types"
+    },
+    {
+      "filename": "primitives/phase4_00_00_choquet_primitives.py",
+      "canonical_name": "phase4_00_00_choquet_primitives",
+      "type": "UTIL",
+      "criticality": "HIGH",
+      "lines_of_code": 501,
+      "purpose": "Choquet integral primitives and utilities"
+    },
+    {
+      "filename": "primitives/phase4_00_00_quality_levels.py",
+      "canonical_name": "phase4_00_00_quality_levels",
+      "type": "UTIL",
+      "criticality": "HIGH",
+      "lines_of_code": 266,
+      "purpose": "Quality level classification primitives"
+    },
+    {
+      "filename": "primitives/phase4_00_00_signal_enriched_primitives.py",
+      "canonical_name": "phase4_00_00_signal_enriched_primitives",
+      "type": "UTIL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 546,
+      "purpose": "Signal-enriched data primitives"
+    },
+    {
+      "filename": "primitives/phase4_00_00_types.py",
+      "canonical_name": "phase4_00_00_types",
+      "type": "UTIL",
+      "criticality": "HIGH",
+      "lines_of_code": 203,
+      "purpose": "Core type definitions for Phase 4"
+    },
+    {
+      "filename": "primitives/phase4_00_00_uncertainty_metrics.py",
+      "canonical_name": "phase4_00_00_uncertainty_metrics",
+      "type": "UTIL",
+      "criticality": "HIGH",
+      "lines_of_code": 433,
+      "purpose": "Uncertainty metrics and confidence interval types"
+    },
+    {
+      "filename": "primitives/phase4_40_00_adaptive_meso_scoring.py",
+      "canonical_name": "phase4_40_00_adaptive_meso_scoring",
+      "type": "UTIL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 487,
+      "purpose": "Adaptive meso-level scoring utilities"
+    },
+    {
+      "filename": "primitives/phase4_40_00_aggregation_enhancements.py",
+      "canonical_name": "phase4_40_00_aggregation_enhancements",
+      "type": "UTIL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 579,
+      "purpose": "Aggregation enhancement utilities"
+    },
+    {
+      "filename": "contracts/phase4_input_contract.py",
+      "canonical_name": "phase4_input_contract",
+      "type": "CONTRACT",
+      "criticality": "CRITICAL",
+      "lines_of_code": 208,
+      "purpose": "Phase 4 input contract specification"
+    },
+    {
+      "filename": "contracts/phase4_mission_contract.py",
+      "canonical_name": "phase4_mission_contract",
+      "type": "CONTRACT",
+      "criticality": "CRITICAL",
+      "lines_of_code": 279,
+      "purpose": "Phase 4 mission and topological order contract"
+    },
+    {
+      "filename": "contracts/phase4_output_contract.py",
+      "canonical_name": "phase4_output_contract",
+      "type": "CONTRACT",
+      "criticality": "CRITICAL",
+      "lines_of_code": 280,
+      "purpose": "Phase 4 output contract specification"
+    },
+    {
+      "filename": "interphase/__init__.py",
+      "canonical_name": "interphase_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 31,
+      "purpose": "Interphase package initialization"
+    },
+    {
+      "filename": "tests/__init__.py",
+      "canonical_name": "tests_init",
+      "type": "TEST",
+      "criticality": "LOW",
+      "lines_of_code": 8,
+      "purpose": "Test package initialization"
+    },
+    {
+      "filename": "tests/test_phase4_00_00_primitives.py",
+      "canonical_name": "test_phase4_primitives",
+      "type": "TEST",
+      "criticality": "MEDIUM",
+      "lines_of_code": 175,
+      "purpose": "Unit tests for Phase 4 primitives"
+    },
+    {
+      "filename": "tests/test_phase4_10_00_contracts.py",
+      "canonical_name": "test_phase4_contracts",
+      "type": "TEST",
+      "criticality": "HIGH",
+      "lines_of_code": 205,
+      "purpose": "Unit tests for Phase 4 contracts"
+    },
+    {
+      "filename": "tests/test_phase4_topological_chain.py",
+      "canonical_name": "test_phase4_topological_chain",
+      "type": "TEST",
+      "criticality": "MEDIUM",
+      "lines_of_code": 213,
+      "purpose": "Topological chain validation tests"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_04_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 4"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 4"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    },
+    {
+      "filename": "CANONICAL_FLOW.md",
+      "purpose": "Documentation of canonical execution flow"
+    },
+    {
+      "filename": "FORCING_ROUTE.md",
+      "purpose": "Documentation of forced execution routes"
+    },
+    {
+      "filename": "SURGERY_REPORT.md",
+      "purpose": "Documentation of surgical changes and refactoring"
+    }
+  ],
+  "total_python_modules": 27,
+  "total_lines_of_code": 9543,
+  "criticality_summary": {
+    "CRITICAL": 10,
+    "HIGH": 7,
+    "MEDIUM": 7,
+    "LOW": 6
+  }
+}

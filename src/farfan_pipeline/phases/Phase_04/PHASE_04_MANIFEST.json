@@ -141,7 +141,7 @@
       "modules": [
         {
           "order": 0,
-          "canonical_name": "PHASE_4_CONSTANTS",
+          "canonical_name": "PHASE_04_CONSTANTS",
           "type": "UTIL",
           "criticality": "MEDIUM",
           "purpose": "Phase 4 Constants"
