@@ -1,0 +1,427 @@
+{
+  "$schema": "sisas_canonical_map_v1",
+  "version": "1.0.0",
+  "generated": "2026-01-19T00:00:00Z",
+  "description": "Canonical mapping of signals to consumers and information items",
+
+  "signal_types": {
+    "MC01": {
+      "name": "Structural Marker Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "STRUCTURAL_PARSING"],
+      "empirical_availability": 0.92,
+      "target_items": {
+        "dimensions": ["DIM03"],
+        "slot_pattern": "D3-Q*",
+        "question_count": 50
+      },
+      "payload_schema": {
+        "type": "object",
+        "required": ["section_type", "section_title", "hierarchy_level"],
+        "properties": {
+          "section_type": {"type": "string", "enum": ["CHAPTER", "SECTION", "SUBSECTION", "ARTICLE"]},
+          "section_title": {"type": "string"},
+          "hierarchy_level": {"type": "integer", "minimum": 1, "maximum": 5}
+        }
+      }
+    },
+    "MC02": {
+      "name": "Quantitative Triplet Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "TRIPLET_EXTRACTION", "NUMERIC_PARSING"],
+      "empirical_availability": 0.78,
+      "target_items": {
+        "dimensions": ["DIM01"],
+        "slot_pattern": "D1-Q*",
+        "question_count": 50
+      },
+      "payload_schema": {
+        "type": "object",
+        "required": ["value", "unit", "context"],
+        "properties": {
+          "value": {"type": "number"},
+          "unit": {"type": "string"},
+          "context": {"type": "string"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "MC03": {
+      "name": "Normative Reference Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "NORMATIVE_LOOKUP", "CITATION_PARSING"],
+      "empirical_availability": 0.85,
+      "target_items": {
+        "dimensions": ["DIM05"],
+        "slot_pattern": "D5-Q*",
+        "question_count": 50
+      }
+    },
+    "MC04": {
+      "name": "Programmatic Hierarchy Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "HIERARCHY_PARSING", "TREE_CONSTRUCTION"],
+      "empirical_availability": 0.71,
+      "target_items": {
+        "dimensions": ["DIM04"],
+        "slot_pattern": "D4-Q*",
+        "question_count": 50
+      }
+    },
+    "MC05": {
+      "name": "Financial Chain Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "FINANCIAL_ANALYSIS", "NUMERIC_PARSING"],
+      "empirical_availability": 0.85,
+      "target_items": {
+        "dimensions": ["DIM01"],
+        "slot_pattern": "D1-Q*",
+        "question_count": 50
+      }
+    },
+    "MC06": {
+      "name": "Population Disaggregation Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS"],
+      "empirical_availability": 0.65,
+      "target_items": {
+        "dimensions": ["DIM02"],
+        "slot_pattern": "D2-Q*",
+        "question_count": 50
+      }
+    },
+    "MC07": {
+      "name": "Temporal Consistency Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "TEMPORAL_PARSING", "DATE_NORMALIZATION"],
+      "empirical_availability": 0.88,
+      "target_items": {
+        "dimensions": ["DIM06"],
+        "slot_pattern": "D6-Q*",
+        "question_count": 50
+      }
+    },
+    "MC08": {
+      "name": "Causal Verb Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "CAUSAL_ANALYSIS", "VERB_EXTRACTION"],
+      "empirical_availability": 0.72,
+      "target_items": {
+        "dimensions": ["DIM06"],
+        "slot_pattern": "D6-Q*",
+        "question_count": 50
+      }
+    },
+    "MC09": {
+      "name": "Institutional NER Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "NER", "INSTITUTIONAL_RECOGNITION"],
+      "empirical_availability": 0.68,
+      "target_items": {
+        "dimensions": ["DIM02"],
+        "slot_pattern": "D2-Q*",
+        "question_count": 50
+      }
+    },
+    "MC10": {
+      "name": "Semantic Relationship Signal",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "SEMANTIC_ANALYSIS", "RELATIONSHIP_EXTRACTION"],
+      "empirical_availability": 0.62,
+      "target_items": {
+        "dimensions": ["DIM04", "DIM05"],
+        "slot_pattern": "D4-Q*,D5-Q*",
+        "question_count": 100
+      }
+    },
+    "PATTERN_ENRICHMENT": {
+      "name": "Pattern Enrichment Signal",
+      "phase": "phase_2",
+      "consumer_id": "phase_02_enrichment_consumer",
+      "capabilities_required": ["ENRICHMENT", "PATTERN_MATCHING"],
+      "empirical_availability": 0.90,
+      "target_items": {
+        "dimensions": ["ALL"],
+        "slot_pattern": "*",
+        "question_count": 300
+      }
+    },
+    "KEYWORD_ENRICHMENT": {
+      "name": "Keyword Enrichment Signal",
+      "phase": "phase_2",
+      "consumer_id": "phase_02_enrichment_consumer",
+      "capabilities_required": ["ENRICHMENT", "KEYWORD_EXTRACTION"],
+      "empirical_availability": 0.95,
+      "target_items": {
+        "dimensions": ["ALL"],
+        "slot_pattern": "*",
+        "question_count": 300
+      }
+    },
+    "ENTITY_ENRICHMENT": {
+      "name": "Entity Enrichment Signal",
+      "phase": "phase_2",
+      "consumer_id": "phase_02_enrichment_consumer",
+      "capabilities_required": ["ENRICHMENT", "ENTITY_RECOGNITION"],
+      "empirical_availability": 0.88,
+      "target_items": {
+        "dimensions": ["ALL"],
+        "slot_pattern": "*",
+        "question_count": 300
+      }
+    },
+    "MICRO_SCORE": {
+      "name": "Micro Score Signal",
+      "phase": "phase_4",
+      "consumer_id": "phase_04_micro_consumer",
+      "capabilities_required": ["SCORING", "MICRO_LEVEL", "CHOQUET_INTEGRAL"],
+      "empirical_availability": 1.0,
+      "target_items": {
+        "dimensions": ["ALL"],
+        "slot_pattern": "*",
+        "question_count": 300
+      }
+    },
+    "MESO_SCORE": {
+      "name": "Meso Score Signal",
+      "phase": "phase_5",
+      "consumer_id": "phase_05_meso_consumer",
+      "capabilities_required": ["SCORING", "MESO_LEVEL", "DIMENSION_AGGREGATION"],
+      "empirical_availability": 1.0,
+      "target_items": {
+        "dimensions": ["ALL"],
+        "policy_areas": ["ALL"],
+        "output_count": 60
+      }
+    },
+    "MACRO_SCORE": {
+      "name": "Macro Score Signal",
+      "phase": "phase_6",
+      "consumer_id": "phase_06_macro_consumer",
+      "capabilities_required": ["SCORING", "MACRO_LEVEL", "POLICY_AREA_AGGREGATION"],
+      "empirical_availability": 1.0,
+      "target_items": {
+        "policy_areas": ["ALL"],
+        "output_count": 10
+      }
+    },
+    "MESO_AGGREGATION": {
+      "name": "Meso Aggregation Signal",
+      "phase": "phase_7",
+      "consumer_id": "phase_07_aggregation_consumer",
+      "capabilities_required": ["AGGREGATION", "CLUSTER_LEVEL"],
+      "empirical_availability": 1.0,
+      "target_items": {
+        "clusters": ["CL01", "CL02", "CL03", "CL04"],
+        "output_count": 4
+      }
+    },
+    "MACRO_AGGREGATION": {
+      "name": "Macro Aggregation Signal",
+      "phase": "phase_8",
+      "consumer_id": "phase_08_integration_consumer",
+      "capabilities_required": ["AGGREGATION", "HOLISTIC_LEVEL"],
+      "empirical_availability": 1.0,
+      "target_items": {
+        "output_count": 1
+      }
+    },
+    "REPORT_ASSEMBLY": {
+      "name": "Report Assembly Signal",
+      "phase": "phase_9",
+      "consumer_id": "phase_09_report_consumer",
+      "capabilities_required": ["REPORT_GENERATION", "ASSEMBLY", "EXPORT"],
+      "empirical_availability": 1.0,
+      "target_items": {
+        "output_count": 1
+      }
+    }
+  },
+
+  "consumers": {
+    "phase_00_assembly_consumer": {
+      "phase": "phase_0",
+      "signal_types": ["SIGNAL_PACK", "STATIC_LOAD"],
+      "capabilities": ["STATIC_LOAD", "SIGNAL_PACK", "PHASE_MONITORING"],
+      "item_coverage": {
+        "questions": 0,
+        "policy_areas": 0,
+        "dimensions": 0
+      }
+    },
+    "phase_01_extraction_consumer": {
+      "phase": "phase_1",
+      "signal_types": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"],
+      "capabilities": ["EXTRACTION", "STRUCTURAL_PARSING", "TRIPLET_EXTRACTION", "NUMERIC_PARSING",
+                      "NORMATIVE_LOOKUP", "CITATION_PARSING", "HIERARCHY_PARSING", "TREE_CONSTRUCTION",
+                      "FINANCIAL_ANALYSIS", "POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS",
+                      "TEMPORAL_PARSING", "DATE_NORMALIZATION", "CAUSAL_ANALYSIS", "VERB_EXTRACTION",
+                      "NER", "INSTITUTIONAL_RECOGNITION", "SEMANTIC_ANALYSIS", "RELATIONSHIP_EXTRACTION",
+                      "PHASE_MONITORING"],
+      "item_coverage": {
+        "questions": 300,
+        "policy_areas": 10,
+        "dimensions": 6
+      }
+    },
+    "phase_02_enrichment_consumer": {
+      "phase": "phase_2",
+      "signal_types": ["PATTERN_ENRICHMENT", "KEYWORD_ENRICHMENT", "ENTITY_ENRICHMENT"],
+      "capabilities": ["ENRICHMENT", "PATTERN_MATCHING", "KEYWORD_EXTRACTION", "ENTITY_RECOGNITION", "PHASE_MONITORING"],
+      "item_coverage": {
+        "questions": 300,
+        "policy_areas": 10,
+        "dimensions": 6
+      }
+    },
+    "phase_03_validation_consumer": {
+      "phase": "phase_3",
+      "signal_types": ["NORMATIVE_VALIDATION", "ENTITY_VALIDATION", "COHERENCE_VALIDATION"],
+      "capabilities": ["VALIDATION", "NORMATIVE_CHECK", "ENTITY_CHECK", "COHERENCE_CHECK", "PHASE_MONITORING"],
+      "item_coverage": {
+        "questions": 300,
+        "policy_areas": 10,
+        "dimensions": 6
+      }
+    },
+    "phase_04_micro_consumer": {
+      "phase": "phase_4",
+      "signal_types": ["MICRO_SCORE"],
+      "capabilities": ["SCORING", "MICRO_LEVEL", "CHOQUET_INTEGRAL", "PHASE_MONITORING"],
+      "item_coverage": {
+        "questions": 300,
+        "policy_areas": 10,
+        "dimensions": 6
+      }
+    },
+    "phase_05_meso_consumer": {
+      "phase": "phase_5",
+      "signal_types": ["MESO_SCORE"],
+      "capabilities": ["SCORING", "MESO_LEVEL", "DIMENSION_AGGREGATION", "PHASE_MONITORING"],
+      "item_coverage": {
+        "questions": 0,
+        "policy_areas": 10,
+        "dimensions": 6,
+        "output_cells": 60
+      }
+    },
+    "phase_06_macro_consumer": {
+      "phase": "phase_6",
+      "signal_types": ["MACRO_SCORE"],
+      "capabilities": ["SCORING", "MACRO_LEVEL", "POLICY_AREA_AGGREGATION", "PHASE_MONITORING"],
+      "item_coverage": {
+        "policy_areas": 10,
+        "output_cells": 10
+      }
+    },
+    "phase_07_aggregation_consumer": {
+      "phase": "phase_7",
+      "signal_types": ["MESO_AGGREGATION"],
+      "capabilities": ["AGGREGATION", "CLUSTER_LEVEL", "PHASE_MONITORING"],
+      "item_coverage": {
+        "clusters": 4,
+        "output_cells": 4
+      }
+    },
+    "phase_08_integration_consumer": {
+      "phase": "phase_8",
+      "signal_types": ["MACRO_AGGREGATION"],
+      "capabilities": ["AGGREGATION", "HOLISTIC_LEVEL", "RECOMMENDATION_ENGINE", "PHASE_MONITORING"],
+      "item_coverage": {
+        "output_cells": 1
+      }
+    },
+    "phase_09_report_consumer": {
+      "phase": "phase_9",
+      "signal_types": ["REPORT_ASSEMBLY"],
+      "capabilities": ["REPORT_GENERATION", "ASSEMBLY", "EXPORT", "PHASE_MONITORING"],
+      "item_coverage": {
+        "output_cells": 1
+      }
+    }
+  },
+
+  "information_items": {
+    "questions": {
+      "total_count": 300,
+      "id_pattern": "Q001-Q300",
+      "distribution_by_policy_area": {
+        "PA01": 30, "PA02": 30, "PA03": 30, "PA04": 30, "PA05": 30,
+        "PA06": 30, "PA07": 30, "PA08": 30, "PA09": 30, "PA10": 30
+      },
+      "distribution_by_dimension": {
+        "DIM01": 50, "DIM02": 50, "DIM03": 50, "DIM04": 50, "DIM05": 50, "DIM06": 50
+      }
+    },
+    "policy_areas": {
+      "total_count": 10,
+      "items": [
+        {"id": "PA01", "name": "Ordenamiento Social de la Propiedad Rural"},
+        {"id": "PA02", "name": "Infraestructura y Adecuación de Tierras"},
+        {"id": "PA03", "name": "Salud Rural"},
+        {"id": "PA04", "name": "Educación Rural"},
+        {"id": "PA05", "name": "Vivienda Rural, Agua Potable y Saneamiento"},
+        {"id": "PA06", "name": "Reactivación Económica y Producción Agropecuaria"},
+        {"id": "PA07", "name": "Sistema Progresivo de Derecho a la Alimentación"},
+        {"id": "PA08", "name": "Reconciliación, Convivencia y Paz"},
+        {"id": "PA09", "name": "Acción Integral Contra Minas Antipersonal"},
+        {"id": "PA10", "name": "Sustitución de Cultivos de Uso Ilícito"}
+      ]
+    },
+    "dimensions": {
+      "total_count": 6,
+      "items": [
+        {"id": "DIM01", "name": "Cuantificación", "slot_prefix": "D1"},
+        {"id": "DIM02", "name": "Poblacional", "slot_prefix": "D2"},
+        {"id": "DIM03", "name": "Estructural", "slot_prefix": "D3"},
+        {"id": "DIM04", "name": "Programática", "slot_prefix": "D4"},
+        {"id": "DIM05", "name": "Normativa", "slot_prefix": "D5"},
+        {"id": "DIM06", "name": "Temporal/Causal", "slot_prefix": "D6"}
+      ]
+    },
+    "clusters": {
+      "total_count": 4,
+      "items": [
+        {"id": "CL01", "name": "Tierras y Territorio", "policy_areas": ["PA01", "PA02"]},
+        {"id": "CL02", "name": "Bienestar Social", "policy_areas": ["PA03", "PA04", "PA05"]},
+        {"id": "CL03", "name": "Desarrollo Económico", "policy_areas": ["PA06", "PA07"]},
+        {"id": "CL04", "name": "Paz y Seguridad", "policy_areas": ["PA08", "PA09", "PA10"]}
+      ]
+    }
+  },
+
+  "irrigation_summary": {
+    "total_signals_per_execution": {
+      "phase_0": 2,
+      "phase_1": 10,
+      "phase_2": 3,
+      "phase_3": 3,
+      "phase_4": 1,
+      "phase_5": 1,
+      "phase_6": 1,
+      "phase_7": 1,
+      "phase_8": 1,
+      "phase_9": 1,
+      "total": 24
+    },
+    "total_items_irrigated": {
+      "questions": 300,
+      "policy_areas": 10,
+      "dimensions": 6,
+      "clusters": 4,
+      "grand_total": 320
+    },
+    "consumers_by_phase": 10,
+    "signal_types_total": 17
+  }
+}
