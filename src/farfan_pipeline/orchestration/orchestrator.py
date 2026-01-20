@@ -63,6 +63,38 @@ import blake3
 import structlog
 
 # =============================================================================
+# SISAS CORE IMPORTS
+# =============================================================================
+try:
+    from canonic_questionnaire_central.core.signal import (
+        Signal, SignalType, SignalScope, SignalProvenance
+    )
+    from canonic_questionnaire_central.core.signal_distribution_orchestrator import (
+        SignalDistributionOrchestrator, Consumer, DeadLetterReason
+    )
+    SISAS_CORE_AVAILABLE = True
+except ImportError:
+    SISAS_CORE_AVAILABLE = False
+    Signal = None
+    SignalType = None
+    SignalScope = None
+    SignalProvenance = None
+
+# Import validation gates
+try:
+    from .gates import (
+        GateOrchestrator,
+        ScopeAlignmentGate,
+        ValueAddGate,
+        CapabilityGate,
+        IrrigationChannelGate
+    )
+    GATES_AVAILABLE = True
+except ImportError:
+    GATES_AVAILABLE = False
+    GateOrchestrator = None
+
+# =============================================================================
 # UNIFIED FACTORY IMPORT
 # =============================================================================
 # Import the unified factory for all component creation and questionnaire loading
@@ -1212,6 +1244,65 @@ class UnifiedOrchestrator:
         result = orchestrator.execute()
     """
 
+    # =========================================================================
+    # SISAS CONSUMER CONFIGURATION
+    # =========================================================================
+    CONSUMER_CONFIGS = (
+        {
+            "consumer_id": "phase_00_assembly_consumer",
+            "scopes": [{"phase": "phase_0", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["STATIC_LOAD", "SIGNAL_PACK", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_01_extraction_consumer",
+            "scopes": [{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["EXTRACTION", "STRUCTURAL_PARSING", "TRIPLET_EXTRACTION",
+                           "NUMERIC_PARSING", "NORMATIVE_LOOKUP", "HIERARCHY_PARSING",
+                           "FINANCIAL_ANALYSIS", "POPULATION_PARSING", "TEMPORAL_PARSING",
+                           "CAUSAL_ANALYSIS", "NER", "SEMANTIC_ANALYSIS", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_02_enrichment_consumer",
+            "scopes": [{"phase": "phase_2", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["ENRICHMENT", "PATTERN_MATCHING", "ENTITY_RECOGNITION", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_03_validation_consumer",
+            "scopes": [{"phase": "phase_3", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["VALIDATION", "NORMATIVE_CHECK", "COHERENCE_CHECK", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_04_micro_consumer",
+            "scopes": [{"phase": "phase_4", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["SCORING", "MICRO_LEVEL", "CHOQUET_INTEGRAL", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_05_meso_consumer",
+            "scopes": [{"phase": "phase_5", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["SCORING", "MESO_LEVEL", "DIMENSION_AGGREGATION", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_06_macro_consumer",
+            "scopes": [{"phase": "phase_6", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["SCORING", "MACRO_LEVEL", "POLICY_AREA_AGGREGATION", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_07_aggregation_consumer",
+            "scopes": [{"phase": "phase_7", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["AGGREGATION", "CLUSTER_LEVEL", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_08_integration_consumer",
+            "scopes": [{"phase": "phase_8", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["INTEGRATION", "RECOMMENDATION_ENGINE", "PHASE_MONITORING"],
+        },
+        {
+            "consumer_id": "phase_09_report_consumer",
+            "scopes": [{"phase": "phase_9", "policy_area": "ALL", "slot": "ALL"}],
+            "capabilities": ["REPORT_GENERATION", "ASSEMBLY", "EXPORT", "PHASE_MONITORING"],
+        },
+    )
+
     def __init__(self, config: OrchestratorConfig):
         """Initialize the unified orchestrator."""
         self.config = config
@@ -1266,6 +1357,10 @@ class UnifiedOrchestrator:
             # Initialize SISAS if enabled
             if config.enable_sisas:
                 self.context.sisas = self.factory.get_sisas_central()
+                # Register phase consumers with SDO
+                if self.context.sisas is not None:
+                    consumers_registered = self._register_phase_consumers()
+                    self.logger.info(f"SISAS initialized with {consumers_registered} consumers")
 
             self.logger.info(
                 "UnifiedFactory initialized",
@@ -1278,6 +1373,130 @@ class UnifiedOrchestrator:
             self.logger.warning(
                 "UnifiedFactory not available, questionnaire and components will be limited"
             )
+
+    def _register_phase_consumers(self) -> int:
+        """
+        Register all 10 phase consumers with the SDO.
+
+        Returns:
+            Number of consumers successfully registered
+        """
+        if not self.config.enable_sisas:
+            self.logger.debug("SISAS disabled, skipping consumer registration")
+            return 0
+
+        if self.context.sisas is None:
+            self.logger.warning("SDO not initialized, cannot register consumers")
+            return 0
+
+        if not SISAS_CORE_AVAILABLE:
+            self.logger.warning("SISAS core not available")
+            return 0
+
+        sdo = self.context.sisas
+        registered = 0
+
+        for config in self.CONSUMER_CONFIGS:
+            try:
+                handler = self._create_phase_handler(config["consumer_id"])
+                sdo.register_consumer(
+                    consumer_id=config["consumer_id"],
+                    scopes=config["scopes"],
+                    capabilities=config["capabilities"],
+                    handler=handler
+                )
+                registered += 1
+                self.logger.debug(f"Registered consumer: {config['consumer_id']}")
+            except Exception as e:
+                self.logger.error(f"Failed to register {config['consumer_id']}: {e}")
+
+        self.logger.info(
+            "Phase consumers registered",
+            registered=registered,
+            total=len(self.CONSUMER_CONFIGS)
+        )
+        return registered
+
+    def _create_phase_handler(self, consumer_id: str):
+        """Create a signal handler for a phase consumer."""
+        def handler(signal):
+            phase_num = consumer_id.split("_")[1]  # Extract "00", "01", etc.
+            metric_key = f"phase_{phase_num}_signals"
+            self.context.signal_metrics.setdefault(metric_key, []).append(signal.signal_id)
+            self.logger.debug(f"{consumer_id} received signal: {signal.signal_id}")
+        return handler
+
+    def _emit_phase_signal(
+        self,
+        phase_id: PhaseID,
+        event_type: str,
+        payload: Dict[str, Any],
+        policy_area: str = "ALL"
+    ) -> bool:
+        """
+        Emit a SISAS signal for phase lifecycle events.
+
+        Args:
+            phase_id: Phase emitting the signal
+            event_type: PHASE_START, PHASE_COMPLETE, PHASE_FAILED
+            payload: Signal payload data
+            policy_area: Target policy area (default ALL)
+
+        Returns:
+            True if signal was delivered to at least one consumer
+        """
+        if not self.config.enable_sisas:
+            return False
+
+        if self.context.sisas is None or not SISAS_CORE_AVAILABLE:
+            return False
+
+        sdo = self.context.sisas
+
+        try:
+            phase_num = int(phase_id.value[1:])
+            phase_str = f"phase_{phase_num}"
+
+            scope = SignalScope(
+                phase=phase_str,
+                policy_area=policy_area,
+                slot="ALL"
+            )
+
+            provenance = SignalProvenance(
+                extractor="UnifiedOrchestrator",
+                source_file="orchestrator.py",
+                extraction_pattern=f"{phase_id.value}_{event_type}"
+            )
+
+            signal = Signal.create(
+                signal_type=SignalType.STATIC_LOAD,
+                scope=scope,
+                payload={
+                    "phase_id": phase_id.value,
+                    "event_type": event_type,
+                    "timestamp": datetime.utcnow().isoformat(),
+                    **payload
+                },
+                provenance=provenance,
+                empirical_availability=1.0,
+                capabilities_required=["PHASE_MONITORING"]
+            )
+
+            delivered = sdo.dispatch(signal)
+
+            self.logger.debug(
+                "Phase signal emitted",
+                phase=phase_id.value,
+                event_type=event_type,
+                delivered=delivered
+            )
+
+            return delivered
+
+        except Exception as e:
+            self.logger.warning(f"Failed to emit signal for {phase_id}: {e}")
+            return False
 
     def _determine_project_root(self, config: OrchestratorConfig) -> Path:
         """
@@ -1488,46 +1707,37 @@ class UnifiedOrchestrator:
         return True
 
     def _execute_single_phase(self, phase_id: PhaseID) -> PhaseResult:
-        """Execute a single phase."""
+        """Execute a single phase with SISAS signal emission."""
         self.logger.info(f"Executing phase: {phase_id.value}")
 
         start_time = time.time()
 
-        try:
-            # Validate prerequisites
-            self.context.validate_phase_prerequisite(phase_id)
+        # Emit PHASE_START signal
+        self._emit_phase_signal(
+            phase_id=phase_id,
+            event_type="PHASE_START",
+            payload={"status": "started"}
+        )
 
-            # Update dependency graph
+        try:
+            self.context.validate_phase_prerequisite(phase_id)
             self.dependency_graph.update_node_status(phase_id.value, DependencyStatus.RUNNING)
 
-            # Execute phase-specific logic
-            if phase_id == PhaseID.PHASE_0:
-                output = self._execute_phase_00()
-            elif phase_id == PhaseID.PHASE_1:
-                output = self._execute_phase_01()
-            elif phase_id == PhaseID.PHASE_2:
-                output = self._execute_phase_02()
-            elif phase_id == PhaseID.PHASE_3:
-                output = self._execute_phase_03()
-            elif phase_id == PhaseID.PHASE_4:
-                output = self._execute_phase_04()
-            elif phase_id == PhaseID.PHASE_5:
-                output = self._execute_phase_05()
-            elif phase_id == PhaseID.PHASE_6:
-                output = self._execute_phase_06()
-            elif phase_id == PhaseID.PHASE_7:
-                output = self._execute_phase_07()
-            elif phase_id == PhaseID.PHASE_8:
-                output = self._execute_phase_08()
-            elif phase_id == PhaseID.PHASE_9:
-                output = self._execute_phase_09()
-            else:
-                raise ValueError(f"Unknown phase: {phase_id}")
+            # Dispatch to appropriate phase method
+            output = self._dispatch_phase_execution(phase_id)
 
             execution_time = time.time() - start_time
-
-            # Update dependency graph
             self.dependency_graph.update_node_status(phase_id.value, DependencyStatus.COMPLETED)
+
+            # Emit PHASE_COMPLETE signal
+            self._emit_phase_signal(
+                phase_id=phase_id,
+                event_type="PHASE_COMPLETE",
+                payload={
+                    "status": "completed",
+                    "execution_time_s": execution_time
+                }
+            )
 
             result = PhaseResult(
                 phase_id=phase_id,
@@ -1542,9 +1752,18 @@ class UnifiedOrchestrator:
         except Exception as e:
             execution_time = time.time() - start_time
 
-            # Update dependency graph
-            self.dependency_graph.update_node_status(phase_id.value, DependencyStatus.FAILED)
+            # Emit PHASE_FAILED signal
+            self._emit_phase_signal(
+                phase_id=phase_id,
+                event_type="PHASE_FAILED",
+                payload={
+                    "status": "failed",
+                    "error": str(e),
+                    "execution_time_s": execution_time
+                }
+            )
 
+            self.dependency_graph.update_node_status(phase_id.value, DependencyStatus.FAILED)
             self.logger.error(f"Phase {phase_id.value} failed: {e}")
 
             if self.config.retry_failed_phases:
@@ -1561,6 +1780,27 @@ class UnifiedOrchestrator:
                 execution_time_s=execution_time,
                 error=e,
             )
+
+    def _dispatch_phase_execution(self, phase_id: PhaseID) -> Any:
+        """Dispatch execution to appropriate phase method."""
+        dispatch_table = {
+            PhaseID.PHASE_0: self._execute_phase_00,
+            PhaseID.PHASE_1: self._execute_phase_01,
+            PhaseID.PHASE_2: self._execute_phase_02,
+            PhaseID.PHASE_3: self._execute_phase_03,
+            PhaseID.PHASE_4: self._execute_phase_04,
+            PhaseID.PHASE_5: self._execute_phase_05,
+            PhaseID.PHASE_6: self._execute_phase_06,
+            PhaseID.PHASE_7: self._execute_phase_07,
+            PhaseID.PHASE_8: self._execute_phase_08,
+            PhaseID.PHASE_9: self._execute_phase_09,
+        }
+
+        method = dispatch_table.get(phase_id)
+        if method is None:
+            raise ValueError(f"Unknown phase: {phase_id}")
+
+        return method()
 
     # =========================================================================
     # PHASE EXECUTION METHODS (simplified placeholders)
@@ -1700,6 +1940,25 @@ class UnifiedOrchestrator:
             "completed_phases": list(self._completed_phases.keys()),
             "failed_phases": list(self._failed_phases.keys()),
             "dependency_graph_state": self.dependency_graph.get_state_snapshot(),
+        }
+
+    def get_sisas_metrics(self) -> Dict[str, Any]:
+        """Get SISAS metrics from SDO and context."""
+        if self.context.sisas is None:
+            return {"sisas_enabled": False}
+
+        sdo_metrics = self.context.sisas.get_metrics()
+        consumer_stats = self.context.sisas.get_consumer_stats()
+        health = self.context.sisas.health_check()
+
+        return {
+            "sisas_enabled": True,
+            "sdo_metrics": sdo_metrics,
+            "consumer_stats": consumer_stats,
+            "health_status": health["status"],
+            "dead_letter_rate": health["dead_letter_rate"],
+            "error_rate": health["error_rate"],
+            "signal_metrics": self.context.signal_metrics,
         }
 
     def save_checkpoint(self, checkpoint_dir: str = None) -> str:

@@ -1,4 +1,16 @@
 """
+DEPRECATED: This module is deprecated as of 2026-01-19.
+
+Enrichment orchestration is now handled by:
+    src/farfan_pipeline/orchestration/orchestrator.py (UnifiedOrchestrator)
+
+via phase_02_enrichment_consumer.
+
+This file will be removed in version 3.0.0.
+
+---
+Original Documentation (preserved for reference):
+
 Enrichment Orchestrator for PDET Context Integration.
 
 Coordinates the four validation gates for data enrichment:
@@ -11,6 +23,12 @@ This module orchestrates the enrichment of canonical questionnaire data
 with PDET Colombian municipalities context, ensuring compliance with
 all governance requirements.
 """
+import warnings
+warnings.warn(
+    "enrichment_orchestrator is deprecated. Use UnifiedOrchestrator.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 from __future__ import annotations
 

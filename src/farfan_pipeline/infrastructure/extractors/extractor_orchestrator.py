@@ -1,4 +1,23 @@
 """
+DEPRECATED: This module is deprecated as of 2026-01-19.
+
+All functionality has been consolidated into:
+    src/farfan_pipeline/orchestration/orchestrator.py (UnifiedOrchestrator)
+
+Migration:
+    Instead of:
+        from farfan_pipeline.infrastructure.extractors.extractor_orchestrator import ExtractorOrchestrator
+
+    Use:
+        from farfan_pipeline.orchestration import UnifiedOrchestrator
+
+This file will be removed in version 3.0.0.
+
+See: docs/sisas_unification/MIGRATION_CHECKLIST.md
+
+---
+Original Documentation (preserved for reference):
+
 Extractor Orchestrator - SISAS 2.0 Integration Layer
 
 Connects existing extractors (MC01-MC10) with the Signal Distribution Orchestrator.
@@ -11,6 +30,12 @@ Author: F.A.R.F.A.N Pipeline Team
 Version: 2.0.0
 Date: 2026-01-14
 """
+import warnings
+warnings.warn(
+    "extractor_orchestrator is deprecated. Use UnifiedOrchestrator instead.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 import logging
 from dataclasses import dataclass, field

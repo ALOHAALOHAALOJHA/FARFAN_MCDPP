@@ -1,9 +1,27 @@
 """
+DEPRECATED: This module is deprecated as of 2026-01-19.
+
+Async enrichment functionality is now handled by:
+    src/farfan_pipeline/orchestration/orchestrator.py (UnifiedOrchestrator)
+
+with SISAS signal-based async dispatch.
+
+This file will be removed in version 3.0.0.
+
+---
+Original Documentation (preserved for reference):
+
 Async Enrichment Orchestrator with Parallel Gate Validation
 
 Provides async/await support for concurrent gate validation and
 non-blocking I/O operations for improved performance.
 """
+import warnings
+warnings.warn(
+    "async_orchestrator is deprecated. Use UnifiedOrchestrator with enable_sisas=True.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 import asyncio
 import logging

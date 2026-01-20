@@ -1,6 +1,21 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/orchestration/sisas_orchestrator.py
 
 """
+DEPRECATED: This module is deprecated as of 2026-01-19.
+
+SISAS orchestration is now integrated into:
+    src/farfan_pipeline/orchestration/orchestrator.py (UnifiedOrchestrator)
+
+The SignalDistributionOrchestrator (SDO) at:
+    canonic_questionnaire_central/core/signal_distribution_orchestrator.py
+
+is now the ONLY signal routing component, accessed via UnifiedOrchestrator.
+
+This file will be removed in version 3.0.0.
+
+---
+Original Documentation (preserved for reference):
+
 PILAR 2: ORQUESTACIÓN - Coordinación del flujo de irrigación
 
 Este módulo implementa el segundo pilar de SISAS: la orquestación del flujo completo.
@@ -8,6 +23,12 @@ Este módulo implementa el segundo pilar de SISAS: la orquestación del flujo co
 AXIOMA: La irrigación sigue un orden determinado por dependencias.
           Nada se irriga hasta que sus dependencias están satisfechas.
 """
+import warnings
+warnings.warn(
+    "sisas_orchestrator is deprecated. Use UnifiedOrchestrator.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 from __future__ import annotations
 import os
