@@ -45,6 +45,49 @@ class IrrigationResult:
 
 
 @dataclass
+class PhaseExecutionResult:
+    """Resultado de ejecución de una fase completa"""
+    phase: str
+    total_routes: int = 0
+    successful_routes: int = 0
+    failed_routes: int = 0
+    total_signals_generated: int = 0
+    total_signals_published: int = 0
+    unique_consumers_notified: set = field(default_factory=set)
+    route_results: List[IrrigationResult] = field(default_factory=list)
+    start_time: datetime = field(default_factory=datetime.utcnow)
+    end_time: Optional[datetime] = None
+    duration_ms: float = 0.0
+
+    @property
+    def success_rate(self) -> float:
+        """Tasa de éxito de la fase"""
+        if self.total_routes == 0:
+            return 0.0
+        return (self.successful_routes / self.total_routes) * 100
+
+    def add_route_result(self, result: IrrigationResult):
+        """Agrega resultado de una ruta"""
+        self.route_results.append(result)
+        self.total_routes += 1
+
+        if result.success:
+            self.successful_routes += 1
+        else:
+            self.failed_routes += 1
+
+        self.total_signals_generated += len(result.signals_generated)
+        self.total_signals_published += result.signals_published
+        self.unique_consumers_notified.update(result.consumers_notified)
+
+    def finalize(self):
+        """Finaliza la ejecución de la fase"""
+        self.end_time = datetime.utcnow()
+        if self.start_time:
+            self.duration_ms = (self.end_time - self.start_time).total_seconds() * 1000
+
+
+@dataclass
 class IrrigationExecutor:
     """
     Ejecutor de irrigación.
@@ -206,21 +249,32 @@ class IrrigationExecutor:
 
         return result
 
-    def execute_phase(self, phase: str, base_path: str = "") -> List[IrrigationResult]:
+    def execute_phase(self, phase: str, base_path: str = "") -> PhaseExecutionResult:
         """
         Ejecuta todas las rutas de una fase.
+
+        Returns:
+            PhaseExecutionResult con estadísticas agregadas
         """
-        results = []
+        phase_result = PhaseExecutionResult(phase=phase)
         routes = self.irrigation_map.get_routes_for_phase(phase)
 
-        self._logger.info(f"Executing phase {phase}:  {len(routes)} routes")
+        self._logger.info(f"Executing phase {phase}: {len(routes)} routes")
 
         for route in routes:
             if route.source.irrigability == IrrigabilityStatus.IRRIGABLE_NOW:
                 result = self.execute_route(route, base_path)
-                results.append(result)
+                phase_result.add_route_result(result)
 
-        return results
+        phase_result.finalize()
+
+        self._logger.info(
+            f"Phase {phase} completed: {phase_result.successful_routes}/{phase_result.total_routes} "
+            f"routes successful ({phase_result.success_rate:.1f}%), "
+            f"{phase_result.total_signals_generated} signals generated"
+        )
+
+        return phase_result
 
     def execute_all_irrigable(self, base_path: str = "") -> List[IrrigationResult]:
         """

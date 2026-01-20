@@ -475,7 +475,154 @@ GRAND TOTAL: 115+ files mapped ✅
 
 ---
 
-## SECTION 11: NEXT STEPS
+## SECTION 11: IRRIGATION INFRASTRUCTURE
+
+### Overview
+
+The irrigation infrastructure manages the flow of 476 irrigable items through the SISAS pipeline, from canonical data loading through signal generation and consumer notification.
+
+**Files:**
+- `irrigation/irrigation_map.py` - Item mapping and routing (✅ ENHANCED)
+- `irrigation/irrigation_executor.py` - Event sequencing and execution (✅ ENHANCED)
+- `core/signal.py` - Signal types and axioms (✅ ENHANCED with 24 signal types)
+
+### Item Calculation (476 Total Items)
+
+| Category | Count | Description |
+|----------|-------|-------------|
+| Questions | 300 | Individual questionnaire items |
+| Policy Areas | 10 | PA01-PA10 |
+| Dimensions | 6 | DIM01-DIM06 |
+| Clusters | 4 | CL01-CL04 |
+| Cross-Cutting | 9 | CC themes |
+| Meso | 4 | Meso aggregation levels |
+| Macro | 1 | Macro aggregation |
+| Patterns | 142 | Extraction patterns |
+| **TOTAL** | **476** | **All irrigable items** |
+
+### irrigation_map.py Structure
+
+**Key Classes:**
+- `ItemCategory` - Enum for 8 item categories
+- `IrrigationStatistics` - Tracks item counts with validation
+- `IrrigationMap` - Main mapping class with routing
+
+**Key Constants:**
+```python
+EXPECTED_TOTAL_ITEMS = 476
+EXPECTED_QUESTIONS = 300
+EXPECTED_POLICY_AREAS = 10
+EXPECTED_DIMENSIONS = 6
+EXPECTED_CLUSTERS = 4
+EXPECTED_CROSS_CUTTING = 9
+EXPECTED_MESO = 4
+EXPECTED_MACRO = 1
+EXPECTED_PATTERNS = 142
+```
+
+**Key Methods:**
+- `from_specification()` - Build map from canonical specification
+- `validate_counts()` - Validate against expected counts
+- `get_routes_for_phase()` - Get routes by phase
+- `get_irrigable_now()` - Get currently irrigable routes
+
+### irrigation_executor.py Structure
+
+**Key Classes:**
+- `IrrigationResult` - Per-route execution result
+- `PhaseExecutionResult` - Per-phase aggregated result (✅ NEW)
+- `IrrigationExecutor` - Main execution engine
+
+**Event Sequencing:**
+```
+CANONICAL_DATA_LOADED
+       ↓
+   Processing (vehicles)
+       ↓
+   Signal Generation
+       ↓
+   Bus Publication
+       ↓
+   Consumer Notification
+       ↓
+IRRIGATION_COMPLETED
+```
+
+**Key Methods:**
+- `execute_route()` - Execute single irrigation route
+- `execute_phase()` - Execute all routes in a phase (returns PhaseExecutionResult)
+- `execute_all_irrigable()` - Execute all currently irrigable routes
+
+### signal.py Structure
+
+**Signal Type Registry (24 Types):**
+
+| Category | Signal Types | Count |
+|----------|--------------|-------|
+| **Operational** | SIGNAL_PACK, STATIC_LOAD | 2 |
+| **Structural** | MC01-MC10 (all extractors) | 10 |
+| **Epistemic** | PATTERN_ENRICHMENT, KEYWORD_ENRICHMENT, ENTITY_ENRICHMENT | 3 |
+| **Integrity** | NORMATIVE_VALIDATION, ENTITY_VALIDATION, COHERENCE_VALIDATION | 3 |
+| **Consumption** | MICRO_SCORE, MESO_SCORE, MACRO_SCORE | 3 |
+| **Orchestration** | MESO_AGGREGATION, MACRO_AGGREGATION, REPORT_ASSEMBLY | 3 |
+| **TOTAL** | | **24** |
+
+**Signal Axioms (Immutable):**
+1. **derived** - Never primary, always from events
+2. **deterministic** - Same input → same signal
+3. **versioned** - Never overwritten, only accumulated
+4. **contextual** - Anchored to node, phase, consumer
+5. **auditable** - Explains why it exists
+6. **non_imperative** - Doesn't command, doesn't decide
+
+**Key Classes:**
+- `SignalType` - Enum with all 24 signal types (✅ NEW)
+- `SignalCategory` - 7 signal categories
+- `Signal` - Base signal class (frozen, immutable)
+- `SignalContext` - Contextual anchoring
+- `SignalSource` - Complete traceability
+
+### Irrigation Flow
+
+```
+Canonical Files (476 items)
+       ↓
+IrrigationMap.from_specification()
+       ↓
+IrrigationStatistics (validates counts)
+       ↓
+IrrigationExecutor.execute_phase()
+       ↓
+   For each route:
+     1. Load canonical JSON
+     2. Create SignalContext
+     3. Register CANONICAL_DATA_LOADED event
+     4. Process with vehicles
+     5. Generate signals (typed with SignalType)
+     6. Publish to buses
+     7. Notify consumers
+     8. Register IRRIGATION_COMPLETED event
+       ↓
+PhaseExecutionResult (aggregated metrics)
+```
+
+### Validation
+
+**Static Validation:**
+- ✅ Item count validation against expected 476
+- ✅ Signal type validation (24 types)
+- ✅ Route validation (vehicles, consumers)
+- ✅ Wiring validation (from wiring_config.py)
+
+**Runtime Validation:**
+- Event sequence validation
+- Signal immutability enforcement
+- Consumer contract validation
+- Phase execution metrics
+
+---
+
+## SECTION 12: NEXT STEPS
 
 ### Immediate (High Priority)
 
