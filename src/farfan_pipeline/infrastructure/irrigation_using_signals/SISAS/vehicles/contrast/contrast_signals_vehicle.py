@@ -9,7 +9,7 @@ from ..base_vehicle import BaseVehicle, VehicleCapabilities
 from ...core.signal import Signal, SignalContext, SignalSource, SignalConfidence
 from ...core.event import Event
 from ...core.contracts import PublicationContract, ContractType, ContractStatus, SignalTypeSpec
-from ....signals.types.contrast import (
+from ...signal_types.types.contrast import (
     DecisionDivergenceSignal,
     ConfidenceDropSignal,
     TemporalContrastSignal

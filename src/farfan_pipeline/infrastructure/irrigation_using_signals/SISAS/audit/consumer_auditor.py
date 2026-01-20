@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 from datetime import datetime
 
 from ..core.contracts import ContractRegistry
-from ..signals.types.consumption import ConsumerHealthSignal
+from ..signal_types.types.consumption import ConsumerHealthSignal
 
 @dataclass
 class AuditReport:

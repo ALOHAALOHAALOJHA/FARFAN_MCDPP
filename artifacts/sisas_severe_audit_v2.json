@@ -1,0 +1,479 @@
+{
+  "summary": {
+    "total": 48,
+    "passed": 21,
+    "failed": 27,
+    "score": 43.75,
+    "start_time": "2026-01-20T03:50:06.032310",
+    "end_time": "2026-01-20T03:50:06.565948"
+  },
+  "tests": [
+    {
+      "name": "Signal components creation",
+      "category": "CORE",
+      "passed": false,
+      "error": "TypeError: SignalContext.__init__() got an unexpected keyword argument 'policy_area'",
+      "details": {},
+      "duration_ms": 90.12198448181152
+    },
+    {
+      "name": "Event creation and storage",
+      "category": "CORE",
+      "passed": false,
+      "error": "AttributeError: FILE_LOADED",
+      "details": {},
+      "duration_ms": 0.04673004150390625
+    },
+    {
+      "name": "Bus creation and registry",
+      "category": "CORE",
+      "passed": false,
+      "error": "TypeError: SignalBus.__init__() got an unexpected keyword argument 'bus_id'",
+      "details": {},
+      "duration_ms": 0.0073909759521484375
+    },
+    {
+      "name": "Contract creation and registry",
+      "category": "CORE",
+      "passed": false,
+      "error": "AttributeError: 'ContractRegistry' object has no attribute 'register'",
+      "details": {},
+      "duration_ms": 0.07486343383789062
+    },
+    {
+      "name": "Structural signals",
+      "category": "SIGNALS",
+      "passed": false,
+      "error": "TypeError: StructuralAlignmentSignal.__init__() got an unexpected keyword argument 'source_file'",
+      "details": {},
+      "duration_ms": 41.24784469604492
+    },
+    {
+      "name": "Integrity signals",
+      "category": "SIGNALS",
+      "passed": false,
+      "error": "TypeError: EventPresenceSignal.__init__() got an unexpected keyword argument 'source_file'",
+      "details": {},
+      "duration_ms": 0.006198883056640625
+    },
+    {
+      "name": "Epistemic signals",
+      "category": "SIGNALS",
+      "passed": false,
+      "error": "AttributeError: DETERMINATE",
+      "details": {},
+      "duration_ms": 0.008106231689453125
+    },
+    {
+      "name": "Contrast signals",
+      "category": "SIGNALS",
+      "passed": false,
+      "error": "AttributeError: SCORE_DIVERGENCE",
+      "details": {},
+      "duration_ms": 0.0050067901611328125
+    },
+    {
+      "name": "Operational signals",
+      "category": "SIGNALS",
+      "passed": false,
+      "error": "AttributeError: SUCCESS",
+      "details": {},
+      "duration_ms": 0.005245208740234375
+    },
+    {
+      "name": "Consumption signals",
+      "category": "SIGNALS",
+      "passed": false,
+      "error": "ValueError: Signal MUST have a context (axiom:  contextual)",
+      "details": {},
+      "duration_ms": 0.022172927856445312
+    },
+    {
+      "name": "Orchestration signals",
+      "category": "SIGNALS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "orchestration_signal_created": true
+      },
+      "duration_ms": 0.034809112548828125
+    },
+    {
+      "name": "Pillar 1: DepurationValidator",
+      "category": "4_PILLARS",
+      "passed": false,
+      "error": "AttributeError: 'DepurationValidator' object has no attribute 'validate_file'",
+      "details": {},
+      "duration_ms": 3.816843032836914
+    },
+    {
+      "name": "Pillar 2: SDO",
+      "category": "4_PILLARS",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.11706352233886719
+    },
+    {
+      "name": "Pillar 3: WiringConfiguration",
+      "category": "4_PILLARS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "wiring_created": true,
+        "has_validate_method": true
+      },
+      "duration_ms": 39.901018142700195
+    },
+    {
+      "name": "Pillar 4: HarmonizationValidator",
+      "category": "4_PILLARS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "validator_created": true,
+        "has_validate_method": true
+      },
+      "duration_ms": 28.72323989868164
+    },
+    {
+      "name": "Vehicle: BaseVehicle",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "class_exists": true,
+        "is_base": true
+      },
+      "duration_ms": 0.00476837158203125
+    },
+    {
+      "name": "Vehicle: SignalRegistryVehicle",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.029087066650390625
+    },
+    {
+      "name": "Vehicle: SignalContextScoper",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.018358230590820312
+    },
+    {
+      "name": "Vehicle: SignalQualityMetrics",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.018835067749023438
+    },
+    {
+      "name": "Vehicle: SignalIrrigator",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.008106231689453125
+    },
+    {
+      "name": "Vehicle: SignalLoader",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.008821487426757812
+    },
+    {
+      "name": "Vehicle: SignalEnhancementIntegrator",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.014066696166992188
+    },
+    {
+      "name": "Vehicle: SignalEvidenceExtractor",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.015020370483398438
+    },
+    {
+      "name": "Vehicle: SignalIntelligenceLayer",
+      "category": "VEHICLES",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_process": true
+      },
+      "duration_ms": 0.0171661376953125
+    },
+    {
+      "name": "Consumer: phase0",
+      "category": "CONSUMERS",
+      "passed": false,
+      "error": "ImportError: cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal' (/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_",
+      "details": {},
+      "duration_ms": 1.8818378448486328
+    },
+    {
+      "name": "Consumer: phase1",
+      "category": "CONSUMERS",
+      "passed": false,
+      "error": "ImportError: cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal' (/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_",
+      "details": {},
+      "duration_ms": 0.9298324584960938
+    },
+    {
+      "name": "Consumer: phase2",
+      "category": "CONSUMERS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_consume": true,
+        "has_contract": true
+      },
+      "duration_ms": 0.031948089599609375
+    },
+    {
+      "name": "Consumer: phase3",
+      "category": "CONSUMERS",
+      "passed": false,
+      "error": "ImportError: cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal' (/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_",
+      "details": {},
+      "duration_ms": 0.8080005645751953
+    },
+    {
+      "name": "Consumer: phase4",
+      "category": "CONSUMERS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_consume": true,
+        "has_contract": true
+      },
+      "duration_ms": 0.0209808349609375
+    },
+    {
+      "name": "Consumer: phase5",
+      "category": "CONSUMERS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_consume": true,
+        "has_contract": true
+      },
+      "duration_ms": 0.013113021850585938
+    },
+    {
+      "name": "Consumer: phase6",
+      "category": "CONSUMERS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_consume": true,
+        "has_contract": true
+      },
+      "duration_ms": 0.011682510375976562
+    },
+    {
+      "name": "Consumer: phase7",
+      "category": "CONSUMERS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_consume": true,
+        "has_contract": true
+      },
+      "duration_ms": 0.014781951904296875
+    },
+    {
+      "name": "Consumer: phase8",
+      "category": "CONSUMERS",
+      "passed": false,
+      "error": "ImportError: cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal' (/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_",
+      "details": {},
+      "duration_ms": 0.518798828125
+    },
+    {
+      "name": "Consumer: phase9",
+      "category": "CONSUMERS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "instantiated": true,
+        "has_consume": true,
+        "has_contract": true
+      },
+      "duration_ms": 0.022649765014648438
+    },
+    {
+      "name": "IrrigationMap",
+      "category": "IRRIGATION",
+      "passed": true,
+      "error": "",
+      "details": {
+        "map_created": true,
+        "route_added": true,
+        "stats": {
+          "total_routes": 1,
+          "irrigable_now": 1,
+          "not_irrigable_yet": 0,
+          "definitely_not": 0,
+          "irrigable_percentage": 100.0,
+          "phases": [
+            "Phase_01"
+          ],
+          "vehicles_in_use": [
+            "signal_registry"
+          ],
+          "consumers_registered": [],
+          "gap_summary": {}
+        }
+      },
+      "duration_ms": 3.5750865936279297
+    },
+    {
+      "name": "IrrigationExecutor",
+      "category": "IRRIGATION",
+      "passed": true,
+      "error": "",
+      "details": {
+        "executor_created": true,
+        "has_irrigate": false
+      },
+      "duration_ms": 2.780914306640625
+    },
+    {
+      "name": "IrrigationValidator",
+      "category": "IRRIGATION",
+      "passed": false,
+      "error": "TypeError: IrrigationValidator.__init__() missing 2 required positional arguments: 'signal_vocabulary' and 'capability_vocabulary'",
+      "details": {},
+      "duration_ms": 1.6891956329345703
+    },
+    {
+      "name": "ConsumptionContract validation",
+      "category": "CONTRACTS",
+      "passed": true,
+      "error": "",
+      "details": {
+        "contract_valid": true,
+        "signal_types": 3
+      },
+      "duration_ms": 0.010967254638671875
+    },
+    {
+      "name": "IrrigationContract validation",
+      "category": "CONTRACTS",
+      "passed": false,
+      "error": "TypeError: IrrigationContract.__init__() got an unexpected keyword argument 'target_phase'",
+      "details": {},
+      "duration_ms": 0.0059604644775390625
+    },
+    {
+      "name": "Create \u2192 Dispatch \u2192 Consume flow",
+      "category": "SIGNAL_FLOW",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.10323524475097656
+    },
+    {
+      "name": "Multi-consumer dispatch",
+      "category": "SIGNAL_FLOW",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.07081031799316406
+    },
+    {
+      "name": "SDO gates configured",
+      "category": "SDO",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.28705596923828125
+    },
+    {
+      "name": "SDO metrics",
+      "category": "SDO",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.07414817810058594
+    },
+    {
+      "name": "SDO dead letter handling",
+      "category": "SDO",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.06508827209472656
+    },
+    {
+      "name": "UnifiedOrchestrator creation",
+      "category": "ORCHESTRATOR",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 314.15390968322754
+    },
+    {
+      "name": "UnifiedOrchestrator consumers",
+      "category": "ORCHESTRATOR",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.2658367156982422
+    },
+    {
+      "name": "UnifiedOrchestrator phase methods",
+      "category": "ORCHESTRATOR",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.22983551025390625
+    },
+    {
+      "name": "UnifiedOrchestrator signal emission",
+      "category": "ORCHESTRATOR",
+      "passed": false,
+      "error": "ModuleNotFoundError: No module named 'canonic_questionnaire_central'",
+      "details": {},
+      "duration_ms": 0.31685829162597656
+    }
+  ]
+}

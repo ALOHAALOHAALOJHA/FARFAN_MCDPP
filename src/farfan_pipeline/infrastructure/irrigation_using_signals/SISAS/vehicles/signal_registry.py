@@ -8,12 +8,12 @@ import os
 from .base_vehicle import BaseVehicle, VehicleCapabilities
 from .. core.signal import Signal, SignalContext, SignalSource, SignalConfidence
 from ..core.event import Event
-from ..signals.types.structural import (
+from ..signal_types.types.structural import (
     StructuralAlignmentSignal, 
     AlignmentStatus,
     CanonicalMappingSignal
 )
-from ..signals.types.integrity import (
+from ..signal_types.types.integrity import (
     EventPresenceSignal,
     PresenceStatus,
     EventCompletenessSignal,

@@ -5,8 +5,8 @@ from typing import Any, Dict, List, Optional
 
 from .base_vehicle import BaseVehicle, VehicleCapabilities
 from ..core.signal import Signal, SignalContext, SignalSource, SignalConfidence
-from ..signals.types.structural import CanonicalMappingSignal
-from ..signals.types.epistemic import (
+from ..signal_types.types.structural import CanonicalMappingSignal
+from ..signal_types.types.epistemic import (
     AnswerDeterminacySignal,
     DeterminacyLevel,
     AnswerSpecificitySignal,

@@ -13,7 +13,7 @@ from ..core.event import Event, EventStore, EventType
 from ..core.contracts import IrrigationContract, ContractRegistry, ContractStatus
 from ..core.bus import BusRegistry
 from ..vehicles.base_vehicle import BaseVehicle
-from ..signals.types.operational import ExecutionAttemptSignal, ExecutionStatus, FailureModeSignal, FailureMode
+from ..signal_types.types.operational import ExecutionAttemptSignal, ExecutionStatus, FailureModeSignal, FailureMode
 
 
 class IrrigationPhase(Enum):

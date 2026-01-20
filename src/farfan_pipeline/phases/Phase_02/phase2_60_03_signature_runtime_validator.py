@@ -38,7 +38,7 @@ import logging
 from pathlib import Path
 from typing import Any, TypedDict
 
-from orchestration.method_signature_validator import (
+from farfan_pipeline.phases.Phase_02.phase2_20_00_method_signature_validator import (
     MethodSignatureValidator,
 )
 
