@@ -188,24 +188,24 @@
       "purpose": "Aggregation enhancement utilities"
     },
     {
-      "filename": "contracts/phase4_input_contract.py",
-      "canonical_name": "phase4_input_contract",
+      "filename": "contracts/phase4_10_00_input_contract.py",
+      "canonical_name": "phase4_10_00_input_contract",
       "type": "CONTRACT",
       "criticality": "CRITICAL",
       "lines_of_code": 208,
       "purpose": "Phase 4 input contract specification"
     },
     {
-      "filename": "contracts/phase4_mission_contract.py",
-      "canonical_name": "phase4_mission_contract",
+      "filename": "contracts/phase4_10_01_mission_contract.py",
+      "canonical_name": "phase4_10_01_mission_contract",
       "type": "CONTRACT",
       "criticality": "CRITICAL",
       "lines_of_code": 279,
       "purpose": "Phase 4 mission and topological order contract"
     },
     {
-      "filename": "contracts/phase4_output_contract.py",
-      "canonical_name": "phase4_output_contract",
+      "filename": "contracts/phase4_10_02_output_contract.py",
+      "canonical_name": "phase4_10_02_output_contract",
       "type": "CONTRACT",
       "criticality": "CRITICAL",
       "lines_of_code": 280,

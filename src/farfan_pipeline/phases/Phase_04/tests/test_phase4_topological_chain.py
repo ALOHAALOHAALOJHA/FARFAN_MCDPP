@@ -101,9 +101,9 @@ class TestPhase4ModuleImports:
     
     def test_import_contracts(self):
         """Test importing all contracts."""
-        from farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract import Phase4InputContract
-        from farfan_pipeline.phases.Phase_04.contracts.phase4_mission_contract import Phase4MissionContract
-        from farfan_pipeline.phases.Phase_04.contracts.phase4_output_contract import Phase4OutputContract
+        from farfan_pipeline.phases.Phase_04.contracts.phase4_10_00_input_contract import Phase4InputContract
+        from farfan_pipeline.phases.Phase_04.contracts.phase4_10_01_mission_contract import Phase4MissionContract
+        from farfan_pipeline.phases.Phase_04.contracts.phase4_10_02_output_contract import Phase4OutputContract
 
         assert Phase4InputContract is not None
         assert Phase4MissionContract is not None
@@ -149,9 +149,9 @@ class TestPhase4LayerDependencies:
     
     def test_contracts_can_import_primitives(self):
         """Test that contracts can safely import from primitives."""
-        from farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract import Phase4InputContract
+        from farfan_pipeline.phases.Phase_04.contracts.phase4_10_00_input_contract import Phase4InputContract
         from farfan_pipeline.phases.Phase_04.primitives import AggregationSettings
-        
+
         # Both should be importable without issues
         assert Phase4InputContract is not None
         assert AggregationSettings is not None
