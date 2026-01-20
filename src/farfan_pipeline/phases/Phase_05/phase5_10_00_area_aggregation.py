@@ -89,6 +89,21 @@ from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (
 # Import canonical AreaScore from phase5_00_00_area_score
 from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
 
+# Phase 5 primitives (v2.0)
+from farfan_pipeline.phases.Phase_05.primitives.phase5_00_00_types import (
+    AggregationStrategy,
+    DimensionContribution,
+    SensitivityAnalysis,
+    StatisticalMetrics,
+    SynthesisDepth,
+)
+from farfan_pipeline.phases.Phase_05.primitives.phase5_00_00_statistical_primitives import (
+    compute_robust_mean,
+    compute_statistical_metrics,
+    detect_outliers_iqr,
+    detect_outliers_zscore,
+)
+
 logger = logging.getLogger(__name__)
 
 

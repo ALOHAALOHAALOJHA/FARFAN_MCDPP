@@ -428,16 +428,24 @@ class UnifiedFactory:
     # ==========================================================================
     # COMPONENT CREATION
     # ==========================================================================
+    # NOTE: These are optional advanced analysis components that may not be
+    # available in all deployments. They gracefully return None if the
+    # underlying modules are not installed.
+    # ==========================================================================
 
     def create_contradiction_detector(self):
         """
         Create contradiction detector instance.
 
-        Returns:
-            ContradictionDetector instance
+        This is an OPTIONAL advanced analysis component. The module may not
+        be available in all deployments.
 
-        Raises:
-            ImportError: If detector module is not available
+        Returns:
+            ContradictionDetector instance or None if module not available
+
+        Note:
+            This component requires farfan_pipeline.phases.Phase_02.methods.contradiction_detector
+            which is an optional dependency. Returns None gracefully if unavailable.
         """
         try:
             from farfan_pipeline.phases.Phase_02.methods.contradiction_detector import (
@@ -446,8 +454,14 @@ class UnifiedFactory:
 
             return ContradictionDetector(self.questionnaire)
         except ImportError as e:
+            logger.debug(
+                "ContradictionDetector not available (optional component)",
+                error=str(e),
+            )
+            return None
+        except Exception as e:
             logger.warning(
-                "ContradictionDetector not available, returning None",
+                "ContradictionDetector initialization failed",
                 error=str(e),
             )
             return None
@@ -456,8 +470,15 @@ class UnifiedFactory:
         """
         Create temporal logic verifier instance.
 
+        This is an OPTIONAL advanced analysis component. The module may not
+        be available in all deployments.
+
         Returns:
-            TemporalLogicVerifier instance or None if not available
+            TemporalLogicVerifier instance or None if module not available
+
+        Note:
+            This component requires farfan_pipeline.phases.Phase_02.methods.temporal_logic
+            which is an optional dependency. Returns None gracefully if unavailable.
         """
         try:
             from farfan_pipeline.phases.Phase_02.methods.temporal_logic import (
@@ -466,8 +487,14 @@ class UnifiedFactory:
 
             return TemporalLogicVerifier(self.questionnaire)
         except ImportError as e:
+            logger.debug(
+                "TemporalLogicVerifier not available (optional component)",
+                error=str(e),
+            )
+            return None
+        except Exception as e:
             logger.warning(
-                "TemporalLogicVerifier not available, returning None",
+                "TemporalLogicVerifier initialization failed",
                 error=str(e),
             )
             return None
@@ -476,8 +503,15 @@ class UnifiedFactory:
         """
         Create Bayesian confidence calculator instance.
 
+        This is an OPTIONAL advanced analysis component. The module may not
+        be available in all deployments.
+
         Returns:
-            BayesianConfidenceCalculator instance or None if not available
+            BayesianConfidenceCalculator instance or None if module not available
+
+        Note:
+            This component requires farfan_pipeline.phases.Phase_02.methods.bayesian_calculator
+            which is an optional dependency. Returns None gracefully if unavailable.
         """
         try:
             from farfan_pipeline.phases.Phase_02.methods.bayesian_calculator import (
@@ -486,8 +520,14 @@ class UnifiedFactory:
 
             return BayesianConfidenceCalculator(self.questionnaire)
         except ImportError as e:
+            logger.debug(
+                "BayesianConfidenceCalculator not available (optional component)",
+                error=str(e),
+            )
+            return None
+        except Exception as e:
             logger.warning(
-                "BayesianConfidenceCalculator not available, returning None",
+                "BayesianConfidenceCalculator initialization failed",
                 error=str(e),
             )
             return None
@@ -496,8 +536,15 @@ class UnifiedFactory:
         """
         Create municipal analyzer instance.
 
+        This is an OPTIONAL advanced analysis component. The module may not
+        be available in all deployments.
+
         Returns:
-            MunicipalAnalyzer instance or None if not available
+            MunicipalAnalyzer instance or None if module not available
+
+        Note:
+            This component requires farfan_pipeline.phases.Phase_02.methods.municipal_analyzer
+            which is an optional dependency. Returns None gracefully if unavailable.
         """
         try:
             from farfan_pipeline.phases.Phase_02.methods.municipal_analyzer import (
@@ -506,8 +553,14 @@ class UnifiedFactory:
 
             return MunicipalAnalyzer(self.questionnaire)
         except ImportError as e:
+            logger.debug(
+                "MunicipalAnalyzer not available (optional component)",
+                error=str(e),
+            )
+            return None
+        except Exception as e:
             logger.warning(
-                "MunicipalAnalyzer not available, returning None",
+                "MunicipalAnalyzer initialization failed",
                 error=str(e),
             )
             return None
@@ -516,8 +569,16 @@ class UnifiedFactory:
         """
         Create all analysis components as a bundle.
 
+        This method attempts to create all optional analysis components.
+        Components that are not available will be excluded from the result.
+
         Returns:
-            Dict with component names as keys and instances as values
+            Dict with component names as keys and instances as values.
+            Only includes components that were successfully created.
+
+        Note:
+            All components in this bundle are OPTIONAL. The returned dict
+            may be empty if no optional components are available.
         """
         components = {
             "contradiction_detector": self.create_contradiction_detector(),
@@ -526,7 +587,7 @@ class UnifiedFactory:
             "municipal_analyzer": self.create_municipal_analyzer(),
         }
 
-        # Filter out None values
+        # Filter out None values (unavailable components)
         components = {k: v for k, v in components.items() if v is not None}
 
         logger.debug(

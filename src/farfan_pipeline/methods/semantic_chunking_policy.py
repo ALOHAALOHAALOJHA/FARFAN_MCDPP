@@ -37,15 +37,12 @@ import numpy as np
 import torch
 
 # Check dependency lockdown before importing transformers
-from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
 from scipy import stats
 from scipy.spatial.distance import cosine
 from scipy.special import rel_entr
 from transformers import AutoModel, AutoTokenizer
 
 # CANONICAL REFACTORING: Import from canonical_specs instead of runtime JSON loading
-
-_lockdown = get_dependency_lockdown()
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray

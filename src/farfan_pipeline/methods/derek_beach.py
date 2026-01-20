@@ -9579,6 +9579,1306 @@ class DerekBeachProducer:
         return refutation.get("recommendation", "")
 
 
+# ============================================================================
+# MERGED MODULE: CAUSAL INFERENCE (DoWhy Integration)
+# Source: causal_inference_dowhy.py
+# ============================================================================
+
+# Required imports for merged modules
+from enum import Enum, auto
+from collections.abc import Sequence
+
+# DoWhy availability check
+DOWHY_AVAILABLE = False
+try:
+    from dowhy import CausalModel as DoWhyCausalModel
+    DOWHY_AVAILABLE = True
+except ImportError:
+    DoWhyCausalModel = Any  # type: ignore[misc, assignment]
+
+
+@dataclass
+class CausalAnalysisResult:
+    """Results from DoWhy causal analysis"""
+
+    identified: bool = False
+    estimand: Any = None
+    backdoor_variables: list[str] = field(default_factory=list)
+    instrumental_variables: list[str] = field(default_factory=list)
+    frontdoor_variables: list[str] = field(default_factory=list)
+    identification_status: str = "unidentified"
+    warnings: list[str] = field(default_factory=list)
+
+
+@dataclass
+class CausalEffectEstimate:
+    """Results from causal effect estimation"""
+
+    value: float = 0.0
+    confidence_interval: tuple[float, float] = (0.0, 0.0)
+    standard_error: float = 0.0
+    method: str = ""
+    identified: bool = False
+    warnings: list[str] = field(default_factory=list)
+
+
+@dataclass
+class RefutationResult:
+    """Results from refutation tests"""
+
+    method: str = ""
+    refuted: bool = False
+    p_value: float | None = None
+    new_effect: float | None = None
+    original_effect: float | None = None
+    summary: str = ""
+    passed: bool = True
+
+
+class DoWhyCausalAnalyzer:
+    """
+    DoWhy integration wrapper for causal inference operations.
+
+    Provides formal causal identification and estimation using Pearl's do-calculus,
+    integrated with existing NetworkX causal graphs from derek_beach.py.
+
+    Usage:
+        analyzer = DoWhyCausalAnalyzer(causal_graph)
+        result = analyzer.identify_effect(data, treatment='intervention', outcome='resultado')
+        if result.identified:
+            estimate = analyzer.estimate_effect(data, treatment='intervention', outcome='resultado')
+    """
+
+    def __init__(self, causal_graph: "nx.DiGraph | None" = None):
+        """
+        Initialize DoWhy analyzer.
+
+        Args:
+            causal_graph: NetworkX directed graph representing causal structure
+        """
+        self.graph = causal_graph or (nx.DiGraph() if NETWORKX_AVAILABLE else None)
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+        if not DOWHY_AVAILABLE:
+            self.logger.warning(
+                "DoWhy library not available. Causal identification will be limited. "
+                "Install with: pip install dowhy>=0.11.1"
+            )
+
+    def is_available(self) -> bool:
+        """Check if DoWhy is available for use."""
+        return DOWHY_AVAILABLE
+
+    def identify_effect(
+        self,
+        data: "pd.DataFrame",
+        treatment: str,
+        outcome: str,
+        common_causes: list[str] | None = None,
+        instruments: list[str] | None = None,
+    ) -> CausalAnalysisResult:
+        """
+        Identify causal effect using do-calculus.
+
+        Applies Pearl's identification criteria to determine if causal effect
+        can be estimated from observational data.
+        """
+        if not DOWHY_AVAILABLE:
+            self.logger.error("DoWhy not available for causal identification")
+            return CausalAnalysisResult(
+                identified=False,
+                identification_status="dowhy_unavailable",
+                warnings=["DoWhy library not installed"],
+            )
+
+        if treatment not in data.columns:
+            raise ValueError(f"Treatment variable '{treatment}' not found in data")
+        if outcome not in data.columns:
+            raise ValueError(f"Outcome variable '{outcome}' not found in data")
+
+        try:
+            model = DoWhyCausalModel(
+                data=data,
+                treatment=treatment,
+                outcome=outcome,
+                graph=self._get_dowhy_compatible_graph(self.graph),
+                common_causes=common_causes,
+                instruments=instruments,
+            )
+
+            identified_estimand = model.identify_effect(proceed_when_unidentifiable=True)
+
+            if identified_estimand is None:
+                return CausalAnalysisResult(
+                    identified=False,
+                    identification_status="unidentified",
+                    warnings=["Causal effect could not be identified from the graph"],
+                )
+
+            backdoor_vars = []
+            if hasattr(identified_estimand, "backdoor_variables"):
+                backdoor_vars = list(identified_estimand.backdoor_variables or [])
+
+            instrumental_vars = []
+            if hasattr(identified_estimand, "instrumental_variables"):
+                instrumental_vars = list(identified_estimand.instrumental_variables or [])
+
+            frontdoor_vars = []
+            if hasattr(identified_estimand, "frontdoor_variables"):
+                frontdoor_vars = list(identified_estimand.frontdoor_variables or [])
+
+            if backdoor_vars or instrumental_vars or frontdoor_vars:
+                status = "identified"
+                identified = True
+            else:
+                status = "unidentified"
+                identified = False
+
+            self.logger.info(
+                f"Causal identification for {treatment}->{outcome}: {status}"
+                f" (backdoor: {len(backdoor_vars)}, IV: {len(instrumental_vars)})"
+            )
+
+            return CausalAnalysisResult(
+                identified=identified,
+                estimand=identified_estimand,
+                backdoor_variables=backdoor_vars,
+                instrumental_variables=instrumental_vars,
+                frontdoor_variables=frontdoor_vars,
+                identification_status=status,
+            )
+
+        except Exception as e:
+            self.logger.error(f"Error during causal identification: {e}")
+            return CausalAnalysisResult(
+                identified=False,
+                identification_status="error",
+                warnings=[f"Identification error: {e!s}"],
+            )
+
+    def estimate_effect(
+        self,
+        data: "pd.DataFrame",
+        treatment: str,
+        outcome: str,
+        method: str = "backdoor.linear_regression",
+        common_causes: list[str] | None = None,
+    ) -> CausalEffectEstimate:
+        """Estimate causal effect with specified method."""
+        if not DOWHY_AVAILABLE:
+            self.logger.error("DoWhy not available for causal estimation")
+            return CausalEffectEstimate(
+                value=0.0,
+                confidence_interval=(0.0, 0.0),
+                method=method,
+                identified=False,
+                warnings=["DoWhy library not installed"],
+            )
+
+        if treatment not in data.columns:
+            raise ValueError(f"Treatment variable '{treatment}' not found in data")
+        if outcome not in data.columns:
+            raise ValueError(f"Outcome variable '{outcome}' not found in data")
+
+        try:
+            model = DoWhyCausalModel(
+                data=data,
+                treatment=treatment,
+                outcome=outcome,
+                graph=self._get_dowhy_compatible_graph(self.graph),
+                common_causes=common_causes,
+            )
+
+            identified_estimand = model.identify_effect()
+
+            if identified_estimand is None:
+                self.logger.warning(f"Causal effect {treatment}->{outcome} could not be identified")
+                return CausalEffectEstimate(
+                    value=0.0,
+                    confidence_interval=(0.0, 0.0),
+                    method=method,
+                    identified=False,
+                    warnings=["Causal effect not identified"],
+                )
+
+            estimate = model.estimate_effect(identified_estimand, method_name=method)
+
+            effect_value = float(estimate.value)
+            stderr = float(getattr(estimate, "stderr", 0.0))
+            ci_lower = effect_value - 1.96 * stderr
+            ci_upper = effect_value + 1.96 * stderr
+
+            self.logger.info(
+                f"Estimated causal effect {treatment}->{outcome}: "
+                f"{effect_value:.4f} (95% CI: [{ci_lower:.4f}, {ci_upper:.4f}])"
+            )
+
+            return CausalEffectEstimate(
+                value=effect_value,
+                confidence_interval=(ci_lower, ci_upper),
+                standard_error=stderr,
+                method=method,
+                identified=True,
+            )
+
+        except Exception as e:
+            self.logger.error(f"Error during causal estimation: {e}")
+            return CausalEffectEstimate(
+                value=0.0,
+                confidence_interval=(0.0, 0.0),
+                method=method,
+                identified=False,
+                warnings=[f"Estimation error: {e!s}"],
+            )
+
+    def refute_estimate(
+        self,
+        data: "pd.DataFrame",
+        treatment: str,
+        outcome: str,
+        estimate: CausalEffectEstimate,
+        methods: "Sequence[str] | None" = None,
+    ) -> dict[str, RefutationResult]:
+        """Refute causal estimate with robustness checks."""
+        if not DOWHY_AVAILABLE:
+            self.logger.error("DoWhy not available for refutation tests")
+            return {}
+
+        if methods is None:
+            methods = [
+                "placebo_treatment_refuter",
+                "random_common_cause",
+                "data_subset_refuter",
+            ]
+
+        try:
+            model = DoWhyCausalModel(
+                data=data,
+                treatment=treatment,
+                outcome=outcome,
+                graph=self._get_dowhy_compatible_graph(self.graph),
+            )
+
+            identified_estimand = model.identify_effect()
+            if identified_estimand is None:
+                self.logger.warning("Cannot refute: effect not identified")
+                return {}
+
+            dowhy_estimate = model.estimate_effect(identified_estimand, method_name=estimate.method)
+
+        except Exception as e:
+            self.logger.error(f"Error setting up refutation: {e}")
+            return {}
+
+        refutation_results: dict[str, RefutationResult] = {}
+
+        for method in methods:
+            try:
+                refute = model.refute_estimate(
+                    identified_estimand, dowhy_estimate, method_name=method
+                )
+
+                p_value = getattr(refute, "p_value", None)
+                new_effect = getattr(refute, "new_effect", None)
+
+                passed = True
+                if method == "placebo_treatment_refuter":
+                    passed = (
+                        abs(new_effect) < abs(estimate.value) * 0.5
+                        if new_effect is not None
+                        else True
+                    )
+                elif p_value is not None:
+                    passed = p_value > 0.05
+
+                refutation_results[method] = RefutationResult(
+                    method=method,
+                    refuted=not passed,
+                    p_value=float(p_value) if p_value is not None else None,
+                    new_effect=float(new_effect) if new_effect is not None else None,
+                    original_effect=estimate.value,
+                    summary=str(refute),
+                    passed=passed,
+                )
+
+                self.logger.info(
+                    f"Refutation {method}: "
+                    f"{'PASSED' if passed else 'FAILED'} "
+                    f"(p={p_value:.4f if p_value else 'N/A'})"
+                )
+
+            except Exception as e:
+                self.logger.error(f"Error in refutation method {method}: {e}")
+                refutation_results[method] = RefutationResult(
+                    method=method,
+                    refuted=False,
+                    summary=f"Error: {e!s}",
+                    passed=False,
+                )
+
+        return refutation_results
+
+    def _get_dowhy_compatible_graph(self, nx_graph: "nx.DiGraph") -> "nx.DiGraph":
+        """Return NetworkX DiGraph for DoWhy consumption."""
+        return nx_graph
+
+    def get_all_paths(self, source: str, target: str) -> list[list[str]]:
+        """Find all causal paths from source to target."""
+        if not NETWORKX_AVAILABLE or self.graph is None:
+            return []
+        try:
+            return list(nx.all_simple_paths(self.graph, source, target))
+        except (nx.NetworkXNoPath, nx.NodeNotFound):
+            return []
+
+    def find_confounders(self, treatment: str, outcome: str) -> list[str]:
+        """Find potential confounders (common causes) for treatment->outcome."""
+        if not NETWORKX_AVAILABLE or self.graph is None:
+            return []
+        confounders = []
+        for node in self.graph.nodes():
+            if node == treatment or node == outcome:
+                continue
+            has_path_to_treatment = nx.has_path(self.graph, node, treatment)
+            has_path_to_outcome = nx.has_path(self.graph, node, outcome)
+            if has_path_to_treatment and has_path_to_outcome:
+                confounders.append(node)
+        return confounders
+
+    def find_mediators(self, treatment: str, outcome: str) -> list[str]:
+        """Find mediators on the causal path from treatment to outcome."""
+        if not NETWORKX_AVAILABLE or self.graph is None:
+            return []
+        if not nx.has_path(self.graph, treatment, outcome):
+            return []
+        all_paths = list(nx.all_simple_paths(self.graph, treatment, outcome))
+        mediators = set()
+        for path in all_paths:
+            mediators.update(path[1:-1])
+        return list(mediators)
+
+    def visualize_causal_graph(self, filepath: str | None = None) -> None:
+        """Visualize causal graph (requires matplotlib and graphviz)."""
+        if not NETWORKX_AVAILABLE or self.graph is None:
+            self.logger.warning("NetworkX not available for visualization")
+            return
+        try:
+            import matplotlib.pyplot as plt
+            pos = nx.spring_layout(self.graph, k=2, iterations=50)
+            plt.figure(figsize=(12, 8))
+            nx.draw(
+                self.graph,
+                pos,
+                with_labels=True,
+                node_color="lightblue",
+                node_size=3000,
+                font_size=10,
+                font_weight="bold",
+                arrows=True,
+                arrowsize=20,
+                edge_color="gray",
+            )
+            if filepath:
+                plt.savefig(filepath, dpi=300, bbox_inches="tight")
+                self.logger.info(f"Causal graph saved to {filepath}")
+            else:
+                plt.show()
+        except ImportError:
+            self.logger.warning("matplotlib not available for visualization")
+
+
+def create_dowhy_analyzer(causal_graph: "nx.DiGraph | None" = None) -> DoWhyCausalAnalyzer:
+    """Factory function to create DoWhy analyzer."""
+    return DoWhyCausalAnalyzer(causal_graph)
+
+
+# ============================================================================
+# MERGED MODULE: CAUSAL STRUCTURE LEARNING (CausalNex Integration)
+# Source: causal_structure_learning.py
+# ============================================================================
+
+# CausalNex availability check
+CAUSALNEX_AVAILABLE = False
+try:
+    from causalnex.inference import InferenceEngine
+    from causalnex.network import BayesianNetwork as CausalNexBayesianNetwork
+    from causalnex.structure import StructureModel
+    from causalnex.structure.notears import from_pandas
+    CAUSALNEX_AVAILABLE = True
+except ImportError:
+    StructureModel = Any  # type: ignore[misc, assignment]
+    CausalNexBayesianNetwork = Any  # type: ignore[misc, assignment]
+    InferenceEngine = Any  # type: ignore[misc, assignment]
+
+
+@dataclass
+class StructureLearningResult:
+    """Results from structure learning"""
+
+    structure: Any | None = None
+    n_nodes: int = 0
+    n_edges: int = 0
+    edge_list: list[tuple[str, str]] = field(default_factory=list)
+    edge_weights: dict[tuple[str, str], float] = field(default_factory=dict)
+    is_dag: bool = True
+    cycles: list[list[str]] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class CausalNexInferenceResult:
+    """Results from Bayesian Network inference (CausalNex)"""
+
+    query_variable: str = ""
+    evidence: dict[str, Any] = field(default_factory=dict)
+    posterior_distribution: dict[Any, float] = field(default_factory=dict)
+    map_estimate: Any | None = None
+    entropy: float = 0.0
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class WhatIfScenario:
+    """What-if scenario analysis result"""
+
+    scenario_name: str = ""
+    interventions: dict[str, Any] = field(default_factory=dict)
+    predictions: dict[str, dict[Any, float]] = field(default_factory=dict)
+    causal_effects: dict[str, float] = field(default_factory=dict)
+    confidence: float = 0.0
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+class CausalStructureLearner:
+    """
+    Bayesian Network structure learning for causal discovery.
+
+    Uses CausalNex's NOTEARS algorithm to learn DAG structures from data,
+    then performs Bayesian inference for what-if scenario analysis.
+    """
+
+    def __init__(self, config: Any | None = None):
+        """Initialize Causal Structure Learner."""
+        self.config = config
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.structure_model: Any | None = None
+        self.bayesian_network: Any | None = None
+        self.inference_engine: Any | None = None
+
+        if not CAUSALNEX_AVAILABLE:
+            self.logger.warning(
+                "CausalNex not available. Structure learning will be disabled. "
+                "Install with: pip install causalnex>=0.12.0"
+            )
+
+    def is_available(self) -> bool:
+        """Check if CausalNex is available."""
+        return CAUSALNEX_AVAILABLE
+
+    def learn_structure(
+        self,
+        data: "pd.DataFrame",
+        w_threshold: float = 0.3,
+        max_iter: int = 100,
+        tabu_edges: list[tuple[str, str]] | None = None,
+        tabu_parent_nodes: list[str] | None = None,
+        tabu_child_nodes: list[str] | None = None,
+    ) -> StructureLearningResult:
+        """Learn causal structure from data using NOTEARS algorithm."""
+        if not CAUSALNEX_AVAILABLE:
+            self.logger.error("CausalNex not available for structure learning")
+            return StructureLearningResult(metadata={"error": "CausalNex not available"})
+
+        if data.empty:
+            self.logger.warning("Empty dataset provided for structure learning")
+            return StructureLearningResult(metadata={"error": "Empty dataset"})
+
+        warnings_list: list[str] = []
+        n_samples = len(data)
+        if n_samples < 1000:
+            warning_msg = (
+                f"Sample size ({n_samples}) is below recommended minimum (1000). "
+                f"Structure learning may be unreliable with small samples."
+            )
+            self.logger.warning(warning_msg)
+            warnings_list.append(warning_msg)
+
+        try:
+            self.logger.info(
+                f"Learning causal structure from {len(data)} observations, "
+                f"{len(data.columns)} variables"
+            )
+
+            sm = from_pandas(
+                data,
+                w_threshold=w_threshold,
+                max_iter=max_iter,
+                tabu_edges=tabu_edges or [],
+                tabu_parent_nodes=tabu_parent_nodes or [],
+                tabu_child_nodes=tabu_child_nodes or [],
+            )
+
+            self.structure_model = sm
+
+            edge_list = list(sm.edges)
+            n_nodes = len(sm.nodes)
+            n_edges = len(edge_list)
+
+            edge_weights = {}
+            for u, v in edge_list:
+                weight = sm.get_edge_data(u, v).get("weight", 0.0)
+                edge_weights[(u, v)] = float(weight)
+
+            from networkx import simple_cycles
+            cycles = list(simple_cycles(sm))
+            is_dag = len(cycles) == 0
+
+            result = StructureLearningResult(
+                structure=sm,
+                n_nodes=n_nodes,
+                n_edges=n_edges,
+                edge_list=edge_list,
+                edge_weights=edge_weights,
+                is_dag=is_dag,
+                cycles=cycles,
+                metadata={
+                    "w_threshold": w_threshold,
+                    "max_iter": max_iter,
+                    "algorithm": "NOTEARS",
+                    "warnings": warnings_list,
+                    "n_samples": n_samples,
+                },
+            )
+
+            self.logger.info(
+                f"Learned DAG structure: {n_nodes} nodes, {n_edges} edges, is_dag={is_dag}"
+            )
+
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error learning structure: {e}")
+            return StructureLearningResult(metadata={"error": str(e)})
+
+    def fit_bayesian_network(
+        self,
+        data: "pd.DataFrame",
+        structure: Any | None = None,
+    ) -> bool:
+        """Fit Bayesian Network from structure and data."""
+        if not CAUSALNEX_AVAILABLE:
+            self.logger.error("CausalNex not available")
+            return False
+
+        if structure is None:
+            structure = self.structure_model
+
+        if structure is None:
+            self.logger.error("No structure available. Run learn_structure() first.")
+            return False
+
+        if data.empty:
+            self.logger.warning("Empty dataset for Bayesian Network fitting")
+            return False
+
+        try:
+            bn = CausalNexBayesianNetwork(structure)
+            bn.fit_node_states(data)
+            bn.fit_cpds(data)
+
+            self.bayesian_network = bn
+            self.inference_engine = InferenceEngine(bn)
+
+            self.logger.info(
+                f"Fitted Bayesian Network with {len(bn.nodes)} nodes, {len(bn.edges)} edges"
+            )
+
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Error fitting Bayesian Network: {e}")
+            return False
+
+    def query_distribution(
+        self,
+        query_variable: str,
+        evidence: dict[str, Any] | None = None,
+    ) -> CausalNexInferenceResult:
+        """Query posterior distribution given evidence."""
+        if not CAUSALNEX_AVAILABLE:
+            self.logger.error("CausalNex not available")
+            return CausalNexInferenceResult(
+                query_variable=query_variable,
+                evidence=evidence or {},
+                metadata={"error": "CausalNex not available"},
+            )
+
+        if self.inference_engine is None:
+            self.logger.error("No inference engine. Run fit_bayesian_network() first.")
+            return CausalNexInferenceResult(
+                query_variable=query_variable,
+                evidence=evidence or {},
+                metadata={"error": "No inference engine"},
+            )
+
+        try:
+            posterior = self.inference_engine.query()[query_variable]
+            if evidence:
+                posterior = self.inference_engine.query(evidence)[query_variable]
+
+            posterior_dict = dict(posterior)
+            map_estimate = max(posterior_dict, key=posterior_dict.get)  # type: ignore[arg-type]
+
+            probs = np.array(list(posterior_dict.values()))
+            entropy = float(-np.sum(probs * np.log2(probs + 1e-10)))
+
+            result = CausalNexInferenceResult(
+                query_variable=query_variable,
+                evidence=evidence or {},
+                posterior_distribution=posterior_dict,
+                map_estimate=map_estimate,
+                entropy=entropy,
+                metadata={"n_states": len(posterior_dict)},
+            )
+
+            self.logger.debug(
+                f"Query {query_variable} | {evidence}: MAP={map_estimate}, H={entropy:.3f}"
+            )
+
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error querying distribution: {e}")
+            return CausalNexInferenceResult(
+                query_variable=query_variable,
+                evidence=evidence or {},
+                metadata={"error": str(e)},
+            )
+
+    def what_if_analysis(
+        self,
+        scenario_name: str,
+        interventions: dict[str, Any],
+        query_variables: list[str],
+        baseline_evidence: dict[str, Any] | None = None,
+    ) -> WhatIfScenario:
+        """Perform what-if scenario analysis with interventions."""
+        if not CAUSALNEX_AVAILABLE:
+            self.logger.error("CausalNex not available")
+            return WhatIfScenario(
+                scenario_name=scenario_name,
+                interventions=interventions,
+                metadata={"error": "CausalNex not available"},
+            )
+
+        if self.inference_engine is None:
+            self.logger.error("No inference engine. Run fit_bayesian_network() first.")
+            return WhatIfScenario(
+                scenario_name=scenario_name,
+                interventions=interventions,
+                metadata={"error": "No inference engine"},
+            )
+
+        if not query_variables:
+            self.logger.warning("No query variables specified for what-if analysis")
+            return WhatIfScenario(
+                scenario_name=scenario_name,
+                interventions=interventions,
+                predictions={},
+                causal_effects={},
+                confidence=0.0,
+                metadata={"warning": "No query variables specified"},
+            )
+
+        try:
+            predictions: dict[str, dict[Any, float]] = {}
+            causal_effects: dict[str, float] = {}
+
+            baseline_distributions = {}
+            for var in query_variables:
+                baseline_result = self.query_distribution(var, baseline_evidence)
+                baseline_distributions[var] = baseline_result.posterior_distribution
+
+            intervention_evidence = {**(baseline_evidence or {}), **interventions}
+
+            for var in query_variables:
+                intervention_result = self.query_distribution(var, intervention_evidence)
+                predictions[var] = intervention_result.posterior_distribution
+
+                baseline_map_prob = max(baseline_distributions[var].values())
+                intervention_map_prob = max(predictions[var].values())
+                causal_effect = intervention_map_prob - baseline_map_prob
+                causal_effects[var] = float(causal_effect)
+
+            total_entropy_reduction = 0.0
+            for var in query_variables:
+                baseline_probs = np.array(list(baseline_distributions[var].values()))
+                baseline_entropy = float(-np.sum(baseline_probs * np.log2(baseline_probs + 1e-10)))
+
+                intervention_probs = np.array(list(predictions[var].values()))
+                intervention_entropy = float(
+                    -np.sum(intervention_probs * np.log2(intervention_probs + 1e-10))
+                )
+
+                entropy_reduction = baseline_entropy - intervention_entropy
+                total_entropy_reduction += entropy_reduction
+
+            avg_entropy_reduction = total_entropy_reduction / len(query_variables)
+            confidence = float(np.clip(avg_entropy_reduction / 2.0, 0.0, 1.0))
+
+            scenario = WhatIfScenario(
+                scenario_name=scenario_name,
+                interventions=interventions,
+                predictions=predictions,
+                causal_effects=causal_effects,
+                confidence=confidence,
+                metadata={
+                    "baseline_evidence": baseline_evidence,
+                    "n_query_variables": len(query_variables),
+                    "avg_entropy_reduction": avg_entropy_reduction,
+                },
+            )
+
+            self.logger.info(
+                f"What-if scenario '{scenario_name}': "
+                f"{len(query_variables)} predictions, confidence={confidence:.3f}"
+            )
+
+            return scenario
+
+        except Exception as e:
+            self.logger.error(f"Error in what-if analysis: {e}")
+            return WhatIfScenario(
+                scenario_name=scenario_name,
+                interventions=interventions,
+                metadata={"error": str(e)},
+            )
+
+    def find_causal_paths(
+        self,
+        source: str,
+        target: str,
+        max_paths: int = 10,
+        max_path_length: int | None = None,
+    ) -> list[list[str]]:
+        """Find causal paths between nodes."""
+        if not self.structure_model or not NETWORKX_AVAILABLE:
+            return []
+
+        try:
+            all_paths = list(nx.all_simple_paths(
+                self.structure_model,
+                source,
+                target,
+                cutoff=max_path_length
+            ))
+            result = all_paths[:max_paths]
+            self.logger.debug(
+                f"Found {len(all_paths)} total paths from {source} to {target}, "
+                f"returning {len(result)}"
+            )
+            return result
+        except nx.NetworkXError as e:
+            self.logger.warning(f"Path finding failed: {e}")
+            return []
+
+    def find_markov_blanket(self, variable: str) -> list[str]:
+        """Find Markov blanket of a variable."""
+        if not CAUSALNEX_AVAILABLE or self.structure_model is None:
+            return []
+
+        try:
+            sm = self.structure_model
+            blanket = set()
+            parents = list(sm.predecessors(variable))
+            blanket.update(parents)
+            children = list(sm.successors(variable))
+            blanket.update(children)
+            for child in children:
+                co_parents = list(sm.predecessors(child))
+                blanket.update(co_parents)
+            blanket.discard(variable)
+            result = list(blanket)
+            self.logger.debug(f"Markov blanket of {variable}: {result}")
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error finding Markov blanket: {e}")
+            return []
+
+    def export_structure_dot(self, output_path: str) -> bool:
+        """Export structure as DOT file for visualization."""
+        if not CAUSALNEX_AVAILABLE or self.structure_model is None:
+            return False
+
+        try:
+            from networkx.drawing.nx_pydot import write_dot
+            write_dot(self.structure_model, output_path)
+            self.logger.info(f"Structure exported to {output_path}")
+            return True
+
+        except ImportError:
+            self.logger.warning("pydot not available for DOT export")
+            return False
+        except Exception as e:
+            self.logger.error(f"Error exporting structure: {e}")
+            return False
+
+    def get_structure_summary(self) -> dict[str, Any]:
+        """Get summary statistics for learned structure."""
+        if not CAUSALNEX_AVAILABLE or self.structure_model is None:
+            return {"error": "No structure available"}
+
+        try:
+            sm = self.structure_model
+            n_nodes = len(sm.nodes)
+            n_edges = len(sm.edges)
+
+            in_degrees = dict(sm.in_degree())
+            out_degrees = dict(sm.out_degree())
+
+            if n_nodes == 0 or not in_degrees:
+                avg_in_degree = 0.0
+                avg_out_degree = 0.0
+            else:
+                avg_in_degree = np.mean(list(in_degrees.values()))
+                avg_out_degree = np.mean(list(out_degrees.values()))
+
+            root_nodes = [node for node in sm.nodes if sm.in_degree(node) == 0]
+            leaf_nodes = [node for node in sm.nodes if sm.out_degree(node) == 0]
+
+            total_degrees = {node: in_degrees[node] + out_degrees[node] for node in sm.nodes}
+            most_connected = sorted(total_degrees.items(), key=lambda x: x[1], reverse=True)[:5]
+
+            return {
+                "n_nodes": n_nodes,
+                "n_edges": n_edges,
+                "avg_in_degree": float(avg_in_degree),
+                "avg_out_degree": float(avg_out_degree),
+                "n_root_nodes": len(root_nodes),
+                "n_leaf_nodes": len(leaf_nodes),
+                "root_nodes": root_nodes,
+                "leaf_nodes": leaf_nodes,
+                "most_connected": most_connected,
+                "density": float(n_edges / (n_nodes * (n_nodes - 1))) if n_nodes > 1 else 0.0,
+            }
+
+        except Exception as e:
+            self.logger.error(f"Error getting structure summary: {e}")
+            return {"error": str(e)}
+
+
+def create_structure_learner(config: Any | None = None) -> CausalStructureLearner:
+    """Factory function to create CausalStructureLearner."""
+    return CausalStructureLearner(config=config)
+
+
+# ============================================================================
+# MERGED MODULE: BAYESIAN MULTI-LEVEL ANALYSIS SYSTEM
+# Source: bayesian_multilevel_system.py
+# ============================================================================
+
+# Note: Some types from this module (ValidatorType, ProbativeTestType, etc.)
+# complement the existing Bayesian infrastructure in derek_beach.py
+
+
+class ValidatorTypeBayesian(Enum):
+    """Types of validators for reconciliation layer"""
+
+    RANGE = auto()
+    UNIT = auto()
+    PERIOD = auto()
+    ENTITY = auto()
+
+
+class ProbativeTestTypeBayesian(Enum):
+    """Taxonomy of probative tests for Bayesian updating"""
+
+    STRAW_IN_WIND = "straw_in_wind"
+    HOOP_TEST = "hoop_test"
+    SMOKING_GUN = "smoking_gun"
+    DOUBLY_DECISIVE = "doubly_decisive"
+
+
+class PenaltyCategoryBayesian(Enum):
+    """Categories of penalties applied to scores"""
+
+    VALIDATION_FAILURE = "validation_failure"
+    DISPERSION_HIGH = "dispersion_high"
+    COVERAGE_GAP = "coverage_gap"
+    CONTRADICTION = "contradiction"
+    PEER_DEVIATION = "peer_deviation"
+
+
+@dataclass
+class ValidationRuleBayesian:
+    """Definition of a validation rule"""
+
+    validator_type: ValidatorTypeBayesian
+    field_name: str
+    expected_range: tuple[float, float] | None = None
+    expected_unit: str | None = None
+    expected_period: str | None = None
+    expected_entity: str | None = None
+    penalty_factor: float = 0.1
+
+
+@dataclass
+class ValidationResultBayesian:
+    """Result of a validation check"""
+
+    rule: ValidationRuleBayesian
+    passed: bool
+    observed_value: Any
+    expected_value: Any
+    violation_severity: float
+    penalty_applied: float
+
+
+class ReconciliationValidatorBayesian:
+    """Reconciliation Layer: Validates data against expected ranges, units, periods, entities"""
+
+    def __init__(self, validation_rules: list[ValidationRuleBayesian]) -> None:
+        self.rules = validation_rules
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def validate_range(self, value: float, rule: ValidationRuleBayesian) -> ValidationResultBayesian:
+        """Validate numeric value is within expected range"""
+        if rule.expected_range is None:
+            return ValidationResultBayesian(
+                rule=rule, passed=True, observed_value=value,
+                expected_value=None, violation_severity=0.0, penalty_applied=0.0,
+            )
+
+        min_val, max_val = rule.expected_range
+        passed = min_val <= value <= max_val
+
+        if not passed:
+            if value < min_val:
+                violation_severity = min(1.0, (min_val - value) / max(abs(min_val), 1.0))
+            else:
+                violation_severity = min(1.0, (value - max_val) / max(abs(max_val), 1.0))
+        else:
+            violation_severity = 0.0
+
+        penalty = violation_severity * rule.penalty_factor if not passed else 0.0
+
+        return ValidationResultBayesian(
+            rule=rule, passed=passed, observed_value=value,
+            expected_value=rule.expected_range, violation_severity=violation_severity,
+            penalty_applied=penalty,
+        )
+
+    def validate_data(self, data: dict[str, Any]) -> list[ValidationResultBayesian]:
+        """Validate data against all rules"""
+        results = []
+        for rule in self.rules:
+            if rule.field_name not in data:
+                continue
+            value = data[rule.field_name]
+            if rule.validator_type == ValidatorTypeBayesian.RANGE:
+                result = self.validate_range(value, rule)
+                results.append(result)
+        return results
+
+    def calculate_total_penalty(self, validation_results: list[ValidationResultBayesian]) -> float:
+        """Calculate total penalty from validation results"""
+        return sum(r.penalty_applied for r in validation_results)
+
+
+@dataclass
+class ProbativeTestBayesian:
+    """Definition of a probative test"""
+
+    test_type: ProbativeTestTypeBayesian
+    test_name: str
+    evidence_strength: float
+    prior_probability: float
+
+    def calculate_likelihood_ratio(self, test_passed: bool) -> float:
+        """Calculate Bayesian likelihood ratio"""
+        if self.test_type == ProbativeTestTypeBayesian.STRAW_IN_WIND:
+            return 2.0 if test_passed else 0.8
+        elif self.test_type == ProbativeTestTypeBayesian.HOOP_TEST:
+            return 1.2 if test_passed else 0.1
+        elif self.test_type == ProbativeTestTypeBayesian.SMOKING_GUN:
+            return 1.0 if test_passed else 0.9
+        elif self.test_type == ProbativeTestTypeBayesian.DOUBLY_DECISIVE:
+            return 2.0 if test_passed else 0.05
+        else:
+            return 1.0
+
+
+@dataclass
+class BayesianUpdateResult:
+    """Result of Bayesian updating"""
+
+    test: ProbativeTestBayesian
+    test_passed: bool
+    prior: float
+    likelihood_ratio: float
+    posterior: float
+    evidence_weight: float
+
+
+class BayesianUpdaterMultilevel:
+    """Bayesian Updater: Sequential Bayesian updating based on probative test taxonomy"""
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.updates: list[BayesianUpdateResult] = []
+
+    def update(self, prior: float, test: ProbativeTestBayesian, test_passed: bool) -> float:
+        """Perform Bayesian update using probative test"""
+        lr = test.calculate_likelihood_ratio(test_passed)
+        prior_odds = prior / (1 - prior + 1e-10)
+        posterior_odds = lr * prior_odds
+        posterior = posterior_odds / (1 + posterior_odds)
+        posterior = max(0.0, min(1.0, posterior))
+        evidence_weight = self._calculate_evidence_weight(prior, posterior)
+        update = BayesianUpdateResult(
+            test=test, test_passed=test_passed, prior=prior,
+            likelihood_ratio=lr, posterior=posterior, evidence_weight=evidence_weight,
+        )
+        self.updates.append(update)
+        self.logger.debug(
+            f"Bayesian update: {test.test_name} ({test.test_type.value}): "
+            f"prior={prior:.3f} → posterior={posterior:.3f} (LR={lr:.2f})"
+        )
+        return posterior
+
+    def sequential_update(
+        self, initial_prior: float, tests: list[tuple[ProbativeTestBayesian, bool]]
+    ) -> float:
+        """Sequentially update belief through multiple tests"""
+        current_belief = initial_prior
+        for test, test_passed in tests:
+            current_belief = self.update(current_belief, test, test_passed)
+        return current_belief
+
+    def _calculate_evidence_weight(self, prior: float, posterior: float) -> float:
+        """Calculate evidence weight using KL divergence"""
+        prior = max(1e-10, min(1 - 1e-10, prior))
+        posterior = max(1e-10, min(1 - 1e-10, posterior))
+        kl_div = posterior * np.log(posterior / prior) + (1 - posterior) * np.log(
+            (1 - posterior) / (1 - prior)
+        )
+        return abs(kl_div)
+
+    def export_to_csv(self, output_path: Path) -> None:
+        """Export posterior table to CSV"""
+        try:
+            from farfan_pipeline.analysis.factory import write_csv
+            headers = [
+                "test_name", "test_type", "test_passed", "prior",
+                "likelihood_ratio", "posterior", "evidence_weight",
+            ]
+            rows = []
+            for update in self.updates:
+                rows.append([
+                    update.test.test_name, update.test.test_type.value, update.test_passed,
+                    f"{update.prior:.4f}", f"{update.likelihood_ratio:.4f}",
+                    f"{update.posterior:.4f}", f"{update.evidence_weight:.4f}",
+                ])
+            write_csv(rows, output_path, headers=headers)
+            self.logger.info(f"Exported {len(self.updates)} Bayesian updates to {output_path}")
+        except ImportError:
+            self.logger.warning("farfan_pipeline.analysis.factory not available for CSV export")
+
+
+class DispersionEngineBayesian:
+    """Dispersion Engine: Computes CV, max_gap, Gini coefficient"""
+
+    def __init__(self, dispersion_threshold: float = 0.3) -> None:
+        self.dispersion_threshold = dispersion_threshold
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def calculate_cv(self, scores: list[float]) -> float:
+        """Calculate Coefficient of Variation (CV = std / mean)"""
+        if not scores or len(scores) < 2:
+            return 0.0
+        mean_score = np.mean(scores)
+        std_score = np.std(scores, ddof=1)
+        if mean_score == 0:
+            return 0.0
+        return std_score / mean_score
+
+    def calculate_max_gap(self, scores: list[float]) -> float:
+        """Calculate maximum gap between adjacent scores"""
+        if not scores or len(scores) < 2:
+            return 0.0
+        sorted_scores = sorted(scores)
+        gaps = [sorted_scores[i + 1] - sorted_scores[i] for i in range(len(sorted_scores) - 1)]
+        return max(gaps) if gaps else 0.0
+
+    def calculate_gini(self, scores: list[float]) -> float:
+        """Calculate Gini coefficient (0 = perfect equality, 1 = perfect inequality)"""
+        if not scores or len(scores) < 2:
+            return 0.0
+        sorted_scores = np.array(sorted(scores))
+        n = len(sorted_scores)
+        index = np.arange(1, n + 1)
+        gini = (2 * np.sum(index * sorted_scores)) / (n * np.sum(sorted_scores)) - (n + 1) / n
+        return gini
+
+    def calculate_dispersion_penalty(self, scores: list[float]) -> tuple[float, dict[str, float]]:
+        """Calculate dispersion penalty based on CV, max_gap, and Gini"""
+        cv = self.calculate_cv(scores)
+        max_gap = self.calculate_max_gap(scores)
+        gini = self.calculate_gini(scores)
+
+        cv_penalty = max(0.0, (cv - self.dispersion_threshold) * 0.5)
+        gap_penalty = max(0.0, (max_gap - 1.0) * 0.3)
+        gini_penalty = max(0.0, (gini - 0.3) * 0.4)
+
+        total_penalty = min(1.0, cv_penalty + gap_penalty + gini_penalty)
+
+        metrics = {
+            "cv": cv, "max_gap": max_gap, "gini": gini,
+            "cv_penalty": cv_penalty, "gap_penalty": gap_penalty,
+            "gini_penalty": gini_penalty, "total_penalty": total_penalty,
+        }
+
+        self.logger.debug(
+            f"Dispersion metrics: CV={cv:.3f}, max_gap={max_gap:.3f}, "
+            f"Gini={gini:.3f}, penalty={total_penalty:.3f}"
+        )
+
+        return total_penalty, metrics
+
+
+@dataclass
+class PeerContextBayesian:
+    """Peer context for comparison"""
+
+    peer_id: str
+    peer_name: str
+    scores: dict[str, float]
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class PeerComparisonBayesian:
+    """Result of peer comparison"""
+
+    target_score: float
+    peer_mean: float
+    peer_std: float
+    z_score: float
+    percentile: float
+    deviation_penalty: float
+    narrative: str
+
+
+class PeerCalibratorBayesian:
+    """Peer Calibration: Compare scores against peer context"""
+
+    def __init__(self, deviation_threshold: float = 1.5) -> None:
+        self.deviation_threshold = deviation_threshold
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def compare_to_peers(
+        self, target_score: float, peer_contexts: list[PeerContextBayesian], dimension: str
+    ) -> PeerComparisonBayesian:
+        """Compare target score to peer contexts"""
+        from scipy import stats as scipy_stats
+
+        peer_scores = [
+            peer.scores.get(dimension, 0.0) for peer in peer_contexts if dimension in peer.scores
+        ]
+
+        if not peer_scores:
+            return PeerComparisonBayesian(
+                target_score=target_score, peer_mean=0.0, peer_std=0.0,
+                z_score=0.0, percentile=0.5, deviation_penalty=0.0,
+                narrative="No peer data available for comparison",
+            )
+
+        peer_mean = np.mean(peer_scores)
+        peer_std = np.std(peer_scores, ddof=1) if len(peer_scores) > 1 else 1.0
+        z_score = (target_score - peer_mean) / (peer_std + 1e-10)
+        percentile = scipy_stats.percentileofscore(peer_scores, target_score) / 100.0
+        deviation_penalty = max(0.0, (abs(z_score) - self.deviation_threshold) * 0.2)
+        deviation_penalty = min(0.5, deviation_penalty)
+        narrative = self._generate_narrative(target_score, peer_mean, peer_std, z_score, percentile)
+
+        return PeerComparisonBayesian(
+            target_score=target_score, peer_mean=peer_mean, peer_std=peer_std,
+            z_score=z_score, percentile=percentile, deviation_penalty=deviation_penalty,
+            narrative=narrative,
+        )
+
+    def _generate_narrative(
+        self, score: float, peer_mean: float, peer_std: float, z_score: float, percentile: float
+    ) -> str:
+        """Generate narrative hook for peer comparison"""
+        if z_score > 1.5:
+            performance = "significantly above"
+        elif z_score > 0.5:
+            performance = "moderately above"
+        elif z_score > -0.5:
+            performance = "comparable to"
+        elif z_score > -1.5:
+            performance = "moderately below"
+        else:
+            performance = "significantly below"
+
+        if percentile >= 0.9:
+            rank = "top 10%"
+        elif percentile >= 0.75:
+            rank = "top quartile"
+        elif percentile >= 0.5:
+            rank = "above median"
+        elif percentile >= 0.25:
+            rank = "below median"
+        else:
+            rank = "bottom quartile"
+
+        narrative = (
+            f"Score of {score:.2f} is {performance} peer average "
+            f"({peer_mean:.2f} ± {peer_std:.2f}), "
+            f"placing in the {rank} (percentile: {percentile:.1%})"
+        )
+
+        return narrative
+
+
+@dataclass
+class ContradictionDetectionBayesian:
+    """Detected contradiction between levels"""
+
+    level_a: str
+    level_b: str
+    score_a: float
+    score_b: float
+    discrepancy: float
+    severity: float
+    description: str
+
+
+class ContradictionScannerBayesian:
+    """Macro Contradiction Scanner: Detect inconsistencies between micro↔meso↔macro"""
+
+    def __init__(self, discrepancy_threshold: float = 0.3) -> None:
+        self.discrepancy_threshold = discrepancy_threshold
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.contradictions: list[ContradictionDetectionBayesian] = []
+
+    def calculate_contradiction_penalty(self) -> float:
+        """Calculate penalty based on detected contradictions"""
+        if not self.contradictions:
+            return 0.0
+        avg_severity = np.mean([c.severity for c in self.contradictions])
+        count_factor = min(1.0, len(self.contradictions) / 10.0)
+        penalty = avg_severity * count_factor * 0.5
+        return penalty
+
+
+# ============================================================================
+# END MERGED MODULES
+# ============================================================================
+
+
 def _run_quality_gates() -> dict[str, bool]:
     """Internal quality validation gates"""
     results = {}

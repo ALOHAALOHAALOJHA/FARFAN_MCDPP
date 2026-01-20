@@ -1,32 +1,84 @@
 """
-Phase 2 Primitives Package
-==========================
+Generador Granular de Contratos Ejecutores F.A.R.F.A.N v4.0.0
 
-PHASE_LABEL: Phase 2
-Module: primitives/__init__.py
-Purpose: Pure helper functions with no phase-specific logic
+Este módulo implementa la generación granular de contratos ejecutores siguiendo
+estrictamente la especificación técnica del guide.md.
 
-This package contains utility functions that are used across Phase 2
-but do not contain business logic or state. These are "leaf nodes"
-in the dependency graph - they are imported but do not import other
-Phase 2 modules.
+INVARIANTES DE DISEÑO:
+- I-1: Autoridad Epistémica Inmutable
+- I-2: Composición Bottom-Up
+- I-3: Sin Templates por TYPE
+- I-4: Determinismo Total
+- I-5: Fail-Loud
 
-Modules classified as primitives:
-- phase2_30_04_circuit_breaker: Fault tolerance pattern (generic)
-- phase2_30_05_distributed_cache: Caching layer (generic)
-- phase2_50_01_chunk_processor: Low-level chunk utilities
-- phase2_50_02_batch_optimizer: Batch optimization algorithms
-- phase2_60_01_contract_validator_cqvr: Contract validation (stateless)
-- phase2_60_03_signature_runtime_validator: Signature validation (stateless)
-
-Note: These modules are intentionally "orphans" in the dependency sense
-because they provide pure utility functions that are called when needed
-but don't participate in the main execution chain.
-
-Version: 1.0.0
-Date: 2026-01-13
-Author: F.A.R.F.A.N Core Architecture Team
+Arquitectura en capas:
+- Layer 0: InputRegistry (carga y validación de insumos)
+- Layer 1: MethodExpander (expansión de métodos)
+- Layer 2: ChainComposer (composición de cadenas)
+- Layer 3: ContractAssembler (ensamblaje de contratos)
+- Layer 4: ContractValidator + JSONEmitter (validación y emisión)
 """
-from __future__ import annotations
 
-__all__: list[str] = []
+from .chain_composer import (
+    ChainComposer,
+    EpistemicChain,
+)
+from .contract_assembler import (
+    ContractAssembler,
+    GeneratedContract,
+)
+from .contract_generator import (
+    ContractGenerator,
+    main,
+)
+from .contract_validator import (
+    ContractValidator,
+    ValidationReport,
+    ValidationResult,
+    ValidationSeverity,
+)
+from .input_registry import (
+    ContractClassification,
+    InputLoader,
+    InputRegistry,
+    MethodAssignment,
+    MethodDefinition,
+    QuestionMethodSet,
+)
+from .json_emitter import (
+    JSONEmitter,
+)
+from .method_expander import (
+    ExpandedMethodUnit,
+    MethodExpander,
+)
+
+__all__ = [
+    # Layer 0
+    "InputLoader",
+    "InputRegistry",
+    "MethodDefinition",
+    "ContractClassification",
+    "MethodAssignment",
+    "QuestionMethodSet",
+    # Layer 1
+    "MethodExpander",
+    "ExpandedMethodUnit",
+    # Layer 2
+    "ChainComposer",
+    "EpistemicChain",
+    # Layer 3
+    "ContractAssembler",
+    "GeneratedContract",
+    # Layer 4
+    "ContractValidator",
+    "ValidationReport",
+    "ValidationResult",
+    "ValidationSeverity",
+    "JSONEmitter",
+    # Orchestrator
+    "ContractGenerator",
+    "main",
+]
+
+__version__ = "4.0.0-granular"

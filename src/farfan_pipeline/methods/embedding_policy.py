@@ -829,20 +829,6 @@ class PolicyCrossEncoderReranker:
         self._logger = logging.getLogger(self.__class__.__name__)
         self.retry_handler = retry_handler
 
-        # Check dependency lockdown before attempting model load
-        from farfan_pipeline.core.dependency_lockdown import (
-            _is_model_cached,
-            get_dependency_lockdown,
-        )
-
-        lockdown = get_dependency_lockdown()
-
-        # Check if we're trying to download a remote model when offline
-        if not _is_model_cached(model_name):
-            lockdown.check_online_model_access(
-                model_name=model_name, operation="load CrossEncoder model"
-            )
-
         # Load model with retry logic if available
         if retry_handler:
             try:
@@ -950,21 +936,6 @@ class PolicyAnalysisEmbedder:
         self.config = config
         self._logger = logging.getLogger(self.__class__.__name__)
         self.retry_handler = retry_handler
-
-        # Check dependency lockdown before attempting model loads
-        from farfan_pipeline.core.dependency_lockdown import (
-            _is_model_cached,
-            get_dependency_lockdown,
-        )
-
-        lockdown = get_dependency_lockdown()
-
-        # Check if we're trying to download remote models when offline
-        if not _is_model_cached(config.embedding_model):
-            lockdown.check_online_model_access(
-                model_name=config.embedding_model,
-                operation="load SentenceTransformer embedding model",
-            )
 
         # Initialize embedding model with retry logic
         if retry_handler:

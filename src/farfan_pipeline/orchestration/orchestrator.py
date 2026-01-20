@@ -1245,9 +1245,15 @@ class UnifiedOrchestrator:
         # Initialize the unified factory for questionnaire loading, component creation,
         # and contract execution
         if FACTORY_AVAILABLE:
+            # Determine project root using multiple fallback strategies for robustness
+            # 1. Try to locate via factory config if provided
+            # 2. Try relative path from output_dir (output_dir may be output/ or artifacts/)
+            # 3. Fall back to current working directory
+            project_root = self._determine_project_root(config)
+
             self.factory: Optional[UnifiedFactory] = UnifiedFactory(
                 config=FactoryConfig(
-                    project_root=Path(config.output_dir).parent.parent,
+                    project_root=project_root,
                     questionnaire_path=Path(config.questionnaire_path) if config.questionnaire_path else None,
                     sisas_enabled=config.enable_sisas,
                     lazy_load_questions=True,
@@ -1282,6 +1288,73 @@ class UnifiedOrchestrator:
             self.logger.warning(
                 "UnifiedFactory not available, questionnaire and components will be limited"
             )
+
+    def _determine_project_root(self, config: OrchestratorConfig) -> Path:
+        """
+        Determine project root using multiple fallback strategies.
+
+        This provides robust path resolution that works with different
+        directory layouts and configurations.
+
+        Args:
+            config: OrchestratorConfig with output_dir and other settings
+
+        Returns:
+            Path to project root directory
+
+        Strategy:
+            1. If factory_config has project_root, use it
+            2. Try output_dir.parent.parent (traditional structure)
+            3. Try output_dir.parent if artifacts/ is at output level
+            4. Fall back to current working directory
+        """
+        from pathlib import Path
+        import sys
+
+        # Strategy 1: Check for explicit factory config
+        if hasattr(config, 'factory_config') and config.factory_config:
+            if hasattr(config.factory_config, 'project_root'):
+                return Path(config.factory_config.project_root)
+
+        output_dir = Path(config.output_dir)
+
+        # Strategy 2: Try output_dir.parent.parent (output/ or artifacts/ structure)
+        # This handles cases like:
+        #   project_root/output/ -> parent.parent = project_root
+        #   project_root/artifacts/output/ -> parent.parent = project_root/artifacts
+        candidate1 = output_dir.parent.parent
+        if (candidate1 / "canonic_questionnaire_central").exists():
+            return candidate1
+        if (candidate1 / "artifacts" / "data" / "contracts").exists():
+            return candidate1
+
+        # Strategy 3: Try output_dir.parent (flat structure)
+        # This handles cases like:
+        #   project_root/output_dir/ -> parent = project_root
+        candidate2 = output_dir.parent
+        if (candidate2 / "canonic_questionnaire_central").exists():
+            return candidate2
+        if (candidate2 / "artifacts" / "data" / "contracts").exists():
+            return candidate2
+
+        # Strategy 4: Check if we're in src/ directory
+        # If this file is in src/farfan_pipeline/orchestration/orchestrator.py
+        # then project_root is 3 levels up
+        current_file = Path(__file__).resolve()
+        candidate3 = current_file.parent.parent.parent
+        if (candidate3 / "canonic_questionnaire_central").exists():
+            return candidate3
+        if (candidate3 / "artifacts" / "data" / "contracts").exists():
+            return candidate3
+
+        # Strategy 5: Fall back to current working directory
+        cwd = Path.cwd()
+        self.logger.warning(
+            "Could not determine project_root via heuristics, using CWD",
+            cwd=str(cwd),
+            output_dir=str(output_dir)
+        )
+        return cwd
 
     def _build_default_dependency_graph(self) -> DependencyGraph:
         """Build default dependency graph for all phases."""
