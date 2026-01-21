@@ -10,22 +10,22 @@ throughout the pipeline.
 
 Key Exports:
 ------------
-- UnitOfAnalysis: Core unit of analysis type
-- FiscalContext: Fiscal and financial context
-- PolicyDocument: Policy document representation
-- AnalysisResult: Analysis result container
+- CategoriaCausal: Causal category enumeration
+- UnitOfAnalysis: Core unit of analysis type (from data_models)
+- FiscalContext: Fiscal and financial context (from data_models)
 """
 
-from farfan_pipeline.core.types import (
+# Import from core.types
+from farfan_pipeline.core.types import CategoriaCausal
+
+# Import from data_models (canonical location for UnitOfAnalysis)
+from farfan_pipeline.data_models.unit_of_analysis import (
     UnitOfAnalysis,
     FiscalContext,
-    PolicyDocument,
-    AnalysisResult,
 )
 
 __all__ = [
+    "CategoriaCausal",
     "UnitOfAnalysis",
     "FiscalContext",
-    "PolicyDocument",
-    "AnalysisResult",
 ]

@@ -8,7 +8,7 @@ Key Models:
 -----------
 - UnitOfAnalysis: Core unit of analysis representation
 - FiscalContext: Fiscal and financial context
-- HandoffContracts: Inter-phase handoff contracts
+- Phase1Manifest: Phase 1 -> Phase 2 handoff contract
 """
 
 from farfan_pipeline.data_models.unit_of_analysis import (
@@ -17,11 +17,11 @@ from farfan_pipeline.data_models.unit_of_analysis import (
 )
 
 from farfan_pipeline.data_models.handoff_contracts import (
-    PhaseHandoff,
+    Phase1Manifest,
 )
 
 __all__ = [
     "UnitOfAnalysis",
     "FiscalContext",
-    "PhaseHandoff",
+    "Phase1Manifest",
 ]
