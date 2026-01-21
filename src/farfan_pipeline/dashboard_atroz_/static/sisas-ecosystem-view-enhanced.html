@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISAS Ecosystem View - ATROZ Dashboard v2.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e27;
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        .sisas-container {
+            padding: 2rem;
+            max-width: 1900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #1e2a3a;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4fc3f7;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            margin-top: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge.online {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Pipeline Phase Flow */
+        .pipeline-flow-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #4fc3f7;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .phase-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .phase-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .phase-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        .phase-circle.complete {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+
+        .phase-circle.active {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: #ff9800;
+            color: #ff9800;
+            animation: rotate 2s linear infinite;
+        }
+
+        .phase-circle.pending {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #4a5568;
+            color: #a0aec0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .phase-arrow {
+            width: 30px;
+            height: 2px;
+            background: #4a5568;
+            position: relative;
+        }
+
+        .phase-arrow.active {
+            background: #ff9800;
+            animation: flow 1s linear infinite;
+        }
+
+        @keyframes flow {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 0; }
+        }
+
+        .phase-arrow.active::after {
+            content: '▶';
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            color: #ff9800;
+            font-size: 0.8rem;
+        }
+
+        .phase-consumers {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+
+        .phase-legend {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Two-column layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Gates Panel */
+        .gates-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #2d3748;
+        }
+
+        .gate-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .gate-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .gate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .gate-name {
+            font-weight: 600;
+            color: #e0e6ed;
+            font-size: 0.9rem;
+        }
+
+        .gate-rate {
+            font-weight: 700;
+            color: #4fc3f7;
+            font-size: 1.1rem;
+        }
+
+        .gate-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .gate-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .gate-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+
+        .dlq-warning {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 3px solid #ff9800;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* Consumer Status */
+        .consumers-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #2d3748;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .consumer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .consumer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .consumer-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .consumer-item.idle {
+            border-left-color: #4caf50;
+        }
+
+        .consumer-item.active {
+            border-left-color: #ff9800;
+            background: rgba(255, 152, 0, 0.05);
+        }
+
+        .consumer-item.wait {
+            border-left-color: #2196f3;
+        }
+
+        .consumer-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .consumer-status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .consumer-status-badge.idle {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .consumer-status-badge.active {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .consumer-status-badge.wait {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+
+        .consumer-summary {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #2d3748;
+            font-size: 0.85rem;
+        }
+
+        /* Extractor Status Grid */
+        .extractor-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .extractor-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        .extractor-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .extractor-card:hover {
+            border-color: #4fc3f7;
+            transform: translateY(-2px);
+        }
+
+        .extractor-id {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #4fc3f7;
+        }
+
+        .extractor-name {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            margin-bottom: 0.75rem;
+        }
+
+        .extractor-progress {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .extractor-progress.complete {
+            color: #4caf50;
+        }
+
+        .extractor-progress.processing {
+            color: #ff9800;
+        }
+
+        .extractor-progress.pending {
+            color: #a0aec0;
+        }
+
+        .extractor-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Irrigation Progress */
+        .irrigation-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .irrigation-bar {
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .irrigation-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7 0%, #00bcd4 100%);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .irrigation-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .irrigation-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .irrigation-detail {
+            text-align: center;
+        }
+
+        .irrigation-label {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            margin-bottom: 0.25rem;
+        }
+
+        .irrigation-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4fc3f7;
+        }
+
+        /* Signal Stream */
+        .signal-stream-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .signal-stream {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .signal-entry {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            border-left: 3px solid;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .signal-entry.delivered {
+            border-left-color: #4caf50;
+        }
+
+        .signal-entry.failed {
+            border-left-color: #f44336;
+        }
+
+        .signal-timestamp {
+            color: #a0aec0;
+            font-size: 0.75rem;
+        }
+
+        .signal-type {
+            color: #4fc3f7;
+            font-weight: 600;
+        }
+
+        .signal-id {
+            color: #9e9e9e;
+            font-size: 0.75rem;
+        }
+
+        .signal-target {
+            color: #e0e6ed;
+        }
+
+        .signal-status {
+            margin-left: auto;
+            font-weight: 600;
+        }
+
+        .signal-status.delivered {
+            color: #4caf50;
+        }
+
+        .signal-status.failed {
+            color: #f44336;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .extractor-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .phase-flow {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .extractor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .irrigation-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sisas-container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>SISAS Ecosystem View</h1>
+                <div class="header-subtitle">Real-Time Signal Observatory | Live data from UnifiedOrchestrator & SDO</div>
+            </div>
+            <div class="status-badge online" id="sisasStatusBadge">
+                <div class="status-indicator online" id="sisasStatusIndicator"></div>
+                <span id="sisasStatusText">ONLINE</span>
+            </div>
+        </div>
+
+        <!-- Pipeline Phase Flow -->
+        <div class="pipeline-flow-panel">
+            <div class="panel-title">
+                <span>🔄</span>
+                PIPELINE PHASE FLOW (Animated Signal Propagation)
+            </div>
+            <div class="phase-flow" id="phaseFlow">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="phase-legend">
+                <div class="legend-item">
+                    <span style="color: #4caf50;">●</span> Complete
+                </div>
+                <div class="legend-item">
+                    <span style="color: #ff9800;">🔄</span> Active
+                </div>
+                <div class="legend-item">
+                    <span style="color: #a0aec0;">○</span> Pending
+                </div>
+                <div class="legend-item">
+                    <span style="color: #ff9800;">──►</span> Signal Flow
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column: Gates + Consumers -->
+        <div class="two-column">
+            <!-- 4-Gate Validation -->
+            <div class="gates-panel">
+                <div class="panel-title">
+                    <span>🚪</span>
+                    4-GATE VALIDATION STATUS
+                </div>
+                <div id="gatesContainer">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Consumer Status -->
+            <div class="consumers-panel">
+                <div class="panel-title">
+                    <span>⚙️</span>
+                    CONSUMER STATUS (17 Consumers)
+                </div>
+                <div class="consumer-list" id="consumerList">
+                    <!-- Dynamically populated -->
+                </div>
+                <div class="consumer-summary" id="consumerSummary">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Extractor Status (MC01-MC10) -->
+        <div class="extractor-panel">
+            <div class="panel-title">
+                <span>🔧</span>
+                EXTRACTOR STATUS (MC01-MC10)
+            </div>
+            <div class="extractor-grid" id="extractorGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Irrigation Progress -->
+        <div class="irrigation-panel">
+            <div class="panel-title">
+                <span>💧</span>
+                IRRIGATION PROGRESS (476 Items)
+            </div>
+            <div class="irrigation-bar">
+                <div class="irrigation-fill" id="irrigationFill" style="width: 37.4%"></div>
+                <div class="irrigation-percentage" id="irrigationPercentage">178/476 (37.4%)</div>
+            </div>
+            <div class="irrigation-details">
+                <div class="irrigation-detail">
+                    <div class="irrigation-label">Current</div>
+                    <div class="irrigation-value" id="irrigationCurrent">Q047 (D1-PA05)</div>
+                </div>
+                <div class="irrigation-detail">
+                    <div class="irrigation-label">Signal Type</div>
+                    <div class="irrigation-value" id="irrigationSignalType">MC05_FINANCIAL</div>
+                </div>
+                <div class="irrigation-detail">
+                    <div class="irrigation-label">Est. Completion</div>
+                    <div class="irrigation-value" id="irrigationETA">8 min 23 sec</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Signal Stream -->
+        <div class="signal-stream-panel">
+            <div class="panel-title">
+                <span>📡</span>
+                LIVE SIGNAL STREAM (SSE from /signals/stream)
+            </div>
+            <div class="signal-stream" id="signalStream">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        // Initialize WebSocket
+        const socket = io('http://localhost:5000');
+
+        // Phase data
+        const phases = [
+            { id: 'P00', name: 'Assembly', consumers: 2 },
+            { id: 'P01', name: 'Extraction', consumers: 2 },
+            { id: 'P02', name: 'Enrichment', consumers: 4 },
+            { id: 'P03', name: 'Validation', consumers: 2 },
+            { id: 'P04', name: 'Micro', consumers: 1 },
+            { id: 'P05', name: 'Meso', consumers: 1 },
+            { id: 'P06', name: 'Macro', consumers: 1 },
+            { id: 'P07', name: 'Meso Agg', consumers: 1 },
+            { id: 'P08', name: 'Macro Agg', consumers: 1 },
+            { id: 'P09', name: 'Report', consumers: 1 }
+        ];
+
+        // Current phase state (mock - will be updated by WebSocket)
+        let currentPhase = 1;
+
+        // Render phase flow
+        function renderPhaseFlow() {
+            const container = document.getElementById('phaseFlow');
+            let html = '';
+
+            phases.forEach((phase, index) => {
+                const phaseNum = parseInt(phase.id.substring(1));
+                let status = 'pending';
+                if (phaseNum < currentPhase) status = 'complete';
+                else if (phaseNum === currentPhase) status = 'active';
+
+                html += `
+                    <div class="phase-node">
+                        <div class="phase-circle ${status}">
+                            ${status === 'complete' ? '●' : (status === 'active' ? '🔄' : '○')}
+                        </div>
+                        <div style="font-size: 0.75rem; margin-top: 0.25rem;">${phase.id}</div>
+                        <div class="phase-consumers">[${phase.consumers}]</div>
+                    </div>
+                `;
+
+                if (index < phases.length - 1) {
+                    const arrowActive = phaseNum < currentPhase || phaseNum === currentPhase;
+                    html += `<div class="phase-arrow ${arrowActive ? 'active' : ''}"></div>`;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Render gates
+        function renderGates() {
+            const gates = [
+                { name: 'Gate 1 (Scope Alignment)', passed: 1247, total: 1283, rate: 97.2 },
+                { name: 'Gate 2 (Value Add)', passed: 1283, total: 1283, rate: 100, threshold: 0.30 },
+                { name: 'Gate 3 (Capability Match)', passed: 1251, total: 1283, rate: 97.5 },
+                { name: 'Gate 4 (Irrigation Channel)', passed: 1238, total: 1283, rate: 96.5 }
+            ];
+
+            const container = document.getElementById('gatesContainer');
+            let html = '';
+
+            gates.forEach(gate => {
+                html += `
+                    <div class="gate-item">
+                        <div class="gate-header">
+                            <div class="gate-name">${gate.name}</div>
+                            <div class="gate-rate">${gate.rate}%</div>
+                        </div>
+                        <div class="gate-bar">
+                            <div class="gate-fill" style="width: ${gate.rate}%"></div>
+                        </div>
+                        <div class="gate-stats">
+                            <span>${gate.passed}/${gate.total}</span>
+                            ${gate.threshold ? `<span>Pass Rate: ${gate.rate}% (threshold ${gate.threshold})</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="dlq-warning">
+                    <strong>Dead Letter Queue:</strong> 45 items | DLQ Rate: 3.5% ⚠️
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Render consumers
+        function renderConsumers() {
+            const consumers = [
+                { name: 'phase_00_bootstrap_consumer', status: 'idle' },
+                { name: 'phase_00_providers_consumer', status: 'idle' },
+                { name: 'phase_01_extraction_consumer', status: 'active' },
+                { name: 'phase_01_enrichment_consumer', status: 'active' },
+                { name: 'phase_02_enrichment_consumer', status: 'wait' },
+                { name: 'phase_02_contract_consumer', status: 'wait' },
+                { name: 'phase_02_evidence_consumer', status: 'wait' },
+                { name: 'phase_02_executor_consumer', status: 'wait' },
+                { name: 'phase_03_validation_consumer', status: 'wait' },
+                { name: 'phase_03_scoring_consumer', status: 'wait' },
+                { name: 'phase_04_micro_consumer', status: 'wait' },
+                { name: 'phase_05_meso_consumer', status: 'wait' },
+                { name: 'phase_06_macro_consumer', status: 'wait' },
+                { name: 'phase_07_meso_agg_consumer', status: 'wait' },
+                { name: 'phase_08_macro_agg_consumer', status: 'wait' },
+                { name: 'phase_09_report_consumer', status: 'wait' }
+            ];
+
+            const container = document.getElementById('consumerList');
+            let html = '';
+
+            consumers.forEach(consumer => {
+                const statusText = consumer.status.toUpperCase();
+                const icon = consumer.status === 'idle' ? '✅' : (consumer.status === 'active' ? '🔄' : '⏳');
+                html += `
+                    <div class="consumer-item ${consumer.status}">
+                        <div class="consumer-name">${consumer.name}</div>
+                        <div class="consumer-status-badge ${consumer.status}">${icon} ${statusText}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Summary
+            const active = consumers.filter(c => c.status === 'active').length;
+            const waiting = consumers.filter(c => c.status === 'wait').length;
+            const idle = consumers.filter(c => c.status === 'idle').length;
+
+            document.getElementById('consumerSummary').innerHTML = `
+                <div><strong>Active:</strong> ${active}</div>
+                <div><strong>Waiting:</strong> ${waiting}</div>
+                <div><strong>Idle:</strong> ${idle}</div>
+            `;
+        }
+
+        // Render extractors
+        function renderExtractors() {
+            const extractors = [
+                { id: 'MC01', name: 'STRUCT', progress: 92, status: 'complete' },
+                { id: 'MC02', name: 'QUANT', progress: 78, status: 'processing' },
+                { id: 'MC03', name: 'NORM', progress: 85, status: 'complete' },
+                { id: 'MC04', name: 'PROG', progress: 71, status: 'pending' },
+                { id: 'MC05', name: 'FINANC', progress: 85, status: 'processing' },
+                { id: 'MC06', name: 'POPUL', progress: 65, status: 'pending' },
+                { id: 'MC07', name: 'TEMP', progress: 88, status: 'complete' },
+                { id: 'MC08', name: 'CAUSAL', progress: 72, status: 'pending' },
+                { id: 'MC09', name: 'INSTIT', progress: 68, status: 'pending' },
+                { id: 'MC10', name: 'SEMANTIC', progress: 62, status: 'pending' }
+            ];
+
+            const container = document.getElementById('extractorGrid');
+            let html = '';
+
+            extractors.forEach(extractor => {
+                const icon = extractor.status === 'complete' ? '✅' : (extractor.status === 'processing' ? '🔄' : '⏳');
+                html += `
+                    <div class="extractor-card">
+                        <div class="extractor-id">${extractor.id}</div>
+                        <div class="extractor-name">${extractor.name}</div>
+                        <div class="extractor-progress ${extractor.status}">${icon} ${extractor.progress}%</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Add signal to stream
+        function addSignalToStream(signal) {
+            const container = document.getElementById('signalStream');
+            const entry = document.createElement('div');
+            entry.className = `signal-entry ${signal.status}`;
+            entry.innerHTML = `
+                <span class="signal-timestamp">${signal.timestamp}</span>
+                <span class="signal-type">[${signal.type}]</span>
+                <span class="signal-id">${signal.id}</span>
+                <span>→</span>
+                <span class="signal-target">${signal.target}</span>
+                <span class="signal-status ${signal.status}">${signal.statusText}</span>
+            `;
+
+            container.insertBefore(entry, container.firstChild);
+
+            // Keep max 20 entries
+            while (container.children.length > 20) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        // Mock signal generation
+        function generateMockSignals() {
+            const signalTypes = [
+                'MC05_FINANCIAL', 'PATTERN_ENRICHMENT', 'MC03_NORMATIVE',
+                'MC07_TEMPORAL', 'ENTITY_ENRICHMENT', 'MC01_STRUCTURAL'
+            ];
+            const targets = [
+                'phase_02_enrichment', 'phase_02_executor', 'phase_01_enrichment',
+                'phase_02_evidence', 'DEAD_LETTER'
+            ];
+
+            setInterval(() => {
+                const type = signalTypes[Math.floor(Math.random() * signalTypes.length)];
+                const target = targets[Math.floor(Math.random() * targets.length)];
+                const status = target === 'DEAD_LETTER' ? 'failed' : 'delivered';
+                const statusText = status === 'delivered' ? '✅ DELIVERED' : '❌ FAILED (NO_CONSUMER)';
+
+                addSignalToStream({
+                    timestamp: new Date().toLocaleTimeString(),
+                    type,
+                    id: 'sig_' + Math.random().toString(36).substring(7),
+                    target,
+                    status,
+                    statusText
+                });
+            }, 2000);
+        }
+
+        // WebSocket event handlers
+        socket.on('connect', () => {
+            console.log('[SISAS] Connected to dashboard');
+        });
+
+        socket.on('pipeline_progress', (data) => {
+            currentPhase = data.phase || 1;
+            renderPhaseFlow();
+        });
+
+        // Initial render
+        renderPhaseFlow();
+        renderGates();
+        renderConsumers();
+        renderExtractors();
+        generateMockSignals();
+
+        // Auto-refresh metrics every 5 seconds
+        setInterval(() => {
+            socket.emit('request_sisas_update');
+        }, 5000);
+    </script>
+</body>
+</html>
