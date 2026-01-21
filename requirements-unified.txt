@@ -170,10 +170,9 @@ pypdf>=6.4.0
     # Note: Pure Python PDF library.
     # Security: Updated versions fix recent CVEs.
 
-PyPDF2>=3.0.1
-    # Source: requirements-improved.txt
-    # Note: LEGACY. Successor is pypdf. Kept because explicitly requested in 'improved'.
-    # Warning: May be redundant with pypdf.
+# PyPDF2>=3.0.1
+    # REMOVED 2026-01-21: Redundant with pypdf (its successor).
+    # pypdf is the maintained fork. PyPDF2 is deprecated.
 
 img2table>=1.4.0
     # Source: requirements-improved.txt

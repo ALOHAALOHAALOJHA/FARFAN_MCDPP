@@ -2203,6 +2203,402 @@ class UnifiedOrchestrator:
 
 
 # =============================================================================
+# SECTION 10: MISSING CLASSES (Required by legacy imports)
+# =============================================================================
+# These classes are imported by tests and other modules but were missing.
+# Added 2026-01-21 to fix broken imports.
+
+@dataclass
+class Evidence:
+    """Represents evidence for a micro-question evaluation."""
+    
+    evidence_id: str = field(default_factory=lambda: str(uuid4()))
+    source: str = ""
+    content: str = ""
+    confidence: float = 0.0
+    timestamp: datetime = field(default_factory=datetime.utcnow)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "evidence_id": self.evidence_id,
+            "source": self.source,
+            "content": self.content,
+            "confidence": self.confidence,
+            "timestamp": self.timestamp.isoformat(),
+            "metadata": self.metadata,
+        }
+
+
+@dataclass
+class MicroQuestionRun:
+    """Represents a single run/execution of a micro-question."""
+    
+    run_id: str = field(default_factory=lambda: str(uuid4()))
+    question_id: str = ""
+    method_id: str = ""
+    start_time: datetime = field(default_factory=datetime.utcnow)
+    end_time: Optional[datetime] = None
+    status: str = "PENDING"
+    result: Optional[Any] = None
+    evidence: List[Evidence] = field(default_factory=list)
+    error: Optional[str] = None
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "run_id": self.run_id,
+            "question_id": self.question_id,
+            "method_id": self.method_id,
+            "start_time": self.start_time.isoformat(),
+            "end_time": self.end_time.isoformat() if self.end_time else None,
+            "status": self.status,
+            "result": self.result,
+            "evidence": [e.to_dict() for e in self.evidence],
+            "error": self.error,
+        }
+
+
+@dataclass
+class ScoredMicroQuestion:
+    """Represents a scored micro-question with its evaluation result."""
+    
+    question_id: str = ""
+    question_text: str = ""
+    score: float = 0.0
+    confidence: float = 0.0
+    evidence: List[Evidence] = field(default_factory=list)
+    method_id: str = ""
+    run: Optional[MicroQuestionRun] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "question_id": self.question_id,
+            "question_text": self.question_text,
+            "score": self.score,
+            "confidence": self.confidence,
+            "evidence": [e.to_dict() for e in self.evidence],
+            "method_id": self.method_id,
+            "run": self.run.to_dict() if self.run else None,
+            "metadata": self.metadata,
+        }
+
+
+@dataclass
+class MacroEvaluation:
+    """Represents an aggregated macro-level evaluation."""
+    
+    evaluation_id: str = field(default_factory=lambda: str(uuid4()))
+    dimension: str = ""
+    policy_area: str = ""
+    aggregated_score: float = 0.0
+    confidence: float = 0.0
+    micro_questions: List[ScoredMicroQuestion] = field(default_factory=list)
+    timestamp: datetime = field(default_factory=datetime.utcnow)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "evaluation_id": self.evaluation_id,
+            "dimension": self.dimension,
+            "policy_area": self.policy_area,
+            "aggregated_score": self.aggregated_score,
+            "confidence": self.confidence,
+            "micro_questions": [mq.to_dict() for mq in self.micro_questions],
+            "timestamp": self.timestamp.isoformat(),
+            "metadata": self.metadata,
+        }
+
+
+@dataclass
+class ResourceLimits:
+    """Resource limits for phase execution."""
+    
+    max_memory_mb: int = 4096
+    max_cpu_percent: float = 80.0
+    max_execution_time_seconds: int = 3600
+    max_concurrent_tasks: int = 4
+    enable_memory_profiling: bool = False
+    enable_cpu_profiling: bool = False
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "max_memory_mb": self.max_memory_mb,
+            "max_cpu_percent": self.max_cpu_percent,
+            "max_execution_time_seconds": self.max_execution_time_seconds,
+            "max_concurrent_tasks": self.max_concurrent_tasks,
+            "enable_memory_profiling": self.enable_memory_profiling,
+            "enable_cpu_profiling": self.enable_cpu_profiling,
+        }
+    
+    def check_memory(self, current_mb: int) -> bool:
+        """Check if current memory usage is within limits."""
+        return current_mb <= self.max_memory_mb
+    
+    def check_cpu(self, current_percent: float) -> bool:
+        """Check if current CPU usage is within limits."""
+        return current_percent <= self.max_cpu_percent
+
+
+@dataclass
+class PhaseInstrumentation:
+    """Instrumentation data for phase execution monitoring."""
+    
+    phase_id: str = ""
+    start_time: datetime = field(default_factory=datetime.utcnow)
+    end_time: Optional[datetime] = None
+    memory_samples: List[int] = field(default_factory=list)
+    cpu_samples: List[float] = field(default_factory=list)
+    checkpoints: List[Dict[str, Any]] = field(default_factory=list)
+    errors: List[str] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
+    
+    def record_memory(self, memory_mb: int) -> None:
+        """Record a memory sample."""
+        self.memory_samples.append(memory_mb)
+    
+    def record_cpu(self, cpu_percent: float) -> None:
+        """Record a CPU sample."""
+        self.cpu_samples.append(cpu_percent)
+    
+    def add_checkpoint(self, name: str, data: Optional[Dict[str, Any]] = None) -> None:
+        """Add an execution checkpoint."""
+        self.checkpoints.append({
+            "name": name,
+            "timestamp": datetime.utcnow().isoformat(),
+            "data": data or {},
+        })
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "phase_id": self.phase_id,
+            "start_time": self.start_time.isoformat(),
+            "end_time": self.end_time.isoformat() if self.end_time else None,
+            "memory_samples": self.memory_samples,
+            "cpu_samples": self.cpu_samples,
+            "checkpoints": self.checkpoints,
+            "errors": self.errors,
+            "warnings": self.warnings,
+            "peak_memory_mb": max(self.memory_samples) if self.memory_samples else 0,
+            "avg_cpu_percent": sum(self.cpu_samples) / len(self.cpu_samples) if self.cpu_samples else 0.0,
+        }
+
+
+class MethodExecutor:
+    """Executor for running methods against micro-questions."""
+    
+    def __init__(
+        self,
+        class_registry: Optional[Dict[str, type]] = None,
+        resource_limits: Optional[ResourceLimits] = None,
+    ) -> None:
+        self.class_registry = class_registry or {}
+        self.resource_limits = resource_limits or ResourceLimits()
+        self._instances: Dict[str, Any] = {}
+        self._execution_count = 0
+        self.logger = structlog.get_logger(__name__)
+    
+    def get_instance(self, class_name: str) -> Any:
+        """Get or create an instance of a registered class."""
+        if class_name not in self._instances:
+            if class_name not in self.class_registry:
+                raise ValueError(f"Class '{class_name}' not found in registry")
+            self._instances[class_name] = self.class_registry[class_name]()
+        return self._instances[class_name]
+    
+    def execute_method(
+        self,
+        class_name: str,
+        method_name: str,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+        """Execute a method on a registered class."""
+        instance = self.get_instance(class_name)
+        method = getattr(instance, method_name, None)
+        if method is None:
+            raise AttributeError(f"Method '{method_name}' not found on class '{class_name}'")
+        
+        self._execution_count += 1
+        self.logger.debug(
+            "Executing method",
+            class_name=class_name,
+            method_name=method_name,
+            execution_count=self._execution_count,
+        )
+        
+        return method(*args, **kwargs)
+    
+    def execute_micro_question(
+        self,
+        question_id: str,
+        method_binding: Dict[str, Any],
+        input_data: Dict[str, Any],
+    ) -> ScoredMicroQuestion:
+        """Execute a micro-question using its method binding."""
+        class_name = method_binding.get("class_name", "")
+        method_name = method_binding.get("method_name", "")
+        
+        run = MicroQuestionRun(
+            question_id=question_id,
+            method_id=f"{class_name}.{method_name}",
+        )
+        
+        try:
+            result = self.execute_method(class_name, method_name, input_data)
+            run.status = "COMPLETED"
+            run.end_time = datetime.utcnow()
+            run.result = result
+            
+            # Extract score and confidence from result
+            score = result.get("score", 0.0) if isinstance(result, dict) else 0.0
+            confidence = result.get("confidence", 0.0) if isinstance(result, dict) else 0.0
+            
+            return ScoredMicroQuestion(
+                question_id=question_id,
+                score=score,
+                confidence=confidence,
+                method_id=run.method_id,
+                run=run,
+            )
+            
+        except Exception as e:
+            run.status = "FAILED"
+            run.end_time = datetime.utcnow()
+            run.error = str(e)
+            self.logger.error("Method execution failed", error=str(e))
+            
+            return ScoredMicroQuestion(
+                question_id=question_id,
+                score=0.0,
+                confidence=0.0,
+                method_id=run.method_id,
+                run=run,
+                metadata={"error": str(e)},
+            )
+    
+    def get_stats(self) -> Dict[str, Any]:
+        """Get executor statistics."""
+        return {
+            "execution_count": self._execution_count,
+            "registered_classes": len(self.class_registry),
+            "active_instances": len(self._instances),
+        }
+
+
+class QuestionnaireSignalRegistry:
+    """Registry for questionnaire signals and their handlers."""
+    
+    def __init__(self) -> None:
+        self._signals: Dict[str, Dict[str, Any]] = {}
+        self._handlers: Dict[str, List[Callable]] = {}
+        self.logger = structlog.get_logger(__name__)
+    
+    def register_signal(
+        self,
+        signal_id: str,
+        signal_type: str,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Register a new signal."""
+        self._signals[signal_id] = {
+            "signal_id": signal_id,
+            "signal_type": signal_type,
+            "metadata": metadata or {},
+            "registered_at": datetime.utcnow().isoformat(),
+        }
+        self.logger.debug("Signal registered", signal_id=signal_id)
+    
+    def add_handler(self, signal_id: str, handler: Callable) -> None:
+        """Add a handler for a signal."""
+        if signal_id not in self._handlers:
+            self._handlers[signal_id] = []
+        self._handlers[signal_id].append(handler)
+    
+    def emit(self, signal_id: str, data: Any) -> None:
+        """Emit a signal to all registered handlers."""
+        handlers = self._handlers.get(signal_id, [])
+        for handler in handlers:
+            try:
+                handler(data)
+            except Exception as e:
+                self.logger.error("Handler failed", signal_id=signal_id, error=str(e))
+    
+    def get_signal(self, signal_id: str) -> Optional[Dict[str, Any]]:
+        """Get signal metadata."""
+        return self._signals.get(signal_id)
+    
+    def list_signals(self) -> List[str]:
+        """List all registered signal IDs."""
+        return list(self._signals.keys())
+
+
+class AbortSignal:
+    """Signal for aborting phase execution."""
+    
+    def __init__(self, reason: str = "", source: str = "") -> None:
+        self.reason = reason
+        self.source = source
+        self.timestamp = datetime.utcnow()
+        self._aborted = False
+    
+    def abort(self, reason: Optional[str] = None) -> None:
+        """Trigger the abort signal."""
+        if reason:
+            self.reason = reason
+        self._aborted = True
+    
+    @property
+    def is_aborted(self) -> bool:
+        """Check if abort has been signaled."""
+        return self._aborted
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "reason": self.reason,
+            "source": self.source,
+            "timestamp": self.timestamp.isoformat(),
+            "is_aborted": self._aborted,
+        }
+
+
+def execute_phase_with_timeout(
+    phase_func: Callable[..., Any],
+    timeout_seconds: int,
+    *args: Any,
+    **kwargs: Any,
+) -> Any:
+    """Execute a phase function with a timeout.
+    
+    Args:
+        phase_func: The phase function to execute
+        timeout_seconds: Maximum execution time in seconds
+        *args: Positional arguments for the phase function
+        **kwargs: Keyword arguments for the phase function
+        
+    Returns:
+        The result of the phase function
+        
+    Raises:
+        TimeoutError: If execution exceeds the timeout
+    """
+    import concurrent.futures
+    
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(phase_func, *args, **kwargs)
+        try:
+            return future.result(timeout=timeout_seconds)
+        except concurrent.futures.TimeoutError:
+            raise TimeoutError(
+                f"Phase execution timed out after {timeout_seconds} seconds"
+            )
+
+
+# Orchestrator alias for backward compatibility
+Orchestrator = UnifiedOrchestrator
+
+
+# =============================================================================
 # EXPORTS
 # =============================================================================
 
@@ -2250,4 +2646,17 @@ __all__ = [
     "ExecutionContext",
     "PipelineResult",
     "UnifiedOrchestrator",
+
+    # Legacy Support Classes (Added 2026-01-21)
+    "Evidence",
+    "MicroQuestionRun",
+    "ScoredMicroQuestion",
+    "MacroEvaluation",
+    "ResourceLimits",
+    "PhaseInstrumentation",
+    "MethodExecutor",
+    "QuestionnaireSignalRegistry",
+    "AbortSignal",
+    "execute_phase_with_timeout",
+    "Orchestrator",  # Alias for UnifiedOrchestrator
 ]

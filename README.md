@@ -2,26 +2,60 @@
 
 **A Mechanistic, Deterministic Policy Analysis Pipeline for the Evaluation of Colombian Territorial Development Plans**
 
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 | Attribute | Specification |
 |-----------|---------------|
-| **Version** | 1.0.0 (Gold Master) |
-| **Date** | 2026-01-17 |
+| **Version** | 2.0.0 |
+| **Last Updated** | 2026-01-21 |
 | **Doctrine** | SIN_CARRETA (System of Non-Compensable Integrity for Analysis of Reproducibility, Traceability, and Absolute Auditability) |
 | **Architecture** | 11-Phase Canonical Pipeline + Signal Irrigation (SISAS) |
 | **Scope** | 300 Questions × 10 Policy Areas × 6 Dimensions |
-| **Methods** | 584 Analytical Methods (240 Dispensary + 344 Specialized) |
+| **Methods** | 584 Analytical Methods (237 Mapped + 74 Classes) |
 | **Provenance** | 100% Token-to-Source Traceability |
+| **Python** | 3.12+ Required |
 
 ---
 
-# Table of Contents
+## 🚀 Quick Start
 
+```bash
+# 1. Clone and navigate
+git clone <repository_url> FARFAN_MCDPP
+cd FARFAN_MCDPP
+
+# 2. Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Install dependencies
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+pip install -e .
+
+# 4. Download NLP models
+python -m spacy download es_core_news_lg
+
+# 5. Run tests
+pytest tests/ -v
+```
+
+---
+
+## 📋 Table of Contents
+
+### Getting Started
+- [Quick Start](#-quick-start)
+- [Installation Guide](#installation-guide)
+- [Configuration](#configuration)
+
+### Architecture
 1. [Introduction & Philosophy](#chapter-1-introduction--philosophy)
 2. [Phase 0: The Pre-Execution Gatekeeper](#chapter-2-phase-0---the-pre-execution-gatekeeper)
 3. [Phase 1: Ingestion & Acquisition](#chapter-3-phase-1---ingestion--acquisition)
 4. [Phase 2: Orchestration & Epistemology](#chapter-4-phase-2---orchestration--epistemology)
-    * [4.1 Epistemological Contracts](#41-epistemological-contracts)
-    * [4.2 The Method Dispensary](#42-the-method-dispensary)
 5. [Phase 3: Normalization & Layer Scoring](#chapter-5-phase-3---normalization--layer-scoring)
 6. [Phase 4: Dimensional Aggregation](#chapter-6-phase-4---dimensional-aggregation)
 7. [Phase 5: Policy Area Integration](#chapter-7-phase-5---policy-area-integration)
@@ -30,9 +64,252 @@
 10. [Phase 8: Recommendations Engine](#chapter-10-phase-8---recommendations-engine)
 11. [Phase 9: Report Assembly](#chapter-11-phase-9---report-assembly)
 12. [Phase 10: Final Verification](#chapter-12-phase-10---final-verification)
+
+### Systems
 13. [SISAS: Signal Irrigation System](#chapter-13-sisas---signal-irrigation-system)
 14. [Calibration & Parametrization](#chapter-14-calibration--parametrization)
 15. [Canonic Questionnaire Central](#chapter-15-canonic-questionnaire-central)
+
+### Reference
+- [Project Structure](#project-structure)
+- [API Reference](#api-reference)
+- [Testing](#testing)
+- [Contributing](#contributing)
+
+---
+
+## Installation Guide
+
+### System Requirements
+
+| Requirement | Specification |
+|-------------|--------------|
+| **Python** | 3.12 or higher |
+| **Memory** | 8GB RAM minimum, 16GB recommended |
+| **Disk** | 10GB free space |
+| **OS** | macOS 12+, Ubuntu 20.04+, Windows 10+ |
+
+### macOS Prerequisites
+
+```bash
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install system dependencies
+brew install libffi cairo pango gdk-pixbuf openjdk@17
+```
+
+### Ubuntu/Debian Prerequisites
+
+```bash
+sudo apt-get update
+sudo apt-get install -y python3.12 python3.12-venv python3.12-dev \
+    build-essential libffi-dev libcairo2-dev libpango1.0-dev \
+    default-jdk git curl
+```
+
+### Full Installation
+
+```bash
+# Clone repository
+git clone <repository_url> FARFAN_MCDPP
+cd FARFAN_MCDPP
+
+# Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate   # Windows
+
+# Install core dependencies
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+
+# Install project in editable mode
+pip install -e .
+
+# Install development dependencies (optional)
+pip install -r requirements-dev.txt
+
+# Download NLP models
+python -m spacy download es_core_news_lg
+python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')"
+```
+
+---
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```bash
+# Core Configuration
+FARFAN_MODE=DEV                    # DEV | PROD | TEST
+FARFAN_SEED=42                     # Master RNG seed
+FARFAN_LOG_LEVEL=INFO              # DEBUG | INFO | WARNING | ERROR
+FARFAN_STRICT_VALIDATION=false     # Enable strict mode
+
+# Resource Limits
+FARFAN_MAX_MEMORY_MB=4096
+FARFAN_MAX_WORKERS=4
+FARFAN_TIMEOUT_SECONDS=300
+
+# SISAS Configuration
+FARFAN_SISAS_ENABLE=true
+FARFAN_SISAS_BUS_QUEUE_SIZE=50000
+```
+
+---
+
+## Project Structure
+
+```
+FARFAN_MCDPP/
+├── src/farfan_pipeline/           # Main source code
+│   ├── orchestration/             # Orchestrator & Factory
+│   │   ├── orchestrator.py        # Unified orchestrator (2600+ lines)
+│   │   ├── factory.py             # Component factory
+│   │   ├── seed_registry.py       # Determinism enforcement
+│   │   └── gates/                 # Validation gates
+│   ├── calibration/               # Calibration system
+│   │   ├── calibration_core.py
+│   │   ├── epistemic_core.py
+│   │   └── registry.py
+│   ├── methods/                   # Analytical methods (74 classes)
+│   │   ├── analyzer_one.py
+│   │   ├── derek_beach.py
+│   │   ├── policy_processor.py
+│   │   └── bayesian_multilevel_system.py
+│   ├── phases/                    # Phase implementations
+│   │   ├── Phase_00/              # Bootstrap & validation
+│   │   ├── Phase_02/              # Evidence extraction
+│   │   └── ...
+│   └── infrastructure/            # SISAS & utilities
+├── canonic_questionnaire_central/ # Canonical questionnaire
+│   ├── governance/                # Method mappings (237 methods)
+│   │   ├── METHODS_TO_QUESTIONS_AND_FILES.json
+│   │   └── METHODS_OPERACIONALIZACION.json
+│   └── config/                    # Schema definitions
+├── tests/                         # Test suite
+├── scripts/                       # Utility scripts
+├── contracts/                     # Phase chain reports
+├── docs/                          # Documentation
+│   └── TECHNICAL_RUNBOOK.md       # Complete technical reference
+├── requirements.txt               # Core dependencies
+├── requirements-dev.txt           # Development dependencies
+├── pyproject.toml                 # Project configuration
+└── README.md                      # This file
+```
+
+---
+
+## API Reference
+
+### Orchestrator
+
+```python
+from farfan_pipeline.orchestration.orchestrator import (
+    OrchestratorConfig,
+    UnifiedOrchestrator,
+    ScoredMicroQuestion,
+    MacroEvaluation,
+    MethodExecutor,
+    ResourceLimits,
+    PhaseInstrumentation,
+    Evidence,
+    Orchestrator,  # Alias for UnifiedOrchestrator
+)
+
+# Create configuration
+config = OrchestratorConfig(
+    municipality_name="Test Municipality",
+    document_path="document.pdf",
+    output_dir="./output",
+    seed=42,
+    max_workers=4,
+)
+```
+
+### Resource Limits
+
+```python
+from farfan_pipeline.orchestration.orchestrator import ResourceLimits
+
+limits = ResourceLimits(
+    max_memory_mb=4096,
+    max_cpu_percent=80.0,
+    max_execution_time_seconds=3600,
+    max_concurrent_tasks=4,
+)
+
+# Check limits
+limits.check_memory(2048)  # True if within limits
+limits.check_cpu(50.0)     # True if within limits
+```
+
+### Seed Registry (Determinism)
+
+```python
+from farfan_pipeline.orchestration.seed_registry import SeedRegistry
+
+# Initialize at pipeline start
+SeedRegistry.initialize(master_seed=42)
+
+# Get derived seeds
+random_seed = SeedRegistry.get_seed("random")
+numpy_seed = SeedRegistry.get_seed("numpy")
+```
+
+---
+
+## Testing
+
+```bash
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=src/farfan_pipeline --cov-report=html
+
+# Run specific test files
+pytest tests/test_orchestrator_signal_validation.py -v
+pytest tests/test_aggregation_pipeline_integration.py -v
+
+# Run by marker
+pytest tests/ -m "not slow"        # Fast tests only
+pytest tests/ -m integration       # Integration tests
+pytest tests/ -k "orchestrator"    # Tests matching pattern
+```
+
+---
+
+## Key Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Total Python Files** | 200+ |
+| **Lines of Code** | 100,000+ |
+| **Registered Classes** | 74 |
+| **Mapped Methods** | 237 |
+| **Test Files** | 50+ |
+| **Phases** | 11 (0-10) |
+| **Policy Areas** | 10 |
+| **Dimensions** | 6 |
+| **Questions** | 300 |
+
+---
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [TECHNICAL_RUNBOOK.md](docs/TECHNICAL_RUNBOOK.md) | Complete technical reference with all commands |
+| [README.ES.md](README.ES.md) | Spanish language README |
+| [COMPREHENSIVE_AUDIT_REPORT.md](COMPREHENSIVE_AUDIT_REPORT.md) | System audit report |
+| [SISAS_INTEGRATION_REPORT.md](SISAS_INTEGRATION_REPORT.md) | SISAS integration details |
+
+---
 
 ---
 

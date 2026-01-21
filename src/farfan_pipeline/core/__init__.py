@@ -1,8 +1,31 @@
 """
-Core module for F.A.R.F.A.N pipeline.
+F.A.R.F.A.N Core Module
+========================
 
-This module provides core functionality and canonical definitions
-for the F.A.R.F.A.N Multi-Criteria Decision-Making Public Policy framework.
+Core types, canonical notation, and fundamental definitions
+for the F.A.R.F.A.N framework.
+
+This module provides the foundational types and interfaces used
+throughout the pipeline.
+
+Key Exports:
+------------
+- UnitOfAnalysis: Core unit of analysis type
+- FiscalContext: Fiscal and financial context
+- PolicyDocument: Policy document representation
+- AnalysisResult: Analysis result container
 """
 
-__all__ = ["canonical_notation"]
+from farfan_pipeline.core.types import (
+    UnitOfAnalysis,
+    FiscalContext,
+    PolicyDocument,
+    AnalysisResult,
+)
+
+__all__ = [
+    "UnitOfAnalysis",
+    "FiscalContext",
+    "PolicyDocument",
+    "AnalysisResult",
+]
