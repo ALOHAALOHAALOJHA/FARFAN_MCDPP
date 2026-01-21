@@ -25,7 +25,7 @@ class TestOrchestratorSignalValidationIntegration:
 
     def test_orchestrator_calls_signal_validation_on_init(self):
         """Orchestrator calls validate_signals_for_questionnaire during init."""
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, MethodExecutor
+        from farfan_pipeline.orchestration.compatibility import Orchestrator, MethodExecutor
         from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
@@ -82,7 +82,7 @@ class TestOrchestratorSignalValidationIntegration:
         executor_config = Mock(spec=ExecutorConfig)
 
         # Initialize orchestrator (should call validation)
-        with patch("orchestration.orchestrator._validate_questionnaire_structure"):
+        with patch("farfan_pipeline.orchestration.compatibility.Orchestrator._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
                 questionnaire=mock_questionnaire,
@@ -97,7 +97,7 @@ class TestOrchestratorSignalValidationIntegration:
 
     def test_orchestrator_fails_in_prod_mode_with_invalid_signals(self):
         """Orchestrator raises RuntimeError in PROD mode when signals invalid."""
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, MethodExecutor
+        from farfan_pipeline.orchestration.compatibility import Orchestrator, MethodExecutor
         from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
@@ -144,7 +144,7 @@ class TestOrchestratorSignalValidationIntegration:
 
         # Should raise RuntimeError in PROD mode
         with pytest.raises(RuntimeError) as exc_info:
-            with patch("orchestration.orchestrator._validate_questionnaire_structure"):
+            with patch("farfan_pipeline.orchestration.compatibility.Orchestrator._validate_questionnaire_structure"):
                 Orchestrator(
                     method_executor=mock_executor,
                     questionnaire=mock_questionnaire,
@@ -159,7 +159,7 @@ class TestOrchestratorSignalValidationIntegration:
 
     def test_orchestrator_warns_in_dev_mode_with_invalid_signals(self, caplog):
         """Orchestrator logs warning in DEV mode but continues."""
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, MethodExecutor
+        from farfan_pipeline.orchestration.compatibility import Orchestrator, MethodExecutor
         from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
@@ -211,7 +211,7 @@ class TestOrchestratorSignalValidationIntegration:
         executor_config = Mock(spec=ExecutorConfig)
 
         # Should succeed but log warning
-        with patch("orchestration.orchestrator._validate_questionnaire_structure"):
+        with patch("farfan_pipeline.orchestration.compatibility.Orchestrator._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
                 questionnaire=mock_questionnaire,
@@ -224,7 +224,7 @@ class TestOrchestratorSignalValidationIntegration:
 
     def test_orchestrator_logs_validation_success(self, caplog):
         """Orchestrator logs when signal validation passes."""
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, MethodExecutor
+        from farfan_pipeline.orchestration.compatibility import Orchestrator, MethodExecutor
         from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components with valid signals
@@ -280,7 +280,7 @@ class TestOrchestratorSignalValidationIntegration:
         executor_config = Mock(spec=ExecutorConfig)
 
         # Initialize orchestrator
-        with patch("orchestration.orchestrator._validate_questionnaire_structure"):
+        with patch("farfan_pipeline.orchestration.compatibility.Orchestrator._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
                 questionnaire=mock_questionnaire,
@@ -354,7 +354,7 @@ class TestOrchestratorSignalValidationRobustness:
 
     def test_orchestrator_handles_validation_exception_gracefully(self):
         """Orchestrator handles exceptions during validation gracefully."""
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, MethodExecutor
+        from farfan_pipeline.orchestration.compatibility import Orchestrator, MethodExecutor
         from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         # Create mock components
@@ -386,7 +386,7 @@ class TestOrchestratorSignalValidationRobustness:
 
         # Should raise the exception (not silently catch it)
         with pytest.raises(Exception) as exc_info:
-            with patch("orchestration.orchestrator._validate_questionnaire_structure"):
+            with patch("farfan_pipeline.orchestration.compatibility.Orchestrator._validate_questionnaire_structure"):
                 Orchestrator(
                     method_executor=mock_executor,
                     questionnaire=mock_questionnaire,
@@ -398,7 +398,7 @@ class TestOrchestratorSignalValidationRobustness:
 
     def test_orchestrator_requires_signal_registry(self):
         """Orchestrator fails if signal_registry is None."""
-        from farfan_pipeline.orchestration.core_orchestrator import Orchestrator, MethodExecutor
+        from farfan_pipeline.orchestration.compatibility import Orchestrator, MethodExecutor
         from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import CanonicalQuestionnaire
 
         mock_questionnaire = Mock(spec=CanonicalQuestionnaire)
@@ -414,7 +414,7 @@ class TestOrchestratorSignalValidationRobustness:
 
         # Should raise RuntimeError about missing signal_registry
         with pytest.raises(RuntimeError) as exc_info:
-            with patch("orchestration.orchestrator._validate_questionnaire_structure"):
+            with patch("farfan_pipeline.orchestration.compatibility.Orchestrator._validate_questionnaire_structure"):
                 Orchestrator(
                     method_executor=mock_executor,
                     questionnaire=mock_questionnaire,

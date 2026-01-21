@@ -6,7 +6,7 @@ It re-exports components from _deprecated/signal_consumption.py.
 Note: This is a compatibility shim. The actual implementation is in _deprecated/.
 """
 
-from ._deprecated.signal_consumption import (
+from .audit.questionnaire_access_audit import (
     AccessLevel,
     get_access_audit,
     QuestionnaireAccessAudit,

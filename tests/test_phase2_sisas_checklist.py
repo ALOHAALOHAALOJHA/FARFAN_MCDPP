@@ -93,7 +93,7 @@ SignalPack = None
 
 # Signal loader for building packs by policy area - REAL PATH
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_loader import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_loader import (
         build_all_signal_packs,
         build_signal_pack_from_monolith,
     )

@@ -1391,13 +1391,7 @@ class UnifiedOrchestrator:
             elif config.enable_sisas and not SISAS_HUB_AVAILABLE:
                 # Fallback to old method if hub not available
                 self.context.sisas = self.factory.get_sisas_central()
-            
-            # ==========================================================================
-            # INTERVENTION 2: Orchestrator-Factory Alignment
-            # ==========================================================================
-            # Perform initial sync with factory
-            self._sync_with_factory()
-                # Register phase consumers with SDO
+                # Register phase consumers with SDO (legacy mode)
                 if self.context.sisas is not None:
                     consumers_registered = self._register_phase_consumers()
                     self.logger.info(f"SISAS initialized (legacy mode) with {consumers_registered} consumers")

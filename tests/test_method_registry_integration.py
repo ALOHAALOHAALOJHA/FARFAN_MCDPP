@@ -19,7 +19,7 @@ import pytest
 import time
 from unittest.mock import Mock, patch
 
-from orchestration.method_registry import MethodRegistry
+from farfan_pipeline.orchestration.method_registry import MethodRegistry
 
 # Try to check if MethodExecutor is available, skip tests if dependencies missing
 try:
@@ -144,7 +144,7 @@ class TestMultiRunMemory:
                 class_name = f"Class_{run}_{i}"
                 entry_instance = Mock()
                 # Force into cache
-                from orchestration.method_registry import CacheEntry
+                from farfan_pipeline.orchestration.method_registry import CacheEntry
 
                 registry._cache[class_name] = CacheEntry(
                     instance=entry_instance,
@@ -180,7 +180,7 @@ class TestMultiRunMemory:
             for i in range(20):
                 class_name = f"Class_{run}_{i}"
                 entry_instance = Mock()
-                from orchestration.method_registry import CacheEntry
+                from farfan_pipeline.orchestration.method_registry import CacheEntry
 
                 registry._cache[class_name] = CacheEntry(
                     instance=entry_instance,
@@ -265,7 +265,7 @@ class TestCacheEvictionObservability:
         )
 
         # Add cache entry
-        from orchestration.method_registry import CacheEntry
+        from farfan_pipeline.orchestration.method_registry import CacheEntry
 
         registry._cache["TestClass"] = CacheEntry(
             instance=Mock(),
@@ -292,7 +292,7 @@ class TestCacheEvictionObservability:
         )
 
         # Add and evict entry
-        from orchestration.method_registry import CacheEntry
+        from farfan_pipeline.orchestration.method_registry import CacheEntry
 
         registry._cache["TestClass"] = CacheEntry(
             instance=Mock(),
@@ -312,7 +312,7 @@ class TestCacheEvictionObservability:
         registry = MethodRegistry(class_paths={})
 
         # Add entries
-        from orchestration.method_registry import CacheEntry
+        from farfan_pipeline.orchestration.method_registry import CacheEntry
 
         for i in range(5):
             registry._cache[f"Class{i}"] = CacheEntry(
@@ -437,7 +437,7 @@ class TestMemoryProfilingIntegration:
 
         # Add cache entries with different ages
         now = time.time()
-        from orchestration.method_registry import CacheEntry
+        from farfan_pipeline.orchestration.method_registry import CacheEntry
 
         registry._cache["OldClass"] = CacheEntry(
             instance=Mock(),

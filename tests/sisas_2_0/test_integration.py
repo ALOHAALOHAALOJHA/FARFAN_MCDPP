@@ -32,7 +32,7 @@ class TestFullPipelineIntegration:
     @pytest.fixture
     def orchestrator(self, resolver):
         """Create UnifiedOrchestrator connected to resolver."""
-        from src.farfan_pipeline.orchestration.orchestrator import (
+        from farfan_pipeline.orchestration.orchestrator import (
             UnifiedOrchestrator,
             OrchestratorConfig
         )
@@ -189,7 +189,7 @@ class TestUnifiedOrchestrator:
     @pytest.fixture
     def orchestrator(self):
         """Create UnifiedOrchestrator."""
-        from src.farfan_pipeline.orchestration.orchestrator import (
+        from farfan_pipeline.orchestration.orchestrator import (
             UnifiedOrchestrator,
             OrchestratorConfig
         )
@@ -203,7 +203,7 @@ class TestUnifiedOrchestrator:
 
     def test_orchestrator_state_machine(self, orchestrator):
         """Test orchestrator state machine."""
-        from src.farfan_pipeline.orchestration.orchestrator import OrchestrationState
+        from farfan_pipeline.orchestration.orchestrator import OrchestrationState
 
         # Initial state should be IDLE
         assert orchestrator.state == OrchestrationState.IDLE
