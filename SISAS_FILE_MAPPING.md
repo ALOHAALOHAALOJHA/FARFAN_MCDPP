@@ -622,7 +622,103 @@ PhaseExecutionResult (aggregated metrics)
 
 ---
 
-## SECTION 12: NEXT STEPS
+## SECTION 12: SDO VALIDATION GATES
+
+### Overview
+
+The Signal Distribution Orchestrator (SDO) implements a comprehensive 4-gate validation system to ensure signal quality and routing integrity throughout the SISAS pipeline.
+
+**Files:**
+- `canonic_questionnaire_central/core/signal_distribution_orchestrator.py` - Main SDO with validation logic (✅ ENHANCED)
+- `canonic_questionnaire_central/_registry/irrigation_validation_rules.json` - Validation rules configuration (✅ ENHANCED)
+
+### 4-Gate Validation System
+
+The SDO validates every signal through 4 sequential gates before and after dispatch:
+
+#### Gate 1: Scope Alignment Validation
+
+**Purpose:** Ensures signals have valid scope configuration
+
+**Rules:**
+- **SCOPE-001** (CRITICAL): Valid Phase - Phase must be in [phase_0, ..., phase_9]
+- **SCOPE-002** (CRITICAL): Valid Policy Area - PA must be in [PA01-PA10, ALL, CROSS_CUTTING]
+- **SCOPE-003** (CRITICAL): Signal Type Phase Alignment - Signal type must be allowed in its phase
+
+#### Gate 2: Value Add Validation
+
+**Purpose:** Ensures signals provide sufficient empirical value
+
+**Rules:**
+- **VALUE-001** (WARNING): Empirical Availability Threshold - availability >= 0.30 OR enrichment = true
+- **VALUE-002** (CRITICAL): Valid Range - 0.0 <= availability <= 1.0
+
+**Thresholds:**
+- empirical_availability_min: 0.30
+- dead_letter_rate_warning: 0.05
+- dead_letter_rate_critical: 0.10
+
+#### Gate 3: Capability Validation
+
+**Purpose:** Ensures consumers have required capabilities
+
+**Rules:**
+- **CAP-001** (CRITICAL): Consumer Has Required Capabilities - consumer.capabilities ⊇ signal.capabilities_required
+- **CAP-002** (WARNING): At Least One Eligible Consumer - ∃ consumer WHERE consumer.can_handle(signal)
+
+#### Gate 4: Irrigation Channel Validation (Post-Dispatch)
+
+**Purpose:** Validates successful signal delivery
+
+**Rules:**
+- **CHANNEL-001** (WARNING): Signal Was Routed - signal._routed == true
+- **CHANNEL-002** (WARNING): At Least One Consumer Received - len(signal._consumers) >= 1
+- **CHANNEL-003** (CRITICAL): Audit Entry Created - audit_entry exists for signal
+
+### Validation Flow
+
+```
+Signal → Gate 1 (Scope) → Gate 2 (Value) → Gate 3 (Capability) → Dispatch
+                                                                      ↓
+                                              Gate 4 (Post-Dispatch) ← Consumers
+                                                                      ↓
+                                                                   Success
+```
+
+### Dead Letter Queue
+
+Signals that fail validation are sent to the Dead Letter Queue:
+
+**Dead Letter Reasons:**
+- `INVALID_SCOPE` - Failed Gate 1
+- `LOW_VALUE` - Failed Gate 2
+- `CAPABILITY_MISMATCH` - Failed Gate 3
+- `NO_CONSUMER` - Failed Gate 3
+- `VALIDATION_FAILED` - Failed signal.validate()
+- `HANDLER_ERROR` - Consumer exception
+
+**Configuration:**
+- Enabled: true
+- Max retries: 3
+- Retention: 30 days
+- Max entries: 10,000
+
+### SDO Methods
+
+**Validation Methods:**
+- `_validate_gate_1_scope_alignment(signal)` - Gate 1 validation
+- `_validate_gate_2_value_add(signal)` - Gate 2 validation
+- `_validate_gate_3_capability(signal)` - Gate 3 validation
+- `_validate_gate_4_irrigation_channel(signal)` - Gate 4 validation
+- `validate_all_gates(signal, post_dispatch=False)` - All gates validation
+
+**Dispatch Methods:**
+- `dispatch(signal)` - Dispatch single signal through all gates
+- `dispatch_batch(signals)` - Dispatch multiple signals
+
+---
+
+## SECTION 13: NEXT STEPS
 
 ### Immediate (High Priority)
 
