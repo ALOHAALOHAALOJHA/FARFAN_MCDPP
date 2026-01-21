@@ -12,6 +12,80 @@ class IrrigabilityStatus(Enum):
     DEFINITELY_NOT = "definitely_not"
 
 
+class ItemCategory(str, Enum):
+    """Categorías de ítems irrigables"""
+    QUESTION = "question"
+    POLICY_AREA = "policy_area"
+    DIMENSION = "dimension"
+    CLUSTER = "cluster"
+    CROSS_CUTTING = "cross_cutting"
+    MESO = "meso"
+    MACRO = "macro"
+    PATTERN = "pattern"
+
+
+# Expected item counts for validation (476 total)
+EXPECTED_QUESTIONS = 300
+EXPECTED_POLICY_AREAS = 10
+EXPECTED_DIMENSIONS = 6
+EXPECTED_CLUSTERS = 4
+EXPECTED_CROSS_CUTTING = 9
+EXPECTED_MESO = 4
+EXPECTED_MACRO = 1
+EXPECTED_PATTERNS = 142
+EXPECTED_TOTAL_ITEMS = 476
+
+
+@dataclass
+class IrrigationStatistics:
+    """Estadísticas de irrigación con desglose por categoría"""
+    total_items: int = 0
+    questions: int = 0
+    policy_areas: int = 0
+    dimensions: int = 0
+    clusters: int = 0
+    cross_cutting: int = 0
+    meso: int = 0
+    macro: int = 0
+    patterns: int = 0
+    irrigable_now: int = 0
+    not_yet: int = 0
+    definitely_not: int = 0
+
+    def is_valid(self) -> bool:
+        """Valida contra conteos esperados"""
+        return (
+            self.total_items == EXPECTED_TOTAL_ITEMS and
+            self.questions == EXPECTED_QUESTIONS and
+            self.policy_areas == EXPECTED_POLICY_AREAS and
+            self.dimensions == EXPECTED_DIMENSIONS and
+            self.clusters == EXPECTED_CLUSTERS and
+            self.cross_cutting == EXPECTED_CROSS_CUTTING and
+            self.meso == EXPECTED_MESO and
+            self.macro == EXPECTED_MACRO and
+            self.patterns == EXPECTED_PATTERNS
+        )
+
+    def get_discrepancies(self) -> Dict[str, tuple[int, int]]:
+        """Retorna discrepancias (actual, expected)"""
+        discrepancies = {}
+        checks = [
+            ("total_items", self.total_items, EXPECTED_TOTAL_ITEMS),
+            ("questions", self.questions, EXPECTED_QUESTIONS),
+            ("policy_areas", self.policy_areas, EXPECTED_POLICY_AREAS),
+            ("dimensions", self.dimensions, EXPECTED_DIMENSIONS),
+            ("clusters", self.clusters, EXPECTED_CLUSTERS),
+            ("cross_cutting", self.cross_cutting, EXPECTED_CROSS_CUTTING),
+            ("meso", self.meso, EXPECTED_MESO),
+            ("macro", self.macro, EXPECTED_MACRO),
+            ("patterns", self.patterns, EXPECTED_PATTERNS),
+        ]
+        for name, actual, expected in checks:
+            if actual != expected:
+                discrepancies[name] = (actual, expected)
+        return discrepancies
+
+
 @dataclass
 class IrrigationTarget:
     """Destino de irrigación"""
@@ -212,3 +286,140 @@ class IrrigationMap:
             "definitely_not":  IrrigabilityStatus.DEFINITELY_NOT
         }
         return mapping.get(value, IrrigabilityStatus.DEFINITELY_NOT)
+
+    @classmethod
+    def from_specification(cls, spec_data: Dict[str, Any]) -> tuple['IrrigationMap', IrrigationStatistics]:
+        """
+        Construye el mapa desde la especificación del cuestionario canónico.
+
+        Espera estructura:
+        {
+            "questions": [...],  # 300 preguntas
+            "policy_areas": [...],  # 10 PA
+            "dimensions": [...],  # 6 DIM
+            "clusters": [...],  # 4 CL
+            "cross_cutting": [...],  # 9 CC
+            "meso": [...],  # 4 MESO
+            "macro": [...],  # 1 MACRO
+            "patterns": [...]  # 142 patterns
+        }
+
+        Returns:
+            (IrrigationMap, IrrigationStatistics) - El mapa y las estadísticas
+        """
+        irrigation_map = cls()
+        stats = IrrigationStatistics()
+
+        # Mapeo de categoría a ItemCategory
+        category_map = {
+            "questions": ItemCategory.QUESTION,
+            "policy_areas": ItemCategory.POLICY_AREA,
+            "dimensions": ItemCategory.DIMENSION,
+            "clusters": ItemCategory.CLUSTER,
+            "cross_cutting": ItemCategory.CROSS_CUTTING,
+            "meso": ItemCategory.MESO,
+            "macro": ItemCategory.MACRO,
+            "patterns": ItemCategory.PATTERN,
+        }
+
+        # Procesar cada categoría
+        for category_key, item_category in category_map.items():
+            items = spec_data.get(category_key, [])
+
+            for item in items:
+                # Crear source
+                source = IrrigationSource(
+                    file_path=item.get("file_path", ""),
+                    stage=item.get("stage", "Canonical"),
+                    phase=item.get("phase", "phase_1"),
+                    vehicles=item.get("vehicles", []),
+                    consumers=item.get("consumers", []),
+                    irrigability=IrrigabilityStatus.IRRIGABLE_NOW,
+                    gaps=[],
+                    added_value="CORE",
+                    file_bytes=item.get("file_bytes", 0)
+                )
+
+                # Crear targets
+                targets = []
+                for consumer in source.consumers:
+                    targets.append(IrrigationTarget(
+                        consumer_id=consumer,
+                        consumer_phase=source.phase
+                    ))
+
+                # Crear ruta
+                route = IrrigationRoute(
+                    source=source,
+                    vehicles=source.vehicles,
+                    signals_generated=[],
+                    targets=targets,
+                    is_active=True
+                )
+
+                irrigation_map.add_route(route)
+
+                # Actualizar estadísticas
+                stats.total_items += 1
+                stats.irrigable_now += 1
+
+                # Incrementar contador de categoría
+                if item_category == ItemCategory.QUESTION:
+                    stats.questions += 1
+                elif item_category == ItemCategory.POLICY_AREA:
+                    stats.policy_areas += 1
+                elif item_category == ItemCategory.DIMENSION:
+                    stats.dimensions += 1
+                elif item_category == ItemCategory.CLUSTER:
+                    stats.clusters += 1
+                elif item_category == ItemCategory.CROSS_CUTTING:
+                    stats.cross_cutting += 1
+                elif item_category == ItemCategory.MESO:
+                    stats.meso += 1
+                elif item_category == ItemCategory.MACRO:
+                    stats.macro += 1
+                elif item_category == ItemCategory.PATTERN:
+                    stats.patterns += 1
+
+        return irrigation_map, stats
+
+    def validate_counts(self) -> tuple[bool, IrrigationStatistics]:
+        """
+        Valida los conteos de ítems contra los esperados.
+
+        Returns:
+            (is_valid, statistics)
+        """
+        stats = IrrigationStatistics()
+
+        # Contar por categoría inferida del file_path
+        for route in self.routes.values():
+            file_path = route.source.file_path.lower()
+            stats.total_items += 1
+
+            if route.source.irrigability == IrrigabilityStatus.IRRIGABLE_NOW:
+                stats.irrigable_now += 1
+            elif route.source.irrigability == IrrigabilityStatus.NOT_IRRIGABLE_YET:
+                stats.not_yet += 1
+            else:
+                stats.definitely_not += 1
+
+            # Inferir categoría
+            if "question" in file_path or "/q" in file_path:
+                stats.questions += 1
+            elif "policy_area" in file_path or "/pa" in file_path:
+                stats.policy_areas += 1
+            elif "dimension" in file_path or "/dim" in file_path:
+                stats.dimensions += 1
+            elif "cluster" in file_path or "/cl" in file_path:
+                stats.clusters += 1
+            elif "cross_cutting" in file_path or "/cc" in file_path:
+                stats.cross_cutting += 1
+            elif "meso" in file_path:
+                stats.meso += 1
+            elif "macro" in file_path:
+                stats.macro += 1
+            elif "pattern" in file_path:
+                stats.patterns += 1
+
+        return stats.is_valid(), stats

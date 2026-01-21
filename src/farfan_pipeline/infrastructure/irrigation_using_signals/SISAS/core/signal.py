@@ -22,6 +22,97 @@ class SignalCategory(Enum):
     ORCHESTRATION = "orchestration"
 
 
+class SignalType(str, Enum):
+    """
+    Tipos de señales en el sistema SISAS (24 tipos totales).
+
+    Mapping a las categorías:
+    - STRUCTURAL: MC01-MC10
+    - EPISTEMIC: PATTERN_ENRICHMENT, KEYWORD_ENRICHMENT, ENTITY_ENRICHMENT
+    - INTEGRITY: NORMATIVE_VALIDATION, ENTITY_VALIDATION, COHERENCE_VALIDATION
+    - CONSUMPTION: MICRO_SCORE, MESO_SCORE, MACRO_SCORE
+    - ORCHESTRATION: MESO_AGGREGATION, MACRO_AGGREGATION, REPORT_ASSEMBLY
+    - OPERATIONAL: SIGNAL_PACK, STATIC_LOAD
+    """
+    # Operational signals (2)
+    SIGNAL_PACK = "SIGNAL_PACK"
+    STATIC_LOAD = "STATIC_LOAD"
+
+    # Structural signals - MC extractors (10)
+    MC01_STRUCTURAL = "MC01_STRUCTURAL"
+    MC02_QUANTITATIVE = "MC02_QUANTITATIVE"
+    MC03_NORMATIVE = "MC03_NORMATIVE"
+    MC04_PROGRAMMATIC = "MC04_PROGRAMMATIC"
+    MC05_FINANCIAL = "MC05_FINANCIAL"
+    MC06_POPULATION = "MC06_POPULATION"
+    MC07_TEMPORAL = "MC07_TEMPORAL"
+    MC08_CAUSAL = "MC08_CAUSAL"
+    MC09_INSTITUTIONAL = "MC09_INSTITUTIONAL"
+    MC10_SEMANTIC = "MC10_SEMANTIC"
+
+    # Epistemic signals - Enrichment (3)
+    PATTERN_ENRICHMENT = "PATTERN_ENRICHMENT"
+    KEYWORD_ENRICHMENT = "KEYWORD_ENRICHMENT"
+    ENTITY_ENRICHMENT = "ENTITY_ENRICHMENT"
+
+    # Integrity signals - Validation (3)
+    NORMATIVE_VALIDATION = "NORMATIVE_VALIDATION"
+    ENTITY_VALIDATION = "ENTITY_VALIDATION"
+    COHERENCE_VALIDATION = "COHERENCE_VALIDATION"
+
+    # Consumption signals - Scoring (3)
+    MICRO_SCORE = "MICRO_SCORE"
+    MESO_SCORE = "MESO_SCORE"
+    MACRO_SCORE = "MACRO_SCORE"
+
+    # Orchestration signals - Aggregation & Reporting (3)
+    MESO_AGGREGATION = "MESO_AGGREGATION"
+    MACRO_AGGREGATION = "MACRO_AGGREGATION"
+    REPORT_ASSEMBLY = "REPORT_ASSEMBLY"
+
+    @property
+    def category(self) -> SignalCategory:
+        """Retorna la categoría de esta señal"""
+        mapping = {
+            # Operational
+            self.SIGNAL_PACK: SignalCategory.OPERATIONAL,
+            self.STATIC_LOAD: SignalCategory.OPERATIONAL,
+
+            # Structural
+            self.MC01_STRUCTURAL: SignalCategory.STRUCTURAL,
+            self.MC02_QUANTITATIVE: SignalCategory.STRUCTURAL,
+            self.MC03_NORMATIVE: SignalCategory.STRUCTURAL,
+            self.MC04_PROGRAMMATIC: SignalCategory.STRUCTURAL,
+            self.MC05_FINANCIAL: SignalCategory.STRUCTURAL,
+            self.MC06_POPULATION: SignalCategory.STRUCTURAL,
+            self.MC07_TEMPORAL: SignalCategory.STRUCTURAL,
+            self.MC08_CAUSAL: SignalCategory.STRUCTURAL,
+            self.MC09_INSTITUTIONAL: SignalCategory.STRUCTURAL,
+            self.MC10_SEMANTIC: SignalCategory.STRUCTURAL,
+
+            # Epistemic
+            self.PATTERN_ENRICHMENT: SignalCategory.EPISTEMIC,
+            self.KEYWORD_ENRICHMENT: SignalCategory.EPISTEMIC,
+            self.ENTITY_ENRICHMENT: SignalCategory.EPISTEMIC,
+
+            # Integrity
+            self.NORMATIVE_VALIDATION: SignalCategory.INTEGRITY,
+            self.ENTITY_VALIDATION: SignalCategory.INTEGRITY,
+            self.COHERENCE_VALIDATION: SignalCategory.INTEGRITY,
+
+            # Consumption
+            self.MICRO_SCORE: SignalCategory.CONSUMPTION,
+            self.MESO_SCORE: SignalCategory.CONSUMPTION,
+            self.MACRO_SCORE: SignalCategory.CONSUMPTION,
+
+            # Orchestration
+            self.MESO_AGGREGATION: SignalCategory.ORCHESTRATION,
+            self.MACRO_AGGREGATION: SignalCategory.ORCHESTRATION,
+            self.REPORT_ASSEMBLY: SignalCategory.ORCHESTRATION,
+        }
+        return mapping.get(self, SignalCategory.OPERATIONAL)
+
+
 class SignalConfidence(Enum):
     """
     Niveles de confianza de una señal.

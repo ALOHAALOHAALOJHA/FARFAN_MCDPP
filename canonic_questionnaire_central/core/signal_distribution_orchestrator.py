@@ -134,32 +134,42 @@ class AuditEntry:
 @dataclass
 class RoutingRules:
     """Configuration for signal routing."""
-    
+
     # Minimum empirical availability for non-enrichment signals
     empirical_availability_min: float = 0.30
-    
+
     # Signal types allowed per phase
     phase_routing: Dict[str, List[str]] = field(default_factory=dict)
-    
+
     # Required capabilities per signal type
     capabilities_required: Dict[str, List[str]] = field(default_factory=dict)
-    
+
     # Dead letter configuration
     dead_letter_enabled: bool = True
     dead_letter_path: str = "_registry/dead_letter/"
-    
+
     # Deduplication window (signals with same hash within this many seconds are dupes)
     dedup_window_seconds: int = 300
-    
+
+    # Gate rules for 4-gate validation
+    gate_rules: Dict[str, Any] = field(default_factory=dict)
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> RoutingRules:
+        # Support both old 'routing' key and new 'phase_signal_alignment' key
+        phase_routing = data.get("phase_signal_alignment", data.get("routing", {}))
+
+        # Get dead_letter config from routing_rules or top-level
+        dead_letter_config = data.get("routing_rules", {}).get("dead_letter", data.get("dead_letter", {}))
+
         return cls(
             empirical_availability_min=data.get("thresholds", {}).get("empirical_availability_min", 0.30),
-            phase_routing=data.get("routing", {}),
-            capabilities_required=data.get("capabilities_required", {}),
-            dead_letter_enabled=data.get("dead_letter", {}).get("enabled", True),
-            dead_letter_path=data.get("dead_letter", {}).get("path", "_registry/dead_letter/"),
-            dedup_window_seconds=data.get("dedup_window_seconds", 300)
+            phase_routing=phase_routing,
+            capabilities_required=data.get("capability_requirements", data.get("capabilities_required", {})),
+            dead_letter_enabled=dead_letter_config.get("enabled", True),
+            dead_letter_path=dead_letter_config.get("path", "_registry/dead_letter/"),
+            dedup_window_seconds=data.get("routing_rules", {}).get("deduplication", {}).get("window_seconds", data.get("dedup_window_seconds", 300)),
+            gate_rules=data.get("gate_rules", {})
         )
 
 
@@ -276,11 +286,171 @@ class SignalDistributionOrchestrator:
             logger.info(f"Consumer unregistered: {consumer_id}")
             return True
         return False
-    
+
+    # =========================================================================
+    # 4-GATE VALIDATION SYSTEM
+    # =========================================================================
+
+    def _validate_gate_1_scope_alignment(self, signal: Signal) -> tuple[bool, List[str]]:
+        """
+        Gate 1: Scope Alignment Validation
+
+        Validates:
+        - SCOPE-001: Valid Phase
+        - SCOPE-002: Valid Policy Area
+        - SCOPE-003: Signal Type Phase Alignment
+
+        Returns (is_valid, errors)
+        """
+        errors = []
+
+        # SCOPE-001: Valid Phase
+        valid_phases = ['phase_0', 'phase_1', 'phase_2', 'phase_3', 'phase_4',
+                       'phase_5', 'phase_6', 'phase_7', 'phase_8', 'phase_9']
+        if signal.scope.phase not in valid_phases:
+            errors.append(f"INVALID_PHASE: {signal.scope.phase} not in {valid_phases}")
+
+        # SCOPE-002: Valid Policy Area
+        valid_pas = ['PA01', 'PA02', 'PA03', 'PA04', 'PA05', 'PA06', 'PA07',
+                    'PA08', 'PA09', 'PA10', 'ALL', 'CROSS_CUTTING']
+        if hasattr(signal.scope, 'policy_area') and signal.scope.policy_area:
+            if signal.scope.policy_area not in valid_pas:
+                errors.append(f"INVALID_POLICY_AREA: {signal.scope.policy_area} not in {valid_pas}")
+
+        # SCOPE-003: Signal Type Phase Alignment
+        if not self._validate_scope_routing(signal):
+            signal_type_value = signal.signal_type.value if isinstance(signal.signal_type, SignalType) else signal.signal_type
+            errors.append(f"SIGNAL_TYPE_PHASE_MISMATCH: {signal_type_value} not allowed in {signal.scope.phase}")
+
+        return len(errors) == 0, errors
+
+    def _validate_gate_2_value_add(self, signal: Signal) -> tuple[bool, List[str]]:
+        """
+        Gate 2: Value Add Validation
+
+        Validates:
+        - VALUE-001: Empirical Availability Threshold (>= 0.30 or enrichment)
+        - VALUE-002: Valid Range (0.0 <= availability <= 1.0)
+
+        Returns (is_valid, errors)
+        """
+        errors = []
+        warnings = []
+
+        # VALUE-002: Valid Range (CRITICAL)
+        if hasattr(signal, 'empirical_availability'):
+            if not (0.0 <= signal.empirical_availability <= 1.0):
+                errors.append(f"INVALID_AVAILABILITY_RANGE: {signal.empirical_availability} not in [0.0, 1.0]")
+
+            # VALUE-001: Empirical Availability Threshold (WARNING)
+            is_enrichment = getattr(signal, 'enrichment', False) or getattr(signal, 'is_enrichment', False)
+            if not is_enrichment and signal.empirical_availability < 0.30:
+                warnings.append(f"LOW_EMPIRICAL_AVAILABILITY: {signal.empirical_availability} < 0.30")
+
+        return len(errors) == 0, errors + warnings
+
+    def _validate_gate_3_capability(self, signal: Signal) -> tuple[bool, List[str]]:
+        """
+        Gate 3: Capability Validation
+
+        Validates:
+        - CAP-001: At least one consumer has required capabilities
+        - CAP-002: At least one eligible consumer exists
+
+        Returns (is_valid, errors)
+        """
+        errors = []
+        warnings = []
+
+        # CAP-002: Check if at least one eligible consumer exists
+        eligible_consumers = []
+        for consumer_id, consumer in self.consumers.items():
+            if consumer.enabled:
+                can_handle, reason = consumer.can_handle(signal)
+                if can_handle:
+                    eligible_consumers.append(consumer_id)
+
+        if not eligible_consumers:
+            warnings.append(f"NO_ELIGIBLE_CONSUMER: No consumer can handle signal {signal.signal_id}")
+
+        # CAP-001: Validate capability matching (checked in consumer.can_handle)
+        # If we have eligible consumers, capabilities are satisfied
+
+        return len(errors) == 0, errors + warnings
+
+    def _validate_gate_4_irrigation_channel(self, signal: Signal) -> tuple[bool, List[str]]:
+        """
+        Gate 4: Irrigation Channel Validation (Post-Dispatch)
+
+        Validates:
+        - CHANNEL-001: Signal was routed
+        - CHANNEL-002: At least one consumer received
+        - CHANNEL-003: Audit entry created
+
+        Returns (is_valid, errors)
+
+        Note: This gate is applied AFTER dispatch.
+        """
+        errors = []
+        warnings = []
+
+        # CHANNEL-001: Signal was routed
+        if not getattr(signal, '_routed', False):
+            warnings.append("SIGNAL_NOT_ROUTED: Signal has not been routed yet")
+
+        # CHANNEL-002: At least one consumer received
+        consumers = getattr(signal, '_consumers', [])
+        if not consumers:
+            warnings.append("NO_CONSUMER_RECEIVED: No consumer has received this signal")
+
+        # CHANNEL-003: Audit entry created (check if signal_id in audit trail)
+        has_audit = any(entry.signal_id == signal.signal_id for entry in self._audit_trail)
+        if not has_audit:
+            errors.append(f"NO_AUDIT_ENTRY: No audit entry for signal {signal.signal_id}")
+
+        return len(errors) == 0, errors + warnings
+
+    def validate_all_gates(self, signal: Signal, post_dispatch: bool = False) -> tuple[bool, Dict[str, List[str]]]:
+        """
+        Validate signal through all 4 gates.
+
+        Args:
+            signal: Signal to validate
+            post_dispatch: If True, includes Gate 4 (post-dispatch validation)
+
+        Returns:
+            (all_valid, gate_errors) where gate_errors is dict of gate -> error_list
+        """
+        gate_errors = {}
+
+        # Gate 1: Scope Alignment
+        valid_1, errors_1 = self._validate_gate_1_scope_alignment(signal)
+        if errors_1:
+            gate_errors["gate_1_scope_alignment"] = errors_1
+
+        # Gate 2: Value Add
+        valid_2, errors_2 = self._validate_gate_2_value_add(signal)
+        if errors_2:
+            gate_errors["gate_2_value_add"] = errors_2
+
+        # Gate 3: Capability
+        valid_3, errors_3 = self._validate_gate_3_capability(signal)
+        if errors_3:
+            gate_errors["gate_3_capability"] = errors_3
+
+        # Gate 4: Irrigation Channel (only if post-dispatch)
+        if post_dispatch:
+            valid_4, errors_4 = self._validate_gate_4_irrigation_channel(signal)
+            if errors_4:
+                gate_errors["gate_4_irrigation_channel"] = errors_4
+
+        all_valid = len(gate_errors) == 0
+        return all_valid, gate_errors
+
     # =========================================================================
     # SIGNAL DISPATCH (THE CORE)
     # =========================================================================
-    
+
     def dispatch(self, signal: Signal) -> bool:
         """
         Dispatch a signal through the system.

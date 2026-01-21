@@ -107,6 +107,23 @@ except ImportError:
     FactoryConfig = None  # type: ignore
 
 # =============================================================================
+# SISAS INTEGRATION HUB IMPORT
+# =============================================================================
+# Import the SISAS integration hub for comprehensive SISAS wiring
+try:
+    from .sisas_integration_hub import (
+        SISASIntegrationHub,
+        IntegrationStatus,
+        initialize_sisas,
+        get_sisas_status,
+    )
+    SISAS_HUB_AVAILABLE = True
+except ImportError:
+    SISAS_HUB_AVAILABLE = False
+    SISASIntegrationHub = None  # type: ignore
+    initialize_sisas = None  # type: ignore
+
+# =============================================================================
 # LOGGER CONFIGURATION
 # =============================================================================
 
@@ -1354,13 +1371,27 @@ class UnifiedOrchestrator:
             self.context.questionnaire = self.factory.load_questionnaire()
             # Initialize signal registry
             self.context.signal_registry = self.factory.create_signal_registry()
-            # Initialize SISAS if enabled
-            if config.enable_sisas:
+
+            # Initialize SISAS if enabled - USING INTEGRATION HUB
+            if config.enable_sisas and SISAS_HUB_AVAILABLE:
+                sisas_status = initialize_sisas(self)
+
+                self.logger.info(
+                    "SISAS initialized via integration hub",
+                    consumers=f"{sisas_status.consumers_registered}/{sisas_status.consumers_available}",
+                    extractors=f"{sisas_status.extractors_connected}/{sisas_status.extractors_available}",
+                    vehicles=f"{sisas_status.vehicles_initialized}/{sisas_status.vehicles_available}",
+                    irrigation_units=sisas_status.irrigation_units_loaded,
+                    items_irrigable=sisas_status.items_irrigable,
+                    fully_integrated=sisas_status.is_fully_integrated(),
+                )
+            elif config.enable_sisas and not SISAS_HUB_AVAILABLE:
+                # Fallback to old method if hub not available
                 self.context.sisas = self.factory.get_sisas_central()
                 # Register phase consumers with SDO
                 if self.context.sisas is not None:
                     consumers_registered = self._register_phase_consumers()
-                    self.logger.info(f"SISAS initialized with {consumers_registered} consumers")
+                    self.logger.info(f"SISAS initialized (legacy mode) with {consumers_registered} consumers")
 
             self.logger.info(
                 "UnifiedFactory initialized",
