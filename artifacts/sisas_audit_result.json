@@ -1,0 +1,2142 @@
+{
+  "summary": {
+    "total_files": 130,
+    "files_exist": 130,
+    "files_missing": 0,
+    "files_empty": 10,
+    "imports_ok": 106,
+    "imports_failed": 17,
+    "wiring_issues": 0,
+    "redundancy_issues": 5,
+    "score": 44
+  },
+  "file_statuses": {
+    "__init__.py": {
+      "exists": true,
+      "size_bytes": 331,
+      "line_count": 14,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "audit_signal_irrigation.py": {
+      "exists": true,
+      "size_bytes": 10365,
+      "line_count": 272,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry'",
+      "classes": [
+        "WiringGap",
+        "ScopeViolation",
+        "SynchronizationIssue",
+        "SignalUtilizationMetrics",
+        "PhaseExecutionTrace",
+        "AuditResults",
+        "WiringAuditor"
+      ],
+      "functions": [
+        "audit_wiring"
+      ]
+    },
+    "comprehensive_signal_audit.py": {
+      "exists": true,
+      "size_bytes": 23633,
+      "line_count": 579,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry'",
+      "classes": [
+        "ComprehensiveAuditResults",
+        "ComprehensiveSignalAuditor"
+      ],
+      "functions": [
+        "main",
+        "run_comprehensive_audit",
+        "generate_report"
+      ]
+    },
+    "ports.py": {
+      "exists": true,
+      "size_bytes": 5347,
+      "line_count": 173,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "QuestionnairePort",
+        "SignalRegistryPort"
+      ],
+      "functions": [
+        "data",
+        "version",
+        "sha256",
+        "micro_questions",
+        "get_chunking_signals",
+        "get_micro_answering_signals",
+        "get_validation_signals",
+        "get_assembly_signals",
+        "get_scoring_signals",
+        "get_source_hash"
+      ]
+    },
+    "visualization_generator.py": {
+      "exists": true,
+      "size_bytes": 13072,
+      "line_count": 363,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalFlowNode",
+        "SignalFlowLink",
+        "SankeyDiagramGenerator",
+        "StateMachineGenerator",
+        "HeatmapGenerator",
+        "VisualizationOrchestrator"
+      ],
+      "functions": [
+        "generate_visualizations",
+        "add_node",
+        "add_link",
+        "to_d3_json",
+        "to_json",
+        "add_state",
+        "add_transition",
+        "to_cytoscape_json",
+        "to_json",
+        "add_data_point"
+      ]
+    },
+    "extractors/__init__.py": {
+      "exists": true,
+      "size_bytes": 711,
+      "line_count": 26,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'canonic_questionnaire_central'",
+      "classes": [],
+      "functions": []
+    },
+    "extractors/base_extractor.py": {
+      "exists": true,
+      "size_bytes": 5848,
+      "line_count": 186,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'canonic_questionnaire_central'",
+      "classes": [
+        "ExtractionContext",
+        "ExtractionResult",
+        "BaseSignalExtractor"
+      ],
+      "functions": [
+        "extract",
+        "extract_and_dispatch",
+        "create_signal",
+        "get_metrics"
+      ]
+    },
+    "extractors/causal_verb_extractor.py": {
+      "exists": true,
+      "size_bytes": 9606,
+      "line_count": 260,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'canonic_questionnaire_central'",
+      "classes": [
+        "CausalVerbExtractor"
+      ],
+      "functions": [
+        "extract"
+      ]
+    },
+    "extractors/financial_chain_extractor.py": {
+      "exists": true,
+      "size_bytes": 8033,
+      "line_count": 205,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'canonic_questionnaire_central'",
+      "classes": [
+        "FinancialChainExtractor"
+      ],
+      "functions": [
+        "extract"
+      ]
+    },
+    "extractors/institutional_ner_extractor.py": {
+      "exists": true,
+      "size_bytes": 11133,
+      "line_count": 294,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'canonic_questionnaire_central'",
+      "classes": [
+        "InstitutionalNERExtractor"
+      ],
+      "functions": [
+        "extract"
+      ]
+    },
+    "SISAS/__init__.py": {
+      "exists": true,
+      "size_bytes": 416,
+      "line_count": 18,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/main.py": {
+      "exists": true,
+      "size_bytes": 11191,
+      "line_count": 321,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": [
+        "setup_logging",
+        "initialize_system",
+        "load_irrigation_map",
+        "run_irrigation",
+        "check_alignment",
+        "generate_contracts",
+        "show_stats",
+        "main"
+      ]
+    },
+    "SISAS/pdt_quality_integration.py": {
+      "exists": true,
+      "size_bytes": 46464,
+      "line_count": 1397,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "QualityLevel",
+        "MetricType",
+        "PatternDefinition",
+        "PDTQualityMetrics",
+        "PatternCatalog",
+        "MatchResult",
+        "PatternMatcher",
+        "ScoringEngine",
+        "AnalysisMetadata",
+        "PDTQualityAnalyzer",
+        "BoostStatistics",
+        "PatternBooster",
+        "CorrelationMetrics",
+        "CorrelationAnalyzer",
+        "BatchAnalysisResult",
+        "BatchAnalyzer",
+        "MetricsExporter",
+        "QualityValidator"
+      ],
+      "functions": [
+        "compute_pdt_section_quality",
+        "apply_pdt_quality_boost",
+        "track_pdt_precision_correlation",
+        "demo_analysis",
+        "get_all_patterns",
+        "match_count",
+        "match_text",
+        "compute_metric_score",
+        "compute_aggregate_quality",
+        "classify_quality_level"
+      ]
+    },
+    "SISAS/signal_consumption.py": {
+      "exists": true,
+      "size_bytes": 562,
+      "line_count": 21,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "No module named 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS._deprecated.signal_co",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/signals.py": {
+      "exists": true,
+      "size_bytes": 1406,
+      "line_count": 47,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/audit/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/audit/consumer_auditor.py": {
+      "exists": true,
+      "size_bytes": 2817,
+      "line_count": 78,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "AuditReport",
+        "ConsumerAuditor"
+      ],
+      "functions": [
+        "audit_consumers"
+      ]
+    },
+    "SISAS/audit/consumption_proof.py": {
+      "exists": true,
+      "size_bytes": 9712,
+      "line_count": 294,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalConsumptionProof",
+        "SignalManifest"
+      ],
+      "functions": [
+        "build_merkle_tree",
+        "compute_file_hash",
+        "generate_signal_manifests",
+        "record_pattern_match",
+        "get_consumption_proof",
+        "save_to_file",
+        "to_dict"
+      ]
+    },
+    "SISAS/audit/decision_auditor.py": {
+      "exists": true,
+      "size_bytes": 3276,
+      "line_count": 88,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "AuditReport",
+        "DecisionAuditor"
+      ],
+      "functions": [
+        "audit_decisions"
+      ]
+    },
+    "SISAS/audit/questionnaire_access_audit.py": {
+      "exists": true,
+      "size_bytes": 8096,
+      "line_count": 228,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "AccessLevel",
+        "AccessRecord",
+        "QuestionnaireAccessAudit"
+      ],
+      "functions": [
+        "get_access_audit",
+        "reset_access_audit",
+        "to_dict",
+        "record_access",
+        "record_violation",
+        "get_utilization_report",
+        "export_audit_log",
+        "reset"
+      ]
+    },
+    "SISAS/audit/signal_auditor.py": {
+      "exists": true,
+      "size_bytes": 3032,
+      "line_count": 84,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "AuditReport",
+        "SignalAuditor"
+      ],
+      "functions": [
+        "audit_signals"
+      ]
+    },
+    "SISAS/config/__init__.py": {
+      "exists": true,
+      "size_bytes": 1180,
+      "line_count": 35,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": [
+        "load_yaml_config",
+        "get_bus_config",
+        "get_irrigation_config",
+        "get_vocabulary_config"
+      ]
+    },
+    "SISAS/config/bus_config.yaml": {
+      "exists": true,
+      "size_bytes": 2032,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/config/irrigation_config.yaml": {
+      "exists": true,
+      "size_bytes": 2660,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/config/vocabulary_config.yaml": {
+      "exists": true,
+      "size_bytes": 1519,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/__init__.py": {
+      "exists": true,
+      "size_bytes": 2256,
+      "line_count": 70,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/base_consumer.py": {
+      "exists": true,
+      "size_bytes": 4275,
+      "line_count": 130,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ConsumerHealth",
+        "BaseConsumer"
+      ],
+      "functions": [
+        "subscribe",
+        "receive_signal",
+        "process_signal",
+        "get_health"
+      ]
+    },
+    "SISAS/consumers/phase0/__init__.py": {
+      "exists": true,
+      "size_bytes": 367,
+      "line_count": 11,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase0/phase0_90_02_bootstrap.py": {
+      "exists": true,
+      "size_bytes": 6778,
+      "line_count": 177,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase0BootstrapConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase0/phase0_assembly_consumer.py": {
+      "exists": true,
+      "size_bytes": 4589,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase0AssemblyConsumerConfig",
+        "Phase0AssemblyConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase0/providers.py": {
+      "exists": true,
+      "size_bytes": 5127,
+      "line_count": 136,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase0ProvidersConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase0/wiring_types.py": {
+      "exists": true,
+      "size_bytes": 6664,
+      "line_count": 171,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase0WiringTypesConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase1/__init__.py": {
+      "exists": true,
+      "size_bytes": 327,
+      "line_count": 9,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase1/phase1_11_00_signal_enrichment.py": {
+      "exists": true,
+      "size_bytes": 6447,
+      "line_count": 166,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase1SignalEnrichmentConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase1/phase1_13_00_cpp_ingestion.py": {
+      "exists": true,
+      "size_bytes": 7414,
+      "line_count": 187,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase1CppIngestionConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase1/phase1_extraction_consumer.py": {
+      "exists": true,
+      "size_bytes": 4679,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase1ExtractionConsumerConfig",
+        "Phase1ExtractionConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase2/__init__.py": {
+      "exists": true,
+      "size_bytes": 474,
+      "line_count": 13,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase2/phase2_contract_consumer.py": {
+      "exists": true,
+      "size_bytes": 3176,
+      "line_count": 86,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase2ContractConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase2/phase2_enrichment_consumer.py": {
+      "exists": true,
+      "size_bytes": 4591,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase2EnrichmentConsumerConfig",
+        "Phase2EnrichmentConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase2/phase2_evidence_consumer.py": {
+      "exists": true,
+      "size_bytes": 3387,
+      "line_count": 93,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase2EvidenceConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase2/phase2_executor_consumer.py": {
+      "exists": true,
+      "size_bytes": 2611,
+      "line_count": 76,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase2ExecutorConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase2/phase2_factory_consumer.py": {
+      "exists": true,
+      "size_bytes": 5632,
+      "line_count": 146,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase2FactoryConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase3/__init__.py": {
+      "exists": true,
+      "size_bytes": 235,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py": {
+      "exists": true,
+      "size_bytes": 9755,
+      "line_count": 264,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase3SignalEnrichedScoringConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase3/phase3_validation_consumer.py": {
+      "exists": true,
+      "size_bytes": 4601,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase3ValidationConsumerConfig",
+        "Phase3ValidationConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase4/__init__.py": {
+      "exists": true,
+      "size_bytes": 206,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase4/phase4_aggregation_consumer.py": {
+      "exists": true,
+      "size_bytes": 7430,
+      "line_count": 192,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase4AggregationConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase4/phase4_dimension_consumer.py": {
+      "exists": true,
+      "size_bytes": 4687,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase4DimensionConsumerConfig",
+        "Phase4DimensionConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase5/__init__.py": {
+      "exists": true,
+      "size_bytes": 206,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase5/phase5_policy_area_consumer.py": {
+      "exists": true,
+      "size_bytes": 4857,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase5PolicyAreaConsumerConfig",
+        "Phase5PolicyAreaConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase5/phase5_uncertainty_consumer.py": {
+      "exists": true,
+      "size_bytes": 8968,
+      "line_count": 232,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase5UncertaintyConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase6/__init__.py": {
+      "exists": true,
+      "size_bytes": 212,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase6/phase6_cluster_consumer.py": {
+      "exists": true,
+      "size_bytes": 4623,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase6ClusterConsumerConfig",
+        "Phase6ClusterConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase6/phase6_configuration_consumer.py": {
+      "exists": true,
+      "size_bytes": 6898,
+      "line_count": 177,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase6ConfigurationConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase7/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase7/phase7_meso_consumer.py": {
+      "exists": true,
+      "size_bytes": 2581,
+      "line_count": 75,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase7MesoConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase8/__init__.py": {
+      "exists": true,
+      "size_bytes": 259,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase8/phase8_30_00_signal_enriched_recommendations.py": {
+      "exists": true,
+      "size_bytes": 12531,
+      "line_count": 311,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase8SignalEnrichedRecommendationsConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/consumers/phase8/phase8_macro_consumer.py": {
+      "exists": true,
+      "size_bytes": 4583,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase8MacroConsumerConfig",
+        "Phase8MacroConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase9/__init__.py": {
+      "exists": true,
+      "size_bytes": 200,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/consumers/phase9/phase9_report_consumer.py": {
+      "exists": true,
+      "size_bytes": 4557,
+      "line_count": 159,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "cannot import name 'SignalType' from 'farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.",
+      "classes": [
+        "Phase9ReportConsumerConfig",
+        "Phase9ReportConsumer"
+      ],
+      "functions": [
+        "consume",
+        "consume_batch",
+        "flush_buffer",
+        "get_consumption_contract",
+        "get_status"
+      ]
+    },
+    "SISAS/consumers/phase9/phase9_reporting_consumer.py": {
+      "exists": true,
+      "size_bytes": 9034,
+      "line_count": 192,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Phase9ReportingConsumer"
+      ],
+      "functions": [
+        "process_signal"
+      ]
+    },
+    "SISAS/core/__init__.py": {
+      "exists": true,
+      "size_bytes": 1505,
+      "line_count": 71,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/core/bus.py": {
+      "exists": true,
+      "size_bytes": 9536,
+      "line_count": 269,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "BusType",
+        "BusMessage",
+        "SignalBus",
+        "BusRegistry"
+      ],
+      "functions": [
+        "acknowledge",
+        "publish",
+        "subscribe",
+        "unsubscribe",
+        "get_pending_messages",
+        "consume_next",
+        "get_stats",
+        "get_subscriber_count",
+        "create_bus",
+        "get_bus"
+      ]
+    },
+    "SISAS/core/contracts.py": {
+      "exists": true,
+      "size_bytes": 11873,
+      "line_count": 331,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ContractType",
+        "ContractStatus",
+        "SignalTypeSpec",
+        "PublicationContract",
+        "ConsumptionContract",
+        "IrrigationContract",
+        "ContractRegistry"
+      ],
+      "functions": [
+        "validate_signal",
+        "to_dict",
+        "matches_signal",
+        "to_dict",
+        "is_irrigable",
+        "get_blocking_gaps",
+        "to_dict",
+        "register_publication",
+        "register_consumption",
+        "register_irrigation"
+      ]
+    },
+    "SISAS/core/event.py": {
+      "exists": true,
+      "size_bytes": 12545,
+      "line_count": 348,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "EventType",
+        "EventPayload",
+        "Event",
+        "EventStore"
+      ],
+      "functions": [
+        "to_dict",
+        "to_dict",
+        "from_canonical_file",
+        "mark_processed",
+        "add_error",
+        "append",
+        "get_by_id",
+        "get_by_type",
+        "get_by_file",
+        "get_by_phase"
+      ]
+    },
+    "SISAS/core/signal.py": {
+      "exists": true,
+      "size_bytes": 9048,
+      "line_count": 264,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalCategory",
+        "SignalConfidence",
+        "SignalContext",
+        "SignalSource",
+        "Signal"
+      ],
+      "functions": [
+        "numeric_value",
+        "to_dict",
+        "from_dict",
+        "to_dict",
+        "category",
+        "compute_hash",
+        "is_valid",
+        "to_dict",
+        "add_audit_entry"
+      ]
+    },
+    "SISAS/harmonization/__init__.py": {
+      "exists": true,
+      "size_bytes": 362,
+      "line_count": 15,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/harmonization/harmonization_validator.py": {
+      "exists": true,
+      "size_bytes": 28401,
+      "line_count": 720,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "DimensionStatus",
+        "HarmonizationIssue",
+        "DimensionValidation",
+        "HarmonizationReport",
+        "HarmonizationValidator"
+      ],
+      "functions": [
+        "validate_harmonization",
+        "to_dict",
+        "critical_issues",
+        "high_issues",
+        "blocking_issues",
+        "issue_count",
+        "to_dict",
+        "total_issues",
+        "blocking_issues",
+        "dimensions_harmonized"
+      ]
+    },
+    "SISAS/integration/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/integration/signal_consumption_integration.py": {
+      "exists": true,
+      "size_bytes": 9708,
+      "line_count": 315,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ConsumptionTracker"
+      ],
+      "functions": [
+        "create_consumption_tracker",
+        "track_pattern_match_from_evidence",
+        "inject_consumption_tracking",
+        "get_consumption_tracker",
+        "record_evidence_matches",
+        "verify_pattern_scope",
+        "record_pattern_match",
+        "get_consumption_summary",
+        "get_proof"
+      ]
+    },
+    "SISAS/irrigation/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/irrigation/irrigation_executor.py": {
+      "exists": true,
+      "size_bytes": 11566,
+      "line_count": 309,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "IrrigationPhase",
+        "IrrigationResult",
+        "IrrigationExecutor"
+      ],
+      "functions": [
+        "register_vehicle",
+        "execute_route",
+        "execute_phase",
+        "execute_all_irrigable",
+        "get_execution_summary"
+      ]
+    },
+    "SISAS/irrigation/irrigation_map.py": {
+      "exists": true,
+      "size_bytes": 8116,
+      "line_count": 214,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "IrrigabilityStatus",
+        "IrrigationTarget",
+        "IrrigationSource",
+        "IrrigationRoute",
+        "IrrigationMap"
+      ],
+      "functions": [
+        "add_route",
+        "get_routes_for_phase",
+        "get_routes_for_vehicle",
+        "get_routes_for_consumer",
+        "get_irrigable_now",
+        "get_blocked_routes",
+        "get_statistics",
+        "from_sabana_csv"
+      ]
+    },
+    "SISAS/irrigation/irrigation_validator.py": {
+      "exists": true,
+      "size_bytes": 8147,
+      "line_count": 212,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ValidationLevel",
+        "ValidationIssue",
+        "ValidationResult",
+        "IrrigationValidator"
+      ],
+      "functions": [
+        "errors",
+        "warnings",
+        "validate_map",
+        "validate_route",
+        "validate_contract",
+        "check_vocabulary_alignment"
+      ]
+    },
+    "SISAS/metadata/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/metadata/signal_method_metadata.py": {
+      "exists": true,
+      "size_bytes": 9716,
+      "line_count": 287,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "MethodMetadata",
+        "MethodExecutionMetadata"
+      ],
+      "functions": [
+        "extract_method_metadata",
+        "should_execute_method",
+        "get_adaptive_execution_plan",
+        "get_methods_by_type",
+        "get_methods_by_priority",
+        "get_high_priority_methods"
+      ]
+    },
+    "SISAS/orchestration/__init__.py": {
+      "exists": true,
+      "size_bytes": 335,
+      "line_count": 7,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/schemas/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/schemas/contract_schema.json": {
+      "exists": true,
+      "size_bytes": 1105,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/schemas/event_schema.json": {
+      "exists": true,
+      "size_bytes": 863,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/schemas/irrigation_spec_schema.json": {
+      "exists": true,
+      "size_bytes": 907,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/schemas/signal_schema.json": {
+      "exists": true,
+      "size_bytes": 1770,
+      "line_count": 0,
+      "is_empty": false,
+      "imports_ok": false,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/scripts/__init__.py": {
+      "exists": true,
+      "size_bytes": 340,
+      "line_count": 13,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/scripts/generate_contracts.py": {
+      "exists": true,
+      "size_bytes": 7344,
+      "line_count": 195,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": [
+        "generate_contracts_from_csv",
+        "parse_list",
+        "export_contracts_to_json",
+        "generate_gap_resolution_tasks"
+      ]
+    },
+    "SISAS/semantic/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/semantic/signal_semantic_expander.py": {
+      "exists": true,
+      "size_bytes": 23992,
+      "line_count": 697,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": [
+        "extract_core_term",
+        "expand_pattern_semantically",
+        "adjust_spanish_agreement",
+        "expand_all_patterns",
+        "validate_expansion_result"
+      ]
+    },
+    "SISAS/signal_types/__init__.py": {
+      "exists": true,
+      "size_bytes": 2570,
+      "line_count": 118,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/signal_types/cache.py": {
+      "exists": true,
+      "size_bytes": 6895,
+      "line_count": 230,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "CacheEntry",
+        "SignalRegistry"
+      ],
+      "functions": [
+        "put",
+        "get",
+        "get_metrics",
+        "clear"
+      ]
+    },
+    "SISAS/signal_types/client.py": {
+      "exists": true,
+      "size_bytes": 22773,
+      "line_count": 693,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalPack",
+        "CircuitBreakerError",
+        "SignalUnavailableError",
+        "InMemorySignalSource",
+        "SignalClient",
+        "blake3",
+        "HashResult"
+      ],
+      "functions": [
+        "create_default_signal_pack",
+        "validate_version",
+        "validate_thresholds",
+        "compute_hash",
+        "is_valid",
+        "get_keys_used",
+        "register",
+        "get",
+        "fetch_signal_pack",
+        "get_metrics"
+      ]
+    },
+    "SISAS/signal_types/registry.py": {
+      "exists": true,
+      "size_bytes": 3028,
+      "line_count": 80,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalRegistry"
+      ],
+      "functions": [
+        "get_class",
+        "register",
+        "get_all_types"
+      ]
+    },
+    "SISAS/signal_types/types/__init__.py": {
+      "exists": true,
+      "size_bytes": 3727,
+      "line_count": 147,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/signal_types/types/consumption.py": {
+      "exists": true,
+      "size_bytes": 2536,
+      "line_count": 91,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "FrequencySignal",
+        "TemporalCouplingSignal",
+        "ConsumerHealthSignal"
+      ],
+      "functions": [
+        "category",
+        "category",
+        "category"
+      ]
+    },
+    "SISAS/signal_types/types/contrast.py": {
+      "exists": true,
+      "size_bytes": 2974,
+      "line_count": 95,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "DivergenceType",
+        "DivergenceSeverity",
+        "DecisionDivergenceSignal",
+        "ConfidenceDropSignal",
+        "TemporalContrastSignal"
+      ],
+      "functions": [
+        "category",
+        "category",
+        "category"
+      ]
+    },
+    "SISAS/signal_types/types/epistemic.py": {
+      "exists": true,
+      "size_bytes": 4944,
+      "line_count": 152,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "DeterminacyLevel",
+        "SpecificityLevel",
+        "EmpiricalSupportLevel",
+        "AnswerDeterminacySignal",
+        "AnswerSpecificitySignal",
+        "EmpiricalSupportSignal",
+        "MethodApplicationSignal"
+      ],
+      "functions": [
+        "category",
+        "category",
+        "category",
+        "category"
+      ]
+    },
+    "SISAS/signal_types/types/integrity.py": {
+      "exists": true,
+      "size_bytes": 2979,
+      "line_count": 100,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "PresenceStatus",
+        "CompletenessLevel",
+        "EventPresenceSignal",
+        "EventCompletenessSignal",
+        "DataIntegritySignal"
+      ],
+      "functions": [
+        "category",
+        "category",
+        "category"
+      ]
+    },
+    "SISAS/signal_types/types/operational.py": {
+      "exists": true,
+      "size_bytes": 3874,
+      "line_count": 138,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ExecutionStatus",
+        "FailureMode",
+        "ExecutionAttemptSignal",
+        "FailureModeSignal",
+        "LegacyActivitySignal",
+        "LegacyDependencySignal"
+      ],
+      "functions": [
+        "category",
+        "category",
+        "category",
+        "category"
+      ]
+    },
+    "SISAS/signal_types/types/orchestration.py": {
+      "exists": true,
+      "size_bytes": 10074,
+      "line_count": 303,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "PhaseCompletionStatus",
+        "OrchestrationDecisionType",
+        "OrchestrationFinalStatus",
+        "BlockingStatus",
+        "PhaseStartSignal",
+        "PhaseCompleteSignal",
+        "PhaseProgressSignal",
+        "PhaseRetrySignal",
+        "OrchestrationInitializedSignal",
+        "OrchestrationCompleteSignal",
+        "OrchestrationDecisionSignal",
+        "ConstitutionalValidationSignal",
+        "DependencyGraphLoadedSignal",
+        "PhaseReadyToStartSignal",
+        "DependencyGraphUpdatedSignal",
+        "PhaseBlockedSignal",
+        "ParallelExecutionLimitSignal",
+        "PhaseDependencySatisfiedSignal"
+      ],
+      "functions": [
+        "create_phase_start_signal",
+        "create_phase_complete_signal",
+        "create_orchestration_initialized_signal",
+        "create_orchestration_decision_signal",
+        "create_orchestration_complete_signal",
+        "create_phase_ready_to_start_signal",
+        "create_dependency_graph_updated_signal"
+      ]
+    },
+    "SISAS/signal_types/types/structural.py": {
+      "exists": true,
+      "size_bytes": 3379,
+      "line_count": 99,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "AlignmentStatus",
+        "StructuralAlignmentSignal",
+        "SchemaConflictSignal",
+        "CanonicalMappingSignal"
+      ],
+      "functions": [
+        "category",
+        "compute_alignment_score",
+        "category",
+        "category"
+      ]
+    },
+    "SISAS/utils/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/utils/signal_resolution.py": {
+      "exists": true,
+      "size_bytes": 2751,
+      "line_count": 100,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "Signal",
+        "Question",
+        "Chunk"
+      ],
+      "functions": []
+    },
+    "SISAS/utils/signal_scoring_context.py": {
+      "exists": true,
+      "size_bytes": 12800,
+      "line_count": 386,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ScoringModalityDefinition",
+        "ScoringContext"
+      ],
+      "functions": [
+        "extract_scoring_context",
+        "create_default_scoring_context",
+        "get_all_modality_definitions",
+        "compute_score",
+        "passes_threshold",
+        "adjust_threshold_for_context",
+        "get_scoring_kwargs"
+      ]
+    },
+    "SISAS/utils/signal_semantic_context.py": {
+      "exists": true,
+      "size_bytes": 12186,
+      "line_count": 360,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "EntityLinking",
+        "DisambiguationRule",
+        "EmbeddingStrategy",
+        "SemanticContext"
+      ],
+      "functions": [
+        "extract_semantic_context",
+        "apply_semantic_disambiguation",
+        "get_entity_linking_config",
+        "should_link_entity",
+        "disambiguate",
+        "get_disambiguation_rule",
+        "disambiguate_term",
+        "disambiguate_pattern",
+        "should_use_hybrid_embedding"
+      ]
+    },
+    "SISAS/utils/signal_validation_specs.py": {
+      "exists": true,
+      "size_bytes": 13075,
+      "line_count": 396,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ValidationSpec",
+        "ValidationSpecifications",
+        "ValidationFailure",
+        "ValidationResult"
+      ],
+      "functions": [
+        "extract_validation_specifications",
+        "passes",
+        "get_spec",
+        "is_required",
+        "is_critical",
+        "validate_evidence",
+        "get_failed_validations",
+        "get_critical_failures"
+      ]
+    },
+    "SISAS/validators/__init__.py": {
+      "exists": true,
+      "size_bytes": 398,
+      "line_count": 19,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/validators/depuration.py": {
+      "exists": true,
+      "size_bytes": 40505,
+      "line_count": 1034,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SeverityLevel",
+        "DepurationError",
+        "DepurationWarning",
+        "DepurationResult",
+        "FileRole",
+        "DepurationValidator",
+        "BatchDepurationResult"
+      ],
+      "functions": [
+        "depurate_all_files",
+        "to_dict",
+        "to_dict",
+        "has_critical_errors",
+        "error_count_by_severity",
+        "warning_count_by_severity",
+        "to_dict",
+        "depurate",
+        "depurate_batch",
+        "depurate_all"
+      ]
+    },
+    "SISAS/vehicles/__init__.py": {
+      "exists": true,
+      "size_bytes": 1331,
+      "line_count": 33,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/vehicles/base_vehicle.py": {
+      "exists": true,
+      "size_bytes": 5600,
+      "line_count": 165,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "VehicleCapabilities",
+        "BaseVehicle"
+      ],
+      "functions": [
+        "process",
+        "create_event",
+        "create_signal_source",
+        "publish_signal",
+        "activate",
+        "deactivate",
+        "get_stats"
+      ]
+    },
+    "SISAS/vehicles/signal_context_scoper.py": {
+      "exists": true,
+      "size_bytes": 9378,
+      "line_count": 248,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalContextScoperVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/signal_enhancement_integrator.py": {
+      "exists": true,
+      "size_bytes": 10357,
+      "line_count": 255,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalEnhancementIntegratorVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/signal_evidence_extractor.py": {
+      "exists": true,
+      "size_bytes": 9071,
+      "line_count": 252,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalEvidenceExtractorVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/signal_intelligence_layer.py": {
+      "exists": true,
+      "size_bytes": 14159,
+      "line_count": 374,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalIntelligenceLayerVehicle",
+        "EnrichedSignalPack"
+      ],
+      "functions": [
+        "create_enriched_signal_pack",
+        "process",
+        "get_patterns_for_context"
+      ]
+    },
+    "SISAS/vehicles/signal_irrigator.py": {
+      "exists": true,
+      "size_bytes": 12508,
+      "line_count": 316,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "IrrigationResult",
+        "SignalIrrigatorVehicle"
+      ],
+      "functions": [
+        "process",
+        "irrigate_file",
+        "irrigate_batch",
+        "get_irrigation_summary"
+      ]
+    },
+    "SISAS/vehicles/signal_loader.py": {
+      "exists": true,
+      "size_bytes": 9927,
+      "line_count": 289,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "FileLoadResult",
+        "SignalLoaderVehicle"
+      ],
+      "functions": [
+        "process",
+        "load_file",
+        "load_batch",
+        "discover_files",
+        "load_all",
+        "get_load_summary",
+        "iterate_canonical_files"
+      ]
+    },
+    "SISAS/vehicles/signal_quality_metrics.py": {
+      "exists": true,
+      "size_bytes": 7927,
+      "line_count": 208,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalQualityMetricsVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/signal_registry.py": {
+      "exists": true,
+      "size_bytes": 9597,
+      "line_count": 261,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalRegistryVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/signals.py": {
+      "exists": true,
+      "size_bytes": 944,
+      "line_count": 31,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalsAggregatorVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/contrast/__init__.py": {
+      "exists": true,
+      "size_bytes": 198,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/vehicles/contrast/contrast_signals_vehicle.py": {
+      "exists": true,
+      "size_bytes": 15026,
+      "line_count": 376,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "ContrastSignalsVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vehicles/structural/__init__.py": {
+      "exists": true,
+      "size_bytes": 200,
+      "line_count": 5,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/vehicles/structural/schema_validator_vehicle.py": {
+      "exists": true,
+      "size_bytes": 9521,
+      "line_count": 266,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SchemaValidatorVehicle"
+      ],
+      "functions": [
+        "process"
+      ]
+    },
+    "SISAS/vocabulary/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/vocabulary/alignment_checker.py": {
+      "exists": true,
+      "size_bytes": 11452,
+      "line_count": 272,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "AlignmentIssue",
+        "AlignmentReport",
+        "VocabularyAlignmentChecker"
+      ],
+      "functions": [
+        "add_issue",
+        "check_alignment",
+        "check_vehicle_alignment",
+        "check_irrigation_route_alignment",
+        "generate_gap_resolution_plan"
+      ]
+    },
+    "SISAS/vocabulary/capability_vocabulary.py": {
+      "exists": true,
+      "size_bytes": 7436,
+      "line_count": 190,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "CapabilityDefinition",
+        "CapabilityVocabulary"
+      ],
+      "functions": [
+        "register",
+        "get",
+        "is_valid",
+        "get_by_category",
+        "get_producers_of",
+        "get_consumers_of"
+      ]
+    },
+    "SISAS/vocabulary/signal_vocabulary.py": {
+      "exists": true,
+      "size_bytes": 26180,
+      "line_count": 600,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalTypeDefinition",
+        "SignalVocabulary"
+      ],
+      "functions": [
+        "compute_hash",
+        "register",
+        "get",
+        "is_valid_type",
+        "get_by_category",
+        "validate_signal",
+        "to_dict",
+        "search_by_field",
+        "search_by_description",
+        "get_usage_statistics"
+      ]
+    },
+    "SISAS/wiring/__init__.py": {
+      "exists": true,
+      "size_bytes": 287,
+      "line_count": 13,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/wiring/wiring_config.py": {
+      "exists": true,
+      "size_bytes": 33414,
+      "line_count": 759,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "WiringIssue",
+        "WiringValidationReport",
+        "WiringConfiguration"
+      ],
+      "functions": [
+        "to_dict",
+        "critical_issues",
+        "high_issues",
+        "blocking_issues",
+        "issues_by_type",
+        "issues_by_severity",
+        "add_critical",
+        "add_error",
+        "add_warning",
+        "add_info"
+      ]
+    },
+    "SISAS/_deprecated/__init__.py": {
+      "exists": true,
+      "size_bytes": 0,
+      "line_count": 0,
+      "is_empty": true,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": []
+    },
+    "SISAS/_deprecated/signal_types.py": {
+      "exists": true,
+      "size_bytes": 12629,
+      "line_count": 334,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [
+        "SignalType",
+        "Signal",
+        "SignalFactory"
+      ],
+      "functions": [
+        "from_mc_id",
+        "to_mc_id",
+        "to_dict",
+        "from_dict",
+        "with_updated_confidence",
+        "create"
+      ]
+    },
+    "SISAS/_deprecated/signal_wiring_fixes.py": {
+      "exists": true,
+      "size_bytes": 13635,
+      "line_count": 383,
+      "is_empty": false,
+      "imports_ok": true,
+      "import_error": "",
+      "classes": [],
+      "functions": [
+        "integrate_context_scoping_in_registry",
+        "integrate_consumption_tracking_in_extraction",
+        "verify_pattern_scope_before_application",
+        "validate_access_level",
+        "verify_registry_interfaces_complete",
+        "validate_injection_timing"
+      ]
+    }
+  },
+  "wiring_issues": [],
+  "redundancy_issues": [
+    {
+      "files": [
+        "SISAS/audit/consumer_auditor.py",
+        "SISAS/audit/decision_auditor.py",
+        "SISAS/audit/signal_auditor.py"
+      ],
+      "type": "DUPLICATE_CLASS",
+      "desc": "Class 'AuditReport' defined in 3 files"
+    },
+    {
+      "files": [
+        "SISAS/core/signal.py",
+        "SISAS/utils/signal_resolution.py",
+        "SISAS/_deprecated/signal_types.py"
+      ],
+      "type": "DUPLICATE_CLASS",
+      "desc": "Class 'Signal' defined in 3 files"
+    },
+    {
+      "files": [
+        "SISAS/irrigation/irrigation_executor.py",
+        "SISAS/vehicles/signal_irrigator.py"
+      ],
+      "type": "DUPLICATE_CLASS",
+      "desc": "Class 'IrrigationResult' defined in 2 files"
+    },
+    {
+      "files": [
+        "SISAS/irrigation/irrigation_validator.py",
+        "SISAS/utils/signal_validation_specs.py"
+      ],
+      "type": "DUPLICATE_CLASS",
+      "desc": "Class 'ValidationResult' defined in 2 files"
+    },
+    {
+      "files": [
+        "SISAS/signal_types/cache.py",
+        "SISAS/signal_types/registry.py"
+      ],
+      "type": "DUPLICATE_CLASS",
+      "desc": "Class 'SignalRegistry' defined in 2 files"
+    }
+  ]
+}

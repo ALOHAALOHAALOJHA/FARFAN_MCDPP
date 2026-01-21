@@ -9,7 +9,7 @@ This package contains the formal contracts governing Phase 1 execution:
 
 from __future__ import annotations
 
-from farfan_pipeline.phases.Phase_01.contracts.phase1_constitutional_contract import (
+from farfan_pipeline.phases.Phase_01.contracts.phase1_10_01_constitutional_contract import (
     EXPECTED_CHUNK_COUNT,
     EXPECTED_DIMENSION_COUNT,
     EXPECTED_POLICY_AREA_COUNT,
@@ -17,18 +17,18 @@ from farfan_pipeline.phases.Phase_01.contracts.phase1_constitutional_contract im
     get_padim_coverage_matrix,
     validate_constitutional_invariant,
 )
-from farfan_pipeline.phases.Phase_01.contracts.phase1_input_contract import (
+from farfan_pipeline.phases.Phase_01.contracts.phase1_10_00_input_contract import (
     PHASE1_INPUT_PRECONDITIONS,
     Phase1InputPrecondition,
     validate_phase1_input_contract,
 )
-from farfan_pipeline.phases.Phase_01.contracts.phase1_mission_contract import (
+from farfan_pipeline.phases.Phase_01.contracts.phase1_10_02_mission_contract import (
     PHASE1_SUBPHASE_WEIGHTS,
     SubphaseWeight,
     WeightTier,
     validate_mission_contract,
 )
-from farfan_pipeline.phases.Phase_01.contracts.phase1_output_contract import (
+from farfan_pipeline.phases.Phase_01.contracts.phase1_10_03_output_contract import (
     PHASE1_OUTPUT_POSTCONDITIONS,
     Phase1OutputPostcondition,
     validate_phase1_output_contract,

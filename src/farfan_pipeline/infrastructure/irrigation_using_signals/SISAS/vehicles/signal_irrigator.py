@@ -275,9 +275,9 @@ class SignalIrrigatorVehicle(BaseVehicle):
 
     def _get_bus_for_signal(self, signal: Signal) -> Optional[BusType]:
         """Determina el bus apropiado para una señal según su categoría"""
-        from ..signals.types.structural import StructuralAlignmentSignal, CanonicalMappingSignal
-        from ..signals.types.integrity import DataIntegritySignal, EventCompletenessSignal
-        from ..signals.types.epistemic import EmpiricalSupportSignal, MethodApplicationSignal
+        from ..signal_types.types.structural import StructuralAlignmentSignal, CanonicalMappingSignal
+        from ..signal_types.types.integrity import DataIntegritySignal, EventCompletenessSignal
+        from ..signal_types.types.epistemic import EmpiricalSupportSignal, MethodApplicationSignal
 
         signal_type = type(signal).__name__
 

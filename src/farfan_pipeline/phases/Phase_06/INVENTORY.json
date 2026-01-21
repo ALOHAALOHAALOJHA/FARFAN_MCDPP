@@ -1,0 +1,109 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 6,
+    "name": "Cluster Aggregation (MESO)"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_06",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 6 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "primitives",
+      "purpose": "Fundamental mathematical definitions for cluster aggregation"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 6 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase6_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 140,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase6_10_00_cluster_score.py",
+      "canonical_name": "phase6_10_00_cluster_score",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 150,
+      "purpose": "ClusterScore dataclass definition"
+    },
+    {
+      "filename": "phase6_10_00_phase_6_constants.py",
+      "canonical_name": "phase6_10_00_phase_6_constants",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 150,
+      "purpose": "Cluster composition and re-exports from unified config"
+    },
+    {
+      "filename": "phase6_10_01_scoring_config.py",
+      "canonical_name": "phase6_10_01_scoring_config",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 180,
+      "purpose": "Single source of truth for all scoring parameters"
+    },
+    {
+      "filename": "phase6_20_00_adaptive_meso_scoring.py",
+      "canonical_name": "phase6_20_00_adaptive_meso_scoring",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 530,
+      "purpose": "Adaptive penalty calculation based on dispersion"
+    },
+    {
+      "filename": "phase6_30_00_cluster_aggregator.py",
+      "canonical_name": "phase6_30_00_cluster_aggregator",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 480,
+      "purpose": "Main aggregation orchestrator with contract enforcement"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_6_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_6_CONSTANTS.py",
+      "purpose": "Phase 6 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 6"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 6"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "total_python_modules": 6,
+  "total_lines_of_code": 1630,
+  "criticality_summary": {
+    "CRITICAL": 5,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 1
+  }
+}

@@ -1,0 +1,248 @@
+{
+  "audit_timestamp": "2026-01-20T01:44:11.582375",
+  "summary": {
+    "total_consumers": 10,
+    "total_signal_types": 24,
+    "total_capability_gaps": 0,
+    "overall_equipment_score": 1.0
+  },
+  "consumer_reports": [
+    {
+      "consumer_id": "phase_00_assembly_consumer",
+      "phase": "phase_0",
+      "declared_capabilities": [
+        "PHASE_MONITORING",
+        "SIGNAL_PACK",
+        "STATIC_LOAD"
+      ],
+      "signal_types_subscribed": [
+        "SIGNAL_PACK",
+        "STATIC_LOAD"
+      ],
+      "signal_types_equipped": [
+        "SIGNAL_PACK",
+        "STATIC_LOAD"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_01_extraction_consumer",
+      "phase": "phase_1",
+      "declared_capabilities": [
+        "CAUSAL_ANALYSIS",
+        "CITATION_PARSING",
+        "DATE_NORMALIZATION",
+        "DEMOGRAPHIC_ANALYSIS",
+        "EXTRACTION",
+        "FINANCIAL_ANALYSIS",
+        "HIERARCHY_PARSING",
+        "INSTITUTIONAL_RECOGNITION",
+        "NER",
+        "NORMATIVE_LOOKUP",
+        "NUMERIC_PARSING",
+        "PHASE_MONITORING",
+        "POPULATION_PARSING",
+        "RELATIONSHIP_EXTRACTION",
+        "SEMANTIC_ANALYSIS",
+        "STRUCTURAL_PARSING",
+        "TEMPORAL_PARSING",
+        "TREE_CONSTRUCTION",
+        "TRIPLET_EXTRACTION",
+        "VERB_EXTRACTION"
+      ],
+      "signal_types_subscribed": [
+        "MC01",
+        "MC02",
+        "MC03",
+        "MC04",
+        "MC05",
+        "MC06",
+        "MC07",
+        "MC08",
+        "MC09",
+        "MC10"
+      ],
+      "signal_types_equipped": [
+        "MC01",
+        "MC02",
+        "MC03",
+        "MC04",
+        "MC05",
+        "MC06",
+        "MC07",
+        "MC08",
+        "MC09",
+        "MC10"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_02_enrichment_consumer",
+      "phase": "phase_2",
+      "declared_capabilities": [
+        "ENRICHMENT",
+        "ENTITY_RECOGNITION",
+        "KEYWORD_EXTRACTION",
+        "PATTERN_MATCHING",
+        "PHASE_MONITORING"
+      ],
+      "signal_types_subscribed": [
+        "ENTITY_ENRICHMENT",
+        "KEYWORD_ENRICHMENT",
+        "PATTERN_ENRICHMENT"
+      ],
+      "signal_types_equipped": [
+        "ENTITY_ENRICHMENT",
+        "KEYWORD_ENRICHMENT",
+        "PATTERN_ENRICHMENT"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_03_validation_consumer",
+      "phase": "phase_3",
+      "declared_capabilities": [
+        "COHERENCE_CHECK",
+        "ENTITY_CHECK",
+        "NORMATIVE_CHECK",
+        "PHASE_MONITORING",
+        "VALIDATION"
+      ],
+      "signal_types_subscribed": [
+        "COHERENCE_VALIDATION",
+        "ENTITY_VALIDATION",
+        "NORMATIVE_VALIDATION"
+      ],
+      "signal_types_equipped": [
+        "COHERENCE_VALIDATION",
+        "ENTITY_VALIDATION",
+        "NORMATIVE_VALIDATION"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_04_micro_consumer",
+      "phase": "phase_4",
+      "declared_capabilities": [
+        "CHOQUET_INTEGRAL",
+        "MICRO_LEVEL",
+        "PHASE_MONITORING",
+        "SCORING"
+      ],
+      "signal_types_subscribed": [
+        "MICRO_SCORE"
+      ],
+      "signal_types_equipped": [
+        "MICRO_SCORE"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_05_meso_consumer",
+      "phase": "phase_5",
+      "declared_capabilities": [
+        "DIMENSION_AGGREGATION",
+        "MESO_LEVEL",
+        "PHASE_MONITORING",
+        "SCORING"
+      ],
+      "signal_types_subscribed": [
+        "MESO_SCORE"
+      ],
+      "signal_types_equipped": [
+        "MESO_SCORE"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_06_macro_consumer",
+      "phase": "phase_6",
+      "declared_capabilities": [
+        "MACRO_LEVEL",
+        "PHASE_MONITORING",
+        "POLICY_AREA_AGGREGATION",
+        "SCORING"
+      ],
+      "signal_types_subscribed": [
+        "MACRO_SCORE"
+      ],
+      "signal_types_equipped": [
+        "MACRO_SCORE"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_07_aggregation_consumer",
+      "phase": "phase_7",
+      "declared_capabilities": [
+        "AGGREGATION",
+        "CLUSTER_LEVEL",
+        "PHASE_MONITORING"
+      ],
+      "signal_types_subscribed": [
+        "MESO_AGGREGATION"
+      ],
+      "signal_types_equipped": [
+        "MESO_AGGREGATION"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_08_integration_consumer",
+      "phase": "phase_8",
+      "declared_capabilities": [
+        "AGGREGATION",
+        "HOLISTIC_LEVEL",
+        "PHASE_MONITORING",
+        "RECOMMENDATION_ENGINE"
+      ],
+      "signal_types_subscribed": [
+        "MACRO_AGGREGATION"
+      ],
+      "signal_types_equipped": [
+        "MACRO_AGGREGATION"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    },
+    {
+      "consumer_id": "phase_09_report_consumer",
+      "phase": "phase_9",
+      "declared_capabilities": [
+        "ASSEMBLY",
+        "EXPORT",
+        "PHASE_MONITORING",
+        "REPORT_GENERATION"
+      ],
+      "signal_types_subscribed": [
+        "REPORT_ASSEMBLY"
+      ],
+      "signal_types_equipped": [
+        "REPORT_ASSEMBLY"
+      ],
+      "signal_types_unequipped": [],
+      "capability_gaps": [],
+      "equipment_score": 1.0
+    }
+  ],
+  "recommendations": [
+    "All consumers are fully equipped for their subscribed signals."
+  ]
+}

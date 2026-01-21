@@ -42,7 +42,8 @@ import hashlib
 import json
 import logging
 import uuid
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+UTC = timezone.utc
 from typing import TYPE_CHECKING, Any, cast, Callable, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator

@@ -1,0 +1,97 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 7,
+    "name": "Macro Evaluation"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_07",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 7 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 7 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase7_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 80,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase7_10_00_macro_score.py",
+      "canonical_name": "phase7_10_00_macro_score",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 200,
+      "purpose": "MacroScore dataclass definition"
+    },
+    {
+      "filename": "phase7_10_00_phase_7_constants.py",
+      "canonical_name": "phase7_10_00_phase_7_constants",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 115,
+      "purpose": "Phase 7 constants and configuration values"
+    },
+    {
+      "filename": "phase7_10_00_systemic_gap_detector.py",
+      "canonical_name": "phase7_10_00_systemic_gap_detector",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 370,
+      "purpose": "Systemic gap detection and analysis"
+    },
+    {
+      "filename": "phase7_20_00_macro_aggregator.py",
+      "canonical_name": "phase7_20_00_macro_aggregator",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 430,
+      "purpose": "Main macro aggregation orchestrator"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_7_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_7_CONSTANTS.py",
+      "purpose": "Phase 7 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 7"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 7"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "total_python_modules": 5,
+  "total_lines_of_code": 1195,
+  "criticality_summary": {
+    "CRITICAL": 4,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 1
+  }
+}

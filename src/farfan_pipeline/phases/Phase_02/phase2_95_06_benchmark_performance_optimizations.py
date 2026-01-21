@@ -29,9 +29,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-from phase2_30_05_distributed_cache import IntelligentCache, cached_method
-from phase2_50_02_batch_optimizer import SmartBatchOptimizer
-from phase2_95_05_execution_predictor import PredictiveProfiler
+from farfan_pipeline.phases.Phase_02.phase2_30_05_distributed_cache import IntelligentCache, cached_method
+from farfan_pipeline.phases.Phase_02.phase2_50_02_batch_optimizer import SmartBatchOptimizer
+from farfan_pipeline.phases.Phase_02.phase2_95_05_execution_predictor import PredictiveProfiler
 
 
 def load_sample_contracts(count: int = 30) -> list[dict[str, Any]]:

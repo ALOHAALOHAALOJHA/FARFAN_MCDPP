@@ -18,13 +18,13 @@ from __future__ import annotations
 __version__ = "1.0.0"
 __phase__ = 2
 
-from farfan_pipeline.phases.Phase_02.contracts.phase2_input_contract import (
+from farfan_pipeline.phases.Phase_02.contracts.phase2_10_00_input_contract import (
     Phase2InputContractError,
     Phase2InputPreconditions,
     Phase2InputValidator,
     verify_phase2_input_contract,
 )
-from farfan_pipeline.phases.Phase_02.contracts.phase2_mission_contract import (
+from farfan_pipeline.phases.Phase_02.contracts.phase2_10_01_mission_contract import (
     ExecutionStage,
     ModuleNode,
     PHASE2_TOPOLOGICAL_ORDER,
@@ -33,7 +33,7 @@ from farfan_pipeline.phases.Phase_02.contracts.phase2_mission_contract import (
     verify_dag_acyclicity,
     verify_phase2_mission_contract,
 )
-from farfan_pipeline.phases.Phase_02.contracts.phase2_output_contract import (
+from farfan_pipeline.phases.Phase_02.contracts.phase2_10_02_output_contract import (
     Phase2Output,
     Phase2OutputContractError,
     Phase2OutputPostconditions,

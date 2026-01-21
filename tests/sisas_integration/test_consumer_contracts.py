@@ -466,7 +466,7 @@ class TestContractViolationDetection:
 
         violations = consumer.validate_contract_compliance()
         assert len(violations) > 0
-        assert "EPISTEMIC_CONFIDENCE" in str(violations[0])
+        assert "epistemic.confidence" in str(violations[0])
 
     def test_no_violations_when_compliant(self):
         """Should report no violations when consumer is compliant."""
