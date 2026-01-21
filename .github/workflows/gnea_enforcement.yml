@@ -34,7 +34,7 @@ on:
           - L4
 
 env:
-  PYTHON_VERSION: "3.11"
+  PYTHON_VERSION: "3.12"
   ENFORCEMENT_LEVEL: ${{ github.event.inputs.level || 'L2' }}
 
 jobs:
