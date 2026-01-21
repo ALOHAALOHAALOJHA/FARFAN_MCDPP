@@ -162,7 +162,7 @@ class OrchestratorConfig:
     enable_checkpoint: bool = True
 
     # Paths
-    questionnaire_path: str = "canonic_questionnaire_central/questionnaire_monolith.json"
+    questionnaire_path: str = "canonic_questionnaire_central/_registry"
     methods_file: str = "json_methods/METHODS_OPERACIONALIZACION.json"
 
     # Resource limits
@@ -1393,6 +1393,12 @@ class UnifiedOrchestrator:
                     consumers_registered = self._register_phase_consumers()
                     self.logger.info(f"SISAS initialized (legacy mode) with {consumers_registered} consumers")
 
+            # ==========================================================================
+            # INTERVENTION 2: Orchestrator-Factory Alignment
+            # ==========================================================================
+            # Perform initial sync with factory
+            self._sync_with_factory()
+
             self.logger.info(
                 "UnifiedFactory initialized",
                 questionnaire_available=self.context.questionnaire is not None,
@@ -1404,6 +1410,35 @@ class UnifiedOrchestrator:
             self.logger.warning(
                 "UnifiedFactory not available, questionnaire and components will be limited"
             )
+
+    def _sync_with_factory(self) -> None:
+        """
+        Synchronize orchestrator context with factory products.
+
+        Ensures that all components created by the factory are correctly
+        registered in the execution context. This provides thread-safe
+        caching and single-source-of-truth alignment.
+        """
+        if not self.factory:
+            return
+
+        # Sync Questionnaire
+        if self.context.questionnaire is None:
+            self.context.questionnaire = self.factory.load_questionnaire()
+            self.logger.debug("Synced questionnaire from factory")
+
+        # Sync Signal Registry
+        if self.context.signal_registry is None:
+            self.context.signal_registry = self.factory.create_signal_registry()
+            self.logger.debug("Synced signal registry from factory")
+
+        # Sync SISAS (if enabled)
+        if self.config.enable_sisas and self.context.sisas is None:
+            self.context.sisas = self.factory.get_sisas_central()
+            if self.context.sisas:
+                self.logger.debug("Synced SISAS central from factory")
+
+        self.logger.debug("Orchestrator-Factory alignment complete")
 
     def _register_phase_consumers(self) -> int:
         """
