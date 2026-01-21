@@ -222,6 +222,7 @@ target-version = ['py312']
 minversion = "7.0"
 addopts = "-v --strict-markers --tb=short -m 'not obsolete'"
 testpaths = ["tests"]
+pythonpath = ["src", "."]  # src/ for farfan_pipeline, . for canonic_questionnaire_central
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

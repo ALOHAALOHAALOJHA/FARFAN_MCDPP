@@ -30,7 +30,7 @@ farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_lo
 farfan_pipeline.phases.Phase_zero.phase0_90_02_bootstrap|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 importlib.util|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 farfan_pipeline.orchestration.factory|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
-farfan_pipeline.orchestration.orchestrator|ERA_ORCHESTRATOR|LIVE|N/A|REDIRECT|MIGRATION_ARTIFACT
+farfan_pipeline.orchestration.orchestrator|ERA_MODERN|LIVE|N/A|KEEP|CANONICAL
 warnings|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 logging|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
 numpy|ERA_UNKNOWN|DEAD|N/A|DELETE|ARCHITECTURAL_GHOST
