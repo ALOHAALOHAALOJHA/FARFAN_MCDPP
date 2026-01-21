@@ -9,7 +9,7 @@ on:
       - 'src/farfan_pipeline/phases/Phase_02/**'
 
 env:
-  PYTHON_VERSION: '3.11'
+  PYTHON_VERSION: '3.12'
   PHASE2_RANDOM_SEED: 42
 
 jobs:
