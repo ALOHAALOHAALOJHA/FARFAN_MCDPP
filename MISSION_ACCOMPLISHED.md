@@ -1,6 +1,34 @@
 # 🎯 MISSION ACCOMPLISHED: SOTA Interventions for FARFAN Pipeline
 
-## Executive Summary
+> **NOTE**: This document has been superseded. Please refer to the PR description and `docs/SOTA_INTERVENTIONS.md` for current status. This file reflects the original implementation which included modifications to legacy SISAS files that have since been reverted.
+
+---
+
+**Original Completion Date**: 2026-01-19  
+**Status**: Documentation archived - see updated PR description
+
+---
+
+## ⚠️ Important Update
+
+The original implementation included three interventions. During PR review and realignment to the unified orchestrator architecture:
+
+**Retained**:
+- ✅ Intervention 1: Factory Performance (thread-safe caching, parallel execution)
+- ✅ Intervention 2: Orchestrator-Factory Alignment (capabilities API, sync protocol)
+
+**Reverted**:
+- ❌ Intervention 3: Direct modifications to legacy SISAS orchestrator removed
+- All SISAS integration now flows through unified orchestrator and SDO
+
+**Current Architecture**:
+- Single orchestration entry point: `orchestrator.py` (UnifiedOrchestrator)
+- SISAS integration via SDO (Signal Distribution Orchestrator)
+- No direct modifications to legacy `sisas_orchestrator.py`
+
+---
+
+## Executive Summary (Original - See Updates Above)
 
 Successfully implemented **3 state-of-the-art interventions** that achieve exponential performance improvements through unorthodox rationality and creative engineering.
 
