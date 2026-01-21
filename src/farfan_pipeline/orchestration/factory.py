@@ -45,7 +45,7 @@ import json
 import time
 import threading
 from collections import OrderedDict
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar
@@ -260,12 +260,9 @@ class UnifiedFactory:
         # INTERVENTION 1: Parallel Execution Infrastructure
         # ==========================================================================
         self._thread_pool: Optional[ThreadPoolExecutor] = None
-        self._process_pool: Optional[ProcessPoolExecutor] = None
         
         if config.enable_parallel_execution:
             self._thread_pool = ThreadPoolExecutor(max_workers=config.max_workers)
-            # Process pool for CPU-intensive tasks
-            self._process_pool = ProcessPoolExecutor(max_workers=max(2, config.max_workers // 2))
             logger.info("Parallel execution enabled", max_workers=config.max_workers)
         
         # ==========================================================================
@@ -1223,10 +1220,6 @@ class UnifiedFactory:
         if self._thread_pool:
             self._thread_pool.shutdown(wait=True)
             logger.debug("Thread pool shut down")
-            
-        if self._process_pool:
-            self._process_pool.shutdown(wait=True)
-            logger.debug("Process pool shut down")
             
         if self._method_cache:
             self._method_cache.clear()

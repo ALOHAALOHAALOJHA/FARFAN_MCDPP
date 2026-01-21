@@ -1717,11 +1717,9 @@ class UnifiedOrchestrator:
         contract_list = list(active_contracts.keys())[:10]
         
         # ==========================================================================
-        # INTERVENTION 1 & 2: Use parallel batch execution if beneficial
+        # INTERVENTION 1 & 2: Use parallel batch execution if recommended by plan
         # ==========================================================================
-        if (execution_plan and 
-            execution_plan["execution_strategy"] == "parallel_batch" and
-            len(contract_list) >= self.factory._config.batch_execution_threshold):
+        if execution_plan and execution_plan["execution_strategy"] == "parallel_batch":
             
             self.logger.info("Using parallel batch execution")
             
@@ -1875,6 +1873,11 @@ class UnifiedOrchestrator:
     def cleanup(self) -> None:
         """Clean up resources after pipeline execution."""
         self.logger.info("Starting cleanup")
+        
+        # Clean up factory resources
+        if self.factory:
+            self.factory.cleanup()
+            
         import gc
         gc.collect()
         self.logger.info("Cleanup completed")

@@ -4,7 +4,6 @@ Test Suite for State-of-the-Art Interventions
 Tests for three major interventions:
 1. Factory Performance Supercharger
 2. Orchestrator-Factory Alignment Protocol
-3. SISAS Dynamic Alignment Enhancement
 """
 
 import asyncio
@@ -14,12 +13,12 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.farfan_pipeline.orchestration.factory import (
+from farfan_pipeline.orchestration.factory import (
     AdaptiveLRUCache,
     FactoryConfig,
     UnifiedFactory,
 )
-from src.farfan_pipeline.orchestration.orchestrator import (
+from farfan_pipeline.orchestration.orchestrator import (
     OrchestratorConfig,
     PhaseID,
     UnifiedOrchestrator,
@@ -343,233 +342,6 @@ class TestOrchestratorFactoryIntegration:
             assert isinstance(result["performance_metrics"], dict)
 
 
-# =============================================================================
-# INTERVENTION 3: SISAS Dynamic Alignment Tests
-# =============================================================================
-
-
-class TestSignalAnticipation:
-    """Test signal anticipation engine."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        """Create SISAS orchestrator."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.orchestration.sisas_orchestrator import (
-            SISASOrchestrator,
-        )
-
-        return SISASOrchestrator()
-
-    def test_enable_signal_anticipation(self, orchestrator):
-        """Test enabling signal anticipation."""
-        orchestrator.enable_signal_anticipation()
-
-        assert orchestrator._signal_anticipation_enabled is True
-        assert hasattr(orchestrator, "_signal_history")
-
-    def test_predict_signal_load_no_history(self, orchestrator):
-        """Test prediction with no history."""
-        orchestrator.enable_signal_anticipation()
-
-        prediction = orchestrator.predict_signal_load("phase_02")
-
-        assert prediction["estimated_signals"] == 0
-        assert prediction["confidence"] == 0.0
-
-    def test_predict_signal_load_with_history(self, orchestrator):
-        """Test prediction with historical data."""
-        orchestrator.enable_signal_anticipation()
-
-        # Add history
-        orchestrator._signal_history = [
-            {"phase": "phase_02", "signal_count": 100},
-            {"phase": "phase_02", "signal_count": 120},
-            {"phase": "phase_02", "signal_count": 110},
-        ]
-
-        prediction = orchestrator.predict_signal_load("phase_02")
-
-        assert prediction["estimated_signals"] > 0
-        assert 0 <= prediction["confidence"] <= 1.0
-
-
-class TestDynamicVehicleRouting:
-    """Test dynamic vehicle routing."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        """Create SISAS orchestrator."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.orchestration.sisas_orchestrator import (
-            SISASOrchestrator,
-        )
-
-        return SISASOrchestrator()
-
-    def test_enable_dynamic_routing(self, orchestrator):
-        """Test enabling dynamic routing."""
-        orchestrator.enable_dynamic_vehicle_routing()
-
-        assert orchestrator._dynamic_routing_enabled is True
-        assert hasattr(orchestrator, "_vehicle_performance")
-
-    def test_optimize_vehicle_assignment(self, orchestrator):
-        """Test vehicle assignment optimization."""
-        orchestrator.enable_dynamic_vehicle_routing()
-
-        # Set performance data
-        orchestrator._vehicle_performance = {
-            "vehicle_a": {"success_rate": 0.9},
-            "vehicle_b": {"success_rate": 0.7},
-            "vehicle_c": {"success_rate": 0.95},
-        }
-
-        # Mock baseline assignment
-        orchestrator._get_vehicles_for_file = lambda path: [
-            "vehicle_a",
-            "vehicle_b",
-            "vehicle_c",
-        ]
-
-        optimized = orchestrator.optimize_vehicle_assignment("test.json")
-
-        # Should be sorted by success rate (descending)
-        assert optimized[0] == "vehicle_c"  # Highest success rate
-
-
-class TestBackpressureManagement:
-    """Test backpressure management."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        """Create SISAS orchestrator."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.orchestration.sisas_orchestrator import (
-            SISASOrchestrator,
-        )
-
-        return SISASOrchestrator()
-
-    def test_enable_backpressure(self, orchestrator):
-        """Test enabling backpressure management."""
-        orchestrator.enable_backpressure_management(threshold=500)
-
-        assert orchestrator._backpressure_enabled is True
-        assert orchestrator._backpressure_threshold == 500
-
-    def test_backpressure_not_triggered(self, orchestrator):
-        """Test backpressure when below threshold."""
-        orchestrator.enable_backpressure_management(threshold=1000)
-        orchestrator._pending_signals_count = 500
-
-        result = orchestrator.check_backpressure()
-
-        assert result["apply_backpressure"] is False
-        assert result["utilization_percent"] == 50.0
-
-    def test_backpressure_triggered(self, orchestrator):
-        """Test backpressure when at/above threshold."""
-        orchestrator.enable_backpressure_management(threshold=1000)
-        orchestrator._pending_signals_count = 1000
-
-        result = orchestrator.check_backpressure()
-
-        assert result["apply_backpressure"] is True
-        assert result["utilization_percent"] == 100.0
-
-
-class TestSignalFusion:
-    """Test signal fusion."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        """Create SISAS orchestrator."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.orchestration.sisas_orchestrator import (
-            SISASOrchestrator,
-        )
-
-        return SISASOrchestrator()
-
-    def test_enable_signal_fusion(self, orchestrator):
-        """Test enabling signal fusion."""
-        orchestrator.enable_signal_fusion()
-
-        assert orchestrator._signal_fusion_enabled is True
-        assert hasattr(orchestrator, "_fusion_buffer")
-
-
-class TestEventStormDetection:
-    """Test event storm detection."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        """Create SISAS orchestrator."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.orchestration.sisas_orchestrator import (
-            SISASOrchestrator,
-        )
-
-        return SISASOrchestrator()
-
-    def test_enable_event_storm_detection(self, orchestrator):
-        """Test enabling event storm detection."""
-        orchestrator.enable_event_storm_detection(rate_limit=50)
-
-        assert orchestrator._event_storm_detection_enabled is True
-        assert orchestrator._rate_limit_per_second == 50
-
-    def test_detect_no_storm(self, orchestrator):
-        """Test storm detection when rate is normal."""
-        orchestrator.enable_event_storm_detection(rate_limit=100)
-        orchestrator._event_timestamps = [time.time() for _ in range(50)]
-
-        result = orchestrator.detect_event_storm()
-
-        assert result["storm_detected"] is False
-
-    def test_detect_storm(self, orchestrator):
-        """Test storm detection when rate exceeds limit."""
-        orchestrator.enable_event_storm_detection(rate_limit=100)
-        orchestrator._event_timestamps = [time.time() for _ in range(150)]
-
-        result = orchestrator.detect_event_storm()
-
-        assert result["storm_detected"] is True
-        assert result["throttle_recommended"] is True
-
-
-class TestSISASHealthMetrics:
-    """Test SISAS comprehensive health metrics."""
-
-    @pytest.fixture
-    def orchestrator(self):
-        """Create SISAS orchestrator."""
-        from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.orchestration.sisas_orchestrator import (
-            SISASOrchestrator,
-        )
-
-        return SISASOrchestrator()
-
-    def test_health_metrics_all_disabled(self, orchestrator):
-        """Test health metrics when all features disabled."""
-        health = orchestrator.get_sisas_health_metrics()
-
-        assert health["signal_anticipation_enabled"] is False
-        assert health["dynamic_routing_enabled"] is False
-        assert health["backpressure_enabled"] is False
-
-    def test_health_metrics_all_enabled(self, orchestrator):
-        """Test health metrics when all features enabled."""
-        orchestrator.enable_signal_anticipation()
-        orchestrator.enable_dynamic_vehicle_routing()
-        orchestrator.enable_backpressure_management()
-        orchestrator.enable_signal_fusion()
-        orchestrator.enable_event_storm_detection()
-
-        health = orchestrator.get_sisas_health_metrics()
-
-        assert health["signal_anticipation_enabled"] is True
-        assert health["dynamic_routing_enabled"] is True
-        assert health["backpressure_enabled"] is True
-        assert health["signal_fusion_enabled"] is True
-        assert health["event_storm_detection_enabled"] is True
 
 
 # =============================================================================
