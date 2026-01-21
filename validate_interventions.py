@@ -336,5 +336,5 @@ def main():
 
 
 if __name__ == "__main__":
-    results = main()
+    main()
     print(f"\n🎯 Validation complete! All interventions operational.\n")
