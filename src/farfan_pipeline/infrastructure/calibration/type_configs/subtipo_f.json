@@ -3,7 +3,7 @@
   "$id": "https://farfan.pipeline/schemas/calibration/subtipo_f.json",
   "contract_type": "SUBTIPO_F",
   "name": "Hybrid/Fallback Contracts",
-  "version": "1.0.0-epistemic",
+  "version": "2.0.0-epistemic",
   "description": "Hybrid contracts providing balanced defaults for composite, mixed-mode, or unclassified contracts that don't fit cleanly into TYPE_A-E categories.",
 
   "epistemology": {
@@ -15,156 +15,58 @@
 
   "epistemic_ratios": {
     "description": "Distribution of computational effort across epistemic layers",
-    "n1_empirical": {
-      "lower": 0.20,
-      "upper": 0.40,
-      "default": 0.30,
-      "justification": "Balanced extraction across multiple evidence types"
-    },
-    "n2_inferential": {
-      "lower": 0.30,
-      "upper": 0.50,
-      "default": 0.40,
-      "justification": "Balanced inferential processing for mixed-mode reasoning"
-    },
-    "n3_audit": {
-      "lower": 0.20,
-      "upper": 0.40,
-      "default": 0.30,
-      "justification": "Standard validation without extreme strictness"
-    }
+    "n1_empirical": { "lower": 0.20, "upper": 0.40, "default": 0.30, "justification": "Balanced extraction across multiple evidence types" },
+    "n2_inferential": { "lower": 0.30, "upper": 0.50, "default": 0.40, "justification": "Balanced inferential processing for mixed-mode reasoning" },
+    "n3_audit": { "lower": 0.20, "upper": 0.40, "default": 0.30, "justification": "Standard validation without extreme strictness" }
   },
 
   "thresholds": {
-    "veto_threshold": {
-      "lower": 0.03,
-      "upper": 0.07,
-      "default": 0.05,
-      "description": "Probability threshold for N3 veto gate activation",
-      "strictness_level": "STANDARD",
-      "note": "SUBTIPO_F uses standard moderate veto thresholds"
-    },
-    "prior_strength": {
-      "lower": 0.1,
-      "upper": 10.0,
-      "default": 1.0,
-      "description": "Weight assigned to priors (default balanced value)"
-    },
-    "aggregation_weight": {
-      "lower": 0.0,
-      "upper": 1.0,
-      "default": 0.5,
-      "description": "Default weight for evidence aggregation"
-    },
-    "fallback_threshold": {
-      "lower": 0.60,
-      "upper": 0.80,
-      "default": 0.70,
-      "description": "Minimum confidence before falling back to alternative methods"
-    }
+    "veto_threshold": { "lower": 0.03, "upper": 0.07, "default": 0.05, "description": "Probability threshold for N3 veto gate activation", "strictness_level": "STANDARD" },
+    "aggregation_weight": { "lower": 0.0, "upper": 1.0, "default": 0.5, "description": "Default weight for evidence aggregation" },
+    "fallback_threshold": { "lower": 0.60, "upper": 0.80, "default": 0.70, "description": "Minimum confidence before falling back to alternative methods" }
   },
 
   "operations": {
     "permitted": [
-      {
-        "name": "concat",
-        "description": "Safe concatenation for evidence assembly",
-        "layer": "N1",
-        "implementation": "SafeConcatenation"
-      },
-      {
-        "name": "veto_gate",
-        "description": "Standard veto gate without extreme strictness",
-        "layer": "N3",
-        "implementation": "StandardVetoGate"
-      },
-      {
-        "name": "weighted_mean",
-        "description": "Weighted mean for balanced aggregation",
-        "layer": "N2",
-        "implementation": "WeightedMeanAggregation",
-        "note": "SUBTIPO_F allows weighted_mean as safe fallback"
-      }
+      { "name": "concat", "description": "Safe concatenation for evidence assembly", "layer": "N1", "implementation": "SafeConcatenation" },
+      { "name": "weighted_mean", "description": "Weighted mean for balanced aggregation", "layer": "N2", "implementation": "WeightedMeanAggregation" },
+      { "name": "veto_gate", "description": "Standard veto gate without extreme strictness", "layer": "N3", "implementation": "StandardVetoGate" }
     ],
     "prohibited": [],
-    "note": "SUBTIPO_F has no prohibited operations - designed for maximum flexibility"
+    "note": "SUBTIPO_F is a fallback: allow broad operations with conservative thresholds"
   },
 
   "fusion_strategies": {
     "description": "Canonical fusion strategy per epistemic layer",
-    "N1": {
-      "strategy": "concat",
-      "symbol": "⊕",
-      "behavior": "additive",
-      "implementation": "ConcatenationStrategy"
-    },
-    "N2": {
-      "strategy": "weighted_mean",
-      "symbol": "⊗",
-      "behavior": "multiplicative",
-      "implementation": "WeightedMeanStrategy"
-    },
-    "N3": {
-      "strategy": "veto_gate",
-      "symbol": "⊘",
-      "behavior": "gate",
-      "implementation": "VetoGateStrategy"
-    }
+    "N1": { "strategy": "concat", "symbol": "⊕", "behavior": "additive", "implementation": "ConcatenationStrategy" },
+    "N2": { "strategy": "weighted_mean", "symbol": "⊗", "behavior": "multiplicative", "implementation": "WeightedMeanStrategy" },
+    "N3": { "strategy": "veto_gate", "symbol": "⊘", "behavior": "gate", "implementation": "VetoGateStrategy" }
   },
 
   "sample_questions": {
     "description": "SUBTIPO_F has no dedicated base questions",
     "questions": [],
-    "note": "SUBTIPO_F is used for unclassified or hybrid contracts"
+    "note": "Fallback for unclassified or hybrid contracts"
   },
 
   "calibration_adjustments": {
     "description": "Parameter overrides for fallback/hybrid mode",
-    "fallback_mode": {
-      "value": true,
-      "description": "Enable graceful fallback to alternative methods"
-    },
-    "conservative_thresholds": {
-      "value": true,
-      "description": "Use conservative thresholds to minimize false positives"
-    },
-    "graceful_degradation": {
-      "value": true,
-      "description": "Enable graceful degradation when primary methods fail"
-    },
-    "multi_modal_aggregation": {
-      "value": true,
-      "description": "Enable aggregation across multiple evidence modalities"
-    },
-    "adaptive_weighting": {
-      "value": true,
-      "description": "Enable adaptive weighting based on evidence quality"
-    }
+    "fallback_mode": { "value": true, "description": "Enable graceful fallback to alternative methods" },
+    "conservative_thresholds": { "value": true, "description": "Use conservative thresholds to minimize false positives" },
+    "graceful_degradation": { "value": true, "description": "Enable graceful degradation when primary methods fail" },
+    "adaptive_weighting": { "value": true, "description": "Enable adaptive weighting based on evidence quality" }
   },
 
   "quality_metrics": {
     "precision_target": 0.75,
     "recall_target": 0.75,
-    "f1_target": 0.75,
-    "note": "SUBTIPO_F targets balanced precision-recall tradeoff"
+    "f1_target": 0.75
   },
 
   "validation_rules": [
-    {
-      "rule": "fallback_available_check",
-      "description": "Validate fallback methods are available",
-      "severity": "WARNING"
-    },
-    {
-      "rule": "aggregation_validity_check",
-      "description": "Validate aggregation weights are valid",
-      "severity": "ERROR"
-    },
-    {
-      "rule": "graceful_degradation_check",
-      "description": "Validate degradation strategy is available",
-      "severity": "WARNING"
-    }
+    { "rule": "fallback_available_check", "description": "Validate fallback methods are available", "severity": "WARNING" },
+    { "rule": "aggregation_validity_check", "description": "Validate aggregation weights are valid", "severity": "ERROR" },
+    { "rule": "graceful_degradation_check", "description": "Validate degradation strategy is available", "severity": "WARNING" }
   ],
 
   "fallback_schema": {
@@ -175,11 +77,11 @@
   },
 
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2026-01-21",
+    "last_modified": "2026-01-21",
     "author": "FARFAN Calibration Team",
     "review_status": "CONSTITUTIONAL",
     "schema_compliance": "EPISTEMIC-v4.0.0",
-    "note": "SUBTIPO_F is designed for maximum flexibility and graceful fallback"
+    "aligns_with": "episteme_rules.md Part I.1.1"
   }
 }

@@ -2,47 +2,102 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://farfan.pipeline/schemas/calibration/pdm/n1_rules.json",
   "rule_set": "N1_EMPIRICAL_PDM_RULES",
-  "name": "N1 Empirical Extraction PDM Sensitivity Rules",
-  "version": "1.0.0-epistemic",
-  "description": "PDM-driven parameter adjustments for N1-EMP (Empirical Extraction) layer. These rules adjust extraction parameters based on document structural characteristics.",
+  "name": "N1 Phase A Construction PDM Rules",
+  "version": "2.0.0-epistemic",
+  "description": "PDM rules for N1-EMP (Phase A: Construction) aligned with episteme_rules.md",
 
   "epistemic_layer": {
     "level": "N1-EMP",
     "name": "Empirical Extraction",
+    "phase": "phase_A_construction",
     "output_type": "FACT",
     "fusion_behavior": "additive",
-    "constitutional_constraint": "PDM adjustments CANNOT change the epistemic level, only parameter values"
+    "symbol": "⊕",
+    "epistemology": "Empirismo positivista",
+    "typical_classes": [
+      "TextMiningEngine",
+      "IndustrialPolicyProcessor",
+      "CausalExtractor",
+      "PDETMunicipalPlanAnalyzer",
+      "SemanticProcessor",
+      "PolicyContradictionDetector"
+    ]
+  },
+
+  "contract_type_sensitivity": {
+    "description": "Different contract types require different N1 adjustments",
+    "TYPE_A": {
+      "name": "Semántico",
+      "strategy": "semantic_corroboration",
+      "boost_semantic_extraction": 1.3,
+      "enable_theme_detection": true
+    },
+    "TYPE_B": {
+      "name": "Bayesiano",
+      "strategy": "concat",
+      "boost_numerical_extraction": 1.2,
+      "enable_statistical_detection": true
+    },
+    "TYPE_C": {
+      "name": "Causal",
+      "strategy": "graph_construction",
+      "boost_relationship_extraction": 1.4,
+      "enable_goal_parsing": true
+    },
+    "TYPE_D": {
+      "name": "Financiero",
+      "strategy": "concat",
+      "boost_table_extraction": 1.5,
+      "enable_budget_parsing": true
+    },
+    "TYPE_E": {
+      "name": "Lógico",
+      "strategy": "concat",
+      "boost_claim_extraction": 1.2,
+      "enable_contradiction_detection": true
+    }
   },
 
   "pdm_triggers": {
-    "description": "Document structural characteristics that trigger PDM adjustments",
     "triggers": [
       {
         "id": "PPI_PAI_TABLES_DETECTED",
-        "name": "Critical Policy Tables",
-        "description": "PPI (Productive Projects Investment) or PAI (Annual Investment Plan) tables detected in document",
+        "name": "Critical Financial Tables",
+        "description": "PPI/PAI/POI tables that TYPE_D contracts need",
         "detection_method": "table_schema_analysis",
-        "indicators": ["PPI", "PAI", "POI", "budget_table", "financial_table"]
+        "indicators": ["PPI", "PAI", "POI", "Proyectos", "Inversión"],
+        "affects_contracts": ["TYPE_D"]
       },
       {
-        "id": "HIERARCHY_DEPTH_EXCEEDS_THRESHOLD",
-        "name": "Deep Hierarchical Structure",
-        "description": "Document hierarchy exceeds 3 levels deep",
+        "id": "DEEP_HIERARCHY",
+        "name": "Deep Document Structure",
+        "description": "Complex nesting requiring careful extraction",
         "detection_method": "hierarchy_depth_analysis",
-        "threshold": 3
+        "threshold": 3,
+        "affects_contracts": ["TYPE_A", "TYPE_C"]
       },
       {
         "id": "HIGH_TABLE_DENSITY",
-        "name": "High Table Density",
-        "description": "Document contains high density of structured tables",
+        "name": "Table-Heavy Document",
+        "description": "Many structured tables to extract",
         "detection_method": "table_density_analysis",
-        "threshold": 0.3
+        "threshold": 0.3,
+        "affects_contracts": ["TYPE_D", "TYPE_B"]
       },
       {
-        "id": "SEMANTIC_SECTION_DETECTED",
-        "name": "Semantic Section Boundaries",
-        "description": "Document contains clear semantic section divisions",
-        "detection_method": "semantic_section_analysis"
+        "id": "SEMANTIC_SECTIONS",
+        "name": "Clear Section Boundaries",
+        "description": "Well-defined semantic divisions",
+        "detection_method": "semantic_section_analysis",
+        "affects_contracts": ["TYPE_A"]
+      },
+      {
+        "id": "CAUSAL_LANGUAGE",
+        "name": "Causal Terminology Present",
+        "description": "Document uses causal language patterns",
+        "detection_method": "causal_language_detection",
+        "indicators": ["objetivo", "meta", "resultado", "impacto", "causa"],
+        "affects_contracts": ["TYPE_C"]
       }
     ]
   },
@@ -50,117 +105,163 @@
   "adjustment_rules": [
     {
       "rule_id": "N1-PDM-001",
-      "name": "Table Extraction Boost",
+      "name": "Financial Table Extraction Boost",
       "trigger": "PPI_PAI_TABLES_DETECTED",
+      "contract_types": ["TYPE_D"],
       "adjustment": {
-        "parameter": "table_extraction_boost",
+        "parameter": "table_extraction_confidence",
         "operation": "multiply",
-        "value": 1.2,
-        "description": "Increase extraction confidence for tabular data by 20%"
+        "value": 1.5,
+        "description": "Boost confidence for financial table extraction"
       },
-      "justification": "PPI/PAI tables are highly structured and reliable sources",
-      "validation": {
-        "min_value": 1.0,
-        "max_value": 2.0,
-        "constraint": "Boost cannot be < 1.0 (would be penalty)"
-      }
+      "justification": "PPI/PAI tables are critical for TYPE_D contracts",
+      "methods_affected": [
+        "PDETMunicipalPlanAnalyzer._extract_from_budget_table",
+        "PDETMunicipalPlanAnalyzer._extract_financial_amounts"
+      ]
     },
     {
       "rule_id": "N1-PDM-002",
-      "name": "Hierarchy Sensitivity Adjustment",
-      "trigger": "HIERARCHY_DEPTH_EXCEEDS_THRESHOLD",
+      "name": "Hierarchy Navigation Enhancement",
+      "trigger": "DEEP_HIERARCHY",
+      "contract_types": ["TYPE_A", "TYPE_C"],
       "adjustment": {
-        "parameter": "hierarchy_sensitivity",
-        "operation": "multiply",
-        "value": 1.1,
-        "description": "Increase hierarchy sensitivity by 10% for deep documents"
+        "parameter": "hierarchy_traversal_depth",
+        "operation": "set",
+        "value": 5,
+        "description": "Increase traversal depth for deep documents"
       },
-      "justification": "Deep hierarchies require more sensitive extraction",
-      "validation": {
-        "min_value": 1.0,
-        "max_value": 2.0,
-        "constraint": "Sensitivity must be positive"
-      }
+      "methods_affected": [
+        "TextMiningEngine.diagnose_critical_links",
+        "CausalExtractor._extract_goals"
+      ]
     },
     {
       "rule_id": "N1-PDM-003",
-      "name": "Pattern Fuzzy Threshold Adjustment",
-      "trigger": "HIGH_TABLE_DENSITY",
+      "name": "Semantic Chunking Optimization",
+      "trigger": "SEMANTIC_SECTIONS",
+      "contract_types": ["TYPE_A"],
       "adjustment": {
-        "parameter": "pattern_fuzzy_threshold",
-        "operation": "add",
-        "value": 0.05,
-        "description": "Increase fuzzy matching threshold by 0.05 for table-heavy documents"
+        "parameter": "chunk_overlap_ratio",
+        "operation": "set",
+        "value": 0.15,
+        "description": "Optimize chunk overlap for semantic sections"
       },
-      "justification": "High table density enables stricter matching",
-      "validation": {
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "constraint": "Threshold must be in [0, 1]"
-      }
+      "methods_affected": [
+        "SemanticProcessor.chunk_text"
+      ]
     },
     {
       "rule_id": "N1-PDM-004",
-      "name": "Deduplication Threshold Increase",
-      "trigger": "SEMANTIC_SECTION_DETECTED",
+      "name": "Causal Pattern Sensitivity",
+      "trigger": "CAUSAL_LANGUAGE",
+      "contract_types": ["TYPE_C"],
       "adjustment": {
-        "parameter": "deduplication_threshold",
-        "operation": "add",
-        "value": 0.02,
-        "description": "Increase deduplication threshold when sections are clear"
+        "parameter": "causal_pattern_threshold",
+        "operation": "subtract",
+        "value": 0.1,
+        "description": "Lower threshold to capture more causal patterns"
       },
-      "justification": "Clear sections enable stricter deduplication",
-      "validation": {
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "constraint": "Threshold must be in [0, 1]"
-      }
+      "methods_affected": [
+        "CausalExtractor._parse_goal_context",
+        "IndustrialPolicyProcessor._extract_point_evidence"
+      ]
+    },
+    {
+      "rule_id": "N1-PDM-005",
+      "name": "Numerical Claim Extraction",
+      "trigger": "HIGH_TABLE_DENSITY",
+      "contract_types": ["TYPE_B", "TYPE_D"],
+      "adjustment": {
+        "parameter": "numerical_extraction_precision",
+        "operation": "set",
+        "value": "high",
+        "description": "Use high-precision numerical extraction"
+      },
+      "methods_affected": [
+        "PolicyContradictionDetector._extract_quantitative_claims",
+        "PolicyContradictionDetector._parse_number"
+      ]
     }
   ],
 
   "composite_rules": [
     {
-      "rule_id": "N1-PDM-COMPOSITE-001",
-      "name": "Complex Document Profile",
-      "description": "Apply multiple adjustments for complex documents with tables AND deep hierarchy",
+      "rule_id": "N1-PDM-COMP-001",
+      "name": "Financial Document Profile",
       "trigger_conditions": {
         "operator": "AND",
-        "conditions": [
-          "PPI_PAI_TABLES_DETECTED",
-          "HIERARCHY_DEPTH_EXCEEDS_THRESHOLD"
-        ]
+        "conditions": ["PPI_PAI_TABLES_DETECTED", "HIGH_TABLE_DENSITY"]
       },
+      "contract_types": ["TYPE_D"],
       "adjustments": [
         {"ref": "N1-PDM-001"},
-        {"ref": "N1-PDM-002"}
+        {"ref": "N1-PDM-005"}
+      ],
+      "priority": "CRITICAL",
+      "description": "Maximum extraction for financial documents"
+    },
+    {
+      "rule_id": "N1-PDM-COMP-002",
+      "name": "Complex Causal Document",
+      "trigger_conditions": {
+        "operator": "AND",
+        "conditions": ["DEEP_HIERARCHY", "CAUSAL_LANGUAGE"]
+      },
+      "contract_types": ["TYPE_C"],
+      "adjustments": [
+        {"ref": "N1-PDM-002"},
+        {"ref": "N1-PDM-004"}
       ],
       "priority": "HIGH"
     }
   ],
 
+  "output_specifications": {
+    "description": "N1 output must be FACT type",
+    "fact_structure": {
+      "required_fields": [
+        "element_id",
+        "element_type",
+        "raw_text",
+        "source_location",
+        "confidence"
+      ],
+      "optional_fields": [
+        "metadata",
+        "relationships",
+        "attributes"
+      ]
+    },
+    "fusion_with_n2": {
+      "description": "N1 facts become input for N2 computation",
+      "data_flow": "N1 → N2 (forward propagation)"
+    }
+  },
+
   "constraints": [
     {
-      "constraint": "LEVEL_IMMUTABILITY",
-      "description": "PDM adjustments CANNOT change the epistemic level from N1-EMP",
-      "enforcement": "Post-adjustment validation"
+      "constraint": "OUTPUT_TYPE_IMMUTABLE",
+      "description": "N1 must always output FACT type",
+      "enforcement": "Runtime validation"
     },
     {
-      "constraint": "PARAMETER_BOUNDS",
-      "description": "All adjustments must respect parameter bounds from level config",
-      "enforcement": "Pre-adjustment validation"
+      "constraint": "NO_INTERPRETATION",
+      "description": "N1 extracts facts without interpretation",
+      "enforcement": "Method design principle"
     },
     {
-      "constraint": "NO_NEGATIVE_BOOSTS",
-      "description": "table_extraction_boost cannot be < 1.0",
-      "enforcement": "Runtime check"
+      "constraint": "ADDITIVE_FUSION",
+      "description": "N1 facts combine additively (⊕)",
+      "enforcement": "Fusion logic"
     }
   ],
 
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2025-01-21",
+    "last_modified": "2025-01-21",
     "author": "FARFAN Calibration Team",
-    "review_status": "CONSTITUTIONAL",
+    "aligns_with": "episteme_rules.md Part II.2.2 (PHASE_A)",
     "schema_compliance": "EPISTEMIC-v4.0.0"
   }
 }
