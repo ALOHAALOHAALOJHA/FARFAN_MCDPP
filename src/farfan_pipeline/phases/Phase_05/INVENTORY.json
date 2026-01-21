@@ -1,0 +1,117 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 5,
+    "name": "Policy Area Aggregation"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_05",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 5 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "primitives",
+      "purpose": "Fundamental mathematical definitions for area aggregation"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 5 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase5_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 150,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase5_00_00_area_score.py",
+      "canonical_name": "phase5_00_00_area_score",
+      "type": "INFRA",
+      "criticality": "CRITICAL",
+      "lines_of_code": 120,
+      "purpose": "Area Score dataclass definition"
+    },
+    {
+      "filename": "phase5_10_00_area_aggregation.py",
+      "canonical_name": "phase5_10_00_area_aggregation",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 900,
+      "purpose": "Area Aggregation - 60 dimensions to 10 areas"
+    },
+    {
+      "filename": "phase5_15_00_performance_boost.py",
+      "canonical_name": "phase5_15_00_performance_boost",
+      "type": "PERFORMANCE",
+      "criticality": "HIGH",
+      "lines_of_code": 750,
+      "purpose": "High-performance parallel/vectorized aggregation with 100-1500x speedup"
+    },
+    {
+      "filename": "phase5_20_00_area_validation.py",
+      "canonical_name": "phase5_20_00_area_validation",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 650,
+      "purpose": "AreaPolicyAggregator with hermeticity validation"
+    },
+    {
+      "filename": "phase5_30_00_area_integration.py",
+      "canonical_name": "phase5_30_00_area_integration",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 450,
+      "purpose": "Phase 5 output validation"
+    },
+    {
+      "filename": "phase5_40_00_synthesis_engine.py",
+      "canonical_name": "phase5_40_00_synthesis_engine",
+      "type": "VAL",
+      "criticality": "CRITICAL",
+      "lines_of_code": 320,
+      "purpose": "End-to-end Phase 5 pipeline orchestration"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_5_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_5_CONSTANTS.py",
+      "purpose": "Phase 5 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 5"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 5"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "total_python_modules": 7,
+  "total_lines_of_code": 3340,
+  "criticality_summary": {
+    "CRITICAL": 5,
+    "HIGH": 1,
+    "MEDIUM": 0,
+    "LOW": 1
+  }
+}

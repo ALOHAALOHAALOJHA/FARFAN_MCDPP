@@ -1,0 +1,137 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 4,
+    "name": "Dimension Aggregation"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_04",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 4 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "primitives",
+      "purpose": "Fundamental mathematical definitions for dimension aggregation"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 4 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase4_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 200,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase4_10_00_aggregation_provenance.py",
+      "canonical_name": "phase4_10_00_aggregation_provenance",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 500,
+      "purpose": "Aggregation provenance tracking"
+    },
+    {
+      "filename": "phase4_10_00_aggregation_settings.py",
+      "canonical_name": "phase4_10_00_aggregation_settings",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 50,
+      "purpose": "Aggregation configuration settings"
+    },
+    {
+      "filename": "phase4_10_00_uncertainty_quantification.py",
+      "canonical_name": "phase4_10_00_uncertainty_quantification",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1200,
+      "purpose": "Uncertainty quantification methods"
+    },
+    {
+      "filename": "phase4_20_00_choquet_adapter.py",
+      "canonical_name": "phase4_20_00_choquet_adapter",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 850,
+      "purpose": "Choquet integral adapter"
+    },
+    {
+      "filename": "phase4_30_00_aggregation.py",
+      "canonical_name": "phase4_30_00_aggregation",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1700,
+      "purpose": "Core aggregation engine"
+    },
+    {
+      "filename": "phase4_30_00_choquet_aggregator.py",
+      "canonical_name": "phase4_30_00_choquet_aggregator",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 950,
+      "purpose": "Choquet aggregation implementation"
+    },
+    {
+      "filename": "phase4_30_00_signal_enriched_aggregation.py",
+      "canonical_name": "phase4_30_00_signal_enriched_aggregation",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 680,
+      "purpose": "Signal-enriched aggregation"
+    },
+    {
+      "filename": "phase4_60_00_aggregation_validation.py",
+      "canonical_name": "phase4_60_00_aggregation_validation",
+      "type": "PROC",
+      "criticality": "MEDIUM",
+      "lines_of_code": 400,
+      "purpose": "Aggregation validation"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_4_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_4_CONSTANTS.py",
+      "purpose": "Phase 4 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 4"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 4"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    },
+    {
+      "filename": "CANONICAL_FLOW.md",
+      "purpose": "Canonical flow documentation"
+    }
+  ],
+  "total_python_modules": 9,
+  "total_lines_of_code": 6530,
+  "criticality_summary": {
+    "CRITICAL": 7,
+    "HIGH": 0,
+    "MEDIUM": 1,
+    "LOW": 1
+  }
+}

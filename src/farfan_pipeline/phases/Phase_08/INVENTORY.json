@@ -1,0 +1,121 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 8,
+    "name": "Recommendation Engine"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_08",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 8 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "primitives",
+      "purpose": "Constants, types, and enums for Phase 8"
+    },
+    {
+      "path": "interfaces",
+      "purpose": "Interface contracts and validation"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 8 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase8_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 200,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase8_00_00_data_models.py",
+      "canonical_name": "phase8_00_00_data_models",
+      "type": "INFRA",
+      "criticality": "CRITICAL",
+      "lines_of_code": 420,
+      "purpose": "Data Models for recommendations"
+    },
+    {
+      "filename": "phase8_10_00_schema_validation.py",
+      "canonical_name": "phase8_10_00_schema_validation",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 950,
+      "purpose": "Schema Validation for rules and recommendations"
+    },
+    {
+      "filename": "phase8_20_00_recommendation_engine.py",
+      "canonical_name": "phase8_20_00_recommendation_engine",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 2400,
+      "purpose": "Core recommendation engine with enhanced rule processing"
+    },
+    {
+      "filename": "phase8_20_01_recommendation_engine_adapter.py",
+      "canonical_name": "phase8_20_01_recommendation_engine_adapter",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 300,
+      "purpose": "Adapter for integrating recommendation engine"
+    },
+    {
+      "filename": "phase8_20_02_generic_rule_engine.py",
+      "canonical_name": "phase8_20_02_generic_rule_engine",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 570,
+      "purpose": "Generic rule engine for flexible rule processing"
+    },
+    {
+      "filename": "phase8_30_00_signal_enriched_recommendations.py",
+      "canonical_name": "phase8_30_00_signal_enriched_recommendations",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 620,
+      "purpose": "Signal-enriched recommendation generation"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_8_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_8_CONSTANTS.py",
+      "purpose": "Phase 8 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 8"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 8"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "total_python_modules": 7,
+  "total_lines_of_code": 5460,
+  "criticality_summary": {
+    "CRITICAL": 6,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 1
+  }
+}
