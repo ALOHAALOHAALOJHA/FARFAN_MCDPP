@@ -1365,6 +1365,9 @@ class UnifiedOrchestrator:
                     questionnaire_path=Path(config.questionnaire_path) if config.questionnaire_path else None,
                     sisas_enabled=config.enable_sisas,
                     lazy_load_questions=True,
+                    enable_parallel_execution=config.enable_parallel_execution,
+                    max_workers=config.max_workers,
+                    enable_adaptive_caching=True,
                 )
             )
             # Initialize questionnaire through factory
@@ -1388,6 +1391,12 @@ class UnifiedOrchestrator:
             elif config.enable_sisas and not SISAS_HUB_AVAILABLE:
                 # Fallback to old method if hub not available
                 self.context.sisas = self.factory.get_sisas_central()
+            
+            # ==========================================================================
+            # INTERVENTION 2: Orchestrator-Factory Alignment
+            # ==========================================================================
+            # Perform initial sync with factory
+            self._sync_with_factory()
                 # Register phase consumers with SDO
                 if self.context.sisas is not None:
                     consumers_registered = self._register_phase_consumers()
@@ -1398,6 +1407,7 @@ class UnifiedOrchestrator:
                 questionnaire_available=self.context.questionnaire is not None,
                 signal_registry_available=self.context.signal_registry is not None,
                 sisas_available=self.context.sisas is not None,
+                factory_capabilities=self.factory.get_factory_capabilities() if self.factory else None,
             )
         else:
             self.factory = None
@@ -1834,6 +1844,68 @@ class UnifiedOrchestrator:
         return method()
 
     # =========================================================================
+    # INTERVENTION 2: Orchestrator-Factory Alignment Methods
+    # =========================================================================
+    
+    def _sync_with_factory(self) -> None:
+        """
+        Synchronize orchestrator state with factory.
+        
+        INTERVENTION 2: Bidirectional sync for alignment.
+        """
+        if not self.factory:
+            return
+            
+        orchestrator_state = {
+            "current_phase": None,
+            "max_workers": self.config.max_workers,
+            "enable_parallel": self.config.enable_parallel_execution,
+            "phases_to_execute": self.config.phases_to_execute,
+        }
+        
+        sync_result = self.factory.synchronize_with_orchestrator(orchestrator_state)
+        
+        if not sync_result["success"]:
+            self.logger.warning(
+                "Factory sync detected conflicts",
+                conflicts=sync_result["conflicts"],
+            )
+            # Handle conflicts (could adjust scheduling, etc.)
+            
+        if sync_result["adjustments"]:
+            self.logger.info(
+                "Factory sync recommended adjustments",
+                adjustments=sync_result["adjustments"],
+            )
+    
+    def _get_factory_execution_plan(self, phase_id: PhaseID) -> Optional[Dict[str, Any]]:
+        """
+        Get execution plan from factory for a phase.
+        
+        INTERVENTION 2: Contract-aware scheduling.
+        """
+        if not self.factory:
+            return None
+            
+        # Get contracts for this phase
+        contracts = self.factory.load_contracts()
+        phase_contracts = [
+            cid for cid, c in contracts.items()
+            if phase_id.value in c.get("applicable_phases", [])
+        ]
+        
+        if not phase_contracts:
+            return None
+            
+        # Get execution plan with constraints
+        constraints = {
+            "max_parallel": self.config.max_workers,
+            "time_budget_seconds": 300,  # 5 minutes per phase budget
+        }
+        
+        return self.factory.get_contract_execution_plan(phase_contracts, constraints)
+
+    # =========================================================================
     # PHASE EXECUTION METHODS (simplified placeholders)
     # =========================================================================
 
@@ -1855,6 +1927,8 @@ class UnifiedOrchestrator:
         1. Load analysis components (detectors, calculators, analyzers)
         2. Load contracts
         3. Execute contracts with method injection
+        
+        INTERVENTION 2: Uses factory capabilities for optimal execution.
 
         Args:
             plan_text: Optional plan text for contract execution
@@ -1892,36 +1966,75 @@ class UnifiedOrchestrator:
             total_contracts=len(contracts),
             active_contracts=len(active_contracts),
         )
+        
+        # ==========================================================================
+        # INTERVENTION 2: Get optimal execution plan from factory
+        # ==========================================================================
+        execution_plan = self._get_factory_execution_plan(PhaseID.PHASE_2)
+        
+        if execution_plan:
+            self.logger.info(
+                "Factory execution plan obtained",
+                strategy=execution_plan["execution_strategy"],
+                estimated_duration=execution_plan["estimated_duration_seconds"],
+                batches=len(execution_plan.get("batches", [])),
+            )
 
         # Execute contracts with method injection
         task_results = []
         input_data = {"plan_text": plan_text, **kwargs}
-
-        for contract_id, contract in list(active_contracts.items())[:10]:  # Limit to 10 for now
-            try:
-                result = self.factory.execute_contract(contract_id, input_data)
+        
+        # Limit contracts for now (can be adjusted based on execution plan)
+        contract_list = list(active_contracts.keys())[:10]
+        
+        # ==========================================================================
+        # INTERVENTION 1 & 2: Use parallel batch execution if recommended by plan
+        # ==========================================================================
+        if execution_plan and execution_plan["execution_strategy"] == "parallel_batch":
+            
+            self.logger.info("Using parallel batch execution")
+            
+            # Execute in parallel batches
+            batch_results = self.factory.execute_contracts_batch(contract_list, input_data)
+            
+            for contract_id, result in batch_results.items():
                 task_results.append({
                     "contract_id": contract_id,
                     "result": result,
                     "status": "completed" if "error" not in result else "failed",
                 })
-            except Exception as e:
-                self.logger.warning(
-                    "Contract execution failed",
-                    contract_id=contract_id,
-                    error=str(e),
-                )
-                task_results.append({
-                    "contract_id": contract_id,
-                    "error": str(e),
-                    "status": "error",
-                })
+        else:
+            # Sequential execution
+            for contract_id in contract_list:
+                try:
+                    result = self.factory.execute_contract(contract_id, input_data)
+                    task_results.append({
+                        "contract_id": contract_id,
+                        "result": result,
+                        "status": "completed" if "error" not in result else "failed",
+                    })
+                except Exception as e:
+                    self.logger.warning(
+                        "Contract execution failed",
+                        contract_id=contract_id,
+                        error=str(e),
+                    )
+                    task_results.append({
+                        "contract_id": contract_id,
+                        "error": str(e),
+                        "status": "error",
+                    })
+
+        # Get performance metrics from factory
+        perf_metrics = self.factory.get_performance_metrics()
 
         return {
             "task_results": task_results,
             "status": "completed",
             "contracts_executed": len(task_results),
             "components_available": list(components.keys()),
+            "execution_strategy": execution_plan["execution_strategy"] if execution_plan else "sequential",
+            "performance_metrics": perf_metrics,
         }
 
     def _execute_phase_03(self) -> Any:
@@ -2050,6 +2163,11 @@ class UnifiedOrchestrator:
     def cleanup(self) -> None:
         """Clean up resources after pipeline execution."""
         self.logger.info("Starting cleanup")
+        
+        # Clean up factory resources
+        if self.factory:
+            self.factory.cleanup()
+            
         import gc
         gc.collect()
         self.logger.info("Cleanup completed")
