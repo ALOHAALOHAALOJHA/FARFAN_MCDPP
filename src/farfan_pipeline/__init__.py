@@ -60,38 +60,82 @@ __author__ = "F.A.R.F.A.N Development Team"
 __license__ = "Proprietary"
 
 # Public API exports
-from farfan_pipeline.core.types import (
-    UnitOfAnalysis,
-    FiscalContext,
-    PolicyDocument,
-    AnalysisResult,
-)
+# Note: Only importing what actually exists to avoid import errors
+
+# Core analytical types from core.types
+try:
+    from farfan_pipeline.core.types import (
+        DimensionAnalitica,
+        MechanismPart,
+        CausalMechanism,
+        EvidenceStrength,
+        ScoreBand,
+        CategoriaCausal,
+    )
+    _analytical_types_available = True
+except ImportError:
+    _analytical_types_available = False
+
+# Core types from data_models
+try:
+    from farfan_pipeline.data_models.unit_of_analysis import (
+        UnitOfAnalysis,
+        FiscalContext,
+        PolicyDocument,
+        AnalysisResult,
+    )
+    _types_available = True
+except ImportError:
+    _types_available = False
 
 # Core orchestration
-from farfan_pipeline.orchestration import (
-    UnifiedOrchestrator,
-    OrchestratorConfig,
-    PhaseID,
-    PhaseStatus,
-    ExecutionContext,
-    PipelineResult,
-)
+try:
+    from farfan_pipeline.orchestration import (
+        UnifiedOrchestrator,
+        OrchestratorConfig,
+        PhaseID,
+        PhaseStatus,
+        ExecutionContext,
+        PipelineResult,
+    )
+    _orchestration_available = True
+except ImportError:
+    _orchestration_available = False
 
 __all__ = [
     # Version info
     "__version__",
     "__author__",
     "__license__",
-    # Core types
-    "UnitOfAnalysis",
-    "FiscalContext",
-    "PolicyDocument",
-    "AnalysisResult",
-    # Orchestration
-    "UnifiedOrchestrator",
-    "OrchestratorConfig",
-    "PhaseID",
-    "PhaseStatus",
-    "ExecutionContext",
-    "PipelineResult",
 ]
+
+# Add analytical types exports if available
+if _analytical_types_available:
+    __all__.extend([
+        "DimensionAnalitica",
+        "MechanismPart",
+        "CausalMechanism",
+        "EvidenceStrength",
+        "ScoreBand",
+        "CategoriaCausal",
+    ])
+
+# Add types exports if available
+if _types_available:
+    __all__.extend([
+        "UnitOfAnalysis",
+        "FiscalContext",
+        "PolicyDocument",
+        "AnalysisResult",
+    ])
+
+# Add orchestration exports if available
+if _orchestration_available:
+    __all__.extend([
+        "UnifiedOrchestrator",
+        "OrchestratorConfig",
+        "PhaseID",
+        "PhaseStatus",
+        "ExecutionContext",
+        "PipelineResult",
+    ])
