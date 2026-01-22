@@ -12,7 +12,7 @@ Trigger Types:
 
 Features:
 - Thread-safe registration and emission
-- Priority-based execution ordering
+- Priority-based execution ordering (CRITICAL > HIGH > MEDIUM > LOW > BACKGROUND)
 - Conditional trigger execution
 - Circuit breakers for fault tolerance
 - Comprehensive metrics and diagnostics
@@ -21,10 +21,12 @@ Features:
 - Context managers for scoped triggers
 
 Author: FARFAN Pipeline Team
-Version: 2.0.0
+Version: 3.0.0
 """
 
 from .trigger_registry import (
+    # Priority
+    TriggerPriority,
     # Core classes
     TriggerRegistry,
     TriggerEvent,
@@ -34,7 +36,11 @@ from .trigger_registry import (
     TriggerState,
     TriggerMetrics,
     RegisteredTrigger,
+    TriggerResult,
+    # Circuit Breaker
     CircuitBreakerConfig,
+    CircuitBreaker,
+    CircuitBreakerOpenError,
     # Enums
     EventCategory,
     EVENT_CATEGORIES,
@@ -48,9 +54,11 @@ from .subphase_triggers import SubPhaseTriggers
 from .contract_triggers import ContractTriggers
 from .extraction_triggers import ExtractionTriggers
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 
 __all__ = [
+    # Priority
+    "TriggerPriority",
     # Core Registry
     "TriggerRegistry",
     "TriggerEvent",
@@ -60,7 +68,11 @@ __all__ = [
     "TriggerState",
     "TriggerMetrics",
     "RegisteredTrigger",
+    "TriggerResult",
+    # Circuit Breaker
     "CircuitBreakerConfig",
+    "CircuitBreaker",
+    "CircuitBreakerOpenError",
     # Enums and mappings
     "EventCategory",
     "EVENT_CATEGORIES",

@@ -570,7 +570,7 @@ class PipelineDashboardBridge:
             context = self.orchestrator.context
             
             # Extract Macro Score (Phase 7 output)
-            macro_score = context.get_phase_output(PhaseID.P07)
+            macro_score = context.get_phase_output(PhaseID.P07) if hasattr(PhaseID, 'P07') else context.get_phase_output("P07")
             if macro_score:
                 if hasattr(macro_score, "score"):
                     outputs["macro_score"] = {
@@ -584,7 +584,7 @@ class PipelineDashboardBridge:
                     outputs["macro_score"] = macro_score
             
             # Extract Cluster Scores (Phase 6 output)
-            cluster_scores = context.get_phase_output(PhaseID.P06)
+            cluster_scores = context.get_phase_output(PhaseID.P06) if hasattr(PhaseID, 'P06') else context.get_phase_output("P06")
             if cluster_scores:
                 outputs["cluster_scores"] = []
                 for cs in (cluster_scores if isinstance(cluster_scores, list) else [cluster_scores]):
@@ -598,7 +598,7 @@ class PipelineDashboardBridge:
                         outputs["cluster_scores"].append(cs)
             
             # Extract Area Scores (Phase 5 output)
-            area_scores = context.get_phase_output(PhaseID.P05)
+            area_scores = context.get_phase_output(PhaseID.P05) if hasattr(PhaseID, 'P05') else context.get_phase_output("P05")
             if area_scores:
                 outputs["area_scores"] = []
                 for area in (area_scores if isinstance(area_scores, list) else [area_scores]):
@@ -612,7 +612,7 @@ class PipelineDashboardBridge:
                         outputs["area_scores"].append(area)
             
             # Extract Recommendations (Phase 8 output)
-            recommendations = context.get_phase_output(PhaseID.P08)
+            recommendations = context.get_phase_output(PhaseID.P08) if hasattr(PhaseID, 'P08') else context.get_phase_output("P08")
             if recommendations:
                 outputs["recommendations"] = recommendations if isinstance(recommendations, dict) else {"data": recommendations}
             
@@ -624,9 +624,11 @@ class PipelineDashboardBridge:
             
             logger.info(
                 f"Extracted phase outputs for dashboard",
-                macro_score=outputs.get("macro_score") is not None,
-                cluster_count=len(outputs.get("cluster_scores", [])),
-                area_count=len(outputs.get("area_scores", [])),
+                extra={
+                    "macro_score": outputs.get("macro_score") is not None,
+                    "cluster_count": len(outputs.get("cluster_scores", [])),
+                    "area_count": len(outputs.get("area_scores", [])),
+                }
             )
             
         except Exception as e:
