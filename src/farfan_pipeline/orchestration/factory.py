@@ -117,6 +117,32 @@ class FactoryConfig:
             self.contracts_path = Path(self.contracts_path)
 
 
+@dataclass(frozen=True)
+class FactoryHealthStatus:
+    """Comprehensive factory health status."""
+    is_healthy: bool
+    cache_hit_rate: float
+    parallel_efficiency: float
+    avg_execution_time_ms: float
+    error_rate: float
+    active_contracts: int
+    available_workers: int
+    warnings: tuple
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        return {
+            "is_healthy": self.is_healthy,
+            "cache_hit_rate": self.cache_hit_rate,
+            "parallel_efficiency": self.parallel_efficiency,
+            "avg_execution_time_ms": self.avg_execution_time_ms,
+            "error_rate": self.error_rate,
+            "active_contracts": self.active_contracts,
+            "available_workers": self.available_workers,
+            "warnings": list(self.warnings),
+        }
+
+
 # =============================================================================
 # ADAPTIVE CACHING SYSTEM (INTERVENTION 1)
 # =============================================================================
