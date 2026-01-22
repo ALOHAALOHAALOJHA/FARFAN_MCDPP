@@ -33,9 +33,9 @@ __execution_pattern__ = "Per-Task"
 
 import logging
 import sys
+import importlib
 from dataclasses import dataclass
-
-from farfan_pipeline.phases.Phase_02.phase2_10_02_methods_registry import MethodRegistry
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +76,6 @@ class Phase1DependencyValidator:
     def __init__(self):
         self.checks: list[DependencyCheck] = []
         self.critical_failures: list[DependencyCheck] = []
-        self.method_registry = MethodRegistry()
 
     def validate_all(self) -> bool:
         """
@@ -235,67 +234,69 @@ class Phase1DependencyValidator:
             )
 
     def _check_methods_package(self) -> None:
-        """Check farfan_pipeline.methods is reachable through the registry."""
+        """Check farfan_pipeline.methods package is importable."""
         try:
-            cls = self.method_registry._load_class("BeachEvidentialTest")
+            import farfan_pipeline.methods
             self.checks.append(
                 DependencyCheck(
-                    name="farfan_pipeline.methods package", available=True, version="registry"
+                    name="farfan_pipeline.methods package", available=True, version="installed"
                 )
             )
-        except MethodRegistryError as e:
+        except ImportError as e:
             self.critical_failures.append(
                 DependencyCheck(
                     name="farfan_pipeline.methods package",
                     available=False,
                     error=str(e),
-                    fix_command="Verify class_registry paths and PYTHONPATH include src/",
+                    fix_command="Verify PYTHONPATH includes src/ and package is installed",
                 )
             )
 
     def _check_derek_beach(self) -> None:
         """Check Derek Beach module can be imported."""
         try:
-            classify = self.method_registry.get_method("BeachEvidentialTest", "classify_test")
-            apply_logic = self.method_registry.get_method("BeachEvidentialTest", "apply_test_logic")
-
-            if not callable(classify):
-                raise MethodRegistryError("BeachEvidentialTest.classify_test not callable")
-            if not callable(apply_logic):
-                raise MethodRegistryError("BeachEvidentialTest.apply_test_logic not callable")
+            from farfan_pipeline.methods.derek_beach import BeachEvidentialTest
+            
+            # Verify methods exist
+            if not hasattr(BeachEvidentialTest, "classify_test"):
+                 raise AttributeError("BeachEvidentialTest missing classify_test")
+            if not hasattr(BeachEvidentialTest, "apply_test_logic"):
+                 raise AttributeError("BeachEvidentialTest missing apply_test_logic")
 
             self.checks.append(
-                DependencyCheck(name="Derek Beach module", available=True, version="registry")
+                DependencyCheck(name="Derek Beach module", available=True, version="direct_import")
             )
-        except MethodRegistryError as e:
+        except (ImportError, AttributeError) as e:
             self.critical_failures.append(
                 DependencyCheck(
                     name="Derek Beach module",
                     available=False,
                     error=str(e),
-                    fix_command="Resolve registry path or dependencies for BeachEvidentialTest in farfan_pipeline.methods",
+                    fix_command="Check farfan_pipeline.methods.derek_beach module integrity",
                 )
             )
 
     def _check_teoria_cambio(self) -> None:
         """Check Theory of Change module can be imported."""
         try:
-            tc_cls = self.method_registry._load_class("TeoriaCambio")
-            if not hasattr(tc_cls, "construir_grafo_causal"):
-                raise MethodRegistryError("TeoriaCambio missing construir_grafo_causal")
-            if not hasattr(tc_cls, "validacion_completa"):
-                raise MethodRegistryError("TeoriaCambio missing validacion_completa")
+            from farfan_pipeline.methods.teoria_cambio import TeoriaCambio
+            
+            # Verify methods exist
+            if not hasattr(TeoriaCambio, "construir_grafo_causal"):
+                raise AttributeError("TeoriaCambio missing construir_grafo_causal")
+            if not hasattr(TeoriaCambio, "validacion_completa"):
+                raise AttributeError("TeoriaCambio missing validacion_completa")
 
             self.checks.append(
-                DependencyCheck(name="Theory of Change module", available=True, version="registry")
+                DependencyCheck(name="Theory of Change module", available=True, version="direct_import")
             )
-        except MethodRegistryError as e:
+        except (ImportError, AttributeError) as e:
             self.critical_failures.append(
                 DependencyCheck(
                     name="Theory of Change module",
                     available=False,
                     error=str(e),
-                    fix_command="Resolve registry path or dependencies for TeoriaCambio in farfan_pipeline.methods",
+                    fix_command="Check farfan_pipeline.methods.teoria_cambio module integrity",
                 )
             )
 
