@@ -240,6 +240,7 @@ def invoke_method_set(
     Returns:
         Dict with method_name -> result mapping
     """
+    import importlib
     results = {}
 
     if not question_spec.method_sets:
@@ -269,6 +270,23 @@ def invoke_method_set(
                 continue
 
             method = method_registry.get_method(class_name, function_name)
+
+            # Fallback for Stub Registry (returns None or non-callable)
+            if method is None or not callable(method):
+                if hasattr(method_registry, "class_paths") and class_name in method_registry.class_paths:
+                    try:
+                        module_path = method_registry.class_paths[class_name]
+                        module = importlib.import_module(module_path)
+                        cls = getattr(module, class_name)
+                        instance = cls()
+                        if hasattr(instance, function_name):
+                            method = getattr(instance, function_name)
+                            logger.debug(f"Resolved {class_name}.{function_name} via dynamic import fallback")
+                    except Exception as fallback_err:
+                        logger.warning(f"Fallback import failed for {class_name}: {fallback_err}")
+
+            if not callable(method):
+                raise ValueError(f"Method {class_name}.{function_name} not found or not callable")
 
             # Invoke method
             logger.debug(
