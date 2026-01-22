@@ -1958,458 +1958,192 @@ class UnifiedOrchestrator:
     # PHASE 0: Bootstrap & Validation (7 Stages)
     # =========================================================================
     """
-    Phase 0 Execution Contract (from phase0_execution_flow.md):
+    Phase 0 Execution Contract (from phase_sequence_contract.json):
 
-    Stage 00: Infrastructure (Boot)
-        - Load domain errors (phase0_00_01_domain_errors.py)
-        - Initialize contract protocols (phase0_00_03_protocols.py)
-        - Apply runtime error fixes (primitives/runtime_error_fixes.py)
+    P0.0: Bootstrap → Runtime config, seed registry, manifest builder
+        GATE_1: Bootstrap Gate - Runtime config loaded, artifacts dir created
 
-    Stage 10: Environment Configuration
-        - Resolve absolute paths (phase0_10_00_paths.py)
-        - Parse environment variables (phase0_10_01_runtime_config.py)
-        - Initialize structured logging (primitives/json_logger.py)
-        EXIT GATE: Configuration must be valid and conflict-free
+    P0.1: Input Verification → Cryptographic hash validation (SHA-256)
+        GATE_2: Input Verification Gate - PDF and questionnaire hashed
 
-    Stage 20: Determinism Enforcement
-        - Initialize global seed registry
-        - Compute deterministic seeds (phase0_20_02_determinism.py)
-        - Seed Python random and numpy.random
-        EXIT GATE: All RNGs must be seeded
+    P0.2: Boot Checks → Dependency validation (PROD: fatal, DEV: warn)
+        GATE_3: Boot Checks Gate - Dependencies validated
 
-    Stage 30: Resource Control
-        - Set kernel-level limits (phase0_30_00_resource_controller.py)
-        - Initialize performance metrics (primitives/performance_metrics.py)
-        EXIT GATE: Resource limits must be active and verified
+    P0.3: Determinism → RNG seeding with mandatory python+numpy seeds
+        GATE_4: Determinism Gate - All required seeds applied
 
-    Stage 40: Validation
-        - Validate Phase0Input (phase0_40_00_input_validation.py)
-        - Compute SHA-256 hashes for all inputs
-        - Verify function signatures (primitives/signature_validator.py)
-        EXIT GATE: CanonicalInput produced with validation_passed=True
+    GATE_5: Questionnaire Integrity Gate - SHA256 validation against known-good
+    GATE_6: Method Registry Gate - Expected method count (416) loaded
+    GATE_7: Smoke Tests Gate - Sample methods from major categories
 
-    Stage 50: Boot Sequence
-        - Run comprehensive boot checks (phase0_50_00_boot_checks.py)
-        - Verify all exit gates (phase0_50_01_exit_gates.py)
-        EXIT GATE: All checks passed (or allowed warnings in DEV mode)
+    CRITICAL: Phase 0 ONLY validates questionnaire FILE INTEGRITY (SHA-256 hash).
+              NEVER loads questionnaire content. Factory loads after Phase 0 passes.
 
-    Stage 90: Integration & Handoff
-        - Wire all components (phase0_90_02_bootstrap.py)
-        - Validate wiring integrity (phase0_90_03_wiring_validator.py)
-        - Produce WiringComponents and CanonicalInput
-        EXIT GATE: Handoff complete
+    Implementation: Delegates to VerifiedPipelineRunner (canonical Phase 0 orchestrator).
     """
 
     def _execute_phase_00(self) -> Dict[str, Any]:
         """
-        Execute Phase 0: Bootstrap & Validation - COMPLETE ORCHESTRATION.
+        Execute Phase 0: Bootstrap & Validation via VerifiedPipelineRunner.
 
-        Orchestrates all 7 stages of Phase 0 with full substage execution.
-        This replaces any simplified bootstrap with the complete execution flow.
+        DELEGATES to VerifiedPipelineRunner (canonical Phase 0 orchestrator).
+        This ensures single-source-of-truth compliance with phase_sequence_contract.json.
+
+        Contract Exit Gates (GATE_1 through GATE_7):
+            GATE_1: Bootstrap Gate - Runtime config loaded, artifacts dir created
+            GATE_2: Input Verification Gate - PDF and questionnaire hashed (SHA-256)
+            GATE_3: Boot Checks Gate - Dependencies validated
+            GATE_4: Determinism Gate - All required seeds applied
+            GATE_5: Questionnaire Integrity Gate - SHA256 validation
+            GATE_6: Method Registry Gate - Expected method count loaded
+            GATE_7: Smoke Tests Gate - Sample methods from major categories
 
         Returns:
             Dict with complete bootstrap results including:
             - canonical_input: Validated CanonicalInput object
             - wiring_components: Initialized WiringComponents
-            - stage_results: Results from each stage
-            - exit_gate_results: All gate validations
+            - exit_gate_results: All 7 gate validations aligned with contract
         """
+        from pathlib import Path as PathLib
+        from farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner import (
+            VerifiedPipelineRunner,
+        )
         from farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap import (
-            WiringBootstrap, EnforcedBootstrap, WiringComponents
+            WiringBootstrap, WiringComponents,
         )
-        from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
-            WiringFeatureFlags
+        from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
+            check_all_gates, get_gate_summary, GateResult,
+        )
+        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
+            Phase0Input, validate_phase0_input, CanonicalInput,
         )
 
         self.logger.info("=" * 80)
-        self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - FULL ORCHESTRATION STARTED")
+        self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - DELEGATING TO VerifiedPipelineRunner")
         self.logger.info("=" * 80)
 
-        stage_results = {}
         exit_gates = {}
+        wiring_components = None
+        canonical_input = None
 
         try:
             # ====================================================================
-            # STAGE 00: Infrastructure (Boot)
+            # PART 1: Run P0.0-P0.3 via VerifiedPipelineRunner (GATES 1-4)
             # ====================================================================
-            self.logger.info("[P0-S00] Stage 00: Infrastructure (Boot) - STARTED")
+            self.logger.info("[P0] Part 1: Running P0.0-P0.3 via VerifiedPipelineRunner")
 
-            # Load domain errors
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_00_01_domain_errors import (
-                    validate_domain_errors
-                )
-                domain_errors_valid = validate_domain_errors()
-                stage_results["s00_domain_errors"] = {
-                    "status": "completed" if domain_errors_valid else "failed",
-                    "valid": domain_errors_valid
-                }
-                self.logger.info("[P0-S00] Domain errors loaded and validated")
-            except Exception as e:
-                self.logger.warning(f"[P0-S00] Domain errors validation failed: {e}")
-                stage_results["s00_domain_errors"] = {"status": "skipped", "reason": str(e)}
+            # Prepare paths for VerifiedPipelineRunner
+            plan_pdf_path = PathLib(self.config.document_path) if self.config.document_path else PathLib("input.pdf")
+            questionnaire_path = PathLib(self.config.questionnaire_path) if self.config.questionnaire_path else PathLib("canonic_questionnaire_central/_registry/questionnaire_monolith.json")
 
-            # Initialize contract protocols
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_00_03_protocols import (
-                    initialize_protocols
-                )
-                protocols_initialized = initialize_protocols()
-                stage_results["s00_protocols"] = {
-                    "status": "completed",
-                    "protocols_count": len(protocols_initialized) if protocols_initialized else 0
-                }
-                self.logger.info(f"[P0-S00] Contract protocols initialized: {stage_results['s00_protocols']['protocols_count']} protocols")
-            except Exception as e:
-                self.logger.warning(f"[P0-S00] Protocol initialization failed: {e}")
-                stage_results["s00_protocols"] = {"status": "skipped", "reason": str(e)}
+            # Create artifacts directory
+            artifacts_dir = PathLib("artifacts") / "phase0"
 
-            self.logger.info("[P0-S00] Stage 00: Infrastructure (Boot) - COMPLETED")
-
-            # ====================================================================
-            # STAGE 10: Environment Configuration
-            # ====================================================================
-            self.logger.info("[P0-S10] Stage 10: Environment Configuration - STARTED")
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import (
-                    resolve_all_paths
-                )
-                resolved_paths = resolve_all_paths()
-                stage_results["s10_paths"] = {
-                    "status": "completed",
-                    "paths_resolved": len(resolved_paths),
-                    "paths": resolved_paths
-                }
-                self.logger.info(f"[P0-S10] Paths resolved: {len(resolved_paths)} paths")
-            except Exception as e:
-                self.logger.error(f"[P0-S10] Path resolution failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 10 path resolution failed: {e}",
-                    error_code="P0_S10_PATH_RESOLUTION_FAILED"
-                )
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import (
-                    RuntimeConfig, load_runtime_config
-                )
-                runtime_config: RuntimeConfig = load_runtime_config()
-                stage_results["s10_runtime_config"] = {
-                    "status": "completed",
-                    "config_valid": runtime_config.is_valid(),
-                    "env_vars_count": len(runtime_config.env_vars)
-                }
-                self.logger.info(f"[P0-S10] Runtime config loaded: {runtime_config.is_valid()}")
-            except Exception as e:
-                self.logger.error(f"[P0-S10] Runtime config failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 10 runtime config failed: {e}",
-                    error_code="P0_S10_RUNTIME_CONFIG_FAILED"
-                )
-
-            # Initialize structured logging
-            try:
-                from farfan_pipeline.phases.Phase_00.primitives.json_logger import (
-                    initialize_structured_logging
-                )
-                logging_configured = initialize_structured_logging()
-                stage_results["s10_logging"] = {
-                    "status": "completed",
-                    "configured": logging_configured
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S10] Structured logging init failed: {e}")
-                stage_results["s10_logging"] = {"status": "skipped", "reason": str(e)}
-
-            # EXIT GATE 10: Configuration validation
-            exit_gates["gate_10"] = {
-                "status": "passed" if runtime_config.is_valid() else "failed",
-                "config_valid": runtime_config.is_valid(),
-                "conflicts": runtime_config.get_conflicts() if hasattr(runtime_config, 'get_conflicts') else []
-            }
-
-            if exit_gates["gate_10"]["status"] != "passed":
-                raise OrchestrationError(
-                    message="Stage 10 exit gate failed: Configuration validation failed",
-                    error_code="P0_S10_EXIT_GATE_FAILED",
-                    context=exit_gates["gate_10"]
-                )
-            self.logger.info("[P0-S10] Stage 10: Environment Configuration - COMPLETED (EXIT GATE PASSED)")
-
-            # ====================================================================
-            # STAGE 20: Determinism Enforcement
-            # ====================================================================
-            self.logger.info("[P0-S20] Stage 20: Determinism Enforcement - STARTED")
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_20_02_determinism import (
-                    initialize_global_seed_registry, compute_deterministic_seeds,
-                    seed_all_rngs
-                )
-                seed_registry = initialize_global_seed_registry()
-                deterministic_seeds = compute_deterministic_seeds(
-                    run_id=self.context.execution_id
-                )
-                seeded_rngs = seed_all_rngs(deterministic_seeds)
-
-                stage_results["s20_determinism"] = {
-                    "status": "completed",
-                    "seed_registry_initialized": seed_registry is not None,
-                    "deterministic_seeds": deterministic_seeds,
-                    "rngs_seeded": list(seeded_rngs.keys()) if seeded_rngs else []
-                }
-                self.logger.info(f"[P0-S20] Determinism enforced: seed={deterministic_seeds}")
-            except Exception as e:
-                self.logger.error(f"[P0-S20] Determinism enforcement failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 20 determinism failed: {e}",
-                    error_code="P0_S20_DETERMINISM_FAILED"
-                )
-
-            # EXIT GATE 20: All RNGs seeded
-            exit_gates["gate_20"] = {
-                "status": "passed" if stage_results["s20_determinism"]["rngs_seeded"] else "failed",
-                "rngs_seeded": stage_results["s20_determinism"]["rngs_seeded"]
-            }
-
-            if not exit_gates["gate_20"]["status"] == "passed":
-                raise OrchestrationError(
-                    message="Stage 20 exit gate failed: Not all RNGs seeded",
-                    error_code="P0_S20_EXIT_GATE_FAILED"
-                )
-
-            self.logger.info("[P0-S20] Stage 20: Determinism Enforcement - COMPLETED (EXIT GATE PASSED)")
-
-            # ====================================================================
-            # STAGE 30: Resource Control
-            # ====================================================================
-            self.logger.info("[P0-S30] Stage 30: Resource Control - STARTED")
-
-            resource_limits_active = False
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (
-                    ResourceController, ResourceLimits
-                )
-                limits = ResourceLimits(
-                    memory_mb=self.config.resource_limits.get("memory_mb", 2048),
-                    cpu_seconds=self.config.resource_limits.get("cpu_seconds", 300),
-                )
-                controller = ResourceController(limits)
-                # Resource limits will be enforced during execution
-                resource_limits_active = True
-
-                stage_results["s30_resource_control"] = {
-                    "status": "completed",
-                    "resource_controller_active": True,
-                    "limits": {
-                        "memory_mb": limits.memory_mb,
-                        "cpu_seconds": limits.cpu_seconds
-                    }
-                }
-                self.logger.info(f"[P0-S30] Resource control activated: {limits.memory_mb}MB, {limits.cpu_seconds}s CPU")
-            except Exception as e:
-                self.logger.warning(f"[P0-S30] Resource control setup failed (continuing without): {e}")
-                stage_results["s30_resource_control"] = {
-                    "status": "skipped",
-                    "reason": str(e)
-                }
-
-            # Initialize performance metrics
-            try:
-                from farfan_pipeline.phases.Phase_00.primitives.performance_metrics import (
-                    PerformanceMetrics, initialize_metrics
-                )
-                perf_metrics = initialize_metrics()
-                stage_results.setdefault("s30_resource_control", {})["performance_metrics"] = {
-                    "initialized": True,
-                    "metrics": perf_metrics.to_dict() if hasattr(perf_metrics, 'to_dict') else {}
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S30] Performance metrics init failed: {e}")
-
-            # EXIT GATE 30: Resource limits active
-            exit_gates["gate_30"] = {
-                "status": "passed" if resource_limits_active else "warned",
-                "resource_limits_active": resource_limits_active
-            }
-
-            self.logger.info("[P0-S30] Stage 30: Resource Control - COMPLETED")
-
-            # ====================================================================
-            # STAGE 40: Validation
-            # ====================================================================
-            self.logger.info("[P0-S40] Stage 40: Input Validation - STARTED")
-
-            canonical_input = None
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
-                    Phase0Input, validate_phase0_input, CanonicalInput
-                )
-                # Create Phase0Input from config
-                phase0_input = Phase0Input(
-                    document_path=Path(self.config.document_path) if self.config.document_path else None,
-                    municipality_name=self.config.municipality_name
-                )
-                # Validate and create CanonicalInput
-                canonical_input = validate_phase0_input(phase0_input)
-
-                # Compute SHA-256 hashes
-                input_hashes = {}
-                if self.config.document_path:
-                    document_hash = self._compute_file_hash(self.config.document_path)
-                    input_hashes["document"] = document_hash
-
-                stage_results["s40_validation"] = {
-                    "status": "completed",
-                    "canonical_input_created": canonical_input is not None,
-                    "validation_passed": canonical_input.validation_passed if canonical_input else False,
-                    "input_hashes": input_hashes
-                }
-                self.logger.info(f"[P0-S40] Input validation: {canonical_input.validation_passed if canonical_input else False}")
-            except Exception as e:
-                self.logger.error(f"[P0-S40] Input validation failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 40 validation failed: {e}",
-                    error_code="P0_S40_VALIDATION_FAILED"
-                )
-
-            # Verify function signatures
-            try:
-                from farfan_pipeline.phases.Phase_00.primitives.signature_validator import (
-                    verify_all_signatures
-                )
-                signatures_valid = verify_all_signatures()
-                stage_results["s40_signatures"] = {
-                    "status": "completed",
-                    "signatures_valid": signatures_valid
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S40] Signature verification failed: {e}")
-                stage_results["s40_signatures"] = {"status": "skipped", "reason": str(e)}
-
-            # EXIT GATE 40: CanonicalInput produced
-            exit_gates["gate_40"] = {
-                "status": "passed" if canonical_input and canonical_input.validation_passed else "failed",
-                "canonical_input": canonical_input is not None,
-                "validation_passed": canonical_input.validation_passed if canonical_input else False
-            }
-
-            if not exit_gates["gate_40"]["status"] == "passed":
-                raise OrchestrationError(
-                    message="Stage 40 exit gate failed: CanonicalInput validation failed",
-                    error_code="P0_S40_EXIT_GATE_FAILED"
-                )
-
-            self.logger.info("[P0-S40] Stage 40: Input Validation - COMPLETED (EXIT GATE PASSED)")
-
-            # ====================================================================
-            # STAGE 50: Boot Sequence
-            # ====================================================================
-            self.logger.info("[P0-S50] Stage 50: Boot Sequence - STARTED")
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
-                    run_comprehensive_boot_checks
-                )
-                boot_check_results = run_comprehensive_boot_checks()
-                stage_results["s50_boot_checks"] = {
-                    "status": "completed",
-                    "checks_passed": boot_check_results.get("all_passed", False),
-                    "check_results": boot_check_results
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S50] Boot checks failed: {e}")
-                stage_results["s50_boot_checks"] = {"status": "skipped", "reason": str(e)}
-
-            # Verify all exit gates
-            all_gates_passed = all(
-                gate.get("status") in ("passed", "warned") for gate in exit_gates.values()
+            # Initialize VerifiedPipelineRunner
+            runner = VerifiedPipelineRunner(
+                plan_pdf_path=plan_pdf_path,
+                artifacts_dir=artifacts_dir,
+                questionnaire_path=questionnaire_path,
             )
-            stage_results["s50_exit_gates"] = {
-                "status": "completed",
-                "all_gates_passed": all_gates_passed,
-                "exit_gates": exit_gates
-            }
 
-            # EXIT GATE 50: All checks passed
-            exit_gates["gate_50"] = {
-                "status": "passed" if all_gates_passed else "failed",
-                "all_checks_passed": all_gates_passed
-            }
+            # Run Phase 0 via VerifiedPipelineRunner (P0.0-P0.3)
+            import asyncio
+            phase0_success = asyncio.run(runner.run_phase_zero())
 
-            if not all_gates_passed and self.config.strict_mode:
+            if not phase0_success:
+                # Phase 0 failed - generate failure manifest
+                runner.generate_failure_manifest()
                 raise OrchestrationError(
-                    message="Stage 50 exit gate failed: Not all checks passed",
-                    error_code="P0_S50_EXIT_GATE_FAILED",
-                    context={"exit_gates": exit_gates}
+                    message="Phase 0 failed: VerifiedPipelineRunner reported failure",
+                    error_code="P0_VERIFIED_RUNNER_FAILED",
+                    context={
+                        "errors": runner.errors,
+                        "bootstrap_failed": runner._bootstrap_failed,
+                        "execution_id": runner.execution_id,
+                    }
                 )
 
-            self.logger.info("[P0-S50] Stage 50: Boot Sequence - COMPLETED")
+            # Check all 7 gates (GATE_1-7 from contract)
+            all_passed, gate_results = check_all_gates(runner)
 
-            # ====================================================================
-            # STAGE 90: Integration & Handoff
-            # ====================================================================
-            self.logger.info("[P0-S90] Stage 90: Integration & Handoff - STARTED")
+            if not all_passed:
+                # Find the failed gate
+                failed_gate = next((g for g in gate_results if not g.passed), None)
+                if failed_gate:
+                    raise OrchestrationError(
+                        message=f"Phase 0 exit gate {failed_gate.gate_id} ({failed_gate.gate_name}) failed: {failed_gate.reason}",
+                        error_code=f"P0_GATE_{failed_gate.gate_id}_FAILED",
+                        context={
+                            "gate_id": failed_gate.gate_id,
+                            "gate_name": failed_gate.gate_name,
+                            "reason": failed_gate.reason,
+                        }
+                    )
 
-            wiring_components: Optional[WiringComponents] = None
-            try:
-                # Create WiringBootstrap
-                flags = WiringFeatureFlags.from_env()
-                bootstrap = WiringBootstrap(
-                    questionnaire_path=self.config.questionnaire_path,
-                    questionnaire_hash="",  # Will be computed if needed
-                    executor_config_path=self.config.methods_file,
-                    calibration_profile="default",
-                    abort_on_insufficient=False,
-                    resource_limits=self.config.resource_limits,
-                    flags=flags
-                )
-
-                # Execute bootstrap
-                wiring_components = bootstrap.bootstrap()
-
-                # Validate wiring integrity
-                from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import (
-                    WiringValidator
-                )
-                validator = WiringValidator()
-                wiring_valid = validator.validate_wiring(wiring_components)
-
-                stage_results["s90_integration"] = {
-                    "status": "completed",
-                    "wiring_components_created": wiring_components is not None,
-                    "wiring_valid": wiring_valid,
-                    "factory_instances": 19 if wiring_components else 0,
-                    "argrouter_routes": wiring_components.arg_router.get_special_route_coverage() if wiring_components else 0
+            # Map gate results to contract-aligned exit gates (GATE_1-7)
+            for gate_result in gate_results:
+                exit_gates[f"GATE_{gate_result.gate_id}"] = {
+                    "gate_id": gate_result.gate_id,
+                    "gate_name": gate_result.gate_name,
+                    "status": "passed" if gate_result.passed else "failed",
+                    "reason": gate_result.reason,
                 }
-                self.logger.info(f"[P0-S90] Integration complete: {stage_results['s90_integration']['factory_instances']} factory instances")
-            except Exception as e:
-                self.logger.error(f"[P0-S90] Integration failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 90 integration failed: {e}",
-                    error_code="P0_S90_INTEGRATION_FAILED"
-                )
 
-            # EXIT GATE 90: Handoff complete
-            exit_gates["gate_90"] = {
-                "status": "passed" if wiring_components is not None else "failed",
-                "wiring_components": wiring_components is not None,
-                "canonical_input": canonical_input is not None
-            }
-
-            if not exit_gates["gate_90"]["status"] == "passed":
-                raise OrchestrationError(
-                    message="Stage 90 exit gate failed: Handoff incomplete",
-                    error_code="P0_S90_EXIT_GATE_FAILED"
-                )
-
-            self.logger.info("[P0-S90] Stage 90: Integration & Handoff - COMPLETED (EXIT GATE PASSED)")
+            self.logger.info(f"[P0] All 7 exit gates passed:\n{get_gate_summary(gate_results)}")
 
             # ====================================================================
-            # PHASE 0 COMPLETE
+            # PART 2: Create CanonicalInput (FILE INTEGRITY ONLY, no content loading)
+            # ====================================================================
+            self.logger.info("[P0] Part 2: Creating CanonicalInput (file integrity validation)")
+
+            phase0_input = Phase0Input(
+                document_path=plan_pdf_path,
+                municipality_name=self.config.municipality_name
+            )
+            canonical_input = validate_phase0_input(phase0_input)
+
+            # Store hashes from VerifiedPipelineRunner
+            exit_gates["GATE_2"]["pdf_sha256"] = runner.input_pdf_sha256
+            exit_gates["GATE_2"]["questionnaire_sha256"] = runner.questionnaire_sha256
+
+            # ====================================================================
+            # PART 3: Execute WiringBootstrap (produces WiringComponents)
+            # ====================================================================
+            self.logger.info("[P0] Part 3: Executing WiringBootstrap")
+
+            from farfan_pipeline.phases.Phase_00.interphase.wiring_types import WiringFeatureFlags
+
+            flags = WiringFeatureFlags.from_env()
+            bootstrap = WiringBootstrap(
+                questionnaire_path=questionnaire_path,
+                questionnaire_hash=runner.questionnaire_sha256,  # Use hash from VPR
+                executor_config_path=self.config.methods_file,
+                calibration_profile="default",
+                abort_on_insufficient=False,
+                resource_limits=self.config.resource_limits,
+                flags=flags
+            )
+
+            wiring_components = bootstrap.bootstrap()
+
+            # Validate wiring integrity
+            from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import WiringValidator
+            validator = WiringValidator()
+            wiring_valid = validator.validate_wiring(wiring_components)
+
+            if not wiring_valid:
+                raise OrchestrationError(
+                    message="Phase 0 wiring validation failed",
+                    error_code="P0_WIRING_VALIDATION_FAILED",
+                )
+
+            self.logger.info(f"[P0] Wiring complete: {wiring_components.factory.factory_instances} factory instances")
+
+            # ====================================================================
+            # PHASE 0 COMPLETE - STORE RESULTS
             # ====================================================================
             self.logger.info("=" * 80)
-            self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - FULL ORCHESTRATION COMPLETED")
+            self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - COMPLETED")
             self.logger.info("=" * 80)
 
             # Store in context for subsequent phases
@@ -2420,20 +2154,28 @@ class UnifiedOrchestrator:
                 "status": "completed",
                 "canonical_input": canonical_input.to_dict() if hasattr(canonical_input, 'to_dict') else str(canonical_input),
                 "wiring_components": {
-                    "factory_instances": stage_results["s90_integration"]["factory_instances"],
-                    "argrouter_routes": stage_results["s90_integration"]["argrouter_routes"]
+                    "factory_instances": wiring_components.factory.factory_instances,
+                    "argrouter_routes": wiring_components.arg_router.get_special_route_coverage() if wiring_components and wiring_components.arg_router else 0,
                 },
-                "stage_results": stage_results,
                 "exit_gates": exit_gates,
-                "validation_passed": canonical_input.validation_passed if canonical_input else False
+                "validation_passed": canonical_input.validation_passed if canonical_input else False,
+                "phase0_execution_id": runner.execution_id,
+                "seed_snapshot": runner.seed_snapshot,
+                "input_hashes": {
+                    "pdf_sha256": runner.input_pdf_sha256,
+                    "questionnaire_sha256": runner.questionnaire_sha256,
+                },
             }
 
+        except OrchestrationError:
+            # Re-raise orchestration errors as-is
+            raise
         except Exception as e:
             self.logger.error(f"Phase 0 orchestration failed: {e}")
             raise PhaseExecutionError(
                 message=f"Phase 0 execution failed: {e}",
                 phase_id="P00",
-                context={"stage_results": stage_results, "exit_gates": exit_gates}
+                context={"exit_gates": exit_gates}
             ) from e
 
     # =========================================================================
@@ -3510,33 +3252,64 @@ class UnifiedOrchestrator:
                 from farfan_pipeline.phases.Phase_06 import ClusterScore
             except ImportError as e:
                 self.logger.warning(f"[P6] Could not import ClusterScore for validation: {e}")
-                # Fallback to attribute-based validation
                 ClusterScore = None
 
-            # Validate: Each item must be a ClusterScore object
+            # Validate each item and build validated output list
+            validated_cluster_scores = []
             for i, cs in enumerate(cluster_scores):
+                # Type validation: isinstance check or attribute-based fallback
                 if ClusterScore is not None:
-                    # Use isinstance validation when type is available
                     if not isinstance(cs, ClusterScore):
-                        raise TypeError(
-                            f"Phase 6 cluster_scores[{i}] is not a ClusterScore object. "
-                            f"Got type: {type(cs).__name__}. "
-                            f"Expected ClusterScore from farfan_pipeline.phases.Phase_06."
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 6 cluster_scores[{i}] is not a ClusterScore object. "
+                                f"Got type: {type(cs).__name__}. "
+                                f"Expected ClusterScore from farfan_pipeline.phases.Phase_06."
+                            ),
+                            phase_id="P06",
+                            context={"index": i, "actual_type": type(cs).__name__}
                         )
                 else:
                     # Fallback: Check required attributes when type import failed
                     if not hasattr(cs, 'cluster_id'):
-                        raise TypeError(
-                            f"Phase 6 cluster_scores[{i}] missing required attribute 'cluster_id'. "
-                            f"Got type: {type(cs).__name__}. "
-                            f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 6 cluster_scores[{i}] missing required attribute 'cluster_id'. "
+                                f"Got type: {type(cs).__name__}. "
+                                f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                            ),
+                            phase_id="P06",
+                            context={"index": i, "actual_type": type(cs).__name__}
                         )
                     if not hasattr(cs, 'score'):
-                        raise TypeError(
-                            f"Phase 6 cluster_scores[{i}] missing required attribute 'score'. "
-                            f"Got type: {type(cs).__name__}. "
-                            f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 6 cluster_scores[{i}] missing required attribute 'score'. "
+                                f"Got type: {type(cs).__name__}. "
+                                f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                            ),
+                            phase_id="P06",
+                            context={"index": i, "actual_type": type(cs).__name__}
                         )
+
+                # Extract values safely after validation
+                try:
+                    cluster_id = cs.cluster_id
+                    score = cs.score
+                except AttributeError as ae:
+                    raise PhaseExecutionError(
+                        message=(
+                            f"Phase 6 cluster_scores[{i}] attribute access failed: {ae}. "
+                            f"Object type: {type(cs).__name__}."
+                        ),
+                        phase_id="P06",
+                        context={"index": i, "actual_type": type(cs).__name__, "error": str(ae)}
+                    ) from ae
+
+                validated_cluster_scores.append({
+                    "cluster_id": cluster_id,
+                    "score": score
+                })
 
             # Validate: Should be 4 clusters
             expected_count = 4
@@ -3553,13 +3326,7 @@ class UnifiedOrchestrator:
             return {
                 "status": "completed",
                 "cluster_count": actual_count,
-                "cluster_scores": [
-                    {
-                        "cluster_id": cs.cluster_id,
-                        "score": cs.score
-                    }
-                    for cs in cluster_scores
-                ]
+                "cluster_scores": validated_cluster_scores
             }
 
         except Exception as e:

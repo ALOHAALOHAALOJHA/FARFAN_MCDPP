@@ -10,7 +10,7 @@ Tests cover:
 
 import pytest
 
-from orchestration.executor_chunk_synchronizer import (
+from farfan_pipeline.phases.Phase_02.phase2_40_01_executor_chunk_synchronizer import (
     ExecutorChunkBinding,
     ExecutorChunkSynchronizationError,
     build_join_table,
@@ -497,6 +497,60 @@ def test_malformed_contract():
     # Should handle missing fields with defaults
     with pytest.raises(ExecutorChunkSynchronizationError):
         build_join_table(contracts, chunks)
+
+
+def test_expansion_ratio_validation(sample_contracts, sample_chunks):
+    """Test that 60 chunks correctly expand to 300 bindings (5:1 ratio).
+
+    Validates the architectural invariant that the 60-chunk matrix from Phase 1
+    expands to 300 executor contract bindings through a many:1 mapping.
+
+    The expansion ratio is derived from:
+    - 60 unique chunks (10 PA × 6 DIM)
+    - 300 executor contracts (Q001-Q300)
+    - Ratio = 300/60 = 5:1 (each chunk services ~5 contracts on average)
+    """
+    bindings = build_join_table(sample_contracts, sample_chunks)
+
+    # Validate total counts
+    assert len(bindings) == EXPECTED_CONTRACT_COUNT, (
+        f"Expected {EXPECTED_CONTRACT_COUNT} bindings, got {len(bindings)}"
+    )
+    assert len(sample_chunks) == EXPECTED_CHUNK_COUNT, (
+        f"Expected {EXPECTED_CHUNK_COUNT} chunks, got {len(sample_chunks)}"
+    )
+
+    # Validate expansion ratio
+    expansion_ratio = len(bindings) / len(sample_chunks)
+    expected_ratio = 5.0  # 300 contracts / 60 chunks = 5:1
+    assert expansion_ratio == expected_ratio, (
+        f"Expected expansion ratio of {expected_ratio}:1, got {expansion_ratio}:1"
+    )
+
+    # Validate unique PA×DIM combinations equals chunk count
+    unique_chunks = {(b.policy_area_id, b.dimension_id) for b in bindings}
+    assert len(unique_chunks) == EXPECTED_CHUNK_COUNT, (
+        f"Expected {EXPECTED_CHUNK_COUNT} unique PA×DIM combinations, "
+        f"got {len(unique_chunks)}"
+    )
+
+    # Validate each unique chunk has multiple bindings (many:1 mapping)
+    chunk_binding_counts = {}
+    for pa, dim in unique_chunks:
+        count = sum(1 for b in bindings if b.policy_area_id == pa and b.dimension_id == dim)
+        chunk_binding_counts[(pa, dim)] = count
+
+    # All chunks should have bindings (no empty chunks)
+    assert all(count > 0 for count in chunk_binding_counts.values()), (
+        "All chunks should have at least one binding"
+    )
+
+    # Average bindings per chunk should equal expansion ratio
+    avg_bindings_per_chunk = sum(chunk_binding_counts.values()) / len(chunk_binding_counts)
+    assert avg_bindings_per_chunk == expected_ratio, (
+        f"Expected average {expected_ratio} bindings per chunk, "
+        f"got {avg_bindings_per_chunk}"
+    )
 
 
 def test_chunk_without_ids():

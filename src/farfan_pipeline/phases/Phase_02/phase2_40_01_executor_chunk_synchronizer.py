@@ -38,7 +38,13 @@ from typing import Any, Literal
 logger = logging.getLogger(__name__)
 
 # Constants
-EXPECTED_CONTRACT_COUNT = 300  # Q001-Q300
+# NOTE: Question count discrepancy (305 vs 300) explanation:
+# - The canonical corpus defines 305 questions (Q001-Q305) in total
+# - Q305 is the MACRO_1 global question (special handling,不属于任何 PA×DIM chunk)
+# - Executor contracts cover Q001-Q300 (300 specialized questions mapped to 60 chunks)
+# - Each chunk (PA×DIM) services 5 questions on average (300/60 = 5:1 expansion ratio)
+# - Phase 2 executor chunk synchronization operates on the 300 specialized questions only
+EXPECTED_CONTRACT_COUNT = 300  # Q001-Q300 (excludes Q305 MACRO_1)
 EXPECTED_CHUNK_COUNT = 60  # 10 PA × 6 DIM
 DEFAULT_CONTRACT_DIR = "config/executor_contracts/specialized"
 
@@ -80,12 +86,13 @@ class ExecutorChunkSynchronizationError(Exception):
 
 @dataclass
 class ExecutorChunkBinding:
-    """Canonical JOIN table entry: 1 executor contract → 1 chunk.
+    """Canonical JOIN table entry: many executor contracts → 1 chunk.
 
     Constitutional Invariants:
-    - Each executor_contract_id maps to exactly 1 chunk_id
-    - Each chunk_id maps to exactly 1 executor_contract_id
-    - Total bindings = 300 (all Q001-Q300 contracts)
+    - Each executor_contract_id maps to exactly 1 chunk_id (many:1 binding)
+    - Multiple executor contracts may share the same chunk (same PA×DIM coordinates)
+    - Each binding's chunk_id is unique (chunk_id-{contract_id} per-binding suffix)
+    - Total bindings = 300 (all Q001-Q300 contracts) mapping to 60 unique chunks
 
     Attributes:
         executor_contract_id: Contract identifier (Q001-Q300)
