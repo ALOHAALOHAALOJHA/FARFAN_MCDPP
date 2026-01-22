@@ -124,11 +124,25 @@ try:
     # Phase 01: CPP Ingestion
     from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
         CPPIngestionEngine,
+        execute_phase_1_with_full_contract,
+        Phase1CPPIngestionFullContract,
+        Phase1FatalError,
+    )
+    from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
+        CanonPolicyPackage,
+        CanonicalInput,
     )
     PHASE_01_AVAILABLE = True
+    PHASE1_FULL_CONTRACT_AVAILABLE = True
 except ImportError:
     PHASE_01_AVAILABLE = False
+    PHASE1_FULL_CONTRACT_AVAILABLE = False
     CPPIngestionEngine = None  # type: ignore
+    execute_phase_1_with_full_contract = None  # type: ignore
+    Phase1CPPIngestionFullContract = None  # type: ignore
+    Phase1FatalError = None  # type: ignore
+    CanonPolicyPackage = None  # type: ignore
+    CanonicalInput = None  # type: ignore
 
 try:
     # Phase 03: Scoring
@@ -2788,50 +2802,105 @@ class UnifiedOrchestrator:
                 }
 
             # ====================================================================
-            # EXECUTE ALL 16 SUBPHASES via Complete Ingestion Engine
+            # EXECUTE PHASE 1 WITH FULL CONTRACT
             # ====================================================================
-            self.logger.info("[P1] Executing complete CPP ingestion pipeline (SP0-SP15)")
+            self.logger.info("[P1] Executing Phase 1 with full contract enforcement")
 
-            # Try to import the complete ingestion function
-            # Note: Only import errors are caught here; runtime errors from the function
-            # itself will propagate normally
-            execute_cpp_fn = None
-            try:
-                from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-                    execute_cpp_ingestion_complete
-                )
-                execute_cpp_fn = execute_cpp_ingestion_complete
-            except ImportError as e:
-                self.logger.error(
-                    f"[P1] Failed to import execute_cpp_ingestion_complete: {e}. "
-                    f"Falling back to individual subphase execution."
-                )
+            # Get signal_registry and structural_profile from Phase 0 wiring
+            signal_registry = None
+            structural_profile = None
 
-            # If import succeeded, call the function (runtime errors will propagate)
-            if execute_cpp_fn is not None:
-                cpp_result = execute_cpp_fn(
-                    canonical_input=canonical_input,
-                    signal_enricher=signal_enricher,
-                    circuit_breaker_config=subphase_results["sp00_circuit_breaker"],
-                    logger=self.logger
-                )
+            if self.context.wiring:
+                # Get signal_registry from factory
+                if hasattr(self.context.wiring, 'factory') and self.context.wiring.factory:
+                    signal_registry = getattr(self.context.wiring.factory, 'signal_registry', None)
+                    self.logger.info(f"[P1] Signal registry from factory: {signal_registry is not None}")
 
-                subphase_results.update(cpp_result.get("subphase_results", {}))
+                # Get PDM structural profile
+                if hasattr(self.context.wiring, 'pdm_profile'):
+                    structural_profile = self.context.wiring.pdm_profile
+                    self.logger.info(f"[P1] PDM structural profile: {structural_profile is not None}")
 
-                self.logger.info(f"[P1] CPP ingestion complete: {len(cpp_result.get('smart_chunks', []))} chunks")
+            # Use full contract executor if available
+            if PHASE1_FULL_CONTRACT_AVAILABLE and execute_phase_1_with_full_contract is not None:
+                self.logger.info("[P1] Using Phase 1 Full Contract Executor")
+                try:
+                    canon_policy_package: CanonPolicyPackage = execute_phase_1_with_full_contract(
+                        canonical_input=canonical_input,
+                        signal_registry=signal_registry,
+                        structural_profile=structural_profile,
+                    )
+
+                    # Extract subphase results from CPP metadata
+                    subphase_results = getattr(canon_policy_package, 'subphase_results', {})
+                    constitutional_invariants = getattr(canon_policy_package, 'constitutional_invariants', {})
+
+                    self.logger.info(f"[P1] Full contract execution complete: {len(canon_policy_package.smart_chunks)} chunks")
+
+                except Phase1FatalError as e:
+                    # Phase 1 specific fatal error - already logged
+                    self.logger.error(f"[P1] Fatal error: {e}")
+                    raise PhaseExecutionError(
+                        message=f"Phase 1 fatal error: {e}",
+                        phase_id="P01"
+                    ) from e
+                except Exception as e:
+                    self.logger.error(f"[P1] Full contract execution failed: {e}")
+                    raise PhaseExecutionError(
+                        message=f"Phase 1 execution failed: {e}",
+                        phase_id="P01"
+                    ) from e
             else:
-                # Fallback: Execute subphases individually
-                cpp_result = self._execute_phase_01_subphases_individually(
-                    canonical_input, signal_enricher, subphase_results
-                )
+                # Fallback: Try to import the complete ingestion function
+                self.logger.warning("[P1] Full contract executor not available, using fallback")
+                execute_cpp_fn = None
+                try:
+                    from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+                        execute_cpp_ingestion_complete
+                    )
+                    execute_cpp_fn = execute_cpp_ingestion_complete
+                except ImportError as e:
+                    self.logger.error(
+                        f"[P1] Failed to import execute_cpp_ingestion_complete: {e}. "
+                        f"Falling back to individual subphase execution."
+                    )
+
+                # If import succeeded, call the function (runtime errors will propagate)
+                if execute_cpp_fn is not None:
+                    cpp_result = execute_cpp_fn(
+                        canonical_input=canonical_input,
+                        signal_enricher=signal_enricher,
+                        circuit_breaker_config=subphase_results["sp00_circuit_breaker"],
+                        logger=self.logger
+                    )
+
+                    subphase_results.update(cpp_result.get("subphase_results", {}))
+                    canon_policy_package = cpp_result.get("canon_policy_package")
+                    if canon_policy_package is None:
+                        raise PhaseExecutionError(
+                            message="Fallback execution did not return CanonPolicyPackage",
+                            phase_id="P01"
+                        )
+                    self.logger.info(f"[P1] Fallback execution complete: {len(canon_policy_package.smart_chunks)} chunks")
+                else:
+                    # Last resort: Execute subphases individually
+                    cpp_result = self._execute_phase_01_subphases_individually(
+                        canonical_input, signal_enricher, subphase_results
+                    )
+                    canon_policy_package = cpp_result.get("canon_policy_package")
+                    if canon_policy_package is None:
+                        raise PhaseExecutionError(
+                            message="Individual subphase execution did not return CanonPolicyPackage",
+                            phase_id="P01"
+                        )
 
             # ====================================================================
             # CONSTITUTIONAL INVARIANTS VALIDATION
             # ====================================================================
             self.logger.info("[P1] Validating constitutional invariants")
 
-            smart_chunks = cpp_result.get("smart_chunks", [])
-            canonical_package = cpp_result.get("canon_policy_package")
+            smart_chunks = canon_policy_package.smart_chunks
+            validation_passed = getattr(canon_policy_package, 'validation_passed', True)
 
             # Invariant 1: 60 Chunks (SP4 - Segmentation)
             chunk_count = len(smart_chunks)
@@ -2858,7 +2927,6 @@ class UnifiedOrchestrator:
             }
 
             # Invariant 3: Validation Gate (SP13)
-            validation_passed = cpp_result.get("validation_result", {}).get("all_passed", False)
             constitutional_invariants["invariant_validation_gate"] = {
                 "name": "Validation Gate Invariant (SP13)",
                 "all_checks_passed": validation_passed,
@@ -2872,38 +2940,30 @@ class UnifiedOrchestrator:
             )
 
             # ====================================================================
-            # FINALIZATION: CanonPolicyPackage Assembly
+            # EXIT GATE: All constitutional invariants must pass
             # ====================================================================
-            self.logger.info("[P1] Assembling CanonPolicyPackage")
+            exit_gates = {}
+            exit_gates["gate_final"] = {
+                "status": "passed" if all_invariants_passed else "failed",
+                "invariants_passed": all_invariants_passed,
+                "chunk_count": chunk_count
+            }
 
-            if canonical_package is None:
-                # Create package from smart chunks
-                from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
-                    CanonPolicyPackage, PolicyManifest, QualityMetrics
-                )
-                from datetime import datetime, timezone
-
-                manifest = PolicyManifest(
-                    document_title=canonical_input.document_name if hasattr(canonical_input, 'document_name') else "Unknown",
-                    municipality=self.config.municipality_name,
-                    generated_at=datetime.now(timezone.utc),
-                    schema_version="2.0.0"
-                )
-
-                quality_metrics = QualityMetrics(
-                    total_chunks=len(smart_chunks),
-                    constitutional_invariants_passed=all_invariants_passed,
-                    validation_score=1.0 if all_invariants_passed else 0.0
+            if not all_invariants_passed and self.config.strict_mode:
+                failed_invariants = [
+                    name for name, inv in constitutional_invariants.items()
+                    if not inv["passed"]
+                ]
+                raise PhaseExecutionError(
+                    message=f"Phase 1 constitutional invariants failed: {failed_invariants}",
+                    phase_id="P01",
+                    context={"constitutional_invariants": constitutional_invariants}
                 )
 
-                chunk_graph = ChunkGraph.from_smart_chunks(smart_chunks)
-
-                canonical_package = CanonPolicyPackage(
-                    smart_chunks=smart_chunks,
-                    manifest=manifest,
-                    quality_metrics=quality_metrics,
-                    chunk_graph=chunk_graph
-                )
+            # ====================================================================
+            # FINALIZATION: Store CanonPolicyPackage in context
+            # ====================================================================
+            self.logger.info("[P1] Storing CanonPolicyPackage in context")
 
             # Validate the package
             try:
@@ -2911,12 +2971,12 @@ class UnifiedOrchestrator:
                     CanonPolicyPackageValidator
                 )
                 validator = CanonPolicyPackageValidator()
-                package_valid = validator.validate(canonical_package)
+                package_valid = validator.validate(canon_policy_package)
 
                 subphase_results["finalization"] = {
                     "status": "completed",
                     "package_valid": package_valid,
-                    "chunks_count": len(canonical_package.smart_chunks)
+                    "chunks_count": len(canon_policy_package.smart_chunks)
                 }
             except Exception as e:
                 self.logger.warning(f"[P1] Package validation failed: {e}")
@@ -2926,23 +2986,6 @@ class UnifiedOrchestrator:
                     "error": str(e)
                 }
 
-            # ====================================================================
-            # EXIT GATE: All constitutional invariants must pass
-            # ====================================================================
-            if not all_invariants_passed and self.config.strict_mode:
-                failed_invariants = [
-                    name for name, inv in constitutional_invariants.items()
-                    if not inv["passed"]
-                ]
-                raise PhaseExecutionError(
-                    message=f"Phase 1 constitutional invariants failed: {failed_invariants}",
-                    phase_id="P01",
-                    context={
-                        "constitutional_invariants": constitutional_invariants,
-                        "failed_invariants": failed_invariants
-                    }
-                )
-
             self.logger.info("=" * 80)
             self.logger.critical("PHASE 1: CPP INGESTION - FULL ORCHESTRATION COMPLETED")
             self.logger.info(f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}")
@@ -2950,19 +2993,20 @@ class UnifiedOrchestrator:
             self.logger.info("=" * 80)
 
             # Store in context
-            self.context.phase_outputs[PhaseID.PHASE_1] = canonical_package
+            self.context.phase_outputs[PhaseID.PHASE_1] = canon_policy_package
 
             return {
                 "status": "completed",
-                "canon_policy_package": canonical_package.to_dict() if hasattr(canonical_package, 'to_dict') else str(canonical_package),
+                "canon_policy_package": canon_policy_package.to_dict() if hasattr(canon_policy_package, 'to_dict') else str(canon_policy_package),
                 "smart_chunks_count": len(smart_chunks),
                 "subphase_results": subphase_results,
                 "constitutional_invariants": constitutional_invariants,
                 "all_invariants_passed": all_invariants_passed,
+                "exit_gates": exit_gates,
                 "cpp_package": {
-                    "total_chunks": len(canonical_package.smart_chunks),
-                    "document_title": canonical_package.manifest.document_name if hasattr(canonical_package.manifest, 'document_name') else "Unknown",
-                    "schema_version": canonical_package.manifest.schema_version if hasattr(canonical_package.manifest, 'schema_version') else "Unknown",
+                    "total_chunks": len(canon_policy_package.smart_chunks),
+                    "document_title": canon_policy_package.manifest.document_name if hasattr(canon_policy_package.manifest, 'document_name') else "Unknown",
+                    "schema_version": canon_policy_package.manifest.schema_version if hasattr(canon_policy_package.manifest, 'schema_version') else "Unknown",
                 }
             }
 
