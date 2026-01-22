@@ -6,7 +6,6 @@ Provides REST API endpoints for accessing granular pipeline monitoring data.
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List
 
 from flask import Blueprint, jsonify, request
 
