@@ -56,7 +56,7 @@ class ContractUpdateValidator:
         self.questionnaire_path = (
             REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
         )
-        self.dispensary_path = SRC_ROOT / "methods_dispensary"
+        self.dispensary_path = SRC_ROOT / "farfan_pipeline" / "methods"
 
         self.validation_results = {
             "phase": "validation",

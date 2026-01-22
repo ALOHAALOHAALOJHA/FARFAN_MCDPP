@@ -3,7 +3,7 @@
   "$id": "https://farfan.pipeline/schemas/calibration/type_c.json",
   "contract_type": "TYPE_C",
   "name": "Causal Inference Contracts",
-  "version": "1.0.0-epistemic",
+  "version": "2.0.0-epistemic",
   "description": "Causal contracts emphasizing N3-dominated processing for DAG validation, causal consistency checking, and counterfactual reasoning.",
 
   "epistemology": {
@@ -15,205 +15,68 @@
 
   "epistemic_ratios": {
     "description": "Distribution of computational effort across epistemic layers",
-    "n1_empirical": {
-      "lower": 0.20,
-      "upper": 0.40,
-      "default": 0.30,
-      "justification": "Extraction of causal claims and mechanism descriptions"
-    },
-    "n2_inferential": {
-      "lower": 0.25,
-      "upper": 0.45,
-      "default": 0.35,
-      "justification": "Causal graph construction and path analysis"
-    },
-    "n3_audit": {
-      "lower": 0.25,
-      "upper": 0.45,
-      "default": 0.35,
-      "justification": "STRONG N3: DAG validation, acyclicity checking, counterfactual audit"
-    }
+    "n1_empirical": { "lower": 0.20, "upper": 0.40, "default": 0.30, "justification": "Extraction of causal claims and mechanism descriptions" },
+    "n2_inferential": { "lower": 0.25, "upper": 0.45, "default": 0.35, "justification": "Causal graph construction and path analysis" },
+    "n3_audit": { "lower": 0.25, "upper": 0.45, "default": 0.35, "justification": "STRONG N3: DAG validation, acyclicity checking, counterfactual audit" }
   },
 
   "thresholds": {
-    "veto_threshold": {
-      "lower": 0.03,
-      "upper": 0.07,
-      "default": 0.05,
-      "description": "Probability threshold for N3 veto gate activation",
-      "strictness_level": "STANDARD"
-    },
-    "prior_strength": {
-      "lower": 0.1,
-      "upper": 10.0,
-      "default": 1.0,
-      "description": "Weight assigned to causal priors"
-    },
-    "dag_acyclicity_pvalue": {
-      "lower": 0.01,
-      "upper": 0.10,
-      "default": 0.05,
-      "description": "P-value threshold for DAG acyclicity validation"
-    },
-    "causal_effect_threshold": {
-      "lower": 0.10,
-      "upper": 0.50,
-      "default": 0.20,
-      "description": "Minimum causal effect size for claim validation"
-    },
-    "counterfactual_confidence": {
-      "lower": 0.70,
-      "upper": 0.95,
-      "default": 0.85,
-      "description": "Minimum confidence for counterfactual acceptance"
-    }
+    "veto_threshold": { "lower": 0.03, "upper": 0.07, "default": 0.05, "description": "Probability threshold for N3 veto gate activation", "strictness_level": "STANDARD" },
+    "dag_acyclicity_pvalue": { "lower": 0.01, "upper": 0.10, "default": 0.05, "description": "P-value threshold for DAG acyclicity validation" },
+    "causal_effect_threshold": { "lower": 0.10, "upper": 0.50, "default": 0.20, "description": "Minimum causal effect size for claim validation" },
+    "counterfactual_confidence": { "lower": 0.70, "upper": 0.95, "default": 0.85, "description": "Minimum confidence for counterfactual acceptance" }
   },
 
   "operations": {
     "permitted": [
-      {
-        "name": "topological_overlay",
-        "description": "Topological sorting for causal graph layering",
-        "layer": "N2",
-        "implementation": "TopologicalOverlay"
-      },
-      {
-        "name": "graph_construction",
-        "description": "Causal graph construction from text",
-        "layer": "N1",
-        "implementation": "CausalGraphBuilder"
-      },
-      {
-        "name": "veto_gate",
-        "description": "N3 veto based on causal consistency",
-        "layer": "N3",
-        "implementation": "CausalVetoGate"
-      },
-      {
-        "name": "carver_doctoral_synthesis",
-        "description": "Carver doctoral synthesis methodology for R4",
-        "layer": "N4",
-        "implementation": "CarverSynthesis"
-      },
-      {
-        "name": "dag_validation",
-        "description": "DAG acyclicity and structural validation",
-        "layer": "N3",
-        "implementation": "DAGValidator"
-      },
-      {
-        "name": "causal_path_analysis",
-        "description": "Causal path enumeration and validation",
-        "layer": "N2",
-        "implementation": "CausalPathAnalyzer"
-      }
+      { "name": "graph_construction", "description": "Causal graph construction from text", "layer": "N1", "implementation": "CausalGraphBuilder" },
+      { "name": "topological_overlay", "description": "Topological sorting for causal graph layering", "layer": "N2", "implementation": "TopologicalOverlay" },
+      { "name": "causal_path_analysis", "description": "Causal path enumeration and validation", "layer": "N2", "implementation": "CausalPathAnalyzer" },
+      { "name": "dag_validation", "description": "DAG acyclicity and structural validation", "layer": "N3", "implementation": "DAGValidator" },
+      { "name": "veto_gate", "description": "N3 veto based on causal consistency", "layer": "N3", "implementation": "CausalVetoGate" },
+      { "name": "carver_doctoral_synthesis", "description": "Carver doctoral synthesis for N4", "layer": "N4", "implementation": "CarverSynthesis" }
     ],
     "prohibited": [
-      {
-        "name": "weighted_mean",
-        "reason": "Inappropriate for causal inference",
-        "alternative": "Use topological_overlay for graph-based combination"
-      },
-      {
-        "name": "concat",
-        "reason": "Violates causal structure principles",
-        "alternative": "Use graph_construction for causal relationship building"
-      },
-      {
-        "name": "simple_average",
-        "reason": "Violates causal epistemology",
-        "alternative": "Use causal_path_analysis for path-based reasoning"
-      },
-      {
-        "name": "arithmetic_aggregation",
-        "reason": "Violates structural causal model principles",
-        "alternative": "Use topological_overlay for DAG-based reasoning"
-      }
+      { "name": "weighted_mean", "reason": "Inappropriate for causal inference", "alternative": "Use topological_overlay for graph-based combination" },
+      { "name": "concat", "reason": "Violates causal structure principles", "alternative": "Use graph_construction for causal relationship building" },
+      { "name": "simple_average", "reason": "Violates causal epistemology", "alternative": "Use causal_path_analysis for path-based reasoning" }
     ]
   },
 
   "fusion_strategies": {
     "description": "Canonical fusion strategy per epistemic layer",
-    "N1": {
-      "strategy": "graph_construction",
-      "symbol": "⊕",
-      "behavior": "additive",
-      "implementation": "GraphConstructionStrategy"
-    },
-    "N2": {
-      "strategy": "topological_overlay",
-      "symbol": "⊗",
-      "behavior": "multiplicative",
-      "implementation": "TopologicalOverlayStrategy"
-    },
-    "N3": {
-      "strategy": "veto_gate",
-      "symbol": "⊘",
-      "behavior": "gate",
-      "implementation": "VetoGateStrategy"
-    }
+    "N1": { "strategy": "graph_construction", "symbol": "⊕", "behavior": "additive", "implementation": "GraphConstructionStrategy" },
+    "N2": { "strategy": "topological_overlay", "symbol": "⊗", "behavior": "multiplicative", "implementation": "TopologicalOverlayStrategy" },
+    "N3": { "strategy": "veto_gate", "symbol": "⊘", "behavior": "gate", "implementation": "VetoGateStrategy" }
   },
 
   "sample_questions": {
     "description": "Base questions classified as TYPE_C",
     "questions": ["Q008", "Q016", "Q026", "Q030"],
-    "extended_pattern": "4 base questions × 10 sectors = 40 total questions"
+    "extended_pattern": "4 base questions × 10 policy areas = 40 total questions"
   },
 
   "calibration_adjustments": {
     "description": "Parameter overrides from base level configuration",
-    "enable_hierarchical_models": {
-      "value": true,
-      "description": "Enable hierarchical causal models for nested structures"
-    },
-    "dag_validation_strictness": {
-      "value": 0.9,
-      "description": "Strictness threshold for DAG validation",
-      "range": "[0.0, 1.0]"
-    },
-    "causal_consistency_threshold": {
-      "value": 0.7,
-      "description": "Minimum consistency for causal claim acceptance"
-    },
-    "counterfactual_enabled": {
-      "value": true,
-      "description": "Enable counterfactual reasoning where applicable"
-    },
-    "temporal_validation": {
-      "value": true,
-      "description": "Enable temporal precedence validation"
-    }
+    "enable_hierarchical_models": { "value": true, "description": "Enable hierarchical causal models for nested structures" },
+    "dag_validation_strictness": { "value": 0.9, "description": "Strictness threshold for DAG validation", "range": "[0.0, 1.0]" },
+    "causal_consistency_threshold": { "value": 0.7, "description": "Minimum consistency for causal claim acceptance" },
+    "counterfactual_enabled": { "value": true, "description": "Enable counterfactual reasoning where applicable" },
+    "temporal_validation": { "value": true, "description": "Enable temporal precedence validation" }
   },
 
   "quality_metrics": {
     "precision_target": 0.82,
     "recall_target": 0.78,
     "f1_target": 0.80,
-    "dag_validity_target": 0.95,
-    "note": "dag_validity_target measures acyclicity and structural validity"
+    "dag_validity_target": 0.95
   },
 
   "validation_rules": [
-    {
-      "rule": "dag_acyclicity_check",
-      "description": "Validate causal graph is acyclic",
-      "severity": "ERROR"
-    },
-    {
-      "rule": "temporal_precedence_check",
-      "description": "Verify temporal order of cause and effect",
-      "severity": "ERROR"
-    },
-    {
-      "rule": "causal_path_completeness",
-      "description": "Validate causal paths are complete and valid",
-      "severity": "WARNING"
-    },
-    {
-      "rule": "counterfactual_coherence",
-      "description": "Validate counterfactual reasoning consistency",
-      "severity": "WARNING"
-    }
+    { "rule": "dag_acyclicity_check", "description": "Validate causal graph is acyclic", "severity": "ERROR" },
+    { "rule": "temporal_precedence_check", "description": "Verify temporal order of cause and effect", "severity": "ERROR" },
+    { "rule": "causal_path_completeness", "description": "Validate causal paths are complete and valid", "severity": "WARNING" },
+    { "rule": "counterfactual_coherence", "description": "Validate counterfactual reasoning consistency", "severity": "WARNING" }
   ],
 
   "causal_validation_schema": {
@@ -224,10 +87,11 @@
   },
 
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2026-01-21",
+    "last_modified": "2026-01-21",
     "author": "FARFAN Calibration Team",
     "review_status": "CONSTITUTIONAL",
-    "schema_compliance": "EPISTEMIC-v4.0.0"
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "aligns_with": "episteme_rules.md Part I.1.1"
   }
 }

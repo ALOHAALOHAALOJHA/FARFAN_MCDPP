@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtroZ · Dashboard Principal</title>
+    <link rel="stylesheet" href="css/atroz-dashboard.css">
+    <style>
+        /* Additional styles for main dashboard */
+        .dashboard-header {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            animation: slideInDown 0.6s var(--transition-bounce);
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent,
+                var(--atroz-green-toxic),
+                var(--atroz-blue-electric),
+                var(--atroz-purple-glow),
+                transparent
+            );
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
+        }
+
+        .main-content {
+            margin-top: 80px;
+            height: calc(100vh - 80px);
+            display: flex;
+            position: relative;
+        }
+
+        .constellation-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        .side-panel {
+            width: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-left: 1px solid var(--glass-border);
+            overflow-y: auto;
+            padding: 30px;
+            animation: slideInRight 0.6s var(--transition-bounce);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .side-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .side-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .side-panel::-webkit-scrollbar-thumb {
+            background: var(--atroz-copper-500);
+            border-radius: 4px;
+        }
+
+        .pdet-constellation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdet-region {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .pdet-region:nth-child(1) { animation-delay: 0s; }
+        .pdet-region:nth-child(2) { animation-delay: 0.5s; }
+        .pdet-region:nth-child(3) { animation-delay: 1s; }
+        .pdet-region:nth-child(4) { animation-delay: 1.5s; }
+        .pdet-region:nth-child(5) { animation-delay: 2s; }
+
+        .pdet-hexagon {
+            width: 100%;
+            height: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            border: 2px solid var(--atroz-copper-500);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-fast);
+        }
+
+        .pdet-hexagon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, var(--atroz-green-toxic) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .pdet-region:hover .pdet-hexagon {
+            transform: scale(1.15);
+            border-color: var(--atroz-green-toxic);
+            box-shadow: 0 0 40px rgba(57, 255, 20, 0.4);
+        }
+
+        .pdet-region:hover .pdet-hexagon::before {
+            opacity: 0.2;
+        }
+
+        .pdet-score {
+            font-size: 36px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--atroz-green-toxic), var(--atroz-cyan-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pdet-name {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pdet-munis {
+            font-size: 8px;
+            opacity: 0.5;
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--atroz-blue-electric), transparent);
+            transform-origin: left center;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: dataFlow 3s linear infinite;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--ink);
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--atroz-green-toxic);
+            box-shadow: 0 8px 20px rgba(57, 255, 20, 0.2);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--atroz-green-toxic), var(--atroz-blue-electric));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mini-chart {
+            width: 100%;
+            height: 60px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 8%;
+            background: linear-gradient(180deg, var(--atroz-green-toxic), var(--atroz-copper-oxide));
+            border-radius: 2px 2px 0 0;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .chart-bar:hover {
+            opacity: 1;
+            transform: scaleY(1.1);
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--atroz-copper-500), var(--atroz-copper-oxide));
+            border: 1px solid var(--atroz-copper-700);
+            color: var(--ink);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(178, 100, 46, 0.4);
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1200px) {
+            .side-panel {
+                width: 350px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .side-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--glass-border);
+                max-height: 40vh;
+            }
+
+            .dashboard-header {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="neural-bg"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div>
+            <div class="logo">ATROZ</div>
+        </div>
+        <nav class="nav-pills">
+            <button class="nav-pill active"><span>MACRO</span></button>
+            <button class="nav-pill"><span>MESO</span></button>
+            <button class="nav-pill"><span>MICRO</span></button>
+        </nav>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div style="font-size: 10px; opacity: 0.7;">
+                <span id="currentTime">--:--:--</span>
+            </div>
+            <button class="action-btn" onclick="location.href='admin.html'" style="margin: 0;">ADMIN</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Constellation Panel -->
+        <div class="constellation-panel">
+            <div class="pdet-constellation" id="constellation">
+                <!-- PDET regions will be dynamically positioned -->
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <aside class="side-panel">
+            <h2 class="section-title">📊 Resumen Macro</h2>
+            
+            <div class="stat-card">
+                <div class="stat-label">Score Promedio Nacional</div>
+                <div class="stat-value" id="avgScore">--</div>
+                <div class="mini-chart" id="scoreChart"></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Regiones PDET Analizadas</div>
+                <div class="stat-value" id="regionCount">16</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Municipios Totales</div>
+                <div class="stat-value" id="muniCount">--</div>
+            </div>
+
+            <h2 class="section-title">🎯 Acciones Rápidas</h2>
+            <div class="quick-actions">
+                <button class="action-btn" onclick="refreshData()">🔄 Actualizar Datos</button>
+                <button class="action-btn" onclick="exportData()">📥 Exportar Dashboard</button>
+                <button class="action-btn" onclick="showComparison()">📊 Vista Comparativa</button>
+                <button class="action-btn" onclick="location.href='admin.html'">⚙️ Panel Admin</button>
+            </div>
+
+            <div class="legend">
+                <h3 style="font-size: 11px; margin-bottom: 15px; letter-spacing: 1px;">LEYENDA</h3>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, var(--atroz-green-toxic), var(--atroz-cyan-glow));"></div>
+                    <span>Excelente (>70)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, var(--atroz-copper-500), var(--atroz-copper-oxide));"></div>
+                    <span>Bueno (60-70)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, var(--atroz-red-700), var(--atroz-red-500));"></div>
+                    <span>Necesita Mejora (<60)</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Loading DNA -->
+    <div class="loading-dna" id="loadingDNA">
+        <div class="dna-strand">
+            <div class="dna-bar"></div>
+            <div class="dna-bar"></div>
+            <div class="dna-bar"></div>
+            <div class="dna-bar"></div>
+            <div class="dna-bar"></div>
+            <div class="dna-bar"></div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationMessage"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Mock PDET data (will be replaced by API calls)
+        const PDET_REGIONS = [
+            { id: 'arauca', name: 'Arauca', score: 85, municipalities: 7 },
+            { id: 'catatumbo', name: 'Catatumbo', score: 72, municipalities: 8 },
+            { id: 'montes_maria', name: 'Montes de María', score: 91, municipalities: 15 },
+            { id: 'pacifico_medio', name: 'Pacífico Medio', score: 64, municipalities: 4 },
+            { id: 'putumayo', name: 'Putumayo', score: 78, municipalities: 9 },
+            { id: 'sierra_nevada', name: 'Sierra Nevada', score: 88, municipalities: 8 },
+            { id: 'uraba', name: 'Urabá', score: 69, municipalities: 8 },
+            { id: 'choco', name: 'Chocó', score: 55, municipalities: 12 },
+            { id: 'macarena', name: 'Macarena', score: 82, municipalities: 12 },
+            { id: 'pacifico_nar', name: 'Pacífico Nar.', score: 60, municipalities: 11 },
+            { id: 'caguan', name: 'Caguán', score: 75, municipalities: 6 },
+            { id: 'sur_tolima', name: 'Sur Tolima', score: 89, municipalities: 4 },
+            { id: 'sur_bolivar', name: 'Sur Bolívar', score: 67, municipalities: 7 },
+            { id: 'bajo_cauca', name: 'Bajo Cauca', score: 71, municipalities: 13 },
+            { id: 'sur_cordoba', name: 'Sur Córdoba', score: 63, municipalities: 5 },
+            { id: 'alto_patia', name: 'Alto Patía', score: 80, municipalities: 24 }
+        ];
+
+        // Initialize particles
+        function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25,
+                    color: `rgba(${Math.random() * 100 + 155}, ${Math.random() * 50 + 50}, ${Math.random() * 100 + 155}, ${Math.random() * 0.3 + 0.1})`
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    let p = particles[i];
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Position PDET regions in circular constellation
+        function createConstellation() {
+            const container = document.getElementById('constellation');
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+            const radius = Math.min(centerX, centerY) * 0.7;
+
+            PDET_REGIONS.forEach((region, index) => {
+                const angle = (index / PDET_REGIONS.length) * Math.PI * 2 - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+
+                const regionEl = document.createElement('div');
+                regionEl.className = 'pdet-region';
+                regionEl.style.left = `${x - 70}px`;
+                regionEl.style.top = `${y - 70}px`;
+                regionEl.innerHTML = `
+                    <div class="pdet-hexagon">
+                        <div class="pdet-score">${region.score}</div>
+                        <div class="pdet-name">${region.name}</div>
+                        <div class="pdet-munis">${region.municipalities} municipios</div>
+                    </div>
+                `;
+                regionEl.onclick = () => selectRegion(region);
+                container.appendChild(regionEl);
+
+                // Add connection lines to neighbors
+                if (index > 0) {
+                    const prevAngle = ((index - 1) / PDET_REGIONS.length) * Math.PI * 2 - Math.PI / 2;
+                    const prevX = centerX + Math.cos(prevAngle) * radius;
+                    const prevY = centerY + Math.sin(prevAngle) * radius;
+                    
+                    const line = document.createElement('div');
+                    line.className = 'connection-line';
+                    const length = Math.sqrt(Math.pow(x - prevX, 2) + Math.pow(y - prevY, 2));
+                    const lineAngle = Math.atan2(y - prevY, x - prevX) * 180 / Math.PI;
+                    
+                    line.style.width = `${length}px`;
+                    line.style.left = `${prevX}px`;
+                    line.style.top = `${prevY}px`;
+                    line.style.transform = `rotate(${lineAngle}deg)`;
+                    container.appendChild(line);
+                }
+            });
+
+            // Close the constellation with final line
+            const firstAngle = -Math.PI / 2;
+            const lastAngle = ((PDET_REGIONS.length - 1) / PDET_REGIONS.length) * Math.PI * 2 - Math.PI / 2;
+            const firstX = centerX + Math.cos(firstAngle) * radius;
+            const firstY = centerY + Math.sin(firstAngle) * radius;
+            const lastX = centerX + Math.cos(lastAngle) * radius;
+            const lastY = centerY + Math.sin(lastAngle) * radius;
+            
+            const line = document.createElement('div');
+            line.className = 'connection-line';
+            const length = Math.sqrt(Math.pow(firstX - lastX, 2) + Math.pow(firstY - lastY, 2));
+            const lineAngle = Math.atan2(firstY - lastY, firstX - lastX) * 180 / Math.PI;
+            
+            line.style.width = `${length}px`;
+            line.style.left = `${lastX}px`;
+            line.style.top = `${lastY}px`;
+            line.style.transform = `rotate(${lineAngle}deg)`;
+            container.appendChild(line);
+        }
+
+        // Calculate and display statistics
+        function updateStats() {
+            const avgScore = (PDET_REGIONS.reduce((sum, r) => sum + r.score, 0) / PDET_REGIONS.length).toFixed(1);
+            const totalMunis = PDET_REGIONS.reduce((sum, r) => sum + r.municipalities, 0);
+
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('muniCount').textContent = totalMunis;
+
+            // Create mini chart
+            const chartContainer = document.getElementById('scoreChart');
+            PDET_REGIONS.forEach((region, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.left = `${index * 6.25}%`;
+                bar.style.height = `${region.score}%`;
+                bar.title = `${region.name}: ${region.score}`;
+                chartContainer.appendChild(bar);
+            });
+        }
+
+        // Select region
+        function selectRegion(region) {
+            showNotification(`Seleccionado: ${region.name} (Score: ${region.score})`);
+            console.log('Selected region:', region);
+        }
+
+        // Utility functions
+        function refreshData() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                showNotification('Datos actualizados correctamente');
+            }, 1500);
+        }
+
+        function exportData() {
+            showNotification('Exportando dashboard...');
+        }
+
+        function showComparison() {
+            showNotification('Vista comparativa próximamente');
+        }
+
+        function showLoading() {
+            document.getElementById('loadingDNA').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingDNA').classList.remove('active');
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationMessage').textContent = message;
+            notification.classList.add('active');
+            setTimeout(() => notification.classList.remove('active'), 3000);
+        }
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-CO', { hour12: false });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            initParticles();
+            createConstellation();
+            updateStats();
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+
+        // Responsive constellation on resize
+        window.addEventListener('resize', () => {
+            document.getElementById('constellation').innerHTML = '';
+            createConstellation();
+        });
+    </script>
+</body>
+</html>

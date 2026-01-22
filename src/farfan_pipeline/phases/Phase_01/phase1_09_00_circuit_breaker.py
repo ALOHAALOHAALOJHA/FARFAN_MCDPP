@@ -223,10 +223,10 @@ class Phase1CircuitBreaker:
         optional_deps = [
             ('langdetect', 'langdetect', 'Language detection for SP0'),
             ('fitz', 'PyMuPDF', 'PDF extraction for SP0/SP1'),
-            ('farfan_pipeline/infrastructure.irrigation_using_signals.SISAS.signal_registry', 
+            ('farfan_pipeline/infrastructure.irrigation_using_signals.SISAS.signal_registry',
              'SISAS', 'Signal enrichment system'),
-            ('methods_dispensary.derek_beach', 'derek_beach', 'Causal analysis'),
-            ('methods_dispensary.teoria_cambio', 'teoria_cambio', 'DAG validation'),
+            ('farfan_pipeline.methods.derek_beach', 'derek_beach', 'Causal analysis'),
+            ('farfan_pipeline.methods.teoria_cambio', 'teoria_cambio', 'DAG validation'),
         ]
         
         for import_name, package_name, description in optional_deps:

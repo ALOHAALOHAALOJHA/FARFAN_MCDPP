@@ -16,7 +16,7 @@ def test_metrics_not_only_in_logs(tmp_path: Path) -> None:
     This test guards against the original issue where export_metrics existed
     but was never called to write metrics to disk.
     """
-    from farfan_pipeline.orchestration.core_orchestrator import (
+    from farfan_pipeline.orchestration.orchestrator import (
         PhaseInstrumentation,
         ResourceLimits
     )
@@ -71,7 +71,7 @@ def test_orchestrator_export_metrics_is_callable() -> None:
     
     Guards against accidental removal or renaming of the export_metrics method.
     """
-    from farfan_pipeline.orchestration.core_orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.orchestrator import Orchestrator
     
     # Verify method exists
     assert hasattr(Orchestrator, "export_metrics"), \
@@ -91,7 +91,7 @@ def test_metrics_persistence_in_ci_artifacts_directory(tmp_path: Path) -> None:
     This test simulates the CI environment expectation that metrics files
     exist in artifacts/plan1/ after a pipeline run.
     """
-    from farfan_pipeline.orchestration.core_orchestrator import (
+    from farfan_pipeline.orchestration.orchestrator import (
         PhaseInstrumentation,
         ResourceLimits
     )
@@ -147,7 +147,7 @@ def test_metrics_files_have_required_content() -> None:
     
     CI tools depend on specific fields being present in metrics files.
     """
-    from farfan_pipeline.orchestration.core_orchestrator import (
+    from farfan_pipeline.orchestration.orchestrator import (
         PhaseInstrumentation,
         ResourceLimits
     )
@@ -219,7 +219,7 @@ def test_metrics_persistence_is_deterministic() -> None:
     Running the same metrics through persist_all_metrics twice
     should produce identical file contents.
     """
-    from farfan_pipeline.orchestration.core_orchestrator import (
+    from farfan_pipeline.orchestration.orchestrator import (
         PhaseInstrumentation,
         ResourceLimits
     )

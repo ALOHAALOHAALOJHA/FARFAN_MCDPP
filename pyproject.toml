@@ -7,7 +7,7 @@ name = "farfan-pipeline"
 version = "1.0.0"
 description = "Framework for Advanced Retrieval of Administrative Narratives - Deterministic Policy Analysis Pipeline"
 readme = "README.ES.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"  # TODO: Upgrade to 3.12 in production
 license = {text = "Proprietary"}
 authors = [
     {name = "F.A.R.F.A.N Pipeline Team"}
@@ -222,6 +222,7 @@ target-version = ['py312']
 minversion = "7.0"
 addopts = "-v --strict-markers --tb=short -m 'not obsolete'"
 testpaths = ["tests"]
+pythonpath = ["src", "."]  # src/ for farfan_pipeline, . for canonic_questionnaire_central
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

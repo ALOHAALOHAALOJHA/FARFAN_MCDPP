@@ -7,7 +7,7 @@ import threading
 import time
 import pytest
 
-from farfan_pipeline.orchestration.core_orchestrator import ResourceLimits
+from farfan_pipeline.orchestration.orchestrator import ResourceLimits
 from farfan_pipeline.resilience import (
     CircuitBreaker,
     CircuitBreakerConfig,

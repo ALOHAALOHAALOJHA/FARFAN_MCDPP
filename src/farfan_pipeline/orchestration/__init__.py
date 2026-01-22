@@ -67,20 +67,30 @@ from farfan_pipeline.orchestration.orchestrator import (
     ExecutionContext,
     PipelineResult,
     UnifiedOrchestrator,
+    MethodExecutor,
+    PhaseInstrumentation,
+    ResourceLimits,
+    AbortSignal,
 )
 
 # Aliases for backward compatibility
 PipelineOrchestrator = UnifiedOrchestrator
-ContractEnforcer = None  # TODO: Implement in unified orchestrator
 Orchestrator = UnifiedOrchestrator
-MethodExecutor = None  # TODO: Implement in unified orchestrator
+ContractEnforcer = None  # TODO: Implement in unified orchestrator
 Phase0ValidationResult = None  # TODO: Implement in unified orchestrator
 GateResult = None  # TODO: Implement in unified orchestrator
+
+# Import execute_phase_with_timeout for backward compatibility
+try:
+    from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+except ImportError:
+    execute_phase_with_timeout = None  # Fallback if function doesn't exist
 
 __all__ = [
     # Unified Orchestrator
     "UnifiedOrchestrator",
     "PipelineOrchestrator",  # Alias
+    "Orchestrator",  # Alias
 
     # Configuration
     "OrchestratorConfig",
@@ -124,10 +134,15 @@ __all__ = [
     "PhaseExecutionError",
     "ContractViolationError",
 
-    # Backward compatibility aliases
-    "ContractEnforcer",
-    "Orchestrator",
+    # Additional classes
     "MethodExecutor",
+    "PhaseInstrumentation",
+    "ResourceLimits",
+    "AbortSignal",
+    "execute_phase_with_timeout",
+
+    # Backward compatibility aliases (TODO)
+    "ContractEnforcer",
     "Phase0ValidationResult",
     "GateResult",
 ]

@@ -2,47 +2,102 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://farfan.pipeline/schemas/calibration/pdm/n2_rules.json",
   "rule_set": "N2_INFERENTIAL_PDM_RULES",
-  "name": "N2 Inferential Computation PDM Sensitivity Rules",
-  "version": "1.0.0-epistemic",
-  "description": "PDM-driven parameter adjustments for N2-INF (Inferential Computation) layer. These rules adjust Bayesian inference parameters based on document structural characteristics.",
+  "name": "N2 Phase B Computation PDM Rules",
+  "version": "2.0.0-epistemic",
+  "description": "PDM rules for N2-INF (Phase B: Computation) aligned with episteme_rules.md",
 
   "epistemic_layer": {
     "level": "N2-INF",
     "name": "Inferential Computation",
+    "phase": "phase_B_computation",
     "output_type": "PARAMETER",
     "fusion_behavior": "multiplicative",
-    "constitutional_constraint": "PDM adjustments CANNOT change the epistemic level, only parameter values"
+    "symbol": "⊗",
+    "epistemology": "Bayesianismo subjetivista",
+    "typical_classes": [
+      "BayesianNumericalAnalyzer",
+      "AdaptivePriorCalculator",
+      "HierarchicalGenerativeModel",
+      "BayesianMechanismInference",
+      "TeoriaCambio",
+      "SemanticProcessor",
+      "IndustrialPolicyProcessor"
+    ]
+  },
+
+  "contract_type_strategies": {
+    "description": "N2 strategies per contract type from episteme_rules Part IV.4.3",
+    "TYPE_A": {
+      "name": "Semántico",
+      "strategy": "dempster_shafer",
+      "belief_propagation": true,
+      "embedding_generation": true
+    },
+    "TYPE_B": {
+      "name": "Bayesiano",
+      "strategy": "bayesian_update",
+      "prior_posterior_update": true,
+      "mcmc_sampling": true
+    },
+    "TYPE_C": {
+      "name": "Causal",
+      "strategy": "topological_overlay",
+      "dag_inference": true,
+      "path_analysis": true
+    },
+    "TYPE_D": {
+      "name": "Financiero",
+      "strategy": "weighted_mean",
+      "financial_scoring": true,
+      "sufficiency_calculation": true
+    },
+    "TYPE_E": {
+      "name": "Lógico",
+      "strategy": "weighted_mean",
+      "coherence_scoring": true,
+      "consistency_metrics": true
+    }
   },
 
   "pdm_triggers": {
-    "description": "Document structural characteristics that trigger PDM adjustments",
     "triggers": [
       {
-        "id": "HISTORICAL_BASELINES_DETECTED",
-        "name": "Temporal Baselines Available",
-        "description": "Document contains historical baselines for data-driven priors",
-        "detection_method": "temporal_structure_analysis",
-        "indicators": ["baseline", "historical", "previous_year", "trend"]
+        "id": "HISTORICAL_DATA",
+        "name": "Historical Baselines Available",
+        "description": "Enable data-driven priors for TYPE_B",
+        "detection_method": "temporal_analysis",
+        "indicators": ["baseline", "histórico", "tendencia", "serie temporal"],
+        "affects_contracts": ["TYPE_B"]
       },
       {
-        "id": "HIERARCHICAL_STRUCTURE_DETECTED",
-        "name": "Hierarchical Document Structure",
-        "description": "Document exhibits hierarchical nesting > 2 levels",
-        "detection_method": "hierarchy_depth_analysis",
-        "threshold": 2
+        "id": "HIERARCHICAL_NESTING",
+        "name": "Hierarchical Structure",
+        "description": "Enable hierarchical models",
+        "detection_method": "structure_analysis",
+        "threshold": 2,
+        "affects_contracts": ["TYPE_B", "TYPE_C"]
       },
       {
-        "id": "HIGH_DIMENSIONAL_EVIDENCE",
+        "id": "HIGH_DIMENSIONALITY",
         "name": "High-Dimensional Evidence",
-        "description": "Document contains high-dimensional evidence requiring sophisticated inference",
-        "detection_method": "dimensionality_analysis",
-        "threshold": 10
+        "description": "Multiple evidence dimensions requiring integration",
+        "detection_method": "dimensionality_check",
+        "threshold": 10,
+        "affects_contracts": ["TYPE_A", "TYPE_B"]
       },
       {
-        "id": "MULTI_MODAL_DATA",
-        "name": "Multi-Modal Data Sources",
-        "description": "Document combines multiple data modalities (text, tables, figures)",
-        "detection_method": "modality_analysis"
+        "id": "MULTI_MODAL",
+        "name": "Multiple Data Modalities",
+        "description": "Text + Tables + Figures",
+        "detection_method": "modality_count",
+        "affects_contracts": ["TYPE_A", "TYPE_D"]
+      },
+      {
+        "id": "CAUSAL_CHAINS",
+        "name": "Causal Chain Evidence",
+        "description": "Evidence of causal mechanisms",
+        "detection_method": "causal_detection",
+        "affects_contracts": ["TYPE_C"]
       }
     ]
   },
@@ -51,149 +106,187 @@
     {
       "rule_id": "N2-PDM-001",
       "name": "Data-Driven Prior Activation",
-      "trigger": "HISTORICAL_BASELINES_DETECTED",
+      "trigger": "HISTORICAL_DATA",
+      "contract_types": ["TYPE_B"],
       "adjustment": {
-        "parameter": "use_data_driven_priors",
+        "parameter": "use_empirical_priors",
         "operation": "set",
         "value": true,
-        "description": "Enable use of historical baselines for prior construction"
+        "description": "Switch to empirical Bayes priors"
       },
-      "justification": "Historical baselines enable empirically-informed priors",
-      "validation": {
-        "type": "boolean",
-        "constraint": "Must be boolean true/false"
-      }
+      "methods_affected": [
+        "AdaptivePriorCalculator.calculate_likelihood_adaptativo",
+        "BayesianNumericalAnalyzer.evaluate_policy_metric"
+      ],
+      "modifies": ["N1_facts.confidence", "edge_weights"]
     },
     {
       "rule_id": "N2-PDM-002",
-      "name": "Prior Strength Increase",
-      "trigger": "HISTORICAL_BASELINES_DETECTED",
+      "name": "Hierarchical Model Enable",
+      "trigger": "HIERARCHICAL_NESTING",
+      "contract_types": ["TYPE_B", "TYPE_C"],
       "adjustment": {
-        "parameter": "prior_strength",
+        "parameter": "hierarchical_modeling",
         "operation": "set",
-        "value": 0.7,
-        "description": "Increase prior strength to 0.7 when using data-driven priors"
+        "value": true,
+        "description": "Enable hierarchical Bayesian models"
       },
-      "justification": "Data-driven priors warrant higher confidence",
-      "validation": {
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "constraint": "Prior strength must be in [0, 1]"
-      }
+      "methods_affected": [
+        "HierarchicalGenerativeModel.verify_conditional_independence",
+        "HierarchicalGenerativeModel._calculate_r_hat"
+      ]
     },
     {
       "rule_id": "N2-PDM-003",
-      "name": "Hierarchical Model Activation",
-      "trigger": "HIERARCHICAL_STRUCTURE_DETECTED",
+      "name": "MCMC Sampling Increase",
+      "trigger": "HIGH_DIMENSIONALITY",
+      "contract_types": ["TYPE_B"],
       "adjustment": {
-        "parameter": "enable_hierarchical_models",
-        "operation": "set",
-        "value": true,
-        "description": "Enable hierarchical Bayesian models for nested structures"
+        "parameter": "mcmc_iterations",
+        "operation": "multiply",
+        "value": 2.0,
+        "description": "Double MCMC iterations for convergence"
       },
-      "justification": "Hierarchical structures require hierarchical inference",
-      "validation": {
-        "type": "boolean",
-        "constraint": "Must be boolean true/false"
-      }
+      "methods_affected": [
+        "HierarchicalGenerativeModel._calculate_r_hat",
+        "HierarchicalGenerativeModel._calculate_ess"
+      ]
     },
     {
       "rule_id": "N2-PDM-004",
-      "name": "MCMC Sample Increase",
-      "trigger": "HIGH_DIMENSIONAL_EVIDENCE",
+      "name": "Dempster-Shafer Activation",
+      "trigger": "MULTI_MODAL",
+      "contract_types": ["TYPE_A"],
       "adjustment": {
-        "parameter": "mcmc_samples",
-        "operation": "multiply",
-        "value": 1.5,
-        "description": "Increase MCMC samples by 50% for high-dimensional inference"
+        "parameter": "belief_combination_method",
+        "operation": "set",
+        "value": "dempster_shafer",
+        "description": "Use D-S theory for multi-modal fusion"
       },
-      "justification": "High-dimensional spaces require more samples for convergence",
-      "validation": {
-        "min_value": 1000,
-        "max_value": 50000,
-        "constraint": "Samples must be > 0"
-      }
+      "methods_affected": [
+        "SemanticProcessor.embed_single",
+        "IndustrialPolicyProcessor._analyze_causal_dimensions"
+      ]
     },
     {
       "rule_id": "N2-PDM-005",
-      "name": "Likelihood Weight Adjustment",
-      "trigger": "MULTI_MODAL_DATA",
+      "name": "Causal Path Enhancement",
+      "trigger": "CAUSAL_CHAINS",
+      "contract_types": ["TYPE_C"],
       "adjustment": {
-        "parameter": "likelihood_weight",
-        "operation": "multiply",
-        "value": 1.2,
-        "description": "Increase likelihood weight by 20% for multi-modal data"
+        "parameter": "path_search_depth",
+        "operation": "set",
+        "value": 5,
+        "description": "Deeper search for causal paths"
       },
-      "justification": "Multi-modal evidence strengthens likelihood",
-      "validation": {
-        "min_value": 0.1,
-        "max_value": 5.0,
-        "constraint": "Weight must be positive"
-      }
+      "methods_affected": [
+        "TeoriaCambio._encontrar_caminos_completos",
+        "BayesianMechanismInference._test_sufficiency"
+      ]
+    },
+    {
+      "rule_id": "N2-PDM-006",
+      "name": "Financial Scoring Precision",
+      "trigger": "MULTI_MODAL",
+      "contract_types": ["TYPE_D"],
+      "adjustment": {
+        "parameter": "financial_precision",
+        "operation": "set",
+        "value": 4,
+        "description": "4 decimal places for financial calculations"
+      },
+      "methods_affected": [
+        "BayesianNumericalAnalyzer.compare_policies"
+      ]
     }
   ],
 
   "composite_rules": [
     {
-      "rule_id": "N2-PDM-COMPOSITE-001",
-      "name": "Hierarchical Temporal Document",
-      "description": "Apply adjustments for documents with both hierarchical structure AND historical baselines",
+      "rule_id": "N2-PDM-COMP-001",
+      "name": "Complex Bayesian Document",
       "trigger_conditions": {
         "operator": "AND",
-        "conditions": [
-          "HISTORICAL_BASELINES_DETECTED",
-          "HIERARCHICAL_STRUCTURE_DETECTED"
-        ]
+        "conditions": ["HISTORICAL_DATA", "HIERARCHICAL_NESTING", "HIGH_DIMENSIONALITY"]
       },
+      "contract_types": ["TYPE_B"],
       "adjustments": [
         {"ref": "N2-PDM-001"},
         {"ref": "N2-PDM-002"},
         {"ref": "N2-PDM-003"}
       ],
-      "priority": "HIGH"
+      "priority": "CRITICAL",
+      "description": "Full Bayesian treatment for complex evidence"
     },
     {
-      "rule_id": "N2-PDM-COMPOSITE-002",
-      "name": "Complex Multi-Dimensional Document",
-      "description": "Apply adjustments for documents with high-dimensional evidence AND multi-modal data",
+      "rule_id": "N2-PDM-COMP-002",
+      "name": "Multi-Modal Semantic Document",
       "trigger_conditions": {
         "operator": "AND",
-        "conditions": [
-          "HIGH_DIMENSIONAL_EVIDENCE",
-          "MULTI_MODAL_DATA"
-        ]
+        "conditions": ["MULTI_MODAL", "HIGH_DIMENSIONALITY"]
       },
+      "contract_types": ["TYPE_A"],
       "adjustments": [
-        {"ref": "N2-PDM-004"},
-        {"ref": "N2-PDM-005"}
+        {"ref": "N2-PDM-004"}
       ],
       "priority": "HIGH"
     }
   ],
 
+  "parameter_modification_rules": {
+    "description": "How N2 modifies N1 confidence and edge weights",
+    "confidence_backpropagation": {
+      "formula": "N1.confidence *= N2.posterior / N2.prior",
+      "constraint": "N1.confidence ∈ [0, 1]"
+    },
+    "edge_weight_modification": {
+      "formula": "edge.weight = edge.weight * N2.bayes_factor",
+      "constraint": "edge.weight > 0"
+    }
+  },
+
+  "output_specifications": {
+    "description": "N2 output must be PARAMETER type",
+    "parameter_structure": {
+      "required_fields": [
+        "parameter_name",
+        "value",
+        "confidence",
+        "source_facts",
+        "computation_method"
+      ],
+      "optional_fields": [
+        "posterior_distribution",
+        "credible_interval",
+        "convergence_diagnostics"
+      ]
+    },
+    "affects": ["N1_facts.confidence", "N1_facts.edge_weights"]
+  },
+
   "constraints": [
     {
-      "constraint": "LEVEL_IMMUTABILITY",
-      "description": "PDM adjustments CANNOT change the epistemic level from N2-INF",
-      "enforcement": "Post-adjustment validation"
+      "constraint": "CONSUMES_N1_FACTS",
+      "description": "N2 must consume N1 facts as input",
+      "enforcement": "requires: ['raw_facts'] in method spec"
     },
     {
-      "constraint": "PARAMETER_BOUNDS",
-      "description": "All adjustments must respect parameter bounds from level config",
-      "enforcement": "Pre-adjustment validation"
+      "constraint": "MULTIPLICATIVE_FUSION",
+      "description": "N2 parameters combine multiplicatively (⊗)",
+      "enforcement": "Fusion logic"
     },
     {
-      "constraint": "MCMC_CONVERGENCE",
-      "description": "MCMC sample increases must maintain convergence diagnostics",
-      "enforcement": "Post-sampling validation"
+      "constraint": "PROBABILISTIC_OUTPUT",
+      "description": "N2 produces probabilistic quantities",
+      "enforcement": "Output validation"
     }
   ],
 
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2025-01-21",
+    "last_modified": "2025-01-21",
     "author": "FARFAN Calibration Team",
-    "review_status": "CONSTITUTIONAL",
+    "aligns_with": "episteme_rules.md Part II.2.2 (PHASE_B)",
     "schema_compliance": "EPISTEMIC-v4.0.0"
   }
 }

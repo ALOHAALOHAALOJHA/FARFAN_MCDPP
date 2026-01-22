@@ -7,6 +7,8 @@ Architecture:
     UnifiedOrchestrator → Bridge → SocketIO → Frontend
                        ↓
                     SISAS SDO → Metrics → Dashboard
+                       ↓
+                 Enhanced Monitor → Granular Tracking
 """
 
 import logging
@@ -18,6 +20,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
 from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
+from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
 from farfan_pipeline.orchestration.phase_id import PhaseID
 
 logger = logging.getLogger(__name__)
@@ -94,6 +97,9 @@ class PipelineDashboardBridge:
         self.orchestrator = orchestrator
         self.socketio = socketio
         self.data_service = dashboard_data_service or DashboardDataService()
+        
+        # Get enhanced monitor
+        self.monitor = get_monitor()
 
         # Job tracking
         self.active_jobs: Dict[str, JobProgress] = {}
@@ -157,6 +163,9 @@ class PipelineDashboardBridge:
 
         with self.job_lock:
             self.active_jobs[job_id] = job
+        
+        # Start monitoring in enhanced monitor
+        self.monitor.start_job_monitoring(job_id, filename, metadata)
 
         # Emit job creation event
         self._emit_event(
@@ -220,6 +229,9 @@ class PipelineDashboardBridge:
                     # Move to completed
                     self.completed_jobs[job_id] = job
                     del self.active_jobs[job_id]
+                    
+                    # Complete job in enhanced monitor
+                    self.monitor.complete_job(job_id, final_artifacts=None)
 
             # Emit completion event
             self._emit_event(
@@ -278,6 +290,37 @@ class PipelineDashboardBridge:
                 return
 
             job = self.active_jobs[job_id]
+
+        # Get phase name
+        phase_name = self._get_phase_name(phase_id)
+        
+        # Handle different event types with enhanced monitoring
+        if event_type == "PHASE_START":
+            # Start phase in enhanced monitor
+            self.monitor.start_phase(
+                job_id=job_id,
+                phase_id=phase_id.value,
+                phase_name=phase_name,
+                metadata=payload
+            )
+        elif event_type == "PHASE_COMPLETE":
+            # Complete phase in enhanced monitor
+            artifacts = payload.get("artifacts", [])
+            self.monitor.complete_phase(
+                job_id=job_id,
+                phase_id=phase_id.value,
+                artifacts=artifacts,
+                metrics=payload
+            )
+        elif event_type == "PHASE_FAILED":
+            # Fail phase in enhanced monitor
+            error = payload.get("error", "Unknown error")
+            self.monitor.fail_phase(
+                job_id=job_id,
+                phase_id=phase_id.value,
+                error=error,
+                error_details=payload
+            )
 
         # Update phase progress
         phase_data = {

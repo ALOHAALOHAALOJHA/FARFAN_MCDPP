@@ -1,15 +1,8 @@
-"""Utility modules for FARFAN Pipeline."""
+"""
+F.A.R.F.A.N Utilities
+======================
 
-from farfan_pipeline.utils.retry import (
-    RetryAttempt,
-    RetryConfig,
-    RetryPolicy,
-    with_exponential_backoff,
-)
+Utility functions and helper modules used throughout the framework.
+"""
 
-__all__ = [
-    "RetryAttempt",
-    "RetryConfig",
-    "RetryPolicy",
-    "with_exponential_backoff",
-]
+__all__ = []

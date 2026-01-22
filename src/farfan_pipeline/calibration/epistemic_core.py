@@ -180,6 +180,11 @@ class N1EmpiricalCalibration:
     PDM Sensitivity:
         - table_boost: Increases extraction confidence for PPI/PAI tables
         - hierarchy_sensitivity: Adjusts extraction based on document depth
+
+    CRITICAL REALIST PERSPECTIVE:
+        N1 operates in Bhaskar's EMPIRICAL domain - what we observe.
+        It extracts phenomena but cannot identify underlying mechanisms.
+        Mechanisms are TRANSFACTUAL and require retroduction (N4).
     """
 
     level: Final[EpistemicLevelLiteral] = field(default="N1-EMP", init=False)
@@ -201,6 +206,11 @@ class N1EmpiricalCalibration:
             active=True, rules=frozenset({"table_boost", "hierarchy_sensitivity"})
         )
     )
+
+    # NEW: Critical Realist properties
+    ontological_domain: str = "EMPIRICAL"  # Bhaskar's domain
+    detects_transfactual: bool = False     # Cannot detect mechanisms directly
+    retroductive_capacity: float = 0.0     # No retroduction at this level
 
     def __post_init__(self) -> None:
         """Validate N1 empirical calibration parameters."""
@@ -299,6 +309,11 @@ class N2InferentialCalibration:
         )
     )
 
+    # NEW: Critical Realist properties
+    ontological_domain: str = "TRANSFACTUAL"  # Mechanisms and causal powers
+    detects_transfactual: bool = True         # Can detect mechanisms (inferred)
+    retroductive_capacity: float = 0.7        # Moderate retroduction capacity
+
     def __post_init__(self) -> None:
         """Validate N2 inferential calibration parameters."""
         # INV-001: Prior strength must be in [0, 1]
@@ -388,6 +403,11 @@ class N3AuditCalibration:
             active=True, rules=frozenset({"financial_strictness", "temporal_logic"})
         )
     )
+
+    # NEW: Critical Realist properties
+    ontological_domain: str = "TRANSFACTUAL"  # Mechanisms and causal powers
+    detects_transfactual: bool = True         # Can detect mechanisms (inferred)
+    retroductive_capacity: float = 0.9        # High retroduction capacity
 
     def __post_init__(self) -> None:
         """Validate N3 audit calibration parameters."""
@@ -526,6 +546,11 @@ class N4MetaCalibration:
     pdm_sensitivity: PDMSensitivity = field(
         default_factory=lambda: PDMSensitivity(active=False, rules=frozenset())
     )
+
+    # NEW: Critical Realist properties
+    ontological_domain: str = "REALISTIC"  # Real mechanisms and their retroduction
+    detects_transfactual: bool = True       # Can detect and retroduce mechanisms
+    retroductive_capacity: float = 1.0      # Full retroduction capacity
 
     def __post_init__(self) -> None:
         """Validate N4 meta-analysis calibration parameters."""

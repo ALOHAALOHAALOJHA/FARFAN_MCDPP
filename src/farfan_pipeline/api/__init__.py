@@ -1,6 +1,13 @@
-"""API module for FARFAN pipeline."""
-from __future__ import annotations
+"""
+F.A.R.F.A.N API Module
+======================
 
-__all__ = ["main"]
+FastAPI endpoints and HTTP API for the F.A.R.F.A.N framework.
 
-from farfan_pipeline.api.api_server import main
+Usage:
+------
+    from farfan_pipeline.api import api_server
+    api_server.main()
+"""
+
+__all__ = []

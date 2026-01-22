@@ -3,7 +3,7 @@
   "$id": "https://farfan.pipeline/schemas/calibration/type_e.json",
   "contract_type": "TYPE_E",
   "name": "Logical Consistency Contracts",
-  "version": "1.0.0-epistemic",
+  "version": "2.0.0-epistemic",
   "description": "Logical contracts emphasizing N3-dominated processing for contradiction detection, propositional consistency validation, and logical entailment checking.",
 
   "epistemology": {
@@ -15,211 +15,68 @@
 
   "epistemic_ratios": {
     "description": "Distribution of computational effort across epistemic layers",
-    "n1_empirical": {
-      "lower": 0.15,
-      "upper": 0.35,
-      "default": 0.25,
-      "justification": "Extraction of propositional claims and logical statements"
-    },
-    "n2_inferential": {
-      "lower": 0.30,
-      "upper": 0.50,
-      "default": 0.40,
-      "justification": "Logical inference and entailment computation"
-    },
-    "n3_audit": {
-      "lower": 0.25,
-      "upper": 0.45,
-      "default": 0.35,
-      "justification": "STRONG N3: Contradiction detection, strict veto on inconsistency"
-    }
+    "n1_empirical": { "lower": 0.15, "upper": 0.35, "default": 0.25, "justification": "Extraction of propositional claims and logical statements" },
+    "n2_inferential": { "lower": 0.30, "upper": 0.50, "default": 0.40, "justification": "Logical inference and entailment computation" },
+    "n3_audit": { "lower": 0.25, "upper": 0.45, "default": 0.35, "justification": "STRONG N3: Contradiction detection, strict veto on inconsistency" }
   },
 
   "thresholds": {
-    "veto_threshold": {
-      "lower": 0.01,
-      "upper": 0.05,
-      "default": 0.03,
-      "description": "Probability threshold for N3 veto gate activation",
-      "strictness_level": "STRICTEST",
-      "note": "TYPE_E uses strictest veto thresholds among all types"
-    },
-    "prior_strength": {
-      "lower": 0.1,
-      "upper": 10.0,
-      "default": 1.0,
-      "description": "Weight assigned to logical priors"
-    },
-    "contradiction_detection_threshold": {
-      "lower": 0.90,
-      "upper": 0.99,
-      "default": 0.95,
-      "description": "Confidence threshold for contradiction flag"
-    },
-    "logical_consistency_threshold": {
-      "lower": 0.90,
-      "upper": 0.99,
-      "default": 0.97,
-      "description": "Minimum consistency score for acceptance"
-    },
-    "entailment_confidence": {
-      "lower": 0.80,
-      "upper": 0.95,
-      "default": 0.90,
-      "description": "Minimum confidence for logical entailment"
-    }
+    "veto_threshold": { "lower": 0.01, "upper": 0.05, "default": 0.03, "description": "Probability threshold for N3 veto gate activation", "strictness_level": "STRICTEST" },
+    "contradiction_detection_threshold": { "lower": 0.90, "upper": 0.99, "default": 0.95, "description": "Confidence threshold for contradiction flag" },
+    "logical_consistency_threshold": { "lower": 0.90, "upper": 0.99, "default": 0.97, "description": "Minimum consistency score for acceptance" },
+    "entailment_confidence": { "lower": 0.80, "upper": 0.95, "default": 0.90, "description": "Minimum confidence for logical entailment" }
   },
 
   "operations": {
     "permitted": [
-      {
-        "name": "concat",
-        "description": "Concatenation of propositional statements",
-        "layer": "N1",
-        "implementation": "PropositionalConcatenation"
-      },
-      {
-        "name": "weighted_mean",
-        "description": "Weighted aggregation of logical confidence scores",
-        "layer": "N2",
-        "implementation": "WeightedLogicalAggregation",
-        "note": "Permitted for TYPE_E as aggregating logical confidences"
-      },
-      {
-        "name": "logical_consistency_validation",
-        "description": "Validation of logical consistency across propositions",
-        "layer": "N3",
-        "implementation": "LogicalConsistencyValidator"
-      },
-      {
-        "name": "contradiction_detection",
-        "description": "Detection of logical contradictions and inconsistencies",
-        "layer": "N3",
-        "implementation": "ContradictionDetector"
-      },
-      {
-        "name": "veto_gate",
-        "description": "Strict N3 veto on logical inconsistency",
-        "layer": "N3",
-        "implementation": "LogicalVetoGate"
-      },
-      {
-        "name": "propositional_analysis",
-        "description": "Propositional logic analysis and decomposition",
-        "layer": "N2",
-        "implementation": "PropositionalAnalyzer"
-      }
+      { "name": "concat", "description": "Concatenation of propositional statements", "layer": "N1", "implementation": "PropositionalConcatenation" },
+      { "name": "propositional_analysis", "description": "Propositional logic analysis and decomposition", "layer": "N2", "implementation": "PropositionalAnalyzer" },
+      { "name": "weighted_mean", "description": "Weighted aggregation of logical confidence scores", "layer": "N2", "implementation": "WeightedLogicalAggregation" },
+      { "name": "logical_consistency_validation", "description": "Validation of logical consistency across propositions", "layer": "N3", "implementation": "LogicalConsistencyValidator" },
+      { "name": "contradiction_detection", "description": "Detection of logical contradictions and inconsistencies", "layer": "N3", "implementation": "ContradictionDetector" },
+      { "name": "veto_gate", "description": "Strict N3 veto on logical inconsistency", "layer": "N3", "implementation": "LogicalVetoGate" }
     ],
     "prohibited": [
-      {
-        "name": "bayesian_update",
-        "reason": "Inappropriate for deductive logical validation",
-        "alternative": "Use logical_consistency_validation for consistency checking"
-      },
-      {
-        "name": "semantic_corroboration",
-        "reason": "Not applicable to logical contradiction detection",
-        "alternative": "Use contradiction_detection for inconsistency detection"
-      },
-      {
-        "name": "graph_construction",
-        "reason": "Not appropriate for propositional logic",
-        "alternative": "Use propositional_analysis for logical structure"
-      },
-      {
-        "name": "topological_overlay",
-        "reason": "Not applicable to logical consistency",
-        "alternative": "Use logical_consistency_validation for consistency"
-      }
+      { "name": "bayesian_update", "reason": "Inappropriate for deductive logical validation", "alternative": "Use logical_consistency_validation for consistency checking" },
+      { "name": "semantic_corroboration", "reason": "Not applicable to logical contradiction detection", "alternative": "Use contradiction_detection for inconsistency detection" },
+      { "name": "graph_construction", "reason": "Not appropriate for propositional logic", "alternative": "Use propositional_analysis for logical structure" }
     ]
   },
 
   "fusion_strategies": {
     "description": "Canonical fusion strategy per epistemic layer",
-    "N1": {
-      "strategy": "concat",
-      "symbol": "⊕",
-      "behavior": "additive",
-      "implementation": "ConcatenationStrategy"
-    },
-    "N2": {
-      "strategy": "weighted_mean",
-      "symbol": "⊗",
-      "behavior": "multiplicative",
-      "implementation": "WeightedMeanStrategy"
-    },
-    "N3": {
-      "strategy": "logical_consistency_validation",
-      "symbol": "⊘",
-      "behavior": "gate",
-      "implementation": "LogicalConsistencyStrategy"
-    }
+    "N1": { "strategy": "concat", "symbol": "⊕", "behavior": "additive", "implementation": "ConcatenationStrategy" },
+    "N2": { "strategy": "weighted_mean", "symbol": "⊗", "behavior": "multiplicative", "implementation": "WeightedMeanStrategy" },
+    "N3": { "strategy": "logical_consistency_validation", "symbol": "⊘", "behavior": "gate", "implementation": "LogicalConsistencyStrategy" }
   },
 
   "sample_questions": {
     "description": "Base questions classified as TYPE_E",
     "questions": ["Q010", "Q014", "Q019", "Q028"],
-    "extended_pattern": "4 base questions × 10 sectors = 40 total questions"
+    "extended_pattern": "4 base questions × 10 policy areas = 40 total questions"
   },
 
   "calibration_adjustments": {
     "description": "Parameter overrides from base level configuration",
-    "financial_strictness": {
-      "value": 1.0,
-      "description": "Standard strictness for logical validation"
-    },
-    "temporal_logic_required": {
-      "value": true,
-      "description": "Enable temporal consistency validation for logical claims",
-      "note": "TYPE_E always validates temporal ordering"
-    },
-    "contradiction_detection_threshold": {
-      "value": 0.95,
-      "description": "High threshold for contradiction flag"
-    },
-    "logical_consistency_threshold": {
-      "value": 0.97,
-      "description": "Very high threshold for logical consistency"
-    },
-    "entailment_validation": {
-      "value": true,
-      "description": "Enable logical entailment validation"
-    },
-    "propositional_decomposition": {
-      "value": true,
-      "description": "Enable decomposition into atomic propositions"
-    }
+    "temporal_logic_required": { "value": true, "description": "Enable temporal consistency validation for logical claims" },
+    "contradiction_detection_threshold": { "value": 0.95, "description": "High threshold for contradiction flag" },
+    "logical_consistency_threshold": { "value": 0.97, "description": "Very high threshold for logical consistency" },
+    "entailment_validation": { "value": true, "description": "Enable logical entailment validation" },
+    "propositional_decomposition": { "value": true, "description": "Enable decomposition into atomic propositions" }
   },
 
   "quality_metrics": {
     "precision_target": 0.90,
     "recall_target": 0.85,
     "f1_target": 0.87,
-    "consistency_target": 0.97,
-    "note": "consistency_target measures logical consistency of outputs"
+    "consistency_target": 0.97
   },
 
   "validation_rules": [
-    {
-      "rule": "contradiction_free_check",
-      "description": "Validate absence of logical contradictions",
-      "severity": "ERROR"
-    },
-    {
-      "rule": "temporal_consistency_check",
-      "description": "Verify temporal ordering consistency",
-      "severity": "ERROR"
-    },
-    {
-      "rule": "entailment_validity_check",
-      "description": "Validate logical entailment relationships",
-      "severity": "ERROR"
-    },
-    {
-      "rule": "propositional_completeness",
-      "description": "Validate all propositions are processed",
-      "severity": "WARNING"
-    }
+    { "rule": "contradiction_free_check", "description": "Validate absence of logical contradictions", "severity": "ERROR" },
+    { "rule": "temporal_consistency_check", "description": "Verify temporal ordering consistency", "severity": "ERROR" },
+    { "rule": "entailment_validity_check", "description": "Validate logical entailment relationships", "severity": "ERROR" },
+    { "rule": "propositional_completeness", "description": "Validate all propositions are processed", "severity": "WARNING" }
   ],
 
   "logical_validation_schema": {
@@ -230,10 +87,11 @@
   },
 
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2026-01-21",
+    "last_modified": "2026-01-21",
     "author": "FARFAN Calibration Team",
     "review_status": "CONSTITUTIONAL",
-    "schema_compliance": "EPISTEMIC-v4.0.0"
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "aligns_with": "episteme_rules.md Part I.1.1"
   }
 }

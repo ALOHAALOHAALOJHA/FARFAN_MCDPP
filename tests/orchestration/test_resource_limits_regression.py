@@ -14,7 +14,7 @@ import pytest
 # Add src to path for imports
 
 from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.orchestration.core_orchestrator import (
+from farfan_pipeline.orchestration.orchestrator import (
     Orchestrator,
 )
 from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (

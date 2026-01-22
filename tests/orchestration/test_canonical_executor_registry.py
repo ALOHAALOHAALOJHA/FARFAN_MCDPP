@@ -3,7 +3,7 @@
 from farfan_pipeline.orchestration.canonical_executors import (
     build_canonical_phase_executors,
 )
-from farfan_pipeline.orchestration.core_orchestrator import PhaseID
+from farfan_pipeline.orchestration.orchestrator import PhaseID
 
 
 def test_canonical_executor_registry_complete() -> None:

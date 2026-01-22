@@ -13,7 +13,7 @@ All models are frozen dataclasses per [INV-010] FORCING ROUTE requirement.
 
 These models are wired to:
 - SISAS signals for quality metrics calculation
-- methods_dispensary for causal analysis
+- farfan_pipeline/methods for causal analysis
 - Canonical questionnaire for PA×DIM validation
 
 Author: FARFAN Pipeline Team
