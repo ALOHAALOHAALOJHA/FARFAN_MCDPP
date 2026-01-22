@@ -1,30 +1,58 @@
-# Canonical Architecture (as of 2026-01-17)
+# Canonical Architecture (as of 2026-01-21)
 
 **Status:** AUTHORITATIVE
-**Version:** 2.0
+**Version:** 3.0
 **Enforcement:** MANDATORY - All code must conform to this architecture
 
 ---
 
 ## Phase Execution & Orchestration
 
-**Authoritative Location:** `farfan_pipeline.orchestration.core_orchestrator`
+**Authoritative Location:** `farfan_pipeline.orchestration.orchestrator`
 
 **Key Classes:**
-- `PipelineOrchestrator` - Main coordinator for full pipeline execution
-- `MethodExecutor` - Phase method execution wrapper
-- `Orchestrator` - Legacy-compatible orchestrator interface
+- `UnifiedOrchestrator` - Main coordinator for full pipeline execution (consolidated all orchestration logic)
+- `OrchestratorConfig` - Configuration for orchestrator
+- `OrchestrationStateMachine` - State machine for orchestration lifecycle
+- `DependencyGraph` - Phase dependency management
+- `PhaseScheduler` - Phase scheduling strategies (SEQUENTIAL, PARALLEL, HYBRID, PRIORITY)
 - `ExecutionContext` - Shared state and metrics across phases
-- `PhaseExecutor` - Protocol for phase execution
-- `ContractEnforcer` - Pre/post execution contract validation
 - `PhaseStatus`, `PhaseID`, `PhaseResult` - Phase execution primitives
 
-**Configuration:** `farfan_pipeline.orchestration.orchestrator_config`
+**Architecture:**
+The `orchestrator.py` file is a **UNIFIED** orchestrator that consolidated all orchestration logic from previously separate files:
+- Configuration management (`OrchestratorConfig`)
+- State machine lifecycle (`OrchestrationStateMachine`)
+- Dependency graph management (`DependencyGraph`)
+- Phase scheduling (`PhaseScheduler`)
+- Core orchestration logic (`UnifiedOrchestrator`)
+- Signal-driven orchestration (SISAS-aware)
+
+**Canonical Import:**
+```python
+from farfan_pipeline.orchestration.orchestrator import (
+    UnifiedOrchestrator,
+    OrchestratorConfig,
+    ExecutionContext,
+    PhaseID,
+    PhaseStatus,
+    PhaseResult,
+    # etc.
+)
+```
 
 **Forbidden Alternatives:**
-- ❌ `orchestration.orchestrator` (DELETED - no longer exists)
-- ❌ `farfan_pipeline.orchestration.orchestrator` (DELETED - replaced by core_orchestrator)
+- ❌ `orchestration.orchestrator` (missing namespace prefix - incorrect)
+- ❌ `farfan_pipeline.orchestration.core_orchestrator` (file does not exist - was never created)
 - ❌ Any module in `/backups/orchestration_relocation_*/` (ARCHIVED ONLY)
+
+**Other Orchestration Modules (Canonical):**
+- `farfan_pipeline.orchestration.factory` - `UnifiedFactory` for component creation
+- `farfan_pipeline.orchestration.method_registry` - Method registration
+- `farfan_pipeline.orchestration.sisas_integration_hub` - SISAS integration
+- `farfan_pipeline.orchestration.gates.*` - Validation gates
+- `farfan_pipeline.orchestration.dependency_graph` - Dependency graph utilities
+- `farfan_pipeline.orchestration.cli` - CLI interface
 
 ---
 
@@ -39,20 +67,15 @@
 - `SISAS.signals` - Signal registry and management (`SignalRegistry`)
 - `SISAS.vehicles.*` - Signal transport and scoping mechanisms
 - `SISAS.consumers/phase*/*` - Phase-specific signal consumers
-- `SISAS.metadata.*` - Signal metadata and enrichment
-- `SISAS.semantic.*` - Semantic signal expansion
+- `SISAS.signal_types.types.*` - Signal type definitions
+- `SISAS.validators.*` - Signal validation
+- `SISAS.wiring.*` - Signal wiring configuration
+- `SISAS.irrigation.*` - Signal irrigation mechanisms
+- `SISAS.vocabulary.*` - Signal vocabulary definitions
 
 **Forbidden Alternatives:**
 - ❌ `cross_cutting_infrastructure.irrigation_using_signals.*` (NAMESPACE DELETED)
-- ❌ `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption` (DEPRECATED - see Migration Path below)
-- ❌ `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration` (DEPRECATED)
-
-**Migration Path for Deprecated Signal Consumption:**
-- Old: `from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import X`
-- New: Classes moved to appropriate locations:
-  - Signal types → `SISAS.core.signal`
-  - Signal registry → `SISAS.signals`
-  - Integration → Phase-specific consumers in `SISAS.consumers/phase*/`
+- ❌ `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption` (DEPRECATED)
 
 ---
 
@@ -78,9 +101,6 @@
 - `interphase/` - Cross-phase wiring (Phase_00 only)
 - `phase{N}_{stage}_{substage}_{name}.py` - Phase execution modules
 
-**Aliases:**
-- `Phase_zero` → symlink to `Phase_00` (tolerated for compatibility)
-
 ---
 
 ## Bootstrap & Infrastructure
@@ -93,23 +113,8 @@
 - `phase0_90_00_main` - Main execution coordinator
 - `phase0_30_00_resource_controller` - Resource limits and monitoring
 - `phase0_00_01_domain_errors` - Domain-specific error types
-- `primitives.providers` - Data providers and configuration
-- `primitives.constants` - System-wide constants
-- `interphase.wiring_types` - Wiring contracts and types
-
----
-
-## Resource Orchestration
-
-**Authoritative Location:** `farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller`
-
-**Key Classes:**
-- `ResourceController` - Resource allocation and limits
-- `ResourceLimits` - Resource limit definitions
-- `MemorySafety` - Memory safety enforcement (also in `farfan_pipeline.orchestration.memory_safety`)
-
-**Forbidden Alternatives:**
-- ❌ `orchestration.orchestrator.ResourceLimits` (NEVER EXISTED - phantom import)
+- `phase0_10_01_runtime_config` - Runtime configuration
+- `phase0_40_00_input_validation` - Input validation
 
 ---
 
@@ -121,80 +126,30 @@
 - **Signal Types:** `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal`
 - **Domain Errors:** `farfan_pipeline.phases.Phase_00.phase0_00_01_domain_errors`
 
-**Classes Imported from core_orchestrator:**
-- `MethodExecutor` - Phase method executor
-- `Orchestrator` - Pipeline orchestrator
-- `ExecutionContext` - Execution state container
-- `PhaseResult`, `PhaseStatus`, `PhaseID` - Phase primitives
-
----
-
-## Missing Classes Resolution (Phase 6 Adjudication)
-
-The following classes were imported from `orchestration.orchestrator` but **NEVER EXISTED** in the deleted file. They are **PHANTOM IMPORTS** that must be resolved:
-
-### Category A: Classes Now in core_orchestrator.py
-✅ **Resolved:** Import from `farfan_pipeline.orchestration.core_orchestrator`
-- `MethodExecutor` - Exists at core_orchestrator:780+
-- `Orchestrator` - Exists at core_orchestrator:950+
-
-### Category B: Classes That May Exist Elsewhere
-🔍 **Requires Investigation:**
-- `ScoredMicroQuestion` - Check Phase_03 (scoring) or Phase_04 (aggregation)
-- `MacroEvaluation` - Check Phase_07 (macro aggregation)
-- `MicroQuestionRun` - Check Phase_02 (executor) or Phase_03 (scoring)
-- `Evidence` - Check contract types or Phase_01 (evidence collection)
-- `QuestionnaireSignalRegistry` - Likely in Phase_02 signal registry
-- `ResourceLimits` - Check phase0_30_00_resource_controller
-- `PhaseInstrumentation` - Check core_orchestrator or Phase_00 monitoring
-- `AbortSignal` - Check domain errors or signal core
-- `execute_phase_with_timeout` - Check core_orchestrator methods
-
----
-
-## Explicitly Dead Layers
-
-The following architectural layers are **FORBIDDEN** and must not be referenced:
-
-### Deleted Namespaces
-- `orchestration.orchestrator.*` - File deleted, replaced by `farfan_pipeline.orchestration.core_orchestrator`
-- `cross_cutting_infrastructure.*` - Entire namespace removed
-- `farfan_pipeline.orchestration.orchestrator.*` - File renamed to core_orchestrator
-
-### Deprecated Modules (Exist but Forbidden)
-- `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption` - In `_deprecated/` directory
-- `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration` - In `_deprecated/` directory
-- Any module in `_deprecated/` directories
-
-### Archived Backups (Never Import)
-- `backups/orchestration_relocation_*/` - Forensic archives only
-
----
-
-## Concept Evolution Table
-
-| Old Term | New Term | Rationale |
-|----------|----------|-----------|
-| `orchestration.orchestrator` | `farfan_pipeline.orchestration.core_orchestrator` | Namespace consolidation, explicit module name |
-| `cross_cutting_infrastructure.irrigation_using_signals` | `farfan_pipeline.infrastructure.irrigation_using_signals` | Removed redundant "cross_cutting" abstraction |
-| `signal_consumption` | Phase-specific consumers in `SISAS.consumers/` | Distributed responsibility to phase consumers |
-| `Orchestrator` (global) | `PipelineOrchestrator` (primary) or `Orchestrator` (compat) | Explicit naming, retained compatibility alias |
-
 ---
 
 ## Import Decision Rules
 
-### Rule 1: DEAD Module → DELETE
+### Rule 1: Canonical Module Path
+All imports must use the full `farfan_pipeline.*` namespace:
+```python
+# Correct
+from farfan_pipeline.orchestration.orchestrator import UnifiedOrchestrator
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+
+# Incorrect
+from orchestration.orchestrator import UnifiedOrchestrator
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.core.signal import Signal
+```
+
+### Rule 2: DEAD Module → DELETE
 If module path does not exist on filesystem, **DELETE** all imports and usages.
 
-### Rule 2: DEPRECATED Module → REDIRECT
+### Rule 3: DEPRECATED Module → REDIRECT
 If module exists in `_deprecated/` directory or marked `ERA_DEPRECATED`, **REDIRECT** to canonical location.
 
-### Rule 3: ERA_CROSS_CUTTING → DELETE
+### Rule 4: ERA_CROSS_CUTTING → DELETE
 Any import from `cross_cutting_infrastructure.*` is **DELETED** (namespace eliminated).
-
-### Rule 4: ERA_ORCHESTRATOR → REDIRECT to core_orchestrator
-Any import from `orchestration.orchestrator` → `farfan_pipeline.orchestration.core_orchestrator`
 
 ### Rule 5: Phantom Classes → INVESTIGATE
 Classes that never existed must be:
@@ -204,9 +159,25 @@ Classes that never existed must be:
 
 ---
 
+## Explicitly Dead Layers
+
+The following architectural layers are **FORBIDDEN** and must not be referenced:
+
+### Deleted Namespaces
+- `cross_cutting_infrastructure.*` - Entire namespace removed
+
+### Deprecated Modules (Exist but Forbidden)
+- `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption` - In `_deprecated/` directory
+- Any module in `_deprecated/` directories
+
+### Archived Backups (Never Import)
+- `backups/orchestration_relocation_*/` - Forensic archives only
+
+---
+
 ## Enforcement Mechanism
 
-**Validation Script:** `scripts/validate_architecture.sh`
+**Validation Script:** `scripts/stratify_imports.sh`
 
 **Failure Conditions:**
 - Any import from forbidden namespaces → Build fails
@@ -219,7 +190,8 @@ The canonical architecture is **enforceable by deletion alone** - removing compa
 ---
 
 ## Version History
-- **v2.0** (2026-01-17): Post-orchestrator migration, canonical architecture declaration
+- **v3.0** (2026-01-21): Corrected canonical architecture - `orchestrator.py` IS the canonical orchestrator (was incorrectly marked as deleted in v2.0)
+- **v2.0** (2026-01-17): Post-orchestrator migration declaration (had incorrect information about orchestrator.py)
 - **v1.x**: Legacy orchestrator era (deprecated)
 
 ---
@@ -228,46 +200,22 @@ The canonical architecture is **enforceable by deletion alone** - removing compa
 
 ---
 
-## Remediation History
+## Current Architecture Summary
 
-### Phase 5 Remediation (2026-01-17)
+The FARFAN pipeline architecture is now **CONSOLIDATED**:
 
-**Status:** ✅ COMPLETE
+| Component | Canonical Location | Status |
+|-----------|-------------------|--------|
+| Orchestrator | `farfan_pipeline.orchestration.orchestrator` | **LIVE** - Unified orchestrator |
+| Factory | `farfan_pipeline.orchestration.factory` | **LIVE** - UnifiedFactory |
+| SISAS | `farfan_pipeline.infrastructure.irrigation_using_signals.SISAS` | **LIVE** - Signal infrastructure |
+| Phases | `farfan_pipeline.phases.Phase_XX` | **LIVE** - Phase execution |
+| Signal Registry | `canonic_questionnaire_central.core.signal_distribution_orchestrator` | **LIVE** - Signal distribution |
 
-**Broken Imports Eliminated:**
-1. ✅ `orchestration.orchestrator` → All imports redirected to `farfan_pipeline.orchestration.core_orchestrator`
-   - Fixed 6 source files
-   - Fixed 11 test files
-   - Fixed 1 script file
-   - **Result:** 0 remaining broken imports
-
-2. ✅ `cross_cutting_infrastructure.*` → No imports found (already eliminated in previous work)
-   - **Result:** 0 remaining broken imports
-
-3. ✅ `signal_consumption_integration` → Path corrected to `integration.signal_consumption_integration`
-   - Fixed 3 source files
-   - Fixed 2 test files
-   - **Result:** All imports now use correct path
-
-**Files Modified:**
-- Source: 6 files in `src/farfan_pipeline/`
-- Tests: 11 files in `tests/`
-- Scripts: 1 file in `scripts/verification/`
-
-**Verification:**
-- ✅ All imports resolve correctly with proper PYTHONPATH
-- ✅ Syntax validation passes on all modified files
-- ✅ No active code imports from `_deprecated/` directories
-- ✅ Stratification artifacts updated and show clean state
-
-**Exit Criteria Met:**
-- ✅ No imports from `orchestration.orchestrator` (DEAD module)
+**Exit Criteria Status:**
 - ✅ No imports from `cross_cutting_infrastructure.*` (DELETED namespace)
-- ✅ All `signal_consumption_integration` imports use correct path
+- ✅ `orchestrator.py` is the canonical orchestrator (83KB unified file)
 - ✅ Architecture is enforceable by deletion alone - forbidden modules can be removed without breaking active code
+- ✅ All imports use the canonical `farfan_pipeline.*` namespace
 
-**Remaining Work:**
-- Test suite verification (pytest run)
-- Handle phantom class `PhaseInstrumentation` in tests if needed
-- Verify all tests pass or are marked as obsolete
-
+**The architectural timelines have collapsed. The present tense is authoritative.**

@@ -2,236 +2,322 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://farfan.pipeline/schemas/calibration/pdm/n3_rules.json",
   "rule_set": "N3_AUDIT_PDM_RULES",
-  "name": "N3 Audit Veto PDM Sensitivity Rules",
-  "version": "1.0.0-epistemic",
-  "description": "PDM-driven parameter adjustments for N3-AUD (Audit/Falsification) layer. These rules adjust veto thresholds and audit strictness based on document structural characteristics.",
+  "name": "N3 Phase C Litigation PDM Rules",
+  "version": "2.0.0-epistemic",
+  "description": "PDM rules for N3-AUD (Phase C: Litigation) with Popperian asymmetric veto gates",
 
   "epistemic_layer": {
     "level": "N3-AUD",
     "name": "Audit/Falsification",
+    "phase": "phase_C_litigation",
     "output_type": "CONSTRAINT",
     "fusion_behavior": "gate",
-    "constitutional_constraint": "PDM adjustments CANNOT change the epistemic level, only parameter values",
-    "asymmetry_principle": "N3 can veto N1/N2, but N1/N2 CANNOT veto N3 [CI-04]"
+    "symbol": "⊘",
+    "epistemology": "Falsacionismo popperiano",
+    "asymmetry": "o₃ ⊗ o₁ puede = ∅ (N3 anula N1), pero o₁ ⊗ o₃ = o₃",
+    "typical_classes": [
+      "PolicyContradictionDetector",
+      "FinancialAuditor",
+      "IndustrialGradeValidator",
+      "AdvancedDAGValidator",
+      "BayesianCounterfactualAuditor",
+      "OperationalizationAuditor",
+      "TemporalLogicVerifier"
+    ]
+  },
+
+  "veto_gate_architecture": {
+    "description": "N3 implements asymmetric veto gates per episteme_rules",
+    "gate_types": {
+      "CRITICAL_VETO": {
+        "symbol": "⊘",
+        "effect": "Complete suppression",
+        "confidence_multiplier": 0.0,
+        "propagation": "total",
+        "reversible": false
+      },
+      "PARTIAL_VETO": {
+        "symbol": "⊘₀.₅",
+        "effect": "Confidence attenuation",
+        "confidence_multiplier": 0.5,
+        "propagation": "local",
+        "reversible": false
+      },
+      "WARNING": {
+        "symbol": "⊘₀.₇",
+        "effect": "Mild attenuation",
+        "confidence_multiplier": 0.7,
+        "propagation": "none",
+        "reversible": true
+      }
+    }
+  },
+
+  "contract_type_audit_strategies": {
+    "description": "N3 strategies from episteme_rules Part IV.4.3",
+    "TYPE_A": {
+      "primary_audit": "semantic_consistency",
+      "veto_threshold": 0.4,
+      "validators": ["PolicyContradictionDetector"]
+    },
+    "TYPE_B": {
+      "primary_audit": "statistical_significance",
+      "veto_threshold": 0.05,
+      "validators": ["PolicyContradictionDetector", "AdvancedDAGValidator"]
+    },
+    "TYPE_C": {
+      "primary_audit": "dag_acyclicity",
+      "veto_threshold": 0.1,
+      "validators": ["AdvancedDAGValidator", "BayesianCounterfactualAuditor"]
+    },
+    "TYPE_D": {
+      "primary_audit": "financial_coherence",
+      "veto_threshold": 0.3,
+      "validators": ["FinancialAuditor", "PolicyContradictionDetector"]
+    },
+    "TYPE_E": {
+      "primary_audit": "logical_consistency",
+      "veto_threshold": 0.2,
+      "validators": ["PolicyContradictionDetector", "OperationalizationAuditor"]
+    }
   },
 
   "pdm_triggers": {
-    "description": "Document structural characteristics that trigger PDM adjustments",
     "triggers": [
       {
-        "id": "FINANCIAL_DATA_DETECTED",
-        "name": "Financial Data Present",
-        "description": "Document contains financial budgets, allocations, or fiscal data",
-        "detection_method": "financial_data_analysis",
-        "indicators": ["budget", "allocation", "fiscal", "financial", "$", "COP", "millions"]
+        "id": "FINANCIAL_CLAIMS",
+        "name": "Financial Claims Present",
+        "description": "Document makes financial assertions",
+        "affects_contracts": ["TYPE_D"],
+        "audit_intensity": 1.5
       },
       {
-        "id": "TEMPORAL_LOGIC_REQUIRED",
-        "name": "Temporal Ordering Detected",
-        "description": "Document contains temporal sequences requiring consistency validation",
-        "detection_method": "temporal_structure_analysis",
-        "indicators": ["phase", "stage", "period", "year", "timeline", "sequence"]
+        "id": "TEMPORAL_SEQUENCES",
+        "name": "Temporal Logic Required",
+        "description": "Time-ordered sequences need validation",
+        "affects_contracts": ["TYPE_C", "TYPE_E"],
+        "audit_intensity": 1.3
       },
       {
-        "id": "HIGH_STAKES_CLAIMS",
+        "id": "HIGH_STAKES",
         "name": "High-Stakes Policy Claims",
-        "description": "Document contains high-stakes claims requiring strict validation",
-        "detection_method": "stakes_analysis",
-        "threshold": 0.8
+        "description": "Critical policy decisions",
+        "affects_contracts": ["TYPE_B", "TYPE_D"],
+        "audit_intensity": 2.0
       },
       {
-        "id": "QUANTITATIVE_PRECISION_REQUIRED",
-        "name": "Quantitative Precision Required",
-        "description": "Document makes precise quantitative claims requiring strict audit",
-        "detection_method": "precision_analysis",
-        "indicators": ["%", "rate", "index", "coefficient", "ratio"]
+        "id": "QUANTITATIVE_CLAIMS",
+        "name": "Precise Quantitative Claims",
+        "description": "Specific numerical assertions",
+        "affects_contracts": ["TYPE_B", "TYPE_D"],
+        "audit_intensity": 1.4
+      },
+      {
+        "id": "CAUSAL_CLAIMS",
+        "name": "Causal Mechanism Claims",
+        "description": "Explicit causal assertions",
+        "affects_contracts": ["TYPE_C"],
+        "audit_intensity": 1.6
       }
     ]
+  },
+
+  "veto_conditions": {
+    "description": "Specific veto conditions from episteme_rules Part V.5.2",
+    "conditions": {
+      "matrix_not_positive_definite": {
+        "triggered_by": "IndustrialGradeValidator.validate_connection_matrix",
+        "gate_type": "CRITICAL_VETO",
+        "propagation": "upstream_and_downstream",
+        "message": "⚠️ ALERTA: Matriz de conexión no es definida positiva. Modelo INVÁLIDO.",
+        "affects_contracts": ["TYPE_C"]
+      },
+      "statistical_significance_failed": {
+        "triggered_by": "PolicyContradictionDetector._statistical_significance_test",
+        "gate_type": "CRITICAL_VETO",
+        "propagation": "downstream_only",
+        "message": "⚠️ ALERTA: Significancia estadística no alcanzada (p > 0.05).",
+        "affects_contracts": ["TYPE_B"]
+      },
+      "logical_contradiction": {
+        "triggered_by": "PolicyContradictionDetector._detect_logical_incompatibilities",
+        "gate_type": "CRITICAL_VETO",
+        "propagation": "both",
+        "message": "⚠️ ALERTA: Contradicción lógica detectada. Coherencia comprometida.",
+        "affects_contracts": ["TYPE_E"]
+      },
+      "cycle_detected": {
+        "triggered_by": "AdvancedDAGValidator._is_acyclic",
+        "gate_type": "CRITICAL_VETO",
+        "propagation": "total",
+        "message": "⚠️ ALERTA: Ciclo detectado en grafo causal. Causalidad INVÁLIDA.",
+        "affects_contracts": ["TYPE_C"]
+      },
+      "budget_insufficiency": {
+        "triggered_by": "FinancialAuditor._detect_allocation_gaps",
+        "gate_type": "PARTIAL_VETO",
+        "propagation": "partial",
+        "confidence_multiplier": 0.3,
+        "message": "⚠️ ADVERTENCIA: Presupuesto insuficiente para metas declaradas.",
+        "affects_contracts": ["TYPE_D"]
+      },
+      "temporal_inconsistency": {
+        "triggered_by": "TemporalLogicVerifier.verify_temporal_consistency",
+        "gate_type": "PARTIAL_VETO",
+        "propagation": "local",
+        "confidence_multiplier": 0.5,
+        "message": "⚠️ ADVERTENCIA: Inconsistencia temporal en secuencia de actividades.",
+        "affects_contracts": ["TYPE_C", "TYPE_E"]
+      }
+    }
   },
 
   "adjustment_rules": [
     {
       "rule_id": "N3-PDM-001",
-      "name": "Financial Strictness Increase",
-      "trigger": "FINANCIAL_DATA_DETECTED",
+      "name": "Financial Audit Strictness",
+      "trigger": "FINANCIAL_CLAIMS",
+      "contract_types": ["TYPE_D"],
       "adjustment": {
-        "parameter": "financial_strictness",
-        "operation": "set",
-        "value": 1.5,
-        "description": "Increase financial validation strictness to 1.5x"
+        "parameter": "financial_veto_threshold",
+        "operation": "multiply",
+        "value": 0.7,
+        "description": "Stricter threshold for financial vetos"
       },
-      "justification": "Financial data warrants enhanced audit scrutiny",
-      "validation": {
-        "min_value": 1.0,
-        "max_value": 3.0,
-        "constraint": "Strictness must be >= 1.0"
+      "veto_conditions": {
+        "budget_gap": {
+          "trigger": "gap > 20%",
+          "confidence_multiplier": 0.0
+        },
+        "allocation_mismatch": {
+          "trigger": "mismatch > 10%",
+          "confidence_multiplier": 0.3
+        }
       }
     },
     {
       "rule_id": "N3-PDM-002",
-      "name": "Veto Threshold Strictening",
-      "trigger": "FINANCIAL_DATA_DETECTED",
-      "adjustment": {
-        "parameter": "veto_threshold_partial",
-        "operation": "set",
-        "value": 0.6,
-        "description": "Lower partial veto threshold to 0.6 for financial data"
-      },
-      "justification": "Financial claims require stricter veto thresholds",
-      "validation": {
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "constraint": "Threshold must be in [0, 1]"
-      }
-    },
-    {
-      "rule_id": "N3-PDM-003",
-      "name": "Temporal Logic Validation Activation",
-      "trigger": "TEMPORAL_LOGIC_REQUIRED",
-      "adjustment": {
-        "parameter": "temporal_logic_required",
-        "operation": "set",
-        "value": true,
-        "description": "Enable temporal consistency validation"
-      },
-      "justification": "Temporal claims require temporal logic checking",
-      "validation": {
-        "type": "boolean",
-        "constraint": "Must be boolean true/false"
-      }
-    },
-    {
-      "rule_id": "N3-PDM-004",
-      "name": "High-Stakes Strictness",
-      "trigger": "HIGH_STAKES_CLAIMS",
+      "name": "Statistical Significance Enforcement",
+      "trigger": "QUANTITATIVE_CLAIMS",
+      "contract_types": ["TYPE_B"],
       "adjustment": {
         "parameter": "significance_level",
         "operation": "set",
         "value": 0.01,
-        "description": "Lower significance level to 0.01 for high-stakes claims"
+        "description": "Strict significance for high-stakes"
       },
-      "justification": "High-stakes claims require more stringent validation",
-      "validation": {
-        "min_value": 0.001,
-        "max_value": 0.1,
-        "constraint": "Significance must be in (0, 0.1]"
+      "veto_conditions": {
+        "p_value_fail": {
+          "trigger": "p > significance_level",
+          "confidence_multiplier": 0.0
+        }
+      }
+    },
+    {
+      "rule_id": "N3-PDM-003",
+      "name": "Causal Validity Check",
+      "trigger": "CAUSAL_CLAIMS",
+      "contract_types": ["TYPE_C"],
+      "adjustment": {
+        "parameter": "dag_validation_strict",
+        "operation": "set",
+        "value": true,
+        "description": "Strict DAG validation"
+      },
+      "veto_conditions": {
+        "cycle": {
+          "trigger": "!is_acyclic",
+          "confidence_multiplier": 0.0
+        },
+        "missing_path": {
+          "trigger": "critical_path_incomplete",
+          "confidence_multiplier": 0.5
+        }
+      }
+    },
+    {
+      "rule_id": "N3-PDM-004",
+      "name": "Temporal Logic Validation",
+      "trigger": "TEMPORAL_SEQUENCES",
+      "contract_types": ["TYPE_C", "TYPE_E"],
+      "adjustment": {
+        "parameter": "temporal_strict_mode",
+        "operation": "set",
+        "value": true,
+        "description": "Enable strict temporal validation"
       }
     },
     {
       "rule_id": "N3-PDM-005",
-      "name": "Quantitative Precision Strictening",
-      "trigger": "QUANTITATIVE_PRECISION_REQUIRED",
+      "name": "High-Stakes Audit Mode",
+      "trigger": "HIGH_STAKES",
+      "contract_types": ["TYPE_B", "TYPE_D"],
       "adjustment": {
-        "parameter": "veto_threshold_critical",
-        "operation": "set",
-        "value": 0.1,
-        "description": "Raise critical veto threshold to 0.1 for precision requirements"
-      },
-      "justification": "Quantitative precision claims require more forgiving veto",
-      "note": "Counter-intuitive: higher critical threshold = less strict critical veto",
-      "validation": {
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "constraint": "Threshold must be in [0, 1]"
+        "parameter": "audit_intensity",
+        "operation": "multiply",
+        "value": 2.0,
+        "description": "Double audit intensity for high-stakes"
       }
     }
   ],
 
-  "composite_rules": [
-    {
-      "rule_id": "N3-PDM-COMPOSITE-001",
-      "name": "Financial Temporal Document",
-      "description": "Apply strictest adjustments for documents with financial data AND temporal logic",
-      "trigger_conditions": {
-        "operator": "AND",
-        "conditions": [
-          "FINANCIAL_DATA_DETECTED",
-          "TEMPORAL_LOGIC_REQUIRED"
-        ]
-      },
-      "adjustments": [
-        {"ref": "N3-PDM-001"},
-        {"ref": "N3-PDM-002"},
-        {"ref": "N3-PDM-003"}
-      ],
-      "priority": "CRITICAL",
-      "note": "This combination represents the strictest audit regime"
+  "cross_layer_veto_effects": {
+    "description": "How N3 vetos affect N1 and N2 per episteme_rules Part V",
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK N1 facts",
+      "formula": "if N3.veto then N1_output = ∅",
+      "asymmetry": "N1 CANNOT invalidate N3",
+      "implementation": "N3 veto removes N1 facts from evidence graph"
     },
-    {
-      "rule_id": "N3-PDM-COMPOSITE-002",
-      "name": "High-Stakes Quantitative Document",
-      "description": "Apply adjustments for high-stakes quantitative claims",
-      "trigger_conditions": {
-        "operator": "AND",
-        "conditions": [
-          "HIGH_STAKES_CLAIMS",
-          "QUANTITATIVE_PRECISION_REQUIRED"
-        ]
-      },
-      "adjustments": [
-        {"ref": "N3-PDM-004"},
-        {"ref": "N3-PDM-005"}
-      ],
-      "priority": "HIGH"
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "formula": "if N3.veto then N2.confidence *= N3.multiplier",
+      "asymmetry": "N2 CANNOT invalidate N3",
+      "implementation": "N3 veto multiplies N2 confidence by 0.0 to 0.7"
     }
-  ],
+  },
 
-  "veto_gate_behavior": {
-    "description": "N3 veto gate implementation details",
-    "asymmetry_principle": {
-      "description": "N3 can veto N1/N2, but N1/N2 CANNOT veto N3",
-      "implementation": "Unidirectional veto gate"
+  "human_answer_integration": {
+    "description": "How N3 results appear in human answer per episteme_rules Part VI",
+    "section": "S3_robustness_audit",
+    "veto_display": {
+      "if_critical_veto": "⚠️ ALERTA: {veto_reason}. El modelo es INVÁLIDO técnicamente.",
+      "if_partial_veto": "⚠️ ADVERTENCIA: {veto_reason}. Confianza reducida a {confidence}%.",
+      "if_no_veto": "✓ Todas las validaciones pasaron."
     },
-    "veto_actions": [
-      {
-        "action": "CRITICAL_VETO",
-        "condition": "confidence <= veto_threshold_critical",
-        "multiplier": 0.0,
-        "status": "SUPPRESSED"
-      },
-      {
-        "action": "PARTIAL_VETO",
-        "condition": "veto_threshold_critical < confidence <= veto_threshold_partial",
-        "multiplier": 0.5,
-        "status": "ATTENUATED"
-      },
-      {
-        "action": "APPROVED",
-        "condition": "confidence > veto_threshold_partial",
-        "multiplier": 1.0,
-        "status": "VALIDATED"
-      }
+    "required_reporting": [
+      "validation_count",
+      "contradiction_count",
+      "blocked_branches_count",
+      "confidence_adjustments"
     ]
   },
 
   "constraints": [
     {
-      "constraint": "LEVEL_IMMUTABILITY",
-      "description": "PDM adjustments CANNOT change the epistemic level from N3-AUD",
-      "enforcement": "Post-adjustment validation"
+      "constraint": "ASYMMETRIC_VETO",
+      "description": "N3 can veto N1/N2, but N1/N2 CANNOT veto N3",
+      "formula": "o₃ ⊗ o₁ ≠ o₁ ⊗ o₃",
+      "enforcement": "Architectural guarantee in fusion layer"
     },
     {
-      "constraint": "PARAMETER_BOUNDS",
-      "description": "All adjustments must respect parameter bounds from level config",
-      "enforcement": "Pre-adjustment validation"
+      "constraint": "VETO_IMMUTABILITY",
+      "description": "Once N3 issues a veto, it cannot be overridden",
+      "enforcement": "Veto decisions are final"
     },
     {
-      "constraint": "ASYMMETRY_PRINCIPLE",
-      "description": "N3 can veto N1/N2, but N1/N2 CANNOT veto N3 [CI-04]",
-      "enforcement": "Architectural enforcement in fusion logic"
-    },
-    {
-      "constraint": "CRITICAL_BELOW_PARTIAL",
-      "description": "veto_threshold_critical must be < veto_threshold_partial",
-      "enforcement": "Runtime validation"
+      "constraint": "CONSUMES_N1_N2",
+      "description": "N3 must consume both N1 facts and N2 parameters",
+      "enforcement": "requires: ['raw_facts', 'inferences']"
     }
   ],
 
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2025-01-21",
+    "last_modified": "2025-01-21",
     "author": "FARFAN Calibration Team",
-    "review_status": "CONSTITUTIONAL",
-    "schema_compliance": "EPISTEMIC-v4.0.0"
+    "aligns_with": "episteme_rules.md Part II.2.2 (PHASE_C) and Part V",
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "critical_principle": "Falsacionismo popperiano con asimetría de veto"
   }
 }

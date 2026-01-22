@@ -2441,7 +2441,7 @@ class Phase1CPPIngestionFullContract:
         SP5: Causal Chain Extraction per FORCING ROUTE SECCIÓN 6.1.
         [EXEC-SP5-001] through [EXEC-SP5-004]
         Uses REAL derek_beach BeachEvidentialTest for causal inference.
-        NO STUBS - Uses PRODUCTION implementation from methods_dispensary.
+        NO STUBS - Uses PRODUCTION implementation from farfan_pipeline/methods.
         """
         logger.info("SP5: Starting causal chain extraction (PRODUCTION)")
         
@@ -2546,7 +2546,7 @@ class Phase1CPPIngestionFullContract:
         [EXEC-SP6-001] through [EXEC-SP6-003]
         Aggregates chunk-level causal graphs into global structure.
         
-        Uses REAL TeoriaCambio from methods_dispensary for DAG validation.
+        Uses REAL TeoriaCambio from farfan_pipeline/methods for DAG validation.
         NO STUBS - Uses PRODUCTION implementation.
         """
         logger.info("SP6: Starting causal integration (PRODUCTION)")
@@ -2590,7 +2590,7 @@ class Phase1CPPIngestionFullContract:
                                             'strength': min(1.0, overlap / 5)
                                         })
         
-        # Validate with REAL TeoriaCambio from methods_dispensary
+        # Validate with REAL TeoriaCambio from farfan_pipeline/methods
         validation_result = None
         teoria_cambio_metadata = {'available': TEORIA_CAMBIO_AVAILABLE, 'method': 'UNAVAILABLE'}
         
@@ -2699,7 +2699,7 @@ class Phase1CPPIngestionFullContract:
                         
                         chunk_arguments[arg_type + 's' if not arg_type.endswith('s') else arg_type].append(arg_entry)
             
-            # Classify using REAL Beach test taxonomy from methods_dispensary
+            # Classify using REAL Beach test taxonomy from farfan_pipeline/methods
             if BEACH_CLASSIFY is not None:
                 evidence_count = len(chunk_arguments['evidence'])
                 claim_count = len(chunk_arguments['claims'])

@@ -278,6 +278,36 @@ def validate_fusion_behavior_for_level(fusion_behavior: str, level: str) -> None
 
 
 # =============================================================================
+# ONTOLOGICAL FOUNDATION (Bhaskar's Critical Realism)
+# =============================================================================
+
+class OntologicalDomain(str):
+    """Bhaskar's three-domain stratified ontology"""
+    EMPIRICAL = "empirical"    # Observable experiences
+    ACTUAL = "actual"          # Events and processes  
+    REAL = "real"             # Causal mechanisms (TRANSFACTUAL)
+
+# Add to module constants
+BHASKAR_CITATION: Final[str] = """
+Causal mechanisms are TRANSFACTUAL - they exist in the REAL domain
+independently of their manifestation in events (Bhaskar, 1975, 1979).
+They are NOT phenomenological appearances but real structures with
+causal powers that can be DETECTED through retroduction.
+"""
+
+# Update EpistemicLevel documentation
+EpistemicLevel.__doc__ += """
+
+CRITICAL REALIST FOUNDATION:
+    N0-N4 levels map to Bhaskar's stratified reality:
+    - N1-EMP: Operates in EMPIRICAL domain (observations)
+    - N2-INF: Bridges EMPIRICAL to ACTUAL (events)
+    - N3-AUD: Validates ACTUAL domain patterns
+    - N4-META: Identifies REAL domain mechanisms
+"""
+
+
+# =============================================================================
 # MODULE EXPORTS
 # =============================================================================
 
@@ -296,4 +326,8 @@ __all__ = [
     "validate_epistemic_level",
     "validate_output_type_for_level",
     "validate_fusion_behavior_for_level",
+    # Ontological classes
+    "OntologicalDomain",
+    # Citations
+    "BHASKAR_CITATION",
 ]

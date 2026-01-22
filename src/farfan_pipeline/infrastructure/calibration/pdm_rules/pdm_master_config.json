@@ -3,230 +3,237 @@
   "$id": "https://farfan.pipeline/schemas/calibration/pdm/master.json",
   "config_type": "PDM_MASTER_CONFIGURATION",
   "name": "PDM Sensitivity Master Configuration",
-  "version": "1.0.0-epistemic",
-  "description": "Master configuration file for PDM-driven calibration adjustments. Orchestrates all level-specific PDM rules and enforces constitutional constraints.",
+  "version": "2.0.0-epistemic",
+  "description": "Master configuration for PDM-driven calibration aligned with episteme_rules.md lattice structure and 300 executor contracts",
+
+  "epistemic_lattice": {
+    "description": "Lattice structure L = {N1, N2, N3, N4} with order ≤",
+    "structure": "N1 ≤ N2 ≤ N3 ≤ N4",
+    "fusion_operator": "⊗ : Output × Output → Output",
+    "asymmetry": "∀o₁ ∈ Output(N1 ∪ N2), ∀o₃ ∈ Output(N3): o₃ ⊗ o₁ ≠ o₁ ⊗ o₃",
+    "levels": {
+      "N1-EMP": {
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "symbol": "⊕",
+        "epistemology": "Empirismo positivista"
+      },
+      "N2-INF": {
+        "output_type": "PARAMETER", 
+        "fusion_behavior": "multiplicative",
+        "symbol": "⊗",
+        "epistemology": "Bayesianismo subjetivista"
+      },
+      "N3-AUD": {
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "symbol": "⊘",
+        "epistemology": "Falsacionismo popperiano",
+        "veto_power": true
+      },
+      "N4-META": {
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "symbol": "⊙",
+        "epistemology": "Reflexividad crítica"
+      }
+    }
+  },
+
+  "contract_types": {
+    "description": "5 contract types from episteme_rules.md Part I.1.1",
+    "types": {
+      "TYPE_A": {
+        "name": "Semántico",
+        "contracts": ["Q001", "Q013"],
+        "focus": "Coherencia narrativa, NLP",
+        "primary_fusion": "semantic_triangulation",
+        "n1_strategy": "semantic_corroboration",
+        "n2_strategy": "dempster_shafer",
+        "n3_strategy": "veto_gate"
+      },
+      "TYPE_B": {
+        "name": "Bayesiano",
+        "contracts": ["Q002", "Q005", "Q007", "Q011", "Q017", "Q018", "Q020", "Q023", "Q024", "Q025", "Q027", "Q029"],
+        "focus": "Significancia estadística, priors",
+        "primary_fusion": "bayesian_update",
+        "n1_strategy": "concat",
+        "n2_strategy": "bayesian_update",
+        "n3_strategy": "veto_gate"
+      },
+      "TYPE_C": {
+        "name": "Causal",
+        "contracts": ["Q008", "Q016", "Q026", "Q030"],
+        "focus": "Topología de grafos, DAGs",
+        "primary_fusion": "topological_overlay",
+        "n1_strategy": "graph_construction",
+        "n2_strategy": "topological_overlay",
+        "n3_strategy": "veto_gate"
+      },
+      "TYPE_D": {
+        "name": "Financiero",
+        "contracts": ["Q003", "Q004", "Q006", "Q009", "Q012", "Q015", "Q021", "Q022"],
+        "focus": "Suficiencia presupuestal",
+        "primary_fusion": "financial_coherence_audit",
+        "n1_strategy": "concat",
+        "n2_strategy": "weighted_mean",
+        "n3_strategy": "financial_coherence_audit"
+      },
+      "TYPE_E": {
+        "name": "Lógico",
+        "contracts": ["Q010", "Q014", "Q019", "Q028"],
+        "focus": "Detección de contradicciones",
+        "primary_fusion": "logical_consistency_validation",
+        "n1_strategy": "concat",
+        "n2_strategy": "weighted_mean",
+        "n3_strategy": "logical_consistency_validation"
+      }
+    }
+  },
 
   "constitutional_framework": {
-    "description": "Constitutional principles enforced by PDM calibration system",
+    "description": "Constitutional principles from episteme_rules asymmetry principle",
     "principles": [
       {
         "id": "CI-03",
         "name": "INMUTABILIDAD EPISTÉMICA",
-        "description": "The epistemic level (N0-N4) of a method is IMMUTABLE",
-        "enforcement": "PDM adjustments can NEVER change the level property",
-        "validation": "Post-adjustment level comparison with registry"
+        "formula": "π : M → L is immutable",
+        "description": "Method level assignment π cannot be changed by PDM",
+        "enforcement": "Level is read from registry, never modified"
       },
       {
-        "id": "CI-04",
+        "id": "CI-04", 
         "name": "ASIMETRÍA POPPERIANA",
-        "description": "N3 can veto N1/N2, but N1/N2 can NEVER veto N3",
-        "enforcement": "Unidirectional veto gate in fusion logic",
-        "validation": "Architectural enforcement in fusion layer"
+        "formula": "o₃ ⊗ o₁ puede = ∅ (N3 anula N1), pero o₁ ⊗ o₃ = o₃",
+        "description": "N3 can BLOCK N1/N2, but N1/N2 CANNOT invalidate N3",
+        "enforcement": "Unidirectional veto gate in cross_layer_fusion"
       },
       {
         "id": "CI-05",
-        "name": "SEPARACIÓN CALIBRACIÓN-NIVEL",
-        "description": "PDM adjusts parameters (thresholds, samples), NEVER level",
-        "enforcement": "PDM rules only modify parameter values",
-        "validation": "Runtime check that 'level' not in adjustments"
+        "name": "SEPARACIÓN TIPO-OUTPUT",
+        "formula": "ρ : M → {FACT, PARAMETER, CONSTRAINT, NARRATIVE}",
+        "description": "Output type mapping ρ is determined by level",
+        "enforcement": "Output type follows from epistemic level"
       }
     ]
   },
 
-  "pdm_system_architecture": {
-    "description": "Architecture of PDM-driven calibration adjustments",
-    "layers": [
-      {
-        "layer": 0,
-        "name": "Global Defaults",
-        "description": "Infrastructure parameters (seeds, timeouts)"
+  "pdm_trigger_categories": {
+    "description": "PDM triggers aligned with contract type requirements",
+    "categories": {
+      "STRUCTURAL": {
+        "triggers": ["HIERARCHY_DEPTH", "TABLE_DENSITY", "SEMANTIC_SECTIONS"],
+        "affects_contracts": ["TYPE_A", "TYPE_C"]
       },
-      {
-        "layer": 1,
-        "name": "Level Determination",
-        "description": "IMMUTABLE epistemic level from registry",
-        "constraint": "Cannot be changed by subsequent layers"
+      "FINANCIAL": {
+        "triggers": ["PPI_PAI_TABLES", "FINANCIAL_DATA", "BUDGET_TABLES"],
+        "affects_contracts": ["TYPE_D"]
       },
-      {
-        "layer": 2,
-        "name": "Level Defaults",
-        "description": "Base calibration from level_configs/*.json"
+      "TEMPORAL": {
+        "triggers": ["HISTORICAL_BASELINES", "TEMPORAL_LOGIC", "TIME_SERIES"],
+        "affects_contracts": ["TYPE_B", "TYPE_C"]
       },
-      {
-        "layer": 3,
-        "name": "Contract Type Overrides",
-        "description": "Type-specific adjustments from type_configs/*.json"
+      "QUANTITATIVE": {
+        "triggers": ["HIGH_DIMENSIONAL", "PRECISION_REQUIRED", "MULTI_MODAL"],
+        "affects_contracts": ["TYPE_B", "TYPE_D"]
       },
-      {
-        "layer": 4,
-        "name": "PDM-Driven Adjustments",
-        "description": "Dynamic adjustments based on document structure",
-        "constraint": "Can ONLY modify parameters, NEVER level"
-      },
-      {
-        "layer": 5,
-        "name": "Reserved",
-        "description": "Reserved for future extensions"
-      },
-      {
-        "layer": 6,
-        "name": "Reserved",
-        "description": "Reserved for future extensions"
-      },
-      {
-        "layer": 7,
-        "name": "Reserved",
-        "description": "Reserved for future extensions"
+      "LOGICAL": {
+        "triggers": ["HIGH_STAKES", "CONTRADICTION_RISK", "COMPLETENESS_CHECK"],
+        "affects_contracts": ["TYPE_E"]
       }
-    ]
+    }
   },
 
-  "level_specific_rules": {
-    "description": "Mapping from epistemic levels to PDM rule files",
-    "levels": [
-      {
-        "level": "N0-INFRA",
-        "rule_file": null,
-        "reason": "N0 is infrastructure-only, no PDM sensitivity"
-      },
-      {
-        "level": "N1-EMP",
-        "rule_file": "n1_empirical_pdm_rules.json",
-        "description": "Empirical extraction PDM rules"
-      },
-      {
-        "level": "N2-INF",
-        "rule_file": "n2_inferential_pdm_rules.json",
-        "description": "Inferential computation PDM rules"
-      },
-      {
-        "level": "N3-AUD",
-        "rule_file": "n3_audit_pdm_rules.json",
-        "description": "Audit veto PDM rules"
-      },
-      {
-        "level": "N4-META",
-        "rule_file": null,
-        "reason": "N4 is level-agnostic meta-analysis"
-      }
-    ]
+  "cross_layer_effects": {
+    "description": "Cross-layer fusion from episteme_rules Part V",
+    "N1_to_N2": {
+      "relationship": "N2 reads N1 facts",
+      "data_flow": "forward_propagation",
+      "formula": "N2 = f(N1_facts)"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 modifies N1 confidence",
+      "data_flow": "confidence_backpropagation",
+      "formula": "N1.confidence *= N2.adjustment"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK N1 facts",
+      "asymmetry": "N1 CANNOT invalidate N3",
+      "formula": "if N3.veto then N1 = ∅"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "asymmetry": "N2 CANNOT invalidate N3",
+      "formula": "if N3.veto then N2.confidence *= 0.0"
+    },
+    "all_to_N4": {
+      "relationship": "N4 consumes validated outputs from all layers",
+      "data_flow": "terminal_aggregation",
+      "formula": "N4 = synthesize(N1_validated, N2_validated, N3_constraints)"
+    }
   },
 
-  "pdm_profile_schema": {
-    "description": "Schema for PDM structural profile used in calibration",
-    "required_fields": [
-      {
-        "field": "document_type",
-        "type": "string",
-        "description": "Type of document (PDM, technical, financial, etc.)"
+  "veto_gate_specifications": {
+    "description": "N3 veto conditions from episteme_rules Part II.2.2",
+    "veto_conditions": {
+      "matrix_not_positive_definite": {
+        "triggered_by": "IndustrialGradeValidator",
+        "propagation": "upstream_and_downstream",
+        "confidence_multiplier": 0.0
       },
-      {
-        "field": "table_schemas",
-        "type": "array",
-        "description": "List of table schemas detected in document"
+      "statistical_significance_failed": {
+        "triggered_by": "PolicyContradictionDetector._statistical_significance_test",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.0
       },
-      {
-        "field": "hierarchy_depth",
-        "type": "integer",
-        "description": "Depth of document hierarchy"
+      "logical_contradiction": {
+        "triggered_by": "PolicyContradictionDetector._detect_logical_incompatibilities",
+        "propagation": "both",
+        "confidence_multiplier": 0.0
       },
-      {
-        "field": "contains_financial_data",
-        "type": "boolean",
-        "description": "Whether document contains financial data"
+      "cycle_detected": {
+        "triggered_by": "AdvancedDAGValidator._is_acyclic",
+        "propagation": "total",
+        "confidence_multiplier": 0.0
       },
-      {
-        "field": "temporal_structure",
-        "type": "object",
-        "description": "Temporal structure information",
-        "properties": [
-          {"name": "has_baselines", "type": "boolean"},
-          {"name": "requires_ordering", "type": "boolean"},
-          {"name": "time_span", "type": "object"}
-        ]
+      "budget_insufficiency": {
+        "triggered_by": "FinancialAuditor._detect_allocation_gaps",
+        "propagation": "partial",
+        "confidence_multiplier": 0.3
       }
-    ],
-    "optional_fields": [
-      {
-        "field": "table_density",
-        "type": "float",
-        "description": "Density of tables in document"
-      },
-      {
-        "field": "semantic_sections",
-        "type": "array",
-        "description": "List of semantic section boundaries"
-      },
-      {
-        "field": "modality_count",
-        "type": "integer",
-        "description": "Number of data modalities present"
-      }
-    ]
+    }
   },
 
   "calibration_pipeline": {
-    "description": "Step-by-step process for PDM-driven calibration",
-    "steps": [
-      {
-        "step": 1,
-        "action": "Load PDM Profile",
-        "description": "Extract structural profile from document"
+    "description": "PDM calibration aligned with execution_phases structure",
+    "phases": {
+      "phase_A_construction": {
+        "level": "N1-EMP",
+        "description": "Extract raw facts",
+        "output_type": "FACT",
+        "typical_methods": ["extract_*", "parse_*", "mine_*", "chunk_*"]
       },
-      {
-        "step": 2,
-        "action": "Detect Triggers",
-        "description": "Identify which PDM triggers are activated"
+      "phase_B_computation": {
+        "level": "N2-INF",
+        "description": "Transform facts to parameters",
+        "output_type": "PARAMETER",
+        "typical_methods": ["analyze_*", "score_*", "calculate_*", "infer_*"]
       },
-      {
-        "step": 3,
-        "action": "Load Base Calibration",
-        "description": "Get base calibration from level config"
-      },
-      {
-        "step": 4,
-        "action": "Apply Adjustments",
-        "description": "Apply PDM rule adjustments to base parameters"
-      },
-      {
-        "step": 5,
-        "action": "Validate Constraints",
-        "description": "Enforce constitutional constraints (CI-03, CI-04, CI-05)"
-      },
-      {
-        "step": 6,
-        "action": "Return Resolved Calibration",
-        "description": "Return fully resolved calibration object"
+      "phase_C_litigation": {
+        "level": "N3-AUD",
+        "description": "Audit and potentially veto",
+        "output_type": "CONSTRAINT",
+        "typical_methods": ["validate_*", "detect_*", "audit_*", "test_*"]
       }
-    ]
+    }
   },
 
-  "validation_rules": [
-    {
-      "rule": "LEVEL_IMMUTABILITY_CHECK",
-      "description": "Verify level has not changed after PDM adjustments",
-      "severity": "ERROR",
-      "enforcement": "Post-adjustment validation"
-    },
-    {
-      "rule": "PARAMETER_BOUNDS_CHECK",
-      "description": "Verify all parameters are within valid bounds",
-      "severity": "ERROR",
-      "enforcement": "Post-adjustment validation"
-    },
-    {
-      "rule": "ASYMMETRY_PRINCIPLE_CHECK",
-      "description": "Verify N3 veto asymmetry is maintained",
-      "severity": "ERROR",
-      "enforcement": "Architectural enforcement"
-    }
-  ],
-
   "metadata": {
-    "created": "2025-01-15",
-    "last_modified": "2025-01-15",
+    "created": "2025-01-21",
+    "last_modified": "2025-01-21",
     "author": "FARFAN Calibration Team",
     "review_status": "CONSTITUTIONAL",
-    "schema_compliance": "EPISTEMIC-v4.0.0"
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "aligns_with": "episteme_rules.md v1.0.0"
   }
 }

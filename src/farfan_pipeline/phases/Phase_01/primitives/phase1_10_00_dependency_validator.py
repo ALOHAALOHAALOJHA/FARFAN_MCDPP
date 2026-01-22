@@ -62,7 +62,7 @@ class Phase1DependencyValidator:
     4. Bayesian libraries (pymc, arviz)
     5. PDF processing (PyMuPDF/fitz, pdfplumber)
     6. Validation libraries (pydantic >=2.0)
-    7. methods_dispensary package accessible
+    7. farfan_pipeline.methods package accessible
     8. Derek Beach module importable
     9. Theory of Change module importable
 
@@ -107,8 +107,8 @@ class Phase1DependencyValidator:
         # Check validation libraries
         self._check_validation_libraries()
 
-        # Check methods_dispensary package
-        self._check_methods_dispensary()
+        # Check farfan_pipeline.methods package
+        self._check_methods_package()
 
         # Check Derek Beach module
         self._check_derek_beach()
@@ -234,19 +234,19 @@ class Phase1DependencyValidator:
                 )
             )
 
-    def _check_methods_dispensary(self) -> None:
-        """Check methods_dispensary is reachable through the registry."""
+    def _check_methods_package(self) -> None:
+        """Check farfan_pipeline.methods is reachable through the registry."""
         try:
             cls = self.method_registry._load_class("BeachEvidentialTest")
             self.checks.append(
                 DependencyCheck(
-                    name="methods_dispensary package", available=True, version="registry"
+                    name="farfan_pipeline.methods package", available=True, version="registry"
                 )
             )
         except MethodRegistryError as e:
             self.critical_failures.append(
                 DependencyCheck(
-                    name="methods_dispensary package",
+                    name="farfan_pipeline.methods package",
                     available=False,
                     error=str(e),
                     fix_command="Verify class_registry paths and PYTHONPATH include src/",
@@ -273,7 +273,7 @@ class Phase1DependencyValidator:
                     name="Derek Beach module",
                     available=False,
                     error=str(e),
-                    fix_command="Resolve registry path or dependencies for BeachEvidentialTest in methods_dispensary",
+                    fix_command="Resolve registry path or dependencies for BeachEvidentialTest in farfan_pipeline.methods",
                 )
             )
 
@@ -295,7 +295,7 @@ class Phase1DependencyValidator:
                     name="Theory of Change module",
                     available=False,
                     error=str(e),
-                    fix_command="Resolve registry path or dependencies for TeoriaCambio in methods_dispensary",
+                    fix_command="Resolve registry path or dependencies for TeoriaCambio in farfan_pipeline.methods",
                 )
             )
 

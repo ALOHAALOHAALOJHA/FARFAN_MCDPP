@@ -80,7 +80,7 @@ DECORATOR_REQUIRED_PARAMS: Final[dict[str, frozenset[str]]] = {
 SCAN_DIRECTORIES: Final[list[str]] = [
     "src/farfan_pipeline/phases/Phase_01",
     "src/farfan_pipeline/phases/Phase_02",
-    "src/farfan_pipeline/methods_dispensary",
+    "src/farfan_pipeline/methods",
 ]
 
 

@@ -1221,7 +1221,7 @@ class DynamicContractExecutor:
         3. Integration flow:
            - Read method_binding.methods[] from contract v3
            - Call MethodRegistry.get_method(class_name, method_name)
-           - Instantiate class under demand from methods_dispensary/*
+           - Instantiate class under demand from farfan_pipeline/methods/*
            - Execute with arguments validated by ExtendedArgRouter
         4. CalibrationPolicy (from calibration_policy.py) weights methods
         5. Thread-safe with threading.Lock

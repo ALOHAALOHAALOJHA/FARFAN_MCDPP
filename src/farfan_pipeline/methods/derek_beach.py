@@ -139,18 +139,9 @@ if missing_deps:
         ImportWarning
     )
 
-# DNP Standards Integration
-try:
-    from dnp_integration import ValidadorDNP
-
-    DNP_AVAILABLE = True
-except ImportError:
-    DNP_AVAILABLE = False
-    warnings.warn("Módulos DNP no disponibles. Validación DNP deshabilitada.", stacklevel=2)
-
 # Refactored Bayesian Engine (F1.2: Architectural Refactoring)
 try:
-    from inference.bayesian_adapter import BayesianEngineAdapter
+    from farfan_pipeline.inference.bayesian_adapter import BayesianEngineAdapter
 
     REFACTORED_BAYESIAN_AVAILABLE = True
 except ImportError:
@@ -2199,7 +2190,6 @@ COLOMBIAN_ENTITIES = {
 DEFAULT_CONFIG_FILE = "config.yaml"
 EXTRACTION_REPORT_SUFFIX = "_extraction_confidence_report.json"
 CAUSAL_MODEL_SUFFIX = "_causal_model.json"
-DNP_REPORT_SUFFIX = "_dnp_compliance_report.txt"
 
 # Type definitions
 NodeType = Literal["programa", "producto", "resultado", "impacto"]
@@ -6807,12 +6797,6 @@ class CDAFFramework:
             self.logger.warning(f"EconML integration not available: {e}")
             self.treatment_analyzer = None
 
-        # Initialize DNP validator if available
-        self.dnp_validator = None
-        if DNP_AVAILABLE:
-            self.dnp_validator = ValidadorDNP(es_municipio_pdet=False)  # Can be configured
-            self.logger.info("Validador DNP inicializado")
-
     def process_document(self, pdf_path: Path, policy_code: str) -> bool:
         """Main processing pipeline"""
         self.logger.info(f"Iniciando procesamiento de documento: {pdf_path}")
@@ -6889,12 +6873,7 @@ class CDAFFramework:
             self.inference_setup.assign_probative_value(nodes)
             self.inference_setup.identify_failure_points(graph, text)
 
-            # Step 7: DNP Standards Validation (if available)
-            if self.dnp_validator:
-                self.logger.info("Validando cumplimiento de estándares DNP...")
-                self._validate_dnp_compliance(nodes, graph, policy_code)
-
-            # Step 8: Generate reports
+            # Step 7: Generate reports
             self.logger.info("Generando reportes y visualizaciones...")
             self.reporting_engine.generate_causal_diagram(graph, policy_code)
             self.reporting_engine.generate_accountability_matrix(graph, policy_code)
@@ -7347,207 +7326,6 @@ class CDAFFramework:
 
         return feedback
 
-    def _validate_dnp_compliance(
-        self, nodes: dict[str, MetaNode], graph: nx.DiGraph, policy_code: str
-    ) -> None:
-        """
-        Validate DNP compliance for all nodes/projects
-        Generates DNP compliance report
-        """
-        if not self.dnp_validator:
-            return
-
-        # Build project list from nodes
-        proyectos = []
-        for node_id, node in nodes.items():
-            # Extract sector from responsible entity or type
-            sector = "general"
-            if node.responsible_entity:
-                entity_lower = node.responsible_entity.lower()
-                if "educaci" in entity_lower or "edu" in entity_lower:
-                    sector = "educacion"
-                elif "salud" in entity_lower:
-                    sector = "salud"
-                elif "agua" in entity_lower or "acueducto" in entity_lower:
-                    sector = "agua_potable_saneamiento"
-                elif (
-                    "via" in entity_lower
-                    or "vial" in entity_lower
-                    or "transporte" in entity_lower
-                    or "infraestructura" in entity_lower
-                ):
-                    sector = "vias_transporte"
-                elif "agr" in entity_lower or "rural" in entity_lower:
-                    sector = "desarrollo_agropecuario"
-
-            # Infer indicators from node type
-            indicadores = []
-            if node.type == "producto":
-                # Map to MGA product indicators based on sector
-                if sector == "educacion":
-                    indicadores = ["EDU-020", "EDU-021"]
-                elif sector == "salud":
-                    indicadores = ["SAL-020", "SAL-021"]
-                elif sector == "agua_potable_saneamiento":
-                    indicadores = ["APS-020", "APS-021"]
-            elif node.type == "resultado":
-                # Map to MGA result indicators
-                if sector == "educacion":
-                    indicadores = ["EDU-001", "EDU-002"]
-                elif sector == "salud":
-                    indicadores = ["SAL-001", "SAL-002"]
-                elif sector == "agua_potable_saneamiento":
-                    indicadores = ["APS-001", "APS-002"]
-
-            proyectos.append(
-                {
-                    "nombre": node_id,
-                    "sector": sector,
-                    "descripcion": node.text[:200] if node.text else "",
-                    "indicadores": indicadores,
-                    "presupuesto": node.financial_allocation or 0.0,
-                    "es_rural": "rural" in node.text.lower() if node.text else False,
-                    "poblacion_victimas": "v ctima" in node.text.lower() if node.text else False,
-                }
-            )
-
-        # Validate each project
-        dnp_results = []
-        for proyecto in proyectos:
-            resultado = self.dnp_validator.validar_proyecto_integral(
-                sector=proyecto["sector"],
-                descripcion=proyecto["descripcion"],
-                indicadores_propuestos=proyecto["indicadores"],
-                presupuesto=proyecto["presupuesto"],
-                es_rural=proyecto["es_rural"],
-                poblacion_victimas=proyecto["poblacion_victimas"],
-            )
-            dnp_results.append({"proyecto": proyecto["nombre"], "resultado": resultado})
-
-        # Generate DNP compliance report
-        self._generate_dnp_report(dnp_results, policy_code)
-
-    def _generate_dnp_report(self, dnp_results: list[dict], policy_code: str) -> None:
-        """Generate comprehensive DNP compliance report"""
-        report_path = self.output_dir / f"{policy_code}{DNP_REPORT_SUFFIX}"
-
-        total_proyectos = len(dnp_results)
-        if total_proyectos == 0:
-            return
-
-        # Calculate aggregate statistics
-        proyectos_excelente = sum(
-            1 for r in dnp_results if r["resultado"].nivel_cumplimiento.value == "excelente"
-        )
-        proyectos_bueno = sum(
-            1 for r in dnp_results if r["resultado"].nivel_cumplimiento.value == "bueno"
-        )
-        proyectos_aceptable = sum(
-            1 for r in dnp_results if r["resultado"].nivel_cumplimiento.value == "aceptable"
-        )
-        proyectos_insuficiente = sum(
-            1 for r in dnp_results if r["resultado"].nivel_cumplimiento.value == "insuficiente"
-        )
-
-        score_promedio = sum(r["resultado"].score_total for r in dnp_results) / total_proyectos
-
-        # Build report
-        lines = []
-        lines.append("=" * 100)
-        lines.append("REPORTE DE CUMPLIMIENTO DE ESTÁNDARES DNP")
-        lines.append(f"Código de Política: {policy_code}")
-        lines.append("=" * 100)
-        lines.append("")
-
-        lines.append("RESUMEN EJECUTIVO")
-        lines.append("-" * 100)
-        lines.append(f"Total de Proyectos/Metas Analizados: {total_proyectos}")
-        lines.append(f"Score Promedio de Cumplimiento: {score_promedio:.1f}/100")
-        lines.append("")
-        lines.append("Distribución por Nivel de Cumplimiento:")
-        lines.append(
-            f"  • Excelente (>90%):      {proyectos_excelente:3d} ({proyectos_excelente / total_proyectos * 100:5.1f}%)"
-        )
-        lines.append(
-            f"  • Bueno (75-90%):        {proyectos_bueno:3d} ({proyectos_bueno / total_proyectos * 100:5.1f}%)"
-        )
-        lines.append(
-            f"  • Aceptable (60-75%):    {proyectos_aceptable:3d} ({proyectos_aceptable / total_proyectos * 100:5.1f}%)"
-        )
-        lines.append(
-            f"  • Insuficiente (<60%):   {proyectos_insuficiente:3d} ({proyectos_insuficiente / total_proyectos * 100:5.1f}%)"
-        )
-        lines.append("")
-
-        # Detailed validation per project
-        lines.append("VALIDACIÓN DETALLADA POR PROYECTO/META")
-        lines.append("=" * 100)
-
-        for i, result_data in enumerate(dnp_results, 1):
-            proyecto = result_data["proyecto"]
-            resultado = result_data["resultado"]
-
-            lines.append("")
-            lines.append(f"{i}. {proyecto}")
-            lines.append("-" * 100)
-            lines.append(
-                f"   Score: {resultado.score_total:.1f}/100 | Nivel: {resultado.nivel_cumplimiento.value.upper()}"
-            )
-
-            # Competencies
-            comp_status = "✓" if resultado.cumple_competencias else "✗"
-            lines.append(f"   Competencias Municipales: {comp_status}")
-            if resultado.competencias_validadas:
-                lines.append(
-                    f"     - Aplicables: {', '.join(resultado.competencias_validadas[:3])}"
-                )
-
-            # MGA Indicators
-            mga_status = "✓" if resultado.cumple_mga else "✗"
-            lines.append(f"   Indicadores MGA: {mga_status}")
-            if resultado.indicadores_mga_usados:
-                lines.append(f"     - Usados: {', '.join(resultado.indicadores_mga_usados)}")
-            if resultado.indicadores_mga_faltantes:
-                lines.append(
-                    f"     - Recomendados: {', '.join(resultado.indicadores_mga_faltantes)}"
-                )
-
-            # PDET (if applicable)
-            if resultado.es_municipio_pdet:
-                pdet_status = "✓" if resultado.cumple_pdet else "✗"
-                lines.append(f"   Lineamientos PDET: {pdet_status}")
-                if resultado.lineamientos_pdet_cumplidos:
-                    lines.append(f"     - Cumplidos: {len(resultado.lineamientos_pdet_cumplidos)}")
-
-            # Critical alerts
-            if resultado.alertas_criticas:
-                lines.append("   ⚠ ALERTAS CRÍTICAS:")
-                for alerta in resultado.alertas_criticas:
-                    lines.append(f"     - {alerta}")
-
-            # Recommendations
-            if resultado.recomendaciones:
-                lines.append("   📋 RECOMENDACIONES:")
-                for rec in resultado.recomendaciones[:3]:  # Top 3
-                    lines.append(f"     - {rec}")
-
-        lines.append("")
-        lines.append("=" * 100)
-        lines.append("NORMATIVA DE REFERENCIA")
-        lines.append("-" * 100)
-        lines.append("• Competencias Municipales: Ley 136/1994, Ley 715/2001, Ley 1551/2012")
-        lines.append("• Indicadores MGA: DNP - Metodología General Ajustada")
-        lines.append("• PDET: Decreto 893/2017, Acuerdo Final de Paz")
-        lines.append("=" * 100)
-
-        # Write report
-        try:
-            with open(report_path, "w", encoding="utf-8") as f:
-                f.write("\n".join(lines))
-            self.logger.info(f"Reporte de cumplimiento DNP guardado en: {report_path}")
-        except Exception as e:
-            self.logger.error(f"Error guardando reporte DNP: {e}")
-
     def _audit_causal_coherence(
         self, graph: nx.DiGraph, nodes: dict[str, MetaNode]
     ) -> dict[str, Any]:
@@ -7633,57 +7411,6 @@ class CDAFFramework:
             self.logger.info(f"Causal model JSON saved to: {output_path}")
         except Exception as e:
             self.logger.error(f"Error saving causal model JSON: {e}")
-
-    def _generate_dnp_compliance_report(
-        self, nodes: dict[str, MetaNode], policy_code: str
-    ) -> dict[str, Any]:
-        """
-        Generate DNP compliance report.
-
-        Args:
-            nodes: Dictionary of nodes
-            policy_code: Policy code
-
-        Returns:
-            Compliance report dictionary
-        """
-        report = {
-            "policy_code": policy_code,
-            "total_products": 0,
-            "compliant_products": 0,
-            "compliance_rate": 0.0,
-            "gaps": [],
-        }
-
-        # Check products for DNP compliance
-        for node_id, node in nodes.items():
-            if node.type == "producto":
-                report["total_products"] += 1
-
-                # Check required fields
-                has_baseline = node.baseline is not None
-                has_target = node.target is not None
-                has_indicator = len(node.text) > 10  # Simple check
-
-                is_compliant = has_baseline and has_target and has_indicator
-
-                if is_compliant:
-                    report["compliant_products"] += 1
-                else:
-                    gaps = []
-                    if not has_baseline:
-                        gaps.append("missing_baseline")
-                    if not has_target:
-                        gaps.append("missing_target")
-                    if not has_indicator:
-                        gaps.append("missing_indicator")
-
-                    report["gaps"].append({"node_id": node_id, "issues": gaps})
-
-        if report["total_products"] > 0:
-            report["compliance_rate"] = report["compliant_products"] / report["total_products"]
-
-        return report
 
     def _generate_extraction_report(
         self, nodes: dict[str, MetaNode], graph: nx.DiGraph, policy_code: str
@@ -9278,12 +9005,6 @@ Configuración:
         help="Nivel de logging (default: INFO)",
     )
 
-    parser.add_argument(
-        "--pdet",
-        action="store_true",
-        help="Indica si el municipio es PDET (activa validación especial)",
-    )
-
     args = parser.parse_args()
 
     from farfan_pipeline.core.policy_area_canonicalization import (
@@ -9300,11 +9021,6 @@ Configuración:
     # Initialize framework
     try:
         framework = CDAFFramework(args.config_file, args.output_dir, args.log_level)
-
-        # Configure PDET if specified
-        if args.pdet and framework.dnp_validator:
-            framework.dnp_validator.es_municipio_pdet = True
-            framework.logger.info("Modo PDET activado - Validación especial habilitada")
     except Exception as e:
         print(f"ERROR: No se pudo inicializar el framework: {e}")
         return 1
