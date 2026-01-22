@@ -72,9 +72,9 @@ class TestPhase5ModuleImports:
     
     def test_import_contracts(self):
         """Test importing all Phase 5 contracts."""
-        from farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract import Phase5InputContract
-        from farfan_pipeline.phases.Phase_05.contracts.phase5_mission_contract import Phase5MissionContract
-        from farfan_pipeline.phases.Phase_05.contracts.phase5_output_contract import Phase5OutputContract
+        from farfan_pipeline.phases.Phase_05.contracts.phase5_10_00_input_contract import Phase5InputContract
+        from farfan_pipeline.phases.Phase_05.contracts.phase5_10_01_mission_contract import Phase5MissionContract
+        from farfan_pipeline.phases.Phase_05.contracts.phase5_10_02_output_contract import Phase5OutputContract
         
         assert Phase5InputContract is not None
         assert Phase5MissionContract is not None
@@ -117,7 +117,7 @@ class TestPhase5Dependencies:
     
     def test_phase5_contracts_validate_compatibility(self):
         """Test that Phase 5 contracts validate Phase 4 compatibility."""
-        from farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract import Phase5InputContract
+        from farfan_pipeline.phases.Phase_05.contracts.phase5_10_00_input_contract import Phase5InputContract
         
         # Phase 5 input should match Phase 4 output
         assert Phase5InputContract.EXPECTED_INPUT_COUNT == 60

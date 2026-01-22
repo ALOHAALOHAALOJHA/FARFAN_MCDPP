@@ -21,9 +21,9 @@ from farfan_pipeline.phases.Phase_05.PHASE_5_CONSTANTS import (
     MIN_SCORE,
     POLICY_AREAS,
 )
-from farfan_pipeline.phases.Phase_05.contracts.phase5_input_contract import Phase5InputContract
-from farfan_pipeline.phases.Phase_05.contracts.phase5_mission_contract import Phase5MissionContract
-from farfan_pipeline.phases.Phase_05.contracts.phase5_output_contract import Phase5OutputContract
+from farfan_pipeline.phases.Phase_05.contracts.phase5_10_00_input_contract import Phase5InputContract
+from farfan_pipeline.phases.Phase_05.contracts.phase5_10_01_mission_contract import Phase5MissionContract
+from farfan_pipeline.phases.Phase_05.contracts.phase5_10_02_output_contract import Phase5OutputContract
 
 
 @dataclass

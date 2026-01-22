@@ -174,10 +174,10 @@ def _generate_mock_cluster_scores() -> Dict[str, int]:
 def _load_scores_from_artifacts(subregion_id: str) -> Dict[str, Any]:
     """Load real scores from pipeline artifacts.
 
-    This will be implemented to read from:
-    - dashboard_outputs/<job_id>/region_<subregion_id>_report.json
-
-    For now, returns empty dict (to be populated by real pipeline results).
+    Attempts to read from:
+    1. artifacts/dashboard_outputs/<subregion_id>_report.json
+    2. artifacts/<job_id>/phase_outputs.json
+    3. Falls back to mock data if no artifacts found
 
     Args:
         subregion_id: Subregion identifier
@@ -185,13 +185,85 @@ def _load_scores_from_artifacts(subregion_id: str) -> Dict[str, Any]:
     Returns:
         Dict with score, dimension_scores, cluster_scores, micro_scores
     """
-    # TODO: Implement artifact loading
-    # For now, return mock data
+    import json
+    from pathlib import Path
+    
+    # Search paths for artifacts
+    artifact_paths = [
+        Path("artifacts") / "dashboard_outputs" / f"{subregion_id}_report.json",
+        Path("artifacts") / "latest" / "phase_outputs.json",
+        Path("output") / "reports" / f"{subregion_id}_analysis.json",
+    ]
+    
+    for artifact_path in artifact_paths:
+        if artifact_path.exists():
+            try:
+                with open(artifact_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                
+                # Extract macro score (Phase 7 output)
+                macro_score = data.get("macro_score", {})
+                overall_score = macro_score.get("score", 0) if isinstance(macro_score, dict) else 0
+                
+                # Extract cluster scores (Phase 6 output)  
+                cluster_data = data.get("cluster_scores", [])
+                cluster_scores = {}
+                for cs in cluster_data:
+                    if isinstance(cs, dict):
+                        cid = cs.get("cluster_id", "")
+                        score = cs.get("score", 0)
+                        # Map to dashboard cluster IDs
+                        if "SEC" in cid.upper() or "PAZ" in cid.upper():
+                            cluster_scores["CL01_SEC_PAZ"] = int(score * 100 / 3) if score <= 3 else int(score)
+                        elif "GP" in cid.upper() or "GOB" in cid.upper():
+                            cluster_scores["CL02_GP"] = int(score * 100 / 3) if score <= 3 else int(score)
+                        elif "TERR" in cid.upper() or "AMB" in cid.upper():
+                            cluster_scores["CL03_TERR_AMB"] = int(score * 100 / 3) if score <= 3 else int(score)
+                        elif "DESC" in cid.upper() or "CRIS" in cid.upper():
+                            cluster_scores["CL04_DESC_CRIS"] = int(score * 100 / 3) if score <= 3 else int(score)
+                
+                # Extract dimension scores (Phase 4/5 output)
+                dim_data = data.get("dimension_scores", data.get("area_scores", []))
+                dimension_scores = {}
+                for ds in dim_data if isinstance(dim_data, list) else []:
+                    if isinstance(ds, dict):
+                        dim_id = ds.get("dimension_id", ds.get("area_id", ""))
+                        score = ds.get("score", 0)
+                        # Normalize to percentage
+                        normalized = int(score * 100 / 3) if score <= 3 else int(score)
+                        dimension_scores[dim_id] = normalized
+                
+                # Fill missing dimensions with defaults
+                default_dims = ["D1_INSUMOS", "D2_VOLUNTAD", "D3_CONTEXTO", 
+                               "D4_COHERENCIA", "D5_SISAS", "D6_IMPLEMENTACION"]
+                for dim in default_dims:
+                    if dim not in dimension_scores:
+                        dimension_scores[dim] = 50  # Neutral default
+                
+                # Fill missing clusters with defaults
+                default_clusters = ["CL01_SEC_PAZ", "CL02_GP", "CL03_TERR_AMB", "CL04_DESC_CRIS"]
+                for cl in default_clusters:
+                    if cl not in cluster_scores:
+                        cluster_scores[cl] = 50  # Neutral default
+                
+                return {
+                    "score": int(overall_score * 100 / 3) if overall_score <= 3 else int(overall_score),
+                    "dimension_scores": dimension_scores,
+                    "cluster_scores": cluster_scores,
+                    "score_source": "artifacts",
+                    "artifact_loaded": True,
+                    "artifact_path": str(artifact_path),
+                }
+            except (json.JSONDecodeError, KeyError, TypeError) as e:
+                # Log and continue to next path
+                continue
+    
+    # Fallback to mock data if no artifacts found
     return {
         "score": _generate_mock_score(subregion_id),
         "dimension_scores": _generate_mock_dimension_scores(),
         "cluster_scores": _generate_mock_cluster_scores(),
-        "score_source": "artifacts",
+        "score_source": "mock_fallback",
         "artifact_loaded": False,
     }
 

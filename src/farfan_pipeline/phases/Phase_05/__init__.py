@@ -73,9 +73,9 @@ from .phase5_30_00_area_integration import (
 )
 
 # Contracts
-from .contracts.phase5_input_contract import Phase5InputContract
-from .contracts.phase5_output_contract import Phase5OutputContract
-from .contracts.phase5_mission_contract import Phase5MissionContract
+from .contracts.phase5_10_00_input_contract import Phase5InputContract
+from .contracts.phase5_10_02_output_contract import Phase5OutputContract
+from .contracts.phase5_10_01_mission_contract import Phase5MissionContract
 
 __all__ = [
     # Constants

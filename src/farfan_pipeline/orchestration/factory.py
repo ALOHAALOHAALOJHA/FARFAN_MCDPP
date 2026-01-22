@@ -707,6 +707,19 @@ class UnifiedFactory:
         self, contract_id: str, input_data: Dict[str, Any]
     ) -> Dict[str, Any]:
         """
+        Execute contract with dynamic method injection.
+
+        THIS IS THE CANONICAL METHOD INJECTION POINT.
+        Replaces the deprecated method_registry.py stub.
+
+        Method Injection Flow:
+        1. Load contract with executor_binding
+        2. Dynamically import executor class
+        3. Inject methods from method_binding section
+        4. Execute N1→N2→N3→N4 epistemological pipeline
+
+        See: Lines 788-955 for injection implementation
+
         Execute a contract by ID with method injection and full N1→N2→N3→N4 pipeline.
 
         This is the CRITICAL method that:

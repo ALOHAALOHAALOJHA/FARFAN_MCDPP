@@ -218,6 +218,9 @@ class PipelineDashboardBridge:
             logger.info(f"Executing pipeline for job {job_id}")
             result = self.orchestrator.execute_full_pipeline(str(pdf_path))
 
+            # Extract phase outputs for dashboard visualization (ACCURACY IMPROVEMENT)
+            phase_outputs = self._extract_phase_outputs_for_dashboard()
+
             # Update job with results
             with self.job_lock:
                 if job_id in self.active_jobs:
@@ -233,7 +236,7 @@ class PipelineDashboardBridge:
                     # Complete job in enhanced monitor
                     self.monitor.complete_job(job_id, final_artifacts=None)
 
-            # Emit completion event
+            # Emit completion event with full phase data (AUTOMATICITY IMPROVEMENT)
             self._emit_event(
                 PipelineEvent(
                     event_type="job_completed",
@@ -245,9 +248,23 @@ class PipelineDashboardBridge:
                         "duration": (job.completed_at - job.started_at).total_seconds()
                         if job.completed_at and job.started_at
                         else None,
+                        "phase_outputs": phase_outputs,  # New: Include phase outputs
                     },
                 )
             )
+            
+            # Emit automatic report ready event (AUTOMATICITY IMPROVEMENT)
+            if phase_outputs.get("macro_score"):
+                self.socketio.emit(
+                    "report_ready",
+                    {
+                        "job_id": job_id,
+                        "timestamp": datetime.now().isoformat(),
+                        "macro_score": phase_outputs.get("macro_score"),
+                        "cluster_scores": phase_outputs.get("cluster_scores"),
+                        "report_available": True,
+                    },
+                )
 
             logger.info(f"Job {job_id} completed successfully")
 
@@ -534,6 +551,89 @@ class PipelineDashboardBridge:
             return {k: str(v) for k, v in result.__dict__.items()}
         else:
             return {"result": str(result)}
+
+    def _extract_phase_outputs_for_dashboard(self) -> Dict[str, Any]:
+        """Extract relevant phase outputs for dashboard visualization.
+        
+        Extracts data from orchestrator context for:
+        - Macro score (Phase 7) - Overall analysis score
+        - Cluster scores (Phase 6) - Meso-level aggregation
+        - Area scores (Phase 5) - Policy area breakdown
+        - Recommendations (Phase 8) - Actionable insights
+        
+        Returns:
+            Dict with dashboard-ready phase outputs
+        """
+        outputs: Dict[str, Any] = {}
+        
+        try:
+            context = self.orchestrator.context
+            
+            # Extract Macro Score (Phase 7 output)
+            macro_score = context.get_phase_output(PhaseID.P07)
+            if macro_score:
+                if hasattr(macro_score, "score"):
+                    outputs["macro_score"] = {
+                        "score": macro_score.score,
+                        "quality_level": getattr(macro_score, "quality_level", "UNKNOWN"),
+                        "coherence": getattr(macro_score, "cross_cutting_coherence", 0.0),
+                        "alignment": getattr(macro_score, "strategic_alignment", 0.0),
+                        "systemic_gaps": getattr(macro_score, "systemic_gaps", []),
+                    }
+                elif isinstance(macro_score, dict):
+                    outputs["macro_score"] = macro_score
+            
+            # Extract Cluster Scores (Phase 6 output)
+            cluster_scores = context.get_phase_output(PhaseID.P06)
+            if cluster_scores:
+                outputs["cluster_scores"] = []
+                for cs in (cluster_scores if isinstance(cluster_scores, list) else [cluster_scores]):
+                    if hasattr(cs, "cluster_id"):
+                        outputs["cluster_scores"].append({
+                            "cluster_id": cs.cluster_id,
+                            "score": cs.score,
+                            "name": getattr(cs, "cluster_name", cs.cluster_id),
+                        })
+                    elif isinstance(cs, dict):
+                        outputs["cluster_scores"].append(cs)
+            
+            # Extract Area Scores (Phase 5 output)
+            area_scores = context.get_phase_output(PhaseID.P05)
+            if area_scores:
+                outputs["area_scores"] = []
+                for area in (area_scores if isinstance(area_scores, list) else [area_scores]):
+                    if hasattr(area, "area_id"):
+                        outputs["area_scores"].append({
+                            "area_id": area.area_id,
+                            "score": area.score,
+                            "name": getattr(area, "area_name", area.area_id),
+                        })
+                    elif isinstance(area, dict):
+                        outputs["area_scores"].append(area)
+            
+            # Extract Recommendations (Phase 8 output)
+            recommendations = context.get_phase_output(PhaseID.P08)
+            if recommendations:
+                outputs["recommendations"] = recommendations if isinstance(recommendations, dict) else {"data": recommendations}
+            
+            # Add phase execution summary
+            outputs["phase_summary"] = {
+                "phases_completed": list(context.phase_results.keys()) if hasattr(context, "phase_results") else [],
+                "total_violations": len(context.total_violations) if hasattr(context, "total_violations") else 0,
+            }
+            
+            logger.info(
+                f"Extracted phase outputs for dashboard",
+                macro_score=outputs.get("macro_score") is not None,
+                cluster_count=len(outputs.get("cluster_scores", [])),
+                area_count=len(outputs.get("area_scores", [])),
+            )
+            
+        except Exception as e:
+            logger.warning(f"Failed to extract phase outputs: {e}")
+            outputs["extraction_error"] = str(e)
+        
+        return outputs
 
 
 # Singleton instance (optional)

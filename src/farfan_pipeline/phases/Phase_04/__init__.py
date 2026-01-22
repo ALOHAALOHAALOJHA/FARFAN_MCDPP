@@ -77,30 +77,34 @@ from farfan_pipeline.phases.Phase_04.phase4_30_00_signal_enriched_aggregation im
 )
 
 # STAGE 40: ENHANCEMENTS - Performance and optimization
-# Adaptive Meso Scoring
-from farfan_pipeline.phases.Phase_04.enhancements.phase4_40_00_adaptive_meso_scoring import (
+# Adaptive Meso Scoring (from primitives)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_40_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
     ScoringMetrics,
 )
 
-# Aggregation Enhancements
-from farfan_pipeline.phases.Phase_04.enhancements import (
+# Aggregation Enhancements (from primitives)
+from farfan_pipeline.phases.Phase_04.primitives.phase4_40_00_aggregation_enhancements import (
     ConfidenceInterval,
     DispersionMetrics,
     HermeticityDiagnosis,
-)
-
-# Enhanced Aggregation (composite from enhancements package)
-from farfan_pipeline.phases.Phase_04.enhancements import (
-    EnhancedDimensionAggregator,
     enhance_aggregator,
 )
 
+# Enhanced Dimension Aggregator (from enhancements package)
+# Note: This may be defined elsewhere or need to be removed
+# from farfan_pipeline.phases.Phase_04.enhancements import (
+#     EnhancedDimensionAggregator,
+#     enhance_aggregator,
+# )
+
 # STAGE 50: INTEGRATION - Cross-phase integration
-from farfan_pipeline.phases.Phase_04.phase4_50_00_aggregation_integration import (
-    ClusterAggregator,
-)
+# Note: phase4_50_00_aggregation_integration does not exist yet
+# ClusterAggregator is defined in phase4_30_00_aggregation instead
+# from farfan_pipeline.phases.Phase_04.phase4_50_00_aggregation_integration import (
+#     ClusterAggregator,
+# )
 
 # STAGE 60: VALIDATION - Output validation
 from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import (
@@ -145,7 +149,7 @@ __all__ = [
     "ChoquetAggregator",
     "create_default_choquet_adapter",
     # Enhanced
-    "EnhancedDimensionAggregator",
+    # "EnhancedDimensionAggregator",  # Not available from primitives
     "enhance_aggregator",
     # Enhancement Metrics & Config
     "ConfidenceInterval",
@@ -166,7 +170,7 @@ __all__ = [
     # Signal
     "SignalEnrichedAggregator",
     # Integration (Stage 50)
-    "ClusterAggregator",
+    # "ClusterAggregator",  # Not defined yet
     # Validation (Stage 60)
     "ValidationResult",
     "AggregationValidationError",

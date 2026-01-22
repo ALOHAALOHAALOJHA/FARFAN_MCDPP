@@ -1,9 +1,18 @@
 """
-Compatibility Stub for MethodRegistry.
+DEPRECATED: This module is a legacy compatibility stub.
 
-This module provides a backward-compatible MethodRegistry implementation
-that redirects to the new architecture or acts as a test stub.
+Actual method injection is performed by:
+- UnifiedFactory.execute_contract() (factory.py:706-1024)
+- Direct method binding via executor_binding configuration
+
+This stub will be removed in v3.0.0.
 """
+import warnings
+warnings.warn(
+    "method_registry.py is deprecated. Use UnifiedFactory for method injection.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 import time
 from typing import Any, Dict, Optional, Type
