@@ -15,6 +15,9 @@ Version: 1.0.0
 from __future__ import annotations
 
 import logging
+import threading
+import time
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -63,6 +66,45 @@ class ResolverLoadResult:
     signals: List[Signal]
     load_time_seconds: float
     signal_count: int
+
+
+@dataclass(frozen=True)
+class SignalAggregationMetrics:
+    """Immutable signal aggregation metrics."""
+    total_signals_emitted: int
+    signals_by_type: Dict[str, int]
+    signals_by_phase: Dict[str, int]
+    signals_by_entity: Dict[str, int]
+    avg_signals_per_load: float
+    peak_signals_load: int
+    failed_emissions: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        return {
+            "total_signals_emitted": self.total_signals_emitted,
+            "signals_by_type": dict(self.signals_by_type),
+            "signals_by_phase": dict(self.signals_by_phase),
+            "signals_by_entity": dict(self.signals_by_entity),
+            "avg_signals_per_load": self.avg_signals_per_load,
+            "peak_signals_load": self.peak_signals_load,
+            "failed_emissions": self.failed_emissions,
+        }
+
+
+@dataclass(frozen=True)
+class VehicleHealthStatus:
+    """Health status for SISAS vehicles."""
+    vehicle_id: str
+    is_active: bool
+    signals_processed: int
+    last_signal_time: float
+    error_rate: float
+    avg_processing_time_ms: float
+
+    def is_healthy(self, error_threshold: float = 0.1) -> bool:
+        """Check if vehicle is healthy."""
+        return self.is_active and self.error_rate < error_threshold
 
 
 class SISASQuestionnaireResolver:
@@ -120,6 +162,16 @@ class SISASQuestionnaireResolver:
             "total_signals_generated": 0,
             "signal_errors": 0,
         }
+
+        # Signal aggregation metrics (thread-safe)
+        self._signal_counts: List[int] = []  # Track signals per load
+        self._signals_by_type: Dict[str, int] = defaultdict(int)
+        self._signals_by_phase: Dict[str, int] = defaultdict(int)
+        self._signals_by_entity: Dict[str, int] = defaultdict(int)
+        self._metrics_lock = threading.Lock()
+
+        # Vehicle health monitoring
+        self._vehicle_health: Dict[str, VehicleHealthStatus] = {}
 
     def _initialize_vehicles(self):
         """Initialize SISAS vehicles for signal generation."""
@@ -241,8 +293,10 @@ class SISASQuestionnaireResolver:
         entity_type: str,
         entity_id: str,
     ) -> List[Signal]:
-        """Generate signals for a load operation."""
+        """Generate signals for a load operation with metrics collection."""
         signals = []
+        failed_count = 0
+        start_time = time.time()
 
         try:
             # Create signal context
@@ -295,12 +349,90 @@ class SISASQuestionnaireResolver:
                 except Exception as e:
                     logger.warning(f"Failed to publish signal {signal.signal_type}: {str(e)}")
                     self._stats["signal_errors"] += 1
+                    failed_count += 1
+
+            # Aggregate metrics (thread-safe)
+            with self._metrics_lock:
+                for sig in signals:
+                    signal_type = getattr(sig, 'signal_type', 'unknown')
+                    phase = getattr(sig, 'phase', 'phase_00')
+                    self._signals_by_type[signal_type] += 1
+                    self._signals_by_phase[phase] += 1
+                    self._signals_by_entity[entity_type] += 1
+
+                self._signal_counts.append(len(signals))
 
         except Exception as e:
             logger.error(f"Error generating signals for {entity_type}/{entity_id}: {str(e)}")
             self._stats["signal_errors"] += 1
+            failed_count += 1
+
+        # Update vehicle health metrics
+        processing_time_ms = (time.time() - start_time) * 1000
+        for vehicle_id in self._vehicles:
+            self._update_vehicle_health(
+                vehicle_id=vehicle_id,
+                processed_count=len(signals),
+                processing_time_ms=processing_time_ms,
+                had_error=(failed_count > 0),
+            )
 
         return signals
+
+    def get_signal_metrics(self) -> SignalAggregationMetrics:
+        """Get immutable copy of signal aggregation metrics."""
+        with self._metrics_lock:
+            total = self._stats.get("total_signals_generated", 0)
+            failed = self._stats.get("signal_errors", 0)
+            counts = list(self._signal_counts) if self._signal_counts else [0]
+
+            return SignalAggregationMetrics(
+                total_signals_emitted=total,
+                signals_by_type=dict(self._signals_by_type),
+                signals_by_phase=dict(self._signals_by_phase),
+                signals_by_entity=dict(self._signals_by_entity),
+                avg_signals_per_load=sum(counts) / len(counts) if counts else 0.0,
+                peak_signals_load=max(counts) if counts else 0,
+                failed_emissions=failed,
+            )
+
+    def _update_vehicle_health(
+        self,
+        vehicle_id: str,
+        processed_count: int,
+        processing_time_ms: float,
+        had_error: bool,
+    ) -> None:
+        """Update vehicle health metrics using exponential moving average."""
+        existing = self._vehicle_health.get(vehicle_id)
+
+        if existing:
+            alpha = 0.2  # EMA smoothing factor
+            new_error_rate = 1.0 if had_error else 0.0
+            error_rate = alpha * new_error_rate + (1 - alpha) * existing.error_rate
+            avg_time = alpha * processing_time_ms + (1 - alpha) * existing.avg_processing_time_ms
+            signals_processed = existing.signals_processed + processed_count
+        else:
+            error_rate = 1.0 if had_error else 0.0
+            avg_time = processing_time_ms
+            signals_processed = processed_count
+
+        self._vehicle_health[vehicle_id] = VehicleHealthStatus(
+            vehicle_id=vehicle_id,
+            is_active=True,
+            signals_processed=signals_processed,
+            last_signal_time=time.time(),
+            error_rate=error_rate,
+            avg_processing_time_ms=avg_time,
+        )
+
+    def get_unhealthy_vehicles(self, error_threshold: float = 0.1) -> List[str]:
+        """Get list of unhealthy vehicle IDs."""
+        return [
+            vehicle_id
+            for vehicle_id, status in self._vehicle_health.items()
+            if not status.is_healthy(error_threshold)
+        ]
 
     def get_statistics(self) -> Dict[str, Any]:
         """Get resolver statistics."""

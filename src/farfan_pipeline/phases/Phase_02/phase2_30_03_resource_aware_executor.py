@@ -40,9 +40,7 @@ from functools import wraps
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    # MethodExecutor not yet implemented in unified orchestrator
-    # from farfan_pipeline.orchestration.orchestrator import MethodExecutor
-    MethodExecutor = Any  # Temporary placeholder
+    from farfan_pipeline.orchestration.compatibility import MethodExecutor
     from farfan_pipeline.phases.Phase_00.phase0_10_00_canonical_questionnaire import (
         CanonicalQuestionnaire,
     )

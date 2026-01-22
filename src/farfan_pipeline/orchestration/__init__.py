@@ -67,6 +67,10 @@ from farfan_pipeline.orchestration.orchestrator import (
     ExecutionContext,
     PipelineResult,
     UnifiedOrchestrator,
+)
+
+# Import compatibility classes
+from farfan_pipeline.orchestration.compatibility import (
     MethodExecutor,
     PhaseInstrumentation,
     ResourceLimits,
