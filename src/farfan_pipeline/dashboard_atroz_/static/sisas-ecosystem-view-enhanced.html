@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISAS Ecosystem View - ATROZ Dashboard v2.0</title>
+    <title>SISAS Unified Dashboard - ATROZ v3.0</title>
+    
+    <!-- Chart.js for advanced visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    
+    <!-- Socket.IO for real-time updates -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -590,6 +598,90 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Real-Time Metrics Overview */
+        .metrics-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #2d3748;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4fc3f7;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-trend {
+            font-size: 0.75rem;
+            color: #4caf50;
+        }
+
+        .metric-trend.down {
+            color: #f44336;
+        }
+
+        /* Chart Panels */
+        .chart-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        .time-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .time-btn {
+            padding: 0.25rem 0.75rem;
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid #4fc3f7;
+            color: #4fc3f7;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .time-btn.active {
+            background: #4fc3f7;
+            color: #0a0e27;
+        }
+
+        .time-btn:hover:not(.active) {
+            background: rgba(79, 195, 247, 0.2);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
@@ -597,12 +689,33 @@
         <!-- Header -->
         <div class="header">
             <div>
-                <h1>SISAS Ecosystem View</h1>
-                <div class="header-subtitle">Real-Time Signal Observatory | Live data from UnifiedOrchestrator & SDO</div>
+                <h1>🔬 SISAS Unified Dashboard</h1>
+                <div class="header-subtitle">Real-Time Signal Observatory & Advanced Analytics | ATROZ v3.0</div>
             </div>
             <div class="status-badge online" id="sisasStatusBadge">
                 <div class="status-indicator online" id="sisasStatusIndicator"></div>
                 <span id="sisasStatusText">ONLINE</span>
+            </div>
+        </div>
+
+        <!-- Real-Time KPI Metrics -->
+        <div class="metrics-overview" id="metricsOverview">
+            <!-- Dynamically populated from real API -->
+        </div>
+
+        <!-- Advanced Chart: Signal Throughput Time-Series -->
+        <div class="chart-panel">
+            <div class="panel-title">
+                <span>📊</span>
+                SIGNAL THROUGHPUT (Real-Time)
+                <div class="time-controls">
+                    <button class="time-btn active" data-range="1h">1H</button>
+                    <button class="time-btn" data-range="6h">6H</button>
+                    <button class="time-btn" data-range="24h">24H</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="throughputChart"></canvas>
             </div>
         </div>
 
@@ -708,10 +821,13 @@
         </div>
     </div>
 
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
         // Initialize WebSocket
         const socket = io('http://localhost:5000');
+        
+        // Global state
+        let charts = {};
+        let currentTimeRange = '1h';
 
         // Phase data
         const phases = [
@@ -727,8 +843,184 @@
             { id: 'P09', name: 'Report', consumers: 1 }
         ];
 
-        // Current phase state (mock - will be updated by WebSocket)
+        // Current phase state
         let currentPhase = 1;
+
+        // ============================================================
+        // REAL API DATA FETCHING
+        // ============================================================
+
+        async function fetchRealMetrics() {
+            try {
+                const response = await fetch('/api/v1/sisas/metrics/aggregated');
+                if (response.ok) {
+                    const data = await response.json();
+                    updateMetricsCards(data.overview);
+                    updateGatesFromAPI(data.gates);
+                    return data;
+                }
+            } catch (error) {
+                console.error('[SISAS] Failed to fetch metrics:', error);
+            }
+            return null;
+        }
+
+        async function fetchHistoricalData(range = '1h') {
+            try {
+                const response = await fetch(`/api/v1/sisas/metrics/historical?range=${range}&interval=1m`);
+                if (response.ok) {
+                    const data = await response.json();
+                    updateThroughputChart(data.data_points);
+                    return data;
+                }
+            } catch (error) {
+                console.error('[SISAS] Failed to fetch historical data:', error);
+            }
+            return null;
+        }
+
+        async function fetchConsumerDetails() {
+            try {
+                const response = await fetch('/api/v1/sisas/consumers/detailed');
+                if (response.ok) {
+                    const data = await response.json();
+                    updateConsumersFromAPI(data.consumers);
+                    return data;
+                }
+            } catch (error) {
+                console.error('[SISAS] Failed to fetch consumer details:', error);
+            }
+            return null;
+        }
+
+        async function fetchExtractorPerformance() {
+            try {
+                const response = await fetch('/api/v1/sisas/extractors/performance');
+                if (response.ok) {
+                    const data = await response.json();
+                    updateExtractorsFromAPI(data.extractors);
+                    return data;
+                }
+            } catch (error) {
+                console.error('[SISAS] Failed to fetch extractor performance:', error);
+            }
+            return null;
+        }
+
+        // ============================================================
+        // METRICS CARDS UPDATE
+        // ============================================================
+
+        function updateMetricsCards(overview) {
+            if (!overview) return;
+            
+            const container = document.getElementById('metricsOverview');
+            container.innerHTML = `
+                <div class="metric-card">
+                    <div class="metric-label">Signals Dispatched</div>
+                    <div class="metric-value">${overview.total_signals_dispatched || 0}</div>
+                    <div class="metric-trend up">↑ Live data</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Signals Delivered</div>
+                    <div class="metric-value">${overview.total_signals_delivered || 0}</div>
+                    <div class="metric-trend up">↑ ${(overview.success_rate || 0).toFixed(1)}% success</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Avg Latency</div>
+                    <div class="metric-value">${overview.avg_latency_ms || 0}ms</div>
+                    <div class="metric-trend up">↑ Real-time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Consumers</div>
+                    <div class="metric-value">${overview.active_consumers || 0}/${overview.total_consumers || 0}</div>
+                    <div class="metric-trend">${((overview.active_consumers / overview.total_consumers) * 100).toFixed(0)}% utilization</div>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // CHART.JS INITIALIZATION
+        // ============================================================
+
+        function initThroughputChart() {
+            const ctx = document.getElementById('throughputChart');
+            if (!ctx) return;
+            
+            charts.throughput = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Dispatched',
+                            data: [],
+                            borderColor: '#4fc3f7',
+                            backgroundColor: 'rgba(79, 195, 247, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Delivered',
+                            data: [],
+                            borderColor: '#4caf50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e0e6ed' }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 35, 50, 0.95)',
+                            titleColor: '#4fc3f7',
+                            bodyColor: '#e0e6ed'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'minute',
+                                displayFormats: { minute: 'HH:mm' }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#a0aec0' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#a0aec0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateThroughputChart(dataPoints) {
+            if (!charts.throughput || !dataPoints) return;
+            
+            const labels = dataPoints.map(p => new Date(p.timestamp));
+            const dispatched = dataPoints.map(p => p.signals_dispatched);
+            const delivered = dataPoints.map(p => p.signals_delivered);
+            
+            charts.throughput.data.labels = labels;
+            charts.throughput.data.datasets[0].data = dispatched;
+            charts.throughput.data.datasets[1].data = delivered;
+            charts.throughput.update();
+        }
+
+        // ============================================================
+        // RENDER FUNCTIONS WITH REAL DATA
+        // ============================================================
 
         // Render phase flow
         function renderPhaseFlow() {
@@ -799,7 +1091,112 @@
             container.innerHTML = html;
         }
 
-        // Render consumers
+        // Update gates from API data
+        function updateGatesFromAPI(gatesData) {
+            if (!gatesData) {
+                renderGates(); // Fallback to mock data
+                return;
+            }
+            
+            const container = document.getElementById('gatesContainer');
+            let html = '';
+            
+            Object.entries(gatesData).forEach(([key, gate]) => {
+                html += `
+                    <div class="gate-item">
+                        <div class="gate-header">
+                            <div class="gate-name">Gate ${gate.name}</div>
+                            <div class="gate-rate">${gate.pass_rate}%</div>
+                        </div>
+                        <div class="gate-bar">
+                            <div class="gate-fill" style="width: ${gate.pass_rate}%"></div>
+                        </div>
+                        <div class="gate-stats">
+                            <span>${gate.passed}/${gate.total}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Render gates (fallback)
+        function renderGates() {
+            const gates = [
+                { name: 'Gate 1 (Scope Alignment)', passed: 1247, total: 1283, rate: 97.2 },
+                { name: 'Gate 2 (Value Add)', passed: 1283, total: 1283, rate: 100, threshold: 0.30 },
+                { name: 'Gate 3 (Capability Match)', passed: 1251, total: 1283, rate: 97.5 },
+                { name: 'Gate 4 (Irrigation Channel)', passed: 1238, total: 1283, rate: 96.5 }
+            ];
+
+            const container = document.getElementById('gatesContainer');
+            let html = '';
+
+            gates.forEach(gate => {
+                html += `
+                    <div class="gate-item">
+                        <div class="gate-header">
+                            <div class="gate-name">${gate.name}</div>
+                            <div class="gate-rate">${gate.rate}%</div>
+                        </div>
+                        <div class="gate-bar">
+                            <div class="gate-fill" style="width: ${gate.rate}%"></div>
+                        </div>
+                        <div class="gate-stats">
+                            <span>${gate.passed}/${gate.total}</span>
+                            ${gate.threshold ? `<span>Pass Rate: ${gate.rate}% (threshold ${gate.threshold})</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="dlq-warning">
+                    <strong>Dead Letter Queue:</strong> 45 items | DLQ Rate: 3.5% ⚠️
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Update consumers from API
+        function updateConsumersFromAPI(consumersData) {
+            if (!consumersData || consumersData.length === 0) {
+                renderConsumers(); // Fallback
+                return;
+            }
+            
+            const container = document.getElementById('consumerList');
+            let html = '';
+            
+            consumersData.forEach(consumer => {
+                const statusText = consumer.status.toUpperCase();
+                const icon = consumer.status === 'idle' ? '✅' : 
+                            (consumer.status === 'active' ? '🔄' : '⏳');
+                html += `
+                    <div class="consumer-item ${consumer.status}">
+                        <div class="consumer-name">${consumer.id}</div>
+                        <div class="consumer-status-badge ${consumer.status}">${icon} ${statusText}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Update summary
+            const active = consumersData.filter(c => c.status === 'active').length;
+            const processing = consumersData.filter(c => c.status === 'processing').length;
+            const waiting = consumersData.filter(c => c.status === 'waiting').length;
+            
+            document.getElementById('consumerSummary').innerHTML = `
+                <div><strong>Active:</strong> ${active}</div>
+                <div><strong>Processing:</strong> ${processing}</div>
+                <div><strong>Waiting:</strong> ${waiting}</div>
+            `;
+        }
+
+        // Render consumers (fallback)
         function renderConsumers() {
             const consumers = [
                 { name: 'phase_00_bootstrap_consumer', status: 'idle' },
@@ -848,7 +1245,32 @@
             `;
         }
 
-        // Render extractors
+        // Update extractors from API
+        function updateExtractorsFromAPI(extractorsData) {
+            if (!extractorsData || extractorsData.length === 0) {
+                renderExtractors(); // Fallback
+                return;
+            }
+            
+            const container = document.getElementById('extractorGrid');
+            let html = '';
+            
+            extractorsData.forEach(extractor => {
+                const icon = extractor.status === 'complete' ? '✅' : 
+                            (extractor.status === 'processing' ? '🔄' : '⏳');
+                html += `
+                    <div class="extractor-card">
+                        <div class="extractor-id">${extractor.id}</div>
+                        <div class="extractor-name">${extractor.name}</div>
+                        <div class="extractor-progress ${extractor.status}">${icon} ${extractor.progress}%</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Render extractors (fallback)
         function renderExtractors() {
             const extractors = [
                 { id: 'MC01', name: 'STRUCT', progress: 92, status: 'complete' },
@@ -933,11 +1355,37 @@
         // WebSocket event handlers
         socket.on('connect', () => {
             console.log('[SISAS] Connected to dashboard');
+            // Fetch initial data
+            fetchRealMetrics();
+            fetchHistoricalData(currentTimeRange);
+            fetchConsumerDetails();
+            fetchExtractorPerformance();
+        });
+
+        socket.on('sisas_metrics', (data) => {
+            console.log('[SISAS] Received real-time update', data);
+            if (data.overview) {
+                updateMetricsCards(data.overview);
+            }
+            if (data.gates) {
+                updateGatesFromAPI(data.gates);
+            }
         });
 
         socket.on('pipeline_progress', (data) => {
             currentPhase = data.phase || 1;
             renderPhaseFlow();
+        });
+
+        // Time range selector
+        document.querySelectorAll('.time-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                const range = e.target.dataset.range;
+                currentTimeRange = range;
+                fetchHistoricalData(range);
+            });
         });
 
         // Initial render
@@ -946,11 +1394,26 @@
         renderConsumers();
         renderExtractors();
         generateMockSignals();
+        
+        // Initialize Chart.js
+        initThroughputChart();
 
-        // Auto-refresh metrics every 5 seconds
+        // Fetch real data on load
+        fetchRealMetrics();
+        fetchHistoricalData(currentTimeRange);
+        fetchConsumerDetails();
+        fetchExtractorPerformance();
+
+        // Auto-refresh real metrics every 5 seconds
         setInterval(() => {
+            fetchRealMetrics();
             socket.emit('request_sisas_update');
         }, 5000);
+
+        // Refresh historical data every 30 seconds
+        setInterval(() => {
+            fetchHistoricalData(currentTimeRange);
+        }, 30000);
     </script>
 </body>
 </html>

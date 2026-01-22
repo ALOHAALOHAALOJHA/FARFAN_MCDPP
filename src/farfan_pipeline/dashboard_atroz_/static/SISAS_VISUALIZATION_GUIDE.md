@@ -1,12 +1,12 @@
-# SISAS Advanced Visualization Dashboard - User Guide
+# SISAS Unified Dashboard - User Guide
 
 ## 📋 Overview
 
-The SISAS Advanced Visualization Dashboard provides comprehensive real-time monitoring and analytics for the Signal Irrigation System for Agile Scheduling (SISAS) components in the FARFAN MCDPP pipeline.
+The SISAS Unified Dashboard provides comprehensive real-time monitoring and analytics for the Signal Irrigation System for Agile Scheduling (SISAS) components in the FARFAN MCDPP pipeline.
 
-**Location:** `/static/sisas-advanced-visualization.html`
+**Location:** `/static/sisas-ecosystem-view-enhanced.html`
 
-**Version:** 3.0
+**Version:** 3.0 (Unified)
 
 **Last Updated:** 2026-01-22
 
@@ -15,21 +15,19 @@ The SISAS Advanced Visualization Dashboard provides comprehensive real-time moni
 ## 🎯 Key Features
 
 ### 1. Real-Time Metrics Dashboard
-- **6 Live Metric Cards** displaying key performance indicators:
-  - Signals Dispatched (with hourly trend)
+- **4 Live Metric Cards** displaying key performance indicators:
+  - Signals Dispatched (from real API)
   - Signals Delivered (with success rate)
-  - Average Latency (with optimization trend)
-  - Active Consumers (out of total)
-  - Overall Success Rate
-  - Dead Letter Queue count
+  - Average Latency (real-time)
+  - Active Consumers (utilization percentage)
 
-### 2. Signal Throughput Visualization
+### 2. Signal Throughput Visualization (Chart.js)
 - **Real-time time-series chart** showing:
   - Signals dispatched over time
   - Signals delivered over time
   - Dual-axis line chart with smooth animations
-  - Configurable time ranges: 1H, 6H, 24H, 7D
-  - Auto-updating every 2 seconds
+  - Configurable time ranges: 1H, 6H, 24H
+  - Auto-updating from `/api/v1/sisas/metrics/historical`
 
 ### 3. Gate Analysis Suite
 - **4-Gate Validation Matrix:**
@@ -99,19 +97,18 @@ The SISAS Advanced Visualization Dashboard provides comprehensive real-time moni
 
 ### Prerequisites
 - Modern web browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
-- Active ATROZ Dashboard server (FastAPI backend)
+- Active ATROZ Dashboard server (FastAPI/Flask backend)
 - WebSocket connection to `http://localhost:5000`
 
 ### Accessing the Dashboard
-1. Navigate to: `http://localhost:5000/static/sisas-advanced-visualization.html`
+1. Navigate to: `http://localhost:5000/static/sisas-ecosystem-view-enhanced.html`
 2. The dashboard will auto-connect via WebSocket
 3. Status indicator in top-right shows connection status (🟢 ONLINE / 🔴 OFFLINE)
+4. Real data is fetched automatically from backend APIs
 
 ### Navigation Controls
-- **Refresh Button:** Manual data refresh (top-right corner)
-- **Time Range Buttons:** Change historical data range (1H/6H/24H/7D)
-- **Reset View:** Reset D3.js flow diagram zoom/pan
-- **Toggle Animation:** Pause/resume signal flow animations
+- **Time Range Buttons:** Change historical data range (1H/6H/24H)
+- **Auto-Refresh:** Metrics update every 5 seconds, charts every 30 seconds
 
 ---
 
