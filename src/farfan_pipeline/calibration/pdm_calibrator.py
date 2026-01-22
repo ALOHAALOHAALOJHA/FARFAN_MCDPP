@@ -801,6 +801,36 @@ class Phase1PDMCalibrator:
             
         return validations
 
+    def retroduct_mechanism(
+        self,
+        empirical_observations: List[Dict[str, Any]],
+        subphase: str
+    ) -> Dict[str, Any]:
+        """
+        Retroductively infer causal mechanisms (Bhaskar's method).
+        
+        Retroduction: Moving from phenomena to underlying mechanisms
+        that could have generated them. NOT induction or deduction.
+        
+        Following DREI(C) model:
+        1. Description of phenomena
+        2. Retroduction to possible mechanisms  
+        3. Elimination of alternatives
+        4. Identification of mechanism
+        """
+        # Implementation here...
+
+    def detect_transfactual_patterns(
+        self,
+        annotations: List[GoldAnnotation]
+    ) -> List[Dict[str, Any]]:
+        """
+        Detect transfactual mechanisms that operate regardless of manifestation.
+        
+        "The world consists of mechanisms not events" - Bhaskar
+        """
+        # Detect patterns that persist even without full manifestation
+        # This is the key insight of Critical Realism
 # =============================================================================
 # PUBLIC API
 # =============================================================================
