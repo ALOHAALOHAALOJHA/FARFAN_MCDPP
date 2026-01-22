@@ -85,8 +85,7 @@ assert (
     == CONSTITUTIONAL_CHUNK_COUNT
 ), f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × {CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim ≠ {CONSTITUTIONAL_CHUNK_COUNT} chunks"
 
-# Phase 2 expansion verification (for documentation)
-_PHASE2_TASK_COUNT: int = CONSTITUTIONAL_CHUNK_COUNT * CONSTITUTIONAL_QUESTIONS_PER_DIMENSION  # 300
+# Phase 2 expansion: 60 chunks × 5 questions = 300 tasks (for documentation)
 
 
 class WeightTier(Enum):
