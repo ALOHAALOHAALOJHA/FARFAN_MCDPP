@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATROZ Enhanced Pipeline Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-value {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-change {
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+
+        .metric-change.positive {
+            color: #28a745;
+        }
+
+        .metric-change.negative {
+            color: #dc3545;
+        }
+
+        /* Pipeline Flow Visualization */
+        .pipeline-flow {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .pipeline-flow h2 {
+            margin-bottom: 25px;
+            color: #1e3c72;
+        }
+
+        .phase-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .phase-node {
+            flex: 1;
+            min-width: 120px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .phase-node.pending {
+            background: #e9ecef;
+            border-color: #dee2e6;
+        }
+
+        .phase-node.running {
+            background: #fff3cd;
+            border-color: #ffc107;
+            animation: pulse 2s infinite;
+        }
+
+        .phase-node.completed {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .phase-node.failed {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .phase-node::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #ccc;
+        }
+
+        .phase-node:last-child::after {
+            display: none;
+        }
+
+        .phase-id {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .phase-name {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .phase-time {
+            font-size: 0.75em;
+            color: #999;
+        }
+
+        .phase-progress {
+            margin-top: 10px;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .phase-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            transition: width 0.3s;
+        }
+
+        /* Performance Charts */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        /* Alerts Panel */
+        .alerts-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .alerts-panel h3 {
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .alert-item {
+            padding: 15px;
+            border-left: 4px solid;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-item.error {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .alert-item.warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .alert-item.info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-severity {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .alert-message {
+            font-size: 0.95em;
+        }
+
+        .alert-time {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85em;
+        }
+
+        /* Resource Timeline */
+        .resource-timeline {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .resource-timeline h3 {
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .timeline-chart {
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Phase Details Table */
+        .phase-details {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .phase-details h3 {
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table th,
+        .details-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .details-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .details-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-badge.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.running {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-badge.pending {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1e3c72;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .phase-container {
+                flex-direction: column;
+            }
+
+            .phase-node::after {
+                content: '↓';
+                right: auto;
+                top: auto;
+                bottom: -15px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Connection Status */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #28a745;
+            animation: blink 2s infinite;
+        }
+
+        .status-dot.disconnected {
+            background: #dc3545;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>🚀 ATROZ Enhanced Pipeline Monitor</h1>
+                <div class="connection-status">
+                    <div class="status-dot" id="connectionDot"></div>
+                    <span id="connectionStatus">Connected</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <select id="jobSelector" class="btn btn-secondary">
+                    <option value="">Select Job...</option>
+                </select>
+                <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+                <button class="btn btn-secondary" onclick="exportData()">📥 Export</button>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value" id="activeJobsCount">0</div>
+                <div class="metric-label">Active Jobs</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="completedJobsCount">0</div>
+                <div class="metric-label">Completed Jobs</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="totalAlerts">0</div>
+                <div class="metric-label">Active Alerts</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="avgExecutionTime">0ms</div>
+                <div class="metric-label">Avg Execution Time</div>
+            </div>
+        </div>
+
+        <!-- Pipeline Flow Visualization -->
+        <div class="pipeline-flow">
+            <h2>📊 Pipeline Execution Flow</h2>
+            <div class="phase-container" id="pipelineFlow">
+                <!-- Phases will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Performance Charts -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3>⏱️ Execution Time Trend</h3>
+                <div class="chart-placeholder" id="executionTimeChart">
+                    <canvas id="timeCanvas"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>💾 Memory Usage</h3>
+                <div class="chart-placeholder" id="memoryChart">
+                    <canvas id="memoryCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resource Timeline -->
+        <div class="resource-timeline">
+            <h3>📈 Resource Usage Timeline</h3>
+            <div class="timeline-chart" id="resourceTimeline">
+                <canvas id="resourceCanvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Alerts Panel -->
+        <div class="alerts-panel">
+            <h3>🚨 Active Alerts</h3>
+            <div id="alertsList">
+                <p style="color: #999; text-align: center;">No active alerts</p>
+            </div>
+        </div>
+
+        <!-- Phase Details Table -->
+        <div class="phase-details">
+            <h3>📋 Phase Details</h3>
+            <table class="details-table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Status</th>
+                        <th>Duration</th>
+                        <th>Memory (MB)</th>
+                        <th>CPU (%)</th>
+                        <th>Artifacts</th>
+                        <th>Errors</th>
+                    </tr>
+                </thead>
+                <tbody id="phaseDetailsBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #999;">
+                            Select a job to view phase details
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        // Global state
+        let socket = null;
+        let selectedJobId = null;
+        let charts = {};
+
+        // Initialize connection
+        function initializeConnection() {
+            socket = io('http://localhost:5000');
+
+            socket.on('connect', () => {
+                console.log('Connected to server');
+                updateConnectionStatus(true);
+                loadInitialData();
+            });
+
+            socket.on('disconnect', () => {
+                console.log('Disconnected from server');
+                updateConnectionStatus(false);
+            });
+
+            socket.on('pipeline_progress', (data) => {
+                console.log('Pipeline progress:', data);
+                updatePipelineFlow(data);
+            });
+
+            socket.on('job_created', (data) => {
+                console.log('Job created:', data);
+                addJobToSelector(data.job_id, data.filename);
+            });
+
+            socket.on('job_completed', (data) => {
+                console.log('Job completed:', data);
+                refreshData();
+            });
+        }
+
+        function updateConnectionStatus(connected) {
+            const dot = document.getElementById('connectionDot');
+            const status = document.getElementById('connectionStatus');
+            
+            if (connected) {
+                dot.classList.remove('disconnected');
+                status.textContent = 'Connected';
+            } else {
+                dot.classList.add('disconnected');
+                status.textContent = 'Disconnected';
+            }
+        }
+
+        async function loadInitialData() {
+            try {
+                // Load monitoring summary
+                const summary = await fetch('/api/v1/monitoring/summary').then(r => r.json());
+                updateMetrics(summary);
+
+                // Load jobs for selector
+                const jobs = await fetch('/api/v1/jobs').then(r => r.json());
+                populateJobSelector(jobs);
+            } catch (error) {
+                console.error('Failed to load initial data:', error);
+            }
+        }
+
+        function updateMetrics(summary) {
+            document.getElementById('activeJobsCount').textContent = summary.active_jobs || 0;
+            document.getElementById('completedJobsCount').textContent = summary.completed_jobs || 0;
+            document.getElementById('totalAlerts').textContent = summary.total_alerts || 0;
+            
+            // Calculate average execution time
+            let avgTime = 0;
+            const stats = summary.phase_statistics || {};
+            const phases = Object.values(stats);
+            if (phases.length > 0) {
+                avgTime = phases.reduce((sum, p) => sum + (p.avg_time_ms || 0), 0) / phases.length;
+            }
+            document.getElementById('avgExecutionTime').textContent = avgTime.toFixed(0) + 'ms';
+        }
+
+        function populateJobSelector(jobsData) {
+            const selector = document.getElementById('jobSelector');
+            selector.innerHTML = '<option value="">Select Job...</option>';
+            
+            const activeJobs = jobsData.active_jobs || [];
+            const completedJobs = jobsData.completed_jobs || [];
+            
+            activeJobs.forEach(job => {
+                const option = document.createElement('option');
+                option.value = job.job_id;
+                option.textContent = `${job.filename} (Active)`;
+                selector.appendChild(option);
+            });
+            
+            completedJobs.forEach(job => {
+                const option = document.createElement('option');
+                option.value = job.job_id;
+                option.textContent = `${job.filename} (Completed)`;
+                selector.appendChild(option);
+            });
+            
+            selector.onchange = () => {
+                selectedJobId = selector.value;
+                if (selectedJobId) {
+                    loadJobDetails(selectedJobId);
+                }
+            };
+        }
+
+        async function loadJobDetails(jobId) {
+            try {
+                // Load job snapshot
+                const snapshot = await fetch(`/api/v1/monitoring/jobs/${jobId}/snapshot`).then(r => r.json());
+                updatePipelineFlowFromSnapshot(snapshot);
+                updatePhaseDetailsTable(snapshot);
+                
+                // Load alerts
+                const alerts = await fetch(`/api/v1/monitoring/alerts?job_id=${jobId}`).then(r => r.json());
+                updateAlertsList(alerts.alerts || []);
+                
+                // Load resource timeline
+                const resources = await fetch(`/api/v1/monitoring/jobs/${jobId}/resource-usage`).then(r => r.json());
+                updateResourceTimeline(resources.timeline || []);
+                
+            } catch (error) {
+                console.error('Failed to load job details:', error);
+            }
+        }
+
+        function updatePipelineFlowFromSnapshot(snapshot) {
+            const container = document.getElementById('pipelineFlow');
+            container.innerHTML = '';
+            
+            const phases = snapshot.phases || {};
+            const phaseOrder = ['P00', 'P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09'];
+            
+            phaseOrder.forEach(phaseId => {
+                const phase = phases[phaseId];
+                if (phase) {
+                    const node = createPhaseNode(phase);
+                    container.appendChild(node);
+                }
+            });
+        }
+
+        function createPhaseNode(phase) {
+            const node = document.createElement('div');
+            node.className = `phase-node ${phase.status.toLowerCase()}`;
+            
+            node.innerHTML = `
+                <div class="phase-id">${phase.phase_id}</div>
+                <div class="phase-name">${phase.phase_name}</div>
+                <div class="phase-time">${phase.execution_time_ms ? phase.execution_time_ms.toFixed(0) + 'ms' : '-'}</div>
+            `;
+            
+            return node;
+        }
+
+        function updatePhaseDetailsTable(snapshot) {
+            const tbody = document.getElementById('phaseDetailsBody');
+            tbody.innerHTML = '';
+            
+            const phases = snapshot.phases || {};
+            Object.values(phases).forEach(phase => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${phase.phase_id}</strong><br><small>${phase.phase_name}</small></td>
+                    <td><span class="status-badge ${phase.status.toLowerCase()}">${phase.status}</span></td>
+                    <td>${phase.execution_time_ms ? phase.execution_time_ms.toFixed(0) + 'ms' : '-'}</td>
+                    <td>${phase.memory_usage_mb ? phase.memory_usage_mb.toFixed(1) : '-'}</td>
+                    <td>${phase.cpu_usage_percent ? phase.cpu_usage_percent.toFixed(1) : '-'}</td>
+                    <td>${phase.artifacts_produced ? phase.artifacts_produced.length : 0}</td>
+                    <td>${phase.errors ? phase.errors.length : 0}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateAlertsList(alerts) {
+            const container = document.getElementById('alertsList');
+            
+            if (alerts.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center;">No active alerts</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            alerts.forEach(alert => {
+                const item = document.createElement('div');
+                item.className = `alert-item ${alert.severity.toLowerCase()}`;
+                item.innerHTML = `
+                    <div class="alert-content">
+                        <div class="alert-severity">${alert.severity}: ${alert.type}</div>
+                        <div class="alert-message">${alert.message}</div>
+                        <div class="alert-time">${new Date(alert.timestamp).toLocaleString()}</div>
+                    </div>
+                    <div class="alert-actions">
+                        <button class="btn btn-small btn-secondary" onclick="acknowledgeAlert('${alert.id}')">
+                            ✓ Acknowledge
+                        </button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function updateResourceTimeline(timeline) {
+            // Placeholder for Chart.js implementation
+            console.log('Resource timeline:', timeline);
+        }
+
+        async function acknowledgeAlert(alertId) {
+            try {
+                await fetch(`/api/v1/monitoring/alerts/${alertId}/acknowledge`, {
+                    method: 'POST'
+                });
+                if (selectedJobId) {
+                    loadJobDetails(selectedJobId);
+                }
+            } catch (error) {
+                console.error('Failed to acknowledge alert:', error);
+            }
+        }
+
+        function refreshData() {
+            loadInitialData();
+            if (selectedJobId) {
+                loadJobDetails(selectedJobId);
+            }
+        }
+
+        async function exportData() {
+            if (!selectedJobId) {
+                alert('Please select a job first');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/v1/monitoring/export/${selectedJobId}`);
+                const data = await response.json();
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `pipeline-monitoring-${selectedJobId}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Failed to export data:', error);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            initializeConnection();
+        });
+    </script>
+</body>
+</html>

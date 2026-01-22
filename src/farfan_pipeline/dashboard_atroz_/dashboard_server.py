@@ -6,6 +6,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
+from pathlib import Path
 
 from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT, DATA_DIR
 
@@ -105,6 +106,14 @@ from flask import Flask, Response
 def index():
     dashboard_path = PROJECT_ROOT / "dashboard.html"
     with open(str(dashboard_path), encoding="utf-8") as f:
+        return Response(f.read(), mimetype="text/html")
+
+
+@app.route("/enhanced-monitor")
+def enhanced_monitor():
+    """Serve the enhanced monitoring dashboard."""
+    monitor_path = Path(__file__).parent / "static" / "enhanced-monitor.html"
+    with open(str(monitor_path), encoding="utf-8") as f:
         return Response(f.read(), mimetype="text/html")
 
 
