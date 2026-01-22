@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISAS Ecosystem View - ATROZ Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e27;
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        .sisas-container {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #1e2a3a;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4fc3f7;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge.online {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .status-badge.offline {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background: #4caf50;
+        }
+
+        .status-indicator.offline {
+            background: #f44336;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Signal Extraction Status */
+        .signal-extraction-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #4fc3f7;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .extraction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .policy-area-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid #4fc3f7;
+            transition: all 0.3s ease;
+        }
+
+        .policy-area-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .policy-area-card.pdet {
+            border-left-color: #ff9800;
+        }
+
+        .pa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .pa-name {
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        .pa-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7 0%, #00bcd4 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .pa-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
+        /* Extraction Methods */
+        .extraction-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .method-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #2d3748;
+        }
+
+        .method-list {
+            list-style: none;
+        }
+
+        .method-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .method-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .method-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .method-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        /* Entity Recognition */
+        .entity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .entity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .entity-name {
+            font-weight: 500;
+        }
+
+        .entity-confidence {
+            font-size: 0.85rem;
+            color: #4fc3f7;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #2d3748;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4fc3f7;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-change {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .metric-change.positive {
+            color: #4caf50;
+        }
+
+        .metric-change.negative {
+            color: #f44336;
+        }
+
+        /* Consumers Panel */
+        .consumers-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .consumer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .consumer-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .consumer-card.active {
+            border-color: #4caf50;
+        }
+
+        .consumer-card.processing {
+            border-color: #ff9800;
+            animation: processing-glow 2s infinite;
+        }
+
+        @keyframes processing-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 152, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 152, 0, 0.6); }
+        }
+
+        .consumer-id {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin-bottom: 0.5rem;
+        }
+
+        .consumer-status {
+            font-weight: 600;
+            color: #4caf50;
+        }
+
+        .consumer-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+
+        /* Gates Panel */
+        .gates-panel {
+            background: linear-gradient(135deg, #1a2332 0%, #2a3544 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3748;
+        }
+
+        .gate-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .gate-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .gate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .gate-name {
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        .gate-rate {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4fc3f7;
+        }
+
+        .gate-bars {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .gate-bar {
+            flex: 1;
+            text-align: center;
+        }
+
+        .gate-bar-label {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            margin-bottom: 0.25rem;
+        }
+
+        .gate-bar-value {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .gate-bar-value.passed {
+            color: #4caf50;
+        }
+
+        .gate-bar-value.failed {
+            color: #f44336;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .extraction-grid,
+            .metrics-grid,
+            .consumer-grid,
+            .gate-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .extraction-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sisas-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>SISAS Ecosystem View</h1>
+            <div class="status-badge online" id="sisasStatusBadge">
+                <div class="status-indicator online" id="sisasStatusIndicator"></div>
+                <span id="sisasStatusText">ONLINE</span>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value" id="metricConsumers">12/17</div>
+                <div class="metric-label">Active Consumers</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="metricSignalsEmitted">142</div>
+                <div class="metric-label">Signals Emitted</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="metricSignalsConsumed">138</div>
+                <div class="metric-label">Signals Consumed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="metricDLQRate">2.8%</div>
+                <div class="metric-label">Dead Letter Rate</div>
+            </div>
+        </div>
+
+        <!-- Signal Extraction Status -->
+        <div class="signal-extraction-panel">
+            <div class="panel-title">
+                <span>📊</span>
+                SIGNAL PACK EXTRACTION STATUS (Real-time)
+            </div>
+            <div class="extraction-grid" id="extractionGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Extraction Methods & Entity Recognition -->
+        <div class="extraction-methods">
+            <div class="method-panel">
+                <div class="panel-title">
+                    <span>🔧</span>
+                    EXTRACTION METHODS
+                </div>
+                <ul class="method-list">
+                    <li class="method-item">
+                        <div class="method-checkbox">✓</div>
+                        <div class="method-name">TF-IDF Patterns</div>
+                        <div class="method-status">ACTIVE</div>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-checkbox">✓</div>
+                        <div class="method-name">spaCy NER</div>
+                        <div class="method-status">ACTIVE</div>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-checkbox">✓</div>
+                        <div class="method-name">Domain Knowledge</div>
+                        <div class="method-status">ACTIVE</div>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-checkbox">✓</div>
+                        <div class="method-name">PDET Empirical</div>
+                        <div class="method-status">ACTIVE</div>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-checkbox">✓</div>
+                        <div class="method-name">Regex Generation</div>
+                        <div class="method-status">ACTIVE</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="method-panel">
+                <div class="panel-title">
+                    <span>🏢</span>
+                    ENTITY RECOGNITION (spaCy + Domain KB)
+                </div>
+                <div class="entity-list" id="entityList">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Consumers Status -->
+        <div class="consumers-panel">
+            <div class="panel-title">
+                <span>⚙️</span>
+                SISAS CONSUMERS STATUS
+            </div>
+            <div class="consumer-grid" id="consumerGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Gate Validation -->
+        <div class="gates-panel">
+            <div class="panel-title">
+                <span>🚪</span>
+                4-GATE VALIDATION STATUS
+            </div>
+            <div class="gate-grid" id="gateGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="/static/js/atroz-sisas-state.js"></script>
+    <script>
+        // Initialize state manager
+        const stateManager = new SISASEnhancedStateManager();
+        const wsHandler = new SISASWebSocketHandler(stateManager, 'http://localhost:5000');
+
+        // Connect WebSocket
+        wsHandler.connect();
+
+        // Policy areas data
+        const policyAreas = [
+            { id: 'PA01', name: 'Derechos de Género', progress: 78, patterns: 42, pdet: false },
+            { id: 'PA02', name: 'Prevención de Violencias', progress: 95, patterns: 58, pdet: false },
+            { id: 'PA03', name: 'Medio Ambiente', progress: 82, patterns: 47, pdet: false },
+            { id: 'PA04', name: 'Derechos Económicos', progress: 89, patterns: 51, pdet: false },
+            { id: 'PA05', name: 'Derechos de Víctimas', progress: 98, patterns: 63, pdet: true },
+            { id: 'PA06', name: 'Niñez y Juventud', progress: 85, patterns: 49, pdet: false },
+            { id: 'PA07', name: 'Tierra y Territorio', progress: 96, patterns: 55, pdet: true },
+            { id: 'PA08', name: 'Defensores DDHH', progress: 91, patterns: 52, pdet: false },
+            { id: 'PA09', name: 'Crisis Carcelaria', progress: 76, patterns: 38, pdet: false },
+            { id: 'PA10', name: 'Migración', progress: 81, patterns: 44, pdet: false }
+        ];
+
+        // Render policy areas
+        function renderPolicyAreas() {
+            const grid = document.getElementById('extractionGrid');
+            grid.innerHTML = policyAreas.map(pa => `
+                <div class="policy-area-card ${pa.pdet ? 'pdet' : ''}">
+                    <div class="pa-header">
+                        <div class="pa-name">${pa.id}: ${pa.name}</div>
+                        ${pa.pdet ? '<div class="pa-badge">⚡PDET</div>' : ''}
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${pa.progress}%"></div>
+                    </div>
+                    <div class="pa-stats">
+                        <span>${pa.progress}%</span>
+                        <span>${pa.patterns} patterns</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render entities
+        function renderEntities() {
+            const entities = [
+                { name: 'Ministerio de Salud', confidence: 98 },
+                { name: 'UARIV', confidence: 97 },
+                { name: 'Corporación Autónoma Regional', confidence: 95 },
+                { name: 'Municipio PDET Tumaco', confidence: 94 },
+                { name: 'JEP', confidence: 93 }
+            ];
+
+            const list = document.getElementById('entityList');
+            list.innerHTML = entities.map(entity => `
+                <div class="entity-item">
+                    <div class="entity-name">ORG: ${entity.name}</div>
+                    <div class="entity-confidence">(${entity.confidence}%)</div>
+                </div>
+            `).join('');
+        }
+
+        // Render consumers
+        function renderConsumers() {
+            const consumers = [
+                { id: 'phase_00_assembly', status: 'ACTIVE', received: 45, processed: 43 },
+                { id: 'phase_01_extraction', status: 'PROCESSING', received: 38, processed: 35 },
+                { id: 'phase_02_enrichment', status: 'ACTIVE', received: 32, processed: 32 },
+                { id: 'phase_03_validation', status: 'IDLE', received: 0, processed: 0 }
+            ];
+
+            const grid = document.getElementById('consumerGrid');
+            grid.innerHTML = consumers.map(consumer => `
+                <div class="consumer-card ${consumer.status.toLowerCase()}">
+                    <div class="consumer-id">${consumer.id}</div>
+                    <div class="consumer-status">${consumer.status}</div>
+                    <div class="consumer-stats">
+                        <div>RX: ${consumer.received}</div>
+                        <div>PX: ${consumer.processed}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render gates
+        function renderGates() {
+            const gates = [
+                { name: 'Gate 1: Scope', rate: 99.2, passed: 140, failed: 2 },
+                { name: 'Gate 2: Value', rate: 98.6, passed: 138, failed: 4 },
+                { name: 'Gate 3: Capability', rate: 97.9, passed: 137, failed: 5 },
+                { name: 'Gate 4: Channel', rate: 96.5, passed: 135, failed: 7 }
+            ];
+
+            const grid = document.getElementById('gateGrid');
+            grid.innerHTML = gates.map(gate => `
+                <div class="gate-card">
+                    <div class="gate-header">
+                        <div class="gate-name">${gate.name}</div>
+                        <div class="gate-rate">${gate.rate}%</div>
+                    </div>
+                    <div class="gate-bars">
+                        <div class="gate-bar">
+                            <div class="gate-bar-label">Passed</div>
+                            <div class="gate-bar-value passed">${gate.passed}</div>
+                        </div>
+                        <div class="gate-bar">
+                            <div class="gate-bar-label">Failed</div>
+                            <div class="gate-bar-value failed">${gate.failed}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Subscribe to state changes
+        stateManager.subscribe((prevState, newState) => {
+            // Update metrics
+            if (newState.sisas) {
+                const { sisas } = newState;
+                document.getElementById('metricConsumers').textContent =
+                    `${sisas.consumers.active}/${sisas.consumers.total}`;
+                document.getElementById('metricSignalsEmitted').textContent =
+                    sisas.signals.emitted || 0;
+                document.getElementById('metricSignalsConsumed').textContent =
+                    sisas.signals.consumed || 0;
+                document.getElementById('metricDLQRate').textContent =
+                    `${(sisas.signals.deadLetter / Math.max(sisas.signals.emitted, 1) * 100).toFixed(1)}%`;
+
+                // Update status badge
+                const statusBadge = document.getElementById('sisasStatusBadge');
+                const statusIndicator = document.getElementById('sisasStatusIndicator');
+                const statusText = document.getElementById('sisasStatusText');
+
+                if (sisas.status === 'ONLINE') {
+                    statusBadge.className = 'status-badge online';
+                    statusIndicator.className = 'status-indicator online';
+                    statusText.textContent = 'ONLINE';
+                } else {
+                    statusBadge.className = 'status-badge offline';
+                    statusIndicator.className = 'status-indicator offline';
+                    statusText.textContent = sisas.status;
+                }
+            }
+        });
+
+        // Initial render
+        renderPolicyAreas();
+        renderEntities();
+        renderConsumers();
+        renderGates();
+
+        // Auto-refresh metrics every 5 seconds
+        setInterval(() => {
+            wsHandler.requestSISASUpdate();
+        }, 5000);
+    </script>
+</body>
+</html>
