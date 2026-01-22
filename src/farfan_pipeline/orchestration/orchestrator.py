@@ -2020,7 +2020,6 @@ class UnifiedOrchestrator:
         from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
             WiringFeatureFlags
         )
-        from pathlib import Path
 
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - FULL ORCHESTRATION STARTED")
@@ -2129,13 +2128,12 @@ class UnifiedOrchestrator:
                 "conflicts": runtime_config.get_conflicts() if hasattr(runtime_config, 'get_conflicts') else []
             }
 
-            if not exit_gates["gate_10"]["status"] == "passed":
+            if exit_gates["gate_10"]["status"] != "passed":
                 raise OrchestrationError(
                     message="Stage 10 exit gate failed: Configuration validation failed",
                     error_code="P0_S10_EXIT_GATE_FAILED",
                     context=exit_gates["gate_10"]
                 )
-
             self.logger.info("[P0-S10] Stage 10: Environment Configuration - COMPLETED (EXIT GATE PASSED)")
 
             # ====================================================================
@@ -2484,9 +2482,6 @@ class UnifiedOrchestrator:
         from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
             CanonPolicyPackage, SmartChunk, ChunkGraph
         )
-        from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-            execute_cpp_ingestion_complete
-        )
 
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 1: CPP INGESTION - FULL ORCHESTRATION STARTED")
@@ -2499,8 +2494,9 @@ class UnifiedOrchestrator:
             # ====================================================================
             # INPUT: Get CanonicalInput from Phase 0
             # ====================================================================
-            canonical_input: Optional[CanonicalInput] = self.context.get_phase_output(PhaseID.PHASE_0)
-            if canonical_input is None:
+            # Type note: Variable starts Optional, but after validation is guaranteed CanonicalInput
+            canonical_input_maybe: Optional[CanonicalInput] = self.context.get_phase_output(PhaseID.PHASE_0)
+            if canonical_input_maybe is None:
                 # Try to create from config
                 self.logger.warning("[P1] CanonicalInput not found in context, creating from config")
                 from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
@@ -2511,7 +2507,17 @@ class UnifiedOrchestrator:
                     document_path=Path(self.config.document_path) if self.config.document_path else None,
                     municipality_name=self.config.municipality_name
                 )
-                canonical_input = validate_phase0_input(phase0_input)
+                # Explicitly type and validate the result
+                canonical_input_result: CanonicalInput = validate_phase0_input(phase0_input)
+                if not isinstance(canonical_input_result, CanonicalInput):
+                    raise TypeError(
+                        f"[P1] validate_phase0_input returned unexpected type: "
+                        f"{type(canonical_input_result).__name__}, expected CanonicalInput"
+                    )
+                canonical_input_maybe = canonical_input_result
+
+            # After validation, canonical_input is guaranteed to be CanonicalInput
+            canonical_input: CanonicalInput = canonical_input_maybe
 
             self.logger.info(f"[P1] Input received: {type(canonical_input).__name__}")
 
@@ -2569,9 +2575,24 @@ class UnifiedOrchestrator:
             # ====================================================================
             self.logger.info("[P1] Executing complete CPP ingestion pipeline (SP0-SP15)")
 
+            # Try to import the complete ingestion function
+            # Note: Only import errors are caught here; runtime errors from the function
+            # itself will propagate normally
+            execute_cpp_fn = None
             try:
-                # Use the complete ingestion function from phase1_13_00_cpp_ingestion.py
-                cpp_result = execute_cpp_ingestion_complete(
+                from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+                    execute_cpp_ingestion_complete
+                )
+                execute_cpp_fn = execute_cpp_ingestion_complete
+            except ImportError as e:
+                self.logger.error(
+                    f"[P1] Failed to import execute_cpp_ingestion_complete: {e}. "
+                    f"Falling back to individual subphase execution."
+                )
+
+            # If import succeeded, call the function (runtime errors will propagate)
+            if execute_cpp_fn is not None:
+                cpp_result = execute_cpp_fn(
                     canonical_input=canonical_input,
                     signal_enricher=signal_enricher,
                     circuit_breaker_config=subphase_results["sp00_circuit_breaker"],
@@ -2581,10 +2602,8 @@ class UnifiedOrchestrator:
                 subphase_results.update(cpp_result.get("subphase_results", {}))
 
                 self.logger.info(f"[P1] CPP ingestion complete: {len(cpp_result.get('smart_chunks', []))} chunks")
-
-            except ImportError:
+            else:
                 # Fallback: Execute subphases individually
-                self.logger.warning("[P1] Complete ingestion function not available, using individual subphases")
                 cpp_result = self._execute_phase_01_subphases_individually(
                     canonical_input, signal_enricher, subphase_results
                 )
@@ -3483,6 +3502,42 @@ class UnifiedOrchestrator:
                     phase_id="P06"
                 ) from e
 
+            # ====================================================================
+            # INPUT CONTRACT VALIDATION: Validate cluster_scores structure
+            # ====================================================================
+            # Import ClusterScore type for isinstance validation
+            try:
+                from farfan_pipeline.phases.Phase_06 import ClusterScore
+            except ImportError as e:
+                self.logger.warning(f"[P6] Could not import ClusterScore for validation: {e}")
+                # Fallback to attribute-based validation
+                ClusterScore = None
+
+            # Validate: Each item must be a ClusterScore object
+            for i, cs in enumerate(cluster_scores):
+                if ClusterScore is not None:
+                    # Use isinstance validation when type is available
+                    if not isinstance(cs, ClusterScore):
+                        raise TypeError(
+                            f"Phase 6 cluster_scores[{i}] is not a ClusterScore object. "
+                            f"Got type: {type(cs).__name__}. "
+                            f"Expected ClusterScore from farfan_pipeline.phases.Phase_06."
+                        )
+                else:
+                    # Fallback: Check required attributes when type import failed
+                    if not hasattr(cs, 'cluster_id'):
+                        raise TypeError(
+                            f"Phase 6 cluster_scores[{i}] missing required attribute 'cluster_id'. "
+                            f"Got type: {type(cs).__name__}. "
+                            f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                        )
+                    if not hasattr(cs, 'score'):
+                        raise TypeError(
+                            f"Phase 6 cluster_scores[{i}] missing required attribute 'score'. "
+                            f"Got type: {type(cs).__name__}. "
+                            f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                        )
+
             # Validate: Should be 4 clusters
             expected_count = 4
             actual_count = len(cluster_scores)
@@ -3501,7 +3556,7 @@ class UnifiedOrchestrator:
                 "cluster_scores": [
                     {
                         "cluster_id": cs.cluster_id,
-                        "score": cs.score if hasattr(cs, 'score') else 0.0
+                        "score": cs.score
                     }
                     for cs in cluster_scores
                 ]
@@ -3727,15 +3782,37 @@ class UnifiedOrchestrator:
 
             try:
                 if self.config.enable_sisas and self.context.sisas:
-                    from farfan_pipeline.phases.Phase_08.phase8_30_00_signal_enriched_recommendations import (
-                        SignalEnrichedRecommender
-                    )
-                    enricher = SignalEnrichedRecommender()
-                    recommendations = enricher.enrich_with_signals(
-                        recommendations=recommendations,
-                        signal_data=self.context.sisas.get_metrics()
-                    )
-                    stage_results["s30_enrichment"] = {"status": "completed"}
+                    # Verify SISAS object has get_metrics method before calling it
+                    if not hasattr(self.context.sisas, "get_metrics"):
+                        self.logger.warning(
+                            "[P8-S30] SISAS object missing get_metrics method, skipping signal enrichment"
+                        )
+                        stage_results["s30_enrichment"] = {
+                            "status": "skipped",
+                            "reason": "missing get_metrics method on SISAS object"
+                        }
+                    else:
+                        from farfan_pipeline.phases.Phase_08.phase8_30_00_signal_enriched_recommendations import (
+                            SignalEnrichedRecommender
+                        )
+                        enricher = SignalEnrichedRecommender()
+                        # Guard against AttributeError when calling get_metrics
+                        try:
+                            signal_data = self.context.sisas.get_metrics()
+                        except AttributeError as ae:
+                            self.logger.warning(
+                                f"[P8-S30] get_metrics raised AttributeError: {ae}, skipping signal enrichment"
+                            )
+                            stage_results["s30_enrichment"] = {
+                                "status": "skipped",
+                                "reason": f"AttributeError from get_metrics: {ae}"
+                            }
+                        else:
+                            recommendations = enricher.enrich_with_signals(
+                                recommendations=recommendations,
+                                signal_data=signal_data
+                            )
+                            stage_results["s30_enrichment"] = {"status": "completed"}
                 else:
                     stage_results["s30_enrichment"] = {"status": "skipped", "reason": "SISAS disabled"}
             except Exception as e:
