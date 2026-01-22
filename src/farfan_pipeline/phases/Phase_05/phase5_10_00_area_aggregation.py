@@ -695,8 +695,8 @@ class AreaPolicyAggregator:
         # Weight robustness: how stable is the score under weight perturbations?
         # Compute by perturbing weights and measuring score change
         perturbed_scores = []
-        for _ in range(5):  # Sample 5 perturbations
-            perturbed_weights = self._perturb_weights(weights, perturbation_size)
+        for i in range(5):  # Sample 5 perturbations
+            perturbed_weights = self._perturb_weights(weights, perturbation_size, seed=42 + i)
             perturbed_score = sum(
                 ds.score * perturbed_weights.get(ds.dimension_id, 0.0)
                 for ds in dimension_scores
@@ -727,6 +727,7 @@ class AreaPolicyAggregator:
         self,
         weights: dict[str, float],
         perturbation_size: float,
+        seed: int | None = None,
     ) -> dict[str, float]:
         """
         Perturb weights randomly while maintaining normalization.
@@ -734,11 +735,15 @@ class AreaPolicyAggregator:
         Args:
             weights: Original weights
             perturbation_size: Size of perturbation (as fraction)
+            seed: Optional random seed for determinism
 
         Returns:
             Perturbed and renormalized weights
         """
         import random
+
+        if seed is not None:
+            random.seed(seed)
 
         perturbed = {}
         for dim_id, weight in weights.items():

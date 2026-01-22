@@ -10,8 +10,8 @@
   },
   "metadata": {
     "created": "2025-12-30",
-    "modified": "2026-01-18",
-    "version": "1.0.0",
+    "modified": "2026-01-22",
+    "version": "1.1.0",
     "author": "F.A.R.F.A.N Core Architecture Team",
     "status": "ACTIVE"
   },
@@ -149,12 +149,12 @@
       {
         "id": "INV-P9-1",
         "name": "Completeness",
-        "formula": "\u2200 section: is_populated(section)"
+        "formula": "∀ section: is_populated(section)"
       },
       {
         "id": "INV-P9-2",
         "name": "Traceability",
-        "formula": "\u2200 finding: has_source_reference(finding)"
+        "formula": "∀ finding: has_source_reference(finding)"
       }
     ]
   },
@@ -165,5 +165,37 @@
   "documentation": {
     "constants": "phase9_10_00_phase_9_constants.py",
     "manifest": "PHASE_9_MANIFEST.json"
+  },
+  "orchestration": {
+    "aligned_with_orchestrator": true,
+    "last_alignment_audit": "2026-01-22",
+    "execution_steps": 4,
+    "step_mapping": [
+      {
+        "step": 1,
+        "name": "Validate Inputs",
+        "module": "contracts/phase9_10_00_input_contract.py"
+      },
+      {
+        "step": 2,
+        "name": "Assemble Report",
+        "module": "phase9_10_00_report_assembly.py"
+      },
+      {
+        "step": 3,
+        "name": "Generate Report Artifacts",
+        "module": "phase9_10_00_report_generator.py"
+      },
+      {
+        "step": 4,
+        "name": "Institutional Annex",
+        "module": "phase9_15_00_institutional_entity_annex.py"
+      }
+    ],
+    "corrected_imports": [
+      "ReportAssembler.assemble_report() instead of ReportGenerator.generate_report()",
+      "ReportGenerator requires output_dir in __init__",
+      "ReportGenerator.generate_all() instead of generate_report()"
+    ]
   }
 }

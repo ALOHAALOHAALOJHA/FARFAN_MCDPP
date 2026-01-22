@@ -73,12 +73,12 @@ from .phase6_30_00_cluster_aggregator import ClusterAggregator
 # STAGE 40: Contracts (Design by Contract)
 # ============================================================================
 # Import contracts (depends on scoring_config)
-from .contracts.phase6_input_contract import Phase6InputContract
-from .contracts.phase6_mission_contract import (
+from .contracts.phase6_10_00_input_contract import Phase6InputContract
+from .contracts.phase6_10_01_mission_contract import (
     MISSION_STATEMENT,
     Phase6Stage,
 )
-from .contracts.phase6_output_contract import (
+from .contracts.phase6_10_02_output_contract import (
     Phase6OutputContract,
     validate_phase6_output,
 )

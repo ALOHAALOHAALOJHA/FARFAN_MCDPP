@@ -137,3 +137,45 @@ The following files contain Phase 5/6/7 logic and should be migrated in future s
 **Surgeon**: GitHub Copilot Agent
 **Date**: 2026-01-13
 **Verification**: Manual and automated
+
+---
+
+## Surgery Update: Orchestrator Alignment
+### Date: 2026-01-22
+
+### Issue Found
+The main pipeline orchestrator (`orchestration/orchestrator.py`) was importing non-existent modules and functions for Phase 4 execution.
+
+### Root Cause
+The orchestrator was written based on a design document rather than the actual implemented modules.
+
+### Incorrect Imports Fixed
+
+| Before (Non-existent) | After (Correct) |
+|-----------------------|-----------------|
+| `contracts.phase4_input_contract.validate_phase4_input` | `contracts.phase4_10_00_input_contract.Phase4InputContract.validate()` |
+| `phase4_20_00_dimension_grouping.group_by_dimension_area` | `phase4_30_00_aggregation.DimensionAggregator.run()` |
+| `phase4_30_00_aggregation.WeightedAverageAggregator` | `phase4_30_00_aggregation.DimensionAggregator` |
+| `phase4_50_00_provenance.register_aggregation_provenance` | `phase4_10_00_aggregation_provenance.AggregationDAG` |
+| `phase4_40_00_uncertainty_quantification.compute_uncertainty_metrics` | `phase4_10_00_uncertainty_quantification.BootstrapAggregator` |
+| (missing) | `phase4_60_00_aggregation_validation.validate_phase4_output` |
+
+### New 8-Step Orchestration Flow
+
+1. **S01**: Load Configuration (`phase4_10_00_aggregation_settings`)
+2. **S02**: Validate Inputs (`Phase4InputContract.validate()`)
+3. **S03**: Initialize Aggregator (`DimensionAggregator`)
+4. **S04**: Calculate Scores (Choquet or Weighted Average)
+5. **S05**: Provenance Tracking (`AggregationDAG`)
+6. **S06**: Uncertainty Quantification (`BootstrapAggregator`)
+7. **S07**: Output Validation (`validate_phase4_output`)
+8. **S08**: Final Output with Exit Gate
+
+### Files Updated
+1. `orchestration/orchestrator.py` - Fixed all Phase 4 imports
+2. `Phase_04/CANONICAL_FLOW.md` - Added orchestrator alignment section
+3. `Phase_04/PHASE_4_MANIFEST.json` - Added orchestration section
+4. `Phase_04/README.md` - Added orchestrator alignment documentation
+5. `Phase_04/contracts/phase4_10_01_mission_contract.py` - Added ORCHESTRATOR_STEP_MAPPING
+
+### Status: ✅ Orchestrator Alignment Complete

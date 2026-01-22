@@ -1,18 +1,18 @@
 {
   "$schema": "../../schemas/phase_manifest_schema.json",
-  "manifest_version": "2.1.0",
+  "manifest_version": "2.2.0",
   "phase": {
     "number": 4,
     "name": "Dimension Aggregation",
     "codename": "DIMENSION",
     "label": "Phase 4",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "status": "ACTIVE",
     "criticality": "CRITICAL"
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2026-01-18",
+    "modified": "2026-01-22",
     "authors": [
       "F.A.R.F.A.N Core Team"
     ],
@@ -20,9 +20,9 @@
       "phase4_team"
     ],
     "repository": "FARFAN_MCDPP",
-    "surgery_note": "Phase 4 surgically separated from meta-phase 4-7 on 2026-01-13. Re-sequenced based on dependency analysis on 2026-01-17. Integration module (subphase 50) moved to orchestration layer on 2026-01-18."
+    "surgery_note": "Phase 4 surgically separated from meta-phase 4-7 on 2026-01-13. Re-sequenced based on dependency analysis on 2026-01-17. Integration module (subphase 50) moved to orchestration layer on 2026-01-18. Orchestrator alignment audit on 2026-01-22 - corrected module imports to match actual file structure."
   },
-  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions \u00d7 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
+  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions × 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
   "stages": [
     {
       "code": 0,
@@ -176,5 +176,52 @@
   },
   "dependency_graph": {
     "note": "Subphase numbers indicate sequential execution order. First number = subphase, second = position within subphase."
+  },
+  "orchestration": {
+    "aligned_with_orchestrator": true,
+    "last_alignment_audit": "2026-01-22",
+    "execution_steps": 8,
+    "step_mapping": [
+      {
+        "step": 1,
+        "name": "Load Configuration",
+        "module": "phase4_10_00_aggregation_settings.py"
+      },
+      {
+        "step": 2,
+        "name": "Validate Inputs",
+        "module": "contracts/phase4_10_00_input_contract.py"
+      },
+      {
+        "step": 3,
+        "name": "Initialize Aggregator",
+        "module": "phase4_30_00_aggregation.py"
+      },
+      {
+        "step": 4,
+        "name": "Calculate Scores",
+        "module": "phase4_30_00_choquet_aggregator.py OR phase4_30_00_aggregation.py"
+      },
+      {
+        "step": 5,
+        "name": "Provenance Tracking",
+        "module": "phase4_10_00_aggregation_provenance.py"
+      },
+      {
+        "step": 6,
+        "name": "Uncertainty Quantification",
+        "module": "phase4_10_00_uncertainty_quantification.py"
+      },
+      {
+        "step": 7,
+        "name": "Output Validation",
+        "module": "phase4_60_00_aggregation_validation.py"
+      },
+      {
+        "step": 8,
+        "name": "Final Output",
+        "module": "orchestrator (exit gate)"
+      }
+    ]
   }
 }

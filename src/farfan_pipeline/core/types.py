@@ -65,27 +65,25 @@ EpistemicOutputType = Literal["FACT", "PARAMETER", "CONSTRAINT", "NARRATIVE", "M
 # PROTOCOLS - Analytical Interfaces
 # ============================================================================
 
-@Protocol
-class EvidenceExtractable:
+class EvidenceExtractable(Protocol):
     """Protocol for objects that can yield empirical evidence."""
-    
-    def extract_evidence(self) -> List[Dict[str, any]]:
+
+    def extract_evidence(self) -> List[Dict[str, Any]]:
         """Extract empirical evidence from this object."""
         ...
-    
+
     def diagnostic_power(self) -> DiagnosticPowerType:
         """Assess diagnostic power of extracted evidence."""
         ...
 
 
-@Protocol
-class MechanismTestable:
+class MechanismTestable(Protocol):
     """Protocol for objects that can be tested as causal mechanisms."""
-    
+
     def mechanism_parts(self) -> List[MechanismPartType]:
         """Identify parts of the causal mechanism."""
         ...
-    
+
     def test_mechanism(self, test_type: ProcessTracingTestType) -> float:
         """Apply process-tracing test to mechanism."""
         ...

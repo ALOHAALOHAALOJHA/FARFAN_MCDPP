@@ -15,16 +15,22 @@ CHANGELOG v2.0.0:
 - Migrated scoring parameters to phase6_10_01_scoring_config.py
 - This file now re-exports from unified config for backwards compatibility
 - Cluster composition constants remain here (domain-specific, not scoring)
+
+CHANGELOG v2.0.1:
+- Made CLUSTER_COMPOSITION truly immutable using MappingProxyType
+- Made CLUSTERS a tuple for immutability
 """
 from __future__ import annotations
 
-__version__ = "2.0.0"
+from types import MappingProxyType
+
+__version__ = "2.0.1"
 __phase__ = 6
 __stage__ = 10
 __order__ = 0
 __author__ = "GNEA-Enforcement"
 __created__ = "2025-01-09T00:00:00Z"
-__modified__ = "2026-01-16T00:00:00Z"
+__modified__ = "2026-01-22T00:00:00Z"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
 
@@ -39,19 +45,25 @@ from farfan_pipeline.phases.Phase_06.phase6_10_01_scoring_config import (
     PENALTY_WEIGHT,
 )
 
-# Cluster identifiers (4 total)
-CLUSTERS = ["CLUSTER_MESO_1", "CLUSTER_MESO_2", "CLUSTER_MESO_3", "CLUSTER_MESO_4"]
+# Cluster identifiers (4 total) - immutable tuple
+CLUSTERS = ("CLUSTER_MESO_1", "CLUSTER_MESO_2", "CLUSTER_MESO_3", "CLUSTER_MESO_4")
 
 # Expected output count for Phase 6
 EXPECTED_CLUSTER_SCORE_COUNT = 4
 
 # Cluster composition (policy areas per cluster)
-CLUSTER_COMPOSITION = {
+# IMMUTABLE: Uses MappingProxyType to prevent accidental modification
+# Exponential benefit: Runtime guarantees of structural integrity
+# - Prevents silent bugs from mutation
+# - Enables safe sharing across threads
+# - Compiler can optimize for read-only access
+_CLUSTER_COMPOSITION_DICT = {
     "CLUSTER_MESO_1": ["PA01", "PA02", "PA03"],
     "CLUSTER_MESO_2": ["PA04", "PA05", "PA06"],
     "CLUSTER_MESO_3": ["PA07", "PA08"],
     "CLUSTER_MESO_4": ["PA09", "PA10"],
 }
+CLUSTER_COMPOSITION = MappingProxyType(_CLUSTER_COMPOSITION_DICT)
 
 # Backwards compatibility exports
 DISPERSION_THRESHOLDS = PHASE6_CONFIG.to_legacy_dispersion_thresholds()

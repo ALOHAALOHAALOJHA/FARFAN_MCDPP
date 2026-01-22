@@ -13,8 +13,8 @@
 | **Phase Identifier** | `PHASE-7-MACRO-EVALUATION` |
 | **Canonical Name** | `phase_7_macro_evaluation` |
 | **Status** | `ACTIVE` |
-| **Version** | `2.0.0` |
-| **Last Updated** | 2025-01-XX |
+| **Version** | `2.1.0` |
+| **Last Updated** | 2026-01-22 |
 | **Pipeline Position** | Phase 6 → **Phase 7** → Final Output |
 | **Compression Ratio** | 4:1 (final reduction) |
 
@@ -1230,5 +1230,15 @@ Phase_07/
 
 ---
 
-*Document generated for F.A.R.F.A.N. Policy Evaluation Framework v2.0*
-*Last updated: 2025-01*
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2025-01-13 | Initial Phase 7 implementation (5 modules) |
+| 2.0.0 | 2025-01-18 | Enhanced documentation and specifications |
+| 2.1.0 | 2026-01-22 | **Constitutional Orchestration**: Added interphase bridge (Stage 5), checkpoint/recovery (Stage 30), performance metrics, exit gate validation, and granular stage-level checkpointing in MacroAggregator (v1.1.0). Total 11 modules. Orchestrator fidelity verified. |
+
+---
+
+*Document generated for F.A.R.F.A.N. Policy Evaluation Framework v2.1.0*
+*Last updated: 2026-01-22*

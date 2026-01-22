@@ -10,7 +10,7 @@ Tests cover:
 
 import pytest
 
-from orchestration.executor_chunk_synchronizer import (
+from farfan_pipeline.phases.Phase_02.phase2_40_01_executor_chunk_synchronizer import (
     ExecutorChunkBinding,
     ExecutorChunkSynchronizationError,
     build_join_table,

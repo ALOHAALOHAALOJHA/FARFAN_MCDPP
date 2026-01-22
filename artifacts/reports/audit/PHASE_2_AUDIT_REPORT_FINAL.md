@@ -75,7 +75,7 @@ from farfan_pipeline.orchestration.seed_registry import SeedRegistry
 |----|-------|----------|--------|
 | INC-001 | `cpp.chunks` vs `cpp.chunk_graph.chunks` access mismatch | CRITICAL | ⚠️ DOCUMENTED, NOT VERIFIED FIXED |
 | INC-002 | `cpp.schema_version` vs `cpp.metadata.schema_version` access mismatch | CRITICAL | ⚠️ DOCUMENTED, NOT VERIFIED FIXED |
-| INC-003 | Question count mismatch (305 vs 300) | LATENT | ⚠️ DOCUMENTED, NOT RESOLVED |
+| INC-003 | Question count mismatch (305 vs 300) | LATENT | ✅ DOCUMENTED AND RESOLVED |
 | INC-004 | Method count mismatch (416 vs 240) | LATENT | ⚠️ DOCUMENTED, NOT RESOLVED |
 | INC-005 | Naming: `smart_chunks` vs `chunks` | COSMETIC | ⚠️ DOCUMENTED |
 
@@ -87,9 +87,17 @@ from farfan_pipeline.orchestration.seed_registry import SeedRegistry
 **Resolution Required:**
 1. Fix Phase 2 imports (Critical Issue 1)
 2. Verify adapter correctly resolves INC-001 and INC-002
-3. Standardize question count (305 or 300)
+3. ~~Standardize question count (305 or 300)~~ ✅ **RESOLVED**: Documented in phase2_40_01_executor_chunk_synchronizer.py and EMPIRICAL_CORPUS_README.md
 4. Standardize method count (416 or 240)
 5. Execute end-to-end Phase 1→2 test to validate composition
+
+**Resolution Notes for INC-003 (2026-01-22):**
+- The 305 vs 300 discrepancy is now fully documented in:
+  - `src/farfan_pipeline/phases/Phase_02/phase2_40_01_executor_chunk_synchronizer.py` (lines 41-46)
+  - `canonic_questionnaire_central/_registry/EMPIRICAL_CORPUS_README.md` (lines 98-104)
+- Q305 (MACRO_1) is the global coherence question handled separately in Phase 3
+- Phase 2 executor contracts cover Q001-Q300 (300 specialized questions)
+- Each of the 60 chunks (10 PA × 6 DIM) services ~5 questions on average (300/60 = 5:1 expansion ratio)
 
 ---
 

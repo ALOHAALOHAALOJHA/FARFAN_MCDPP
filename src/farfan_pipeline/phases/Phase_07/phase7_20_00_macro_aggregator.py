@@ -11,28 +11,36 @@ Module: src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py
 Purpose: Implement macro-level aggregation logic
 Owner: phase7_20
 Lifecycle: ACTIVE
-Version: 1.0.0
-Effective-Date: 2026-01-13
+Version: 1.1.0
+Effective-Date: 2026-01-22
+Enhancements:
+    - v1.1.0: Added granular stage-level checkpointing support
 """
 
 # METADATA
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __phase__ = 7
 __stage__ = 20
 __order__ = 0
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2026-01-13T00:00:00Z"
-__modified__ = "2026-01-13T00:00:00Z"
+__modified__ = "2026-01-22T00:00:00Z"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "Per-Task"
 
 import logging
 import statistics
-from typing import Any
-from datetime import datetime
+from typing import Any, TYPE_CHECKING
+from datetime import datetime, timezone
 from uuid import uuid4
 
 from farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score import ClusterScore
+
+# Type hint for checkpoint manager to avoid circular imports
+if TYPE_CHECKING:
+    from farfan_pipeline.phases.Phase_07.phase7_30_00_checkpoint_manager import (
+        Phase7CheckpointManager,
+    )
 from farfan_pipeline.phases.Phase_07.phase7_10_00_macro_score import MacroScore
 from farfan_pipeline.phases.Phase_07.phase7_10_00_phase_7_constants import (
     CLUSTER_WEIGHTS,
@@ -60,13 +68,13 @@ logger = logging.getLogger(__name__)
 class MacroAggregator:
     """
     Phase 7 Macro Aggregator.
-    
+
     Aggregates 4 ClusterScore objects into a single holistic MacroScore.
-    
+
     Contract:
         Input:  4 ClusterScore (CLUSTER_MESO_1 through CLUSTER_MESO_4)
         Output: 1 MacroScore (holistic evaluation)
-        
+
     Features:
         - Weighted averaging of cluster scores (equal weights by default)
         - Cross-cutting coherence analysis (strategic, operational, institutional)
@@ -74,30 +82,34 @@ class MacroAggregator:
         - Strategic alignment scoring (vertical, horizontal, temporal)
         - Quality classification based on normalized score
         - Uncertainty propagation from cluster scores
+        - Granular stage-level checkpointing (v1.1.0)
     """
-    
+
     def __init__(
         self,
         cluster_weights: dict[str, float] | None = None,
         enable_gap_detection: bool = True,
         enable_coherence_analysis: bool = True,
         enable_alignment_scoring: bool = True,
+        checkpoint_manager: "Phase7CheckpointManager | None" = None,
     ):
         """
         Initialize MacroAggregator.
-        
+
         Args:
             cluster_weights: Custom weights for clusters (default: equal weights)
             enable_gap_detection: Whether to detect systemic gaps
             enable_coherence_analysis: Whether to compute cross-cutting coherence
             enable_alignment_scoring: Whether to compute strategic alignment
+            checkpoint_manager: Optional checkpoint manager for granular stage recovery
         """
         self.cluster_weights = cluster_weights or CLUSTER_WEIGHTS.copy()
         self.enable_gap_detection = enable_gap_detection
         self.enable_coherence_analysis = enable_coherence_analysis
         self.enable_alignment_scoring = enable_alignment_scoring
+        self.checkpoint_manager = checkpoint_manager
         self.gap_detector = SystemicGapDetector() if enable_gap_detection else None
-        
+
         # Validate weights sum to 1.0
         weight_sum = sum(self.cluster_weights.values())
         if abs(weight_sum - 1.0) > 1e-6:
@@ -109,47 +121,81 @@ class MacroAggregator:
     def aggregate(self, cluster_scores: list[ClusterScore]) -> MacroScore:
         """
         Aggregate cluster scores into macro score.
-        
+
         Args:
             cluster_scores: List of 4 ClusterScore objects
-            
+
         Returns:
             MacroScore: Holistic evaluation
-            
+
         Raises:
             ValueError: If preconditions are violated
+
+        Checkpoint Support (v1.1.0):
+            If checkpoint_manager is provided, saves checkpoints after each stage
+            enabling granular mid-execution recovery.
         """
         # Validate preconditions
         self._validate_input(cluster_scores)
-        
+
         # Step 1: Compute weighted mean score
         raw_score = self._compute_weighted_score(cluster_scores)
-        
+        self._save_checkpoint_if_enabled(
+            "STAGE_WEIGHTED_SCORE",
+            {"raw_score": raw_score},
+            {"description": "Weighted score computation complete"}
+        )
+
         # Step 2: Normalize score
         score_normalized = raw_score / 3.0
-        
+
         # Step 3: Classify quality
         quality_level = self._classify_quality(score_normalized)
-        
+        self._save_checkpoint_if_enabled(
+            "STAGE_QUALITY_CLASSIFICATION",
+            {"quality_level": quality_level, "score_normalized": score_normalized},
+            {"description": "Quality classification complete"}
+        )
+
         # Step 4: Cross-cutting coherence analysis
         coherence, coherence_breakdown = self._compute_coherence(cluster_scores)
-        
+        self._save_checkpoint_if_enabled(
+            "STAGE_COHERENCE_ANALYSIS",
+            {"coherence": coherence, "coherence_breakdown": coherence_breakdown},
+            {"description": "Cross-cutting coherence analysis complete"}
+        )
+
         # Step 5: Systemic gap detection
         systemic_gaps, gap_severity = self._detect_gaps(cluster_scores)
-        
+        self._save_checkpoint_if_enabled(
+            "STAGE_GAP_DETECTION",
+            {"systemic_gaps": systemic_gaps, "gap_severity": gap_severity},
+            {"description": "Systemic gap detection complete", "gaps_count": len(systemic_gaps)}
+        )
+
         # Step 6: Strategic alignment scoring
         alignment, alignment_breakdown = self._compute_alignment(cluster_scores)
-        
+        self._save_checkpoint_if_enabled(
+            "STAGE_ALIGNMENT_SCORING",
+            {"alignment": alignment, "alignment_breakdown": alignment_breakdown},
+            {"description": "Strategic alignment scoring complete"}
+        )
+
         # Step 7: Uncertainty propagation
         score_std, ci_95 = self._propagate_uncertainty(cluster_scores)
-        
+        self._save_checkpoint_if_enabled(
+            "STAGE_UNCERTAINTY_PROPAGATION",
+            {"score_std": score_std, "confidence_interval_95": ci_95},
+            {"description": "Uncertainty propagation complete"}
+        )
+
         # Step 8: Assemble cluster details
         cluster_details = self._assemble_cluster_details(cluster_scores)
-        
+
         # Step 9: Generate evaluation ID and provenance
         evaluation_id = f"EVAL_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
         provenance_node_id = f"PROV_MACRO_{uuid4().hex[:8]}"
-        
+
         # Step 10: Construct MacroScore
         macro_score = MacroScore(
             evaluation_id=evaluation_id,
@@ -169,21 +215,28 @@ class MacroAggregator:
             provenance_node_id=provenance_node_id,
             aggregation_method="weighted_average",
             evaluation_timestamp=datetime.utcnow().isoformat() + "Z",
-            pipeline_version="1.0.0",
+            pipeline_version="1.1.0",
         )
-        
+
         # Validate output contract
         input_cluster_ids = {cs.cluster_id for cs in cluster_scores}
         is_valid, error_message = Phase7OutputContract.validate(macro_score, input_cluster_ids)
         if not is_valid:
             raise ValueError(f"Phase 7 output contract violation: {error_message}")
-        
+
+        # Save final aggregation checkpoint
+        self._save_checkpoint_if_enabled(
+            "STAGE_AGGREGATION_FINAL",
+            {"evaluation_id": evaluation_id, "macro_score": macro_score},
+            {"description": "Macro aggregation complete", "status": "success"}
+        )
+
         logger.info(
             f"Macro aggregation complete: score={raw_score:.3f}, "
             f"quality={quality_level}, coherence={coherence:.3f}, "
             f"alignment={alignment:.3f}, gaps={len(systemic_gaps)}"
         )
-        
+
         return macro_score
     
     def _validate_input(self, cluster_scores: list[ClusterScore]) -> None:
@@ -358,3 +411,43 @@ class MacroAggregator:
                 "areas": cs.areas,
             }
         return details
+
+    def _save_checkpoint_if_enabled(
+        self,
+        stage_id: str,
+        output: dict[str, Any],
+        metadata: dict[str, Any],
+    ) -> None:
+        """
+        Save checkpoint after stage completion if checkpoint manager is enabled.
+
+        Args:
+            stage_id: Stage identifier (e.g., "STAGE_COHERENCE_ANALYSIS")
+            output: Output data from stage execution
+            metadata: Additional metadata about the execution
+
+        This enables granular mid-execution recovery, allowing the pipeline
+        to resume from intermediate stages instead of re-running the entire
+        aggregation from scratch.
+
+        Checkpoint Strategy (v1.1.0):
+            - Saves after each major computational stage
+            - Enables O(k) recovery where k = stages completed
+            - Prevents O(n) recomputation for long-running aggregations
+            - Thread-safe checkpoint operations
+        """
+        if self.checkpoint_manager is not None:
+            try:
+                self.checkpoint_manager.save_stage_checkpoint(
+                    stage_id=stage_id,
+                    output=output,
+                    metadata={
+                        **metadata,
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "aggregator_version": __version__,
+                    },
+                )
+                logger.debug(f"[P7] Checkpoint saved: {stage_id}")
+            except Exception as e:
+                # Checkpoint failure should not halt aggregation
+                logger.warning(f"[P7] Failed to save checkpoint for {stage_id}: {e}")

@@ -147,6 +147,44 @@ Phase 4 GUARANTEES:
 - **Validation**: Hermetic validation at phase boundary
 - **Uncertainty**: BCa bootstrap uncertainty quantification
 
+## Orchestrator Alignment (Updated 2026-01-22)
+
+The main pipeline orchestrator (`orchestration/orchestrator.py`) has been aligned to use the correct
+Phase 4 modules. The orchestration flow now matches the canonical module structure:
+
+### 8-Step Orchestration Flow
+
+| Step | Label | Module Used | Function/Class |
+|------|-------|-------------|----------------|
+| S01 | Load Configuration | `phase4_10_00_aggregation_settings.py` | `load_aggregation_settings()` |
+| S02 | Validate Inputs | `contracts/phase4_10_00_input_contract.py` | `Phase4InputContract.validate()` |
+| S03 | Initialize Aggregator | `phase4_30_00_aggregation.py` | `DimensionAggregator` |
+| S04 | Calculate Scores | `phase4_30_00_choquet_aggregator.py` OR `phase4_30_00_aggregation.py` | `ChoquetAggregator.aggregate()` OR `DimensionAggregator.run()` |
+| S05 | Provenance Tracking | `phase4_10_00_aggregation_provenance.py` | `AggregationDAG`, `ProvenanceNode` |
+| S06 | Uncertainty Quantification | `phase4_10_00_uncertainty_quantification.py` | `BootstrapAggregator.compute_bca_interval()` |
+| S07 | Output Validation | `phase4_60_00_aggregation_validation.py` | `validate_phase4_output()` |
+| S08 | Final Output | Orchestrator | Exit gate validation |
+
+### Module Mapping (Orchestrator → Phase 4)
+
+**CORRECTED mappings (as of 2026-01-22):**
+
+| Orchestrator Import | Actual Module | Status |
+|---------------------|---------------|--------|
+| `Phase4InputContract` | `contracts/phase4_10_00_input_contract.py` | ✅ FIXED |
+| `DimensionAggregator` | `phase4_30_00_aggregation.py` | ✅ CORRECT |
+| `group_by` | `phase4_30_00_aggregation.py` | ✅ FIXED (was missing) |
+| `ChoquetAggregator` | `phase4_30_00_choquet_aggregator.py` | ✅ CORRECT |
+| `AggregationDAG` | `phase4_10_00_aggregation_provenance.py` | ✅ FIXED |
+| `BootstrapAggregator` | `phase4_10_00_uncertainty_quantification.py` | ✅ FIXED |
+| `validate_phase4_output` | `phase4_60_00_aggregation_validation.py` | ✅ ADDED |
+
+**REMOVED non-existent imports:**
+- ~~`phase4_20_00_dimension_grouping.group_by_dimension_area`~~ → Use `DimensionAggregator.run()`
+- ~~`phase4_30_00_aggregation.WeightedAverageAggregator`~~ → Use `DimensionAggregator`
+- ~~`phase4_50_00_provenance.register_aggregation_provenance`~~ → Use `AggregationDAG`
+- ~~`phase4_40_00_uncertainty_quantification.compute_uncertainty_metrics`~~ → Use `BootstrapAggregator`
+
 ## Files NOT in Default Flow
 
 The following files exist but are NOT part of the canonical flow:

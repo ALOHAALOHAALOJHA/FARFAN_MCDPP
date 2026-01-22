@@ -166,6 +166,59 @@ class Phase4MissionContract:
         "Uncertainty: Bootstrap resampling for confidence intervals",
     ]
 
+    # Orchestrator Alignment (Updated 2026-01-22)
+    # This defines the canonical mapping between orchestrator steps and Phase 4 modules
+    ORCHESTRATOR_STEP_MAPPING = [
+        {
+            "step": 1,
+            "name": "Load Configuration",
+            "module": "phase4_10_00_aggregation_settings.py",
+            "function": "load_aggregation_settings()",
+        },
+        {
+            "step": 2,
+            "name": "Validate Inputs",
+            "module": "contracts/phase4_10_00_input_contract.py",
+            "function": "Phase4InputContract.validate()",
+        },
+        {
+            "step": 3,
+            "name": "Initialize Aggregator",
+            "module": "phase4_30_00_aggregation.py",
+            "function": "DimensionAggregator()",
+        },
+        {
+            "step": 4,
+            "name": "Calculate Scores",
+            "module": "phase4_30_00_choquet_aggregator.py OR phase4_30_00_aggregation.py",
+            "function": "ChoquetAggregator.aggregate() OR DimensionAggregator.run()",
+        },
+        {
+            "step": 5,
+            "name": "Provenance Tracking",
+            "module": "phase4_10_00_aggregation_provenance.py",
+            "function": "AggregationDAG.add_node()",
+        },
+        {
+            "step": 6,
+            "name": "Uncertainty Quantification",
+            "module": "phase4_10_00_uncertainty_quantification.py",
+            "function": "BootstrapAggregator.compute_bca_interval()",
+        },
+        {
+            "step": 7,
+            "name": "Output Validation",
+            "module": "phase4_60_00_aggregation_validation.py",
+            "function": "validate_phase4_output()",
+        },
+        {
+            "step": 8,
+            "name": "Final Output",
+            "module": "orchestrator",
+            "function": "exit gate validation",
+        },
+    ]
+
     @staticmethod
     def validate_topological_order() -> tuple[bool, dict[str, Any]]:
         """

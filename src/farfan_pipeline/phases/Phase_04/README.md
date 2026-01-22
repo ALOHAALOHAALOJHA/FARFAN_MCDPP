@@ -11,11 +11,70 @@
 | **Phase ID** | `PHASE-4-DIMENSION-AGGREGATION` |
 | **Canonical Name** | `phase_4_dimension_aggregation` |
 | **Status** | `CANONICAL` |
-| **Version** | `3.0.0` |
-| **Effective Date** | 2026-01-11 |
+| **Version** | `3.1.0` |
+| **Effective Date** | 2026-01-22 |
 | **Pipeline Position** | Phase 3 (Scoring) → **Phase 4** → Phase 5 (Area) |
 | **Criticality** | `CRITICAL` |
 | **Certification** | [CERTIFICATE_01_PHASE4_COUNT_60](contracts/certificates/CERTIFICATE_01_PHASE4_COUNT_60.md) |
+| **Orchestrator Alignment** | ✅ Verified 2026-01-22 |
+
+---
+
+## Orchestrator Alignment (Updated 2026-01-22)
+
+The main pipeline orchestrator (`orchestration/orchestrator.py`) has been aligned to use the correct Phase 4 modules. This section documents the canonical 8-step execution flow.
+
+### 8-Step Orchestration Flow
+
+| Step | Label | Module | Function/Class |
+|------|-------|--------|----------------|
+| **S01** | Load Configuration | `phase4_10_00_aggregation_settings.py` | `load_aggregation_settings()` |
+| **S02** | Validate Inputs | `contracts/phase4_10_00_input_contract.py` | `Phase4InputContract.validate()` |
+| **S03** | Initialize Aggregator | `phase4_30_00_aggregation.py` | `DimensionAggregator` |
+| **S04** | Calculate Scores | `phase4_30_00_choquet_aggregator.py` OR `phase4_30_00_aggregation.py` | `ChoquetAggregator.aggregate()` OR `DimensionAggregator.run()` |
+| **S05** | Provenance Tracking | `phase4_10_00_aggregation_provenance.py` | `AggregationDAG`, `ProvenanceNode` |
+| **S06** | Uncertainty Quantification | `phase4_10_00_uncertainty_quantification.py` | `BootstrapAggregator.compute_bca_interval()` |
+| **S07** | Output Validation | `phase4_60_00_aggregation_validation.py` | `validate_phase4_output()` |
+| **S08** | Final Output | Orchestrator | Exit gate validation (60 DimensionScore) |
+
+### Key Module Exports Used by Orchestrator
+
+```python
+# From phase4_10_00_aggregation_settings
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
+    load_aggregation_settings, AggregationSettings
+)
+
+# From contracts/phase4_10_00_input_contract
+from farfan_pipeline.phases.Phase_04.contracts.phase4_10_00_input_contract import (
+    Phase4InputContract
+)
+
+# From phase4_30_00_aggregation
+from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
+    DimensionAggregator, group_by
+)
+
+# From phase4_30_00_choquet_aggregator
+from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
+    ChoquetAggregator
+)
+
+# From phase4_10_00_aggregation_provenance
+from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
+    AggregationDAG, ProvenanceNode
+)
+
+# From phase4_10_00_uncertainty_quantification
+from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
+    BootstrapAggregator, aggregate_with_uncertainty
+)
+
+# From phase4_60_00_aggregation_validation
+from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import (
+    validate_phase4_output, ValidationResult
+)
+```
 
 ---
 

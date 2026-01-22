@@ -95,6 +95,14 @@ class StructuralMarkerExtractor:
 #### Purpose
 Complete mapping of Q001-Q305 to signal types, enabling precise signal routing and irrigation.
 
+#### Note: Question Count Discrepancy (305 vs 300)
+The canonical corpus defines **305 questions** (Q001-Q305), while Phase 2 executor contracts cover **300 questions** (Q001-Q300):
+- **Q305 (MACRO_1)** is the global coherence question that evaluates the entire plan
+- **Q001-Q300** are specialized questions mapped to PA×DIM chunks (10 PA × 6 DIM = 60 chunks)
+- Each chunk services ~5 questions on average (300/60 = 5:1 expansion ratio)
+- Phase 2 executor-chunk synchronization operates on the 300 specialized questions only
+- Q305 is handled separately in Phase 3 (Macro Aggregation)
+
 #### Contents
 ```json
 {

@@ -51,10 +51,10 @@ from farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
 )
-from farfan_pipeline.phases.Phase_06.contracts.phase6_input_contract import (
+from farfan_pipeline.phases.Phase_06.contracts.phase6_10_00_input_contract import (
     Phase6InputContract,
 )
-from farfan_pipeline.phases.Phase_06.contracts.phase6_output_contract import (
+from farfan_pipeline.phases.Phase_06.contracts.phase6_10_02_output_contract import (
     Phase6OutputContract,
 )
 

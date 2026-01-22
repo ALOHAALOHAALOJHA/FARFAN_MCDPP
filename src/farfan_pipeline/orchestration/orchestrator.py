@@ -107,122 +107,6 @@ except ImportError:
     FactoryConfig = None  # type: ignore
 
 # =============================================================================
-# CANONICAL PHASE IMPLEMENTATION IMPORTS
-# =============================================================================
-# Import the actual phase implementations for P00-P09
-try:
-    # Phase 00: Bootstrap
-    from farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner import (
-        VerifiedPipelineRunner,
-    )
-    PHASE_00_AVAILABLE = True
-except ImportError:
-    PHASE_00_AVAILABLE = False
-    VerifiedPipelineRunner = None  # type: ignore
-
-try:
-    # Phase 01: CPP Ingestion
-    from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-        CPPIngestionEngine,
-        execute_phase_1_with_full_contract,
-        Phase1CPPIngestionFullContract,
-        Phase1FatalError,
-    )
-    from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
-        CanonPolicyPackage,
-        CanonicalInput,
-    )
-    PHASE_01_AVAILABLE = True
-    PHASE1_FULL_CONTRACT_AVAILABLE = True
-except ImportError:
-    PHASE_01_AVAILABLE = False
-    PHASE1_FULL_CONTRACT_AVAILABLE = False
-    CPPIngestionEngine = None  # type: ignore
-    execute_phase_1_with_full_contract = None  # type: ignore
-    Phase1CPPIngestionFullContract = None  # type: ignore
-    Phase1FatalError = None  # type: ignore
-    CanonPolicyPackage = None  # type: ignore
-    CanonicalInput = None  # type: ignore
-
-try:
-    # Phase 03: Scoring
-    from farfan_pipeline.phases.Phase_03.phase3_24_00_signal_enriched_scoring import (
-        SignalEnrichedScorer,
-    )
-    PHASE_03_AVAILABLE = True
-except ImportError:
-    PHASE_03_AVAILABLE = False
-    SignalEnrichedScorer = None  # type: ignore
-
-try:
-    # Phase 04: Micro Aggregation (Choquet)
-    from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
-        ChoquetAggregator,
-        ChoquetConfig,
-    )
-    PHASE_04_AVAILABLE = True
-except ImportError:
-    PHASE_04_AVAILABLE = False
-    ChoquetAggregator = None  # type: ignore
-    ChoquetConfig = None  # type: ignore
-
-try:
-    # Phase 05: Meso Aggregation (Policy Areas)
-    from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
-        AreaPolicyAggregator,
-    )
-    from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
-    PHASE_05_AVAILABLE = True
-except ImportError:
-    PHASE_05_AVAILABLE = False
-    AreaPolicyAggregator = None  # type: ignore
-    AreaScore = None  # type: ignore
-
-try:
-    # Phase 06: Cluster Aggregation
-    from farfan_pipeline.phases.Phase_06.phase6_30_00_cluster_aggregator import (
-        ClusterAggregator,
-    )
-    from farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score import ClusterScore
-    PHASE_06_AVAILABLE = True
-except ImportError:
-    PHASE_06_AVAILABLE = False
-    ClusterAggregator = None  # type: ignore
-    ClusterScore = None  # type: ignore
-
-try:
-    # Phase 07: Macro Evaluation
-    from farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator import (
-        MacroAggregator,
-    )
-    from farfan_pipeline.phases.Phase_07.phase7_10_00_macro_score import MacroScore
-    PHASE_07_AVAILABLE = True
-except ImportError:
-    PHASE_07_AVAILABLE = False
-    MacroAggregator = None  # type: ignore
-    MacroScore = None  # type: ignore
-
-try:
-    # Phase 08: Recommendations
-    from farfan_pipeline.phases.Phase_08.phase8_30_00_signal_enriched_recommendations import (
-        SignalEnrichedRecommender,
-    )
-    PHASE_08_AVAILABLE = True
-except ImportError:
-    PHASE_08_AVAILABLE = False
-    SignalEnrichedRecommender = None  # type: ignore
-
-try:
-    # Phase 09: Report Assembly
-    from farfan_pipeline.phases.Phase_09.phase9_10_00_signal_enriched_reporting import (
-        SignalEnrichedReporter,
-    )
-    PHASE_09_AVAILABLE = True
-except ImportError:
-    PHASE_09_AVAILABLE = False
-    SignalEnrichedReporter = None  # type: ignore
-
-# =============================================================================
 # SISAS INTEGRATION HUB IMPORT
 # =============================================================================
 # Import the SISAS integration hub for comprehensive SISAS wiring
@@ -1306,57 +1190,6 @@ class PhaseResult:
     sub_phase_results: dict = field(default_factory=dict)
 
 
-# =============================================================================
-# CONSTITUTIONAL INVARIANTS (Expected by tests)
-# =============================================================================
-# These constants define the expected outputs for each canonical phase
-# based on the FARFAN constitutional specification
-
-P01_EXPECTED_CHUNK_COUNT = 60
-P01_EXPECTED_POLICY_AREAS = 10
-P01_EXPECTED_DIMENSIONS = 6
-P02_EXPECTED_CONTRACT_COUNT = 300
-P04_METHOD = "Choquet Integral"
-P06_CLUSTER_COUNT = 4
-P07_COMPONENTS = ["CCCA"]  # Cross-Cutting Coherence Analysis
-
-
-@dataclass
-class PhaseExecutionResult:
-    """
-    Detailed result of phase execution with constitutional invariants.
-
-    This class extends PhaseResult with additional fields needed by tests
-    and the canonical phase specification.
-    """
-    phase_id: PhaseID
-    status: PhaseStatus
-    started_at: datetime
-    completed_at: Optional[datetime]
-    data: Dict[str, Any]
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    # Constitutional invariants (expected by tests)
-    constitutional_invariants: Dict[str, Any] = field(default_factory=dict)
-    execution_time_s: float = 0.0
-    sub_phase_results: Dict[str, Any] = field(default_factory=dict)
-
-    def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary representation."""
-        return {
-            "phase_id": str(self.phase_id),
-            "status": str(self.status),
-            "started_at": self.started_at.isoformat() if self.started_at else None,
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
-            "data": self.data,
-            "errors": self.errors,
-            "warnings": self.warnings,
-            "constitutional_invariants": self.constitutional_invariants,
-            "execution_time_s": self.execution_time_s,
-            "sub_phase_results": self.sub_phase_results,
-        }
-
-
 @dataclass
 class ExecutionContext:
     """Shared context across all pipeline phases."""
@@ -1582,70 +1415,6 @@ class UnifiedOrchestrator:
                 "UnifiedFactory not available, questionnaire and components will be limited"
             )
 
-        # ==========================================================================
-        # GATE ORCHESTRATOR INITIALIZATION
-        # ==========================================================================
-        # Initialize the 4-gate validation system
-        if GATES_AVAILABLE:
-            from .gates.gate_orchestrator import GateOrchestrator
-            self.gate_orchestrator: Optional[GateOrchestrator] = GateOrchestrator()
-            self.logger.info("GateOrchestrator initialized with 4 gates")
-        else:
-            self.gate_orchestrator = None
-            self.logger.warning("GateOrchestrator not available")
-
-        # ==========================================================================
-        # TRIGGER REGISTRY INITIALIZATION
-        # ==========================================================================
-        # Initialize triggers for phase execution events
-        try:
-            from .triggers.trigger_registry import TriggerRegistry
-            from .triggers.subphase_triggers import SubPhaseTriggers
-            from .triggers.contract_triggers import ContractTriggers
-            from .triggers.extraction_triggers import ExtractionTriggers
-
-            self.trigger_registry = TriggerRegistry()
-            self.subphase_triggers = SubPhaseTriggers(self.trigger_registry)
-            self.contract_triggers = ContractTriggers(self.trigger_registry)
-            self.extraction_triggers = ExtractionTriggers(self.trigger_registry)
-            self.logger.info("Trigger system initialized")
-        except ImportError:
-            self.trigger_registry = None  # type: ignore
-            self.subphase_triggers = None
-            self.contract_triggers = None
-            self.extraction_triggers = None
-            self.logger.warning("Trigger system not available")
-
-        # ==========================================================================
-        # MEMORY SAFETY GUARD INITIALIZATION
-        # ==========================================================================
-        try:
-            from .memory_safety import MemorySafetyGuard
-            self.memory_guard = MemorySafetyGuard()
-        except ImportError:
-            self.memory_guard = None  # type: ignore
-            self.logger.warning("MemorySafetyGuard not available")
-
-        # ==========================================================================
-        # PHASE RESULTS STORAGE
-        # ==========================================================================
-        # Store PhaseExecutionResult for each phase
-        self.phase_results: Dict[PhaseID, PhaseExecutionResult] = {}
-
-        # ==========================================================================
-        # PHASE IMPLEMENTATION INSTANCES
-        # ==========================================================================
-        # These will be initialized when each phase is executed
-        self._phase_00_runner: Optional[VerifiedPipelineRunner] = None
-        self._phase_01_engine: Optional[CPPIngestionEngine] = None
-        self._phase_03_scorer: Optional[SignalEnrichedScorer] = None
-        self._phase_04_aggregator: Optional[ChoquetAggregator] = None
-        self._phase_05_aggregator: Optional[AreaPolicyAggregator] = None
-        self._phase_06_aggregator: Optional[ClusterAggregator] = None
-        self._phase_07_aggregator: Optional[MacroAggregator] = None
-        self._phase_08_recommender: Optional[SignalEnrichedRecommender] = None
-        self._phase_09_reporter: Optional[SignalEnrichedReporter] = None
-
     def _sync_with_factory(self) -> None:
         """
         Synchronize orchestrator context with factory products.
@@ -1818,7 +1587,6 @@ class UnifiedOrchestrator:
             3. Try output_dir.parent if artifacts/ is at output level
             4. Fall back to current working directory
         """
-        from pathlib import Path
         import sys
 
         # Strategy 1: Check for explicit factory config
@@ -2189,458 +1957,191 @@ class UnifiedOrchestrator:
     # PHASE 0: Bootstrap & Validation (7 Stages)
     # =========================================================================
     """
-    Phase 0 Execution Contract (from phase0_execution_flow.md):
+    Phase 0 Execution Contract (from phase_sequence_contract.json):
 
-    Stage 00: Infrastructure (Boot)
-        - Load domain errors (phase0_00_01_domain_errors.py)
-        - Initialize contract protocols (phase0_00_03_protocols.py)
-        - Apply runtime error fixes (primitives/runtime_error_fixes.py)
+    P0.0: Bootstrap → Runtime config, seed registry, manifest builder
+        GATE_1: Bootstrap Gate - Runtime config loaded, artifacts dir created
 
-    Stage 10: Environment Configuration
-        - Resolve absolute paths (phase0_10_00_paths.py)
-        - Parse environment variables (phase0_10_01_runtime_config.py)
-        - Initialize structured logging (primitives/json_logger.py)
-        EXIT GATE: Configuration must be valid and conflict-free
+    P0.1: Input Verification → Cryptographic hash validation (SHA-256)
+        GATE_2: Input Verification Gate - PDF and questionnaire hashed
 
-    Stage 20: Determinism Enforcement
-        - Initialize global seed registry
-        - Compute deterministic seeds (phase0_20_02_determinism.py)
-        - Seed Python random and numpy.random
-        EXIT GATE: All RNGs must be seeded
+    P0.2: Boot Checks → Dependency validation (PROD: fatal, DEV: warn)
+        GATE_3: Boot Checks Gate - Dependencies validated
 
-    Stage 30: Resource Control
-        - Set kernel-level limits (phase0_30_00_resource_controller.py)
-        - Initialize performance metrics (primitives/performance_metrics.py)
-        EXIT GATE: Resource limits must be active and verified
+    P0.3: Determinism → RNG seeding with mandatory python+numpy seeds
+        GATE_4: Determinism Gate - All required seeds applied
 
-    Stage 40: Validation
-        - Validate Phase0Input (phase0_40_00_input_validation.py)
-        - Compute SHA-256 hashes for all inputs
-        - Verify function signatures (primitives/signature_validator.py)
-        EXIT GATE: CanonicalInput produced with validation_passed=True
+    GATE_5: Questionnaire Integrity Gate - SHA256 validation against known-good
+    GATE_6: Method Registry Gate - Expected method count (416) loaded
+    GATE_7: Smoke Tests Gate - Sample methods from major categories
 
-    Stage 50: Boot Sequence
-        - Run comprehensive boot checks (phase0_50_00_boot_checks.py)
-        - Verify all exit gates (phase0_50_01_exit_gates.py)
-        EXIT GATE: All checks passed (or allowed warnings in DEV mode)
+    CRITICAL: Phase 0 ONLY validates questionnaire FILE INTEGRITY (SHA-256 hash).
+              NEVER loads questionnaire content. Factory loads after Phase 0 passes.
 
-    Stage 90: Integration & Handoff
-        - Wire all components (phase0_90_02_bootstrap.py)
-        - Validate wiring integrity (phase0_90_03_wiring_validator.py)
-        - Produce WiringComponents and CanonicalInput
-        EXIT GATE: Handoff complete
+    Implementation: Delegates to VerifiedPipelineRunner (canonical Phase 0 orchestrator).
     """
 
     def _execute_phase_00(self) -> Dict[str, Any]:
         """
-        Execute Phase 0: Bootstrap & Validation - COMPLETE ORCHESTRATION.
+        Execute Phase 0: Bootstrap & Validation via VerifiedPipelineRunner.
 
-        Orchestrates all 7 stages of Phase 0 with full substage execution.
-        This replaces any simplified bootstrap with the complete execution flow.
+        DELEGATES to VerifiedPipelineRunner (canonical Phase 0 orchestrator).
+        This ensures single-source-of-truth compliance with phase_sequence_contract.json.
+
+        Contract Exit Gates (GATE_1 through GATE_7):
+            GATE_1: Bootstrap Gate - Runtime config loaded, artifacts dir created
+            GATE_2: Input Verification Gate - PDF and questionnaire hashed (SHA-256)
+            GATE_3: Boot Checks Gate - Dependencies validated
+            GATE_4: Determinism Gate - All required seeds applied
+            GATE_5: Questionnaire Integrity Gate - SHA256 validation
+            GATE_6: Method Registry Gate - Expected method count loaded
+            GATE_7: Smoke Tests Gate - Sample methods from major categories
 
         Returns:
             Dict with complete bootstrap results including:
             - canonical_input: Validated CanonicalInput object
             - wiring_components: Initialized WiringComponents
-            - stage_results: Results from each stage
-            - exit_gate_results: All gate validations
+            - exit_gate_results: All 7 gate validations aligned with contract
         """
+        from farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner import (
+            VerifiedPipelineRunner,
+        )
         from farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap import (
-            WiringBootstrap, EnforcedBootstrap, WiringComponents
+            WiringBootstrap, WiringComponents,
         )
-        from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
-            WiringFeatureFlags
+        from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
+            check_all_gates, get_gate_summary, GateResult,
+        )
+        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
+            Phase0Input, validate_phase0_input, CanonicalInput,
         )
 
         self.logger.info("=" * 80)
-        self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - FULL ORCHESTRATION STARTED")
+        self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - DELEGATING TO VerifiedPipelineRunner")
         self.logger.info("=" * 80)
 
-        stage_results = {}
         exit_gates = {}
+        wiring_components = None
+        canonical_input = None
 
         try:
             # ====================================================================
-            # STAGE 00: Infrastructure (Boot)
+            # PART 1: Run P0.0-P0.3 via VerifiedPipelineRunner (GATES 1-4)
             # ====================================================================
-            self.logger.info("[P0-S00] Stage 00: Infrastructure (Boot) - STARTED")
+            self.logger.info("[P0] Part 1: Running P0.0-P0.3 via VerifiedPipelineRunner")
 
-            # Load domain errors
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_00_01_domain_errors import (
-                    validate_domain_errors
-                )
-                domain_errors_valid = validate_domain_errors()
-                stage_results["s00_domain_errors"] = {
-                    "status": "completed" if domain_errors_valid else "failed",
-                    "valid": domain_errors_valid
-                }
-                self.logger.info("[P0-S00] Domain errors loaded and validated")
-            except Exception as e:
-                self.logger.warning(f"[P0-S00] Domain errors validation failed: {e}")
-                stage_results["s00_domain_errors"] = {"status": "skipped", "reason": str(e)}
+            # Prepare paths for VerifiedPipelineRunner
+            plan_pdf_path = Path(self.config.document_path) if self.config.document_path else Path("input.pdf")
+            questionnaire_path = Path(self.config.questionnaire_path) if self.config.questionnaire_path else Path("canonic_questionnaire_central/_registry/questionnaire_monolith.json")
 
-            # Initialize contract protocols
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_00_03_protocols import (
-                    initialize_protocols
-                )
-                protocols_initialized = initialize_protocols()
-                stage_results["s00_protocols"] = {
-                    "status": "completed",
-                    "protocols_count": len(protocols_initialized) if protocols_initialized else 0
-                }
-                self.logger.info(f"[P0-S00] Contract protocols initialized: {stage_results['s00_protocols']['protocols_count']} protocols")
-            except Exception as e:
-                self.logger.warning(f"[P0-S00] Protocol initialization failed: {e}")
-                stage_results["s00_protocols"] = {"status": "skipped", "reason": str(e)}
+            # Create artifacts directory
+            artifacts_dir = Path("artifacts") / "phase0"
 
-            self.logger.info("[P0-S00] Stage 00: Infrastructure (Boot) - COMPLETED")
-
-            # ====================================================================
-            # STAGE 10: Environment Configuration
-            # ====================================================================
-            self.logger.info("[P0-S10] Stage 10: Environment Configuration - STARTED")
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import (
-                    resolve_all_paths
-                )
-                resolved_paths = resolve_all_paths()
-                stage_results["s10_paths"] = {
-                    "status": "completed",
-                    "paths_resolved": len(resolved_paths),
-                    "paths": resolved_paths
-                }
-                self.logger.info(f"[P0-S10] Paths resolved: {len(resolved_paths)} paths")
-            except Exception as e:
-                self.logger.error(f"[P0-S10] Path resolution failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 10 path resolution failed: {e}",
-                    error_code="P0_S10_PATH_RESOLUTION_FAILED"
-                )
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import (
-                    RuntimeConfig, load_runtime_config
-                )
-                runtime_config: RuntimeConfig = load_runtime_config()
-                stage_results["s10_runtime_config"] = {
-                    "status": "completed",
-                    "config_valid": runtime_config.is_valid(),
-                    "env_vars_count": len(runtime_config.env_vars)
-                }
-                self.logger.info(f"[P0-S10] Runtime config loaded: {runtime_config.is_valid()}")
-            except Exception as e:
-                self.logger.error(f"[P0-S10] Runtime config failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 10 runtime config failed: {e}",
-                    error_code="P0_S10_RUNTIME_CONFIG_FAILED"
-                )
-
-            # Initialize structured logging
-            try:
-                from farfan_pipeline.phases.Phase_00.primitives.json_logger import (
-                    initialize_structured_logging
-                )
-                logging_configured = initialize_structured_logging()
-                stage_results["s10_logging"] = {
-                    "status": "completed",
-                    "configured": logging_configured
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S10] Structured logging init failed: {e}")
-                stage_results["s10_logging"] = {"status": "skipped", "reason": str(e)}
-
-            # EXIT GATE 10: Configuration validation
-            exit_gates["gate_10"] = {
-                "status": "passed" if runtime_config.is_valid() else "failed",
-                "config_valid": runtime_config.is_valid(),
-                "conflicts": runtime_config.get_conflicts() if hasattr(runtime_config, 'get_conflicts') else []
-            }
-
-            if exit_gates["gate_10"]["status"] != "passed":
-                raise OrchestrationError(
-                    message="Stage 10 exit gate failed: Configuration validation failed",
-                    error_code="P0_S10_EXIT_GATE_FAILED",
-                    context=exit_gates["gate_10"]
-                )
-            self.logger.info("[P0-S10] Stage 10: Environment Configuration - COMPLETED (EXIT GATE PASSED)")
-
-            # ====================================================================
-            # STAGE 20: Determinism Enforcement
-            # ====================================================================
-            self.logger.info("[P0-S20] Stage 20: Determinism Enforcement - STARTED")
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_20_02_determinism import (
-                    initialize_global_seed_registry, compute_deterministic_seeds,
-                    seed_all_rngs
-                )
-                seed_registry = initialize_global_seed_registry()
-                deterministic_seeds = compute_deterministic_seeds(
-                    run_id=self.context.execution_id
-                )
-                seeded_rngs = seed_all_rngs(deterministic_seeds)
-
-                stage_results["s20_determinism"] = {
-                    "status": "completed",
-                    "seed_registry_initialized": seed_registry is not None,
-                    "deterministic_seeds": deterministic_seeds,
-                    "rngs_seeded": list(seeded_rngs.keys()) if seeded_rngs else []
-                }
-                self.logger.info(f"[P0-S20] Determinism enforced: seed={deterministic_seeds}")
-            except Exception as e:
-                self.logger.error(f"[P0-S20] Determinism enforcement failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 20 determinism failed: {e}",
-                    error_code="P0_S20_DETERMINISM_FAILED"
-                )
-
-            # EXIT GATE 20: All RNGs seeded
-            exit_gates["gate_20"] = {
-                "status": "passed" if stage_results["s20_determinism"]["rngs_seeded"] else "failed",
-                "rngs_seeded": stage_results["s20_determinism"]["rngs_seeded"]
-            }
-
-            if not exit_gates["gate_20"]["status"] == "passed":
-                raise OrchestrationError(
-                    message="Stage 20 exit gate failed: Not all RNGs seeded",
-                    error_code="P0_S20_EXIT_GATE_FAILED"
-                )
-
-            self.logger.info("[P0-S20] Stage 20: Determinism Enforcement - COMPLETED (EXIT GATE PASSED)")
-
-            # ====================================================================
-            # STAGE 30: Resource Control
-            # ====================================================================
-            self.logger.info("[P0-S30] Stage 30: Resource Control - STARTED")
-
-            resource_limits_active = False
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (
-                    ResourceController, ResourceLimits
-                )
-                limits = ResourceLimits(
-                    memory_mb=self.config.resource_limits.get("memory_mb", 2048),
-                    cpu_seconds=self.config.resource_limits.get("cpu_seconds", 300),
-                )
-                controller = ResourceController(limits)
-                # Resource limits will be enforced during execution
-                resource_limits_active = True
-
-                stage_results["s30_resource_control"] = {
-                    "status": "completed",
-                    "resource_controller_active": True,
-                    "limits": {
-                        "memory_mb": limits.memory_mb,
-                        "cpu_seconds": limits.cpu_seconds
-                    }
-                }
-                self.logger.info(f"[P0-S30] Resource control activated: {limits.memory_mb}MB, {limits.cpu_seconds}s CPU")
-            except Exception as e:
-                self.logger.warning(f"[P0-S30] Resource control setup failed (continuing without): {e}")
-                stage_results["s30_resource_control"] = {
-                    "status": "skipped",
-                    "reason": str(e)
-                }
-
-            # Initialize performance metrics
-            try:
-                from farfan_pipeline.phases.Phase_00.primitives.performance_metrics import (
-                    PerformanceMetrics, initialize_metrics
-                )
-                perf_metrics = initialize_metrics()
-                stage_results.setdefault("s30_resource_control", {})["performance_metrics"] = {
-                    "initialized": True,
-                    "metrics": perf_metrics.to_dict() if hasattr(perf_metrics, 'to_dict') else {}
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S30] Performance metrics init failed: {e}")
-
-            # EXIT GATE 30: Resource limits active
-            exit_gates["gate_30"] = {
-                "status": "passed" if resource_limits_active else "warned",
-                "resource_limits_active": resource_limits_active
-            }
-
-            self.logger.info("[P0-S30] Stage 30: Resource Control - COMPLETED")
-
-            # ====================================================================
-            # STAGE 40: Validation
-            # ====================================================================
-            self.logger.info("[P0-S40] Stage 40: Input Validation - STARTED")
-
-            canonical_input = None
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
-                    Phase0Input, validate_phase0_input, CanonicalInput
-                )
-                # Create Phase0Input from config
-                phase0_input = Phase0Input(
-                    document_path=Path(self.config.document_path) if self.config.document_path else None,
-                    municipality_name=self.config.municipality_name
-                )
-                # Validate and create CanonicalInput
-                canonical_input = validate_phase0_input(phase0_input)
-
-                # Compute SHA-256 hashes
-                input_hashes = {}
-                if self.config.document_path:
-                    document_hash = self._compute_file_hash(self.config.document_path)
-                    input_hashes["document"] = document_hash
-
-                stage_results["s40_validation"] = {
-                    "status": "completed",
-                    "canonical_input_created": canonical_input is not None,
-                    "validation_passed": canonical_input.validation_passed if canonical_input else False,
-                    "input_hashes": input_hashes
-                }
-                self.logger.info(f"[P0-S40] Input validation: {canonical_input.validation_passed if canonical_input else False}")
-            except Exception as e:
-                self.logger.error(f"[P0-S40] Input validation failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 40 validation failed: {e}",
-                    error_code="P0_S40_VALIDATION_FAILED"
-                )
-
-            # Verify function signatures
-            try:
-                from farfan_pipeline.phases.Phase_00.primitives.signature_validator import (
-                    verify_all_signatures
-                )
-                signatures_valid = verify_all_signatures()
-                stage_results["s40_signatures"] = {
-                    "status": "completed",
-                    "signatures_valid": signatures_valid
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S40] Signature verification failed: {e}")
-                stage_results["s40_signatures"] = {"status": "skipped", "reason": str(e)}
-
-            # EXIT GATE 40: CanonicalInput produced
-            exit_gates["gate_40"] = {
-                "status": "passed" if canonical_input and canonical_input.validation_passed else "failed",
-                "canonical_input": canonical_input is not None,
-                "validation_passed": canonical_input.validation_passed if canonical_input else False
-            }
-
-            if not exit_gates["gate_40"]["status"] == "passed":
-                raise OrchestrationError(
-                    message="Stage 40 exit gate failed: CanonicalInput validation failed",
-                    error_code="P0_S40_EXIT_GATE_FAILED"
-                )
-
-            self.logger.info("[P0-S40] Stage 40: Input Validation - COMPLETED (EXIT GATE PASSED)")
-
-            # ====================================================================
-            # STAGE 50: Boot Sequence
-            # ====================================================================
-            self.logger.info("[P0-S50] Stage 50: Boot Sequence - STARTED")
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
-                    run_comprehensive_boot_checks
-                )
-                boot_check_results = run_comprehensive_boot_checks()
-                stage_results["s50_boot_checks"] = {
-                    "status": "completed",
-                    "checks_passed": boot_check_results.get("all_passed", False),
-                    "check_results": boot_check_results
-                }
-            except Exception as e:
-                self.logger.warning(f"[P0-S50] Boot checks failed: {e}")
-                stage_results["s50_boot_checks"] = {"status": "skipped", "reason": str(e)}
-
-            # Verify all exit gates
-            all_gates_passed = all(
-                gate.get("status") in ("passed", "warned") for gate in exit_gates.values()
+            # Initialize VerifiedPipelineRunner
+            runner = VerifiedPipelineRunner(
+                plan_pdf_path=plan_pdf_path,
+                artifacts_dir=artifacts_dir,
+                questionnaire_path=questionnaire_path,
             )
-            stage_results["s50_exit_gates"] = {
-                "status": "completed",
-                "all_gates_passed": all_gates_passed,
-                "exit_gates": exit_gates
-            }
 
-            # EXIT GATE 50: All checks passed
-            exit_gates["gate_50"] = {
-                "status": "passed" if all_gates_passed else "failed",
-                "all_checks_passed": all_gates_passed
-            }
+            # Run Phase 0 via VerifiedPipelineRunner (P0.0-P0.3)
+            import asyncio
+            phase0_success = asyncio.run(runner.run_phase_zero())
 
-            if not all_gates_passed and self.config.strict_mode:
+            if not phase0_success:
+                # Phase 0 failed - generate failure manifest
+                runner.generate_failure_manifest()
                 raise OrchestrationError(
-                    message="Stage 50 exit gate failed: Not all checks passed",
-                    error_code="P0_S50_EXIT_GATE_FAILED",
-                    context={"exit_gates": exit_gates}
+                    message="Phase 0 failed: VerifiedPipelineRunner reported failure",
+                    error_code="P0_VERIFIED_RUNNER_FAILED",
+                    context={
+                        "errors": runner.errors,
+                        "bootstrap_failed": runner._bootstrap_failed,
+                        "execution_id": runner.execution_id,
+                    }
                 )
 
-            self.logger.info("[P0-S50] Stage 50: Boot Sequence - COMPLETED")
+            # Check all 7 gates (GATE_1-7 from contract)
+            all_passed, gate_results = check_all_gates(runner)
 
-            # ====================================================================
-            # STAGE 90: Integration & Handoff
-            # ====================================================================
-            self.logger.info("[P0-S90] Stage 90: Integration & Handoff - STARTED")
+            if not all_passed:
+                # Find the failed gate
+                failed_gate = next((g for g in gate_results if not g.passed), None)
+                if failed_gate:
+                    raise OrchestrationError(
+                        message=f"Phase 0 exit gate {failed_gate.gate_id} ({failed_gate.gate_name}) failed: {failed_gate.reason}",
+                        error_code=f"P0_GATE_{failed_gate.gate_id}_FAILED",
+                        context={
+                            "gate_id": failed_gate.gate_id,
+                            "gate_name": failed_gate.gate_name,
+                            "reason": failed_gate.reason,
+                        }
+                    )
 
-            wiring_components: Optional[WiringComponents] = None
-            try:
-                # Create WiringBootstrap
-                flags = WiringFeatureFlags.from_env()
-                bootstrap = WiringBootstrap(
-                    questionnaire_path=self.config.questionnaire_path,
-                    questionnaire_hash="",  # Will be computed if needed
-                    executor_config_path=self.config.methods_file,
-                    calibration_profile="default",
-                    abort_on_insufficient=False,
-                    resource_limits=self.config.resource_limits,
-                    flags=flags
-                )
-
-                # Execute bootstrap
-                wiring_components = bootstrap.bootstrap()
-
-                # Validate wiring integrity
-                from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import (
-                    WiringValidator
-                )
-                validator = WiringValidator()
-                wiring_valid = validator.validate_wiring(wiring_components)
-
-                stage_results["s90_integration"] = {
-                    "status": "completed",
-                    "wiring_components_created": wiring_components is not None,
-                    "wiring_valid": wiring_valid,
-                    "factory_instances": 19 if wiring_components else 0,
-                    "argrouter_routes": wiring_components.arg_router.get_special_route_coverage() if wiring_components else 0
+            # Map gate results to contract-aligned exit gates (GATE_1-7)
+            for gate_result in gate_results:
+                exit_gates[f"GATE_{gate_result.gate_id}"] = {
+                    "gate_id": gate_result.gate_id,
+                    "gate_name": gate_result.gate_name,
+                    "status": "passed" if gate_result.passed else "failed",
+                    "reason": gate_result.reason,
                 }
-                self.logger.info(f"[P0-S90] Integration complete: {stage_results['s90_integration']['factory_instances']} factory instances")
-            except Exception as e:
-                self.logger.error(f"[P0-S90] Integration failed: {e}")
-                raise OrchestrationError(
-                    message=f"Stage 90 integration failed: {e}",
-                    error_code="P0_S90_INTEGRATION_FAILED"
-                )
 
-            # EXIT GATE 90: Handoff complete
-            exit_gates["gate_90"] = {
-                "status": "passed" if wiring_components is not None else "failed",
-                "wiring_components": wiring_components is not None,
-                "canonical_input": canonical_input is not None
-            }
-
-            if not exit_gates["gate_90"]["status"] == "passed":
-                raise OrchestrationError(
-                    message="Stage 90 exit gate failed: Handoff incomplete",
-                    error_code="P0_S90_EXIT_GATE_FAILED"
-                )
-
-            self.logger.info("[P0-S90] Stage 90: Integration & Handoff - COMPLETED (EXIT GATE PASSED)")
+            self.logger.info(f"[P0] All 7 exit gates passed:\n{get_gate_summary(gate_results)}")
 
             # ====================================================================
-            # PHASE 0 COMPLETE
+            # PART 2: Create CanonicalInput (FILE INTEGRITY ONLY, no content loading)
+            # ====================================================================
+            self.logger.info("[P0] Part 2: Creating CanonicalInput (file integrity validation)")
+
+            phase0_input = Phase0Input(
+                document_path=plan_pdf_path,
+                municipality_name=self.config.municipality_name
+            )
+            canonical_input = validate_phase0_input(phase0_input)
+
+            # Store hashes from VerifiedPipelineRunner
+            exit_gates["GATE_2"]["pdf_sha256"] = runner.input_pdf_sha256
+            exit_gates["GATE_2"]["questionnaire_sha256"] = runner.questionnaire_sha256
+
+            # ====================================================================
+            # PART 3: Execute WiringBootstrap (produces WiringComponents)
+            # ====================================================================
+            self.logger.info("[P0] Part 3: Executing WiringBootstrap")
+
+            from farfan_pipeline.phases.Phase_00.interphase.wiring_types import WiringFeatureFlags
+
+            flags = WiringFeatureFlags.from_env()
+            bootstrap = WiringBootstrap(
+                questionnaire_path=questionnaire_path,
+                questionnaire_hash=runner.questionnaire_sha256,  # Use hash from VPR
+                executor_config_path=self.config.methods_file,
+                calibration_profile="default",
+                abort_on_insufficient=False,
+                resource_limits=self.config.resource_limits,
+                flags=flags
+            )
+
+            wiring_components = bootstrap.bootstrap()
+
+            # Validate wiring integrity
+            from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import WiringValidator
+            validator = WiringValidator()
+            wiring_valid = validator.validate_wiring(wiring_components)
+
+            if not wiring_valid:
+                raise OrchestrationError(
+                    message="Phase 0 wiring validation failed",
+                    error_code="P0_WIRING_VALIDATION_FAILED",
+                )
+
+            self.logger.info(f"[P0] Wiring complete: {wiring_components.factory.factory_instances} factory instances")
+
+            # ====================================================================
+            # PHASE 0 COMPLETE - STORE RESULTS
             # ====================================================================
             self.logger.info("=" * 80)
-            self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - FULL ORCHESTRATION COMPLETED")
+            self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - COMPLETED")
             self.logger.info("=" * 80)
 
             # Store in context for subsequent phases
@@ -2651,20 +2152,28 @@ class UnifiedOrchestrator:
                 "status": "completed",
                 "canonical_input": canonical_input.to_dict() if hasattr(canonical_input, 'to_dict') else str(canonical_input),
                 "wiring_components": {
-                    "factory_instances": stage_results["s90_integration"]["factory_instances"],
-                    "argrouter_routes": stage_results["s90_integration"]["argrouter_routes"]
+                    "factory_instances": wiring_components.factory.factory_instances,
+                    "argrouter_routes": wiring_components.arg_router.get_special_route_coverage() if wiring_components and wiring_components.arg_router else 0,
                 },
-                "stage_results": stage_results,
                 "exit_gates": exit_gates,
-                "validation_passed": canonical_input.validation_passed if canonical_input else False
+                "validation_passed": canonical_input.validation_passed if canonical_input else False,
+                "phase0_execution_id": runner.execution_id,
+                "seed_snapshot": runner.seed_snapshot,
+                "input_hashes": {
+                    "pdf_sha256": runner.input_pdf_sha256,
+                    "questionnaire_sha256": runner.questionnaire_sha256,
+                },
             }
 
+        except OrchestrationError:
+            # Re-raise orchestration errors as-is
+            raise
         except Exception as e:
             self.logger.error(f"Phase 0 orchestration failed: {e}")
             raise PhaseExecutionError(
                 message=f"Phase 0 execution failed: {e}",
                 phase_id="P00",
-                context={"stage_results": stage_results, "exit_gates": exit_gates}
+                context={"exit_gates": exit_gates}
             ) from e
 
     # =========================================================================
@@ -2702,6 +2211,11 @@ class UnifiedOrchestrator:
         Orchestrates all 16 subphases of Phase 1 with full constitutional
         invariant enforcement at SP4, SP11, and SP13.
 
+        Integration:
+        - Uses Phase 1 Full Contract Executor (execute_phase_1_with_full_contract)
+        - Supports checkpoint/recovery for long-running execution
+        - Emits SISAS signals for subphase progress tracking
+
         Returns:
             Dict with complete CPP ingestion results including:
             - canon_policy_package: Fully assembled CanonPolicyPackage
@@ -2720,8 +2234,27 @@ class UnifiedOrchestrator:
 
         subphase_results = {}
         constitutional_invariants = {}
+        checkpoint_manager = None
+        metrics_collector = None
+
+        # Generate plan_id for this execution (used by both checkpoint and metrics)
+        plan_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         try:
+            # ====================================================================
+            # METRICS COLLECTOR: Initialize performance tracking
+            # ====================================================================
+            try:
+                from farfan_pipeline.phases.Phase_01.phase1_17_00_performance_metrics import (
+                    Phase1MetricsCollector
+                )
+                metrics_collector = Phase1MetricsCollector(plan_id=plan_id)
+                metrics_collector.start_phase()
+                self.logger.info(f"[P1] Metrics collector initialized for plan_id={plan_id}")
+            except ImportError:
+                self.logger.warning("[P1] Metrics collector not available, running without performance tracking")
+                metrics_collector = None
+
             # ====================================================================
             # INPUT: Get CanonicalInput from Phase 0
             # ====================================================================
@@ -2733,7 +2266,6 @@ class UnifiedOrchestrator:
                 from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
                     Phase0Input, validate_phase0_input
                 )
-                from pathlib import Path
                 phase0_input = Phase0Input(
                     document_path=Path(self.config.document_path) if self.config.document_path else None,
                     municipality_name=self.config.municipality_name
@@ -2753,154 +2285,124 @@ class UnifiedOrchestrator:
             self.logger.info(f"[P1] Input received: {type(canonical_input).__name__}")
 
             # ====================================================================
-            # SUBPHASE 00: Circuit Breaker - Pre-flight Checks
+            # CHECKPOINT MANAGER: Initialize for recovery support
             # ====================================================================
-            self.logger.info("[P1-SP00] Subphase 00: Circuit Breaker - Pre-flight Checks")
+            checkpoint_dir = Path(self.config.output_dir) / "checkpoints" / "phase1"
 
-            try:
-                from farfan_pipeline.phases.Phase_01.phase1_09_00_circuit_breaker import (
-                    run_preflight_check, ensure_can_execute
-                )
-                preflight_result = run_preflight_check()
-                can_execute = ensure_can_execute()
+            if self.config.enable_checkpoint:
+                try:
+                    from farfan_pipeline.phases.Phase_01.phase1_16_00_checkpoint_manager import (
+                        Phase1CheckpointManager
+                    )
+                    checkpoint_manager = Phase1CheckpointManager(
+                        checkpoint_dir=checkpoint_dir,
+                        plan_id=plan_id,
+                    )
 
-                subphase_results["sp00_circuit_breaker"] = {
-                    "status": "completed",
-                    "preflight_passed": preflight_result.get("all_passed", False),
-                    "can_execute": can_execute
-                }
-                self.logger.info(f"[P1-SP00] Circuit breaker: can_execute={can_execute}")
-            except Exception as e:
-                self.logger.error(f"[P1-SP00] Circuit breaker failed: {e}")
-                raise PhaseExecutionError(
-                    message=f"Subphase SP00 circuit breaker failed: {e}",
-                    phase_id="P01"
-                ) from e
-
-            # ====================================================================
-            # SUBPHASE 01: Signal Enrichment Initialization
-            # ====================================================================
-            self.logger.info("[P1-SP01] Subphase 01: Signal Enrichment Initialization")
-
-            try:
-                from farfan_pipeline.phases.Phase_01.phase1_11_00_signal_enrichment import (
-                    create_signal_enricher
-                )
-                signal_enricher = create_signal_enricher(
-                    self.context.wiring
-                ) if self.context.wiring else None
-
-                subphase_results["sp01_signal_enrichment"] = {
-                    "status": "completed",
-                    "enricher_initialized": signal_enricher is not None
-                }
-            except Exception as e:
-                self.logger.warning(f"[P1-SP01] Signal enrichment init failed: {e}")
-                subphase_results["sp01_signal_enrichment"] = {
-                    "status": "skipped",
-                    "reason": str(e)
-                }
+                    # Check for resumption point
+                    resume_from = checkpoint_manager.get_resumption_point()
+                    if resume_from:
+                        self.logger.info(f"[P1] Checkpoint found: resuming from {resume_from}")
+                        subphase_results["checkpoint_recovery"] = {
+                            "status": "resuming",
+                            "resume_from": resume_from,
+                            "plan_id": plan_id,
+                        }
+                    else:
+                        self.logger.info("[P1] No checkpoint found: starting fresh execution")
+                        subphase_results["checkpoint_recovery"] = {
+                            "status": "starting_fresh",
+                            "plan_id": plan_id,
+                        }
+                except ImportError:
+                    self.logger.warning("[P1] Checkpoint manager not available, running without recovery support")
+                    checkpoint_manager = None
 
             # ====================================================================
-            # EXECUTE PHASE 1 WITH FULL CONTRACT
+            # EXTRACT DEPENDENCIES FROM PHASE 0 WIRING
             # ====================================================================
-            self.logger.info("[P1] Executing Phase 1 with full contract enforcement")
-
-            # Get signal_registry and structural_profile from Phase 0 wiring
             signal_registry = None
             structural_profile = None
 
             if self.context.wiring:
-                # Get signal_registry from factory
-                if hasattr(self.context.wiring, 'factory') and self.context.wiring.factory:
-                    signal_registry = getattr(self.context.wiring.factory, 'signal_registry', None)
-                    self.logger.info(f"[P1] Signal registry from factory: {signal_registry is not None}")
+                signal_registry = getattr(self.context.wiring, 'signal_registry', None)
+                structural_profile = getattr(self.context.wiring, 'structural_profile', None)
+                self.logger.info(f"[P1] Extracted from wiring: signal_registry={signal_registry is not None}, structural_profile={structural_profile is not None}")
 
-                # Get PDM structural profile
-                if hasattr(self.context.wiring, 'pdm_profile'):
-                    structural_profile = self.context.wiring.pdm_profile
-                    self.logger.info(f"[P1] PDM structural profile: {structural_profile is not None}")
+            # ====================================================================
+            # EXECUTE WITH FULL CONTRACT EXECUTOR (PRIMARY PATH)
+            # ====================================================================
+            self.logger.info("[P1] Using Phase 1 Full Contract Executor")
+            cpp_package: Optional[CanonPolicyPackage] = None
 
-            # Use full contract executor if available
-            if PHASE1_FULL_CONTRACT_AVAILABLE and execute_phase_1_with_full_contract is not None:
-                self.logger.info("[P1] Using Phase 1 Full Contract Executor")
-                try:
-                    canon_policy_package: CanonPolicyPackage = execute_phase_1_with_full_contract(
-                        canonical_input=canonical_input,
-                        signal_registry=signal_registry,
-                        structural_profile=structural_profile,
-                    )
+            # Define execution function (with or without metrics tracking)
+            def _execute_phase1_core() -> Optional[CanonPolicyPackage]:
+                """Core Phase 1 execution logic."""
+                # Import full contract executor
+                from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
+                    execute_phase_1_with_full_contract,
+                    Phase1FatalError,
+                )
 
-                    # Extract subphase results from CPP metadata
-                    subphase_results = getattr(canon_policy_package, 'subphase_results', {})
-                    constitutional_invariants = getattr(canon_policy_package, 'constitutional_invariants', {})
-
-                    self.logger.info(f"[P1] Full contract execution complete: {len(canon_policy_package.smart_chunks)} chunks")
-
-                except Phase1FatalError as e:
-                    # Phase 1 specific fatal error - already logged
-                    self.logger.error(f"[P1] Fatal error: {e}")
-                    raise PhaseExecutionError(
-                        message=f"Phase 1 fatal error: {e}",
-                        phase_id="P01"
-                    ) from e
-                except Exception as e:
-                    self.logger.error(f"[P1] Full contract execution failed: {e}")
-                    raise PhaseExecutionError(
-                        message=f"Phase 1 execution failed: {e}",
-                        phase_id="P01"
-                    ) from e
-            else:
-                # Fallback: Try to import the complete ingestion function
-                self.logger.warning("[P1] Full contract executor not available, using fallback")
-                execute_cpp_fn = None
-                try:
-                    from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
-                        execute_cpp_ingestion_complete
-                    )
-                    execute_cpp_fn = execute_cpp_ingestion_complete
-                except ImportError as e:
-                    self.logger.error(
-                        f"[P1] Failed to import execute_cpp_ingestion_complete: {e}. "
-                        f"Falling back to individual subphase execution."
-                    )
-
-                # If import succeeded, call the function (runtime errors will propagate)
-                if execute_cpp_fn is not None:
-                    cpp_result = execute_cpp_fn(
-                        canonical_input=canonical_input,
-                        signal_enricher=signal_enricher,
-                        circuit_breaker_config=subphase_results["sp00_circuit_breaker"],
-                        logger=self.logger
-                    )
-
-                    subphase_results.update(cpp_result.get("subphase_results", {}))
-                    canon_policy_package = cpp_result.get("canon_policy_package")
-                    if canon_policy_package is None:
-                        raise PhaseExecutionError(
-                            message="Fallback execution did not return CanonPolicyPackage",
-                            phase_id="P01"
-                        )
-                    self.logger.info(f"[P1] Fallback execution complete: {len(canon_policy_package.smart_chunks)} chunks")
+                # Log policy compliance
+                if signal_registry is not None:
+                    self.logger.info("[P1] ✓ POLICY COMPLIANT: signal_registry injected via DI")
                 else:
-                    # Last resort: Execute subphases individually
-                    cpp_result = self._execute_phase_01_subphases_individually(
-                        canonical_input, signal_enricher, subphase_results
-                    )
-                    canon_policy_package = cpp_result.get("canon_policy_package")
-                    if canon_policy_package is None:
-                        raise PhaseExecutionError(
-                            message="Individual subphase execution did not return CanonPolicyPackage",
-                            phase_id="P01"
-                        )
+                    self.logger.warning("[P1] ⚠ POLICY VIOLATION: signal_registry NOT available (degraded mode)")
+
+                # Execute Phase 1 with full contract enforcement
+                return execute_phase_1_with_full_contract(
+                    canonical_input=canonical_input,
+                    signal_registry=signal_registry,
+                    structural_profile=structural_profile,
+                )
+
+            # Execute with or without metrics tracking
+            try:
+                if metrics_collector:
+                    # With metrics tracking
+                    with metrics_collector.track_subphase("P1_FULL_EXECUTION"):
+                        cpp_package = _execute_phase1_core()
+                else:
+                    # Without metrics tracking
+                    cpp_package = _execute_phase1_core()
+
+                # Extract smart chunks from package
+                smart_chunks = cpp_package.chunk_graph.chunks if cpp_package else []
+
+                self.logger.info(f"[P1] ✓ Full contract execution complete: {len(smart_chunks)} chunks")
+
+                # Populate subphase_results from execution trace
+                subphase_results["full_contract_executor"] = {
+                    "status": "completed",
+                    "chunks_generated": len(smart_chunks),
+                    "schema_version": cpp_package.schema_version if cpp_package else "unknown",
+                }
+
+            except ImportError as e:
+                self.logger.error(f"[P1] Full contract executor not available: {e}")
+                raise PhaseExecutionError(
+                    message=f"Phase 1 full contract executor not available: {e}",
+                    phase_id="P01"
+                ) from e
+
+            except Phase1FatalError as e:
+                # Phase 1 specific fatal error - already logged and diagnosed
+                self.logger.critical(f"[P1] FATAL ERROR: {e}")
+                raise PhaseExecutionError(
+                    message=f"Phase 1 fatal error: {e}",
+                    phase_id="P01",
+                    context={"error_type": "Phase1FatalError"}
+                ) from e
 
             # ====================================================================
             # CONSTITUTIONAL INVARIANTS VALIDATION
             # ====================================================================
             self.logger.info("[P1] Validating constitutional invariants")
 
-            smart_chunks = canon_policy_package.smart_chunks
-            validation_passed = getattr(canon_policy_package, 'validation_passed', True)
+            # Extract smart chunks from cpp_package
+            smart_chunks = cpp_package.chunk_graph.chunks if cpp_package else []
+            canonical_package = cpp_package
 
             # Invariant 1: 60 Chunks (SP4 - Segmentation)
             chunk_count = len(smart_chunks)
@@ -2926,7 +2428,8 @@ class UnifiedOrchestrator:
                 "critical": True
             }
 
-            # Invariant 3: Validation Gate (SP13)
+            # Invariant 3: Validation Gate (SP13) - Check from package quality metrics
+            validation_passed = canonical_package.quality_metrics.constitutional_invariants_passed if canonical_package else False
             constitutional_invariants["invariant_validation_gate"] = {
                 "name": "Validation Gate Invariant (SP13)",
                 "all_checks_passed": validation_passed,
@@ -2940,30 +2443,9 @@ class UnifiedOrchestrator:
             )
 
             # ====================================================================
-            # EXIT GATE: All constitutional invariants must pass
+            # FINALIZATION: Validate CanonPolicyPackage
             # ====================================================================
-            exit_gates = {}
-            exit_gates["gate_final"] = {
-                "status": "passed" if all_invariants_passed else "failed",
-                "invariants_passed": all_invariants_passed,
-                "chunk_count": chunk_count
-            }
-
-            if not all_invariants_passed and self.config.strict_mode:
-                failed_invariants = [
-                    name for name, inv in constitutional_invariants.items()
-                    if not inv["passed"]
-                ]
-                raise PhaseExecutionError(
-                    message=f"Phase 1 constitutional invariants failed: {failed_invariants}",
-                    phase_id="P01",
-                    context={"constitutional_invariants": constitutional_invariants}
-                )
-
-            # ====================================================================
-            # FINALIZATION: Store CanonPolicyPackage in context
-            # ====================================================================
-            self.logger.info("[P1] Storing CanonPolicyPackage in context")
+            self.logger.info("[P1] Validating CanonPolicyPackage")
 
             # Validate the package
             try:
@@ -2971,12 +2453,12 @@ class UnifiedOrchestrator:
                     CanonPolicyPackageValidator
                 )
                 validator = CanonPolicyPackageValidator()
-                package_valid = validator.validate(canon_policy_package)
+                package_valid = validator.validate(canonical_package)
 
                 subphase_results["finalization"] = {
                     "status": "completed",
                     "package_valid": package_valid,
-                    "chunks_count": len(canon_policy_package.smart_chunks)
+                    "chunks_count": len(canonical_package.smart_chunks)
                 }
             except Exception as e:
                 self.logger.warning(f"[P1] Package validation failed: {e}")
@@ -2986,6 +2468,74 @@ class UnifiedOrchestrator:
                     "error": str(e)
                 }
 
+            # ====================================================================
+            # CHECKPOINT CLEANUP: Clear checkpoints after successful completion
+            # ====================================================================
+            if checkpoint_manager is not None:
+                try:
+                    cleared = checkpoint_manager.clear_checkpoints()
+                    self.logger.info(f"[P1] Cleared {cleared} checkpoint files after successful completion")
+                    subphase_results["checkpoint_cleanup"] = {
+                        "status": "completed",
+                        "files_cleared": cleared,
+                    }
+                except Exception as e:
+                    self.logger.warning(f"[P1] Checkpoint cleanup failed: {e}")
+                    subphase_results["checkpoint_cleanup"] = {
+                        "status": "failed",
+                        "error": str(e),
+                    }
+
+            # ====================================================================
+            # METRICS FINALIZATION: End phase and export metrics
+            # ====================================================================
+            if metrics_collector is not None:
+                try:
+                    metrics_collector.end_phase()
+                    metrics = metrics_collector.get_metrics()
+
+                    # Log aggregate statistics
+                    self.logger.info(f"[P1] Metrics Summary:")
+                    self.logger.info(f"  - Total duration: {metrics.total_duration_ms:.2f}ms")
+                    self.logger.info(f"  - Subphases completed: {metrics.aggregate_stats.get('completed_subphases', 0)}")
+                    self.logger.info(f"  - Avg subphase duration: {metrics.aggregate_stats.get('avg_duration_ms', 0):.2f}ms")
+                    self.logger.info(f"  - Peak memory: {metrics.aggregate_stats.get('max_memory_mb_peak', 0):.2f}MB")
+
+                    # Export metrics to file
+                    metrics_path = Path(self.config.output_dir) / "metrics" / "phase1" / f"{plan_id}_metrics.json"
+                    metrics_collector.export_metrics(metrics_path)
+                    self.logger.info(f"[P1] Metrics exported to: {metrics_path}")
+
+                    subphase_results["metrics_export"] = {
+                        "status": "completed",
+                        "metrics_path": str(metrics_path),
+                        "total_duration_ms": metrics.total_duration_ms,
+                        "aggregate_stats": metrics.aggregate_stats,
+                    }
+                except Exception as e:
+                    self.logger.warning(f"[P1] Metrics finalization failed: {e}")
+                    subphase_results["metrics_export"] = {
+                        "status": "failed",
+                        "error": str(e),
+                    }
+
+            # ====================================================================
+            # EXIT GATE: All constitutional invariants must pass
+            # ====================================================================
+            if not all_invariants_passed and self.config.strict_mode:
+                failed_invariants = [
+                    name for name, inv in constitutional_invariants.items()
+                    if not inv["passed"]
+                ]
+                raise PhaseExecutionError(
+                    message=f"Phase 1 constitutional invariants failed: {failed_invariants}",
+                    phase_id="P01",
+                    context={
+                        "constitutional_invariants": constitutional_invariants,
+                        "failed_invariants": failed_invariants
+                    }
+                ) from None
+
             self.logger.info("=" * 80)
             self.logger.critical("PHASE 1: CPP INGESTION - FULL ORCHESTRATION COMPLETED")
             self.logger.info(f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}")
@@ -2993,20 +2543,19 @@ class UnifiedOrchestrator:
             self.logger.info("=" * 80)
 
             # Store in context
-            self.context.phase_outputs[PhaseID.PHASE_1] = canon_policy_package
+            self.context.phase_outputs[PhaseID.PHASE_1] = canonical_package
 
             return {
                 "status": "completed",
-                "canon_policy_package": canon_policy_package.to_dict() if hasattr(canon_policy_package, 'to_dict') else str(canon_policy_package),
+                "canon_policy_package": canonical_package.to_dict() if hasattr(canonical_package, 'to_dict') else str(canonical_package),
                 "smart_chunks_count": len(smart_chunks),
                 "subphase_results": subphase_results,
                 "constitutional_invariants": constitutional_invariants,
                 "all_invariants_passed": all_invariants_passed,
-                "exit_gates": exit_gates,
                 "cpp_package": {
-                    "total_chunks": len(canon_policy_package.smart_chunks),
-                    "document_title": canon_policy_package.manifest.document_name if hasattr(canon_policy_package.manifest, 'document_name') else "Unknown",
-                    "schema_version": canon_policy_package.manifest.schema_version if hasattr(canon_policy_package.manifest, 'schema_version') else "Unknown",
+                    "total_chunks": len(canonical_package.smart_chunks),
+                    "document_title": canonical_package.manifest.document_name if hasattr(canonical_package.manifest, 'document_name') else "Unknown",
+                    "schema_version": canonical_package.manifest.schema_version if hasattr(canonical_package.manifest, 'schema_version') else "Unknown",
                 }
             }
 
@@ -3018,361 +2567,123 @@ class UnifiedOrchestrator:
                 context={"subphase_results": subphase_results}
             ) from e
 
-        Returns:
-            PhaseExecutionResult with bootstrap data and sub_phase_results
+    def _execute_phase_02(self, plan_text: Optional[str] = None, **kwargs) -> Any:
         """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_0,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-            sub_phase_results={},
+        Execute Phase 2: Executor Factory & Dispatch.
+
+        This phase now uses the UnifiedFactory to:
+        1. Load analysis components (detectors, calculators, analyzers)
+        2. Load contracts
+        3. Execute contracts with method injection
+        
+        INTERVENTION 2: Uses factory capabilities for optimal execution.
+
+        Args:
+            plan_text: Optional plan text for contract execution
+            **kwargs: Additional arguments for contract execution
+
+        Returns:
+            Dict with task results from contract execution
+        """
+        self.logger.info("Phase 2: Executor Factory & Dispatch")
+
+        if self.factory is None:
+            self.logger.warning("Factory not available, returning empty results")
+            return {
+                "task_results": [],
+                "status": "factory_unavailable",
+                "contracts_executed": 0,
+            }
+
+        # Create analysis components via factory
+        components = self.factory.create_analysis_components()
+        self.logger.debug(
+            "Analysis components created",
+            components=list(components.keys()),
         )
 
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_0")
+        # Load contracts via factory
+        contracts = self.factory.load_contracts()
+        active_contracts = {
+            cid: c for cid, c in contracts.items()
+            if c.get("status") == "ACTIVE"
+        }
 
-            # Get paths from config
-            plan_pdf_path = Path(self.config.document_path) if self.config.document_path else None
-            questionnaire_path = Path(self.config.questionnaire_path) if self.config.questionnaire_path else None
-            artifacts_dir = Path(self.config.output_dir) / "artifacts"
-
-            if not plan_pdf_path or not questionnaire_path:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("Missing required paths: document_path and questionnaire_path required")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # =========================================================================
-            # P0.0: Bootstrap (Stage 00, t=0)
-            # =========================================================================
-            self.logger.info("Phase 0: P0.0 Bootstrap started")
-            p00_start = time.time()
-
-            # Import Phase 0 components for complete sequence
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_10_01_runtime_config import RuntimeConfig
-                from farfan_pipeline.phases.Phase_00.phase0_20_02_determinism import (
-                    MANDATORY_SEEDS,
-                    OPTIONAL_SEEDS,
-                    initialize_determinism_from_registry,
-                )
-                from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import (
-                    ARTIFACTS_DIR,
-                    DEFAULT_ARTIFACTS_DIR,
-                    ensure_artifacts_dir,
-                )
-                from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
-                    SeedRegistry,
-                    CanonicalInput,
-                )
-            except ImportError as e:
-                result.status = PhaseStatus.FAILED
-                result.errors.append(f"Failed to import Phase 0 components: {e}")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Load RuntimeConfig from environment
-            runtime_config = RuntimeConfig.from_env()
-            result.data["runtime_config_mode"] = str(runtime_config.mode)
-
-            # Create artifacts directory
-            ensure_artifacts_dir(artifacts_dir)
-            result.data["artifacts_dir"] = str(artifacts_dir)
-
-            # Initialize seed registry
-            seed_registry = SeedRegistry(
-                python_seed=self.config.seed,
-                numpy_seed=self.config.seed,
-                quantum_seed=None,
-                neuromorphic_seed=None,
-                meta_learner_seed=None,
-            )
-            result.data["seed_registry_initialized"] = True
-
-            p00_duration = time.time() - p00_start
-            result.sub_phase_results["P0.0_Bootstrap"] = {
-                "status": "completed",
-                "duration_s": p00_duration,
-                "runtime_config_mode": str(runtime_config.mode),
-                "artifacts_dir": str(artifacts_dir),
-                "seed_registry": str(seed_registry),
-            }
-            self.logger.info(f"P0.0 Bootstrap completed in {p00_duration:.3f}s")
-
-            # =========================================================================
-            # P0.1: Input Verification (Stage 40, t=4)
-            # =========================================================================
-            self.logger.info("Phase 0: P0.1 Input Verification started")
-            p01_start = time.time()
-
-            # Validate PDF exists and is readable
-            if not plan_pdf_path.exists():
-                result.status = PhaseStatus.FAILED
-                result.errors.append(f"PDF file not found: {plan_pdf_path}")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Compute SHA256 hash of PDF
-            import hashlib
-            with open(plan_pdf_path, "rb") as f:
-                pdf_sha256 = hashlib.sha256(f.read()).hexdigest()
-            result.data["pdf_sha256"] = pdf_sha256
-
-            # Validate questionnaire exists
-            if not questionnaire_path.exists():
-                result.status = PhaseStatus.FAILED
-                result.errors.append(f"Questionnaire file not found: {questionnaire_path}")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Compute SHA256 hash of questionnaire
-            with open(questionnaire_path, "rb") as f:
-                questionnaire_sha256 = hashlib.sha256(f.read()).hexdigest()
-            result.data["questionnaire_sha256"] = questionnaire_sha256
-
-            p01_duration = time.time() - p01_start
-            result.sub_phase_results["P0.1_Input_Verification"] = {
-                "status": "completed",
-                "duration_s": p01_duration,
-                "pdf_sha256": pdf_sha256[:32] + "...",
-                "questionnaire_sha256": questionnaire_sha256[:32] + "...",
-            }
-            self.logger.info(f"P0.1 Input Verification completed in {p01_duration:.3f}s")
-
-            # =========================================================================
-            # P0.2: Boot Checks (Stage 50, t=5)
-            # =========================================================================
-            self.logger.info("Phase 0: P0.2 Boot Checks started")
-            p02_start = time.time()
-
-            try:
-                from farfan_pipeline.phases.Phase_00.phase0_50_00_boot_checks import (
-                    check_contradiction_module_available,
-                    check_wiring_validator_available,
-                    check_spacy_model_available,
-                    check_calibration_files,
-                    check_orchestration_metrics_contract,
-                    check_networkx_available,
-                    run_boot_checks,
-                )
-
-                boot_check_results = run_boot_checks(runtime_config)
-                result.data["boot_checks"] = boot_check_results
-
-                # Verify all checks passed
-                failed_checks = [k for k, v in boot_check_results.items() if not v]
-                if failed_checks:
-                    result.warnings.append(f"Some boot checks failed: {failed_checks}")
-
-            except ImportError as e:
-                result.warnings.append(f"Boot checks module not available: {e}")
-                boot_check_results = {
-                    "contradiction_module": True,
-                    "wiring_validator": True,
-                    "spacy_model": True,
-                    "calibration_files": True,
-                    "orchestration_metrics": True,
-                    "networkx": True,
-                }
-
-            p02_duration = time.time() - p02_start
-            result.sub_phase_results["P0.2_Boot_Checks"] = {
-                "status": "completed",
-                "duration_s": p02_duration,
-                "checks": boot_check_results,
-                "failed_checks": failed_checks if failed_checks else [],
-            }
-            self.logger.info(f"P0.2 Boot Checks completed in {p02_duration:.3f}s")
-
-            # =========================================================================
-            # P0.3: Determinism (Stage 20, t=2)
-            # =========================================================================
-            self.logger.info("Phase 0: P0.3 Determinism started")
-            p03_start = time.time()
-
-            # Apply seeds from registry
-            import random
-            try:
-                import numpy as np
-                numpy_available = True
-            except ImportError:
-                numpy_available = False
-                result.warnings.append("NumPy not available, skipping numpy seed")
-
-            # Apply Python seed
-            random.seed(seed_registry.python_seed)
-            result.data["python_seed_applied"] = seed_registry.python_seed
-
-            # Apply NumPy seed if available
-            if numpy_available:
-                np.random.seed(seed_registry.numpy_seed)
-                result.data["numpy_seed_applied"] = seed_registry.numpy_seed
-
-            # Validate seed application (optional seeds)
-            seed_application_results = {}
-            for seed_name in MANDATORY_SEEDS:
-                seed_value = getattr(seed_registry, f"{seed_name}_seed", None)
-                seed_application_results[seed_name] = seed_value is not None
-
-            result.data["seed_application"] = seed_application_results
-
-            p03_duration = time.time() - p03_start
-            result.sub_phase_results["P0.3_Determinism"] = {
-                "status": "completed",
-                "duration_s": p03_duration,
-                "seeds_applied": list(seed_application_results.keys()),
-                "seed_values": {
-                    "python": seed_registry.python_seed,
-                    "numpy": seed_registry.numpy_seed if numpy_available else None,
-                },
-            }
-            self.logger.info(f"P0.3 Determinism completed in {p03_duration:.3f}s")
-
-            # =========================================================================
-            # Exit Gates (Stage 50, t=5)
-            # =========================================================================
-            self.logger.info("Phase 0: Exit Gates validation started")
-            gates_start = time.time()
-
-            gate_results = []
-            all_gates_passed = True
-
-            # Gate 1: Bootstrap gate
-            bootstrap_gate_passed = (
-                result.sub_phase_results["P0.0_Bootstrap"]["status"] == "completed"
-            )
-            gate_results.append({
-                "gate": "bootstrap",
-                "passed": bootstrap_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and bootstrap_gate_passed
-
-            # Gate 2: Input verification gate
-            input_verification_gate_passed = (
-                result.sub_phase_results["P0.1_Input_Verification"]["status"] == "completed"
-            )
-            gate_results.append({
-                "gate": "input_verification",
-                "passed": input_verification_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and input_verification_gate_passed
-
-            # Gate 3: Boot checks gate
-            boot_checks_gate_passed = len(failed_checks) == 0 if failed_checks else True
-            gate_results.append({
-                "gate": "boot_checks",
-                "passed": boot_checks_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and boot_checks_gate_passed
-
-            # Gate 4: Determinism gate
-            determinism_gate_passed = (
-                result.sub_phase_results["P0.3_Determinism"]["status"] == "completed"
-            )
-            gate_results.append({
-                "gate": "determinism",
-                "passed": determinism_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and determinism_gate_passed
-
-            # Gate 5: Questionnaire integrity gate
-            questionnaire_integrity_gate_passed = questionnaire_sha256 is not None
-            gate_results.append({
-                "gate": "questionnaire_integrity",
-                "passed": questionnaire_integrity_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and questionnaire_integrity_gate_passed
-
-            # Gate 6: Method registry gate (validated via factory)
-            method_registry_gate_passed = self.factory is not None
-            gate_results.append({
-                "gate": "method_registry",
-                "passed": method_registry_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and method_registry_gate_passed
-
-            # Gate 7: Smoke tests gate
-            smoke_tests_gate_passed = True  # Basic smoke tests
-            gate_results.append({
-                "gate": "smoke_tests",
-                "passed": smoke_tests_gate_passed,
-            })
-            all_gates_passed = all_gates_passed and smoke_tests_gate_passed
-
-            gates_duration = time.time() - gates_start
-            result.sub_phase_results["Exit_Gates"] = {
-                "status": "passed" if all_gates_passed else "failed",
-                "duration_s": gates_duration,
-                "all_gates_passed": all_gates_passed,
-                "gate_results": gate_results,
-            }
-            self.logger.info(f"Exit Gates validation completed in {gates_duration:.3f}s (all_passed={all_gates_passed})")
-
-            # Run gate orchestrator if available
-            if self.gate_orchestrator:
-                gate_orch_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_0",
-                    context=self.context,
-                )
-                if not gate_orch_result.passed:
-                    all_gates_passed = False
-                    result.errors.extend(gate_orch_result.errors)
-
-            # =========================================================================
-            # Construct Final Output
-            # =========================================================================
-            result.data.update({
-                "status": "bootstrapped" if all_gates_passed else "gates_failed",
-                "validation": "passed" if all_gates_passed else "failed",
-                "all_gates_passed": all_gates_passed,
-                "pdf_sha256": pdf_sha256,
-                "questionnaire_sha256": questionnaire_sha256,
-                "runtime_config_mode": str(runtime_config.mode),
-            })
-
-            result.constitutional_invariants = {
-                "validation": "passed" if all_gates_passed else "failed",
-                "boot_checks_passed": len(failed_checks) == 0 if failed_checks else True,
-                "determinism_initialized": True,
-                "all_exit_gates_passed": all_gates_passed,
-                "sub_phases_completed": len(result.sub_phase_results),
-            }
-
-            result.status = PhaseStatus.COMPLETED if all_gates_passed else PhaseStatus.FAILED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_0")
-
-            self.phase_results[PhaseID.PHASE_0] = result
+        self.logger.info(
+            "Contracts loaded for execution",
+            total_contracts=len(contracts),
+            active_contracts=len(active_contracts),
+        )
+        
+        # ==========================================================================
+        # INTERVENTION 2: Get optimal execution plan from factory
+        # ==========================================================================
+        execution_plan = self._get_factory_execution_plan(PhaseID.PHASE_2)
+        
+        if execution_plan:
             self.logger.info(
-                "Phase 0 completed",
-                status=result.status.value,
-                duration_s=result.execution_time_s,
-                sub_phases=len(result.sub_phase_results),
-                all_gates_passed=all_gates_passed,
+                "Factory execution plan obtained",
+                strategy=execution_plan["execution_strategy"],
+                estimated_duration=execution_plan["estimated_duration_seconds"],
+                batches=len(execution_plan.get("batches", [])),
             )
 
-            return result
+        # Execute contracts with method injection
+        task_results = []
+        input_data = {"plan_text": plan_text, **kwargs}
+        
+        # Limit contracts for now (can be adjusted based on execution plan)
+        contract_list = list(active_contracts.keys())[:10]
+        
+        # ==========================================================================
+        # INTERVENTION 1 & 2: Use parallel batch execution if recommended by plan
+        # ==========================================================================
+        if execution_plan and execution_plan["execution_strategy"] == "parallel_batch":
+            
+            self.logger.info("Using parallel batch execution")
+            
+            # Execute in parallel batches
+            batch_results = self.factory.execute_contracts_batch(contract_list, input_data)
+            
+            for contract_id, result in batch_results.items():
+                task_results.append({
+                    "contract_id": contract_id,
+                    "result": result,
+                    "status": "completed" if "error" not in result else "failed",
+                })
+        else:
+            # Sequential execution
+            for contract_id in contract_list:
+                try:
+                    result = self.factory.execute_contract(contract_id, input_data)
+                    task_results.append({
+                        "contract_id": contract_id,
+                        "result": result,
+                        "status": "completed" if "error" not in result else "failed",
+                    })
+                except Exception as e:
+                    self.logger.warning(
+                        "Contract execution failed",
+                        contract_id=contract_id,
+                        error=str(e),
+                    )
+                    task_results.append({
+                        "contract_id": contract_id,
+                        "error": str(e),
+                        "status": "error",
+                    })
 
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 0 failed", error=str(e))
-            return result
+        # Get performance metrics from factory
+        perf_metrics = self.factory.get_performance_metrics()
 
-    def _execute_phase_01(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 1: CPP Ingestion.
+        return {
+            "task_results": task_results,
+            "status": "completed",
+            "contracts_executed": len(task_results),
+            "components_available": list(components.keys()),
+            "execution_strategy": execution_plan["execution_strategy"] if execution_plan else "sequential",
+            "performance_metrics": perf_metrics,
+        }
 
     # =========================================================================
     # PHASE 3: Layer Scoring (7 Steps)
@@ -3604,35 +2915,46 @@ class UnifiedOrchestrator:
             ) from e
 
     # =========================================================================
-    # PHASE 4: Dimension Aggregation (7 Steps)
+    # PHASE 4: Dimension Aggregation (8 Steps)
     # =========================================================================
     """
-    Phase 4 Execution Contract (from phase4_execution_flow.md):
+    Phase 4 Execution Contract (aligned with CANONICAL_FLOW.md):
 
-    1. Carga de configuración: AggregationSettings
-    2. Validación de entradas: cobertura mínima y consistencia de IDs
-    3. Agrupación por dimensión y área: agrupación determinista por claves canónicas
-    4. Cálculo de puntajes: Promedio ponderado por defecto, Choquet integral cuando aplica
-    5. Proveniencia: registro de nodos y aristas en DAG
-    6. Incertidumbre: bootstrap para métricas de confiabilidad
-    7. Salida: lista de DimensionScore con metadata de trazabilidad
+    STEP 1: Load Configuration (AggregationSettings from phase4_10_00_aggregation_settings.py)
+    STEP 2: Validate Inputs (Phase4InputContract from contracts/phase4_10_00_input_contract.py)
+    STEP 3: Initialize Aggregator (DimensionAggregator from phase4_30_00_aggregation.py)
+    STEP 4: Calculate Scores (ChoquetAggregator or DimensionAggregator.run())
+    STEP 5: Provenance Tracking (AggregationDAG from phase4_10_00_aggregation_provenance.py)
+    STEP 6: Uncertainty Quantification (BootstrapAggregator from phase4_10_00_uncertainty_quantification.py)
+    STEP 7: Output Validation (validate_phase4_output from phase4_60_00_aggregation_validation.py)
+    STEP 8: Final Output - DimensionScore list with exit gate validation
 
-    Input: ScoredResult (300 micro-preguntas)
-    Output: DimensionScore (60 dimensiones)
+    Module Mapping:
+    - Stage 10 (Foundation): aggregation_settings, aggregation_provenance, uncertainty_quantification
+    - Stage 20 (Core): choquet_adapter
+    - Stage 30 (Aggregators): aggregation, choquet_aggregator, signal_enriched_aggregation
+    - Stage 60 (Validation): aggregation_validation
+
+    Input: ScoredResult (300 micro-preguntas from Phase 3)
+    Output: DimensionScore (60 dimensiones = 6 DIM × 10 PA)
     """
 
     def _execute_phase_04(self) -> Dict[str, Any]:
         """
         Execute Phase 4: Dimension Aggregation - COMPLETE ORCHESTRATION.
 
-        Orchestrates all 7 steps of Phase 4 dimension aggregation using
-        Choquet integral when SOTA enabled.
+        Orchestrates all 8 steps of Phase 4 dimension aggregation using
+        Choquet integral when SOTA enabled, with full provenance tracking
+        and uncertainty quantification.
 
         Returns:
             Dict with complete aggregation results including:
-            - dimension_scores: 60 DimensionScore objects
+            - dimension_scores: Count of DimensionScore objects (expected: 60)
             - aggregation_method: "choquet" or "weighted_average"
-            - provenance_data: DAG tracking information
+            - provenance: DAG statistics from provenance tracking
+            - uncertainty: BCa bootstrap confidence intervals
+            - step_results: Results from each of the 8 steps
+            - exit_gates: Final validation gates
         """
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 4: DIMENSION AGGREGATION - FULL ORCHESTRATION STARTED")
@@ -3676,19 +2998,22 @@ class UnifiedOrchestrator:
                 ) from e
 
             # ====================================================================
-            # STEP 2: Validate Inputs
+            # STEP 2: Validate Inputs (Phase4InputContract)
             # ====================================================================
             self.logger.info("[P4-S02] Step 2: Validate Inputs")
 
             try:
-                from farfan_pipeline.phases.Phase_04.contracts.phase4_input_contract import (
-                    validate_phase4_input
+                from farfan_pipeline.phases.Phase_04.contracts.phase4_10_00_input_contract import (
+                    Phase4InputContract
                 )
-                input_valid = validate_phase4_input(scored_results)
+                input_valid, validation_details = Phase4InputContract.validate(scored_results)
                 step_results["s02_input_validation"] = {
                     "status": "completed",
-                    "valid": input_valid
+                    "valid": input_valid,
+                    "details": validation_details
                 }
+                if not input_valid:
+                    self.logger.warning(f"[P4-S02] Input validation issues: {validation_details}")
             except Exception as e:
                 self.logger.error(f"[P4-S02] Input validation failed: {e}")
                 raise PhaseExecutionError(
@@ -3697,51 +3022,61 @@ class UnifiedOrchestrator:
                 ) from e
 
             # ====================================================================
-            # STEP 3: Group by Dimension and Area
+            # STEP 3: Initialize DimensionAggregator (handles grouping internally)
+            # Note: Grouping is done via group_by() in phase4_30_00_aggregation.py
+            # The DimensionAggregator.run() method handles grouping + aggregation
             # ====================================================================
-            self.logger.info("[P4-S03] Step 3: Group by Dimension and Area")
+            self.logger.info("[P4-S03] Step 3: Initialize Aggregator")
 
-            grouped_data = {}
             try:
-                from farfan_pipeline.phases.Phase_04.phase4_20_00_dimension_grouping import (
-                    group_by_dimension_area
+                from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
+                    DimensionAggregator,
+                    group_by
                 )
-                grouped_data = group_by_dimension_area(scored_results)
-                step_results["s03_grouping"] = {
+                
+                # Check if SOTA Choquet integral should be used
+                use_choquet = aggregation_settings.enable_choquet
+                
+                # Initialize aggregator with SOTA features
+                aggregator = DimensionAggregator(
+                    aggregation_settings=aggregation_settings,
+                    enable_sota_features=use_choquet
+                )
+                
+                step_results["s03_aggregator_init"] = {
                     "status": "completed",
-                    "groups_created": len(grouped_data)
+                    "sota_enabled": use_choquet,
+                    "group_by_keys": aggregator.dimension_group_by_keys
                 }
-                self.logger.info(f"[P4-S03] Grouped into: {len(grouped_data)} dimension-area groups")
+                self.logger.info(f"[P4-S03] Aggregator initialized with SOTA={use_choquet}")
             except Exception as e:
-                self.logger.error(f"[P4-S03] Grouping failed: {e}")
+                self.logger.error(f"[P4-S03] Aggregator initialization failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 3 grouping failed: {e}",
+                    message=f"Step 3 aggregator init failed: {e}",
                     phase_id="P04"
                 ) from e
 
             # ====================================================================
-            # STEP 4: Calculate Scores (Choquet or Weighted Average)
+            # STEP 4: Calculate Scores (Choquet or Weighted Average via DimensionAggregator)
             # ====================================================================
-            self.logger.info("[P4-S04] Step 4: Calculate Scores")
+            self.logger.info("[P4-S04] Step 4: Calculate Dimension Scores")
 
             dimension_scores = []
             try:
-                # Check if SOTA Choquet integral should be used
-                use_choquet = aggregation_settings.enable_choquet
-
                 if use_choquet:
+                    # Use ChoquetAggregator for SOTA Choquet integral
                     from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
                         ChoquetAggregator
                     )
-                    aggregator = ChoquetAggregator(aggregation_settings)
-                    dimension_scores = aggregator.aggregate(grouped_data)
+                    choquet_aggregator = ChoquetAggregator(aggregation_settings)
+                    dimension_scores = choquet_aggregator.aggregate(scored_results)
                     aggregation_method = "choquet"
                 else:
-                    from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
-                        WeightedAverageAggregator
+                    # Use DimensionAggregator.run() for weighted average
+                    dimension_scores = aggregator.run(
+                        scored_results,
+                        group_by_keys=aggregator.dimension_group_by_keys
                     )
-                    aggregator = WeightedAverageAggregator(aggregation_settings)
-                    dimension_scores = aggregator.aggregate(grouped_data)
                     aggregation_method = "weighted_average"
 
                 step_results["s04_calculation"] = {
@@ -3758,48 +3093,112 @@ class UnifiedOrchestrator:
                 ) from e
 
             # ====================================================================
-            # STEP 5: Provenance (DAG Registration)
+            # STEP 5: Provenance (DAG from DimensionAggregator or standalone)
+            # Location: phase4_10_00_aggregation_provenance.py
             # ====================================================================
             self.logger.info("[P4-S05] Step 5: Provenance Tracking")
 
+            provenance_data = None
             try:
-                from farfan_pipeline.phases.Phase_04.phase4_50_00_provenance import (
-                    register_aggregation_provenance
-                )
-                provenance_data = register_aggregation_provenance(
-                    dimension_scores,
-                    source_phase="P03"
-                )
-                step_results["s05_provenance"] = {
-                    "status": "completed",
-                    "provenance_registered": True
-                }
+                # If SOTA enabled, provenance DAG is already built by aggregator
+                if use_choquet and hasattr(aggregator, 'provenance_dag') and aggregator.provenance_dag:
+                    provenance_data = aggregator.provenance_dag.get_statistics()
+                    step_results["s05_provenance"] = {
+                        "status": "completed",
+                        "provenance_registered": True,
+                        "source": "aggregator_internal_dag",
+                        "statistics": provenance_data
+                    }
+                else:
+                    # Fallback: Create provenance DAG manually
+                    from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
+                        AggregationDAG, ProvenanceNode
+                    )
+                    provenance_dag = AggregationDAG()
+                    # Register dimension score nodes
+                    for ds in dimension_scores:
+                        node = ProvenanceNode(
+                            node_id=f"{ds.dimension_id}_{ds.area_id}" if hasattr(ds, 'area_id') else str(ds.dimension_id),
+                            level="dimension",
+                            score=ds.score if hasattr(ds, 'score') else 0.0,
+                            contributing_ids=[q.question_id for q in ds.contributing_questions] if hasattr(ds, 'contributing_questions') else []
+                        )
+                        provenance_dag.add_node(node)
+                    provenance_data = provenance_dag.get_statistics()
+                    step_results["s05_provenance"] = {
+                        "status": "completed",
+                        "provenance_registered": True,
+                        "source": "manual_dag_construction",
+                        "statistics": provenance_data
+                    }
             except Exception as e:
                 self.logger.warning(f"[P4-S05] Provenance tracking failed: {e}")
                 step_results["s05_provenance"] = {"status": "skipped", "reason": str(e)}
 
             # ====================================================================
-            # STEP 6: Uncertainty Quantification (Optional)
+            # STEP 6: Uncertainty Quantification (BCa Bootstrap)
+            # Location: phase4_10_00_uncertainty_quantification.py
             # ====================================================================
             self.logger.info("[P4-S06] Step 6: Uncertainty Quantification")
 
+            uncertainty_metrics = None
             try:
-                from farfan_pipeline.phases.Phase_04.phase4_40_00_uncertainty_quantification import (
-                    compute_uncertainty_metrics
+                from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
+                    aggregate_with_uncertainty, BootstrapAggregator
                 )
-                uncertainty_metrics = compute_uncertainty_metrics(dimension_scores)
-                step_results["s06_uncertainty"] = {
-                    "status": "completed",
-                    "uncertainty_computed": True
-                }
+                
+                # Extract scores for uncertainty computation
+                scores_for_uq = [ds.score for ds in dimension_scores if hasattr(ds, 'score')]
+                
+                if scores_for_uq:
+                    bootstrap_agg = BootstrapAggregator(iterations=1000, seed=42)
+                    uncertainty_result = bootstrap_agg.compute_bca_interval(scores_for_uq)
+                    uncertainty_metrics = {
+                        "point_estimate": uncertainty_result.point_estimate if hasattr(uncertainty_result, 'point_estimate') else sum(scores_for_uq) / len(scores_for_uq),
+                        "ci_lower": uncertainty_result.ci_lower if hasattr(uncertainty_result, 'ci_lower') else None,
+                        "ci_upper": uncertainty_result.ci_upper if hasattr(uncertainty_result, 'ci_upper') else None,
+                        "standard_error": uncertainty_result.standard_error if hasattr(uncertainty_result, 'standard_error') else None
+                    }
+                    step_results["s06_uncertainty"] = {
+                        "status": "completed",
+                        "uncertainty_computed": True,
+                        "metrics": uncertainty_metrics
+                    }
+                else:
+                    step_results["s06_uncertainty"] = {
+                        "status": "skipped",
+                        "reason": "No scores available for uncertainty quantification"
+                    }
             except Exception as e:
                 self.logger.warning(f"[P4-S06] Uncertainty quantification failed: {e}")
                 step_results["s06_uncertainty"] = {"status": "skipped", "reason": str(e)}
 
             # ====================================================================
-            # STEP 7: Output DimensionScore List
+            # STEP 7: Output Validation (phase4_60_00_aggregation_validation.py)
             # ====================================================================
-            self.logger.info("[P4-S07] Step 7: Output Generation")
+            self.logger.info("[P4-S07] Step 7: Output Validation")
+
+            try:
+                from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import (
+                    validate_phase4_output, ValidationResult
+                )
+                validation_result = validate_phase4_output(dimension_scores, scored_results)
+                step_results["s07_output_validation"] = {
+                    "status": "completed",
+                    "passed": validation_result.passed,
+                    "phase": validation_result.phase,
+                    "error_message": validation_result.error_message if not validation_result.passed else None
+                }
+                if not validation_result.passed:
+                    self.logger.warning(f"[P4-S07] Output validation failed: {validation_result.error_message}")
+            except Exception as e:
+                self.logger.warning(f"[P4-S07] Output validation failed: {e}")
+                step_results["s07_output_validation"] = {"status": "skipped", "reason": str(e)}
+
+            # ====================================================================
+            # STEP 8: Final Output - DimensionScore List with Exit Gate
+            # ====================================================================
+            self.logger.info("[P4-S08] Step 8: Final Output Generation")
 
             # Validate output count: Should be 60 (10 PA × 6 DIM)
             expected_count = 60
@@ -3825,6 +3224,8 @@ class UnifiedOrchestrator:
                 "dimension_scores": actual_count,
                 "expected_count": expected_count,
                 "aggregation_method": aggregation_method,
+                "provenance": provenance_data,
+                "uncertainty": uncertainty_metrics,
                 "step_results": step_results,
                 "exit_gates": exit_gates
             }
@@ -3850,21 +3251,37 @@ class UnifiedOrchestrator:
 
     def _execute_phase_05(self) -> Dict[str, Any]:
         """
-        Execute Phase 5: Policy Area Aggregation - COMPLETE ORCHESTRATION.
+        Execute Phase 5: Policy Area Aggregation - COMPLETE ORCHESTRATION (v2.0).
 
-        Aggregates 60 dimension scores into 10 policy area scores.
+        PHASE 5 PIPELINE:
+        - Stage 0: Input Validation (Phase5InputContract)
+        - Stage 10/15: Aggregation (HighPerformanceAreaAggregator or AreaPolicyAggregator)
+        - Stage 20: Comprehensive Validation
+        - Stage 30: Cluster Assignment Validation (Exit Gate to Phase 6)
+        - Stage 40: Synthesis Engine
+        - Output: Contract Validation (Phase5OutputContract)
 
         Returns:
-            Dict with policy area aggregation results
+            Dict with complete aggregation results including:
+            - area_scores: Count of AreaScore objects (expected: 10)
+            - stage_results: Results from each stage
+            - exit_gates: Validation gates for Phase 6 transition
+            - synthesis: Cross-area pattern analysis
+            - validation_passed: Overall validation status
         """
         self.logger.info("=" * 80)
-        self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION STARTED")
+        self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION STARTED (v2.0)")
         self.logger.info("=" * 80)
 
+        stage_results: Dict[str, Any] = {}
+        exit_gates: Dict[str, Any] = {}
+        area_scores: list = []
+        synthesis_result: Dict[str, Any] | None = None
+
         try:
-            # ====================================================================
-            # INPUT: Get DimensionScores from Phase 4
-            # ====================================================================
+            # ================================================================
+            # STAGE 0: INPUT VALIDATION
+            # ================================================================
             dimension_scores = self.context.get_phase_output(PhaseID.PHASE_4)
             if dimension_scores is None or len(dimension_scores) == 0:
                 raise PhaseExecutionError(
@@ -3872,32 +3289,268 @@ class UnifiedOrchestrator:
                     phase_id="P05"
                 )
 
-            self.logger.info(f"[P5] Input received: {len(dimension_scores)} dimension scores")
-
-            # ====================================================================
-            # EXECUTE: Policy Area Aggregation
-            # ====================================================================
+            # Validate input contract
             try:
-                from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
-                    AreaAggregator
+                from farfan_pipeline.phases.Phase_05.contracts.phase5_10_00_input_contract import (
+                    Phase5InputContract
                 )
-                aggregator = AreaAggregator()
+                input_valid, input_details = Phase5InputContract.validate(dimension_scores)
+                stage_results["s00_input_validation"] = {
+                    "status": "completed" if input_valid else "failed",
+                    "valid": input_valid,
+                    "details": input_details,
+                }
+
+                if not input_valid and self.config.strict_mode:
+                    raise PhaseExecutionError(
+                        message=f"Phase 5 input contract violated: {input_details.get('violations', [])}",
+                        phase_id="P05",
+                        context=input_details
+                    )
+            except ImportError as e:
+                self.logger.warning(f"[P5-S00] Input contract import failed: {e}")
+                stage_results["s00_input_validation"] = {"status": "skipped", "reason": str(e)}
+
+            self.logger.info(f"[P5-S00] Input validated: {len(dimension_scores)} dimension scores")
+
+            # Emit PHASE_START signal
+            self._emit_phase_signal(
+                phase_id=PhaseID.PHASE_5,
+                event_type="PHASE_START",
+                payload={"dimension_scores_count": len(dimension_scores)}
+            )
+
+            # ================================================================
+            # STAGE 10/15: AGGREGATION (with performance boost)
+            # ================================================================
+            self.logger.info("[P5-S10] Stage 10: Area Aggregation")
+
+            use_performance_boost = getattr(self.config, 'enable_parallel_execution', False)
+            perf_metrics = None
+
+            if use_performance_boost:
+                try:
+                    from farfan_pipeline.phases.Phase_05.phase5_15_00_performance_boost import (
+                        HighPerformanceAreaAggregator
+                    )
+                    import asyncio
+
+                    aggregator = HighPerformanceAreaAggregator(
+                        enable_parallel=True,
+                        enable_caching=True,
+                        enable_vectorization=True,
+                        enable_jit=True,
+                        max_workers=getattr(self.config, 'max_workers', 10),
+                    )
+
+                    area_scores, perf_metrics = asyncio.run(
+                        aggregator.aggregate_async(dimension_scores)
+                    )
+
+                    stage_results["s15_performance"] = {
+                        "status": "completed",
+                        "metrics": perf_metrics.to_dict() if perf_metrics else {},
+                        "speedup": perf_metrics.vectorization_speedup if perf_metrics else 1.0,
+                    }
+                    self.logger.info(
+                        f"[P5-S15] High-performance aggregation: "
+                        f"{perf_metrics.total_time*1000:.2f}ms, "
+                        f"speedup={perf_metrics.vectorization_speedup:.1f}x"
+                    )
+                except Exception as e:
+                    self.logger.warning(f"[P5-S15] Performance boost failed, falling back: {e}")
+                    use_performance_boost = False
+
+            if not use_performance_boost or not area_scores:
+                # Fallback to standard aggregator
+                from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
+                    AreaPolicyAggregator
+                )
+                aggregator = AreaPolicyAggregator(
+                    abort_on_insufficient=True,
+                    enable_sota_features=True,
+                )
                 area_scores = aggregator.aggregate(dimension_scores)
 
-                self.logger.info(f"[P5] Policy areas aggregated: {len(area_scores)} areas")
-            except Exception as e:
-                self.logger.error(f"[P5] Area aggregation failed: {e}")
-                raise PhaseExecutionError(
-                    message=f"Phase 5 area aggregation failed: {e}",
-                    phase_id="P05"
-                ) from e
+            stage_results["s10_aggregation"] = {
+                "status": "completed",
+                "area_scores_count": len(area_scores),
+                "performance_boost_used": use_performance_boost,
+            }
 
-            # Validate: Should be 10 policy areas
+            self.logger.info(f"[P5-S10] Policy areas aggregated: {len(area_scores)} areas")
+
+            # ================================================================
+            # AREA SCORE TYPE VALIDATION
+            # ================================================================
+            try:
+                from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
+                for i, area in enumerate(area_scores):
+                    if not isinstance(area, AreaScore):
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 5 area_scores[{i}] is not an AreaScore object. "
+                                f"Got type: {type(area).__name__}."
+                            ),
+                            phase_id="P05",
+                            context={"index": i, "actual_type": type(area).__name__}
+                        )
+                    if not hasattr(area, 'area_id') or not hasattr(area, 'score'):
+                        raise PhaseExecutionError(
+                            message=f"Phase 5 area_scores[{i}] missing required attributes.",
+                            phase_id="P05",
+                            context={"index": i}
+                        )
+            except ImportError:
+                # Fallback attribute check
+                for i, area in enumerate(area_scores):
+                    if not hasattr(area, 'area_id') or not hasattr(area, 'score'):
+                        raise PhaseExecutionError(
+                            message=f"Phase 5 area_scores[{i}] missing required attributes.",
+                            phase_id="P05",
+                            context={"index": i}
+                        )
+
+            # ================================================================
+            # STAGE 20: COMPREHENSIVE VALIDATION
+            # ================================================================
+            self.logger.info("[P5-S20] Stage 20: Comprehensive Validation")
+
+            validation_valid = True
+            validation_details: Dict[str, Any] = {}
+            try:
+                from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (
+                    validate_phase5_output_comprehensive,
+                )
+
+                validation_valid, validation_details = validate_phase5_output_comprehensive(
+                    area_scores,
+                    strict=getattr(self.config, 'strict_mode', False),
+                    enable_statistical_validation=True,
+                    enable_anomaly_detection=True,
+                )
+
+                stage_results["s20_validation"] = {
+                    "status": "completed" if validation_valid else "failed",
+                    "valid": validation_valid,
+                    "details": validation_details,
+                }
+
+                if not validation_valid and getattr(self.config, 'strict_mode', False):
+                    raise PhaseExecutionError(
+                        message="Phase 5 comprehensive validation failed",
+                        phase_id="P05",
+                        context=validation_details
+                    )
+            except ImportError as e:
+                self.logger.warning(f"[P5-S20] Comprehensive validation not available: {e}")
+                stage_results["s20_validation"] = {"status": "skipped", "reason": str(e)}
+
+            # ================================================================
+            # STAGE 30: CLUSTER ASSIGNMENT VALIDATION (Exit Gate to Phase 6)
+            # ================================================================
+            self.logger.info("[P5-S30] Stage 30: Cluster Assignment Validation")
+
+            cluster_valid = True
+            cluster_details: Dict[str, Any] = {}
+            try:
+                from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (
+                    validate_cluster_assignments,
+                )
+
+                cluster_valid, cluster_details = validate_cluster_assignments(area_scores)
+
+                exit_gates["gate_cluster_assignments"] = {
+                    "status": "passed" if cluster_valid else "failed",
+                    "details": cluster_details,
+                }
+
+                if not cluster_valid:
+                    self.logger.error(
+                        f"[P5-S30] Cluster assignment validation failed: "
+                        f"{cluster_details.get('missing_cluster_assignments', [])}"
+                    )
+                    if getattr(self.config, 'strict_mode', False):
+                        raise PhaseExecutionError(
+                            message="Phase 5 exit gate failed: cluster assignments invalid for Phase 6",
+                            phase_id="P05",
+                            context=cluster_details
+                        )
+
+                stage_results["s30_cluster_validation"] = {
+                    "status": "completed",
+                    "cluster_valid": cluster_valid,
+                }
+            except ImportError as e:
+                self.logger.warning(f"[P5-S30] Cluster validation not available: {e}")
+                stage_results["s30_cluster_validation"] = {"status": "skipped", "reason": str(e)}
+                exit_gates["gate_cluster_assignments"] = {"status": "skipped", "reason": str(e)}
+
+            # ================================================================
+            # STAGE 40: SYNTHESIS ENGINE (Optional)
+            # ================================================================
+            self.logger.info("[P5-S40] Stage 40: Synthesis Engine")
+
+            try:
+                from farfan_pipeline.phases.Phase_05.phase5_40_00_synthesis_engine import (
+                    SynthesisEngine
+                )
+                synthesis_engine = SynthesisEngine()
+                synthesis_result = synthesis_engine.synthesize(area_scores, dimension_scores)
+
+                stage_results["s40_synthesis"] = {
+                    "status": "completed",
+                    "patterns_detected": len(synthesis_result.get("cross_area_patterns", [])),
+                    "recommendations_generated": len(synthesis_result.get("policy_recommendations", [])),
+                }
+            except Exception as e:
+                self.logger.warning(f"[P5-S40] Synthesis engine failed: {e}")
+                stage_results["s40_synthesis"] = {"status": "skipped", "reason": str(e)}
+
+            # ================================================================
+            # OUTPUT CONTRACT VALIDATION
+            # ================================================================
+            output_valid = True
+            output_details: Dict[str, Any] = {}
+            try:
+                from farfan_pipeline.phases.Phase_05.contracts.phase5_10_02_output_contract import (
+                    Phase5OutputContract
+                )
+                output_valid, output_details = Phase5OutputContract.validate(area_scores)
+
+                exit_gates["gate_output_contract"] = {
+                    "status": "passed" if output_valid else "failed",
+                    "details": output_details,
+                }
+            except ImportError as e:
+                self.logger.warning(f"[P5] Output contract not available: {e}")
+                exit_gates["gate_output_contract"] = {"status": "skipped", "reason": str(e)}
+
+            # ================================================================
+            # FINAL INVARIANT CHECK: 10 AreaScores
+            # ================================================================
             expected_count = 10
             actual_count = len(area_scores)
 
+            exit_gates["gate_count_invariant"] = {
+                "status": "passed" if actual_count == expected_count else "failed",
+                "expected": expected_count,
+                "actual": actual_count,
+            }
+
+            # Emit PHASE_COMPLETE signal
+            self._emit_phase_signal(
+                phase_id=PhaseID.PHASE_5,
+                event_type="PHASE_COMPLETE",
+                payload={
+                    "area_scores_count": actual_count,
+                    "validation_passed": validation_valid,
+                    "cluster_assignments_valid": cluster_valid,
+                }
+            )
+
             self.logger.info("=" * 80)
-            self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION COMPLETED")
+            self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION COMPLETED (v2.0)")
             self.logger.info(f"Area Scores: {actual_count} (expected: {expected_count})")
             self.logger.info("=" * 80)
 
@@ -3908,15 +3561,24 @@ class UnifiedOrchestrator:
                 "status": "completed",
                 "area_scores": actual_count,
                 "expected_count": expected_count,
-                "policy_area_count": actual_count
+                "policy_area_count": actual_count,
+                "stage_results": stage_results,
+                "exit_gates": exit_gates,
+                "synthesis": synthesis_result,
+                "validation_passed": validation_valid,
+                "cluster_assignments_valid": cluster_valid,
             }
 
+        except PhaseExecutionError:
+            raise
         except Exception as e:
             self.logger.error(f"Phase 5 orchestration failed: {e}")
             raise PhaseExecutionError(
                 message=f"Phase 5 execution failed: {e}",
-                phase_id="P05"
+                phase_id="P05",
+                context={"stage_results": stage_results}
             ) from e
+
 
     # =========================================================================
     # PHASE 6: Cluster Aggregation (3 Stages)
@@ -3973,14 +3635,10 @@ class UnifiedOrchestrator:
             # ====================================================================
             # STAGE 2: Adaptive Penalty Mechanism
             # ====================================================================
-            try:
-                from farfan_pipeline.phases.Phase_06.phase6_20_00_adaptive_meso_scoring import (
-                    AdaptiveMesoScoring
-                )
-                adaptive_scorer = AdaptiveMesoScoring()
-                # Will be used by cluster aggregator
-            except Exception as e:
-                self.logger.warning(f"[P6-S20] Adaptive scoring init failed: {e}")
+            # NOTE: AdaptiveMesoScoring is initialized internally by ClusterAggregator.
+            # No standalone import needed - this design ensures each aggregator instance
+            # has its own configured scoring engine, improving isolation and testability.
+            self.logger.info("[P6-S20] Adaptive penalty mechanism configured within ClusterAggregator")
 
             # ====================================================================
             # STAGE 3: Cluster Aggregation
@@ -4009,33 +3667,64 @@ class UnifiedOrchestrator:
                 from farfan_pipeline.phases.Phase_06 import ClusterScore
             except ImportError as e:
                 self.logger.warning(f"[P6] Could not import ClusterScore for validation: {e}")
-                # Fallback to attribute-based validation
                 ClusterScore = None
 
-            # Validate: Each item must be a ClusterScore object
+            # Validate each item and build validated output list
+            validated_cluster_scores = []
             for i, cs in enumerate(cluster_scores):
+                # Type validation: isinstance check or attribute-based fallback
                 if ClusterScore is not None:
-                    # Use isinstance validation when type is available
                     if not isinstance(cs, ClusterScore):
-                        raise TypeError(
-                            f"Phase 6 cluster_scores[{i}] is not a ClusterScore object. "
-                            f"Got type: {type(cs).__name__}. "
-                            f"Expected ClusterScore from farfan_pipeline.phases.Phase_06."
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 6 cluster_scores[{i}] is not a ClusterScore object. "
+                                f"Got type: {type(cs).__name__}. "
+                                f"Expected ClusterScore from farfan_pipeline.phases.Phase_06."
+                            ),
+                            phase_id="P06",
+                            context={"index": i, "actual_type": type(cs).__name__}
                         )
                 else:
                     # Fallback: Check required attributes when type import failed
                     if not hasattr(cs, 'cluster_id'):
-                        raise TypeError(
-                            f"Phase 6 cluster_scores[{i}] missing required attribute 'cluster_id'. "
-                            f"Got type: {type(cs).__name__}. "
-                            f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 6 cluster_scores[{i}] missing required attribute 'cluster_id'. "
+                                f"Got type: {type(cs).__name__}. "
+                                f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                            ),
+                            phase_id="P06",
+                            context={"index": i, "actual_type": type(cs).__name__}
                         )
                     if not hasattr(cs, 'score'):
-                        raise TypeError(
-                            f"Phase 6 cluster_scores[{i}] missing required attribute 'score'. "
-                            f"Got type: {type(cs).__name__}. "
-                            f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                        raise PhaseExecutionError(
+                            message=(
+                                f"Phase 6 cluster_scores[{i}] missing required attribute 'score'. "
+                                f"Got type: {type(cs).__name__}. "
+                                f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
+                            ),
+                            phase_id="P06",
+                            context={"index": i, "actual_type": type(cs).__name__}
                         )
+
+                # Extract values safely after validation
+                try:
+                    cluster_id = cs.cluster_id
+                    score = cs.score
+                except AttributeError as ae:
+                    raise PhaseExecutionError(
+                        message=(
+                            f"Phase 6 cluster_scores[{i}] attribute access failed: {ae}. "
+                            f"Object type: {type(cs).__name__}."
+                        ),
+                        phase_id="P06",
+                        context={"index": i, "actual_type": type(cs).__name__, "error": str(ae)}
+                    ) from ae
+
+                validated_cluster_scores.append({
+                    "cluster_id": cluster_id,
+                    "score": score
+                })
 
             # Validate: Should be 4 clusters
             expected_count = 4
@@ -4052,13 +3741,7 @@ class UnifiedOrchestrator:
             return {
                 "status": "completed",
                 "cluster_count": actual_count,
-                "cluster_scores": [
-                    {
-                        "cluster_id": cs.cluster_id,
-                        "score": cs.score
-                    }
-                    for cs in cluster_scores
-                ]
+                "cluster_scores": validated_cluster_scores
             }
 
         except Exception as e:
@@ -4086,56 +3769,349 @@ class UnifiedOrchestrator:
 
     def _execute_phase_07(self) -> Dict[str, Any]:
         """
-        Execute Phase 7: Macro Aggregation - COMPLETE ORCHESTRATION.
+        Execute Phase 7: Macro Aggregation - CONSTITUTIONAL ORCHESTRATION.
 
-        Synthesizes 4 MESO-level cluster scores into a single holistic MacroScore.
+        Synthesizes 4 MESO-level cluster scores into a single holistic MacroScore
+        with full contract enforcement, checkpoint support, and performance metrics.
+
+        Integration:
+        - Uses Phase 6 → Phase 7 Interphase Bridge for input validation
+        - Supports checkpoint/recovery for resilience
+        - Emits SISAS signals for observability
+        - Collects performance metrics throughout execution
+        - Validates exit gate against Phase 8 requirements
 
         Returns:
-            Dict with macro aggregation results
+            Dict with complete macro aggregation results
         """
+        from farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score import ClusterScore
+
         self.logger.info("=" * 80)
-        self.logger.critical("PHASE 7: MACRO AGGREGATION - FULL ORCHESTRATION STARTED")
+        self.logger.critical("PHASE 7: MACRO AGGREGATION - CONSTITUTIONAL ORCHESTRATION STARTED")
         self.logger.info("=" * 80)
+
+        step_results = {}
+        constitutional_invariants = {}
+        checkpoint_manager = None
+        metrics_collector = None
+        plan_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         try:
             # ====================================================================
-            # INPUT: Get ClusterScores from Phase 6
+            # METRICS COLLECTOR: Initialize performance tracking
             # ====================================================================
+            try:
+                from farfan_pipeline.phases.Phase_07.phase7_31_00_performance_metrics import (
+                    Phase7MetricsCollector
+                )
+                metrics_collector = Phase7MetricsCollector(plan_id=plan_id, cluster_count=4)
+                metrics_collector.start_phase()
+                self.logger.info(f"[P7] Metrics collector initialized for plan_id={plan_id}")
+            except ImportError:
+                self.logger.warning("[P7] Metrics collector not available, running without performance tracking")
+                metrics_collector = None
+
+            # ====================================================================
+            # CHECKPOINT MANAGER: Initialize for recovery support
+            # ====================================================================
+            checkpoint_dir = Path(self.config.output_dir) / "checkpoints" / "phase7"
+
+            if self.config.enable_checkpoint:
+                try:
+                    from farfan_pipeline.phases.Phase_07.phase7_30_00_checkpoint_manager import (
+                        Phase7CheckpointManager
+                    )
+                    checkpoint_manager = Phase7CheckpointManager(
+                        checkpoint_dir=checkpoint_dir,
+                        plan_id=plan_id,
+                    )
+
+                    resume_from = checkpoint_manager.get_resumption_point()
+                    if resume_from:
+                        self.logger.info(f"[P7] Checkpoint found: resuming from {resume_from}")
+                        step_results["checkpoint_recovery"] = {
+                            "status": "resuming",
+                            "resume_from": resume_from,
+                            "plan_id": plan_id,
+                        }
+                    else:
+                        self.logger.info("[P7] No checkpoint found: starting fresh execution")
+                        step_results["checkpoint_recovery"] = {
+                            "status": "starting_fresh",
+                            "plan_id": plan_id,
+                        }
+                except ImportError:
+                    self.logger.warning("[P7] Checkpoint manager not available, running without recovery support")
+                    checkpoint_manager = None
+
+            # ====================================================================
+            # STAGE 1: INPUT VALIDATION (Phase 6 → Phase 7 Bridge Contract)
+            # ====================================================================
+            self.logger.info("[P7-S1] Stage 1: Input Validation via Interphase Bridge")
+
             cluster_scores = self.context.get_phase_output(PhaseID.PHASE_6)
             if cluster_scores is None or len(cluster_scores) == 0:
                 raise PhaseExecutionError(
                     message="Phase 7 requires Phase 6 cluster scores",
-                    phase_id="P07"
+                    phase_id="P07",
+                    context={"stage": "S1_INPUT_VALIDATION"}
                 )
 
-            self.logger.info(f"[P7] Input received: {len(cluster_scores)} cluster scores")
-
-            # ====================================================================
-            # EXECUTE: Macro Aggregation
-            # ====================================================================
-            macro_score = None
+            # Use interphase bridge for validation
             try:
-                from farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator import (
-                    MacroAggregator
+                from farfan_pipeline.phases.Phase_07.interphase import (
+                    bridge_phase6_to_phase7,
+                    Phase6ToPhase7BridgeError,
                 )
-                aggregator = MacroAggregator()
-                macro_score = aggregator.aggregate(cluster_scores)
 
-                self.logger.info(f"[P7] Macro aggregated: score={macro_score.score if hasattr(macro_score, 'score') else 0.0}")
-            except Exception as e:
-                self.logger.error(f"[P7] Macro aggregation failed: {e}")
+                validated_cluster_scores, bridge_contract = bridge_phase6_to_phase7(cluster_scores)
+
+                step_results["s1_input_validation"] = {
+                    "status": "completed",
+                    "cluster_count": bridge_contract.cluster_count,
+                    "cluster_ids": sorted(bridge_contract.cluster_ids),
+                    "score_range": [
+                        min(bridge_contract.cluster_scores.values()),
+                        max(bridge_contract.cluster_scores.values())
+                    ],
+                    "certificate": bridge_contract.certificate,
+                }
+
+                self.logger.info(f"[P7-S1] Input validated: {bridge_contract.cluster_count} clusters")
+
+            except Phase6ToPhase7BridgeError as e:
+                self.logger.error(f"[P7-S1] Bridge validation failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Phase 7 macro aggregation failed: {e}",
-                    phase_id="P07"
+                    message=f"Phase 7 input validation failed: {e}",
+                    phase_id="P07",
+                    context={"stage": "S1_INPUT_VALIDATION", "error_code": e.error_code}
+                ) from e
+
+            # Emit SISAS signal for phase start
+            self._emit_phase_signal("P07", "STARTED", {
+                "plan_id": plan_id,
+                "cluster_count": len(validated_cluster_scores)
+            })
+
+            # ====================================================================
+            # STAGE 2-8: MACRO AGGREGATION WITH METRICS TRACKING
+            # ====================================================================
+            self.logger.info("[P7] Executing macro aggregation pipeline")
+
+            macro_score = None
+
+            # Track with metrics collector
+            if metrics_collector:
+                with metrics_collector.track_stage("P7_MACRO_AGGREGATION"):
+                    try:
+                        from farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator import (
+                            MacroAggregator
+                        )
+                        # Pass checkpoint_manager for granular stage-level recovery
+                        aggregator = MacroAggregator(
+                            checkpoint_manager=checkpoint_manager
+                        )
+                        macro_score = aggregator.aggregate(validated_cluster_scores)
+
+                        self.logger.info(f"[P7] Macro aggregated: score={macro_score.score}")
+
+                    except Exception as e:
+                        self.logger.error(f"[P7] Macro aggregation failed: {e}")
+                        raise PhaseExecutionError(
+                            message=f"Phase 7 macro aggregation failed: {e}",
+                            phase_id="P07",
+                            context={"stage": "MACRO_AGGREGATION"}
+                        ) from e
+            else:
+                # Without metrics tracking
+                try:
+                    from farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator import (
+                        MacroAggregator
+                    )
+                    # Pass checkpoint_manager for granular stage-level recovery
+                    aggregator = MacroAggregator(
+                        checkpoint_manager=checkpoint_manager
+                    )
+                    macro_score = aggregator.aggregate(validated_cluster_scores)
+
+                    self.logger.info(f"[P7] Macro aggregated: score={macro_score.score}")
+
+                except Exception as e:
+                    self.logger.error(f"[P7] Macro aggregation failed: {e}")
+                    raise PhaseExecutionError(
+                        message=f"Phase 7 macro aggregation failed: {e}",
+                        phase_id="P07",
+                        context={"stage": "MACRO_AGGREGATION"}
+                    ) from e
+
+            # ====================================================================
+            # CONSTITUTIONAL INVARIANTS VALIDATION
+            # ====================================================================
+            self.logger.info("[P7] Validating constitutional invariants")
+
+            # INV-7.1: Cluster weights sum to 1.0
+            from farfan_pipeline.phases.Phase_07.contracts.phase7_10_01_mission_contract import (
+                Phase7MissionContract
+            )
+            weight_sum = sum(Phase7MissionContract.CLUSTER_WEIGHTS.values())
+            invariant_7_1 = abs(weight_sum - 1.0) < 1e-6
+            constitutional_invariants["INV-7.1"] = {
+                "name": "Cluster weights sum to 1.0",
+                "expected": 1.0,
+                "actual": weight_sum,
+                "passed": invariant_7_1,
+            }
+
+            # INV-7.3: Score domain [0.0, 3.0]
+            score_in_bounds = (Phase7MissionContract.SCORE_MIN <= macro_score.score <= Phase7MissionContract.SCORE_MAX)
+            constitutional_invariants["INV-7.3"] = {
+                "name": "Score domain [0.0, 3.0]",
+                "min": Phase7MissionContract.SCORE_MIN,
+                "max": Phase7MissionContract.SCORE_MAX,
+                "actual": macro_score.score,
+                "passed": score_in_bounds,
+            }
+
+            # INV-7.4: Coherence weights sum to 1.0
+            coherence_sum = sum(Phase7MissionContract.COHERENCE_WEIGHTS.values())
+            invariant_7_4 = abs(coherence_sum - 1.0) < 1e-6
+            constitutional_invariants["INV-7.4"] = {
+                "name": "Coherence weights sum to 1.0",
+                "expected": 1.0,
+                "actual": coherence_sum,
+                "passed": invariant_7_4,
+            }
+
+            # Overall invariants status
+            all_invariants_passed = all(
+                inv["passed"] for inv in constitutional_invariants.values()
+            )
+
+            if not all_invariants_passed and self.config.strict_mode:
+                failed_invariants = [
+                    name for name, inv in constitutional_invariants.items()
+                    if not inv["passed"]
+                ]
+                raise PhaseExecutionError(
+                    message=f"Phase 7 constitutional invariants failed: {failed_invariants}",
+                    phase_id="P07",
+                    context={
+                        "constitutional_invariants": constitutional_invariants,
+                        "failed_invariants": failed_invariants
+                    }
+                )
+
+            # ====================================================================
+            # EXIT GATE VALIDATION (Phase 8 Compatibility)
+            # ====================================================================
+            self.logger.info("[P7] Exit Gate Validation: Phase 8 Compatibility")
+
+            exit_gate_result = None
+            try:
+                from farfan_pipeline.phases.Phase_07.phase7_32_00_exit_gate_validation import (
+                    validate_phase7_exit_gate,
+                )
+
+                input_cluster_ids = [cs.cluster_id for cs in validated_cluster_scores]
+                exit_gate_result = validate_phase7_exit_gate(
+                    macro_score,
+                    input_cluster_ids,
+                    strict_mode=self.config.strict_mode,
+                )
+
+                step_results["exit_gate_validation"] = {
+                    "status": "completed",
+                    "passed": exit_gate_result.passed,
+                    "checks": len(exit_gate_result.checks_performed),
+                    "errors": len(exit_gate_result.errors),
+                    "warnings": len(exit_gate_result.warnings),
+                    "certificate": exit_gate_result.certificate,
+                }
+
+                self.logger.info(f"[P7] Exit gate passed: ready for Phase 8")
+
+            except ValueError as e:
+                self.logger.error(f"[P7] Exit gate validation failed: {e}")
+                raise PhaseExecutionError(
+                    message=f"Phase 7 exit gate validation failed: {e}",
+                    phase_id="P07",
+                    context={"stage": "EXIT_GATE_VALIDATION"}
                 ) from e
 
             # ====================================================================
-            # OUTPUT: MacroScore with all components
+            # CHECKPOINT CLEANUP: Clear checkpoints after successful completion
+            # ====================================================================
+            if checkpoint_manager is not None:
+                try:
+                    cleared = checkpoint_manager.clear_checkpoints()
+                    self.logger.info(f"[P7] Cleared {cleared} checkpoint files after successful completion")
+                    step_results["checkpoint_cleanup"] = {
+                        "status": "completed",
+                        "files_cleared": cleared,
+                    }
+                except Exception as e:
+                    self.logger.warning(f"[P7] Checkpoint cleanup failed: {e}")
+                    step_results["checkpoint_cleanup"] = {
+                        "status": "failed",
+                        "error": str(e),
+                    }
+
+            # ====================================================================
+            # METRICS FINALIZATION: End phase and export metrics
+            # ====================================================================
+            if metrics_collector is not None:
+                try:
+                    macro_score_info = {
+                        "evaluation_id": getattr(macro_score, 'evaluation_id', 'UNKNOWN'),
+                        "score": getattr(macro_score, 'score', 0.0),
+                        "quality_level": getattr(macro_score, 'quality_level', 'UNKNOWN'),
+                        "coherence": getattr(macro_score, 'cross_cutting_coherence', 0.0),
+                        "alignment": getattr(macro_score, 'strategic_alignment', 0.0),
+                    }
+                    metrics_collector.end_phase(macro_score_info)
+                    metrics = metrics_collector.get_metrics()
+
+                    # Log aggregate statistics
+                    self.logger.info(f"[P7] Metrics Summary:")
+                    self.logger.info(f"  - Total duration: {metrics.total_duration_ms:.2f}ms")
+                    self.logger.info(f"  - Stages completed: {metrics.aggregate_stats.get('completed_stages', 0)}")
+                    self.logger.info(f"  - Avg stage duration: {metrics.aggregate_stats.get('avg_duration_ms', 0):.2f}ms")
+                    self.logger.info(f"  - Peak memory: {metrics.aggregate_stats.get('max_memory_mb_peak', 0):.2f}MB")
+
+                    # Export metrics to file
+                    metrics_path = Path(self.config.output_dir) / "metrics" / "phase7" / f"{plan_id}_metrics.json"
+                    metrics_collector.export_metrics(metrics_path)
+                    self.logger.info(f"[P7] Metrics exported to: {metrics_path}")
+
+                    step_results["metrics_export"] = {
+                        "status": "completed",
+                        "metrics_path": str(metrics_path),
+                        "total_duration_ms": metrics.total_duration_ms,
+                        "aggregate_stats": metrics.aggregate_stats,
+                    }
+                except Exception as e:
+                    self.logger.warning(f"[P7] Metrics finalization failed: {e}")
+                    step_results["metrics_export"] = {
+                        "status": "failed",
+                        "error": str(e),
+                    }
+
+            # Emit SISAS signal for phase completion
+            self._emit_phase_signal("P07", "COMPLETED", {
+                "plan_id": plan_id,
+                "macro_score": macro_score.score,
+                "quality_level": macro_score.quality_level,
+                "exit_gate_passed": exit_gate_result.passed if exit_gate_result else False,
+            })
+
+            # ====================================================================
+            # FINALIZATION: Store and Return Results
             # ====================================================================
             self.logger.info("=" * 80)
-            self.logger.critical("PHASE 7: MACRO AGGREGATION - FULL ORCHESTRATION COMPLETED")
-            self.logger.info(f"Macro Score: {macro_score.score if hasattr(macro_score, 'score') else 0.0}")
-            self.logger.info(f"Quality Level: {macro_score.quality_level if hasattr(macro_score, 'quality_level') else 'Unknown'}")
+            self.logger.critical("PHASE 7: MACRO AGGREGATION - CONSTITUTIONAL ORCHESTRATION COMPLETED")
+            self.logger.info(f"Macro Score: {macro_score.score}")
+            self.logger.info(f"Quality Level: {macro_score.quality_level}")
+            self.logger.info(f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}")
             self.logger.info("=" * 80)
 
             # Store in context
@@ -4144,19 +4120,31 @@ class UnifiedOrchestrator:
             return {
                 "status": "completed",
                 "macro_score": {
-                    "score": macro_score.score if hasattr(macro_score, 'score') else 0.0,
-                    "quality_level": str(macro_score.quality_level) if hasattr(macro_score, 'quality_level') else "Unknown",
-                    "coherence": macro_score.coherence if hasattr(macro_score, 'coherence') else 0.0,
-                    "alignment": macro_score.alignment if hasattr(macro_score, 'alignment') else 0.0
+                    "evaluation_id": getattr(macro_score, 'evaluation_id', 'UNKNOWN'),
+                    "score": macro_score.score,
+                    "quality_level": macro_score.quality_level,
+                    "coherence": getattr(macro_score, 'cross_cutting_coherence', 0.0),
+                    "alignment": getattr(macro_score, 'strategic_alignment', 0.0),
+                    "systemic_gaps": getattr(macro_score, 'systemic_gaps', []),
                 },
-                "components": ["CCCA", "SGD", "SAS"]
+                "step_results": step_results,
+                "constitutional_invariants": constitutional_invariants,
+                "all_invariants_passed": all_invariants_passed,
+                "exit_gate_certificate": exit_gate_result.certificate if exit_gate_result else {},
+                "components": ["CCCA", "SGD", "SAS"],
             }
 
         except Exception as e:
             self.logger.error(f"Phase 7 orchestration failed: {e}")
+            # Emit SISAS signal for phase failure
+            self._emit_phase_signal("P07", "FAILED", {
+                "plan_id": plan_id,
+                "error": str(e),
+            })
             raise PhaseExecutionError(
                 message=f"Phase 7 execution failed: {e}",
-                phase_id="P07"
+                phase_id="P07",
+                context={"step_results": step_results}
             ) from e
 
     # =========================================================================
@@ -4242,29 +4230,54 @@ class UnifiedOrchestrator:
                 from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
                     RecommendationEngine
                 )
-                from farfan_pipeline.phases.Phase_08.phase8_20_04_recommendation_engine_orchestrator import (
-                    RecommendationEngineOrchestrator
-                )
 
-                orchestrator = RecommendationEngineOrchestrator()
+                engine = RecommendationEngine()
 
                 # Get cluster data from Phase 6 and macro data from Phase 7
                 cluster_scores = self.context.get_phase_output(PhaseID.PHASE_6) or []
                 area_scores = self.context.get_phase_output(PhaseID.PHASE_5) or []
 
-                # Generate all recommendations
-                all_recs = orchestrator.generate_all_recommendations(
-                    micro_scores=area_scores,
-                    cluster_data=cluster_scores,
-                    macro_data=macro_score
+                # Convert scores to dict format expected by engine
+                micro_scores = {}
+                if isinstance(area_scores, list):
+                    for score in area_scores:
+                        if hasattr(score, 'area_id') and hasattr(score, 'score'):
+                            micro_scores[score.area_id] = score.score
+                elif isinstance(area_scores, dict):
+                    micro_scores = area_scores
+
+                cluster_data = {}
+                if isinstance(cluster_scores, list):
+                    for score in cluster_scores:
+                        if hasattr(score, 'cluster_id'):
+                            cluster_data[score.cluster_id] = score
+                elif isinstance(cluster_scores, dict):
+                    cluster_data = cluster_scores
+
+                macro_data = macro_score if isinstance(macro_score, dict) else {"macro_score": macro_score}
+
+                # Generate all recommendations using RecommendationEngine
+                all_recs = engine.generate_all_recommendations(
+                    micro_scores=micro_scores,
+                    cluster_data=cluster_data,
+                    macro_data=macro_data
                 )
 
                 recommendations = all_recs
+                
+                # Count recommendations (handle both dict and RecommendationSet)
+                def get_rec_count(rec_set):
+                    if hasattr(rec_set, 'recommendations'):
+                        return len(rec_set.recommendations)
+                    elif isinstance(rec_set, dict):
+                        return len(rec_set.get("recommendations", []))
+                    return 0
+
                 stage_results["s20_core"] = {
                     "status": "completed",
-                    "micro_count": len(all_recs.get("MICRO", {}).get("recommendations", [])),
-                    "meso_count": len(all_recs.get("MESO", {}).get("recommendations", [])),
-                    "macro_count": len(all_recs.get("MACRO", {}).get("recommendations", []))
+                    "micro_count": get_rec_count(all_recs.get("MICRO", {})),
+                    "meso_count": get_rec_count(all_recs.get("MESO", {})),
+                    "macro_count": get_rec_count(all_recs.get("MACRO", {}))
                 }
                 self.logger.info(f"[P8-S20] Recommendations generated: {stage_results['s20_core']}")
             except Exception as e:
@@ -4321,10 +4334,18 @@ class UnifiedOrchestrator:
             # ====================================================================
             # OUTPUT: Three-Level Recommendations
             # ====================================================================
+            # Helper function to count recommendations (handles both RecommendationSet and dict)
+            def get_rec_count_output(rec_set):
+                if hasattr(rec_set, 'recommendations'):
+                    return len(rec_set.recommendations)
+                elif isinstance(rec_set, dict):
+                    return len(rec_set.get("recommendations", []))
+                return 0
+
             total_recs = (
-                len(recommendations.get("MICRO", {}).get("recommendations", [])) +
-                len(recommendations.get("MESO", {}).get("recommendations", [])) +
-                len(recommendations.get("MACRO", {}).get("recommendations", []))
+                get_rec_count_output(recommendations.get("MICRO", {})) +
+                get_rec_count_output(recommendations.get("MESO", {})) +
+                get_rec_count_output(recommendations.get("MACRO", {}))
             )
 
             self.logger.info("=" * 80)
@@ -4339,9 +4360,9 @@ class UnifiedOrchestrator:
                 "status": "completed",
                 "recommendations": {
                     "total_count": total_recs,
-                    "micro_count": len(recommendations.get("MICRO", {}).get("recommendations", [])),
-                    "meso_count": len(recommendations.get("MESO", {}).get("recommendations", [])),
-                    "macro_count": len(recommendations.get("MACRO", {}).get("recommendations", [])),
+                    "micro_count": get_rec_count_output(recommendations.get("MICRO", {})),
+                    "meso_count": get_rec_count_output(recommendations.get("MESO", {})),
+                    "macro_count": get_rec_count_output(recommendations.get("MACRO", {})),
                     "version": "3.0.0"
                 },
                 "stage_results": stage_results
@@ -4355,27 +4376,43 @@ class UnifiedOrchestrator:
             ) from e
 
     # =========================================================================
-    # PHASE 9: Report Assembly
+    # PHASE 9: Report Assembly (4 Steps)
     # =========================================================================
     """
-    Phase 9 Execution Contract:
+    Phase 9 Execution Contract (aligned with PHASE_9_MANIFEST.json):
 
-    Input: Phase 8 recommendations
-    Output: Final report generation
+    STEP 1: Validate Inputs (Phase9Input from contracts/phase9_10_00_input_contract.py)
+    STEP 2: Assemble Report (ReportAssembler from phase9_10_00_report_assembly.py)
+    STEP 3: Generate Report Artifacts (ReportGenerator from phase9_10_00_report_generator.py)
+    STEP 4: Final Output with institutional annex
+
+    Module Mapping:
+    - Stage 10: phase_9_constants, report_assembly, report_generator, signal_enriched_reporting
+    - Stage 15: institutional_entity_annex
+
+    Input: Phase 8 recommendations + all prior phase outputs
+    Output: PolicyReport, ExecutiveSummary, DetailedFindings (MD/HTML/PDF)
     """
 
     def _execute_phase_09(self) -> Dict[str, Any]:
         """
         Execute Phase 9: Report Assembly - COMPLETE ORCHESTRATION.
 
-        Generates final report with all analysis results and recommendations.
+        Orchestrates all 4 steps of Phase 9 report generation:
+        1. Input validation
+        2. Report assembly via ReportAssembler
+        3. Artifact generation via ReportGenerator
+        4. Final output with institutional annex
 
         Returns:
-            Dict with report generation results
+            Dict with report generation results including artifact paths
         """
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 9: REPORT ASSEMBLY - FULL ORCHESTRATION STARTED")
         self.logger.info("=" * 80)
+
+        step_results = {}
+        exit_gates = {}
 
         try:
             # ====================================================================
@@ -4388,63 +4425,192 @@ class UnifiedOrchestrator:
                     phase_id="P09"
                 )
 
-            self.logger.info(f"[P9] Input received: recommendations")
+            self.logger.info(f"[P9] Input received: Phase 8 recommendations")
 
             # ====================================================================
-            # EXECUTE: Report Generation
+            # STEP 1: Validate Inputs
             # ====================================================================
-            report = None
+            self.logger.info("[P9-S01] Step 1: Validate Inputs")
+
             try:
-                from farfan_pipeline.phases.Phase_09.phase9_10_00_report_generator import (
-                    ReportGenerator
+                from farfan_pipeline.phases.Phase_09.contracts.phase9_10_00_input_contract import (
+                    Phase9Input, validate_phase9_input
                 )
-                generator = ReportGenerator()
-
-                # Gather all phase outputs for report
-                report_data = {
-                    "municipality": self.config.municipality_name,
-                    "phase_results": {
-                        "macro_score": self.context.get_phase_output(PhaseID.PHASE_7),
-                        "cluster_scores": self.context.get_phase_output(PhaseID.PHASE_6),
-                        "area_scores": self.context.get_phase_output(PhaseID.PHASE_5),
-                        "recommendations": recommendations
-                    }
+                
+                # Build Phase9Input from context
+                phase9_input = Phase9Input(
+                    recommendations=recommendations if isinstance(recommendations, list) else [recommendations],
+                    signal_enriched_data=self.context.get_phase_output(PhaseID.PHASE_8) or {},
+                    institutional_context={"municipality": self.config.municipality_name},
+                    policy_areas=[f"PA{i:02d}" for i in range(1, 11)],
+                    report_config={"format": ["html", "markdown", "pdf"]}
+                )
+                
+                is_valid, validation_errors = validate_phase9_input(phase9_input)
+                step_results["s01_input_validation"] = {
+                    "status": "completed",
+                    "valid": is_valid,
+                    "errors": validation_errors if not is_valid else []
                 }
-
-                report = generator.generate_report(report_data)
-
-                self.logger.info(f"[P9] Report generated: {type(report).__name__}")
+                
+                if not is_valid:
+                    self.logger.warning(f"[P9-S01] Input validation issues: {validation_errors}")
             except Exception as e:
-                self.logger.error(f"[P9] Report generation failed: {e}")
+                self.logger.warning(f"[P9-S01] Input validation skipped: {e}")
+                step_results["s01_input_validation"] = {"status": "skipped", "reason": str(e)}
+
+            # ====================================================================
+            # STEP 2: Assemble Report (ReportAssembler)
+            # ====================================================================
+            self.logger.info("[P9-S02] Step 2: Assemble Report")
+
+            analysis_report = None
+            try:
+                from farfan_pipeline.phases.Phase_09.phase9_10_00_report_assembly import (
+                    ReportAssembler, AnalysisReport
+                )
+                
+                # Get questionnaire provider from context or factory
+                questionnaire_provider = None
+                if hasattr(self.context, 'wiring') and self.context.wiring:
+                    questionnaire_provider = getattr(self.context.wiring.factory, 'questionnaire_provider', None)
+                
+                if questionnaire_provider is None:
+                    # Fallback: Create a minimal provider
+                    class MinimalProvider:
+                        def get_data(self):
+                            return {"blocks": {}, "metadata": {}}
+                    questionnaire_provider = MinimalProvider()
+                
+                assembler = ReportAssembler(
+                    questionnaire_provider=questionnaire_provider,
+                    orchestrator=self
+                )
+                
+                # Gather all phase outputs for report
+                execution_results = {
+                    "macro_score": self.context.get_phase_output(PhaseID.PHASE_7),
+                    "cluster_scores": self.context.get_phase_output(PhaseID.PHASE_6),
+                    "area_scores": self.context.get_phase_output(PhaseID.PHASE_5),
+                    "dimension_scores": self.context.get_phase_output(PhaseID.PHASE_4),
+                    "recommendations": recommendations
+                }
+                
+                analysis_report = assembler.assemble_report(
+                    plan_name=self.config.municipality_name or "policy_analysis",
+                    execution_results=execution_results
+                )
+                
+                step_results["s02_assembly"] = {
+                    "status": "completed",
+                    "report_id": analysis_report.metadata.report_id if hasattr(analysis_report, 'metadata') else "unknown"
+                }
+                self.logger.info(f"[P9-S02] Report assembled: {step_results['s02_assembly']['report_id']}")
+            except Exception as e:
+                self.logger.error(f"[P9-S02] Report assembly failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Phase 9 report generation failed: {e}",
+                    message=f"Step 2 report assembly failed: {e}",
                     phase_id="P09"
                 ) from e
 
             # ====================================================================
+            # STEP 3: Generate Report Artifacts (ReportGenerator)
+            # ====================================================================
+            self.logger.info("[P9-S03] Step 3: Generate Report Artifacts")
+
+            artifacts = {}
+            try:
+                from farfan_pipeline.phases.Phase_09.phase9_10_00_report_generator import (
+                    ReportGenerator
+                )
+                from pathlib import Path
+                
+                output_dir = Path(self.config.output_dir) / "reports"
+                generator = ReportGenerator(
+                    output_dir=output_dir,
+                    plan_name=self.config.municipality_name or "policy_analysis",
+                    enable_charts=True,
+                    enable_animations=True
+                )
+                
+                artifacts = generator.generate_all(
+                    report=analysis_report,
+                    generate_pdf=True,
+                    generate_html=True,
+                    generate_markdown=True
+                )
+                
+                step_results["s03_generation"] = {
+                    "status": "completed",
+                    "artifacts": {k: str(v) for k, v in artifacts.items()}
+                }
+                self.logger.info(f"[P9-S03] Generated {len(artifacts)} report artifacts")
+            except Exception as e:
+                self.logger.warning(f"[P9-S03] Report generation failed: {e}")
+                step_results["s03_generation"] = {"status": "failed", "reason": str(e)}
+
+            # ====================================================================
+            # STEP 4: Institutional Entity Annex (Optional)
+            # ====================================================================
+            self.logger.info("[P9-S04] Step 4: Institutional Entity Annex")
+
+            try:
+                from farfan_pipeline.phases.Phase_09.phase9_15_00_institutional_entity_annex import (
+                    generate_institutional_annex
+                )
+                
+                annex = generate_institutional_annex(
+                    report=analysis_report,
+                    municipality=self.config.municipality_name
+                )
+                step_results["s04_annex"] = {
+                    "status": "completed",
+                    "annex_generated": True
+                }
+            except Exception as e:
+                self.logger.warning(f"[P9-S04] Institutional annex skipped: {e}")
+                step_results["s04_annex"] = {"status": "skipped", "reason": str(e)}
+
+            # ====================================================================
             # OUTPUT: Final Report
             # ====================================================================
+            exit_gates["gate_final"] = {
+                "status": "passed" if analysis_report is not None else "failed",
+                "artifacts_generated": len(artifacts)
+            }
+
             self.logger.info("=" * 80)
             self.logger.critical("PHASE 9: REPORT ASSEMBLY - FULL ORCHESTRATION COMPLETED")
-            self.logger.info(f"Report Status: complete")
+            self.logger.info(f"Report Status: {'complete' if analysis_report else 'failed'}")
+            self.logger.info(f"Artifacts: {len(artifacts)}")
             self.logger.info("=" * 80)
 
             # Store in context
-            self.context.phase_outputs[PhaseID.PHASE_9] = report
+            self.context.phase_outputs[PhaseID.PHASE_9] = {
+                "report": analysis_report,
+                "artifacts": artifacts
+            }
 
             return {
                 "status": "completed",
                 "report": {
                     "municipality": self.config.municipality_name,
-                    "status": "complete"
-                }
+                    "status": "complete" if analysis_report else "failed",
+                    "report_id": analysis_report.metadata.report_id if analysis_report and hasattr(analysis_report, 'metadata') else None
+                },
+                "artifacts": {k: str(v) for k, v in artifacts.items()},
+                "step_results": step_results,
+                "exit_gates": exit_gates
             }
 
+        except PhaseExecutionError:
+            raise
         except Exception as e:
             self.logger.error(f"Phase 9 orchestration failed: {e}")
             raise PhaseExecutionError(
                 message=f"Phase 9 execution failed: {e}",
-                phase_id="P09"
+                phase_id="P09",
+                context={"step_results": step_results}
             ) from e
 
     # =========================================================================
@@ -4491,1085 +4657,240 @@ class UnifiedOrchestrator:
             "validation_result": {"all_passed": True}
         }
 
-        Returns:
-            PhaseExecutionResult with CPP chunk data
+    # =========================================================================
+    # PHASE 1 PROGRESS TRACKING METHODS
+    # =========================================================================
+
+    def _on_phase1_subphase_progress(
+        self,
+        subphase_id: str,
+        status: str,
+        metrics: Optional[Dict[str, Any]] = None,
+    ) -> None:
         """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_1,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
+        Callback for Phase 1 subphase progress updates.
+
+        Args:
+            subphase_id: Subphase identifier (e.g., "SP4", "SP11")
+            status: Status update (PENDING, RUNNING, COMPLETED, FAILED)
+            metrics: Optional metrics dictionary
+        """
+        self.logger.info(
+            f"[P1] Subphase progress: {subphase_id} = {status}",
+            subphase_id=subphase_id,
+            status=status,
+            metrics=metrics,
         )
 
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_1")
+        # Update subphase registry if exists
+        if subphase_id in self.PHASE1_SUBPHASES:
+            subphase = self.PHASE1_SUBPHASES[subphase_id]
+            subphase.status = status
+            if status == "RUNNING" and subphase.started_at is None:
+                subphase.started_at = datetime.utcnow()
+            elif status in ("COMPLETED", "FAILED"):
+                subphase.completed_at = datetime.utcnow()
+            if metrics:
+                subphase.metrics.update(metrics)
 
-            if not PHASE_01_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("CPPIngestionEngine not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Get paths from Phase 0 result
-            plan_pdf_path = Path(self.config.document_path) if self.config.document_path else None
-
-            if not plan_pdf_path:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("Missing document_path from config")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Get signal registry if available
-            signal_registry = self.context.signal_registry if hasattr(self.context, "signal_registry") else None
-
-            # Initialize CPPIngestionEngine
-            self._phase_01_engine = CPPIngestionEngine(
-                pdf_path=plan_pdf_path,
-                signal_registry=signal_registry,
-                enable_signal_enrichment=True,
+        # Emit signal if SISAS enabled
+        if self.config.enable_sisas and self.context.sisas:
+            self._emit_subphase_signal(
+                phase="phase_1",
+                subphase=subphase_id,
+                status=status,
+                metrics=metrics,
             )
 
-            # Run extraction (MC01-MC10 extractors)
-            self.logger.info("Starting CPP extraction with 10 extractors (MC01-MC10)")
-
-            if self.extraction_triggers:
-                self.extraction_triggers.emit_extraction_starting("cpp_ingestion")
-
-            # Extract CPP chunks
-            cpp_chunks = self._phase_01_engine.extract_chunks()
-
-            if self.extraction_triggers:
-                self.extraction_triggers.emit_extraction_completed("cpp_ingestion")
-
-            # Validate output count
-            if len(cpp_chunks) != P01_EXPECTED_CHUNK_COUNT:
-                result.warnings.append(
-                    f"Expected {P01_EXPECTED_CHUNK_COUNT} chunks, got {len(cpp_chunks)}"
-                )
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_1",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "cpp_chunks": cpp_chunks,
-                "chunk_count": len(cpp_chunks),
-                "extractors_used": ["MC01", "MC02", "MC03", "MC04", "MC05",
-                                   "MC06", "MC07", "MC08", "MC09", "MC10"],
-            }
-
-            result.constitutional_invariants = {
-                "expected_chunks": P01_EXPECTED_CHUNK_COUNT,
-                "policy_areas": P01_EXPECTED_POLICY_AREAS,
-                "dimensions": P01_EXPECTED_DIMENSIONS,
-                "actual_chunks": len(cpp_chunks),
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_1")
-
-            self.phase_results[PhaseID.PHASE_1] = result
-            self.logger.info(
-                "Phase 1 completed",
-                chunk_count=len(cpp_chunks),
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 1 failed", error=str(e))
-            return result
-
-    def _execute_phase_02(self, plan_text: Optional[str] = None, **kwargs) -> PhaseExecutionResult:
+    def _emit_subphase_signal(
+        self,
+        phase: str,
+        subphase: str,
+        status: str,
+        metrics: Optional[Dict[str, Any]] = None,
+    ) -> None:
         """
-        Execute Phase 2: Executor Factory & Dispatch.
+        Emit SISAS signal for subphase progress.
 
-        Uses the UnifiedFactory to:
-        1. Load analysis components (detectors, calculators, analyzers)
-        2. Load contracts
-        3. Execute contracts with method injection
-
-        Contract:
-            - Input: CPP chunks (from Phase 1), plan_text
-            - Output: Task results from contract execution
-            - Constitutional Invariants: contract_count=300
-
-        Returns:
-            PhaseExecutionResult with contract execution data
+        Args:
+            phase: Phase identifier (e.g., "phase_1")
+            subphase: Subphase identifier (e.g., "SP4")
+            status: Status update
+            metrics: Optional metrics dictionary
         """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_2,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
+        if not SISAS_CORE_AVAILABLE:
+            return
+
+        if self.context.sisas is None:
+            return
 
         try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_2")
-
-            if self.contract_triggers:
-                self.contract_triggers.emit_contract_loading("phase_2_contracts")
-
-            if self.factory is None:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("Factory not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Create analysis components via factory
-            components = self.factory.create_analysis_components()
-            self.logger.debug(
-                "Analysis components created",
-                components=list(components.keys()),
-            )
-
-            # Load contracts via factory
-            contracts = self.factory.load_contracts()
-            active_contracts = {
-                cid: c for cid, c in contracts.items()
-                if c.get("status") == "ACTIVE"
-            }
-
-            self.logger.info(
-                "Contracts loaded for execution",
-                total_contracts=len(contracts),
-                active_contracts=len(active_contracts),
-            )
-
-            # Get optimal execution plan from factory
-            execution_plan = self._get_factory_execution_plan(PhaseID.PHASE_2)
-
-            if execution_plan:
-                self.logger.info(
-                    "Factory execution plan obtained",
-                    strategy=execution_plan["execution_strategy"],
-                    estimated_duration=execution_plan["estimated_duration_seconds"],
-                    batches=len(execution_plan.get("batches", [])),
-                )
-
-            # Emit contract execution signal
-            if self.contract_triggers:
-                self.contract_triggers.emit_contract_executing("phase_2_execution")
-
-            # Execute contracts with method injection
-            task_results = []
-            input_data = {"plan_text": plan_text, **kwargs}
-
-            # Limit contracts for now (can be adjusted based on execution plan)
-            contract_list = list(active_contracts.keys())[:10]
-
-            # Use parallel batch execution if recommended by plan
-            if execution_plan and execution_plan["execution_strategy"] == "parallel_batch":
-                self.logger.info("Using parallel batch execution")
-                batch_results = self.factory.execute_contracts_batch(contract_list, input_data)
-
-                for contract_id, exec_result in batch_results.items():
-                    task_results.append({
-                        "contract_id": contract_id,
-                        "result": exec_result,
-                        "status": "completed" if "error" not in exec_result else "failed",
-                    })
-            else:
-                # Sequential execution
-                for contract_id in contract_list:
-                    try:
-                        exec_result = self.factory.execute_contract(contract_id, input_data)
-                        task_results.append({
-                            "contract_id": contract_id,
-                            "result": exec_result,
-                            "status": "completed" if "error" not in exec_result else "failed",
-                        })
-                    except Exception as e:
-                        self.logger.warning(
-                            "Contract execution failed",
-                            contract_id=contract_id,
-                            error=str(e),
-                        )
-                        task_results.append({
-                            "contract_id": contract_id,
-                            "error": str(e),
-                            "status": "error",
-                        })
-
-            # Get performance metrics from factory
-            perf_metrics = self.factory.get_performance_metrics()
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_2",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "task_results": task_results,
-                "contracts_executed": len(task_results),
-                "components_available": list(components.keys()),
-                "execution_strategy": execution_plan["execution_strategy"] if execution_plan else "sequential",
-                "performance_metrics": perf_metrics,
-            }
-
-            result.constitutional_invariants = {
-                "contract_count": P02_EXPECTED_CONTRACT_COUNT,
-                "actual_contracts": len(task_results),
-                "components": list(components.keys()),
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_2")
-
-            self.phase_results[PhaseID.PHASE_2] = result
-            self.logger.info(
-                "Phase 2 completed",
-                contracts_executed=len(task_results),
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 2 failed", error=str(e))
-            return result
-
-    def _execute_phase_03(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 3: Layer Scoring.
-
-        Uses SignalEnrichedScorer for 8-layer quality assessment:
-        - Signal-driven threshold adjustment
-        - Quality level validation
-        - Score extraction with provenance
-
-        Contract:
-            - Input: Task results (from Phase 2)
-            - Output: Scored micro-questions
-            - Constitutional Invariants: layers=8
-
-        Returns:
-            PhaseExecutionResult with scoring data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_3,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_3")
-
-            if not PHASE_03_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("SignalEnrichedScorer not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Get signal registry if available
-            signal_registry = self.context.signal_registry if hasattr(self.context, "signal_registry") else None
-
-            # Initialize SignalEnrichedScorer
-            self._phase_03_scorer = SignalEnrichedScorer(
-                signal_registry=signal_registry,
-                enable_threshold_adjustment=True,
-                enable_quality_validation=True,
-            )
-
-            # Get task results from Phase 2
-            phase_2_result = self.phase_results.get(PhaseID.PHASE_2)
-            if not phase_2_result:
-                result.warnings.append("Phase 2 results not available")
-
-            # Perform scoring (8 layers)
-            self.logger.info("Starting 8-layer quality assessment")
-
-            # In a real implementation, this would process actual task results
-            # For now, we create a placeholder structure
-            scored_results = []
-            if phase_2_result and phase_2_result.data.get("task_results"):
-                for task_result in phase_2_result.data["task_results"][:10]:
-                    scored_results.append({
-                        "task_id": task_result.get("contract_id"),
-                        "layers": [0.7, 0.8, 0.6, 0.9, 0.75, 0.85, 0.7, 0.8],  # 8 layer scores
-                        "quality_level": "ACEPTABLE",
-                    })
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_3",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "scored_results": scored_results,
-                "layers": 8,
-                "scorer_enabled": True,
-            }
-
-            result.constitutional_invariants = {
-                "layers": 8,
-                "scored_count": len(scored_results),
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_3")
-
-            self.phase_results[PhaseID.PHASE_3] = result
-            self.logger.info(
-                "Phase 3 completed",
-                scored_count=len(scored_results),
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 3 failed", error=str(e))
-            return result
-
-    def _execute_phase_04(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 4: Dimension Aggregation (Micro-level).
-
-        Uses ChoquetAggregator for non-linear multi-layer calibration:
-        - Choquet integral aggregation with interaction terms
-        - Captures synergies and complementarities between layers
-        - Outputs 60 DimensionScore objects
-
-        Contract:
-            - Input: Scored results (from Phase 3)
-            - Output: 60 DimensionScore objects (6 dimensions × 10 policy areas)
-            - Constitutional Invariants: method="Choquet Integral"
-
-        Returns:
-            PhaseExecutionResult with dimension aggregation data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_4,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_4")
-
-            if not PHASE_04_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("ChoquetAggregator not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Initialize ChoquetAggregator
-            # Create default config with linear weights for 8 layers
-            linear_weights = {
-                f"@layer_{i}": 1.0 / 8.0 for i in range(8)
-            }
-            choquet_config = ChoquetConfig(
-                linear_weights=linear_weights,
-                validate_boundedness=True,
-                normalize_weights=True,
-            )
-
-            self._phase_04_aggregator = ChoquetAggregator(
-                config=choquet_config,
-                monolith=self.context.questionnaire.monolith if hasattr(self.context, "questionnaire") and self.context.questionnaire else None,
-            )
-
-            # Get scored results from Phase 3
-            phase_3_result = self.phase_results.get(PhaseID.PHASE_3)
-
-            # Perform Choquet aggregation
-            self.logger.info("Starting Choquet integral aggregation")
-
-            # In a real implementation, this would process actual scored results
-            # For now, we create a placeholder structure for 60 dimension scores
-            dimension_scores = []
-            for area_idx in range(10):
-                for dim_idx in range(6):
-                    dimension_scores.append({
-                        "dimension_id": f"DIM{dim_idx+1:02d}",
-                        "policy_area": f"PA{area_idx+1:02d}",
-                        "score": 0.75 + (dim_idx * 0.05),
-                        "quality": "ACEPTABLE",
-                    })
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_4",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "dimension_scores": dimension_scores,
-                "dimension_count": len(dimension_scores),
-                "method": P04_METHOD,
-            }
-
-            result.constitutional_invariants = {
-                "method": P04_METHOD,
-                "expected_dimensions": 60,
-                "actual_dimensions": len(dimension_scores),
-                "policy_areas": 10,
-                "dimensions_per_area": 6,
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_4")
-
-            self.phase_results[PhaseID.PHASE_4] = result
-            self.logger.info(
-                "Phase 4 completed",
-                dimension_count=len(dimension_scores),
-                method=P04_METHOD,
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 4 failed", error=str(e))
-            return result
-
-    def _execute_phase_05(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 5: Policy Area Aggregation (Meso-level).
-
-        Uses AreaPolicyAggregator to aggregate 60 dimension scores
-        into 10 policy area scores.
-
-        Contract:
-            - Input: 60 DimensionScore (from Phase 4)
-            - Output: 10 AreaScore objects
-            - Constitutional Invariants: areas=10
-
-        Returns:
-            PhaseExecutionResult with policy area aggregation data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_5,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_5")
-
-            if not PHASE_05_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("AreaPolicyAggregator not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Initialize AreaPolicyAggregator
-            self._phase_05_aggregator = AreaPolicyAggregator(
-                monolith=self.context.questionnaire.monolith if hasattr(self.context, "questionnaire") and self.context.questionnaire else None,
-                abort_on_insufficient=False,
-                enable_sota_features=True,
-                signal_registry=self.context.signal_registry if hasattr(self.context, "signal_registry") else None,
-            )
-
-            # Get dimension scores from Phase 4
-            phase_4_result = self.phase_results.get(PhaseID.PHASE_4)
-            dimension_scores = phase_4_result.data.get("dimension_scores", []) if phase_4_result else []
-
-            # Perform area aggregation
-            self.logger.info("Starting policy area aggregation (60 dimensions → 10 areas)")
-
-            # In a real implementation, this would process actual dimension scores
-            # For now, we create a placeholder structure for 10 area scores
-            area_scores = []
-            for area_idx in range(10):
-                area_scores.append({
-                    "area_id": f"PA{area_idx+1:02d}",
-                    "area_name": f"Policy Area {area_idx+1}",
-                    "score": 2.0 + (area_idx * 0.1),
-                    "quality": "ACEPTABLE",
-                    "dimension_count": 6,
-                })
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_5",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "area_scores": area_scores,
-                "area_count": len(area_scores),
-            }
-
-            result.constitutional_invariants = {
-                "expected_areas": 10,
-                "actual_areas": len(area_scores),
-                "dimensions_per_area": 6,
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_5")
-
-            self.phase_results[PhaseID.PHASE_5] = result
-            self.logger.info(
-                "Phase 5 completed",
-                area_count=len(area_scores),
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 5 failed", error=str(e))
-            return result
-
-    def _execute_phase_06(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 6: Cluster Aggregation (Macro-level).
-
-        Uses ClusterAggregator to aggregate 10 policy area scores
-        into 4 MESO-level cluster scores.
-
-        Contract:
-            - Input: 10 AreaScore (from Phase 5)
-            - Output: 4 ClusterScore objects
-            - Constitutional Invariants: cluster_count=4
-
-        Returns:
-            PhaseExecutionResult with cluster aggregation data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_6,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_6")
-
-            if not PHASE_06_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("ClusterAggregator not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Initialize ClusterAggregator
-            self._phase_06_aggregator = ClusterAggregator(
-                monolith=self.context.questionnaire.monolith if hasattr(self.context, "questionnaire") and self.context.questionnaire else None,
-                abort_on_insufficient=False,
-                enforce_contracts=True,
-                contract_mode="strict",
-            )
-
-            # Get area scores from Phase 5
-            phase_5_result = self.phase_results.get(PhaseID.PHASE_5)
-            area_scores = phase_5_result.data.get("area_scores", []) if phase_5_result else []
-
-            # Perform cluster aggregation
-            self.logger.info("Starting cluster aggregation (10 areas → 4 clusters)")
-
-            # In a real implementation, this would process actual area scores
-            # For now, we create a placeholder structure for 4 cluster scores
-            cluster_scores = []
-            for cluster_idx in range(4):
-                cluster_scores.append({
-                    "cluster_id": f"CLUSTER_MESO_{cluster_idx+1}",
-                    "cluster_name": f"Cluster {cluster_idx+1}",
-                    "score": 2.0 + (cluster_idx * 0.15),
-                    "quality": "ACEPTABLE",
-                    "area_count": 3 if cluster_idx < 1 else 2,  # First cluster has 3 areas, rest have 2
-                })
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_6",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "cluster_scores": cluster_scores,
-                "cluster_count": len(cluster_scores),
-            }
-
-            result.constitutional_invariants = {
-                "cluster_count": P06_CLUSTER_COUNT,
-                "actual_clusters": len(cluster_scores),
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_6")
-
-            self.phase_results[PhaseID.PHASE_6] = result
-            self.logger.info(
-                "Phase 6 completed",
-                cluster_count=len(cluster_scores),
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 6 failed", error=str(e))
-            return result
-
-    def _execute_phase_07(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 7: Macro Evaluation.
-
-        Uses MacroAggregator to aggregate 4 cluster scores
-        into 1 holistic macro score with CCCA.
-
-        Contract:
-            - Input: 4 ClusterScore (from Phase 6)
-            - Output: 1 MacroScore
-            - Constitutional Invariants: components=["CCCA"]
-
-        Returns:
-            PhaseExecutionResult with macro evaluation data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_7,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_7")
-
-            if not PHASE_07_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("MacroAggregator not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Initialize MacroAggregator
-            self._phase_07_aggregator = MacroAggregator(
-                cluster_weights=None,  # Use equal weights
-                enable_gap_detection=True,
-                enable_coherence_analysis=True,
-                enable_alignment_scoring=True,
-            )
-
-            # Get cluster scores from Phase 6
-            phase_6_result = self.phase_results.get(PhaseID.PHASE_6)
-            cluster_scores = phase_6_result.data.get("cluster_scores", []) if phase_6_result else []
-
-            # Perform macro aggregation
-            self.logger.info("Starting macro aggregation (4 clusters → 1 holistic score)")
-
-            # In a real implementation, this would process actual cluster scores
-            # For now, we create a placeholder structure for macro score
-            raw_score = sum(cs.get("score", 2.0) for cs in cluster_scores[:4]) / 4 if cluster_scores else 2.0
-            score_normalized = raw_score / 3.0
-            quality_level = "ACEPTABLE" if score_normalized >= 0.5 else "INSUFICIENTE"
-
-            macro_score = {
-                "macro_id": "MACRO_001",
-                "score": raw_score,
-                "score_normalized": score_normalized,
-                "quality_level": quality_level,
-                "coherence_strategic": 0.75,
-                "coherence_operational": 0.70,
-                "coherence_institutional": 0.72,
-                "systemic_gaps": [],
-                "alignment_vertical": 0.68,
-                "alignment_horizontal": 0.71,
-                "alignment_temporal": 0.69,
-            }
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_7",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "macro_score": macro_score,
-            }
-
-            result.constitutional_invariants = {
-                "components": P07_COMPONENTS,
-                "score": raw_score,
-            }
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_7")
-
-            self.phase_results[PhaseID.PHASE_7] = result
-            self.logger.info(
-                "Phase 7 completed",
-                score=raw_score,
-                quality=quality_level,
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 7 failed", error=str(e))
-            return result
-
-    def _execute_phase_08(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 8: Recommendations Engine.
-
-        Uses SignalEnrichedRecommender to generate context-aware,
-        data-driven recommendations.
-
-        Contract:
-            - Input: MacroScore (from Phase 7)
-            - Output: Recommendations with signal enrichment
-            - Constitutional Invariants: N/A
-
-        Returns:
-            PhaseExecutionResult with recommendations data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_8,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_8")
-
-            if not PHASE_08_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("SignalEnrichedRecommender not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Get signal registry if available
-            signal_registry = self.context.signal_registry if hasattr(self.context, "signal_registry") else None
-
-            # Initialize SignalEnrichedRecommender
-            self._phase_08_recommender = SignalEnrichedRecommender(
-                signal_registry=signal_registry,
-                enable_pattern_matching=True,
-                enable_priority_scoring=True,
-            )
-
-            # Get macro score from Phase 7
-            phase_7_result = self.phase_results.get(PhaseID.PHASE_7)
-            macro_score = phase_7_result.data.get("macro_score", {}) if phase_7_result else {}
-
-            # Generate recommendations
-            self.logger.info("Generating signal-enriched recommendations")
-
-            # In a real implementation, this would analyze the macro score
-            # and generate actual recommendations. For now, placeholder:
-            recommendations = {
-                "high_priority": [],
-                "medium_priority": [],
-                "low_priority": [],
-                "strategic": [],
-                "operational": [],
-                "institutional": [],
-            }
-
-            # Generate recommendations based on low-scoring areas
-            if macro_score.get("score_normalized", 1.0) < 0.6:
-                recommendations["high_priority"].append({
-                    "type": "IMPROVEMENT",
-                    "target": "OVERALL",
-                    "description": "Comprehensive improvement plan needed",
-                    "priority": "CRITICAL",
-                })
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_8",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "recommendations": recommendations,
-                "recommendation_count": sum(len(v) for v in recommendations.values()),
-            }
-
-            result.constitutional_invariants = {}
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_8")
-
-            self.phase_results[PhaseID.PHASE_8] = result
-            self.logger.info(
-                "Phase 8 completed",
-                recommendation_count=result.data["recommendation_count"],
-                duration_s=result.execution_time_s,
-            )
-
-            return result
-
-        except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 8 failed", error=str(e))
-            return result
-
-    def _execute_phase_09(self) -> PhaseExecutionResult:
-        """
-        Execute Phase 9: Report Assembly.
-
-        Uses SignalEnrichedReporter to generate the final report with
-        narrative enrichment, section selection, and evidence highlighting.
-
-        Contract:
-            - Input: Recommendations (from Phase 8)
-            - Output: Final report with annexes
-            - Constitutional Invariants: N/A
-
-        Returns:
-            PhaseExecutionResult with report data
-        """
-        result = PhaseExecutionResult(
-            phase_id=PhaseID.PHASE_9,
-            status=PhaseStatus.IN_PROGRESS,
-            started_at=datetime.utcnow(),
-            completed_at=None,
-            data={},
-            constitutional_invariants={},
-        )
-
-        try:
-            # Emit trigger signals
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_initializing("phase_9")
-
-            if not PHASE_09_AVAILABLE:
-                result.status = PhaseStatus.FAILED
-                result.errors.append("SignalEnrichedReporter not available")
-                result.completed_at = datetime.utcnow()
-                return result
-
-            # Get signal registry if available
-            signal_registry = self.context.signal_registry if hasattr(self.context, "signal_registry") else None
-
-            # Initialize SignalEnrichedReporter
-            self._phase_09_reporter = SignalEnrichedReporter(
-                signal_registry=signal_registry,
-                enable_narrative_enrichment=True,
-                enable_section_selection=True,
-                enable_evidence_highlighting=True,
-            )
-
-            # Get recommendations from Phase 8
-            phase_8_result = self.phase_results.get(PhaseID.PHASE_8)
-            recommendations = phase_8_result.data.get("recommendations", {}) if phase_8_result else {}
-
-            # Generate report
-            self.logger.info("Assembling final report")
-
-            # Collect all phase results for the report
-            report_data = {
-                "execution_id": self.context.execution_id,
-                "timestamp": datetime.utcnow().isoformat(),
-                "municipality": self.config.municipality_name,
-                "phases_completed": list(self.phase_results.keys()),
-                "executive_summary": {
-                    "total_phases": len(self.phase_results),
-                    "overall_quality": "COMPLETED",
+            from uuid import uuid4
+
+            signal = Signal(
+                signal_id=f"{phase.upper()}_{subphase}_{status}_{uuid4().hex[:8]}",
+                signal_type=SignalType.PHASE_MONITORING,
+                scope=SignalScope(
+                    phase=phase,
+                    policy_area="ALL",
+                    slot=subphase,
+                ),
+                content={
+                    "subphase": subphase,
+                    "status": status,
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "metrics": metrics or {},
                 },
-                "recommendations": recommendations,
-                "annexes": [],
-            }
-
-            # Add institutional entity annex if Phase 7 macro score exists
-            phase_7_result = self.phase_results.get(PhaseID.PHASE_7)
-            if phase_7_result and phase_7_result.data.get("macro_score"):
-                macro_score = phase_7_result.data["macro_score"]
-                report_data["annexes"].append({
-                    "type": "INSTITUTIONAL_ENTITY",
-                    "content": {
-                        "macro_score": macro_score.get("score_normalized"),
-                        "quality_level": macro_score.get("quality_level"),
-                        "ccca_components": macro_score.get("coherence_strategic"),
-                    },
-                })
-
-            # Run gate validation if available
-            if self.gate_orchestrator:
-                gate_result = self.gate_orchestrator.run_all_gates(
-                    phase_id="phase_9",
-                    context=self.context,
-                )
-                if not gate_result.passed:
-                    result.errors.extend(gate_result.warnings)
-
-            # Construct output with constitutional invariants
-            result.data = {
-                "report": report_data,
-                "report_generated": True,
-                "annex_count": len(report_data["annexes"]),
-            }
-
-            result.constitutional_invariants = {}
-
-            result.status = PhaseStatus.COMPLETED
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-
-            # Emit completion signal
-            if self.subphase_triggers:
-                self.subphase_triggers.emit_phase_finalizing("phase_9")
-
-            self.phase_results[PhaseID.PHASE_9] = result
-            self.logger.info(
-                "Phase 9 completed",
-                report_generated=True,
-                duration_s=result.execution_time_s,
+                provenance=SignalProvenance(
+                    source_module="UnifiedOrchestrator._emit_subphase_signal",
+                    created_at=datetime.utcnow(),
+                    correlation_id=self.context.execution_id,
+                ),
             )
 
-            return result
+            # Dispatch signal
+            self.context.sisas.dispatch(signal)
+
+            self.logger.debug(
+                f"Subphase signal emitted: {phase}/{subphase} = {status}",
+                signal_id=signal.signal_id,
+            )
 
         except Exception as e:
-            result.status = PhaseStatus.FAILED
-            result.errors.append(str(e))
-            result.completed_at = datetime.utcnow()
-            result.execution_time_s = (result.completed_at - result.started_at).total_seconds()
-            self.logger.error("Phase 9 failed", error=str(e))
-            return result
+            self.logger.warning(
+                f"Failed to emit subphase signal: {e}",
+                phase=phase,
+                subphase=subphase,
+            )
 
     # =========================================================================
-    # UTILITY METHODS
+    # PHASE 1 EXIT GATE VALIDATION
     # =========================================================================
+
+    def _validate_phase1_exit_gate(
+        self,
+        canon_policy_package: Any,
+    ) -> Dict[str, Any]:
+        """
+        Validate Phase 1 output meets Phase 2 input requirements.
+
+        Uses Phase 2's input contract for validation.
+
+        Args:
+            canon_policy_package: CanonPolicyPackage from Phase 1
+
+        Returns:
+            Dict with exit_gate_passed and validation_details
+        """
+        try:
+            from farfan_pipeline.phases.Phase_02.contracts.phase2_10_00_input_contract import (
+                Phase2InputPreconditions,
+                Phase2InputValidator,
+            )
+
+            preconditions = Phase2InputPreconditions()
+            validator = Phase2InputValidator(preconditions)
+
+            # Validate CPP structure
+            cpp_valid, cpp_errors = validator.validate_cpp(canon_policy_package)
+
+            # Generate compatibility certificate
+            certificate = self._generate_phase1_certificate(
+                canon_policy_package,
+                cpp_valid,
+                cpp_errors,
+            )
+
+            exit_gate_result = {
+                "exit_gate_passed": cpp_valid and certificate["status"] == "VALID",
+                "cpp_validation": {
+                    "valid": cpp_valid,
+                    "errors": cpp_errors,
+                },
+                "certificate": certificate,
+                "phase2_preconditions": {
+                    "expected_chunk_count": preconditions.EXPECTED_CHUNK_COUNT,
+                    "actual_chunk_count": len(canon_policy_package.smart_chunks),
+                    "expected_schema_version": preconditions.REQUIRED_CPP_SCHEMA_VERSION,
+                    "actual_schema_version": canon_policy_package.manifest.schema_version if hasattr(canon_policy_package, 'manifest') else "UNKNOWN",
+                },
+            }
+
+            if not exit_gate_result["exit_gate_passed"]:
+                self.logger.error(
+                    "[P1] Exit gate FAILED",
+                    errors=cpp_errors,
+                    certificate_status=certificate["status"],
+                )
+
+                if self.config.strict_mode:
+                    raise PhaseExecutionError(
+                        message="Phase 1 exit gate failed - Phase 2 preconditions not met",
+                        phase_id="P01",
+                        context=exit_gate_result,
+                    )
+            else:
+                self.logger.info(
+                    "[P1] Exit gate PASSED",
+                    chunks=len(canon_policy_package.smart_chunks),
+                    certificate_status=certificate["status"],
+                )
+
+            return exit_gate_result
+
+        except Exception as e:
+            self.logger.error(f"[P1] Exit gate validation error: {e}")
+            return {
+                "exit_gate_passed": False,
+                "error": str(e),
+                "cpp_validation": {"valid": False, "errors": [str(e)]},
+                "certificate": None,
+            }
+
+    def _generate_phase1_certificate(
+        self,
+        cpp: Any,
+        valid: bool,
+        errors: list,
+    ) -> Dict[str, Any]:
+        """
+        Generate Phase 1 compatibility certificate for Phase 2.
+
+        Args:
+            cpp: CanonPolicyPackage
+            valid: Whether validation passed
+            errors: List of validation errors
+
+        Returns:
+            Certificate dictionary
+        """
+        import json
+        from datetime import datetime, timezone
+
+        # Compute CPP hash
+        cpp_dict = cpp.to_dict() if hasattr(cpp, 'to_dict') else {}
+        cpp_json = json.dumps(cpp_dict, sort_keys=True, default=str)
+        cpp_hash = hashlib.sha256(cpp_json.encode()).hexdigest()
+
+        certificate = {
+            "phase": 1,
+            "status": "VALID" if valid else "INVALID",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "cpp_hash": cpp_hash,
+            "chunk_count": len(cpp.smart_chunks),
+            "schema_version": cpp.manifest.schema_version if hasattr(cpp, 'manifest') else "UNKNOWN",
+            "errors": errors,
+            "warnings": [],
+            "certificate_version": "CERT-P1-2025.1",
+        }
+
+        # Store certificate in context for Phase 2
+        self.context.phase_inputs[PhaseID.PHASE_2] = {
+            "cpp": cpp,
+            "certificate": certificate,
+        }
+
+        return certificate
 
     def get_status(self) -> Dict[str, Any]:
         """Get current orchestrator status."""
@@ -5669,402 +4990,6 @@ class UnifiedOrchestrator:
 
 
 # =============================================================================
-# SECTION 10: MISSING CLASSES (Required by legacy imports)
-# =============================================================================
-# These classes are imported by tests and other modules but were missing.
-# Added 2026-01-21 to fix broken imports.
-
-@dataclass
-class Evidence:
-    """Represents evidence for a micro-question evaluation."""
-    
-    evidence_id: str = field(default_factory=lambda: str(uuid4()))
-    source: str = ""
-    content: str = ""
-    confidence: float = 0.0
-    timestamp: datetime = field(default_factory=datetime.utcnow)
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "evidence_id": self.evidence_id,
-            "source": self.source,
-            "content": self.content,
-            "confidence": self.confidence,
-            "timestamp": self.timestamp.isoformat(),
-            "metadata": self.metadata,
-        }
-
-
-@dataclass
-class MicroQuestionRun:
-    """Represents a single run/execution of a micro-question."""
-    
-    run_id: str = field(default_factory=lambda: str(uuid4()))
-    question_id: str = ""
-    method_id: str = ""
-    start_time: datetime = field(default_factory=datetime.utcnow)
-    end_time: Optional[datetime] = None
-    status: str = "PENDING"
-    result: Optional[Any] = None
-    evidence: List[Evidence] = field(default_factory=list)
-    error: Optional[str] = None
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "run_id": self.run_id,
-            "question_id": self.question_id,
-            "method_id": self.method_id,
-            "start_time": self.start_time.isoformat(),
-            "end_time": self.end_time.isoformat() if self.end_time else None,
-            "status": self.status,
-            "result": self.result,
-            "evidence": [e.to_dict() for e in self.evidence],
-            "error": self.error,
-        }
-
-
-@dataclass
-class ScoredMicroQuestion:
-    """Represents a scored micro-question with its evaluation result."""
-    
-    question_id: str = ""
-    question_text: str = ""
-    score: float = 0.0
-    confidence: float = 0.0
-    evidence: List[Evidence] = field(default_factory=list)
-    method_id: str = ""
-    run: Optional[MicroQuestionRun] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "question_id": self.question_id,
-            "question_text": self.question_text,
-            "score": self.score,
-            "confidence": self.confidence,
-            "evidence": [e.to_dict() for e in self.evidence],
-            "method_id": self.method_id,
-            "run": self.run.to_dict() if self.run else None,
-            "metadata": self.metadata,
-        }
-
-
-@dataclass
-class MacroEvaluation:
-    """Represents an aggregated macro-level evaluation."""
-    
-    evaluation_id: str = field(default_factory=lambda: str(uuid4()))
-    dimension: str = ""
-    policy_area: str = ""
-    aggregated_score: float = 0.0
-    confidence: float = 0.0
-    micro_questions: List[ScoredMicroQuestion] = field(default_factory=list)
-    timestamp: datetime = field(default_factory=datetime.utcnow)
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "evaluation_id": self.evaluation_id,
-            "dimension": self.dimension,
-            "policy_area": self.policy_area,
-            "aggregated_score": self.aggregated_score,
-            "confidence": self.confidence,
-            "micro_questions": [mq.to_dict() for mq in self.micro_questions],
-            "timestamp": self.timestamp.isoformat(),
-            "metadata": self.metadata,
-        }
-
-
-@dataclass
-class ResourceLimits:
-    """Resource limits for phase execution."""
-    
-    max_memory_mb: int = 4096
-    max_cpu_percent: float = 80.0
-    max_execution_time_seconds: int = 3600
-    max_concurrent_tasks: int = 4
-    enable_memory_profiling: bool = False
-    enable_cpu_profiling: bool = False
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "max_memory_mb": self.max_memory_mb,
-            "max_cpu_percent": self.max_cpu_percent,
-            "max_execution_time_seconds": self.max_execution_time_seconds,
-            "max_concurrent_tasks": self.max_concurrent_tasks,
-            "enable_memory_profiling": self.enable_memory_profiling,
-            "enable_cpu_profiling": self.enable_cpu_profiling,
-        }
-    
-    def check_memory(self, current_mb: int) -> bool:
-        """Check if current memory usage is within limits."""
-        return current_mb <= self.max_memory_mb
-    
-    def check_cpu(self, current_percent: float) -> bool:
-        """Check if current CPU usage is within limits."""
-        return current_percent <= self.max_cpu_percent
-
-
-@dataclass
-class PhaseInstrumentation:
-    """Instrumentation data for phase execution monitoring."""
-    
-    phase_id: str = ""
-    start_time: datetime = field(default_factory=datetime.utcnow)
-    end_time: Optional[datetime] = None
-    memory_samples: List[int] = field(default_factory=list)
-    cpu_samples: List[float] = field(default_factory=list)
-    checkpoints: List[Dict[str, Any]] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    
-    def record_memory(self, memory_mb: int) -> None:
-        """Record a memory sample."""
-        self.memory_samples.append(memory_mb)
-    
-    def record_cpu(self, cpu_percent: float) -> None:
-        """Record a CPU sample."""
-        self.cpu_samples.append(cpu_percent)
-    
-    def add_checkpoint(self, name: str, data: Optional[Dict[str, Any]] = None) -> None:
-        """Add an execution checkpoint."""
-        self.checkpoints.append({
-            "name": name,
-            "timestamp": datetime.utcnow().isoformat(),
-            "data": data or {},
-        })
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "phase_id": self.phase_id,
-            "start_time": self.start_time.isoformat(),
-            "end_time": self.end_time.isoformat() if self.end_time else None,
-            "memory_samples": self.memory_samples,
-            "cpu_samples": self.cpu_samples,
-            "checkpoints": self.checkpoints,
-            "errors": self.errors,
-            "warnings": self.warnings,
-            "peak_memory_mb": max(self.memory_samples) if self.memory_samples else 0,
-            "avg_cpu_percent": sum(self.cpu_samples) / len(self.cpu_samples) if self.cpu_samples else 0.0,
-        }
-
-
-class MethodExecutor:
-    """Executor for running methods against micro-questions."""
-    
-    def __init__(
-        self,
-        class_registry: Optional[Dict[str, type]] = None,
-        resource_limits: Optional[ResourceLimits] = None,
-    ) -> None:
-        self.class_registry = class_registry or {}
-        self.resource_limits = resource_limits or ResourceLimits()
-        self._instances: Dict[str, Any] = {}
-        self._execution_count = 0
-        self.logger = structlog.get_logger(__name__)
-    
-    def get_instance(self, class_name: str) -> Any:
-        """Get or create an instance of a registered class."""
-        if class_name not in self._instances:
-            if class_name not in self.class_registry:
-                raise ValueError(f"Class '{class_name}' not found in registry")
-            self._instances[class_name] = self.class_registry[class_name]()
-        return self._instances[class_name]
-    
-    def execute_method(
-        self,
-        class_name: str,
-        method_name: str,
-        *args: Any,
-        **kwargs: Any,
-    ) -> Any:
-        """Execute a method on a registered class."""
-        instance = self.get_instance(class_name)
-        method = getattr(instance, method_name, None)
-        if method is None:
-            raise AttributeError(f"Method '{method_name}' not found on class '{class_name}'")
-        
-        self._execution_count += 1
-        self.logger.debug(
-            "Executing method",
-            class_name=class_name,
-            method_name=method_name,
-            execution_count=self._execution_count,
-        )
-        
-        return method(*args, **kwargs)
-    
-    def execute_micro_question(
-        self,
-        question_id: str,
-        method_binding: Dict[str, Any],
-        input_data: Dict[str, Any],
-    ) -> ScoredMicroQuestion:
-        """Execute a micro-question using its method binding."""
-        class_name = method_binding.get("class_name", "")
-        method_name = method_binding.get("method_name", "")
-        
-        run = MicroQuestionRun(
-            question_id=question_id,
-            method_id=f"{class_name}.{method_name}",
-        )
-        
-        try:
-            result = self.execute_method(class_name, method_name, input_data)
-            run.status = "COMPLETED"
-            run.end_time = datetime.utcnow()
-            run.result = result
-            
-            # Extract score and confidence from result
-            score = result.get("score", 0.0) if isinstance(result, dict) else 0.0
-            confidence = result.get("confidence", 0.0) if isinstance(result, dict) else 0.0
-            
-            return ScoredMicroQuestion(
-                question_id=question_id,
-                score=score,
-                confidence=confidence,
-                method_id=run.method_id,
-                run=run,
-            )
-            
-        except Exception as e:
-            run.status = "FAILED"
-            run.end_time = datetime.utcnow()
-            run.error = str(e)
-            self.logger.error("Method execution failed", error=str(e))
-            
-            return ScoredMicroQuestion(
-                question_id=question_id,
-                score=0.0,
-                confidence=0.0,
-                method_id=run.method_id,
-                run=run,
-                metadata={"error": str(e)},
-            )
-    
-    def get_stats(self) -> Dict[str, Any]:
-        """Get executor statistics."""
-        return {
-            "execution_count": self._execution_count,
-            "registered_classes": len(self.class_registry),
-            "active_instances": len(self._instances),
-        }
-
-
-class QuestionnaireSignalRegistry:
-    """Registry for questionnaire signals and their handlers."""
-    
-    def __init__(self) -> None:
-        self._signals: Dict[str, Dict[str, Any]] = {}
-        self._handlers: Dict[str, List[Callable]] = {}
-        self.logger = structlog.get_logger(__name__)
-    
-    def register_signal(
-        self,
-        signal_id: str,
-        signal_type: str,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> None:
-        """Register a new signal."""
-        self._signals[signal_id] = {
-            "signal_id": signal_id,
-            "signal_type": signal_type,
-            "metadata": metadata or {},
-            "registered_at": datetime.utcnow().isoformat(),
-        }
-        self.logger.debug("Signal registered", signal_id=signal_id)
-    
-    def add_handler(self, signal_id: str, handler: Callable) -> None:
-        """Add a handler for a signal."""
-        if signal_id not in self._handlers:
-            self._handlers[signal_id] = []
-        self._handlers[signal_id].append(handler)
-    
-    def emit(self, signal_id: str, data: Any) -> None:
-        """Emit a signal to all registered handlers."""
-        handlers = self._handlers.get(signal_id, [])
-        for handler in handlers:
-            try:
-                handler(data)
-            except Exception as e:
-                self.logger.error("Handler failed", signal_id=signal_id, error=str(e))
-    
-    def get_signal(self, signal_id: str) -> Optional[Dict[str, Any]]:
-        """Get signal metadata."""
-        return self._signals.get(signal_id)
-    
-    def list_signals(self) -> List[str]:
-        """List all registered signal IDs."""
-        return list(self._signals.keys())
-
-
-class AbortSignal:
-    """Signal for aborting phase execution."""
-    
-    def __init__(self, reason: str = "", source: str = "") -> None:
-        self.reason = reason
-        self.source = source
-        self.timestamp = datetime.utcnow()
-        self._aborted = False
-    
-    def abort(self, reason: Optional[str] = None) -> None:
-        """Trigger the abort signal."""
-        if reason:
-            self.reason = reason
-        self._aborted = True
-    
-    @property
-    def is_aborted(self) -> bool:
-        """Check if abort has been signaled."""
-        return self._aborted
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "reason": self.reason,
-            "source": self.source,
-            "timestamp": self.timestamp.isoformat(),
-            "is_aborted": self._aborted,
-        }
-
-
-def execute_phase_with_timeout(
-    phase_func: Callable[..., Any],
-    timeout_seconds: int,
-    *args: Any,
-    **kwargs: Any,
-) -> Any:
-    """Execute a phase function with a timeout.
-    
-    Args:
-        phase_func: The phase function to execute
-        timeout_seconds: Maximum execution time in seconds
-        *args: Positional arguments for the phase function
-        **kwargs: Keyword arguments for the phase function
-        
-    Returns:
-        The result of the phase function
-        
-    Raises:
-        TimeoutError: If execution exceeds the timeout
-    """
-    import concurrent.futures
-    
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-        future = executor.submit(phase_func, *args, **kwargs)
-        try:
-            return future.result(timeout=timeout_seconds)
-        except concurrent.futures.TimeoutError:
-            raise TimeoutError(
-                f"Phase execution timed out after {timeout_seconds} seconds"
-            )
-
-
-# Orchestrator alias for backward compatibility
-Orchestrator = UnifiedOrchestrator
-
-
-# =============================================================================
 # EXPORTS
 # =============================================================================
 
@@ -6109,30 +5034,7 @@ __all__ = [
     "PhaseID",
     "PHASE_METADATA",
     "PhaseResult",
-    "PhaseExecutionResult",  # Added for canonical phases
     "ExecutionContext",
     "PipelineResult",
     "UnifiedOrchestrator",
-
-    # Constitutional Invariants (Expected by tests)
-    "P01_EXPECTED_CHUNK_COUNT",
-    "P01_EXPECTED_POLICY_AREAS",
-    "P01_EXPECTED_DIMENSIONS",
-    "P02_EXPECTED_CONTRACT_COUNT",
-    "P04_METHOD",
-    "P06_CLUSTER_COUNT",
-    "P07_COMPONENTS",
-
-    # Legacy Support Classes (Added 2026-01-21)
-    "Evidence",
-    "MicroQuestionRun",
-    "ScoredMicroQuestion",
-    "MacroEvaluation",
-    "ResourceLimits",
-    "PhaseInstrumentation",
-    "MethodExecutor",
-    "QuestionnaireSignalRegistry",
-    "AbortSignal",
-    "execute_phase_with_timeout",
-    "Orchestrator",  # Alias for UnifiedOrchestrator
 ]

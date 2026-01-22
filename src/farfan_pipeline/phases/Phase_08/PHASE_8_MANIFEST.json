@@ -10,7 +10,7 @@
   },
   "metadata": {
     "created": "2025-12-30",
-    "modified": "2026-01-18",
+    "modified": "2026-01-22",
     "version": "2.0.1",
     "author": "F.A.R.F.A.N Core Architecture Team",
     "status": "ACTIVE",
@@ -218,17 +218,17 @@
       {
         "id": "INV-P8-001",
         "name": "Confidence Threshold",
-        "formula": "\u2200 rec: confidence >= 0.6"
+        "formula": "∀ rec: confidence >= 0.6"
       },
       {
         "id": "INV-P8-002",
         "name": "Area Coverage",
-        "formula": "\u2200 area \u2208 PA01..PA10: has_recommendations(area)"
+        "formula": "∀ area ∈ PA01..PA10: has_recommendations(area)"
       },
       {
         "id": "INV-P8-003",
         "name": "Level Hierarchy",
-        "formula": "MICRO \u2286 MESO \u2286 MACRO"
+        "formula": "MICRO ⊆ MESO ⊆ MACRO"
       },
       {
         "id": "INV-P8-004",
@@ -272,5 +272,36 @@
       "Phase 9": "Consumes recommendations for report generation",
       "Orchestrator": "Receives metadata for pipeline state"
     }
+  },
+  "orchestration": {
+    "aligned_with_orchestrator": true,
+    "last_alignment_audit": "2026-01-22",
+    "execution_stages": 4,
+    "stage_mapping": [
+      {
+        "stage": "S00",
+        "name": "Foundation",
+        "module": "phase8_00_00_data_models.py"
+      },
+      {
+        "stage": "S10",
+        "name": "Validation",
+        "module": "phase8_10_00_schema_validation.py"
+      },
+      {
+        "stage": "S20",
+        "name": "Core Generation",
+        "module": "phase8_20_00_recommendation_engine.py"
+      },
+      {
+        "stage": "S30",
+        "name": "Signal Enrichment",
+        "module": "phase8_30_00_signal_enriched_recommendations.py"
+      }
+    ],
+    "corrected_imports": [
+      "RecommendationEngine.generate_all_recommendations() instead of RecommendationEngineOrchestrator",
+      "Removed non-existent phase8_20_04_recommendation_engine_orchestrator.py import"
+    ]
   }
 }
