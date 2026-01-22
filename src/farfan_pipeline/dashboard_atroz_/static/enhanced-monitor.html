@@ -251,14 +251,9 @@
             color: #1e3c72;
         }
 
-        .chart-placeholder {
+        .chart-container {
             height: 300px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
+            position: relative;
         }
 
         /* Alerts Panel */
@@ -347,10 +342,7 @@
 
         .timeline-chart {
             height: 200px;
-            background: #f8f9fa;
-            border-radius: 10px;
             position: relative;
-            overflow: hidden;
         }
 
         /* Phase Details Table */
@@ -530,13 +522,13 @@
         <div class="charts-container">
             <div class="chart-card">
                 <h3>⏱️ Execution Time Trend</h3>
-                <div class="chart-placeholder" id="executionTimeChart">
+                <div class="chart-container">
                     <canvas id="timeCanvas"></canvas>
                 </div>
             </div>
             <div class="chart-card">
                 <h3>💾 Memory Usage</h3>
-                <div class="chart-placeholder" id="memoryChart">
+                <div class="chart-container">
                     <canvas id="memoryCanvas"></canvas>
                 </div>
             </div>
@@ -590,7 +582,15 @@
         // Global state
         let socket = null;
         let selectedJobId = null;
-        let charts = {};
+        let charts = {
+            executionTime: null,
+            memory: null,
+            resourceTimeline: null
+        };
+
+        // Chart.js default configuration
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.color = '#666';
 
         // Initialize connection
         function initializeConnection() {
@@ -610,6 +610,11 @@
             socket.on('pipeline_progress', (data) => {
                 console.log('Pipeline progress:', data);
                 updatePipelineFlow(data);
+                
+                // Refresh job details if this is the selected job
+                if (selectedJobId === data.job_id) {
+                    loadJobDetails(selectedJobId);
+                }
             });
 
             socket.on('job_created', (data) => {
@@ -709,6 +714,12 @@
                 const resources = await fetch(`/api/v1/monitoring/jobs/${jobId}/resource-usage`).then(r => r.json());
                 updateResourceTimeline(resources.timeline || []);
                 
+                // Load execution time trends for all phases
+                await updateExecutionTimeChart(jobId, snapshot);
+                
+                // Load memory usage chart
+                await updateMemoryChart(jobId, snapshot);
+                
             } catch (error) {
                 console.error('Failed to load job details:', error);
             }
@@ -792,8 +803,332 @@
         }
 
         function updateResourceTimeline(timeline) {
-            // Placeholder for Chart.js implementation
-            console.log('Resource timeline:', timeline);
+            if (!timeline || timeline.length === 0) {
+                return;
+            }
+
+            const ctx = document.getElementById('resourceCanvas');
+            if (!ctx) return;
+
+            // Destroy existing chart
+            if (charts.resourceTimeline) {
+                charts.resourceTimeline.destroy();
+            }
+
+            // Prepare data
+            const labels = timeline.map((entry, idx) => {
+                const date = new Date(entry.timestamp);
+                return date.toLocaleTimeString();
+            });
+
+            const cpuData = timeline.map(entry => entry.cpu_percent);
+            const memoryData = timeline.map(entry => entry.memory_mb);
+
+            // Create chart
+            charts.resourceTimeline = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'CPU Usage (%)',
+                            data: cpuData,
+                            borderColor: 'rgb(30, 60, 114)',
+                            backgroundColor: 'rgba(30, 60, 114, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y',
+                            fill: true
+                        },
+                        {
+                            label: 'Memory (MB)',
+                            data: memoryData,
+                            borderColor: 'rgb(42, 82, 152)',
+                            backgroundColor: 'rgba(42, 82, 152, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y1',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.datasetIndex === 0) {
+                                            label += context.parsed.y.toFixed(1) + '%';
+                                        } else {
+                                            label += context.parsed.y.toFixed(1) + ' MB';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'CPU Usage (%)'
+                            },
+                            min: 0,
+                            max: 100
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Memory (MB)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            min: 0
+                        }
+                    }
+                }
+            });
+        }
+
+        async function updateExecutionTimeChart(jobId, snapshot) {
+            const ctx = document.getElementById('timeCanvas');
+            if (!ctx) return;
+
+            // Destroy existing chart
+            if (charts.executionTime) {
+                charts.executionTime.destroy();
+            }
+
+            // Get execution times for all phases in this job
+            const phases = snapshot.phases || {};
+            const phaseOrder = ['P00', 'P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09'];
+            
+            const labels = [];
+            const executionTimes = [];
+            const colors = [];
+
+            for (const phaseId of phaseOrder) {
+                if (phases[phaseId]) {
+                    const phase = phases[phaseId];
+                    labels.push(phaseId);
+                    executionTimes.push(phase.execution_time_ms || 0);
+                    
+                    // Color based on status
+                    if (phase.status === 'COMPLETED') {
+                        colors.push('rgba(40, 167, 69, 0.8)');
+                    } else if (phase.status === 'FAILED') {
+                        colors.push('rgba(220, 53, 69, 0.8)');
+                    } else if (phase.status === 'RUNNING') {
+                        colors.push('rgba(255, 193, 7, 0.8)');
+                    } else {
+                        colors.push('rgba(108, 117, 125, 0.8)');
+                    }
+                }
+            }
+
+            // Create chart
+            charts.executionTime = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Execution Time (ms)',
+                        data: executionTimes,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const phase = phases[context.label];
+                                    return [
+                                        `Time: ${context.parsed.y.toFixed(0)} ms`,
+                                        `Status: ${phase.status}`,
+                                        `Name: ${phase.phase_name}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Execution Time (ms)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Phase'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function updateMemoryChart(jobId, snapshot) {
+            const ctx = document.getElementById('memoryCanvas');
+            if (!ctx) return;
+
+            // Destroy existing chart
+            if (charts.memory) {
+                charts.memory.destroy();
+            }
+
+            // Get memory usage for all phases
+            const phases = snapshot.phases || {};
+            const phaseOrder = ['P00', 'P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09'];
+            
+            const labels = [];
+            const memoryUsage = [];
+            const cpuUsage = [];
+
+            for (const phaseId of phaseOrder) {
+                if (phases[phaseId]) {
+                    const phase = phases[phaseId];
+                    labels.push(phaseId);
+                    memoryUsage.push(phase.memory_usage_mb || 0);
+                    cpuUsage.push(phase.cpu_usage_percent || 0);
+                }
+            }
+
+            // Create chart
+            charts.memory = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Memory Usage (MB)',
+                            data: memoryUsage,
+                            borderColor: 'rgb(30, 60, 114)',
+                            backgroundColor: 'rgba(30, 60, 114, 0.2)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y',
+                            fill: true
+                        },
+                        {
+                            label: 'CPU Usage (%)',
+                            data: cpuUsage,
+                            borderColor: 'rgb(42, 82, 152)',
+                            backgroundColor: 'rgba(42, 82, 152, 0.2)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y1',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const phase = phases[context.label];
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.datasetIndex === 0) {
+                                            label += context.parsed.y.toFixed(1) + ' MB';
+                                        } else {
+                                            label += context.parsed.y.toFixed(1) + '%';
+                                        }
+                                    }
+                                    return [label, `Phase: ${phase.phase_name}`];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Phase'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Memory (MB)'
+                            },
+                            min: 0
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'CPU Usage (%)'
+                            },
+                            min: 0,
+                            max: 100,
+                            grid: {
+                                drawOnChartArea: false,
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         async function acknowledgeAlert(alertId) {

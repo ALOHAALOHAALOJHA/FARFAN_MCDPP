@@ -44,6 +44,7 @@ from farfan_pipeline.dashboard_atroz_.pipeline_dashboard_bridge import (
     get_bridge,
 )
 from farfan_pipeline.dashboard_atroz_.api_monitoring_enhanced import register_monitoring_endpoints
+from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
 
 # Global state
 pipeline_status = {
@@ -58,6 +59,9 @@ REGION_CONNECTIONS = get_region_connections()
 
 # Pipeline bridge (will be initialized when orchestrator is available)
 pipeline_bridge: PipelineDashboardBridge = None
+
+# Dashboard data service for transforming artifacts
+dashboard_data_service = DashboardDataService(jobs_dir=DATA_DIR / "jobs")
 
 # Evidence stream - will be populated by pipeline analysis
 EVIDENCE_STREAM = [
@@ -318,25 +322,59 @@ def get_region_questions(region_id: str):
     policy_area = request.args.get("policy_area")
     job_id = request.args.get("job_id")
 
-    # TODO: Integrate with DashboardDataService.extract_question_matrix()
-    # For now, return mock structure
+    # Try to load from actual job artifacts if job_id is provided
     questions = []
-    for i in range(1, 301):
-        question = {
-            "id": f"Q{i:03d}",
-            "text": f"Question {i} text",
-            "score": None,  # Will be populated from artifacts
-            "dimension": f"D{((i-1) // 50) + 1}",
-            "policy_area": f"PA{((i-1) % 10) + 1:02d}",
-        }
-
-        # Apply filters
-        if dimension and question["dimension"] != dimension:
-            continue
-        if policy_area and question["policy_area"] != policy_area:
-            continue
-
-        questions.append(question)
+    if job_id and pipeline_bridge:
+        try:
+            # Get job snapshot to find artifacts
+            from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
+            monitor = get_monitor()
+            snapshot = monitor.get_job_snapshot(job_id)
+            
+            if snapshot:
+                # Look for report artifacts in completed phases
+                for phase_id, phase_metrics in snapshot.phases.items():
+                    if phase_metrics.status == "COMPLETED":
+                        for artifact in phase_metrics.artifacts_produced:
+                            if "report" in artifact.lower() or "questions" in artifact.lower():
+                                try:
+                                    import json
+                                    with open(artifact, 'r') as f:
+                                        report = json.load(f)
+                                        questions = dashboard_data_service.extract_question_matrix(report)
+                                        break
+                                except Exception as e:
+                                    logger.warning(f"Failed to load artifact {artifact}: {e}")
+                    if questions:
+                        break
+        except Exception as e:
+            logger.error(f"Failed to load questions from job artifacts: {e}")
+    
+    # Fallback to generating structure from canonical questionnaire
+    if not questions:
+        # Generate question structure based on F.A.R.F.A.N architecture
+        # 300 questions = 30 base questions × 10 policy areas
+        for i in range(1, 301):
+            base_q = ((i - 1) % 30) + 1
+            pa_idx = ((i - 1) // 30) + 1
+            dim_idx = ((base_q - 1) // 5) + 1
+            
+            question = {
+                "id": f"Q{i:03d}",
+                "text": f"Question {base_q} for Policy Area {pa_idx:02d}",
+                "score": None,  # Will be populated from artifacts when available
+                "dimension": f"D{dim_idx}",
+                "policy_area": f"PA{pa_idx:02d}",
+                "base_question": f"Q{base_q:03d}",
+            }
+            
+            # Apply filters
+            if dimension and question["dimension"] != dimension:
+                continue
+            if policy_area and question["policy_area"] != policy_area:
+                continue
+            
+            questions.append(question)
 
     return jsonify({"region_id": region_id, "questions": questions, "total": len(questions), "job_id": job_id})
 
@@ -354,18 +392,55 @@ def get_region_evidence(region_id: str):
     question_id = request.args.get("question_id")
     job_id = request.args.get("job_id")
 
-    # TODO: Integrate with DashboardDataService.normalize_evidence_stream()
-    # For now, return mock structure
-    evidence_items = [
-        {
-            "source": "PDT Sección 3.2",
-            "page": 45,
-            "text": "Implementación de estrategias municipales para equidad de género",
-            "timestamp": "2024-01-15T10:30:00Z",
-            "question_id": "Q023",
-            "relevance_score": 0.87,
-        }
-    ]
+    evidence_items = []
+    
+    # Try to load from actual job artifacts if job_id is provided
+    if job_id and pipeline_bridge:
+        try:
+            from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
+            monitor = get_monitor()
+            snapshot = monitor.get_job_snapshot(job_id)
+            
+            if snapshot:
+                # Look for evidence artifacts in completed phases
+                for phase_id, phase_metrics in snapshot.phases.items():
+                    if phase_metrics.status == "COMPLETED":
+                        for artifact in phase_metrics.artifacts_produced:
+                            if "evidence" in artifact.lower():
+                                try:
+                                    import json
+                                    with open(artifact, 'r') as f:
+                                        raw_evidence = json.load(f)
+                                        # Normalize evidence stream
+                                        if isinstance(raw_evidence, list):
+                                            evidence_items = dashboard_data_service.normalize_evidence_stream(
+                                                raw_evidence, 
+                                                limit=limit
+                                            )
+                                        break
+                                except Exception as e:
+                                    logger.warning(f"Failed to load evidence artifact {artifact}: {e}")
+                    if evidence_items:
+                        break
+        except Exception as e:
+            logger.error(f"Failed to load evidence from job artifacts: {e}")
+    
+    # Fallback to structured example if no real data available
+    if not evidence_items:
+        evidence_items = [
+            {
+                "source": f"PDT Sección 3.2 - {region_id}",
+                "page": 45,
+                "text": "Implementación de estrategias municipales para equidad de género",
+                "timestamp": "2024-01-15T10:30:00Z",
+                "question_id": "Q023",
+                "relevance_score": 0.87,
+            }
+        ]
+        
+        # Apply question filter if specified
+        if question_id:
+            evidence_items = [e for e in evidence_items if e.get("question_id") == question_id]
 
     return jsonify(
         {
@@ -391,10 +466,74 @@ def get_job_logs(job_id: str):
     level = request.args.get("level")
     limit = int(request.args.get("limit", 100))
 
-    # TODO: Implement log retrieval from job artifacts
-    logs = [
-        {"timestamp": "2024-01-15T10:30:00Z", "phase": "P00", "level": "INFO", "message": "Phase started"},
-    ]
+    logs = []
+    
+    # Try to retrieve logs from monitoring system
+    try:
+        from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
+        monitor = get_monitor()
+        snapshot = monitor.get_job_snapshot(job_id)
+        
+        if snapshot:
+            # Convert phase metrics to log-like entries
+            for phase_id, phase_metrics in snapshot.phases.items():
+                # Add phase start log
+                if phase_metrics.started_at:
+                    logs.append({
+                        "timestamp": phase_metrics.started_at.isoformat(),
+                        "phase": phase_id,
+                        "level": "INFO",
+                        "message": f"Phase {phase_id} ({phase_metrics.phase_name}) started"
+                    })
+                
+                # Add error logs
+                for error in phase_metrics.errors:
+                    logs.append({
+                        "timestamp": error.get("timestamp", ""),
+                        "phase": phase_id,
+                        "level": "ERROR",
+                        "message": error.get("message", "Unknown error"),
+                        "details": error.get("details", {})
+                    })
+                
+                # Add warning logs
+                for warning in phase_metrics.warnings:
+                    logs.append({
+                        "timestamp": warning.get("timestamp", ""),
+                        "phase": phase_id,
+                        "level": "WARNING",
+                        "message": warning.get("message", "Warning"),
+                        "details": warning.get("details", {})
+                    })
+                
+                # Add phase completion log
+                if phase_metrics.completed_at:
+                    log_level = "INFO" if phase_metrics.status == "COMPLETED" else "ERROR"
+                    logs.append({
+                        "timestamp": phase_metrics.completed_at.isoformat(),
+                        "phase": phase_id,
+                        "level": log_level,
+                        "message": f"Phase {phase_id} {phase_metrics.status.lower()} in {phase_metrics.execution_time_ms:.0f}ms"
+                    })
+                
+                # Add sub-phase logs
+                for sub_phase_name, sub_phase_data in phase_metrics.sub_phases.items():
+                    logs.append({
+                        "timestamp": sub_phase_data.get("timestamp", ""),
+                        "phase": phase_id,
+                        "level": "DEBUG",
+                        "message": f"Sub-phase: {sub_phase_name}",
+                        "details": sub_phase_data.get("metrics", {})
+                    })
+            
+            # Sort by timestamp
+            logs.sort(key=lambda x: x.get("timestamp", ""))
+    except Exception as e:
+        logger.error(f"Failed to retrieve logs for job {job_id}: {e}")
+        logs = [
+            {"timestamp": "2024-01-15T10:30:00Z", "phase": "P00", "level": "ERROR", 
+             "message": f"Failed to retrieve logs: {str(e)}"}
+        ]
 
     # Apply filters
     if phase:
@@ -413,19 +552,54 @@ def get_job_logs(job_id: str):
 @app.route("/api/v1/canonical/questions", methods=["GET"])
 def get_canonical_questions():
     """Get all 300 micro questions with metadata."""
-    # TODO: Integrate with CQC loader
-    # For now return basic structure
+    import json
+    from pathlib import Path
+    
     questions = []
-    for i in range(1, 301):
-        questions.append(
-            {
+    
+    # Try to load from canonic questionnaire central
+    try:
+        cqc_path = Path(__file__).parent.parent.parent.parent / "canonic_questionnaire_central"
+        flat_view = cqc_path / "_views" / "questionnaire_flat.json"
+        
+        if flat_view.exists():
+            with open(flat_view, 'r', encoding='utf-8') as f:
+                cqc_data = json.load(f)
+                
+            # Extract questions from CQC structure
+            if isinstance(cqc_data, dict) and "questions" in cqc_data:
+                for q in cqc_data["questions"]:
+                    questions.append({
+                        "id": q.get("id", ""),
+                        "text": q.get("text", ""),
+                        "dimension": q.get("dimension", ""),
+                        "policy_area": q.get("policy_area", ""),
+                        "cluster": q.get("cluster", ""),
+                        "type": q.get("type", "micro"),
+                    })
+        else:
+            # Fallback to structured generation
+            raise FileNotFoundError("CQC flat view not found")
+            
+    except Exception as e:
+        logger.warning(f"Could not load from CQC: {e}, using structured generation")
+        
+        # Generate structured questions based on F.A.R.F.A.N architecture
+        # 300 questions = 30 base questions × 10 policy areas
+        for i in range(1, 301):
+            base_q = ((i - 1) % 30) + 1
+            pa_idx = ((i - 1) // 30) + 1
+            dim_idx = ((base_q - 1) // 5) + 1
+            cluster_idx = ((base_q - 1) // 8) + 1
+            
+            questions.append({
                 "id": f"Q{i:03d}",
                 "text": f"Canonical question {i}",
-                "dimension": f"D{((i-1) // 50) + 1}",
-                "policy_area": f"PA{((i-1) % 10) + 1:02d}",
-                "cluster": f"CL{((i-1) % 4) + 1:02d}",
-            }
-        )
+                "dimension": f"D{dim_idx}",
+                "policy_area": f"PA{pa_idx:02d}",
+                "cluster": f"CL{cluster_idx:02d}",
+                "type": "micro",
+            })
 
     return jsonify({"questions": questions, "total": len(questions)})
 
@@ -433,17 +607,59 @@ def get_canonical_questions():
 @app.route("/api/v1/canonical/questions/<question_id>", methods=["GET"])
 def get_question_detail(question_id: str):
     """Get single question with all bound methods and patterns."""
-    # TODO: Integrate with CQC loader
-    question_detail = {
-        "id": question_id,
-        "text": f"Detailed text for {question_id}",
-        "dimension": "D1",
-        "policy_area": "PA01",
-        "cluster": "CL01",
-        "patterns": [],
-        "indicators": [],
-        "methods": [],
-    }
+    import json
+    from pathlib import Path
+    
+    question_detail = None
+    
+    # Try to load from canonic questionnaire central
+    try:
+        cqc_path = Path(__file__).parent.parent.parent.parent / "canonic_questionnaire_central"
+        
+        # Look for question in dimensions
+        for dim_dir in (cqc_path / "dimensions").iterdir():
+            if dim_dir.is_dir():
+                questions_file = dim_dir / "questions.json"
+                if questions_file.exists():
+                    with open(questions_file, 'r', encoding='utf-8') as f:
+                        dim_questions = json.load(f)
+                        
+                    # Find matching question
+                    if isinstance(dim_questions, list):
+                        for q in dim_questions:
+                            if q.get("id") == question_id:
+                                question_detail = {
+                                    "id": q.get("id"),
+                                    "text": q.get("text", ""),
+                                    "dimension": q.get("dimension", ""),
+                                    "policy_area": q.get("policy_area", ""),
+                                    "cluster": q.get("cluster", ""),
+                                    "patterns": q.get("patterns", []),
+                                    "indicators": q.get("indicators", []),
+                                    "methods": q.get("methods", []),
+                                    "metadata": q.get("metadata", {}),
+                                }
+                                break
+                if question_detail:
+                    break
+        
+        if not question_detail:
+            raise ValueError(f"Question {question_id} not found in CQC")
+            
+    except Exception as e:
+        logger.warning(f"Could not load question {question_id} from CQC: {e}")
+        
+        # Fallback to basic structure
+        question_detail = {
+            "id": question_id,
+            "text": f"Detailed text for {question_id}",
+            "dimension": "D1",
+            "policy_area": "PA01",
+            "cluster": "CL01",
+            "patterns": [],
+            "indicators": [],
+            "methods": [],
+        }
 
     return jsonify(question_detail)
 
