@@ -2,7 +2,7 @@
 Unit of analysis and policy document definitions for calibration and Bayesian analysis.
 
 This module provides classes to represent the territorial and fiscal context
-of municipalities, policy documents, and analysis results for proper calibration
+of municipalities, policy documents, and analysis results for proper calibration 
 of Bayesian priors and comprehensive policy evaluation.
 
 Implements SOTA patterns:
@@ -56,22 +56,22 @@ ScoreBandType = Literal["BAJO", "MEDIO", "ALTO", "SATISFACTORIO", "INSUFICIENTE"
 class FiscalContext(Enum):
     """
     Categorización de la capacidad fiscal de municipios colombianos.
-
+    
     Esta clasificación se basa en la dependencia del Sistema General de Participaciones (SGP)
     y la capacidad de generación de recursos propios, alineada con categorías DNP.
-
+    
     Values:
         HIGH_CAPACITY: Municipios categoría 1-2 con alta capacidad fiscal (>60% recursos propios)
         MEDIUM_CAPACITY: Municipios categoría 3-4 con capacidad fiscal moderada (30-60% recursos propios)
         LOW_CAPACITY: Municipios categoría 5-6 dependientes del SGP (<30% recursos propios)
         SPECIAL_DISTRICT: Distritos especiales con régimen fiscal diferenciado
     """
-
+    
     HIGH_CAPACITY = auto()
     MEDIUM_CAPACITY = auto()
     LOW_CAPACITY = auto()
     SPECIAL_DISTRICT = auto()
-
+    
     def to_weight(self) -> float:
         """Convert fiscal context to Bayesian prior weight."""
         weights = {
@@ -81,7 +81,7 @@ class FiscalContext(Enum):
             self.SPECIAL_DISTRICT: 0.8,
         }
         return weights.get(self, 0.5)
-
+    
     def to_dnp_category(self) -> str:
         """Map to DNP fiscal category string."""
         mapping = {
@@ -96,7 +96,7 @@ class FiscalContext(Enum):
 class TerritorialCategory(Enum):
     """
     Categorización territorial según tipología DNP/DANE.
-
+    
     Values:
         CIUDAD_CAPITAL: Ciudades capitales y áreas metropolitanas
         CIUDAD_INTERMEDIA: Ciudades intermedias (50k-500k habitantes)
@@ -104,7 +104,7 @@ class TerritorialCategory(Enum):
         MUNICIPIO_DISPERSO: Municipios rurales dispersos
         ZONA_FRONTERA: Municipios fronterizos con régimen especial
     """
-
+    
     CIUDAD_CAPITAL = auto()
     CIUDAD_INTERMEDIA = auto()
     MUNICIPIO_RURAL = auto()
@@ -115,7 +115,7 @@ class TerritorialCategory(Enum):
 class PolicyDocumentType(Enum):
     """
     Tipos de documentos de política pública colombiana.
-
+    
     Values:
         PDM: Plan de Desarrollo Municipal
         PDD: Plan de Desarrollo Departamental
@@ -127,7 +127,7 @@ class PolicyDocumentType(Enum):
         CONPES: Documento CONPES
         OTHER: Otro tipo de documento
     """
-
+    
     PDM = auto()
     PDD = auto()
     PND = auto()
@@ -137,7 +137,7 @@ class PolicyDocumentType(Enum):
     PDET = auto()
     CONPES = auto()
     OTHER = auto()
-
+    
     @classmethod
     def from_string(cls, value: str) -> PolicyDocumentType:
         """Parse document type from string."""
@@ -157,7 +157,7 @@ class PolicyDocumentType(Enum):
 class CausalDimension(Enum):
     """
     Dimensiones causales del Marco Lógico para análisis de políticas.
-
+    
     Values:
         D1_INSUMOS: Inputs/recursos para la política
         D2_ACTIVIDADES: Activities/acciones programadas
@@ -166,14 +166,14 @@ class CausalDimension(Enum):
         D5_IMPACTOS: Impacts/efectos a largo plazo
         D6_CAUSALIDAD: Causal mechanisms/mecanismos causales
     """
-
+    
     D1_INSUMOS = "D1"
     D2_ACTIVIDADES = "D2"
     D3_PRODUCTOS = "D3"
     D4_RESULTADOS = "D4"
     D5_IMPACTOS = "D5"
     D6_CAUSALIDAD = "D6"
-
+    
     @property
     def description(self) -> str:
         """Get dimension description in Spanish."""
@@ -197,7 +197,7 @@ class CausalDimension(Enum):
 class GeographicContext:
     """
     Contexto geográfico y administrativo del municipio.
-
+    
     Attributes:
         latitude: Latitud del centroide municipal
         longitude: Longitud del centroide municipal
@@ -207,7 +207,7 @@ class GeographicContext:
         subregion: Subregión según clasificación departamental
         zomac: Si es Zona Más Afectada por el Conflicto Armado
     """
-
+    
     latitude: float
     longitude: float
     altitude_m: Optional[float] = None
@@ -221,7 +221,7 @@ class GeographicContext:
 class SocialIndicators:
     """
     Indicadores sociales del municipio para calibración contextual.
-
+    
     Attributes:
         nbi: Necesidades Básicas Insatisfechas (0.0-100.0)
         education_coverage: Cobertura educativa neta (0.0-1.0)
@@ -231,7 +231,7 @@ class SocialIndicators:
         internet_penetration: Penetración de internet (0.0-1.0)
         violence_index: Índice de violencia normalizado (0.0-1.0)
     """
-
+    
     nbi: Optional[float] = None
     education_coverage: float = 0.0
     health_coverage: float = 0.0
@@ -239,7 +239,7 @@ class SocialIndicators:
     electricity_access: float = 0.0
     internet_penetration: float = 0.0
     violence_index: float = 0.0
-
+    
     def infrastructure_score(self) -> float:
         """Calculate infrastructure development score."""
         scores = [
@@ -255,33 +255,33 @@ class SocialIndicators:
 class CredibleInterval:
     """
     Bayesian credible interval with evidence metadata.
-
+    
     Attributes:
         lower: Lower bound of the interval
         upper: Upper bound of the interval
         level: Confidence level (e.g., 0.95 for 95% CI)
         method: Estimation method (e.g., "HDI", "quantile")
     """
-
+    
     lower: float
     upper: float
     level: float = 0.95
     method: str = "HDI"
-
+    
     @property
     def width(self) -> float:
         """Calculate interval width."""
         return self.upper - self.lower
-
+    
     @property
     def midpoint(self) -> float:
         """Calculate interval midpoint."""
         return (self.lower + self.upper) / 2
-
+    
     def contains(self, value: float) -> bool:
         """Check if value is within the interval."""
         return self.lower <= value <= self.upper
-
+    
     def to_tuple(self) -> Tuple[float, float]:
         """Convert to tuple for serialization compatibility."""
         return (self.lower, self.upper)
@@ -291,7 +291,7 @@ class CredibleInterval:
 class BayesianPosterior:
     """
     Bayesian posterior distribution summary.
-
+    
     Attributes:
         point_estimate: Central tendency estimate (median/mean)
         credible_interval: 95% credible interval
@@ -299,18 +299,18 @@ class BayesianPosterior:
         posterior_samples: Number of posterior samples
         convergence_diagnostic: R-hat or similar convergence metric
     """
-
+    
     point_estimate: float
     credible_interval: CredibleInterval
     evidence_strength: EvidenceStrengthType
     posterior_samples: int = 10000
     convergence_diagnostic: float = 1.0
-
+    
     @property
     def is_significant(self) -> bool:
         """Check if posterior is significantly different from null."""
         return not self.credible_interval.contains(0.0)
-
+    
     @property
     def uncertainty_ratio(self) -> float:
         """Calculate uncertainty as ratio of CI width to point estimate."""
@@ -327,17 +327,17 @@ class BayesianPosterior:
 class PolicyDocumentMetadata(BaseModel):
     """
     Metadata for a policy document with validation.
-
+    
     Aligns with Colombian policy document standards (SINERGIA, DNP).
     """
-
+    
     model_config = ConfigDict(
         frozen=True,
         extra="forbid",
         validate_assignment=True,
         str_strip_whitespace=True,
     )
-
+    
     document_id: str = Field(
         ...,
         description="Unique document identifier",
@@ -347,13 +347,13 @@ class PolicyDocumentMetadata(BaseModel):
     )
     title: str = Field(..., description="Document title", min_length=5, max_length=500)
     municipality_code: str = Field(
-        ...,
-        description="DANE municipality code",
+        ..., 
+        description="DANE municipality code", 
         pattern=r"^\d{5,6}$"
     )
     department_code: str = Field(
-        ...,
-        description="DANE department code",
+        ..., 
+        description="DANE department code", 
         pattern=r"^\d{2}$"
     )
     administration_period: str = Field(
@@ -371,7 +371,7 @@ class PolicyDocumentMetadata(BaseModel):
         default_factory=lambda: datetime.now(UTC).isoformat(),
         description="Text extraction timestamp",
     )
-
+    
     @field_validator("administration_period")
     @classmethod
     def validate_period(cls, v: str) -> str:
@@ -387,10 +387,10 @@ class PolicyDocumentMetadata(BaseModel):
 class PolicyDocument(BaseModel):
     """
     Complete policy document representation for analysis pipeline.
-
+    
     This is the primary input contract for the F.A.R.F.A.N analysis engine.
     Implements cryptographic verification for traceability.
-
+    
     Attributes:
         metadata: Document metadata
         raw_text: Full extracted text content
@@ -399,21 +399,21 @@ class PolicyDocument(BaseModel):
         numerical_data: Extracted numerical values with context
         fingerprint: SHA-256 fingerprint for verification
     """
-
+    
     model_config = ConfigDict(
         frozen=True,
         extra="forbid",
         validate_assignment=True,
     )
-
+    
     metadata: PolicyDocumentMetadata = Field(..., description="Document metadata")
     raw_text: str = Field(..., description="Full document text", min_length=100)
     sections: Dict[str, str] = Field(
-        default_factory=dict,
+        default_factory=dict, 
         description="Structured sections by chapter/section name"
     )
     tables: List[Dict[str, Any]] = Field(
-        default_factory=list,
+        default_factory=list, 
         description="Extracted tables as structured data"
     )
     numerical_data: List[Dict[str, Any]] = Field(
@@ -429,7 +429,7 @@ class PolicyDocument(BaseModel):
         description="SHA-256 fingerprint of content",
         pattern=r"^[a-f0-9]{64}$|^$",
     )
-
+    
     @model_validator(mode="after")
     def compute_fingerprint_if_missing(self) -> "PolicyDocument":
         """Compute fingerprint if not provided."""
@@ -444,22 +444,22 @@ class PolicyDocument(BaseModel):
             # Since frozen, we need to use object.__setattr__
             object.__setattr__(self, "fingerprint", computed)
         return self
-
+    
     @property
     def document_type(self) -> PolicyDocumentType:
         """Get parsed document type enum."""
         return PolicyDocumentType.from_string(self.metadata.document_type)
-
+    
     @property
     def word_count(self) -> int:
         """Estimate word count from raw text."""
         return len(self.raw_text.split())
-
+    
     @property
     def section_count(self) -> int:
         """Get number of sections."""
         return len(self.sections)
-
+    
     def get_section(self, name: str) -> Optional[str]:
         """Get section content by name (case-insensitive)."""
         name_lower = name.lower()
@@ -467,7 +467,7 @@ class PolicyDocument(BaseModel):
             if key.lower() == name_lower:
                 return value
         return None
-
+    
     def extract_numerical_patterns(self) -> List[Dict[str, Any]]:
         """Extract numerical patterns from raw text."""
         patterns = [
@@ -476,7 +476,7 @@ class PolicyDocument(BaseModel):
             (r"\d+(?:\.\d+)?\s*(?:millones?|mil millones?|billones?)", "monetary"),
             (r"\d+\s*(?:por|cada)\s*(?:100|mil|100\.000)", "rate"),
         ]
-
+        
         results = []
         for pattern, pattern_type in patterns:
             for match in re.finditer(pattern, self.raw_text, re.IGNORECASE):
@@ -486,9 +486,9 @@ class PolicyDocument(BaseModel):
                     "position": match.span(),
                     "context": self.raw_text[max(0, match.start()-50):match.end()+50],
                 })
-
+        
         return results
-
+    
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
@@ -506,9 +506,9 @@ class DimensionScore(BaseModel):
     """
     Score for a single causal dimension with Bayesian uncertainty.
     """
-
+    
     model_config = ConfigDict(frozen=True, extra="forbid")
-
+    
     dimension: str = Field(..., description="Dimension code (D1-D6)")
     score: float = Field(..., ge=0.0, le=3.0, description="Dimension score (0-3 scale)")
     credible_interval_lower: float = Field(..., ge=0.0, le=3.0)
@@ -516,12 +516,12 @@ class DimensionScore(BaseModel):
     evidence_count: int = Field(..., ge=0, description="Number of evidence items")
     confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence level")
     evidence_strength: EvidenceStrengthType = Field(default="moderate")
-
+    
     @property
     def credible_interval(self) -> Tuple[float, float]:
         """Get credible interval as tuple."""
         return (self.credible_interval_lower, self.credible_interval_upper)
-
+    
     @property
     def is_reliable(self) -> bool:
         """Check if score is considered reliable (sufficient evidence)."""
@@ -532,9 +532,9 @@ class QuestionScore(BaseModel):
     """
     Score for a single questionnaire question (Q001-Q300).
     """
-
+    
     model_config = ConfigDict(frozen=True, extra="forbid")
-
+    
     question_id: str = Field(..., description="Question ID (Q###)", pattern=r"^Q\d{3}$")
     policy_area: str = Field(..., description="Policy area code (PA##)", pattern=r"^PA\d{2}$")
     dimension: str = Field(..., description="Dimension code (D#)", pattern=r"^D\d$")
@@ -542,7 +542,7 @@ class QuestionScore(BaseModel):
     raw_evidence: List[str] = Field(default_factory=list, description="Supporting evidence")
     method_chain: List[str] = Field(default_factory=list, description="Methods used")
     confidence: float = Field(default=0.5, ge=0.0, le=1.0)
-
+    
     @property
     def is_satisfactory(self) -> bool:
         """Check if score meets satisfactory threshold (>= 2.0)."""
@@ -553,9 +553,9 @@ class ClusterAnalysis(BaseModel):
     """
     Meso-level cluster analysis result.
     """
-
+    
     model_config = ConfigDict(frozen=True, extra="forbid")
-
+    
     cluster_id: str = Field(..., description="Cluster ID (CL##)", pattern=r"^CL\d{2}$")
     cluster_name: str = Field(..., description="Cluster name/description")
     aggregate_score: float = Field(..., ge=0.0, le=100.0, description="Aggregate cluster score")
@@ -564,7 +564,7 @@ class ClusterAnalysis(BaseModel):
     weak_areas: List[str] = Field(default_factory=list, description="Weakest policy areas")
     strong_areas: List[str] = Field(default_factory=list, description="Strongest policy areas")
     recommendations: List[str] = Field(default_factory=list, description="Cluster-specific recommendations")
-
+    
     @property
     def score_band(self) -> ScoreBandType:
         """Classify score into band."""
@@ -584,9 +584,9 @@ class MacroSummary(BaseModel):
     """
     Macro-level policy analysis summary.
     """
-
+    
     model_config = ConfigDict(frozen=True, extra="forbid")
-
+    
     overall_score: float = Field(..., ge=0.0, le=100.0, description="Overall policy score")
     quality_level: QualityLevelType = Field(..., description="Quality classification")
     strengths: List[str] = Field(default_factory=list, description="Identified strengths")
@@ -594,7 +594,7 @@ class MacroSummary(BaseModel):
     priority_recommendations: List[str] = Field(default_factory=list, description="Top recommendations")
     pdet_alignment_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
     sdg_alignment_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
-
+    
     @property
     def is_passing(self) -> bool:
         """Check if overall score is passing (>= 60)."""
@@ -604,11 +604,11 @@ class MacroSummary(BaseModel):
 class AnalysisResult(BaseModel):
     """
     Complete policy analysis result with multi-level aggregation.
-
+    
     This is the primary output contract for the F.A.R.F.A.N analysis engine.
     Contains micro (question), meso (cluster), and macro (summary) level results
     with full Bayesian uncertainty quantification and cryptographic traceability.
-
+    
     Attributes:
         document_id: Reference to analyzed document
         analysis_id: Unique analysis run identifier
@@ -621,13 +621,13 @@ class AnalysisResult(BaseModel):
         processing_metrics: Performance and timing metrics
         evidence_chain_hash: Cryptographic hash of evidence chain
     """
-
+    
     model_config = ConfigDict(
         frozen=True,
         extra="forbid",
         validate_assignment=True,
     )
-
+    
     # Identification
     document_id: str = Field(..., description="Source document ID")
     analysis_id: str = Field(
@@ -641,55 +641,55 @@ class AnalysisResult(BaseModel):
         default_factory=lambda: datetime.now(UTC).isoformat(),
         description="Analysis timestamp",
     )
-
+    
     # Micro-level (Question scores)
     micro_scores: Dict[str, QuestionScore] = Field(
-        default_factory=dict,
+        default_factory=dict, 
         description="Question scores keyed by Q### ID"
     )
-
+    
     # Dimension aggregates
     dimension_scores: Dict[str, DimensionScore] = Field(
         default_factory=dict,
         description="Dimension scores keyed by D# code",
     )
-
+    
     # Meso-level (Cluster analyses)
     cluster_analyses: Dict[str, ClusterAnalysis] = Field(
         default_factory=dict,
         description="Cluster analyses keyed by CL## ID",
     )
-
+    
     # Macro-level (Summary)
     macro_summary: Optional[MacroSummary] = Field(
-        default=None,
+        default=None, 
         description="Overall policy summary"
     )
-
+    
     # Bayesian metadata
     bayesian_metadata: Dict[str, Any] = Field(
         default_factory=dict,
         description="Bayesian analysis parameters and diagnostics",
     )
-
+    
     # Processing metrics
     processing_metrics: Dict[str, Any] = Field(
         default_factory=dict,
         description="Performance and timing metrics",
     )
-
+    
     # Traceability
     evidence_chain_hash: Optional[str] = Field(
         default=None,
         description="SHA-256 hash of evidence chain",
         pattern=r"^[a-f0-9]{64}$|^$",
     )
-
+    
     @property
     def total_questions_analyzed(self) -> int:
         """Get count of analyzed questions."""
         return len(self.micro_scores)
-
+    
     @property
     def average_micro_score(self) -> float:
         """Calculate average micro score."""
@@ -697,28 +697,28 @@ class AnalysisResult(BaseModel):
             return 0.0
         scores = [q.score for q in self.micro_scores.values()]
         return sum(scores) / len(scores)
-
+    
     @property
     def coverage_rate(self) -> float:
         """Calculate question coverage rate (vs 300 total)."""
         return len(self.micro_scores) / 300.0
-
+    
     def get_weak_questions(self, threshold: float = 1.5) -> List[QuestionScore]:
         """Get questions below score threshold."""
         return [q for q in self.micro_scores.values() if q.score < threshold]
-
+    
     def get_strong_questions(self, threshold: float = 2.5) -> List[QuestionScore]:
         """Get questions above score threshold."""
         return [q for q in self.micro_scores.values() if q.score >= threshold]
-
+    
     def get_questions_by_policy_area(self, policy_area: str) -> List[QuestionScore]:
         """Get all questions for a specific policy area."""
         return [q for q in self.micro_scores.values() if q.policy_area == policy_area]
-
+    
     def get_questions_by_dimension(self, dimension: str) -> List[QuestionScore]:
         """Get all questions for a specific dimension."""
         return [q for q in self.micro_scores.values() if q.dimension == dimension]
-
+    
     def compute_digest(self) -> str:
         """Compute SHA-256 digest of analysis results."""
         content = json.dumps({
@@ -729,7 +729,7 @@ class AnalysisResult(BaseModel):
             "status": self.status,
         }, sort_keys=True)
         return hashlib.sha256(content.encode()).hexdigest()
-
+    
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
@@ -755,7 +755,7 @@ class AnalysisResult(BaseModel):
             "evidence_chain_hash": self.evidence_chain_hash,
             "digest": self.compute_digest(),
         }
-
+    
     def to_sabana_row(self) -> Dict[str, Any]:
         """Export as SISAS sabana-compatible row."""
         return {
@@ -780,11 +780,11 @@ class AnalysisResult(BaseModel):
 class UnitOfAnalysis:
     """
     Representa las características de una unidad territorial de análisis.
-
+    
     Esta clase encapsula las propiedades municipales relevantes para calibrar
     los análisis Bayesianos y ajustar priors según el contexto territorial.
     Implementa inmutabilidad (frozen) para garantizar consistencia en análisis.
-
+    
     Attributes:
         municipality_code: Código DANE del municipio (formato: DDDMMM)
         municipality_name: Nombre oficial del municipio
@@ -801,7 +801,7 @@ class UnitOfAnalysis:
         social_indicators: Indicadores sociales opcionales
         metadata: Metadatos adicionales (fechas, fuentes, etc.)
     """
-
+    
     municipality_code: str
     municipality_name: str
     department_code: str
@@ -816,23 +816,23 @@ class UnitOfAnalysis:
     geographic_context: Optional[GeographicContext] = None
     social_indicators: Optional[SocialIndicators] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
-
+    
     def __post_init__(self):
         """Validate data after initialization."""
         # Validate municipality code format (DDDMMM)
         if not self.municipality_code or len(self.municipality_code) not in [5, 6]:
             raise ValueError(f"Invalid municipality code: {self.municipality_code}")
-
+        
         # Validate ranges
         if not 0.0 <= self.rural_share <= 1.0:
             raise ValueError(f"rural_share must be between 0.0 and 1.0: {self.rural_share}")
-
+        
         if not 0.0 <= self.poverty_index <= 1.0:
             raise ValueError(f"poverty_index must be between 0.0 and 1.0: {self.poverty_index}")
-
+        
         if self.population < 0:
             raise ValueError(f"Population cannot be negative: {self.population}")
-
+        
         # Log creation
         logger.debug(
             "unit_of_analysis_created",
@@ -840,18 +840,18 @@ class UnitOfAnalysis:
             municipality_name=self.municipality_name,
             fiscal_context=self.fiscal_context.name,
         )
-
+    
     def complexity_score(self) -> float:
         """
         Calcula un score de complejidad basado en características municipales.
-
+        
         Implementa un modelo multi-dimensional ponderado que considera:
         - Tamaño poblacional (logarítmico)
         - Contexto territorial
         - Factores de vulnerabilidad (PDET, conflicto, ZOMAC)
         - Indicadores socioeconómicos
         - Capacidad institucional
-
+        
         Returns:
             float: Score de complejidad entre 0.0 (simple) y 1.0 (muy complejo)
         """
@@ -862,9 +862,9 @@ class UnitOfAnalysis:
             "socioeconomic": 0.25,
             "institutional": 0.20,
         }
-
+        
         scores = {}
-
+        
         # Population complexity (logarithmic scale)
         if self.population > 1000000:
             scores["population"] = 1.0
@@ -878,7 +878,7 @@ class UnitOfAnalysis:
             scores["population"] = 0.2
         else:
             scores["population"] = 0.1
-
+        
         # Territorial complexity
         territorial_scores = {
             TerritorialCategory.CIUDAD_CAPITAL: 0.8,
@@ -888,7 +888,7 @@ class UnitOfAnalysis:
             TerritorialCategory.ZONA_FRONTERA: 0.9,
         }
         scores["territorial"] = territorial_scores.get(self.territorial_category, 0.5)
-
+        
         # Vulnerability factors
         vulnerability = 0.0
         if self.pdet_municipality:
@@ -898,7 +898,7 @@ class UnitOfAnalysis:
         if self.geographic_context and self.geographic_context.zomac:
             vulnerability += 0.3
         scores["vulnerability"] = min(vulnerability, 1.0)
-
+        
         # Socioeconomic complexity
         socio_score = 0.0
         socio_score += self.poverty_index * 0.4
@@ -907,7 +907,7 @@ class UnitOfAnalysis:
             if self.social_indicators.nbi:
                 socio_score += (self.social_indicators.nbi / 100.0) * 0.3
         scores["socioeconomic"] = min(socio_score, 1.0)
-
+        
         # Institutional complexity (inverse of fiscal capacity)
         fiscal_scores = {
             FiscalContext.HIGH_CAPACITY: 0.2,
@@ -916,40 +916,40 @@ class UnitOfAnalysis:
             FiscalContext.SPECIAL_DISTRICT: 0.3,
         }
         scores["institutional"] = fiscal_scores.get(self.fiscal_context, 0.5)
-
+        
         # Calculate weighted average
         total_score = sum(
             scores.get(key, 0.0) * weight
             for key, weight in weights.items()
         )
-
+        
         return min(total_score, 1.0)
-
+    
     def priority_score(self) -> float:
         """
         Calcula score de priorización para políticas públicas.
-
+        
         Municipios con mayor score requieren mayor atención en políticas.
-
+        
         Returns:
             float: Score de prioridad entre 0.0 (baja) y 1.0 (máxima)
         """
         # Start with complexity
         score = self.complexity_score() * 0.5
-
+        
         # Add vulnerability bonus
         if self.pdet_municipality:
             score += 0.2
-
+        
         # Add poverty bonus
         score += self.poverty_index * 0.3
-
+        
         return min(score, 1.0)
-
+    
     def to_calibration_params(self) -> Dict[str, float]:
         """
         Convert unit characteristics to Bayesian calibration parameters.
-
+        
         Returns:
             Dict with calibration parameters for Bayesian analysis
         """
@@ -960,11 +960,11 @@ class UnitOfAnalysis:
             "sample_size_adjustment": max(0.5, 1.0 - (self.complexity_score() * 0.3)),
             "convergence_threshold": 0.01 * (1.0 + self.complexity_score()),
         }
-
+    
     def get_signal_context(self) -> Dict[str, Any]:
         """
         Generate context for signal extraction aligned with SISAS patterns.
-
+        
         Returns:
             Dict with signal extraction context
         """
@@ -977,11 +977,11 @@ class UnitOfAnalysis:
             "rural_context": self.rural_share > 0.6,
             "vulnerable_population": self.poverty_index > 0.4,
         }
-
+    
     def generate_fingerprint(self) -> str:
         """
         Generate stable fingerprint for caching and comparison.
-
+        
         Returns:
             str: SHA256 fingerprint of unit characteristics
         """
@@ -993,9 +993,9 @@ class UnitOfAnalysis:
             "rural": self.rural_share,
             "poverty": self.poverty_index,
         }, sort_keys=True)
-
+        
         return hashlib.sha256(content.encode()).hexdigest()[:16]
-
+    
     def __repr__(self) -> str:
         """Enhanced string representation for debugging."""
         return (
@@ -1008,11 +1008,11 @@ class UnitOfAnalysis:
             f"complexity={self.complexity_score():.2f}, "
             f"priority={self.priority_score():.2f})"
         )
-
+    
     def to_dict(self) -> Dict[str, Any]:
         """
         Convert to dictionary for serialization.
-
+        
         Returns:
             Dict representation of the unit
         """
@@ -1032,7 +1032,7 @@ class UnitOfAnalysis:
             "priority_score": self.priority_score(),
             "fingerprint": self.generate_fingerprint(),
         }
-
+        
         if self.geographic_context:
             base["geographic"] = {
                 "latitude": self.geographic_context.latitude,
@@ -1041,7 +1041,7 @@ class UnitOfAnalysis:
                 "area_km2": self.geographic_context.area_km2,
                 "zomac": self.geographic_context.zomac,
             }
-
+        
         if self.social_indicators:
             base["social"] = {
                 "nbi": self.social_indicators.nbi,
@@ -1049,10 +1049,10 @@ class UnitOfAnalysis:
                 "health_coverage": self.social_indicators.health_coverage,
                 "infrastructure_score": self.social_indicators.infrastructure_score(),
             }
-
+        
         if self.metadata:
             base["metadata"] = self.metadata
-
+        
         return base
 
 
@@ -1065,24 +1065,24 @@ class UnitOfAnalysis:
 class UnitCollection:
     """
     Collection of units for batch analysis with SOTA operations.
-
+    
     Attributes:
         units: List of UnitOfAnalysis instances
         collection_id: Unique identifier for the collection
         created_at: Timestamp of collection creation
     """
-
+    
     units: List[UnitOfAnalysis] = field(default_factory=list)
     collection_id: str = field(default_factory=lambda: hashlib.sha256(
         str(datetime.now(UTC)).encode()
     ).hexdigest()[:16])
     created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
-
+    
     def add_unit(self, unit: UnitOfAnalysis) -> None:
         """Add a unit to the collection with validation."""
         if not isinstance(unit, UnitOfAnalysis):
             raise TypeError("Unit must be instance of UnitOfAnalysis")
-
+        
         # Check for duplicates
         existing_codes = {u.municipality_code for u in self.units}
         if unit.municipality_code in existing_codes:
@@ -1091,40 +1091,40 @@ class UnitCollection:
                 municipality_code=unit.municipality_code
             )
             return
-
+        
         self.units.append(unit)
         logger.debug(
             "unit_added_to_collection",
             collection_id=self.collection_id,
             municipality_code=unit.municipality_code
         )
-
+    
     def get_by_fiscal_context(self, context: FiscalContext) -> List[UnitOfAnalysis]:
         """Filter units by fiscal context."""
         return [u for u in self.units if u.fiscal_context == context]
-
+    
     def get_pdet_units(self) -> List[UnitOfAnalysis]:
         """Get all PDET municipalities."""
         return [u for u in self.units if u.pdet_municipality]
-
+    
     def get_priority_units(self, threshold: float = 0.7) -> List[UnitOfAnalysis]:
         """Get units above priority threshold."""
         return [u for u in self.units if u.priority_score() >= threshold]
-
+    
     def aggregate_stats(self) -> Dict[str, Any]:
         """Calculate aggregate statistics for the collection."""
         if not self.units:
             return {}
-
+        
         total_population = sum(u.population for u in self.units)
         avg_complexity = sum(u.complexity_score() for u in self.units) / len(self.units)
         avg_priority = sum(u.priority_score() for u in self.units) / len(self.units)
-
+        
         fiscal_distribution = {}
         for context in FiscalContext:
             count = len(self.get_by_fiscal_context(context))
             fiscal_distribution[context.name] = count
-
+        
         return {
             "collection_id": self.collection_id,
             "total_units": len(self.units),
@@ -1135,7 +1135,7 @@ class UnitCollection:
             "fiscal_distribution": fiscal_distribution,
             "high_priority_count": len(self.get_priority_units()),
         }
-
+    
     def to_dataframe_dict(self) -> List[Dict[str, Any]]:
         """Convert to list of dicts suitable for pandas DataFrame."""
         return [u.to_dict() for u in self.units]
@@ -1213,7 +1213,7 @@ def create_policy_document(
         document_type=document_type,
         character_count=len(raw_text),
     )
-
+    
     return PolicyDocument(
         metadata=metadata,
         raw_text=raw_text,
@@ -1235,46 +1235,46 @@ def create_empty_analysis_result(
 def load_units_from_json(filepath: str) -> UnitCollection:
     """
     Load unit collection from JSON file.
-
+    
     Args:
         filepath: Path to JSON file
-
+        
     Returns:
         UnitCollection instance
     """
     collection = UnitCollection()
-
+    
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
-
+        
         for unit_data in data.get("units", []):
             # Convert string enums back to enum instances
             if "fiscal_context" in unit_data:
                 unit_data["fiscal_context"] = FiscalContext[unit_data["fiscal_context"]]
             if "territorial_category" in unit_data:
                 unit_data["territorial_category"] = TerritorialCategory[unit_data["territorial_category"]]
-
+            
             # Handle nested objects
             if "geographic" in unit_data:
                 unit_data["geographic_context"] = GeographicContext(**unit_data.pop("geographic"))
             if "social" in unit_data:
                 unit_data["social_indicators"] = SocialIndicators(**unit_data.pop("social"))
-
+            
             # Remove computed fields
             unit_data.pop("complexity_score", None)
             unit_data.pop("priority_score", None)
             unit_data.pop("fingerprint", None)
-
+            
             unit = UnitOfAnalysis(**unit_data)
             collection.add_unit(unit)
-
+        
         logger.info(
             "units_loaded_from_json",
             filepath=filepath,
             count=len(collection.units)
         )
-
+        
     except Exception as e:
         logger.error(
             "failed_to_load_units",
@@ -1282,108 +1282,8 @@ def load_units_from_json(filepath: str) -> UnitCollection:
             error=str(e)
         )
         raise
-
+    
     return collection
-
-
-# ============================================================================
-# SISAS EVENT IRRIGATION INTEGRATION
-# ============================================================================
-
-def emit_unit_analysis_event(unit: UnitOfAnalysis) -> Dict[str, Any]:
-    """
-    Emit SISAS-compatible event for unit analysis.
-
-    This function generates an event that can be consumed by the SISAS
-    irrigation system for dynamic signal enrichment.
-
-    Args:
-        unit: UnitOfAnalysis instance
-
-    Returns:
-        SISAS-compatible event dictionary
-    """
-    return {
-        "event_type": "unit_analysis_created",
-        "event_id": hashlib.sha256(
-            f"{unit.municipality_code}:{datetime.now(UTC).isoformat()}".encode()
-        ).hexdigest()[:16],
-        "timestamp": datetime.now(UTC).isoformat(),
-        "source": "farfan_pipeline.data_models.unit_of_analysis",
-        "payload": {
-            "municipality_code": unit.municipality_code,
-            "municipality_name": unit.municipality_name,
-            "department_code": unit.department_code,
-            "fiscal_context": unit.fiscal_context.name,
-            "territorial_category": unit.territorial_category.name,
-            "complexity_score": unit.complexity_score(),
-            "priority_score": unit.priority_score(),
-            "is_pdet": unit.pdet_municipality,
-            "calibration_params": unit.to_calibration_params(),
-            "signal_context": unit.get_signal_context(),
-        },
-        "irrigation_targets": [
-            "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry",
-            "farfan_pipeline.methods.embedding_cache_sota",
-        ],
-    }
-
-
-def irrigate_sisas_signals(unit: UnitOfAnalysis) -> None:
-    """
-    Irrigate SISAS signal registry with unit analysis data.
-
-    This function dynamically updates SISAS signals when a UnitOfAnalysis
-    is created or updated, enabling real-time signal enrichment.
-
-    Args:
-        unit: UnitOfAnalysis instance to irrigate
-    """
-    try:
-        # Import here to avoid circular dependency
-        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
-            register_unit_signal,
-        )
-
-        # Register unit-level signals
-        register_unit_signal(
-            signal_name=f"municipality_{unit.municipality_code}_complexity",
-            signal_value=unit.complexity_score(),
-            signal_metadata={
-                "source": "unit_of_analysis",
-                "municipality_code": unit.municipality_code,
-                "timestamp": datetime.now(UTC).isoformat(),
-            },
-        )
-
-        register_unit_signal(
-            signal_name=f"municipality_{unit.municipality_code}_priority",
-            signal_value=unit.priority_score(),
-            signal_metadata={
-                "source": "unit_of_analysis",
-                "municipality_code": unit.municipality_code,
-                "is_pdet": unit.pdet_municipality,
-                "timestamp": datetime.now(UTC).isoformat(),
-            },
-        )
-
-        logger.info(
-            "sisas_irrigation_success",
-            municipality_code=unit.municipality_code,
-            signals_registered=2,
-        )
-
-    except ImportError:
-        logger.warning(
-            "sisas_irrigation_skipped",
-            reason="SISAS signal registry not available",
-        )
-    except Exception as e:
-        logger.error(
-            "sisas_irrigation_failed",
-            municipality_code=unit.municipality_code,
-            error=str(e),
-        )
 
 
 # ============================================================================
@@ -1423,7 +1323,4 @@ __all__ = [
     "create_policy_document",
     "create_empty_analysis_result",
     "load_units_from_json",
-    # SISAS integration
-    "emit_unit_analysis_event",
-    "irrigate_sisas_signals",
 ]

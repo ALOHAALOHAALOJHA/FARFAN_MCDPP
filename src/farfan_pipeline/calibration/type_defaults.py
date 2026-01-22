@@ -412,6 +412,11 @@ class ContractTypeDefaults:
     permitted_operations: frozenset[str]
     prohibited_operations: frozenset[str]
 
+    # NEW: Mechanistic properties
+    enables_retroduction: bool = False
+    transfactual_detection: bool = False
+    causal_mechanism_focus: str = "correlational"  # or "mechanistic"
+
     def __post_init__(self) -> None:
         """Validate contract type defaults."""
         if self.contract_type_code not in VALID_CONTRACT_TYPES:
@@ -1712,3 +1717,11 @@ __all__ = [
     "create_method_binding",
     "validate_method_binding",
 ]
+
+# ADD new constants for mechanistic analysis
+
+# Mechanistic Causal Parameters (Bhaskar-inspired)
+CAUSAL_POWER_MIN: Final[float] = 0.0
+CAUSAL_POWER_MAX: Final[float] = 1.0
+TRANSFACTUAL_CONFIDENCE: Final[float] = 0.3  # Minimum for unmanifested mechanisms
+RETRODUCTIVE_THRESHOLD: Final[float] = 0.5
