@@ -25,6 +25,9 @@ CORS(app)
 # Initialize SocketIO
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
+# Register enhanced monitoring endpoints
+register_monitoring_endpoints(app)
+
 # Ensure upload directory exists
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
@@ -39,6 +42,7 @@ from farfan_pipeline.dashboard_atroz_.pipeline_dashboard_bridge import (
     initialize_bridge,
     get_bridge,
 )
+from farfan_pipeline.dashboard_atroz_.api_monitoring_enhanced import register_monitoring_endpoints
 
 # Global state
 pipeline_status = {
