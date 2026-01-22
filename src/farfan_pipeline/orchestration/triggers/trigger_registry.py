@@ -1,222 +1,154 @@
 """
-Trigger Registry - Central registry for all event triggers.
+SISAS Event Trigger Optimization Module
 
-SOTA Pattern: Observer Pattern with Type-Safe Callbacks
+Provides enhanced event triggers for fine-grained signal emission.
+These triggers are ADDITIVE to the core orchestrator signals.
+
+Trigger Types:
+1. SubPhase Triggers - Emit signals within phase execution
+2. Contract Triggers - Emit signals during contract execution
+3. Extraction Triggers - Emit signals during MC extraction
+4. Validation Triggers - Emit signals during gate validation
+
+Features:
+- Thread-safe registration and emission
+- Priority-based execution ordering
+- Conditional trigger execution
+- Circuit breakers for fault tolerance
+- Comprehensive metrics and diagnostics
+- Bulk registration/deregistration
+- Decorator-based registration
+- Context managers for scoped triggers
+
+Author: FARFAN Pipeline Team
+Version: 2.0.0
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Callable, Any, Optional
-from enum import Enum, auto
-from datetime import datetime
-import logging
+from .trigger_registry import (
+    # Core classes
+    TriggerRegistry,
+    TriggerEvent,
+    TriggerContext,
+    TriggerCallback,
+    TriggerCondition,
+    TriggerState,
+    TriggerMetrics,
+    RegisteredTrigger,
+    CircuitBreakerConfig,
+    # Enums
+    EventCategory,
+    EVENT_CATEGORIES,
+    # Module-level functions
+    get_registry,
+    register_trigger,
+    emit_trigger,
+    on_event,
+)
+from .subphase_triggers import SubPhaseTriggers
+from .contract_triggers import ContractTriggers
+from .extraction_triggers import ExtractionTriggers
 
-logger = logging.getLogger(__name__)
+__version__ = "2.0.0"
 
-
-class TriggerEvent(str, Enum):
-    """All possible trigger events in the system."""
-
-    # Phase lifecycle (granular)
-    PHASE_INITIALIZING = "PHASE_INITIALIZING"
-    PHASE_VALIDATING_PREREQUISITES = "PHASE_VALIDATING_PREREQUISITES"
-    PHASE_EXECUTING = "PHASE_EXECUTING"
-    PHASE_FINALIZING = "PHASE_FINALIZING"
-
-    # Contract lifecycle
-    CONTRACT_LOADING = "CONTRACT_LOADING"
-    CONTRACT_METHOD_INJECTING = "CONTRACT_METHOD_INJECTING"
-    CONTRACT_EXECUTING = "CONTRACT_EXECUTING"
-    CONTRACT_VETO_CHECK = "CONTRACT_VETO_CHECK"
-    CONTRACT_FUSION = "CONTRACT_FUSION"
-
-    # Extraction lifecycle (MC01-MC10)
-    EXTRACTION_STARTING = "EXTRACTION_STARTING"
-    EXTRACTION_PATTERN_MATCHED = "EXTRACTION_PATTERN_MATCHED"
-    EXTRACTION_SIGNAL_CREATED = "EXTRACTION_SIGNAL_CREATED"
-    EXTRACTION_COMPLETED = "EXTRACTION_COMPLETED"
-
-    # Validation lifecycle
-    VALIDATION_GATE_1_START = "VALIDATION_GATE_1_START"
-    VALIDATION_GATE_1_COMPLETE = "VALIDATION_GATE_1_COMPLETE"
-    VALIDATION_GATE_2_START = "VALIDATION_GATE_2_START"
-    VALIDATION_GATE_2_COMPLETE = "VALIDATION_GATE_2_COMPLETE"
-    VALIDATION_GATE_3_START = "VALIDATION_GATE_3_START"
-    VALIDATION_GATE_3_COMPLETE = "VALIDATION_GATE_3_COMPLETE"
-    VALIDATION_GATE_4_START = "VALIDATION_GATE_4_START"
-    VALIDATION_GATE_4_COMPLETE = "VALIDATION_GATE_4_COMPLETE"
-
-    # Aggregation lifecycle
-    AGGREGATION_MICRO_TO_MESO = "AGGREGATION_MICRO_TO_MESO"
-    AGGREGATION_MESO_TO_MACRO = "AGGREGATION_MESO_TO_MACRO"
-    AGGREGATION_CLUSTER = "AGGREGATION_CLUSTER"
-    AGGREGATION_HOLISTIC = "AGGREGATION_HOLISTIC"
-
-
-@dataclass
-class TriggerContext:
-    """Context passed to trigger callbacks."""
-    event: TriggerEvent
-    timestamp: datetime
-    phase_id: Optional[str] = None
-    signal_type: Optional[str] = None
-    consumer_id: Optional[str] = None
-    contract_id: Optional[str] = None
-    payload: Dict[str, Any] = field(default_factory=dict)
+__all__ = [
+    # Core Registry
+    "TriggerRegistry",
+    "TriggerEvent",
+    "TriggerContext",
+    "TriggerCallback",
+    "TriggerCondition",
+    "TriggerState",
+    "TriggerMetrics",
+    "RegisteredTrigger",
+    "CircuitBreakerConfig",
+    # Enums and mappings
+    "EventCategory",
+    "EVENT_CATEGORIES",
+    # Convenience functions
+    "get_registry",
+    "register_trigger",
+    "emit_trigger",
+    "on_event",
+    # Specialized managers
+    "SubPhaseTriggers",
+    "ContractTriggers",
+    "ExtractionTriggers",
+]
 
 
-TriggerCallback = Callable[[TriggerContext], None]
-
-
-@dataclass
-class RegisteredTrigger:
-    """A registered trigger callback."""
-    callback: TriggerCallback
-    event: TriggerEvent
-    priority: int = 0  # Higher priority executes first
-    name: str = "unnamed"
-    enabled: bool = True
-
-
-class TriggerRegistry:
+def get_all_managers(
+    registry: TriggerRegistry = None,
+) -> dict:
     """
-    Central registry for event triggers.
+    Factory function to get all trigger managers.
 
-    Usage:
-        registry = TriggerRegistry()
-        registry.register(TriggerEvent.PHASE_EXECUTING, my_callback)
-        registry.emit(TriggerEvent.PHASE_EXECUTING, context)
+    Args:
+        registry: Optional shared registry (uses singleton if None)
+
+    Returns:
+        Dict with all manager instances
+    """
+    reg = registry or get_registry()
+    return {
+        "subphase": SubPhaseTriggers(reg),
+        "contract": ContractTriggers(reg),
+        "extraction": ExtractionTriggers(reg),
+    }
+
+
+class TriggerFacade:
+    """
+    Unified facade for all trigger operations.
+
+    Provides a single entry point for registering and emitting
+    triggers across all domains (phase, contract, extraction).
     """
 
-    _instance: Optional["TriggerRegistry"] = None
+    def __init__(self, registry: TriggerRegistry = None):
+        """Initialize with optional shared registry."""
+        self._registry = registry or get_registry()
+        self._subphase = SubPhaseTriggers(self._registry)
+        self._contract = ContractTriggers(self._registry)
+        self._extraction = ExtractionTriggers(self._registry)
 
-    def __new__(cls):
-        """Singleton pattern for global trigger registry."""
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._triggers = {}
-            cls._instance._execution_log = []
-        return cls._instance
+    @property
+    def registry(self) -> TriggerRegistry:
+        """Access the underlying registry."""
+        return self._registry
 
-    def register(
-        self,
-        event: TriggerEvent,
-        callback: TriggerCallback,
-        priority: int = 0,
-        name: str = None,
-    ) -> str:
-        """
-        Register a trigger callback for an event.
+    @property
+    def subphase(self) -> SubPhaseTriggers:
+        """Access subphase triggers."""
+        return self._subphase
 
-        Args:
-            event: The event to listen for
-            callback: Function to call when event fires
-            priority: Execution priority (higher = first)
-            name: Optional name for debugging
+    @property
+    def contract(self) -> ContractTriggers:
+        """Access contract triggers."""
+        return self._contract
 
-        Returns:
-            Registration ID for later unregistration
-        """
-        if event not in self._triggers:
-            self._triggers[event] = []
+    @property
+    def extraction(self) -> ExtractionTriggers:
+        """Access extraction triggers."""
+        return self._extraction
 
-        trigger = RegisteredTrigger(
-            callback=callback,
-            event=event,
-            priority=priority,
-            name=name or f"trigger_{len(self._triggers[event])}",
-        )
+    def health_check(self) -> dict:
+        """Combined health check across all managers."""
+        return {
+            "registry": self._registry.health_check(),
+            "subphase": self._subphase.health_check(),
+            "extraction": self._extraction.health_check(),
+            "contract": {
+                "registrations": len(self._contract._registry._triggers_by_id),
+            },
+        }
 
-        self._triggers[event].append(trigger)
-        # Sort by priority (descending)
-        self._triggers[event].sort(key=lambda t: t.priority, reverse=True)
+    def clear_all(self) -> dict:
+        """Clear all triggers from all managers."""
+        return {
+            "subphase": self._subphase.clear_all(),
+            "extraction": self._extraction.clear_all(),
+            "registry": (self._registry.clear(), 0)[1],
+        }
 
-        logger.debug(f"Registered trigger '{trigger.name}' for event {event.value}")
-        return trigger.name
-
-    def unregister(self, event: TriggerEvent, name: str) -> bool:
-        """Unregister a trigger by name."""
-        if event not in self._triggers:
-            return False
-
-        original_len = len(self._triggers[event])
-        self._triggers[event] = [t for t in self._triggers[event] if t.name != name]
-        return len(self._triggers[event]) < original_len
-
-    def emit(self, event: TriggerEvent, context: TriggerContext) -> int:
-        """
-        Emit an event to all registered triggers.
-
-        Args:
-            event: The event to emit
-            context: Context to pass to callbacks
-
-        Returns:
-            Number of triggers executed
-        """
-        if event not in self._triggers:
-            return 0
-
-        executed = 0
-        for trigger in self._triggers[event]:
-            if not trigger.enabled:
-                continue
-
-            try:
-                trigger.callback(context)
-                executed += 1
-                self._execution_log.append({
-                    "event": event.value,
-                    "trigger": trigger.name,
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "status": "success",
-                })
-            except Exception as e:
-                logger.error(f"Trigger '{trigger.name}' failed: {e}")
-                self._execution_log.append({
-                    "event": event.value,
-                    "trigger": trigger.name,
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "status": "error",
-                    "error": str(e),
-                })
-
-        return executed
-
-    def get_registered_count(self, event: TriggerEvent = None) -> int:
-        """Get count of registered triggers."""
-        if event is not None:
-            return len(self._triggers.get(event, []))
-        return sum(len(triggers) for triggers in self._triggers.values())
-
-    def get_execution_log(self, limit: int = 100) -> List[Dict]:
-        """Get recent execution log entries."""
-        return self._execution_log[-limit:]
-
-    def clear(self) -> None:
-        """Clear all registered triggers."""
-        self._triggers.clear()
-        self._execution_log.clear()
-
-
-# Module-level convenience functions
-_registry = TriggerRegistry()
-
-
-def register_trigger(
-    event: TriggerEvent,
-    callback: TriggerCallback,
-    priority: int = 0,
-    name: str = None,
-) -> str:
-    """Register a trigger callback."""
-    return _registry.register(event, callback, priority, name)
-
-
-def emit_trigger(event: TriggerEvent, **kwargs) -> int:
-    """Emit a trigger event."""
-    context = TriggerContext(
-        event=event,
-        timestamp=datetime.utcnow(),
-        **kwargs
-    )
-    return _registry.emit(event, context)
+    def __repr__(self) -> str:
+        return f"<TriggerFacade registry={len(self._registry)}>"
