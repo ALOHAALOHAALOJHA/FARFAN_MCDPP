@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+from datetime import datetime, timedelta
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -290,6 +291,289 @@ def get_dead_letter_queue():
             return jsonify({"error": str(e)}), 500
 
     return jsonify({"dead_letter_queue": [], "count": 0, "message": "SISAS not available"})
+
+
+@app.route("/api/v1/sisas/metrics/historical", methods=["GET"])
+def get_historical_metrics():
+    """Get historical SISAS metrics for time-series visualization.
+    
+    Query params:
+        - range: Time range (1h, 6h, 24h, 7d) - default: 1h
+        - interval: Data point interval (1m, 5m, 15m, 1h) - default: 1m
+    """
+    time_range = request.args.get("range", "1h")
+    interval = request.args.get("interval", "1m")
+    
+    # Mock historical data for demonstration
+    # In production, this would query a time-series database
+    import random
+    from datetime import datetime, timedelta
+    
+    # Parse time range
+    range_map = {"1h": 60, "6h": 360, "24h": 1440, "7d": 10080}
+    minutes = range_map.get(time_range, 60)
+    
+    # Parse interval
+    interval_map = {"1m": 1, "5m": 5, "15m": 15, "1h": 60}
+    step = interval_map.get(interval, 1)
+    
+    # Generate time series data
+    now = datetime.now()
+    data_points = []
+    
+    for i in range(0, minutes, step):
+        timestamp = now - timedelta(minutes=minutes - i)
+        data_points.append({
+            "timestamp": timestamp.isoformat(),
+            "signals_dispatched": random.randint(140, 180),
+            "signals_delivered": random.randint(130, 170),
+            "signals_failed": random.randint(2, 10),
+            "avg_latency_ms": random.randint(35, 65),
+            "active_consumers": random.randint(12, 17),
+            "dead_letter_count": random.randint(0, 5)
+        })
+    
+    return jsonify({
+        "range": time_range,
+        "interval": interval,
+        "data_points": data_points,
+        "summary": {
+            "total_dispatched": sum(p["signals_dispatched"] for p in data_points),
+            "total_delivered": sum(p["signals_delivered"] for p in data_points),
+            "avg_latency": sum(p["avg_latency_ms"] for p in data_points) / len(data_points),
+            "success_rate": (sum(p["signals_delivered"] for p in data_points) / 
+                           sum(p["signals_dispatched"] for p in data_points) * 100)
+        }
+    })
+
+
+@app.route("/api/v1/sisas/metrics/aggregated", methods=["GET"])
+def get_aggregated_metrics():
+    """Get aggregated SISAS metrics across all components."""
+    # Mock aggregated data
+    # In production, this would aggregate real metrics from SISAS components
+    return jsonify({
+        "overview": {
+            "total_signals_dispatched": 1247,
+            "total_signals_delivered": 1183,
+            "total_signals_failed": 64,
+            "success_rate": 94.9,
+            "avg_latency_ms": 47,
+            "active_consumers": 14,
+            "total_consumers": 17
+        },
+        "gates": {
+            "gate_1": {"name": "Scope Alignment", "pass_rate": 97.2, "passed": 1247, "total": 1283},
+            "gate_2": {"name": "Value Add", "pass_rate": 100.0, "passed": 1283, "total": 1283},
+            "gate_3": {"name": "Capability Match", "pass_rate": 97.5, "passed": 1251, "total": 1283},
+            "gate_4": {"name": "Irrigation Channel", "pass_rate": 96.5, "passed": 1238, "total": 1283}
+        },
+        "signal_types": {
+            "MC01_STRUCTURAL": 245,
+            "MC02_QUANTITATIVE": 198,
+            "MC03_NORMATIVE": 176,
+            "MC04_PROGRAMMATIC": 142,
+            "MC05_FINANCIAL": 215,
+            "MC06_POPULATION": 134,
+            "MC07_TEMPORAL": 189,
+            "MC08_CAUSAL": 156,
+            "MC09_INSTITUTIONAL": 128,
+            "MC10_SEMANTIC": 164
+        },
+        "error_breakdown": {
+            "NO_CONSUMER": 28,
+            "TIMEOUT": 15,
+            "VALIDATION_FAILED": 12,
+            "GATE_REJECTED": 8,
+            "SYSTEM_ERROR": 1
+        },
+        "phase_distribution": {
+            "P00": 245, "P01": 232, "P02": 218, "P03": 195, "P04": 178,
+            "P05": 156, "P06": 142, "P07": 128, "P08": 115, "P09": 98
+        },
+        "latency_distribution": {
+            "0-20ms": 245,
+            "20-40ms": 432,
+            "40-60ms": 318,
+            "60-80ms": 156,
+            "80-100ms": 78,
+            "100ms+": 18
+        }
+    })
+
+
+@app.route("/api/v1/sisas/consumers/detailed", methods=["GET"])
+def get_consumers_detailed():
+    """Get detailed status and performance metrics for all consumers."""
+    # Mock detailed consumer data
+    consumers = [
+        {
+            "id": "phase_00_bootstrap",
+            "name": "Phase 0 Bootstrap Consumer",
+            "phase": "P00",
+            "status": "active",
+            "throughput_per_min": 156,
+            "queue_depth": 12,
+            "processed_total": 8945,
+            "failed_total": 23,
+            "avg_processing_time_ms": 42,
+            "last_heartbeat": datetime.now().isoformat(),
+            "uptime_hours": 72.5
+        },
+        {
+            "id": "phase_01_extraction",
+            "name": "Phase 1 Extraction Consumer",
+            "phase": "P01",
+            "status": "processing",
+            "throughput_per_min": 145,
+            "queue_depth": 24,
+            "processed_total": 7823,
+            "failed_total": 18,
+            "avg_processing_time_ms": 58,
+            "last_heartbeat": datetime.now().isoformat(),
+            "uptime_hours": 71.8
+        },
+        {
+            "id": "phase_02_enrichment",
+            "name": "Phase 2 Enrichment Consumer",
+            "phase": "P02",
+            "status": "active",
+            "throughput_per_min": 128,
+            "queue_depth": 15,
+            "processed_total": 6734,
+            "failed_total": 31,
+            "avg_processing_time_ms": 67,
+            "last_heartbeat": datetime.now().isoformat(),
+            "uptime_hours": 70.2
+        }
+        # Additional consumers would be added here
+    ]
+    
+    return jsonify({
+        "consumers": consumers,
+        "summary": {
+            "total_consumers": 17,
+            "active": 14,
+            "processing": 2,
+            "waiting": 1,
+            "error": 0,
+            "total_throughput": sum(c["throughput_per_min"] for c in consumers),
+            "avg_queue_depth": sum(c["queue_depth"] for c in consumers) / len(consumers)
+        }
+    })
+
+
+@app.route("/api/v1/sisas/extractors/performance", methods=["GET"])
+def get_extractors_performance():
+    """Get performance metrics for all extractors (MC01-MC10)."""
+    extractors = [
+        {"id": "MC01", "name": "STRUCTURAL", "progress": 92, "status": "complete", 
+         "signals_emitted": 245, "avg_quality_score": 0.94},
+        {"id": "MC02", "name": "QUANTITATIVE", "progress": 78, "status": "processing", 
+         "signals_emitted": 198, "avg_quality_score": 0.89},
+        {"id": "MC03", "name": "NORMATIVE", "progress": 85, "status": "complete", 
+         "signals_emitted": 176, "avg_quality_score": 0.91},
+        {"id": "MC04", "name": "PROGRAMMATIC", "progress": 71, "status": "processing", 
+         "signals_emitted": 142, "avg_quality_score": 0.87},
+        {"id": "MC05", "name": "FINANCIAL", "progress": 85, "status": "complete", 
+         "signals_emitted": 215, "avg_quality_score": 0.92},
+        {"id": "MC06", "name": "POPULATION", "progress": 65, "status": "processing", 
+         "signals_emitted": 134, "avg_quality_score": 0.85},
+        {"id": "MC07", "name": "TEMPORAL", "progress": 88, "status": "complete", 
+         "signals_emitted": 189, "avg_quality_score": 0.93},
+        {"id": "MC08", "name": "CAUSAL", "progress": 72, "status": "processing", 
+         "signals_emitted": 156, "avg_quality_score": 0.88},
+        {"id": "MC09", "name": "INSTITUTIONAL", "progress": 68, "status": "processing", 
+         "signals_emitted": 128, "avg_quality_score": 0.86},
+        {"id": "MC10", "name": "SEMANTIC", "progress": 62, "status": "processing", 
+         "signals_emitted": 164, "avg_quality_score": 0.84}
+    ]
+    
+    return jsonify({
+        "extractors": extractors,
+        "summary": {
+            "total_extractors": 10,
+            "completed": sum(1 for e in extractors if e["status"] == "complete"),
+            "processing": sum(1 for e in extractors if e["status"] == "processing"),
+            "avg_progress": sum(e["progress"] for e in extractors) / len(extractors),
+            "total_signals": sum(e["signals_emitted"] for e in extractors),
+            "avg_quality": sum(e["avg_quality_score"] for e in extractors) / len(extractors)
+        }
+    })
+
+
+@app.route("/api/v1/sisas/gates/detailed", methods=["GET"])
+def get_gates_detailed():
+    """Get detailed gate validation statistics and rejection reasons."""
+    gates = [
+        {
+            "gate_number": 1,
+            "name": "Scope Alignment",
+            "pass_rate": 97.2,
+            "passed": 1247,
+            "rejected": 36,
+            "total": 1283,
+            "threshold": 0.50,
+            "rejection_reasons": {
+                "OUT_OF_SCOPE": 18,
+                "WRONG_PHASE": 12,
+                "INVALID_TARGET": 6
+            },
+            "avg_validation_time_ms": 12
+        },
+        {
+            "gate_number": 2,
+            "name": "Value Add",
+            "pass_rate": 100.0,
+            "passed": 1283,
+            "rejected": 0,
+            "total": 1283,
+            "threshold": 0.30,
+            "rejection_reasons": {},
+            "avg_validation_time_ms": 8
+        },
+        {
+            "gate_number": 3,
+            "name": "Capability Match",
+            "pass_rate": 97.5,
+            "passed": 1251,
+            "rejected": 32,
+            "total": 1283,
+            "threshold": 0.70,
+            "rejection_reasons": {
+                "CONSUMER_NOT_READY": 15,
+                "MISSING_CAPABILITY": 10,
+                "RESOURCE_LIMIT": 7
+            },
+            "avg_validation_time_ms": 15
+        },
+        {
+            "gate_number": 4,
+            "name": "Irrigation Channel",
+            "pass_rate": 96.5,
+            "passed": 1238,
+            "rejected": 45,
+            "total": 1283,
+            "threshold": 0.80,
+            "rejection_reasons": {
+                "CHANNEL_FULL": 22,
+                "RATE_LIMIT": 15,
+                "BACKPRESSURE": 8
+            },
+            "avg_validation_time_ms": 18
+        }
+    ]
+    
+    return jsonify({
+        "gates": gates,
+        "summary": {
+            "total_gates": 4,
+            "overall_pass_rate": sum(g["pass_rate"] for g in gates) / len(gates),
+            "total_signals": 1283,
+            "total_passed": sum(g["passed"] for g in gates) / len(gates),
+            "total_rejected": sum(g["rejected"] for g in gates)
+        }
+    })
 
 
 @app.route("/api/v1/regions/<region_id>/questions", methods=["GET"])
