@@ -15,15 +15,15 @@
 
   "epistemic_ratios": {
     "description": "Distribution of computational effort across epistemic layers",
-    "n1_empirical": { "lower": 0.20, "upper": 0.40, "default": 0.30, "justification": "Balanced extraction across multiple evidence types" },
-    "n2_inferential": { "lower": 0.30, "upper": 0.50, "default": 0.40, "justification": "Balanced inferential processing for mixed-mode reasoning" },
-    "n3_audit": { "lower": 0.20, "upper": 0.40, "default": 0.30, "justification": "Standard validation without extreme strictness" }
+    "n1_empirical": { "lower": 0.2, "upper": 0.4, "default": 0.3, "justification": "Balanced extraction across multiple evidence types" },
+    "n2_inferential": { "lower": 0.3, "upper": 0.5, "default": 0.4, "justification": "Balanced inferential processing for mixed-mode reasoning" },
+    "n3_audit": { "lower": 0.2, "upper": 0.4, "default": 0.3, "justification": "Standard validation without extreme strictness" }
   },
 
   "thresholds": {
     "veto_threshold": { "lower": 0.03, "upper": 0.07, "default": 0.05, "description": "Probability threshold for N3 veto gate activation", "strictness_level": "STANDARD" },
     "aggregation_weight": { "lower": 0.0, "upper": 1.0, "default": 0.5, "description": "Default weight for evidence aggregation" },
-    "fallback_threshold": { "lower": 0.60, "upper": 0.80, "default": 0.70, "description": "Minimum confidence before falling back to alternative methods" }
+    "fallback_threshold": { "lower": 0.6, "upper": 0.8, "default": 0.7, "description": "Minimum confidence before falling back to alternative methods" }
   },
 
   "operations": {
