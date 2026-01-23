@@ -12,10 +12,10 @@ The FARFAN pipeline uses a **Unified Factory Pattern** to manage all component c
 The UnifiedFactory is the **single source of truth** for all factory operations in the FARFAN pipeline.
 
 #### Key Features:
-- **Questionnaire Loading**: Lazy-loads questionnaires via CQCLoader with 333x performance optimizations
+- **Questionnaire Loading**: Lazy-loads questionnaires via CQCLoader with significant performance optimizations
 - **Signal Registry**: Creates signal registries from canonical notation
 - **Component Creation**: Instantiates detectors, calculators, analyzers
-- **Contract Execution**: Loads and executes 300 contracts with method injection
+- **Contract Execution**: Loads and executes contracts with method injection
 - **SISAS Integration**: Initializes SISAS central for signal distribution
 - **Adaptive Caching**: LRU+TTL hybrid cache for performance
 - **Parallel Execution**: ThreadPool-based parallel contract execution
@@ -258,8 +258,8 @@ python scripts/audit/audit_factory.py
 
 ## Version History
 
-- **v1.0.0 (2026-01-19)**: Initial UnifiedFactory implementation
-- **v1.0.1 (2026-01-23)**: Audit script updated to check UnifiedFactory
+- **v1.0.0 (January 2026)**: Initial UnifiedFactory implementation
+- **v1.0.1 (January 2026)**: Audit script updated to check UnifiedFactory
 
 ## Support
 

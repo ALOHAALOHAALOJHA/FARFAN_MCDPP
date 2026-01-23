@@ -24,6 +24,26 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
 
 
+# =============================================================================
+# AUDIT CONFIGURATION
+# =============================================================================
+
+# Maximum external load_questionnaire calls allowed before warning
+ALLOWED_EXTERNAL_LOAD_CALLS = 5
+
+# Patterns indicating method injection capability
+METHOD_INJECTION_PATTERNS = [
+    "inject_method",
+    "method_binding",
+    "load_method",
+    "_method_cache",
+    "MethodRegistry",
+]
+
+# Directories to exclude from external load call scanning
+EXCLUDED_DIRECTORIES = ["__pycache__", ".pytest_cache", ".git", "test", "tests", "docs", "examples"]
+
+
 @dataclass
 class AuditResult:
     """Result of a single audit check."""
@@ -494,7 +514,7 @@ class FactoryAuditor:
 
         # Status depends on caching implementation
         code_implemented = has_caching_var and has_lazy_loading
-        if external_calls > 5:  # Allow some test/doc calls
+        if external_calls > ALLOWED_EXTERNAL_LOAD_CALLS:
             status = "PARTIAL"
             passed = True  # Warning only
         elif code_implemented:
@@ -523,7 +543,7 @@ class FactoryAuditor:
         """Count load_questionnaire calls outside factory."""
         count = 0
         for py_file in self.repo_root.rglob("*.py"):
-            if any(x in py_file.parts for x in ["__pycache__", ".pytest_cache", ".git", "test", "tests", "docs", "examples"]):
+            if any(x in py_file.parts for x in EXCLUDED_DIRECTORIES):
                 continue
             if "phase2_10_00_factory.py" in str(py_file):
                 continue
@@ -572,19 +592,12 @@ class FactoryAuditor:
             has_contract_execution = False
             has_batch_execution = False
 
-        # Check for method injection/loading (more specific patterns)
+        # Check for method injection/loading (specific patterns)
         has_method_loading = False
         if self.factory_path.exists():
             factory_content = self.factory_path.read_text(encoding='utf-8')
             # Look for specific method injection patterns
-            method_patterns = [
-                "inject_method",
-                "method_binding",
-                "load_method",
-                "_method_cache",
-                "MethodRegistry",
-            ]
-            has_method_loading = any(pattern in factory_content for pattern in method_patterns)
+            has_method_loading = any(pattern in factory_content for pattern in METHOD_INJECTION_PATTERNS)
             print(f"  {'✅' if has_method_loading else '❌'} Method injection capability")
 
         passed = has_class_registry and (has_contract_execution or has_batch_execution)
