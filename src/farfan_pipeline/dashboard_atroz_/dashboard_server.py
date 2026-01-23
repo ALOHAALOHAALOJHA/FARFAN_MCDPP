@@ -25,13 +25,7 @@ app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50MB max upload
 CORS(app)
 
 # Initialize SocketIO
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
-
-# Register enhanced monitoring endpoints
-register_monitoring_endpoints(app)
-
-# Ensure upload directory exists
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # Import real PDET data and bridge
 from farfan_pipeline.dashboard_atroz_.pdet_dashboard_adapter import (
@@ -46,6 +40,12 @@ from farfan_pipeline.dashboard_atroz_.pipeline_dashboard_bridge import (
 )
 from farfan_pipeline.dashboard_atroz_.api_monitoring_enhanced import register_monitoring_endpoints
 from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
+
+# Register enhanced monitoring endpoints
+register_monitoring_endpoints(app)
+
+# Ensure upload directory exists
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # Global state
 pipeline_status = {
@@ -1133,4 +1133,4 @@ if __name__ == "__main__":
     except ImportError:
         logger.info("UnifiedOrchestrator not available - running in standalone mode")
 
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    socketio.run(app, host="0.0.0.0", port=5005, debug=True)

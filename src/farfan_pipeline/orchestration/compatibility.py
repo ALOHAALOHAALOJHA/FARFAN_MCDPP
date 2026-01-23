@@ -1,13 +1,39 @@
 """
 Compatibility layer for deprecated Orchestrator imports.
 
-This module provides a bridge for legacy code importing from
-'orchestration.orchestrator' or 'farfan_pipeline.orchestration.orchestrator'
-expecting the old class structure.
+MIGRATION GUIDE (v2.0 -> v3.0):
+===============================
+
+This module provides a bridge for legacy code. All legacy imports MUST be migrated
+before v3.0.0.
+
+Old Import                                  | New Import
+------------------------------------------- | ----------------------------------------------------
+orchestration.orchestrator.Orchestrator     | farfan_pipeline.orchestration.orchestrator.UnifiedOrchestrator
+orchestration.factory.Factory               | farfan_pipeline.orchestration.factory.UnifiedFactory
+orchestration.method_registry.*             | farfan_pipeline.orchestration.factory.UnifiedFactory.execute_contract()
+
+DEPRECATION TIMELINE:
+- v2.0 (Current): Warnings emitted, stubs provided.
+- v2.5: Stubs raise error (optional flag to suppress).
+- v3.0: This module is removed.
+
 """
 
+import warnings
 from typing import Any, Dict, List, Optional
 import logging
+
+class CompatibilityWarning(DeprecationWarning):
+    """Warning for usage of deprecated orchestration components."""
+    pass
+
+def _warn_deprecated(old_name: str, new_name: str):
+    warnings.warn(
+        f"{old_name} is deprecated. Use {new_name} instead. Removal in v3.0.",
+        CompatibilityWarning,
+        stacklevel=3
+    )
 
 # =============================================================================
 # REAL IMPORTS (Redirects)
@@ -54,6 +80,10 @@ class MacroEvaluation:
     """Stub for deprecated MacroEvaluation."""
     pass
 
+class AbortSignal(Exception):
+    """Stub for deprecated AbortSignal."""
+    pass
+
 class Orchestrator:
     """
     Compatibility Stub for the old Orchestrator.
@@ -74,6 +104,29 @@ class Orchestrator:
     def _validate_questionnaire_structure(self, *args, **kwargs):
         pass
 
-    def validate_signals_for_questionnaire(self, *args, **kwargs):
-        return {"valid": True} # Mock success
+
+class LegacyCoreOrchestrator:
+    """
+    Wrapper for backward compatibility.
+    
+    Proxies calls to UnifiedOrchestrator while emitting warnings.
+    """
+    def __init__(self, *args, **kwargs):
+        _warn_deprecated("LegacyCoreOrchestrator", "UnifiedOrchestrator")
+        from farfan_pipeline.orchestration.orchestrator import UnifiedOrchestrator, OrchestratorConfig
+        
+        # Try to map legacy config args to FactoryConfig/OrchestratorConfig if possible
+        # For now, just initialize with defaults + overrides
+        config = OrchestratorConfig() 
+        self._delegate = UnifiedOrchestrator(config)
+        
+    def execute_phase(self, phase_id: str, *args, **kwargs):
+        _warn_deprecated("execute_phase()", "UnifiedOrchestrator.execute()")
+        # This is a best-effort mapping. Phase IDs might need mapping too.
+        return self._delegate.execute_phase(phase_id)
+        
+    def __getattr__(self, name: str):
+        # Proxy everything else
+        return getattr(self._delegate, name)
+
 

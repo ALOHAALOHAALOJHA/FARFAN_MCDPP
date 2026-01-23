@@ -305,6 +305,12 @@ class UnifiedFactory:
         }
         self._metrics_lock = threading.Lock()  # Lock for metrics updates
 
+        # ==========================================================================
+        # INTERVENTION 2: Access Pattern Tracking for Predictive Caching
+        # ==========================================================================
+        self._access_pattern: List[str] = []  # Track contract access order
+        self._pattern_lock = threading.Lock()  # Lock for pattern access
+
         logger.info(
             "UnifiedFactory initialized",
             project_root=str(config.project_root),
@@ -1495,6 +1501,173 @@ class UnifiedFactory:
             Dict with dimensions, policy_areas, and clusters
         """
         return self.create_signal_registry()
+
+    # ==========================================================================
+    # HEALTH DASHBOARD & PREDICTIVE CACHING (INTERVENTION 2)
+    # ==========================================================================
+
+    def get_performance_metrics(self) -> Dict[str, Any]:
+        """Get current performance metrics (thread-safe copy)."""
+        with self._metrics_lock:
+            metrics = dict(self._execution_metrics)
+            # Compute cache efficiency
+            total_cache_ops = metrics.get("cache_hits", 0) + metrics.get("cache_misses", 0)
+            metrics["cache_efficiency_percent"] = (
+                (metrics.get("cache_hits", 0) / total_cache_ops * 100)
+                if total_cache_ops > 0 else 0.0
+            )
+            return metrics
+
+    def get_factory_capabilities(self) -> Dict[str, Any]:
+        """Get factory capabilities and resource status."""
+        return {
+            "max_workers": self._config.max_workers,
+            "available_workers": self._config.max_workers,  # Simplified
+            "cache_size": self._config.cache_size,
+            "parallel_enabled": self._config.enable_parallel_execution,
+            "adaptive_cache_enabled": self._config.enable_adaptive_caching,
+            "predictive_prefetch_enabled": self._config.enable_predictive_prefetch,
+            "active_contracts": len(self._contracts) if self._contracts else 0,
+        }
+
+    def get_health_status(self) -> FactoryHealthStatus:
+        """Get comprehensive factory health status."""
+        metrics = self.get_performance_metrics()
+        capabilities = self.get_factory_capabilities()
+
+        # Calculate health indicators
+        cache_hit_rate = metrics.get("cache_efficiency_percent", 0)
+        contracts_executed = max(1, metrics.get("contracts_executed", 1))
+        parallel_efficiency = (
+            metrics.get("parallel_executions", 0) / contracts_executed
+        ) * 100
+
+        avg_time_ms = metrics.get("average_execution_time", 0) * 1000
+        error_rate = (
+            metrics.get("failed_executions", 0) / contracts_executed
+        ) * 100
+
+        warnings = []
+        if cache_hit_rate < 50:
+            warnings.append(f"Low cache hit rate: {cache_hit_rate:.1f}%")
+        if error_rate > 5:
+            warnings.append(f"High error rate: {error_rate:.1f}%")
+        if avg_time_ms > 1000:
+            warnings.append(f"Slow avg execution: {avg_time_ms:.0f}ms")
+
+        is_healthy = (
+            error_rate < 10 and
+            cache_hit_rate > 30 and
+            len(warnings) == 0
+        )
+
+        return FactoryHealthStatus(
+            is_healthy=is_healthy,
+            cache_hit_rate=cache_hit_rate,
+            parallel_efficiency=parallel_efficiency,
+            avg_execution_time_ms=avg_time_ms,
+            error_rate=error_rate,
+            active_contracts=capabilities["active_contracts"],
+            available_workers=capabilities["max_workers"],
+            warnings=tuple(warnings),
+        )
+
+    def get_health_dashboard(self) -> Dict[str, Any]:
+        """Get formatted health dashboard."""
+        health = self.get_health_status()
+        capabilities = self.get_factory_capabilities()
+
+        return {
+            "status": "HEALTHY" if health.is_healthy else "DEGRADED",
+            "metrics": {
+                "cache_efficiency": f"{health.cache_hit_rate:.1f}%",
+                "parallel_efficiency": f"{health.parallel_efficiency:.1f}%",
+                "avg_execution_time": f"{health.avg_execution_time_ms:.1f}ms",
+                "error_rate": f"{health.error_rate:.1f}%",
+            },
+            "resources": {
+                "active_contracts": health.active_contracts,
+                "available_workers": health.available_workers,
+                "cache_size": capabilities["cache_size"],
+            },
+            "warnings": list(health.warnings),
+            "recommendations": self._generate_health_recommendations(health),
+        }
+
+    def _generate_health_recommendations(
+        self, health: FactoryHealthStatus
+    ) -> List[str]:
+        """Generate actionable recommendations based on health."""
+        recommendations = []
+
+        if health.cache_hit_rate < 50:
+            recommendations.append(
+                "Increase cache_size or enable_predictive_prefetch"
+            )
+        if health.error_rate > 5:
+            recommendations.append(
+                "Review contract configurations and method bindings"
+            )
+        if health.avg_execution_time_ms > 1000:
+            recommendations.append(
+                "Enable parallel_execution or increase max_workers"
+            )
+
+        return recommendations
+
+    def _track_access(self, contract_id: str) -> None:
+        """Track contract access pattern for prediction."""
+        with self._pattern_lock:
+            self._access_pattern.append(contract_id)
+            # Keep last 1000 accesses
+            if len(self._access_pattern) > 1000:
+                self._access_pattern = self._access_pattern[-1000:]
+
+    def get_predicted_contracts(self, count: int = 10) -> List[str]:
+        """Predict next contracts to access based on Markov chain patterns."""
+        from collections import Counter
+
+        with self._pattern_lock:
+            if len(self._access_pattern) < 10:
+                return []
+
+            # Build transition probabilities
+            transitions: Counter = Counter()
+            for i in range(len(self._access_pattern) - 1):
+                current = self._access_pattern[i]
+                next_contract = self._access_pattern[i + 1]
+                transitions[(current, next_contract)] += 1
+
+            # Get most likely next contracts from last accessed
+            last_contract = self._access_pattern[-1]
+            predictions = [
+                next_contract
+                for (current, next_contract), freq in transitions.most_common()
+                if current == last_contract
+            ]
+
+            return predictions[:count]
+
+    def prefetch_predicted_contracts(self) -> int:
+        """Prefetch predicted contracts into cache."""
+        if not self._config.enable_predictive_prefetch:
+            return 0
+
+        predicted = self.get_predicted_contracts(
+            count=self._config.cache_size // 4
+        )
+
+        prefetched = 0
+        for contract_id in predicted:
+            if self._executor_cache and contract_id not in self._executor_cache._cache:
+                try:
+                    # Pre-warm cache by loading contracts
+                    self.load_contracts()
+                    prefetched += 1
+                except Exception:
+                    pass
+
+        return prefetched
 
     # ==========================================================================
     # FACTORY METHODS

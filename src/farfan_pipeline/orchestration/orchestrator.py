@@ -1243,6 +1243,34 @@ class PipelineResult:
     errors: list = field(default_factory=list)
 
 
+@dataclass(frozen=True)
+class ExecutionTrace:
+    """Immutable trace of execution for debugging/analysis."""
+    execution_id: str
+    phase_sequence: Tuple[str, ...]
+    state_transitions: Tuple[Dict[str, Any], ...]
+    phase_timings: Dict[str, float]
+    violations: Tuple[Any, ...]
+    errors: Tuple[Exception, ...]
+    metadata: Dict[str, Any]
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "execution_id": self.execution_id,
+            "phase_sequence": self.phase_sequence,
+            "state_transitions": self.state_transitions,
+            "phase_timings": self.phase_timings,
+            "violations": [str(v) for v in self.violations],
+            "errors": [str(e) for e in self.errors],
+            "metadata": self.metadata,
+        }
+
+    def to_json(self, path: Path) -> None:
+        import json
+        with open(path, "w") as f:
+            json.dump(self.to_dict(), f, indent=2, default=str)
+
+
 class UnifiedOrchestrator:
     """
     Unified FARFAN Pipeline Orchestrator.
@@ -1340,6 +1368,12 @@ class UnifiedOrchestrator:
             dependency_graph=self.dependency_graph,
             mode=SchedulingStrategy[config.scheduling_mode],
         )
+        
+        # Execution Trace
+        self._trace: List[Dict[str, Any]] = []
+        self._trace_lock = threading.Lock()
+        self._execution_id = str(uuid4())
+        self._phase_timings: Dict[str, float] = {}
 
         # Execution state
         self._active_phases: Set[str] = set()
@@ -1496,6 +1530,35 @@ class UnifiedOrchestrator:
             self.logger.debug(f"{consumer_id} received signal: {signal.signal_id}")
         return handler
 
+    def _trace_event(self, event_type: str, **kwargs) -> None:
+        """Record an execution event to the trace."""
+        with self._trace_lock:
+            event = {
+                "timestamp": time.time(),
+                "type": event_type,
+                "data": kwargs
+            }
+            self._trace.append(event)
+
+    def get_execution_trace(self) -> ExecutionTrace:
+        """Get the current execution trace."""
+        with self._trace_lock:
+            # Safe retrieval
+            return ExecutionTrace(
+                execution_id=self._execution_id,
+                phase_sequence=tuple(e["data"].get("phase_id") for e in self._trace if e["type"] == "PHASE_COMPLETE"),
+                state_transitions=(), 
+                phase_timings=self._phase_timings.copy(),
+                violations=(),
+                errors=(),
+                metadata={"event_count": len(self._trace)}
+            )
+
+    def to_json(self, path: Path) -> None:
+         """Export execution trace to JSON."""
+         trace = self.get_execution_trace()
+         trace.to_json(path)
+
     def _emit_phase_signal(
         self,
         phase_id: PhaseID,
@@ -1517,6 +1580,8 @@ class UnifiedOrchestrator:
         """
         if not self.config.enable_sisas:
             return False
+
+
 
         if self.context.sisas is None or not SISAS_CORE_AVAILABLE:
             return False

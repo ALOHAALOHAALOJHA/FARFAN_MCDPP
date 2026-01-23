@@ -556,3 +556,93 @@ class DependencyGraph:
             config = yaml.safe_load(f)
         
         return cls.from_config(config)
+    # =========================================================================
+    # VISUALIZATION
+    # =========================================================================
+
+    def export_to_dot(self, output_path: str) -> None:
+        """Export dependency graph to DOT format for Graphviz."""
+        dot_lines = [
+            "digraph FARFAN_Dependency_Graph {",
+            "  rankdir=TD;",  # Top to bottom
+            "  node [shape=box];",
+            "  ",
+        ]
+
+        # Add nodes with status-based styling
+        for node_id, node in self.nodes.items():
+            status_color = self._get_status_color(node.status)
+            label = f"{node_id}\\n({node.status.name})"
+            dot_lines.append(f'  "{node_id}" [label="{label}" fillcolor="{status_color}" style=filled];')
+
+        # Add edges
+        for edge in self.edges:
+            edge_style = "solid" if edge.edge_type == "hard" else "dashed"
+            dot_lines.append(f'  "{edge.source}" -> "{edge.target}" [style={edge_style}];')
+
+        dot_lines.append("}")
+
+        # Write to file
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(dot_lines))
+
+    def _get_status_color(self, status: DependencyStatus) -> str:
+        """Get color for node status."""
+        colors = {
+            DependencyStatus.PENDING: "lightgray",
+            DependencyStatus.READY: "lightblue",
+            DependencyStatus.RUNNING: "yellow",
+            DependencyStatus.COMPLETED: "lightgreen",
+            DependencyStatus.FAILED: "lightcoral",
+            DependencyStatus.BLOCKED: "orange",
+            DependencyStatus.NOT_STARTED: "white",
+            DependencyStatus.PENDING_RETRY: "pink",
+            DependencyStatus.PARTIAL: "lightgreen", # Same as completed usually
+        }
+        return colors.get(status, "white")
+
+    def export_to_mermaid(self, output_path: str) -> None:
+        """Export to Mermaid.js format for Markdown rendering."""
+        lines = ["graph TD"]
+
+        # Add nodes
+        for node_id, node in self.nodes.items():
+            status_icon = self._get_status_icon(node.status)
+            lines.append(f"  {node_id}[{status_icon} {node_id}<br/>{node.status.name}]")
+
+        # Add edges
+        for edge in self.edges:
+            style = " -.-> " if edge.edge_type == "soft" else " --> "
+            lines.append(f"  {edge.source}{style}{edge.target}")
+
+        # Add classes for styling (basic)
+        lines.append("\n  classDef completed fill:#90EE90,stroke:#333,stroke-width:2px")
+        lines.append("  classDef failed fill:#F08080,stroke:#333,stroke-width:2px")
+        lines.append("  classDef running fill:#FFD700,stroke:#333,stroke-width:2px")
+        
+        # Apply classes based on status (simplified)
+        for node_id, node in self.nodes.items():
+            if node.status == DependencyStatus.COMPLETED:
+                lines.append(f"  class {node_id} completed")
+            elif node.status == DependencyStatus.FAILED:
+                lines.append(f"  class {node_id} failed")
+            elif node.status == DependencyStatus.RUNNING:
+                lines.append(f"  class {node_id} running")
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+
+    def _get_status_icon(self, status: DependencyStatus) -> str:
+        """Get emoji icon for status."""
+        icons = {
+            DependencyStatus.NOT_STARTED: "⚪",
+            DependencyStatus.PENDING: "⏳",
+            DependencyStatus.PENDING_RETRY: "🔄",
+            DependencyStatus.READY: "✅",
+            DependencyStatus.RUNNING: "🚀",
+            DependencyStatus.COMPLETED: "✅",
+            DependencyStatus.PARTIAL: "⚠️",
+            DependencyStatus.FAILED: "❌",
+            DependencyStatus.BLOCKED: "🚫",
+        }
+        return icons.get(status, "❓")

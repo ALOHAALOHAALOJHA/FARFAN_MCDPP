@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
 from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
-from farfan_pipeline.orchestration.phase_id import PhaseID
+from farfan_pipeline.orchestration import PhaseID
 
 logger = logging.getLogger(__name__)
 
