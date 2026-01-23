@@ -2497,7 +2497,7 @@ class UnifiedOrchestrator:
             # Extract policy areas from chunks (assuming they have policy_area attribute)
             policy_areas_found = set()
             for chunk in smart_chunks:
-                if hasattr(chunk, 'policy_area'):
+                if hasattr(chunk, 'policy_area') and chunk.policy_area:
                     policy_areas_found.add(chunk.policy_area)
             policy_areas_count = len(policy_areas_found)
             invariant_10_policy_areas = (policy_areas_count == 10)
@@ -2514,7 +2514,7 @@ class UnifiedOrchestrator:
             # Extract dimensions from chunks (assuming they have dimension attribute)
             dimensions_found = set()
             for chunk in smart_chunks:
-                if hasattr(chunk, 'dimension'):
+                if hasattr(chunk, 'dimension') and chunk.dimension:
                     dimensions_found.add(chunk.dimension)
             dimensions_count = len(dimensions_found)
             invariant_6_dimensions = (dimensions_count == 6)
@@ -2790,7 +2790,7 @@ class UnifiedOrchestrator:
             "expected": 300,
             "actual": total_contracts,
             "passed": invariant_300_contracts,
-            "critical": False  # Warning level, not critical
+            "critical": True  # Critical per CANONICAL_PHASE_ARCHITECTURE.md
         }
         self.logger.info(f"[P2] Invariant Check: 300 Contracts = {invariant_300_contracts} (actual: {total_contracts})")
         
