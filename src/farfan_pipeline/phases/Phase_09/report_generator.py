@@ -1393,31 +1393,38 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
             plt.close(fig)
             chart_paths.append(chart_path)
 
-        # RADAR CHART for clusters (if we have multiple dimensions)
+        # RADAR CHART for clusters with actual multi-dimensional metrics
         if report.meso_clusters and len(report.meso_clusters) >= 3:
-            # TODO: Implement proper radar chart with actual cluster metrics
-            # For radar, we need multiple dimensions per cluster
-            # Currently using simplified aggregated scores as placeholder
             fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True), facecolor=colors['bg'])
             ax.set_facecolor(colors['bg'])
-            
-            # Use actual cluster data instead of random
-            categories = list(report.meso_clusters.keys())[:5]  # Use first 5 clusters as categories
+
+            # Define metric dimensions for the radar chart
+            categories = ['Raw Score', 'Adjusted Score', 'Dispersion', 'Peer Quality', 'Overall Quality']
             N = len(categories)
-            
-            # Extract real scores from clusters
-            cluster_items = list(report.meso_clusters.items())[:3]  # First 3 clusters
+
+            # Extract top 3 clusters with their actual metrics
+            cluster_items = list(report.meso_clusters.items())[:3]
+
+            # Build multi-dimensional data for each cluster
             values = []
-            for _, cluster in cluster_items:
-                # Use actual adjusted_score, repeated for each category
-                # This is a placeholder until proper multi-dimensional metrics are available
-                values.append([cluster.adjusted_score] * N)
+            for cluster_id, cluster in cluster_items:
+                # Extract actual metrics from the cluster
+                cluster_metrics = [
+                    cluster.raw_meso_score,  # Raw Score
+                    cluster.adjusted_score,  # Adjusted Score
+                    1.0 - cluster.dispersion_penalty,  # Dispersion (inverted - higher is better)
+                    1.0 - cluster.peer_penalty,  # Peer Quality (inverted - higher is better)
+                    1.0 - cluster.total_penalty,  # Overall Quality (inverted - higher is better)
+                ]
+                values.append(cluster_metrics)
             values = np.array(values)
-            
-            # Plot each cluster
+
+            # Setup angles for radar chart
             angles = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
             angles += angles[:1]
-            
+
+            # Plot each cluster with its actual metrics
+            cluster_colors = ['#00ff88', '#ff8800', '#0088ff']
             for i in range(min(3, len(cluster_items))):
                 vals = values[i].tolist()
                 vals += vals[:1]
