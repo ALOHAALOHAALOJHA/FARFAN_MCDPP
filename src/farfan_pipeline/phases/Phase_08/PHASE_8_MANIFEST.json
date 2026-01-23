@@ -1,45 +1,43 @@
 {
   "$schema": "phase_manifest_schema.json",
-  "manifest_version": "2.0.0",
+  "manifest_version": "2.0.2",
   "phase": {
     "number": 8,
     "name": "Recommendation Engine",
     "codename": "RECOMMENDER",
     "label": "Phase 8",
-    "description": "Recommendation engine that synthesizes analysis results into actionable policy recommendations using enhanced rule templates with 7 key features"
+    "description": "Unified recommendation engine (Bifurcator) that synthesizes analysis results into actionable policy recommendations with exponential amplification."
   },
   "metadata": {
     "created": "2025-12-30",
     "modified": "2026-01-22",
-    "version": "2.0.1",
+    "version": "3.0.0",
     "author": "F.A.R.F.A.N Core Architecture Team",
     "status": "ACTIVE",
     "gnea_compliant": true,
     "labels": [
       "PHASE_8",
       "RECOMMENDER",
-      "GNEA_COMPLIANT"
+      "GNEA_COMPLIANT",
+      "BIFURCATOR"
     ]
   },
   "statistics": {
-    "total_modules": 8,
-    "stages": 4
+    "total_modules": 3,
+    "stages": 3
   },
   "directory_structure": {
     "root_modules": [
       "phase8_00_00_data_models.py",
       "phase8_10_00_schema_validation.py",
-      "phase8_20_00_recommendation_engine.py",
-      "phase8_20_01_recommendation_engine_adapter.py",
-      "phase8_20_02_generic_rule_engine.py",
-      "phase8_20_03_template_compiler.py",
-      "phase8_30_00_signal_enriched_recommendations.py"
+      "phase8_25_00_recommendation_bifurcator.py"
     ],
     "subfolders": {
       "interfaces": {
         "purpose": "Interface contracts and validation",
         "modules": [
-          "interface_validator.py"
+          "interface_validator.py",
+          "phase8_10_00_interface_validator.py"
         ],
         "documentation": [
           "README.md",
@@ -77,15 +75,8 @@
       "name": "Infrastructure",
       "description": "Base infrastructure and types",
       "execution_order": 1,
-      "module_count": 2,
+      "module_count": 1,
       "modules": [
-        {
-          "order": 0,
-          "canonical_name": "__init__",
-          "type": "INFRA",
-          "criticality": "LOW",
-          "purpose": "Package initialization"
-        },
         {
           "order": 1,
           "canonical_name": "phase8_00_00_data_models",
@@ -112,55 +103,18 @@
       ]
     },
     {
-      "code": 20,
-      "name": "Enforcement",
-      "description": "Determinism and enforcement",
+      "code": 25,
+      "name": "Unified Engine",
+      "description": "Unified generation and bifurcation",
       "execution_order": 3,
-      "module_count": 4,
-      "modules": [
-        {
-          "order": 0,
-          "canonical_name": "phase8_20_00_recommendation_engine",
-          "type": "ENF",
-          "criticality": "CRITICAL",
-          "purpose": "Recommendation Engine"
-        },
-        {
-          "order": 1,
-          "canonical_name": "phase8_20_01_recommendation_engine_adapter",
-          "type": "ENF",
-          "criticality": "CRITICAL",
-          "purpose": "Recommendation Engine Adapter"
-        },
-        {
-          "order": 2,
-          "canonical_name": "phase8_20_02_generic_rule_engine",
-          "type": "ENF",
-          "criticality": "CRITICAL",
-          "purpose": "Generic Rule Engine"
-        },
-        {
-          "order": 3,
-          "canonical_name": "phase8_20_03_template_compiler",
-          "type": "ENF",
-          "criticality": "CRITICAL",
-          "purpose": "Template Compiler"
-        }
-      ]
-    },
-    {
-      "code": 30,
-      "name": "Resource Management",
-      "description": "Resource control and limits",
-      "execution_order": 4,
       "module_count": 1,
       "modules": [
         {
           "order": 0,
-          "canonical_name": "phase8_30_00_signal_enriched_recommendations",
-          "type": "ENF",
+          "canonical_name": "phase8_25_00_recommendation_bifurcator",
+          "type": "ENG",
           "criticality": "CRITICAL",
-          "purpose": "Signal Enriched Recommendations"
+          "purpose": "Unified Recommendation Engine"
         }
       ]
     }
@@ -182,14 +136,6 @@
         "source": "Orchestrator",
         "required": true,
         "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-002"
-      },
-      {
-        "id": "P8-IN-003",
-        "name": "signal_data",
-        "type": "SignalDataInput",
-        "source": "SISAS Signal Registry",
-        "required": false,
-        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-003"
       }
     ],
     "outputs": [
@@ -202,16 +148,6 @@
           "Orchestrator"
         ],
         "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/outputs/P8-OUT-001"
-      },
-      {
-        "id": "P8-OUT-002",
-        "name": "recommendation_metadata",
-        "type": "RecommendationMetadata",
-        "destination": [
-          "Orchestrator",
-          "Audit Log"
-        ],
-        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/outputs/P8-OUT-002"
       }
     ],
     "invariants": [
@@ -229,16 +165,11 @@
         "id": "INV-P8-003",
         "name": "Level Hierarchy",
         "formula": "MICRO ⊆ MESO ⊆ MACRO"
-      },
-      {
-        "id": "INV-P8-004",
-        "name": "Score Bounds",
-        "formula": "MICRO: [0,3], MESO/MACRO: [0,100]"
       }
     ]
   },
   "enhanced_features": {
-    "version": "2.0",
+    "version": "3.0",
     "features": [
       "template_parameterization",
       "execution_logic",
@@ -246,7 +177,11 @@
       "unambiguous_time_horizons",
       "testable_verification",
       "cost_tracking",
-      "authority_mapping"
+      "authority_mapping",
+      "dimensional_resonance",
+      "cross_pollination",
+      "temporal_cascades",
+      "synergy_matrix"
     ]
   },
   "determinism": {
@@ -262,21 +197,21 @@
     "interface_spec": "interfaces/INTERFACE_MANIFEST.json",
     "primitives": "primitives/README.md",
     "manifest": "PHASE_8_MANIFEST.json",
-    "rules_schema": "rules/recommendation_rules.schema.json"
+    "rules_schema": "rules/recommendation_rules.schema.json",
+    "dag": "PHASE_8_DAG.md"
   },
   "cross_references": {
     "upstream": {
       "Phase 7": "Provides AnalysisResultsInput with micro_scores, cluster_data, macro_data"
     },
     "downstream": {
-      "Phase 9": "Consumes recommendations for report generation",
-      "Orchestrator": "Receives metadata for pipeline state"
+      "Phase 9": "Consumes recommendations for report generation"
     }
   },
   "orchestration": {
     "aligned_with_orchestrator": true,
     "last_alignment_audit": "2026-01-22",
-    "execution_stages": 4,
+    "execution_stages": 3,
     "stage_mapping": [
       {
         "stage": "S00",
@@ -289,19 +224,10 @@
         "module": "phase8_10_00_schema_validation.py"
       },
       {
-        "stage": "S20",
-        "name": "Core Generation",
-        "module": "phase8_20_00_recommendation_engine.py"
-      },
-      {
-        "stage": "S30",
-        "name": "Signal Enrichment",
-        "module": "phase8_30_00_signal_enriched_recommendations.py"
+        "stage": "S25",
+        "name": "Unified Bifurcation",
+        "module": "phase8_25_00_recommendation_bifurcator.py"
       }
-    ],
-    "corrected_imports": [
-      "RecommendationEngine.generate_all_recommendations() instead of RecommendationEngineOrchestrator",
-      "Removed non-existent phase8_20_04_recommendation_engine_orchestrator.py import"
     ]
   }
 }
