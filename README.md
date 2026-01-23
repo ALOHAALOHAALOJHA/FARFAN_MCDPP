@@ -167,9 +167,9 @@ FARFAN_SISAS_BUS_QUEUE_SIZE=50000
 ```
 FARFAN_MCDPP/
 ├── src/farfan_pipeline/           # Main source code
-│   ├── orchestration/             # Orchestrator & Factory
+│   ├── orchestration/             # Orchestrator & UnifiedFactory
 │   │   ├── orchestrator.py        # Unified orchestrator (2600+ lines)
-│   │   ├── factory.py             # Component factory
+│   │   ├── factory.py             # UnifiedFactory (component factory)
 │   │   ├── seed_registry.py       # Determinism enforcement
 │   │   └── gates/                 # Validation gates
 │   ├── calibration/               # Calibration system
