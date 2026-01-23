@@ -2047,7 +2047,6 @@ class UnifiedOrchestrator:
             )
 
             # Run Phase 0 via VerifiedPipelineRunner (P0.0-P0.3)
-            import asyncio
             phase0_success = asyncio.run(runner.run_phase_zero())
 
             if not phase0_success:
