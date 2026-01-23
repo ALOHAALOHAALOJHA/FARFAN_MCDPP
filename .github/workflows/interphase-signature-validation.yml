@@ -1,0 +1,116 @@
+name: Interphase Signature Validation
+
+on:
+  pull_request:
+    paths:
+      - 'src/farfan_pipeline/phases/**/interphase/**'
+      - 'scripts/audit/inspect_interphase_signatures.py'
+      - 'scripts/audit/validate_interphase_compatibility.py'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/farfan_pipeline/phases/**/interphase/**'
+  workflow_dispatch:
+
+jobs:
+  validate-signatures:
+    name: Validate Interphase Signatures
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || echo "requirements.txt not found, skipping"
+      
+      - name: Run static signature inspection
+        id: static-check
+        run: |
+          python scripts/audit/inspect_interphase_signatures.py
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+      
+      - name: Check inspection results
+        run: |
+          if [ -f "artifacts/audit_reports/interphase_signature_inspection.json" ]; then
+            echo "✅ Inspection report generated"
+            
+            # Check for incompatibilities
+            incompatible=$(python -c "import json; report=json.load(open('artifacts/audit_reports/interphase_signature_inspection.json')); print(report['compatibility_summary']['incompatible'])")
+            
+            if [ "$incompatible" -gt 0 ]; then
+              echo "❌ Found $incompatible incompatibilities"
+              exit 1
+            else
+              echo "✅ No incompatibilities detected"
+            fi
+          else
+            echo "⚠️ Inspection report not found"
+            exit 1
+          fi
+      
+      - name: Upload inspection artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: interphase-signature-reports
+          path: |
+            artifacts/audit_reports/interphase_signature_inspection.json
+            artifacts/audit_reports/interphase_compatibility_validation.json
+          retention-days: 30
+      
+      - name: Comment on PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (!fs.existsSync('artifacts/audit_reports/interphase_signature_inspection.json')) {
+              return;
+            }
+            
+            const report = JSON.parse(fs.readFileSync('artifacts/audit_reports/interphase_signature_inspection.json', 'utf8'));
+            const summary = report.compatibility_summary;
+            
+            const body = `## Interphase Signature Validation Results
+            
+            **Timestamp**: ${report.timestamp}
+            
+            ### Summary
+            - **Phases Analyzed**: ${report.total_phases}
+            - **Interphase Modules**: ${report.total_interphase_modules}
+            - **Functions Extracted**: ${report.total_functions}
+            - **Contracts Identified**: ${report.total_contracts}
+            
+            ### Compatibility Status
+            - ✅ Compatible: ${summary.compatible}
+            - ⚠️ Warnings: ${summary.warning}
+            - ❌ Incompatible: ${summary.incompatible}
+            - ❓ Unknown: ${summary.unknown}
+            
+            ${summary.incompatible > 0 ? '### ❌ Critical Issues Detected\n\nPlease review the incompatibilities before merging.' : '### ✅ All Signatures Compatible\n\nNo critical issues detected.'}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+      
+      - name: Fail workflow if incompatibilities found
+        if: steps.static-check.outputs.exit_code != '0'
+        run: |
+          echo "❌ Signature validation failed"
+          exit 1

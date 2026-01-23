@@ -134,6 +134,8 @@ class InterphaseCompatibilityValidator:
         self._check_phase0_to_phase1_bridge()
         self._check_phase1_to_phase2_adapter()
         self._check_phase2_to_phase3_adapter()
+        self._check_phase4_to_phase5_contracts()
+        self._check_phase5_to_phase6_contracts()
         self._check_phase6_to_phase7_bridge()
         
         # Check validator interfaces
@@ -260,6 +262,96 @@ class InterphaseCompatibilityValidator:
             logger.warning(f"Phase 2 → Phase 3 adapter not found or not importable: {e}")
         except Exception as e:
             logger.error(f"Error checking Phase 2 → Phase 3 adapter: {e}")
+    
+    def _check_phase4_to_phase5_contracts(self) -> None:
+        """Validate Phase 4 to Phase 5 contract compatibility."""
+        logger.info("Checking Phase 4 → Phase 5 contracts...")
+        self.report.total_adapters_checked += 1
+        
+        try:
+            from farfan_pipeline.phases.Phase_05.interphase.phase5_10_00_entry_contract import (
+                Phase5EntryContract,
+                validate_phase5_entry
+            )
+            
+            # Analyze signatures
+            validate_sig = self._analyze_function_signature(validate_phase5_entry, "Phase_05.interphase")
+            self.report.signatures_analyzed.append(validate_sig)
+            
+            # Check that entry contract validates DimensionScore from Phase 4
+            if 'dimension_scores' not in validate_sig.parameters:
+                self.report.issues.append(CompatibilityIssue(
+                    severity='high',
+                    category='signature_mismatch',
+                    source_phase='Phase_04',
+                    target_phase='Phase_05',
+                    source_function='validate_phase5_entry',
+                    target_function=None,
+                    description='Entry contract missing expected dimension_scores parameter',
+                    recommendation='Ensure Phase 5 entry contract accepts DimensionScore[] from Phase 4'
+                ))
+            
+            logger.info("✓ Phase 4 → Phase 5 entry contract checked")
+            
+        except ImportError as e:
+            logger.error(f"Failed to import Phase 4 → Phase 5 contract: {e}")
+            self.report.issues.append(CompatibilityIssue(
+                severity='critical',
+                category='import_error',
+                source_phase='Phase_04',
+                target_phase='Phase_05',
+                source_function='validate_phase5_entry',
+                target_function=None,
+                description=f'Cannot import entry contract: {e}',
+                recommendation='Fix import errors in phase5_10_00_entry_contract.py'
+            ))
+        except Exception as e:
+            logger.error(f"Error checking Phase 4 → Phase 5 contract: {e}")
+    
+    def _check_phase5_to_phase6_contracts(self) -> None:
+        """Validate Phase 5 to Phase 6 contract compatibility."""
+        logger.info("Checking Phase 5 → Phase 6 contracts...")
+        self.report.total_adapters_checked += 1
+        
+        try:
+            from farfan_pipeline.phases.Phase_05.interphase.phase5_10_00_exit_contract import (
+                Phase5ExitContract,
+                validate_phase5_exit
+            )
+            
+            # Analyze signatures
+            validate_sig = self._analyze_function_signature(validate_phase5_exit, "Phase_05.interphase")
+            self.report.signatures_analyzed.append(validate_sig)
+            
+            # Check that exit contract validates AreaScore for Phase 6
+            if 'area_scores' not in validate_sig.parameters:
+                self.report.issues.append(CompatibilityIssue(
+                    severity='high',
+                    category='signature_mismatch',
+                    source_phase='Phase_05',
+                    target_phase='Phase_06',
+                    source_function='validate_phase5_exit',
+                    target_function=None,
+                    description='Exit contract missing expected area_scores parameter',
+                    recommendation='Ensure Phase 5 exit contract validates AreaScore[] for Phase 6'
+                ))
+            
+            logger.info("✓ Phase 5 → Phase 6 exit contract checked")
+            
+        except ImportError as e:
+            logger.error(f"Failed to import Phase 5 → Phase 6 contract: {e}")
+            self.report.issues.append(CompatibilityIssue(
+                severity='critical',
+                category='import_error',
+                source_phase='Phase_05',
+                target_phase='Phase_06',
+                source_function='validate_phase5_exit',
+                target_function=None,
+                description=f'Cannot import exit contract: {e}',
+                recommendation='Fix import errors in phase5_10_00_exit_contract.py'
+            ))
+        except Exception as e:
+            logger.error(f"Error checking Phase 5 → Phase 6 contract: {e}")
     
     def _check_phase6_to_phase7_bridge(self) -> None:
         """Validate Phase 6 to Phase 7 bridge compatibility."""
