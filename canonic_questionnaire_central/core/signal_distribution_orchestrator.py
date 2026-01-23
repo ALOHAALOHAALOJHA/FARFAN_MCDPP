@@ -403,8 +403,8 @@ class SignalDistributionOrchestrator:
         if not consumers:
             warnings.append("NO_CONSUMER_RECEIVED: No consumer has received this signal")
 
-        # CHANNEL-003: Audit entry created (check if signal_id in audit trail)
-        has_audit = any(entry.signal_id == signal.signal_id for entry in self._audit_trail)
+        # CHANNEL-003: Audit entry created (check if signal_id in audit log)
+        has_audit = any(entry.signal_id == signal.signal_id for entry in self._audit_log)
         if not has_audit:
             errors.append(f"NO_AUDIT_ENTRY: No audit entry for signal {signal.signal_id}")
 

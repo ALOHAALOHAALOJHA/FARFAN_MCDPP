@@ -28,12 +28,14 @@ import json
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Any, Optional, Callable
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Setup paths
 PROJECT_ROOT = Path(__file__).parent.parent
 SRC_PATH = PROJECT_ROOT / "src"
 sys.path.insert(0, str(SRC_PATH))
+# Also add PROJECT_ROOT to sys.path for canonic_questionnaire_central imports
+sys.path.insert(0, str(PROJECT_ROOT))
 
 SISAS_BASE = SRC_PATH / "farfan_pipeline" / "infrastructure" / "irrigation_using_signals" / "SISAS"
 
@@ -78,7 +80,7 @@ class SevereSISASAudit:
     
     def __init__(self):
         self.results = AuditResults()
-        self.results.start_time = datetime.utcnow().isoformat()
+        self.results.start_time = datetime.now(timezone.utc).isoformat()
         
     def run_test(self, name: str, category: str, test_fn: Callable) -> TestResult:
         """Run a single test with timing and error capture."""
@@ -167,7 +169,7 @@ class SevereSISASAudit:
         print("-" * 50)
         self._test_unified_orchestrator()
         
-        self.results.end_time = datetime.utcnow().isoformat()
+        self.results.end_time = datetime.now(timezone.utc).isoformat()
         
     def _test_core_infrastructure(self):
         """Test core SISAS infrastructure."""
