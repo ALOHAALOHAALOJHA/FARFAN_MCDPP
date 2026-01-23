@@ -4555,7 +4555,4531 @@ ls contracts/*.json | head -20
 
 ---
 
-*End of Comprehensive Technical Runbook - Version 2.0.0*
+## PART II: ADVANCED OPERATIONS & COMPREHENSIVE GUIDE
+
+> **Extended Technical Reference**
+>
+> | Attribute | Value |
+> |-----------|-------|
+> | **Section** | `RUNBOOK-ADVANCED-003` |
+> | **Version** | `3.0.0` |
+> | **Classification** | ADVANCED OPERATIONS |
+> | **Page Equivalent** | 200+ pages |
+
+---
+
+# Section 24: Installation & Initialization - Complete Propedeutic Guide
+
+## 24.1 System Requirements & Prerequisites
+
+### 24.1.1 Hardware Requirements
+
+**Minimum Requirements:**
+```yaml
+CPU: 4 cores (x86_64)
+RAM: 8 GB
+Storage: 20 GB free space
+Network: Stable internet connection (for model downloads)
+```
+
+**Recommended for Production:**
+```yaml
+CPU: 8+ cores (x86_64) with AVX2 support
+RAM: 16-32 GB
+Storage: 50 GB SSD (NVMe preferred)
+Network: 1 Gbps connection
+GPU: Optional - CUDA-compatible GPU for accelerated NLP operations
+```
+
+**Optimal Configuration:**
+```yaml
+CPU: 16+ cores (AMD EPYC or Intel Xeon)
+RAM: 64 GB
+Storage: 100 GB NVMe SSD
+Network: 10 Gbps connection
+GPU: NVIDIA A100 or V100 for transformer models
+```
+
+### 24.1.2 Software Prerequisites
+
+**Operating System Support:**
+```bash
+# Fully Supported
+Ubuntu 22.04 LTS (Jammy Jellyfish)
+Ubuntu 20.04 LTS (Focal Fossa)
+Debian 11 (Bullseye)
+Debian 12 (Bookworm)
+
+# Partially Supported
+macOS 12+ (Monterey or later) - Darwin platform
+RHEL 8+, CentOS 8+, Rocky Linux 8+
+
+# Experimental
+Windows 10/11 with WSL2 (Ubuntu 22.04)
+```
+
+**Core Dependencies:**
+```bash
+# Python ecosystem
+Python 3.12+ (strict requirement)
+pip 23.0+
+setuptools 65.0+
+wheel 0.38+
+
+# System packages (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install -y \
+    python3.12 \
+    python3.12-venv \
+    python3.12-dev \
+    build-essential \
+    git \
+    curl \
+    wget \
+    libssl-dev \
+    libffi-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libpoppler-cpp-dev \
+    poppler-utils \
+    tesseract-ocr \
+    tesseract-ocr-spa \
+    graphviz \
+    redis-server
+
+# Optional performance packages
+sudo apt-get install -y \
+    libblas-dev \
+    liblapack-dev \
+    libopenblas-dev \
+    gfortran
+
+# For PDF processing
+sudo apt-get install -y \
+    ghostscript \
+    imagemagick \
+    pdftotext \
+    pdfinfo
+```
+
+### 24.1.3 Network Configuration
+
+**Firewall Rules:**
+```bash
+# Allow dashboard access
+sudo ufw allow 5000/tcp   # ATROZ Dashboard
+sudo ufw allow 8000/tcp   # API Server
+sudo ufw allow 6379/tcp   # Redis (if external)
+
+# For remote access
+sudo ufw allow from 10.0.0.0/8 to any port 5000
+sudo ufw allow from 172.16.0.0/12 to any port 5000
+```
+
+**Proxy Configuration (if behind corporate proxy):**
+```bash
+# Set environment variables
+export http_proxy="http://proxy.company.com:8080"
+export https_proxy="http://proxy.company.com:8080"
+export no_proxy="localhost,127.0.0.1,.local"
+
+# For pip
+pip config set global.proxy http://proxy.company.com:8080
+```
+
+## 24.2 Installation Methods
+
+### 24.2.1 Method 1: Quick Install (Recommended)
+
+**Single-Command Installation:**
+```bash
+# Clone repository
+git clone https://github.com/ALOHAALOHAALOJHA/FARFAN_MCDPP.git
+cd FARFAN_MCDPP
+
+# Run installer
+bash install.sh
+
+# Activate environment
+source farfan-env/bin/activate
+
+# Verify installation
+farfan-pipeline --version
+python -m farfan_pipeline.orchestration.orchestrator --help
+```
+
+**Installation Script Breakdown:**
+```bash
+# What install.sh does:
+# 1. Checks Python 3.12+ availability
+# 2. Creates virtual environment in farfan-env/
+# 3. Upgrades pip, setuptools, wheel
+# 4. Installs all requirements from requirements.txt
+# 5. Installs package in editable mode (pip install -e .)
+# 6. Downloads spaCy language models
+# 7. Validates installation
+# 8. Creates default configuration files
+# 9. Initializes SISAS subsystem
+# 10. Runs smoke tests
+```
+
+### 24.2.2 Method 2: Manual Installation (Full Control)
+
+**Step-by-Step Manual Setup:**
+```bash
+# Step 1: Clone repository
+git clone https://github.com/ALOHAALOHAALOJHA/FARFAN_MCDPP.git
+cd FARFAN_MCDPP
+
+# Step 2: Create virtual environment
+python3.12 -m venv farfan-env
+
+# Step 3: Activate environment
+source farfan-env/bin/activate  # Linux/macOS
+# OR
+farfan-env\Scripts\activate  # Windows
+
+# Step 4: Upgrade pip ecosystem
+pip install --upgrade pip setuptools wheel
+
+# Step 5: Install core dependencies
+pip install -r requirements.txt
+
+# Step 6: Install package in development mode
+pip install -e .
+
+# Step 7: Download NLP models
+python -m spacy download es_core_news_lg
+python -m spacy download es_dep_news_trf
+
+# Step 8: Initialize configuration
+python scripts/setup/initialize_config.py
+
+# Step 9: Validate installation
+python scripts/setup/validate_installation.py
+
+# Step 10: Run smoke tests
+pytest tests/smoke/ -v
+```
+
+### 24.2.3 Method 3: Docker Installation
+
+**Using Docker Compose:**
+```bash
+# Build image
+docker-compose build farfan-pipeline
+
+# Start services
+docker-compose up -d
+
+# Access container
+docker-compose exec farfan-pipeline bash
+
+# Run pipeline
+docker-compose exec farfan-pipeline farfan-pipeline --start-phase 0 --end-phase 9
+```
+
+**Docker Configuration:**
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  farfan-pipeline:
+    build: .
+    container_name: farfan-pipeline
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+      - ./logs:/app/logs
+    ports:
+      - "5000:5000"  # Dashboard
+      - "8000:8000"  # API
+    environment:
+      - FARFAN_MODE=PROD
+      - FARFAN_SEED=42
+      - FARFAN_LOG_LEVEL=INFO
+    networks:
+      - farfan-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: farfan-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - farfan-network
+
+networks:
+  farfan-network:
+    driver: bridge
+```
+
+### 24.2.4 Post-Installation Verification
+
+**Comprehensive Health Check:**
+```bash
+# 1. Check Python version
+python --version
+# Expected: Python 3.12.x
+
+# 2. Check package installation
+pip list | grep farfan
+# Expected: farfan-pipeline, farfan-core
+
+# 3. Verify spaCy models
+python -c "import spacy; nlp = spacy.load('es_core_news_lg'); print('✓ Spanish model loaded')"
+
+# 4. Test imports
+python -c "
+from farfan_pipeline.orchestration.orchestrator import Orchestrator
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main import main
+print('✓ All imports successful')
+"
+
+# 5. Run diagnostic script
+python scripts/diagnostics/system_check.py
+
+# 6. Validate canonical files
+python scripts/validation/validate_canonical_files.py
+
+# 7. Check SISAS health
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main health
+
+# 8. Run mini pipeline test
+pytest tests/integration/test_mini_pipeline.py -v
+```
+
+## 24.3 Configuration & Initialization
+
+### 24.3.1 Environment Configuration
+
+**Create .env file:**
+```bash
+cat > .env << 'EOF'
+# Core Settings
+FARFAN_MODE=DEV
+FARFAN_SEED=42
+FARFAN_LOG_LEVEL=INFO
+FARFAN_STRICT_VALIDATION=false
+
+# Paths
+FARFAN_DATA_DIR=/home/user/FARFAN_MCDPP/data
+FARFAN_ARTIFACTS_DIR=/home/user/FARFAN_MCDPP/artifacts
+FARFAN_LOGS_DIR=/home/user/FARFAN_MCDPP/logs
+FARFAN_CONFIG_DIR=/home/user/FARFAN_MCDPP/config
+
+# SISAS Settings
+FARFAN_SISAS_ENABLE=true
+FARFAN_SISAS_BUS_QUEUE_SIZE=50000
+FARFAN_SISAS_CONSUMER_THREADS=4
+FARFAN_SISAS_GATE_STRICT=true
+
+# Performance Settings
+FARFAN_MAX_MEMORY_MB=8192
+FARFAN_TIMEOUT_SECONDS=300
+FARFAN_MAX_WORKERS=4
+FARFAN_ENABLE_CACHING=true
+FARFAN_CACHE_SIZE_MB=2048
+
+# Dashboard Settings
+FARFAN_DASHBOARD_HOST=0.0.0.0
+FARFAN_DASHBOARD_PORT=5000
+FARFAN_DASHBOARD_DEBUG=false
+
+# API Settings
+FARFAN_API_HOST=0.0.0.0
+FARFAN_API_PORT=8000
+FARFAN_API_WORKERS=4
+
+# Redis Settings
+FARFAN_REDIS_HOST=localhost
+FARFAN_REDIS_PORT=6379
+FARFAN_REDIS_DB=0
+
+# Monitoring Settings
+FARFAN_ENABLE_METRICS=true
+FARFAN_METRICS_INTERVAL=10
+FARFAN_ENABLE_PROFILING=false
+
+# Security Settings
+FARFAN_API_KEY=your-secret-key-here
+FARFAN_ENABLE_AUTH=false
+EOF
+```
+
+**Load environment:**
+```bash
+# Load .env automatically
+source .env
+
+# Or use python-dotenv
+python -c "from dotenv import load_dotenv; load_dotenv(); print('✓ Environment loaded')"
+```
+
+### 24.3.2 Initialize Canonical Files
+
+**Download/Verify Canonical Questionnaire:**
+```bash
+# Verify questionnaire exists
+ls -lh canonic_questionnaire_central/questionnaire_monolith.json
+
+# Validate questionnaire schema
+python scripts/validation/validate_questionnaire_schema.py
+
+# Generate questionnaire hash
+sha256sum canonic_questionnaire_central/questionnaire_monolith.json
+
+# Verify calibration files exist
+ls -lh config/calibration/COHORT_2024_*.json
+
+# List all calibration files
+ls -1 config/calibration/
+# Expected output:
+# COHORT_2024_intrinsic_calibration.json
+# COHORT_2024_fusion_weights.json
+# COHORT_2024_method_compatibility.json
+# COHORT_2024_questionnaire_monolith.json
+# COHORT_2024_executor_config.json
+# COHORT_2024_runtime_layers.json
+```
+
+### 24.3.3 Generate Required Contracts
+
+**Generate Phase 2 Contracts:**
+```bash
+# Generate all 300 contracts (Q001-Q030 × PA01-PA10)
+python scripts/generation/generate_all_contracts.py \
+    --questionnaire canonic_questionnaire_central/questionnaire_monolith.json \
+    --output-dir src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/ \
+    --version 4 \
+    --validate
+
+# Verify contract count
+ls src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/*.json | wc -l
+# Expected: 300
+
+# Validate contract integrity
+python scripts/validation/validate_all_contracts.py
+```
+
+### 24.3.4 Initialize SISAS Subsystem
+
+**Complete SISAS Initialization:**
+```bash
+# 1. Generate signal vocabulary
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    generate-vocab \
+    --output src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config/vocabulary_config.yaml
+
+# 2. Initialize signal buses
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.buses.bus_system init
+
+# 3. Register all consumers
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.consumers.consumer_registry register-all
+
+# 4. Validate gate configuration
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.gates.gate_validator validate
+
+# 5. Run SISAS health check
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main health \
+    --bus-stats \
+    --consumer-health \
+    --vehicle-status
+
+# Expected output:
+# ✓ All 6 buses operational
+# ✓ All 17 consumers registered
+# ✓ All 4 gates configured
+# ✓ All 8 vehicles available
+```
+
+### 24.3.5 Initialize Seed Registry
+
+**Set Up Deterministic Execution:**
+```bash
+# Initialize seed registry
+python -c "
+from farfan_pipeline.orchestration.seed_registry import SeedRegistry
+SeedRegistry.initialize(master_seed=42)
+print('✓ Seed registry initialized with seed=42')
+"
+
+# Verify determinism
+python scripts/validation/test_determinism.py --runs 3
+# Expected: All 3 runs produce identical results
+```
+
+### 24.3.6 Create Directory Structure
+
+**Initialize Required Directories:**
+```bash
+# Create full directory structure
+mkdir -p artifacts/{checkpoints,logs,reports,evidence,scores,dimensions,areas,clusters,macro,recommendations}
+mkdir -p data/{plans,questionnaires,contracts}
+mkdir -p logs/{orchestrator,phases,sisas,metrics}
+mkdir -p config/{calibration,parametrization,pdm}
+mkdir -p temp/{cache,processing}
+
+# Set permissions
+chmod -R 755 artifacts/ data/ logs/ config/
+chmod -R 777 temp/
+
+# Create .gitkeep files
+find artifacts/ data/ logs/ temp/ -type d -exec touch {}/.gitkeep \;
+
+# Verify structure
+tree -L 2 artifacts/ data/ logs/
+```
+
+## 24.4 First-Time Execution Guide
+
+### 24.4.1 Smoke Test - Minimal Pipeline
+
+**Run Minimal Test:**
+```bash
+# Activate environment
+source farfan-env/bin/activate
+
+# Run Phase 0 only (Bootstrap validation)
+python -m farfan_pipeline.phases.Phase_00.phase0_90_00_main \
+    --dry-run \
+    --verbose
+
+# Expected output:
+# ✓ Exit Gate 1: Python 3.12+ detected
+# ✓ Exit Gate 2: Questionnaire loaded (300 questions)
+# ✓ Exit Gate 3: Calibration files valid
+# ✓ Exit Gate 4: Method registry populated (74 classes)
+# ✓ Exit Gate 5: Contracts available (300 files)
+# ✓ Exit Gate 6: SISAS subsystem healthy
+# ✓ Exit Gate 7: Seed registry initialized
+# Phase 0 validation: PASSED
+```
+
+### 24.4.2 Test Pipeline - Single Document
+
+**Process Test Document:**
+```bash
+# Use sample plan (if available)
+PLAN_PDF="data/plans/sample_plan.pdf"
+
+# Run phases 0-3 only
+python scripts/run_policy_pipeline_verified.py \
+    --plan "$PLAN_PDF" \
+    --artifacts-dir artifacts/test_run \
+    --start-phase 0 \
+    --end-phase 3 \
+    --seed 42 \
+    --verbose
+
+# Check outputs
+ls -lh artifacts/test_run/
+# Expected:
+# - phase0_bootstrap/
+# - phase1_chunks/
+# - phase2_evidence/
+# - phase3_scores/
+```
+
+### 24.4.3 Full Pipeline - Production Run
+
+**Complete Pipeline Execution:**
+```bash
+# Run full pipeline (phases 0-9)
+farfan-pipeline \
+    --plan data/plans/Plan_PDET_2018.pdf \
+    --artifacts-dir artifacts/full_run_$(date +%Y%m%d_%H%M%S) \
+    --start-phase 0 \
+    --end-phase 9 \
+    --seed 42 \
+    --enable-sisas \
+    --enable-metrics \
+    --enable-dashboard \
+    --log-level INFO
+
+# Monitor execution
+tail -f logs/orchestrator/orchestrator.log
+
+# Check final artifacts
+ls -lh artifacts/full_run_*/phase9_reports/
+```
+
+---
+
+# Section 25: Dashboard & Visualization - Complete Guide
+
+## 25.1 ATROZ Dashboard v2.0
+
+### 25.1.1 Starting the Dashboard
+
+**Basic Start:**
+```bash
+# Method 1: Direct Python
+python -m farfan_pipeline.dashboard_atroz_.dashboard_server
+
+# Method 2: With custom port
+python -m farfan_pipeline.dashboard_atroz_.dashboard_server --port 5001
+
+# Method 3: Production mode
+python -m farfan_pipeline.dashboard_atroz_.dashboard_server \
+    --host 0.0.0.0 \
+    --port 5000 \
+    --workers 4 \
+    --no-debug
+
+# Method 4: Background process
+nohup python -m farfan_pipeline.dashboard_atroz_.dashboard_server \
+    --host 0.0.0.0 \
+    --port 5000 \
+    > logs/dashboard.log 2>&1 &
+
+echo $! > /tmp/dashboard.pid
+```
+
+**Advanced Configuration:**
+```bash
+# Start with custom configuration
+python -m farfan_pipeline.dashboard_atroz_.dashboard_server \
+    --config config/dashboard_config.yaml \
+    --enable-auth \
+    --enable-ssl \
+    --ssl-cert /path/to/cert.pem \
+    --ssl-key /path/to/key.pem \
+    --redis-url redis://localhost:6379/0 \
+    --websocket-ping-interval 25 \
+    --websocket-ping-timeout 120 \
+    --max-connections 1000
+```
+
+### 25.1.2 Dashboard Views
+
+**Main Dashboard - Constellation View:**
+```
+URL: http://localhost:5000/
+
+Features:
+┌─────────────────────────────────────────────────────────────┐
+│                    MAIN DASHBOARD                            │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  [Map View: 170 PDET Municipalities]                        │
+│                                                              │
+│  Region Selector: [Dropdown: 16 regions]                    │
+│                                                              │
+│  Pipeline Status:                                            │
+│  Phase 0: ████████████ 100% [COMPLETE]                      │
+│  Phase 1: ████████████ 100% [COMPLETE]                      │
+│  Phase 2: ████████████ 100% [COMPLETE]                      │
+│  Phase 3: ████████████ 100% [COMPLETE]                      │
+│  Phase 4: ██████────── 60% [RUNNING]                        │
+│  Phase 5: ────────────  0% [PENDING]                        │
+│  Phase 6: ────────────  0% [PENDING]                        │
+│  Phase 7: ────────────  0% [PENDING]                        │
+│  Phase 8: ────────────  0% [PENDING]                        │
+│  Phase 9: ────────────  0% [PENDING]                        │
+│                                                              │
+│  Live Metrics:                                               │
+│  • Questions Scored: 245/300 (81.7%)                        │
+│  • Evidence Extracted: 2,456 items                          │
+│  • SISAS Signals: 15,234 emitted, 15,100 consumed          │
+│  • Processing Time: 00:45:32                                │
+│                                                              │
+│  [View Details] [Export Data] [Download Report]             │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**SISAS Ecosystem View:**
+```
+URL: http://localhost:5000/static/sisas-ecosystem-view.html
+
+Features:
+┌─────────────────────────────────────────────────────────────┐
+│              SISAS ECOSYSTEM DASHBOARD                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Signal Bus Status:                                          │
+│  ┌────────────────┬────────┬─────────┬──────────┐           │
+│  │ Bus            │ Queue  │ Rate    │ Status   │           │
+│  ├────────────────┼────────┼─────────┼──────────┤           │
+│  │ Structural     │ 234/50k│ 45 s⁻¹  │ HEALTHY  │           │
+│  │ Integrity      │ 156/50k│ 32 s⁻¹  │ HEALTHY  │           │
+│  │ Epistemic      │ 89/50k │ 18 s⁻¹  │ HEALTHY  │           │
+│  │ Contrast       │ 45/50k │ 9 s⁻¹   │ HEALTHY  │           │
+│  │ Operational    │ 12/50k │ 3 s⁻¹   │ HEALTHY  │           │
+│  │ Consumption    │ 8/50k  │ 2 s⁻¹   │ HEALTHY  │           │
+│  └────────────────┴────────┴─────────┴──────────┘           │
+│                                                              │
+│  Consumer Health (17 total):                                 │
+│  Phase 0: ✓ Bootstrap Consumer [ACTIVE]                     │
+│  Phase 1: ✓ Signal Enrichment Consumer [ACTIVE]             │
+│  Phase 2: ✓ Contract Consumer [ACTIVE]                      │
+│          ✓ Evidence Consumer [ACTIVE]                       │
+│          ✓ Factory Consumer [ACTIVE]                        │
+│          ✓ Executor Consumer [ACTIVE]                       │
+│  Phase 3: ✓ Signal Enriched Scoring Consumer [ACTIVE]       │
+│  ... [expand all]                                            │
+│                                                              │
+│  4-Gate Validation Statistics:                               │
+│  Gate 1 (Scope): 15,234 passed, 45 rejected (99.7%)        │
+│  Gate 2 (Value): 15,189 passed, 90 rejected (99.4%)        │
+│  Gate 3 (Capability): 15,100 passed, 179 rejected (98.8%)  │
+│  Gate 4 (Channel): 15,100 passed, 0 rejected (100%)        │
+│                                                              │
+│  Dead Letter Queue: 179 signals [View Details]              │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Admin Panel:**
+```
+URL: http://localhost:5000/static/admin.html
+
+Features:
+┌─────────────────────────────────────────────────────────────┐
+│                    ADMIN CONTROL PANEL                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Pipeline Control:                                           │
+│  [Start Pipeline] [Pause Pipeline] [Stop Pipeline]          │
+│  [Resume from Checkpoint] [Rollback to Phase]               │
+│                                                              │
+│  SISAS Control:                                              │
+│  [Flush Signal Buses] [Reset Consumers] [Clear DLQ]         │
+│  [Replay Signals] [Export Signal Log]                       │
+│                                                              │
+│  System Maintenance:                                         │
+│  [Clear Cache] [Vacuum Database] [Rotate Logs]              │
+│  [Backup Artifacts] [Restore Checkpoint]                    │
+│                                                              │
+│  Diagnostics:                                                │
+│  [Run Health Check] [Generate System Report]                │
+│  [Validate Contracts] [Check Integrity]                     │
+│                                                              │
+│  Monitoring:                                                 │
+│  CPU: ████████░░ 80%  Memory: ██████░░░░ 60%               │
+│  Disk: ████░░░░░░ 40%  Network: ███░░░░░░░ 30%             │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 25.1.3 Dashboard API Endpoints
+
+**Complete API Reference:**
+
+```bash
+# ============================================================
+# REGION ENDPOINTS
+# ============================================================
+
+# Get all regions with summary statistics
+curl http://localhost:5000/api/v1/regions | jq
+
+# Response:
+{
+  "regions": [
+    {
+      "id": "R01",
+      "name": "Arauca",
+      "municipalities": 7,
+      "macro_score": 0.72,
+      "status": "evaluated"
+    },
+    ...
+  ],
+  "total": 16
+}
+
+# Get detailed region analysis
+curl http://localhost:5000/api/v1/regions/R01 | jq
+
+# Response:
+{
+  "region_id": "R01",
+  "name": "Arauca",
+  "municipalities": 7,
+  "macro_score": 0.72,
+  "clusters": {
+    "institutional": 0.75,
+    "territorial": 0.68,
+    "productive": 0.71,
+    "social": 0.74
+  },
+  "policy_areas": [...],
+  "dimensions": [...],
+  "evaluation_date": "2026-01-23T10:30:00Z"
+}
+
+# Get 300 micro question scores for a region
+curl http://localhost:5000/api/v1/regions/R01/questions | jq
+
+# Response:
+{
+  "region_id": "R01",
+  "questions": [
+    {
+      "question_id": "Q001_PA01",
+      "score": 0.85,
+      "confidence": 0.92,
+      "evidence_count": 8
+    },
+    ...
+  ],
+  "total": 300
+}
+
+# Get evidence stream for a region
+curl http://localhost:5000/api/v1/regions/R01/evidence | jq
+
+# Get region connections graph
+curl http://localhost:5000/api/v1/regions/connections | jq
+
+
+# ============================================================
+# JOB MANAGEMENT ENDPOINTS
+# ============================================================
+
+# List all jobs
+curl http://localhost:5000/api/v1/jobs | jq
+
+# Response:
+{
+  "jobs": [
+    {
+      "job_id": "job_20260123_103000",
+      "status": "running",
+      "current_phase": 4,
+      "progress": 0.45,
+      "started_at": "2026-01-23T10:30:00Z"
+    },
+    ...
+  ]
+}
+
+# Get detailed job status
+curl http://localhost:5000/api/v1/jobs/job_20260123_103000 | jq
+
+# Response:
+{
+  "job_id": "job_20260123_103000",
+  "status": "running",
+  "phases": {
+    "phase_0": {"status": "completed", "duration": 45.2},
+    "phase_1": {"status": "completed", "duration": 120.5},
+    "phase_2": {"status": "completed", "duration": 450.8},
+    "phase_3": {"status": "completed", "duration": 180.3},
+    "phase_4": {"status": "running", "progress": 0.60},
+    ...
+  },
+  "total_duration": 2156.3,
+  "artifacts_generated": 1245
+}
+
+# Get execution logs
+curl http://localhost:5000/api/v1/jobs/job_20260123_103000/logs?lines=100 | jq
+
+# Upload PDF and start pipeline
+curl -X POST \
+  -F "file=@data/plans/Plan_PDET.pdf" \
+  -F "region_id=R01" \
+  -F "seed=42" \
+  http://localhost:5000/api/upload/plan
+
+# Response:
+{
+  "job_id": "job_20260123_150000",
+  "status": "queued",
+  "message": "Pipeline started successfully"
+}
+
+
+# ============================================================
+# SISAS INTEGRATION ENDPOINTS
+# ============================================================
+
+# Get SISAS integration status
+curl http://localhost:5000/api/v1/sisas/status | jq
+
+# Response:
+{
+  "buses": {
+    "total": 6,
+    "healthy": 6,
+    "degraded": 0,
+    "failed": 0
+  },
+  "consumers": {
+    "total": 17,
+    "active": 17,
+    "idle": 0,
+    "error": 0
+  },
+  "gates": {
+    "gate_1_pass_rate": 0.997,
+    "gate_2_pass_rate": 0.994,
+    "gate_3_pass_rate": 0.988,
+    "gate_4_pass_rate": 1.000
+  }
+}
+
+# Get real-time SISAS metrics
+curl http://localhost:5000/api/v1/sisas/metrics | jq
+
+# Response:
+{
+  "signals_emitted": 15234,
+  "signals_consumed": 15100,
+  "signals_rejected": 134,
+  "dead_letters": 179,
+  "throughput": {
+    "current": 45.2,
+    "average": 38.7,
+    "peak": 67.3
+  },
+  "latency": {
+    "p50": 12.3,
+    "p95": 45.6,
+    "p99": 78.9
+  }
+}
+
+# Get all consumer statuses
+curl http://localhost:5000/api/v1/sisas/consumers | jq
+
+# Get dead letter queue contents
+curl http://localhost:5000/api/v1/sisas/dead-letter?limit=50 | jq
+
+
+# ============================================================
+# CANONICAL DATA ENDPOINTS
+# ============================================================
+
+# Get all 300 canonical questions
+curl http://localhost:5000/api/v1/canonical/questions | jq
+
+# Get single question detail
+curl http://localhost:5000/api/v1/canonical/questions/Q001_PA01 | jq
+
+# Response:
+{
+  "question_id": "Q001_PA01",
+  "text": "¿El plan identifica claramente los objetivos estratégicos?",
+  "dimension": "D1_ESTRATEGIA",
+  "policy_area": "PA01_GOBERNANZA",
+  "weight": 0.045,
+  "methods": ["analyzer_one", "derek_beach"],
+  "contract_file": "Q001_PA01_contract_v4.json"
+}
+
+# Get 6 dimensions metadata
+curl http://localhost:5000/api/v1/canonical/dimensions | jq
+
+# Get 10 policy areas metadata
+curl http://localhost:5000/api/v1/canonical/policy-areas | jq
+
+# Get 4 clusters metadata
+curl http://localhost:5000/api/v1/canonical/clusters | jq
+
+
+# ============================================================
+# METRICS & MONITORING ENDPOINTS
+# ============================================================
+
+# Get system metrics
+curl http://localhost:5000/api/v1/metrics/system | jq
+
+# Get phase metrics
+curl http://localhost:5000/api/v1/metrics/phase/4 | jq
+
+# Get executor metrics
+curl http://localhost:5000/api/v1/metrics/executors | jq
+
+# Get time series metrics (Prometheus format)
+curl http://localhost:5000/api/v1/metrics/prometheus
+
+
+# ============================================================
+# HEALTH CHECK ENDPOINTS
+# ============================================================
+
+# Basic health check
+curl http://localhost:5000/health
+
+# Response:
+{"status": "healthy", "timestamp": "2026-01-23T10:30:00Z"}
+
+# Detailed health check
+curl http://localhost:5000/health/detailed | jq
+
+# Response:
+{
+  "status": "healthy",
+  "components": {
+    "database": "healthy",
+    "redis": "healthy",
+    "sisas": "healthy",
+    "filesystem": "healthy"
+  },
+  "metrics": {
+    "uptime": 86400,
+    "requests_total": 15234,
+    "requests_per_second": 12.5
+  }
+}
+
+# Readiness probe (K8s)
+curl http://localhost:5000/ready
+
+# Liveness probe (K8s)
+curl http://localhost:5000/alive
+```
+
+### 25.1.4 WebSocket API
+
+**Real-Time Updates:**
+
+```javascript
+// Connect to WebSocket
+const socket = io('http://localhost:5000');
+
+// Listen to pipeline progress
+socket.on('pipeline_progress', (data) => {
+  console.log('Phase:', data.phase);
+  console.log('Progress:', data.progress);
+  console.log('Status:', data.status);
+});
+
+// Listen to SISAS events
+socket.on('sisas_signal', (data) => {
+  console.log('Signal Type:', data.signal_type);
+  console.log('Bus:', data.bus);
+  console.log('Payload:', data.payload);
+});
+
+// Listen to metrics updates
+socket.on('metrics_update', (data) => {
+  console.log('Metrics:', data);
+});
+
+// Listen to job completion
+socket.on('job_complete', (data) => {
+  console.log('Job ID:', data.job_id);
+  console.log('Duration:', data.duration);
+  console.log('Artifacts:', data.artifacts_count);
+});
+
+// Send control commands
+socket.emit('pipeline_control', {
+  action: 'pause',
+  job_id: 'job_20260123_103000'
+});
+```
+
+## 25.2 Advanced Visualization Tools
+
+### 25.2.1 Grafana Integration
+
+**Setup Grafana Dashboard:**
+
+```bash
+# Install Grafana
+sudo apt-get install -y grafana
+
+# Start Grafana
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+
+# Access Grafana
+# URL: http://localhost:3000
+# Default credentials: admin/admin
+
+# Import F.A.R.F.A.N. dashboard
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d @grafana/farfan_dashboard.json \
+  http://admin:admin@localhost:3000/api/dashboards/db
+```
+
+**Grafana Dashboard Panels:**
+
+```yaml
+Dashboard: "F.A.R.F.A.N. Pipeline Monitoring"
+
+Panels:
+  - Pipeline Phase Progress:
+      Type: Graph
+      Metrics:
+        - phase_0_duration
+        - phase_1_duration
+        - phase_2_duration
+        - ... phase_9_duration
+
+  - SISAS Signal Throughput:
+      Type: Graph
+      Metrics:
+        - signals_emitted_per_second
+        - signals_consumed_per_second
+        - signals_rejected_per_second
+
+  - Resource Utilization:
+      Type: Graph
+      Metrics:
+        - cpu_usage_percent
+        - memory_usage_mb
+        - disk_io_read_mb
+        - disk_io_write_mb
+
+  - Error Rates:
+      Type: Stat
+      Metrics:
+        - executor_error_rate
+        - consumer_error_rate
+        - gate_rejection_rate
+
+  - Queue Depths:
+      Type: Gauge
+      Metrics:
+        - structural_bus_queue_depth
+        - integrity_bus_queue_depth
+        - epistemic_bus_queue_depth
+        - ... all buses
+
+  - Evidence Extraction Rate:
+      Type: Graph
+      Metrics:
+        - evidence_per_second
+        - evidence_quality_score
+
+  - Scoring Performance:
+      Type: Heatmap
+      Metrics:
+        - question_score_distribution
+        - dimension_score_distribution
+```
+
+### 25.2.2 Prometheus Metrics Export
+
+**Metrics Endpoint Configuration:**
+
+```bash
+# Enable Prometheus metrics
+export FARFAN_ENABLE_METRICS=true
+export FARFAN_METRICS_PORT=9090
+
+# Start metrics exporter
+python -m farfan_pipeline.monitoring.prometheus_exporter \
+    --port 9090 \
+    --interval 10
+
+# Verify metrics endpoint
+curl http://localhost:9090/metrics
+
+# Sample metrics output:
+# HELP farfan_pipeline_phase_duration_seconds Time taken for each phase
+# TYPE farfan_pipeline_phase_duration_seconds histogram
+farfan_pipeline_phase_duration_seconds_bucket{phase="0",le="10"} 5
+farfan_pipeline_phase_duration_seconds_bucket{phase="0",le="30"} 12
+farfan_pipeline_phase_duration_seconds_bucket{phase="0",le="60"} 15
+farfan_pipeline_phase_duration_seconds_sum{phase="0"} 456.78
+farfan_pipeline_phase_duration_seconds_count{phase="0"} 15
+
+# HELP farfan_sisas_signals_total Total SISAS signals by type
+# TYPE farfan_sisas_signals_total counter
+farfan_sisas_signals_total{type="structural"} 5234
+farfan_sisas_signals_total{type="integrity"} 3456
+farfan_sisas_signals_total{type="epistemic"} 2345
+
+# HELP farfan_executor_calls_total Total executor method calls
+# TYPE farfan_executor_calls_total counter
+farfan_executor_calls_total{executor="analyzer_one",method="analyze"} 1234
+...
+```
+
+**Prometheus Configuration:**
+
+```yaml
+# prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'farfan-pipeline'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+```
+
+### 25.2.3 Custom Visualization Scripts
+
+**Generate Phase Flow Diagram:**
+
+```bash
+# Generate Graphviz diagram
+python scripts/visualization/generate_phase_flow.py \
+    --artifacts-dir artifacts/latest_run \
+    --output artifacts/visualizations/phase_flow.png \
+    --format png \
+    --dpi 300
+
+# Generate interactive HTML
+python scripts/visualization/generate_phase_flow.py \
+    --artifacts-dir artifacts/latest_run \
+    --output artifacts/visualizations/phase_flow.html \
+    --format html \
+    --interactive
+```
+
+**Generate Signal Flow Diagram:**
+
+```bash
+# Visualize SISAS signal flow
+python scripts/visualization/generate_signal_flow.py \
+    --log-file logs/sisas/signals.log \
+    --output artifacts/visualizations/signal_flow.png \
+    --time-range "2026-01-23T10:00:00" "2026-01-23T11:00:00" \
+    --highlight-gates
+
+# Generate Sankey diagram
+python scripts/visualization/generate_signal_sankey.py \
+    --log-file logs/sisas/signals.log \
+    --output artifacts/visualizations/signal_sankey.html
+```
+
+**Generate Score Heatmaps:**
+
+```bash
+# Generate 300-question heatmap
+python scripts/visualization/generate_score_heatmap.py \
+    --scores-file artifacts/latest_run/phase3_scores/scores.json \
+    --output artifacts/visualizations/scores_heatmap.png \
+    --colormap "RdYlGn" \
+    --annotate
+
+# Generate policy area comparison
+python scripts/visualization/generate_policy_comparison.py \
+    --artifacts-dir artifacts/latest_run \
+    --output artifacts/visualizations/policy_comparison.png \
+    --chart-type radar
+```
+
+**Generate Evidence Network Graph:**
+
+```bash
+# Create evidence relationship graph
+python scripts/visualization/generate_evidence_network.py \
+    --evidence-file artifacts/latest_run/phase2_evidence/evidence.json \
+    --output artifacts/visualizations/evidence_network.html \
+    --layout force-directed \
+    --min-weight 0.5
+
+# Generate evidence quality distribution
+python scripts/visualization/generate_evidence_quality.py \
+    --evidence-file artifacts/latest_run/phase2_evidence/evidence.json \
+    --output artifacts/visualizations/evidence_quality.png \
+    --bins 50
+```
+
+---
+
+# Section 26: Advanced Graphics Stack
+
+## 26.1 Real-Time Graphics with D3.js
+
+**Interactive Score Visualization:**
+
+```html
+<!-- Include in dashboard -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<script>
+// Real-time score update visualization
+function createScoreVisualization(containerId, data) {
+  const width = 1200;
+  const height = 800;
+  const margin = {top: 40, right: 40, bottom: 60, left: 60};
+
+  const svg = d3.select(`#${containerId}`)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  // Create color scale
+  const colorScale = d3.scaleSequential()
+    .domain([0, 1])
+    .interpolator(d3.interpolateRdYlGn);
+
+  // Create heatmap
+  const heatmap = svg.selectAll(".cell")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class", "cell")
+    .attr("x", d => d.col * 40)
+    .attr("y", d => d.row * 40)
+    .attr("width", 38)
+    .attr("height", 38)
+    .attr("fill", d => colorScale(d.score))
+    .on("mouseover", showTooltip)
+    .on("mouseout", hideTooltip);
+
+  // Add real-time updates via WebSocket
+  socket.on('score_update', (update) => {
+    svg.selectAll(".cell")
+      .filter(d => d.question_id === update.question_id)
+      .transition()
+      .duration(500)
+      .attr("fill", colorScale(update.new_score));
+  });
+}
+</script>
+```
+
+**Pipeline Flow Sankey Diagram:**
+
+```javascript
+// Sankey diagram for phase transitions
+function createPipelineSankey(data) {
+  const sankeyData = {
+    nodes: [
+      {name: "Phase 0 (Input)"},
+      {name: "Phase 1 (60 Chunks)"},
+      {name: "Phase 2 (300 Evidence)"},
+      {name: "Phase 3 (300 Scores)"},
+      {name: "Phase 4 (60 Dimensions)"},
+      {name: "Phase 5 (10 Areas)"},
+      {name: "Phase 6 (4 Clusters)"},
+      {name: "Phase 7 (1 Macro)"},
+      {name: "Phase 8 (Recommendations)"},
+      {name: "Phase 9 (Reports)"}
+    ],
+    links: [
+      {source: 0, target: 1, value: 60},
+      {source: 1, target: 2, value: 300},
+      {source: 2, target: 3, value: 300},
+      {source: 3, target: 4, value: 60},
+      {source: 4, target: 5, value: 10},
+      {source: 5, target: 6, value: 4},
+      {source: 6, target: 7, value: 1},
+      {source: 7, target: 8, value: 1},
+      {source: 8, target: 9, value: 1}
+    ]
+  };
+
+  const sankey = d3.sankey()
+    .nodeWidth(15)
+    .nodePadding(10)
+    .extent([[1, 1], [width - 1, height - 6]]);
+
+  const {nodes, links} = sankey(sankeyData);
+
+  // Render nodes and links
+  svg.append("g")
+    .selectAll("rect")
+    .data(nodes)
+    .join("rect")
+    .attr("x", d => d.x0)
+    .attr("y", d => d.y0)
+    .attr("height", d => d.y1 - d.y0)
+    .attr("width", d => d.x1 - d.x0)
+    .attr("fill", "#69b3a2");
+
+  svg.append("g")
+    .selectAll("path")
+    .data(links)
+    .join("path")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", "#000")
+    .attr("stroke-width", d => Math.max(1, d.width))
+    .attr("fill", "none")
+    .attr("opacity", 0.5);
+}
+```
+
+## 26.2 3D Visualizations with Three.js
+
+**3D Evidence Network:**
+
+```javascript
+// 3D evidence relationship visualization
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+function create3DEvidenceNetwork(evidenceData) {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({antialias: true});
+
+  renderer.setSize(width, height);
+  container.appendChild(renderer.domElement);
+
+  // Create nodes for each evidence item
+  evidenceData.forEach((evidence, i) => {
+    const geometry = new THREE.SphereGeometry(evidence.quality * 5, 32, 32);
+    const material = new THREE.MeshPhongMaterial({
+      color: getColorByPolicyArea(evidence.policy_area),
+      emissive: 0x333333,
+      shininess: 100
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+
+    // Position in 3D space
+    sphere.position.set(
+      evidence.dimension_x * 100,
+      evidence.dimension_y * 100,
+      evidence.dimension_z * 100
+    );
+
+    scene.add(sphere);
+  });
+
+  // Add orbit controls
+  const controls = new OrbitControls(camera, renderer.domElement);
+
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+```
+
+## 26.3 Statistical Visualizations with Plotly
+
+**Comprehensive Score Analysis:**
+
+```python
+# Generate comprehensive statistical visualizations
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+import pandas as pd
+
+def generate_comprehensive_analysis(artifacts_dir):
+    """Generate full statistical analysis dashboard."""
+
+    # Load data
+    scores_df = pd.read_json(f"{artifacts_dir}/phase3_scores/scores.json")
+    dimensions_df = pd.read_json(f"{artifacts_dir}/phase4_dimensions/dimensions.json")
+    areas_df = pd.read_json(f"{artifacts_dir}/phase5_areas/areas.json")
+
+    # Create subplots
+    fig = make_subplots(
+        rows=3, cols=3,
+        subplot_titles=(
+            'Score Distribution', 'Policy Area Comparison', 'Dimension Radar',
+            'Temporal Evolution', 'Evidence Quality', 'SISAS Signal Flow',
+            'Executor Performance', 'Confidence Intervals', 'Aggregation Pyramid'
+        ),
+        specs=[
+            [{'type': 'histogram'}, {'type': 'bar'}, {'type': 'scatterpolar'}],
+            [{'type': 'scatter'}, {'type': 'box'}, {'type': 'sankey'}],
+            [{'type': 'bar'}, {'type': 'scatter'}, {'type': 'funnel'}]
+        ]
+    )
+
+    # 1. Score distribution histogram
+    fig.add_trace(
+        go.Histogram(x=scores_df['score'], nbinsx=50, name='Scores'),
+        row=1, col=1
+    )
+
+    # 2. Policy area comparison
+    area_scores = areas_df.groupby('policy_area')['score'].mean()
+    fig.add_trace(
+        go.Bar(x=area_scores.index, y=area_scores.values, name='Areas'),
+        row=1, col=2
+    )
+
+    # 3. Dimension radar chart
+    dim_scores = dimensions_df.groupby('dimension')['score'].mean()
+    fig.add_trace(
+        go.Scatterpolar(
+            r=dim_scores.values,
+            theta=dim_scores.index,
+            fill='toself',
+            name='Dimensions'
+        ),
+        row=1, col=3
+    )
+
+    # 4. Temporal evolution
+    fig.add_trace(
+        go.Scatter(
+            x=scores_df['timestamp'],
+            y=scores_df['cumulative_score'],
+            mode='lines',
+            name='Evolution'
+        ),
+        row=2, col=1
+    )
+
+    # 5. Evidence quality box plot
+    evidence_df = pd.read_json(f"{artifacts_dir}/phase2_evidence/evidence.json")
+    fig.add_trace(
+        go.Box(y=evidence_df['quality'], name='Quality'),
+        row=2, col=2
+    )
+
+    # 6. SISAS signal flow (Sankey)
+    signal_df = pd.read_json(f"{artifacts_dir}/sisas_logs/signals.json")
+    fig.add_trace(
+        go.Sankey(
+            node=dict(label=signal_df['node_labels']),
+            link=dict(
+                source=signal_df['source'],
+                target=signal_df['target'],
+                value=signal_df['value']
+            )
+        ),
+        row=2, col=3
+    )
+
+    # 7. Executor performance
+    executor_df = pd.read_json(f"{artifacts_dir}/phase2_evidence/executor_metrics.json")
+    fig.add_trace(
+        go.Bar(
+            x=executor_df['executor'],
+            y=executor_df['avg_duration'],
+            name='Duration'
+        ),
+        row=3, col=1
+    )
+
+    # 8. Confidence intervals
+    fig.add_trace(
+        go.Scatter(
+            x=scores_df['question_id'],
+            y=scores_df['score'],
+            error_y=dict(
+                type='data',
+                array=scores_df['std'],
+                visible=True
+            ),
+            mode='markers',
+            name='Confidence'
+        ),
+        row=3, col=2
+    )
+
+    # 9. Aggregation pyramid (funnel)
+    fig.add_trace(
+        go.Funnel(
+            y=['300 Scores', '60 Dimensions', '10 Areas', '4 Clusters', '1 Macro'],
+            x=[300, 60, 10, 4, 1],
+            name='Compression'
+        ),
+        row=3, col=3
+    )
+
+    # Update layout
+    fig.update_layout(
+        title_text="F.A.R.F.A.N. Pipeline - Comprehensive Analysis Dashboard",
+        height=1200,
+        width=1800,
+        showlegend=True
+    )
+
+    # Save
+    fig.write_html(f"{artifacts_dir}/visualizations/comprehensive_analysis.html")
+    print(f"✓ Comprehensive analysis saved")
+
+# Execute
+generate_comprehensive_analysis("artifacts/latest_run")
+```
+
+**Advanced Heatmap with Dendrograms:**
+
+```python
+import plotly.figure_factory as ff
+import scipy.cluster.hierarchy as sch
+
+def generate_clustered_heatmap(scores_matrix, labels):
+    """Generate clustered heatmap with dendrograms."""
+
+    # Compute hierarchical clustering
+    row_linkage = sch.linkage(scores_matrix, method='ward')
+    col_linkage = sch.linkage(scores_matrix.T, method='ward')
+
+    # Create dendrogram heatmap
+    fig = ff.create_dendrogram(
+        scores_matrix,
+        labels=labels,
+        linkagefun=lambda x: sch.linkage(x, method='ward')
+    )
+
+    # Add heatmap
+    heatmap = go.Heatmap(
+        z=scores_matrix,
+        x=labels,
+        y=labels,
+        colorscale='RdYlGn',
+        colorbar=dict(title='Score')
+    )
+
+    fig.add_trace(heatmap)
+
+    fig.update_layout(
+        title='Clustered Score Heatmap with Dendrograms',
+        xaxis_title='Questions',
+        yaxis_title='Evidence',
+        width=1400,
+        height=1000
+    )
+
+    fig.write_html('artifacts/visualizations/clustered_heatmap.html')
+```
+
+## 26.4 Time-Series Analysis with Matplotlib
+
+**Phase Performance Time Series:**
+
+```python
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib import style
+import seaborn as sns
+
+def create_phase_performance_timeline():
+    """Create animated timeline of phase execution."""
+
+    style.use('seaborn-v0_8-darkgrid')
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(16, 12))
+
+    def animate(frame):
+        # Load real-time data
+        metrics = load_metrics(frame)
+
+        # Plot 1: Phase durations
+        ax1.clear()
+        ax1.bar(metrics['phases'], metrics['durations'], color='skyblue')
+        ax1.set_title('Phase Execution Durations', fontsize=16)
+        ax1.set_xlabel('Phase')
+        ax1.set_ylabel('Duration (seconds)')
+        ax1.axhline(y=metrics['target_duration'], color='r', linestyle='--', label='Target')
+        ax1.legend()
+
+        # Plot 2: Memory usage over time
+        ax2.clear()
+        ax2.plot(metrics['timestamps'], metrics['memory_usage'], label='Memory', color='orange')
+        ax2.fill_between(metrics['timestamps'], 0, metrics['memory_usage'], alpha=0.3, color='orange')
+        ax2.set_title('Memory Usage Over Time', fontsize=16)
+        ax2.set_xlabel('Time')
+        ax2.set_ylabel('Memory (MB)')
+        ax2.legend()
+
+        # Plot 3: Signal throughput
+        ax3.clear()
+        for bus_name, throughput in metrics['bus_throughput'].items():
+            ax3.plot(metrics['timestamps'], throughput, label=bus_name, linewidth=2)
+        ax3.set_title('SISAS Signal Throughput by Bus', fontsize=16)
+        ax3.set_xlabel('Time')
+        ax3.set_ylabel('Signals/second')
+        ax3.legend()
+
+        plt.tight_layout()
+
+    # Create animation
+    ani = animation.FuncAnimation(fig, animate, interval=1000, cache_frame_data=False)
+
+    plt.show()
+
+# Execute
+create_phase_performance_timeline()
+```
+
+**Evidence Quality Distribution:**
+
+```python
+def plot_evidence_quality_analysis(evidence_file):
+    """Comprehensive evidence quality analysis."""
+
+    evidence_df = pd.read_json(evidence_file)
+
+    fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+    fig.suptitle('Evidence Quality Analysis Dashboard', fontsize=20, fontweight='bold')
+
+    # 1. Quality distribution
+    sns.histplot(evidence_df['quality'], bins=50, kde=True, ax=axes[0, 0], color='teal')
+    axes[0, 0].set_title('Quality Score Distribution')
+    axes[0, 0].set_xlabel('Quality Score')
+    axes[0, 0].set_ylabel('Frequency')
+
+    # 2. Quality by policy area
+    sns.boxplot(data=evidence_df, x='policy_area', y='quality', ax=axes[0, 1], palette='Set2')
+    axes[0, 1].set_title('Quality by Policy Area')
+    axes[0, 1].tick_params(axis='x', rotation=45)
+
+    # 3. Quality vs confidence scatter
+    sns.scatterplot(data=evidence_df, x='quality', y='confidence',
+                    hue='policy_area', size='word_count', ax=axes[0, 2], alpha=0.6)
+    axes[0, 2].set_title('Quality vs Confidence')
+
+    # 4. Executor performance
+    executor_quality = evidence_df.groupby('executor')['quality'].mean().sort_values()
+    axes[1, 0].barh(executor_quality.index, executor_quality.values, color='coral')
+    axes[1, 0].set_title('Average Quality by Executor')
+    axes[1, 0].set_xlabel('Average Quality')
+
+    # 5. Temporal trend
+    evidence_df['timestamp'] = pd.to_datetime(evidence_df['timestamp'])
+    evidence_df = evidence_df.sort_values('timestamp')
+    axes[1, 1].plot(evidence_df['timestamp'], evidence_df['quality'].rolling(50).mean(), linewidth=2)
+    axes[1, 1].set_title('Quality Trend Over Time (50-sample rolling mean)')
+    axes[1, 1].tick_params(axis='x', rotation=45)
+
+    # 6. Quality correlation matrix
+    corr_matrix = evidence_df[['quality', 'confidence', 'word_count', 'method_count']].corr()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0, ax=axes[1, 2])
+    axes[1, 2].set_title('Quality Correlation Matrix')
+
+    plt.tight_layout()
+    plt.savefig('artifacts/visualizations/evidence_quality_analysis.png', dpi=300, bbox_inches='tight')
+    print('✓ Evidence quality analysis saved')
+
+# Execute
+plot_evidence_quality_analysis('artifacts/latest_run/phase2_evidence/evidence.json')
+```
+
+## 26.5 Network Visualizations with NetworkX
+
+**Evidence Relationship Graph:**
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+from pyvis.network import Network
+
+def create_evidence_network_graph(evidence_file, output_file):
+    """Create interactive evidence relationship network."""
+
+    # Load evidence
+    evidence_df = pd.read_json(evidence_file)
+
+    # Create graph
+    G = nx.Graph()
+
+    # Add nodes (evidence items)
+    for idx, row in evidence_df.iterrows():
+        G.add_node(
+            row['evidence_id'],
+            title=row['text'][:100],
+            size=row['quality'] * 50,
+            color=get_color_by_policy_area(row['policy_area']),
+            policy_area=row['policy_area'],
+            quality=row['quality']
+        )
+
+    # Add edges (relationships based on semantic similarity)
+    for i, row1 in evidence_df.iterrows():
+        for j, row2 in evidence_df.iterrows():
+            if i < j:
+                similarity = calculate_similarity(row1['embedding'], row2['embedding'])
+                if similarity > 0.7:  # Threshold
+                    G.add_edge(
+                        row1['evidence_id'],
+                        row2['evidence_id'],
+                        weight=similarity,
+                        title=f"Similarity: {similarity:.2f}"
+                    )
+
+    # Create interactive visualization with pyvis
+    net = Network(
+        height='900px',
+        width='100%',
+        bgcolor='#222222',
+        font_color='white',
+        notebook=False
+    )
+
+    net.from_nx(G)
+
+    # Physics settings
+    net.set_options("""
+    {
+      "physics": {
+        "forceAtlas2Based": {
+          "gravitationalConstant": -50,
+          "centralGravity": 0.01,
+          "springLength": 100,
+          "springConstant": 0.08
+        },
+        "maxVelocity": 50,
+        "solver": "forceAtlas2Based",
+        "timestep": 0.35,
+        "stabilization": {"iterations": 150}
+      }
+    }
+    """)
+
+    # Save
+    net.show(output_file)
+    print(f'✓ Evidence network graph saved to {output_file}')
+
+# Execute
+create_evidence_network_graph(
+    'artifacts/latest_run/phase2_evidence/evidence.json',
+    'artifacts/visualizations/evidence_network.html'
+)
+```
+
+**SISAS Signal Flow Graph:**
+
+```python
+def create_sisas_flow_graph(signal_log_file):
+    """Create SISAS signal flow directed graph."""
+
+    # Load signal logs
+    signals_df = pd.read_json(signal_log_file, lines=True)
+
+    # Create directed graph
+    G = nx.DiGraph()
+
+    # Add nodes for buses and consumers
+    buses = ['structural', 'integrity', 'epistemic', 'contrast', 'operational', 'consumption']
+    consumers = [f'phase_{i}_consumer' for i in range(10)]
+
+    for bus in buses:
+        G.add_node(bus, node_type='bus', layer=1)
+
+    for consumer in consumers:
+        G.add_node(consumer, node_type='consumer', layer=2)
+
+    # Add edges based on signal flow
+    for idx, row in signals_df.iterrows():
+        if G.has_edge(row['bus'], row['consumer']):
+            G[row['bus']][row['consumer']]['weight'] += 1
+        else:
+            G.add_edge(row['bus'], row['consumer'], weight=1)
+
+    # Layout
+    pos = nx.spring_layout(G, k=2, iterations=50)
+
+    # Draw
+    plt.figure(figsize=(16, 10))
+
+    # Draw buses
+    bus_nodes = [n for n, d in G.nodes(data=True) if d['node_type'] == 'bus']
+    nx.draw_networkx_nodes(G, pos, nodelist=bus_nodes,
+                           node_color='lightblue', node_size=3000, label='Buses')
+
+    # Draw consumers
+    consumer_nodes = [n for n, d in G.nodes(data=True) if d['node_type'] == 'consumer']
+    nx.draw_networkx_nodes(G, pos, nodelist=consumer_nodes,
+                           node_color='lightcoral', node_size=2000, label='Consumers')
+
+    # Draw edges with width proportional to signal count
+    edges = G.edges()
+    weights = [G[u][v]['weight'] for u, v in edges]
+    nx.draw_networkx_edges(G, pos, width=[w/100 for w in weights], alpha=0.5,
+                           edge_color='gray', arrows=True, arrowsize=20)
+
+    # Labels
+    nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
+
+    plt.title('SISAS Signal Flow Graph', fontsize=20, fontweight='bold')
+    plt.legend()
+    plt.axis('off')
+    plt.tight_layout()
+    plt.savefig('artifacts/visualizations/sisas_flow_graph.png', dpi=300, bbox_inches='tight')
+    print('✓ SISAS flow graph saved')
+
+# Execute
+create_sisas_flow_graph('logs/sisas/signals.jsonl')
+```
+
+---
+
+# Section 27: Complete Operations Catalog by Phase
+
+## 27.1 Phase 0: Bootstrap - Complete Operations
+
+### 27.1.1 Basic Operations
+
+```bash
+# Run bootstrap validation only
+python -m farfan_pipeline.phases.Phase_00.phase0_90_00_main \
+    --dry-run \
+    --verbose
+
+# Run with specific seed
+python -m farfan_pipeline.phases.Phase_00.phase0_90_00_main \
+    --seed 12345 \
+    --log-level DEBUG
+
+# Run with custom questionnaire
+python -m farfan_pipeline.phases.Phase_00.phase0_90_00_main \
+    --questionnaire /path/to/custom_questionnaire.json \
+    --validate-schema
+
+# Skip specific exit gates (dangerous!)
+python -m farfan_pipeline.phases.Phase_00.phase0_90_00_main \
+    --skip-gates 3,5 \
+    --force
+```
+
+### 27.1.2 Exit Gate Operations
+
+```bash
+# Check individual exit gates
+
+# Gate 1: Python version
+python -c "import sys; print(f'Python {sys.version}'); assert sys.version_info >= (3, 12)"
+
+# Gate 2: Questionnaire validation
+python scripts/validation/validate_questionnaire.py \
+    --questionnaire canonic_questionnaire_central/questionnaire_monolith.json \
+    --schema canonic_questionnaire_central/questionnaire_schema.json
+
+# Gate 3: Calibration files
+python scripts/validation/validate_calibration_files.py \
+    --calibration-dir config/calibration \
+    --cohort 2024
+
+# Gate 4: Method registry
+python -c "
+from farfan_pipeline.methods import REGISTRY
+print(f'Total classes: {len(REGISTRY)}')
+for name, cls in REGISTRY.items():
+    print(f'  {name}: {len([m for m in dir(cls) if not m.startswith(\"_\")])} methods')
+"
+
+# Gate 5: Contracts availability
+find src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/ -name "*.json" | wc -l
+# Expected: 300
+
+# Gate 6: SISAS health
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main health
+
+# Gate 7: Seed registry
+python -c "
+from farfan_pipeline.orchestration.seed_registry import SeedRegistry
+SeedRegistry.initialize(42)
+print(f'✓ Seed registry initialized: {SeedRegistry.get_master_seed()}')
+"
+```
+
+### 27.1.3 Configuration Operations
+
+```bash
+# Load runtime configuration
+python -c "
+from farfan_pipeline.phases.Phase_00.runtime_config import RuntimeConfig
+config = RuntimeConfig.load()
+print(config.to_dict())
+"
+
+# Validate environment
+python scripts/validation/validate_environment.py \
+    --check-all \
+    --verbose
+
+# Generate bootstrap report
+python -m farfan_pipeline.phases.Phase_00.phase0_90_00_main \
+    --generate-report \
+    --output artifacts/bootstrap_report.json
+```
+
+## 27.2 Phase 1: Document Chunking - Complete Operations
+
+### 27.2.1 Chunking Operations
+
+```bash
+# Run document chunking
+python -m farfan_pipeline.phases.Phase_01.chunker \
+    --input data/plans/Plan_PDET.pdf \
+    --output artifacts/phase1_chunks/ \
+    --target-chunks 60 \
+    --method svd \
+    --verbose
+
+# Use alternative chunking method
+python -m farfan_pipeline.phases.Phase_01.chunker \
+    --input data/plans/Plan_PDET.pdf \
+    --output artifacts/phase1_chunks/ \
+    --target-chunks 60 \
+    --method semantic \
+    --embedding-model es_core_news_lg
+
+# Specify chunk size range
+python -m farfan_pipeline.phases.Phase_01.chunker \
+    --input data/plans/Plan_PDET.pdf \
+    --output artifacts/phase1_chunks/ \
+    --target-chunks 60 \
+    --min-chunk-size 500 \
+    --max-chunk-size 2000 \
+    --overlap 100
+
+# Export chunks to multiple formats
+python -m farfan_pipeline.phases.Phase_01.chunker \
+    --input data/plans/Plan_PDET.pdf \
+    --output artifacts/phase1_chunks/ \
+    --target-chunks 60 \
+    --export-formats json,txt,md,csv
+```
+
+### 27.2.2 Chunk Analysis Operations
+
+```bash
+# Analyze chunk quality
+python scripts/analysis/analyze_chunks.py \
+    --chunks-dir artifacts/phase1_chunks/ \
+    --output artifacts/analysis/chunk_quality.json
+
+# Visualize chunk distribution
+python scripts/visualization/visualize_chunks.py \
+    --chunks-dir artifacts/phase1_chunks/ \
+    --output artifacts/visualizations/chunk_distribution.png
+
+# Validate chunk coverage
+python scripts/validation/validate_chunk_coverage.py \
+    --original-pdf data/plans/Plan_PDET.pdf \
+    --chunks-dir artifacts/phase1_chunks/ \
+    --min-coverage 0.95
+
+# Generate chunk statistics
+python -c "
+import json
+import glob
+chunks = []
+for f in glob.glob('artifacts/phase1_chunks/*.json'):
+    with open(f) as fp:
+        chunks.append(json.load(fp))
+print(f'Total chunks: {len(chunks)}')
+print(f'Avg words per chunk: {sum(c[\"word_count\"] for c in chunks) / len(chunks):.1f}')
+print(f'Avg chars per chunk: {sum(c[\"char_count\"] for c in chunks) / len(chunks):.1f}')
+"
+```
+
+### 27.2.3 Signal Enrichment
+
+```bash
+# View signal enrichment consumer status
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    consumer-status phase_01_signal_enrichment
+
+# Query enrichment signals
+python scripts/sisas/query_signals.py \
+    --phase 1 \
+    --signal-type integrity \
+    --time-range "last 1 hour"
+```
+
+## 27.3 Phase 2: Evidence Extraction - Complete Operations
+
+### 27.3.1 Executor Operations
+
+```bash
+# List all executors
+python -c "
+from farfan_pipeline.phases.Phase_02.executors import EXECUTOR_REGISTRY
+print(f'Total executors: {len(EXECUTOR_REGISTRY)}')
+for name in sorted(EXECUTOR_REGISTRY.keys()):
+    print(f'  - {name}')
+"
+
+# Run single executor
+python -m farfan_pipeline.phases.Phase_02.executor_runner \
+    --executor analyzer_one \
+    --question Q001_PA01 \
+    --chunks-dir artifacts/phase1_chunks/ \
+    --output artifacts/test_evidence.json
+
+# Run executor with profiling
+python -m farfan_pipeline.phases.Phase_02.phase2_95_00_executor_profiler \
+    --executor derek_beach \
+    --question Q015_PA03 \
+    --chunks-dir artifacts/phase1_chunks/ \
+    --profile-output artifacts/profiling/derek_beach_profile.json
+
+# Test executor circuit breaker
+python -m farfan_pipeline.phases.Phase_02.phase2_30_04_circuit_breaker_test \
+    --executor bayesian_multilevel \
+    --failure-threshold 5 \
+    --recovery-timeout 30
+
+# Benchmark executor performance
+python scripts/benchmarking/benchmark_executors.py \
+    --executors analyzer_one,derek_beach,policy_processor \
+    --iterations 100 \
+    --output artifacts/benchmarks/executor_performance.json
+```
+
+### 27.3.2 Contract Operations
+
+```bash
+# Validate single contract
+python scripts/validation/validate_contract.py \
+    --contract src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/Q001_PA01_contract_v4.json
+
+# Validate all contracts
+python scripts/validation/validate_all_contracts.py \
+    --contracts-dir src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/ \
+    --parallel 8
+
+# Regenerate single contract
+python scripts/generation/generate_contract.py \
+    --question Q001_PA01 \
+    --questionnaire canonic_questionnaire_central/questionnaire_monolith.json \
+    --output src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/Q001_PA01_contract_v4.json \
+    --version 4
+
+# Audit contract quality (CQVR scoring)
+python scripts/audit/audit_contract_quality.py \
+    --contract src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/Q001_PA01_contract_v4.json \
+    --output artifacts/audit/contract_quality.json
+
+# View contract signal wiring
+python scripts/validation/verify_contract_signal_wiring.py \
+    --contract Q001_PA01 \
+    --verbose
+```
+
+### 27.3.3 Evidence Analysis Operations
+
+```bash
+# Extract evidence for specific question
+python -m farfan_pipeline.phases.Phase_02.evidence_extractor \
+    --question Q001_PA01 \
+    --chunks-dir artifacts/phase1_chunks/ \
+    --executors analyzer_one,derek_beach \
+    --output artifacts/evidence/Q001_PA01_evidence.json
+
+# Analyze evidence quality
+python scripts/analysis/analyze_evidence_quality.py \
+    --evidence-file artifacts/phase2_evidence/evidence.json \
+    --output artifacts/analysis/evidence_quality_report.json
+
+# Filter high-quality evidence
+python scripts/filtering/filter_evidence.py \
+    --evidence-file artifacts/phase2_evidence/evidence.json \
+    --min-quality 0.7 \
+    --min-confidence 0.8 \
+    --output artifacts/filtered_evidence.json
+
+# Generate evidence summary
+python scripts/generation/generate_evidence_summary.py \
+    --evidence-file artifacts/phase2_evidence/evidence.json \
+    --group-by policy_area \
+    --output artifacts/reports/evidence_summary.md
+
+# Export evidence to database
+python scripts/export/export_evidence_to_db.py \
+    --evidence-file artifacts/phase2_evidence/evidence.json \
+    --db-url postgresql://localhost/farfan \
+    --table evidence
+
+# Create evidence embeddings
+python scripts/embeddings/generate_evidence_embeddings.py \
+    --evidence-file artifacts/phase2_evidence/evidence.json \
+    --model sentence-transformers/paraphrase-multilingual-mpnet-base-v2 \
+    --output artifacts/embeddings/evidence_embeddings.npy
+```
+
+### 27.3.4 Method Dispensary Operations
+
+```bash
+# Query method dispensary
+python -c "
+from farfan_pipeline.phases.Phase_02.method_dispensary import MethodDispensary
+dispensary = MethodDispensary()
+print(f'Total methods: {dispensary.get_method_count()}')
+print(f'Methods by class:')
+for cls_name, methods in dispensary.get_methods_by_class().items():
+    print(f'  {cls_name}: {len(methods)} methods')
+"
+
+# Get methods for specific question
+python scripts/query/get_methods_for_question.py \
+    --question Q001_PA01 \
+    --verbose
+
+# Validate method availability
+python scripts/validation/validate_method_availability.py \
+    --methods-file canonic_questionnaire_central/governance/METHODS_TO_QUESTIONS_AND_FILES.json \
+    --verify-imports
+```
+
+## 27.4 Phase 3: Scoring - Complete Operations
+
+### 27.4.1 Scoring Operations
+
+```bash
+# Run scoring for all questions
+python -m farfan_pipeline.phases.Phase_03.scorer \
+    --evidence-dir artifacts/phase2_evidence/ \
+    --calibration config/calibration/COHORT_2024_intrinsic_calibration.json \
+    --output artifacts/phase3_scores/scores.json
+
+# Run scoring for specific policy area
+python -m farfan_pipeline.phases.Phase_03.scorer \
+    --evidence-dir artifacts/phase2_evidence/ \
+    --calibration config/calibration/COHORT_2024_intrinsic_calibration.json \
+    --policy-area PA01 \
+    --output artifacts/phase3_scores/scores_PA01.json
+
+# Run scoring with alternative calibration
+python -m farfan_pipeline.phases.Phase_03.scorer \
+    --evidence-dir artifacts/phase2_evidence/ \
+    --calibration config/calibration/CUSTOM_calibration.json \
+    --output artifacts/phase3_scores/scores_custom.json
+
+# Run scoring with confidence thresholds
+python -m farfan_pipeline.phases.Phase_03.scorer \
+    --evidence-dir artifacts/phase2_evidence/ \
+    --calibration config/calibration/COHORT_2024_intrinsic_calibration.json \
+    --min-evidence 3 \
+    --min-confidence 0.7 \
+    --output artifacts/phase3_scores/scores_filtered.json
+
+# Generate scoring report
+python -m farfan_pipeline.phases.Phase_03.scorer \
+    --evidence-dir artifacts/phase2_evidence/ \
+    --calibration config/calibration/COHORT_2024_intrinsic_calibration.json \
+    --output artifacts/phase3_scores/scores.json \
+    --generate-report artifacts/reports/scoring_report.html
+```
+
+### 27.4.2 Score Analysis Operations
+
+```bash
+# Analyze score distribution
+python scripts/analysis/analyze_score_distribution.py \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --output artifacts/analysis/score_distribution.json
+
+# Compare scores across regions
+python scripts/comparison/compare_regional_scores.py \
+    --scores-dir artifacts/phase3_scores/ \
+    --regions R01,R02,R03 \
+    --output artifacts/comparison/regional_comparison.html
+
+# Identify low-scoring questions
+python scripts/analysis/identify_low_scores.py \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --threshold 0.5 \
+    --output artifacts/analysis/low_scores.csv
+
+# Generate score heatmap
+python scripts/visualization/generate_score_heatmap.py \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --output artifacts/visualizations/score_heatmap.png \
+    --width 20 \
+    --height 15 \
+    --dpi 300
+```
+
+### 27.4.3 Signal-Enriched Scoring
+
+```bash
+# View signal-enriched scoring consumer
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    consumer-status phase_03_signal_enriched_scoring
+
+# Query epistemic signals for scoring
+python scripts/sisas/query_signals.py \
+    --phase 3 \
+    --signal-type epistemic \
+    --filter "determinacy,specificity" \
+    --output artifacts/sisas/epistemic_signals.json
+```
+
+## 27.5 Phase 4: Dimension Aggregation - Complete Operations
+
+### 27.5.1 Aggregation Operations
+
+```bash
+# Run dimension aggregation
+python -m farfan_pipeline.phases.Phase_04.dimension_aggregator \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --fusion-weights config/calibration/COHORT_2024_fusion_weights.json \
+    --output artifacts/phase4_dimensions/dimensions.json
+
+# Use Choquet integral
+python -m farfan_pipeline.phases.Phase_04.dimension_aggregator \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --fusion-weights config/calibration/COHORT_2024_fusion_weights.json \
+    --method choquet \
+    --output artifacts/phase4_dimensions/dimensions_choquet.json
+
+# Use weighted average (alternative)
+python -m farfan_pipeline.phases.Phase_04.dimension_aggregator \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --fusion-weights config/calibration/COHORT_2024_fusion_weights.json \
+    --method weighted_average \
+    --output artifacts/phase4_dimensions/dimensions_weighted.json
+
+# Sensitivity analysis
+python scripts/analysis/dimension_sensitivity_analysis.py \
+    --scores-file artifacts/phase3_scores/scores.json \
+    --fusion-weights config/calibration/COHORT_2024_fusion_weights.json \
+    --perturbation 0.1 \
+    --output artifacts/analysis/dimension_sensitivity.json
+```
+
+### 27.5.2 Dimension Analysis Operations
+
+```bash
+# Analyze dimension scores
+python scripts/analysis/analyze_dimensions.py \
+    --dimensions-file artifacts/phase4_dimensions/dimensions.json \
+    --output artifacts/analysis/dimension_analysis.json
+
+# Generate dimension radar chart
+python scripts/visualization/generate_dimension_radar.py \
+    --dimensions-file artifacts/phase4_dimensions/dimensions.json \
+    --output artifacts/visualizations/dimension_radar.png
+
+# Compare dimensions across regions
+python scripts/comparison/compare_dimensions.py \
+    --dimensions-dir artifacts/phase4_dimensions/ \
+    --regions R01,R02,R03,R04 \
+    --output artifacts/comparison/dimension_comparison.html
+```
+
+## 27.6 Phase 5: Area Aggregation - Complete Operations
+
+### 27.6.1 High-Performance Aggregation
+
+```bash
+# Run area aggregation (high performance)
+python -m farfan_pipeline.phases.Phase_05.area_aggregator \
+    --dimensions-file artifacts/phase4_dimensions/dimensions.json \
+    --output artifacts/phase5_areas/areas.json \
+    --enable-async \
+    --enable-numba \
+    --enable-caching
+
+# Run with performance profiling
+python -m farfan_pipeline.phases.Phase_05.area_aggregator \
+    --dimensions-file artifacts/phase4_dimensions/dimensions.json \
+    --output artifacts/phase5_areas/areas.json \
+    --profile \
+    --profile-output artifacts/profiling/area_aggregation_profile.json
+
+# Benchmark performance
+python scripts/benchmarking/benchmark_area_aggregation.py \
+    --dimensions-file artifacts/phase4_dimensions/dimensions.json \
+    --iterations 10 \
+    --output artifacts/benchmarks/area_aggregation_benchmark.json
+
+# Run without optimizations (baseline)
+python -m farfan_pipeline.phases.Phase_05.area_aggregator \
+    --dimensions-file artifacts/phase4_dimensions/dimensions.json \
+    --output artifacts/phase5_areas/areas_baseline.json \
+    --disable-async \
+    --disable-numba \
+    --disable-caching
+```
+
+### 27.6.2 Area Analysis Operations
+
+```bash
+# Analyze policy areas
+python scripts/analysis/analyze_policy_areas.py \
+    --areas-file artifacts/phase5_areas/areas.json \
+    --output artifacts/analysis/area_analysis.json
+
+# Generate area comparison chart
+python scripts/visualization/generate_area_comparison.py \
+    --areas-file artifacts/phase5_areas/areas.json \
+    --output artifacts/visualizations/area_comparison.png \
+    --chart-type bar
+
+# Identify critical areas
+python scripts/analysis/identify_critical_areas.py \
+    --areas-file artifacts/phase5_areas/areas.json \
+    --threshold 0.6 \
+    --output artifacts/analysis/critical_areas.csv
+```
+
+## 27.7 Phase 6: Cluster Aggregation - Complete Operations
+
+### 27.7.1 Cluster Operations
+
+```bash
+# Run cluster aggregation
+python -m farfan_pipeline.phases.Phase_06.cluster_aggregator \
+    --areas-file artifacts/phase5_areas/areas.json \
+    --output artifacts/phase6_clusters/clusters.json \
+    --method adaptive_penalty
+
+# View MESO consumer status
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    consumer-status phase_06_meso
+
+# Analyze clusters
+python scripts/analysis/analyze_clusters.py \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --output artifacts/analysis/cluster_analysis.json
+```
+
+## 27.8 Phase 7: Macro Evaluation - Complete Operations
+
+### 27.8.1 Macro Scoring Operations
+
+```bash
+# Run macro evaluation (CCCA algorithm)
+python -m farfan_pipeline.phases.Phase_07.macro_evaluator \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --output artifacts/phase7_macro/macro_score.json \
+    --algorithm ccca
+
+# Run with SGD algorithm
+python -m farfan_pipeline.phases.Phase_07.macro_evaluator \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --output artifacts/phase7_macro/macro_score_sgd.json \
+    --algorithm sgd \
+    --learning-rate 0.01 \
+    --iterations 1000
+
+# Run with SAS algorithm
+python -m farfan_pipeline.phases.Phase_07.macro_evaluator \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --output artifacts/phase7_macro/macro_score_sas.json \
+    --algorithm sas
+
+# Generate macro report
+python -m farfan_pipeline.phases.Phase_07.macro_evaluator \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --output artifacts/phase7_macro/macro_score.json \
+    --algorithm ccca \
+    --generate-report artifacts/reports/macro_evaluation_report.html
+```
+
+### 27.8.2 Macro Analysis Operations
+
+```bash
+# Analyze macro score
+python scripts/analysis/analyze_macro_score.py \
+    --macro-file artifacts/phase7_macro/macro_score.json \
+    --output artifacts/analysis/macro_analysis.json
+
+# Compare macro scores across algorithms
+python scripts/comparison/compare_macro_algorithms.py \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --algorithms ccca,sgd,sas \
+    --output artifacts/comparison/macro_algorithm_comparison.html
+
+# Sensitivity analysis
+python scripts/analysis/macro_sensitivity_analysis.py \
+    --clusters-file artifacts/phase6_clusters/clusters.json \
+    --perturbation 0.05 \
+    --output artifacts/analysis/macro_sensitivity.json
+```
+
+## 27.9 Phase 8: Recommendations - Complete Operations
+
+### 27.9.1 Recommendation Generation
+
+```bash
+# Generate recommendations
+python -m farfan_pipeline.phases.Phase_08.recommendation_engine \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase8_recommendations/recommendations.json \
+    --rule-engine-version 3.0
+
+# Generate recommendations for specific area
+python -m farfan_pipeline.phases.Phase_08.recommendation_engine \
+    --artifacts-dir artifacts/ \
+    --policy-area PA01 \
+    --output artifacts/phase8_recommendations/recommendations_PA01.json
+
+# Generate prioritized recommendations
+python -m farfan_pipeline.phases.Phase_08.recommendation_engine \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase8_recommendations/recommendations_prioritized.json \
+    --prioritize \
+    --max-recommendations 20
+
+# Generate recommendations with budget constraints
+python -m farfan_pipeline.phases.Phase_08.recommendation_engine \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase8_recommendations/recommendations_budgeted.json \
+    --budget 1000000 \
+    --optimize-budget
+```
+
+### 27.9.2 Recommendation Analysis
+
+```bash
+# Analyze recommendations
+python scripts/analysis/analyze_recommendations.py \
+    --recommendations-file artifacts/phase8_recommendations/recommendations.json \
+    --output artifacts/analysis/recommendation_analysis.json
+
+# Group recommendations by category
+python scripts/grouping/group_recommendations.py \
+    --recommendations-file artifacts/phase8_recommendations/recommendations.json \
+    --group-by category,priority \
+    --output artifacts/analysis/recommendations_grouped.csv
+
+# Export recommendations to actionable format
+python scripts/export/export_recommendations_action_plan.py \
+    --recommendations-file artifacts/phase8_recommendations/recommendations.json \
+    --output artifacts/action_plans/recommendations_action_plan.xlsx
+```
+
+## 27.10 Phase 9: Reporting - Complete Operations
+
+### 27.10.1 Report Generation
+
+```bash
+# Generate all report types
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output-dir artifacts/phase9_reports/ \
+    --all-templates
+
+# Generate enhanced report only
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/enhanced_report.html \
+    --template enhanced
+
+# Generate executive dashboard
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/executive_dashboard.html \
+    --template executive
+
+# Generate technical deep-dive
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/technical_deepdive.html \
+    --template technical
+
+# Generate original report
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/original_report.html \
+    --template original
+
+# Generate PDF reports
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output-dir artifacts/phase9_reports/ \
+    --all-templates \
+    --format pdf \
+    --pdf-engine weasyprint
+```
+
+### 27.10.2 Report Customization
+
+```bash
+# Generate report with custom template
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/custom_report.html \
+    --custom-template templates/my_custom_template.jinja2
+
+# Generate report with logo
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/branded_report.html \
+    --template enhanced \
+    --logo assets/logo.png
+
+# Generate multi-language report
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/report_en.html \
+    --template enhanced \
+    --language en
+
+# Generate report with custom quality thresholds
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/ \
+    --output artifacts/phase9_reports/custom_thresholds_report.html \
+    --template enhanced \
+    --threshold-excelente 0.90 \
+    --threshold-bueno 0.75 \
+    --threshold-aceptable 0.60
+```
+
+---
+
+# Section 28: Advanced Debugging & Troubleshooting
+
+## 28.1 Log Analysis & Debugging
+
+### 28.1.1 Log Locations
+
+```bash
+# Orchestrator logs
+tail -f logs/orchestrator/orchestrator.log
+
+# Phase-specific logs
+tail -f logs/phases/phase_00.log
+tail -f logs/phases/phase_01.log
+tail -f logs/phases/phase_02.log
+# ... through phase_09.log
+
+# SISAS logs
+tail -f logs/sisas/signals.log
+tail -f logs/sisas/buses.log
+tail -f logs/sisas/consumers.log
+tail -f logs/sisas/gates.log
+
+# Executor logs
+tail -f logs/executors/analyzer_one.log
+tail -f logs/executors/derek_beach.log
+
+# Metrics logs
+tail -f logs/metrics/system_metrics.log
+tail -f logs/metrics/phase_metrics.log
+
+# Error logs
+tail -f logs/errors/error.log
+tail -f logs/errors/critical.log
+```
+
+### 28.1.2 Log Filtering & Analysis
+
+```bash
+# Find all ERROR level logs in last hour
+grep "ERROR" logs/orchestrator/orchestrator.log | grep "$(date -d '1 hour ago' '+%Y-%m-%d %H')"
+
+# Find all CRITICAL logs
+grep "CRITICAL" logs/**/*.log
+
+# Find specific error pattern
+grep -r "TimeoutError\|MemoryError\|KeyError" logs/
+
+# Extract stack traces
+grep -A 20 "Traceback" logs/orchestrator/orchestrator.log
+
+# Count errors by type
+grep "ERROR" logs/orchestrator/orchestrator.log | cut -d':' -f4 | sort | uniq -c | sort -rn
+
+# Find slowest operations
+grep "duration" logs/phases/*.log | awk '{print $NF}' | sort -rn | head -20
+
+# Analyze SISAS signal rejections
+grep "rejected" logs/sisas/gates.log | jq '.gate, .reason' | sort | uniq -c
+
+# Find memory spikes
+grep "memory_usage_mb" logs/metrics/system_metrics.log | awk '{print $NF}' | \
+    awk 'BEGIN{max=0} {if($1>max) max=$1} END{print "Peak memory: " max " MB"}'
+```
+
+### 28.1.3 Interactive Debugging
+
+```bash
+# Enable debug mode
+export FARFAN_LOG_LEVEL=DEBUG
+export FARFAN_DEBUG=true
+
+# Run pipeline with pdb breakpoint
+python -m pdb -m farfan_pipeline.orchestration.orchestrator \
+    --plan data/plans/test.pdf \
+    --start-phase 0 \
+    --end-phase 3
+
+# Run with ipdb (better interface)
+pip install ipdb
+python -c "import ipdb; ipdb.set_trace(); from farfan_pipeline.orchestration.orchestrator import Orchestrator; o = Orchestrator()"
+
+# Run with profiling
+python -m cProfile -o profile.stats \
+    -m farfan_pipeline.orchestration.orchestrator \
+    --plan data/plans/test.pdf
+
+# Analyze profile
+python -c "
+import pstats
+p = pstats.Stats('profile.stats')
+p.sort_stats('cumulative')
+p.print_stats(50)
+"
+
+# Memory profiling
+pip install memory_profiler
+python -m memory_profiler scripts/run_policy_pipeline_verified.py \
+    --plan data/plans/test.pdf
+```
+
+### 28.1.4 Common Issues & Solutions
+
+**Issue 1: Pipeline Hangs During Phase 2**
+```bash
+# Diagnosis
+ps aux | grep farfan  # Check if process is running
+strace -p <PID>       # See what system calls it's making
+lsof -p <PID>         # Check open files
+
+# Check executor timeouts
+grep "timeout" logs/executors/*.log
+
+# Check circuit breaker status
+python -c "
+from farfan_pipeline.phases.Phase_02.phase2_30_04_circuit_breaker import CircuitBreakerRegistry
+registry = CircuitBreakerRegistry()
+for executor, cb in registry.get_all().items():
+    print(f'{executor}: {cb.state}')
+"
+
+# Solution: Increase executor timeout
+export FARFAN_EXECUTOR_TIMEOUT=600
+```
+
+**Issue 2: Out of Memory Errors**
+```bash
+# Diagnosis
+free -h  # Check available memory
+top      # Monitor memory usage in real-time
+
+# Check memory usage by phase
+grep "memory" logs/metrics/system_metrics.log | tail -100
+
+# Solution: Reduce batch size
+export FARFAN_MAX_MEMORY_MB=4096
+export FARFAN_BATCH_SIZE=10  # Process fewer items at once
+
+# Or enable memory-efficient mode
+export FARFAN_MEMORY_EFFICIENT=true
+```
+
+**Issue 3: SISAS Signal Backlog**
+```bash
+# Diagnosis
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main stats
+
+# Check queue depths
+curl http://localhost:5000/api/v1/sisas/metrics | jq '.queue_depths'
+
+# Solution: Increase consumer threads
+export FARFAN_SISAS_CONSUMER_THREADS=8
+
+# Or increase bus capacity
+export FARFAN_SISAS_BUS_QUEUE_SIZE=100000
+
+# Or flush backlog
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main flush-queues
+```
+
+**Issue 4: Contract Validation Failures**
+```bash
+# Diagnosis
+python scripts/validation/validate_all_contracts.py --verbose
+
+# Check specific contract
+python scripts/validation/validate_contract.py \
+    --contract src/farfan_pipeline/phases/Phase_02/generated_contracts/contracts/Q001_PA01_contract_v4.json \
+    --debug
+
+# Solution: Regenerate failed contracts
+python scripts/generation/regenerate_failed_contracts.py \
+    --validation-log artifacts/validation/failed_contracts.log
+```
+
+**Issue 5: Evidence Extraction Low Quality**
+```bash
+# Diagnosis
+python scripts/analysis/analyze_evidence_quality.py \
+    --evidence-file artifacts/phase2_evidence/evidence.json \
+    --min-quality 0.7
+
+# Check which executors are underperforming
+python -c "
+import json
+with open('artifacts/phase2_evidence/evidence.json') as f:
+    evidence = json.load(f)
+from collections import defaultdict
+by_executor = defaultdict(list)
+for e in evidence:
+    by_executor[e['executor']].append(e['quality'])
+for executor, qualities in by_executor.items():
+    avg = sum(qualities) / len(qualities)
+    print(f'{executor}: {avg:.3f} (n={len(qualities)})')
+"
+
+# Solution: Recalibrate underperforming executors
+python scripts/calibration/recalibrate_executor.py \
+    --executor derek_beach \
+    --target-quality 0.75
+```
+
+## 28.2 Performance Diagnostics
+
+### 28.2.1 System Resource Monitoring
+
+```bash
+# Real-time system monitoring
+watch -n 1 '
+echo "=== CPU ==="
+mpstat 1 1 | tail -1
+echo ""
+echo "=== Memory ==="
+free -h
+echo ""
+echo "=== Disk I/O ==="
+iostat -x 1 1 | tail -n +4
+echo ""
+echo "=== Pipeline Processes ==="
+ps aux | grep farfan | head -5
+'
+
+# Monitor GPU usage (if available)
+watch -n 1 nvidia-smi
+
+# Monitor disk space
+df -h | grep -E "Filesystem|/home"
+
+# Monitor network usage
+iftop -i eth0
+
+# Continuous resource logging
+python scripts/monitoring/continuous_resource_monitor.py \
+    --interval 5 \
+    --output logs/resources.log &
+```
+
+### 28.2.2 Bottleneck Identification
+
+```bash
+# Identify slowest phases
+python scripts/analysis/identify_bottlenecks.py \
+    --log-file logs/orchestrator/orchestrator.log \
+    --output artifacts/analysis/bottlenecks.json
+
+# Profile specific phase
+python -m cProfile -o phase2_profile.stats \
+    -m farfan_pipeline.phases.Phase_02.main \
+    --chunks-dir artifacts/phase1_chunks/
+
+# Analyze profile
+python -c "
+import pstats
+from pstats import SortKey
+p = pstats.Stats('phase2_profile.stats')
+print('Top 20 by cumulative time:')
+p.sort_stats(SortKey.CUMULATIVE).print_stats(20)
+print('\nTop 20 by time per call:')
+p.sort_stats(SortKey.TIME).print_stats(20)
+"
+
+# Line profiler for specific function
+pip install line_profiler
+kernprof -l -v scripts/profile_target.py
+
+# Generate flame graph
+pip install py-spy
+py-spy record -o flamegraph.svg -- python -m farfan_pipeline.orchestration.orchestrator
+```
+
+## 28.3 Data Validation & Integrity Checks
+
+### 28.3.1 Artifact Validation
+
+```bash
+# Validate all artifacts
+python scripts/validation/validate_all_artifacts.py \
+    --artifacts-dir artifacts/latest_run \
+    --strict
+
+# Check artifact counts
+echo "Expected vs Actual artifact counts:"
+echo "Chunks: $(ls artifacts/latest_run/phase1_chunks/*.json 2>/dev/null | wc -l) / 60"
+echo "Evidence: $(jq length artifacts/latest_run/phase2_evidence/evidence.json) / 300"
+echo "Scores: $(jq length artifacts/latest_run/phase3_scores/scores.json) / 300"
+echo "Dimensions: $(jq length artifacts/latest_run/phase4_dimensions/dimensions.json) / 60"
+echo "Areas: $(jq length artifacts/latest_run/phase5_areas/areas.json) / 10"
+echo "Clusters: $(jq length artifacts/latest_run/phase6_clusters/clusters.json) / 4"
+
+# Verify artifact integrity (checksums)
+python scripts/validation/verify_artifact_checksums.py \
+    --artifacts-dir artifacts/latest_run \
+    --checksums artifacts/latest_run/checksums.sha256
+
+# Detect corrupted files
+find artifacts/latest_run -name "*.json" -exec sh -c '
+    if ! jq empty "$1" 2>/dev/null; then
+        echo "Corrupted: $1"
+    fi
+' _ {} \;
+```
+
+### 28.3.2 Data Consistency Checks
+
+```bash
+# Check score consistency
+python scripts/validation/check_score_consistency.py \
+    --scores-file artifacts/latest_run/phase3_scores/scores.json \
+    --dimensions-file artifacts/latest_run/phase4_dimensions/dimensions.json
+
+# Verify aggregation chain
+python scripts/validation/verify_aggregation_chain.py \
+    --artifacts-dir artifacts/latest_run
+
+# Check for missing data
+python scripts/validation/check_missing_data.py \
+    --artifacts-dir artifacts/latest_run \
+    --report artifacts/validation/missing_data_report.txt
+
+# Validate provenance chain
+python scripts/validation/validate_provenance.py \
+    --artifacts-dir artifacts/latest_run \
+    --verify-w3c-prov
+```
+
+---
+
+# Section 29: Performance Tuning & Optimization
+
+## 29.1 Configuration Optimization
+
+### 29.1.1 Memory Optimization
+
+```bash
+# Configure memory limits
+export FARFAN_MAX_MEMORY_MB=16384       # Max total memory
+export FARFAN_PHASE_MEMORY_LIMIT=4096   # Per-phase limit
+export FARFAN_EXECUTOR_MEMORY_LIMIT=512 # Per-executor limit
+
+# Enable memory-efficient processing
+export FARFAN_MEMORY_EFFICIENT=true
+export FARFAN_STREAMING_MODE=true       # Process in streams
+export FARFAN_LAZY_LOADING=true         # Load data on-demand
+
+# Configure garbage collection
+export PYTHONMALLOC=malloc
+export PYTHONGC=2,10,10  # gc.set_threshold(2, 10, 10)
+
+# Use memory pooling
+export FARFAN_USE_MEMORY_POOL=true
+export FARFAN_POOL_SIZE=1024
+```
+
+### 29.1.2 CPU Optimization
+
+```bash
+# Set number of workers
+export FARFAN_MAX_WORKERS=8              # Parallel workers
+export FARFAN_EXECUTOR_THREADS=4         # Threads per executor
+export FARFAN_SISAS_CONSUMER_THREADS=8   # SISAS consumer threads
+
+# Enable CPU affinity
+export FARFAN_CPU_AFFINITY=true
+taskset -c 0-7 python -m farfan_pipeline.orchestration.orchestrator
+
+# Use process pool instead of thread pool
+export FARFAN_USE_PROCESS_POOL=true
+
+# Enable JIT compilation
+export FARFAN_ENABLE_NUMBA=true
+export NUMBA_CACHE_DIR=/tmp/numba_cache
+```
+
+### 29.1.3 I/O Optimization
+
+```bash
+# Configure I/O settings
+export FARFAN_IO_BUFFER_SIZE=65536       # 64KB buffer
+export FARFAN_ASYNC_IO=true              # Async I/O operations
+export FARFAN_USE_MMAP=true              # Memory-mapped files
+
+# Use faster JSON library
+export FARFAN_JSON_LIBRARY=orjson  # or ujson
+
+# Enable compression
+export FARFAN_COMPRESS_ARTIFACTS=true
+export FARFAN_COMPRESSION_LEVEL=6
+
+# Use tmpfs for temporary files
+export TMPDIR=/dev/shm
+mkdir -p /dev/shm/farfan_temp
+export FARFAN_TEMP_DIR=/dev/shm/farfan_temp
+```
+
+## 29.2 Caching Strategies
+
+### 29.2.1 Application-Level Caching
+
+```bash
+# Enable caching
+export FARFAN_ENABLE_CACHING=true
+export FARFAN_CACHE_SIZE_MB=4096
+export FARFAN_CACHE_TTL=3600  # 1 hour
+
+# Configure cache types
+export FARFAN_CACHE_QUESTIONNAIRE=true   # Cache questionnaire
+export FARFAN_CACHE_CONTRACTS=true       # Cache contracts
+export FARFAN_CACHE_EMBEDDINGS=true      # Cache embeddings
+export FARFAN_CACHE_SCORES=true          # Cache intermediate scores
+
+# Use Redis for distributed caching
+export FARFAN_CACHE_BACKEND=redis
+export FARFAN_REDIS_URL=redis://localhost:6379/0
+
+# Cache warming
+python scripts/optimization/warm_cache.py \
+    --questionnaire \
+    --contracts \
+    --embeddings
+```
+
+### 29.2.2 File System Caching
+
+```bash
+# Use SSD for artifacts
+export FARFAN_ARTIFACTS_DIR=/mnt/ssd/farfan_artifacts
+
+# Enable OS-level caching
+echo 3 > /proc/sys/vm/drop_caches  # Clear cache
+# Let OS manage cache naturally
+
+# Use tmpfs for hot data
+mount -t tmpfs -o size=8G tmpfs /mnt/farfan_hot
+export FARFAN_HOT_DATA_DIR=/mnt/farfan_hot
+```
+
+## 29.3 Parallel Processing Optimization
+
+### 29.3.1 Phase-Level Parallelization
+
+```bash
+# Run independent operations in parallel
+python scripts/optimization/parallel_phase_runner.py \
+    --phases 1,2,3 \
+    --parallel \
+    --max-workers 3
+
+# Use GNU parallel for batch processing
+find data/plans/*.pdf | parallel -j 4 \
+    python scripts/run_policy_pipeline_verified.py --plan {}
+```
+
+### 29.3.2 Executor-Level Parallelization
+
+```bash
+# Configure executor parallelism
+export FARFAN_EXECUTOR_PARALLEL=true
+export FARFAN_EXECUTOR_MAX_PARALLEL=30
+
+# Use asyncio for I/O-bound executors
+export FARFAN_EXECUTOR_ASYNC=true
+
+# Batch executor calls
+export FARFAN_EXECUTOR_BATCH_SIZE=10
+```
+
+## 29.4 Database & Query Optimization
+
+### 29.4.1 Query Optimization
+
+```bash
+# Use indexes for faster lookups
+python scripts/optimization/create_indexes.py \
+    --tables evidence,scores,dimensions
+
+# Enable query caching
+export FARFAN_QUERY_CACHE=true
+export FARFAN_QUERY_CACHE_SIZE=1000
+
+# Use connection pooling
+export FARFAN_DB_POOL_SIZE=20
+export FARFAN_DB_MAX_OVERFLOW=10
+```
+
+### 29.4.2 Batch Operations
+
+```bash
+# Batch insert operations
+python scripts/optimization/batch_insert.py \
+    --evidence artifacts/phase2_evidence/evidence.json \
+    --batch-size 1000
+
+# Use bulk operations
+export FARFAN_USE_BULK_OPS=true
+export FARFAN_BULK_SIZE=5000
+```
+
+## 29.5 Benchmark Suite
+
+### 29.5.1 Performance Benchmarks
+
+```bash
+# Run full benchmark suite
+python scripts/benchmarking/benchmark_suite.py \
+    --output artifacts/benchmarks/full_benchmark.json
+
+# Benchmark specific components
+python scripts/benchmarking/benchmark_executors.py --iterations 100
+python scripts/benchmarking/benchmark_aggregation.py --iterations 50
+python scripts/benchmarking/benchmark_sisas.py --duration 300
+
+# Compare before/after optimization
+python scripts/benchmarking/compare_benchmarks.py \
+    --baseline artifacts/benchmarks/baseline.json \
+    --current artifacts/benchmarks/current.json \
+    --output artifacts/benchmarks/comparison.html
+```
+
+### 29.5.2 Load Testing
+
+```bash
+# Stress test pipeline
+python scripts/testing/stress_test.py \
+    --concurrent-jobs 10 \
+    --duration 3600 \
+    --ramp-up 300
+
+# Load test API
+pip install locust
+locust -f scripts/testing/locustfile.py \
+    --host http://localhost:5000 \
+    --users 100 \
+    --spawn-rate 10
+
+# Memory leak detection
+python scripts/testing/memory_leak_test.py \
+    --iterations 1000 \
+    --check-interval 10
+```
+
+---
+
+# Section 30: Disaster Recovery & Business Continuity
+
+## 30.1 Backup Strategies
+
+### 30.1.1 Automated Backups
+
+```bash
+# Create backup script
+cat > scripts/backup/daily_backup.sh << 'EOF'
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/backups/farfan"
+
+# Backup artifacts
+tar -czf "$BACKUP_DIR/artifacts_$DATE.tar.gz" artifacts/
+
+# Backup configuration
+tar -czf "$BACKUP_DIR/config_$DATE.tar.gz" config/
+
+# Backup canonical files
+tar -czf "$BACKUP_DIR/canonical_$DATE.tar.gz" canonic_questionnaire_central/
+
+# Backup logs
+tar -czf "$BACKUP_DIR/logs_$DATE.tar.gz" logs/
+
+# Cleanup old backups (keep 30 days)
+find "$BACKUP_DIR" -name "*.tar.gz" -mtime +30 -delete
+
+echo "Backup completed: $DATE"
+EOF
+
+chmod +x scripts/backup/daily_backup.sh
+
+# Schedule with cron
+crontab -e
+# Add: 0 2 * * * /home/user/FARFAN_MCDPP/scripts/backup/daily_backup.sh
+```
+
+### 30.1.2 Incremental Backups
+
+```bash
+# Use rsync for incremental backups
+rsync -av --delete \
+    --link-dest=/backups/farfan/latest \
+    artifacts/ /backups/farfan/$(date +%Y%m%d)/
+
+ln -nsf /backups/farfan/$(date +%Y%m%d) /backups/farfan/latest
+```
+
+### 30.1.3 Cloud Backups
+
+```bash
+# Backup to S3
+pip install awscli
+aws s3 sync artifacts/ s3://my-bucket/farfan-backups/artifacts/ --storage-class GLACIER
+
+# Backup to Google Cloud Storage
+pip install google-cloud-storage
+gsutil -m rsync -r artifacts/ gs://my-bucket/farfan-backups/artifacts/
+
+# Backup to Azure Blob Storage
+pip install azure-storage-blob
+az storage blob upload-batch \
+    --destination farfan-backups \
+    --source artifacts/ \
+    --account-name mystorageaccount
+```
+
+## 30.2 Checkpoint & Resume
+
+### 30.2.1 Creating Checkpoints
+
+```bash
+# Enable checkpointing
+export FARFAN_ENABLE_CHECKPOINTS=true
+export FARFAN_CHECKPOINT_INTERVAL=300  # Every 5 minutes
+
+# Manual checkpoint
+python -c "
+from farfan_pipeline.orchestration.checkpoint_manager import CheckpointManager
+cm = CheckpointManager()
+cm.create_checkpoint('manual_checkpoint_$(date +%s)')
+"
+
+# List checkpoints
+python -c "
+from farfan_pipeline.orchestration.checkpoint_manager import CheckpointManager
+cm = CheckpointManager()
+for cp in cm.list_checkpoints():
+    print(f'{cp.timestamp}: {cp.phase} - {cp.description}')
+"
+```
+
+### 30.2.2 Restoring from Checkpoints
+
+```bash
+# Resume from latest checkpoint
+python -m farfan_pipeline.orchestration.orchestrator \
+    --resume-from-checkpoint latest
+
+# Resume from specific checkpoint
+python -m farfan_pipeline.orchestration.orchestrator \
+    --resume-from-checkpoint checkpoint_20260123_103045
+
+# Restore artifacts from checkpoint
+python scripts/recovery/restore_from_checkpoint.py \
+    --checkpoint checkpoint_20260123_103045 \
+    --restore-artifacts \
+    --restore-state
+```
+
+## 30.3 Rollback Procedures
+
+### 30.3.1 Phase Rollback
+
+```bash
+# Rollback to previous phase
+python scripts/enforcement/rollback_manager.py \
+    --target-phase 5 \
+    --reason "Phase 6 validation failed" \
+    --create-backup
+
+# Rollback with artifact cleanup
+python scripts/enforcement/rollback_manager.py \
+    --target-phase 3 \
+    --cleanup-artifacts \
+    --preserve-logs
+```
+
+### 30.3.2 Configuration Rollback
+
+```bash
+# Backup current config before changes
+cp -r config/ config.backup.$(date +%s)
+
+# Rollback configuration
+python scripts/recovery/rollback_config.py \
+    --backup-dir config.backup.1737633045
+
+# Verify configuration
+python scripts/validation/validate_configuration.py
+```
+
+## 30.4 Failure Recovery
+
+### 30.4.1 Automatic Recovery
+
+```bash
+# Enable automatic recovery
+export FARFAN_AUTO_RECOVERY=true
+export FARFAN_MAX_RETRY_ATTEMPTS=3
+export FARFAN_RETRY_DELAY=60
+
+# Configure circuit breaker for auto-recovery
+export FARFAN_CIRCUIT_BREAKER_ENABLED=true
+export FARFAN_CIRCUIT_BREAKER_THRESHOLD=5
+export FARFAN_CIRCUIT_BREAKER_TIMEOUT=300
+```
+
+### 30.4.2 Manual Recovery
+
+```bash
+# Diagnose failure
+python scripts/diagnostics/diagnose_failure.py \
+    --log-file logs/orchestrator/orchestrator.log \
+    --job-id job_20260123_103000
+
+# Repair corrupted artifacts
+python scripts/recovery/repair_artifacts.py \
+    --artifacts-dir artifacts/failed_run \
+    --auto-fix
+
+# Regenerate failed phase
+python scripts/recovery/regenerate_phase.py \
+    --phase 4 \
+    --input-dir artifacts/failed_run/phase3_scores \
+    --output-dir artifacts/recovered_run/phase4_dimensions
+```
+
+## 30.5 Data Integrity Verification
+
+### 30.5.1 Checksum Verification
+
+```bash
+# Generate checksums
+find artifacts/ -type f -name "*.json" -exec sha256sum {} \; > artifacts/checksums.sha256
+
+# Verify checksums
+sha256sum -c artifacts/checksums.sha256
+
+# Detect changes
+python scripts/integrity/detect_artifact_changes.py \
+    --checksums artifacts/checksums.sha256 \
+    --report artifacts/integrity_report.txt
+```
+
+### 30.5.2 Provenance Verification
+
+```bash
+# Verify W3C PROV-DM compliance
+python scripts/validation/validate_provenance.py \
+    --artifacts-dir artifacts/latest_run \
+    --verify-chain \
+    --strict
+
+# Generate provenance graph
+python scripts/visualization/generate_provenance_graph.py \
+    --artifacts-dir artifacts/latest_run \
+    --output artifacts/visualizations/provenance.svg
+```
+
+---
+
+# Section 31: Advanced SISAS Operations
+
+## 31.1 Signal Management
+
+### 31.1.1 Signal Creation & Publishing
+
+```python
+# Custom signal creation
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import StructuralSignal
+
+signal = StructuralSignal(
+    signal_id="custom_001",
+    source="custom_extractor",
+    target="phase_02",
+    payload={
+        "alignment_score": 0.85,
+        "conflict_detected": False,
+        "metadata": {"custom_field": "value"}
+    }
+)
+
+# Publish signal
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.buses import BusSystem
+bus_system = BusSystem()
+bus_system.publish("structural", signal)
+```
+
+### 31.1.2 Signal Filtering & Routing
+
+```bash
+# Filter signals by criteria
+python scripts/sisas/filter_signals.py \
+    --signal-log logs/sisas/signals.jsonl \
+    --type structural \
+    --min-score 0.8 \
+    --output artifacts/filtered_signals.jsonl
+
+# Route signals to custom consumer
+python scripts/sisas/route_signals.py \
+    --source-bus structural \
+    --target-consumer custom_consumer \
+    --filter-expression "score > 0.75"
+```
+
+## 31.2 Consumer Development
+
+### 31.2.1 Custom Consumer Creation
+
+```python
+# Create custom consumer
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.consumers import BaseConsumer
+
+class MyCustomConsumer(BaseConsumer):
+    def __init__(self):
+        super().__init__(
+            consumer_id="custom_consumer_001",
+            subscribed_buses=["structural", "epistemic"]
+        )
+
+    def on_signal(self, signal):
+        """Process incoming signal."""
+        print(f"Received signal: {signal.signal_id}")
+        # Custom processing logic
+        result = self.process_signal(signal)
+        return result
+
+    def process_signal(self, signal):
+        """Custom signal processing."""
+        # Your logic here
+        pass
+
+# Register consumer
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.consumers import ConsumerRegistry
+registry = ConsumerRegistry()
+registry.register(MyCustomConsumer())
+```
+
+### 31.2.2 Consumer Monitoring
+
+```bash
+# Monitor consumer health
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    consumer-health --consumer custom_consumer_001
+
+# View consumer metrics
+curl http://localhost:5000/api/v1/sisas/consumers/custom_consumer_001 | jq
+
+# Reset consumer state
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    reset-consumer --consumer custom_consumer_001
+```
+
+## 31.3 Gate Configuration
+
+### 31.3.1 Custom Gate Rules
+
+```yaml
+# config/sisas/custom_gate_rules.yaml
+gates:
+  gate_1_scope:
+    rules:
+      - field: signal_type
+        operator: in
+        values: [structural, integrity, epistemic]
+      - field: source
+        operator: matches
+        pattern: "^(phase_|extractor_)"
+    action: pass
+
+  gate_2_value:
+    rules:
+      - field: payload.quality
+        operator: gte
+        value: 0.6
+      - field: payload.confidence
+        operator: gte
+        value: 0.7
+    action: pass
+
+  custom_gate:
+    rules:
+      - field: payload.custom_score
+        operator: gt
+        value: 0.8
+    action: pass
+```
+
+### 31.3.2 Gate Tuning
+
+```bash
+# Analyze gate rejection rates
+python scripts/sisas/analyze_gate_performance.py \
+    --log-file logs/sisas/gates.log \
+    --output artifacts/sisas/gate_analysis.json
+
+# Optimize gate thresholds
+python scripts/sisas/optimize_gate_thresholds.py \
+    --target-pass-rate 0.95 \
+    --output config/sisas/optimized_gates.yaml
+```
+
+## 31.4 Dead Letter Queue Management
+
+### 31.4.1 DLQ Operations
+
+```bash
+# View dead letter queue
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    dlq-list --limit 50
+
+# Replay dead letters
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    dlq-replay --signal-ids signal_001,signal_002
+
+# Clear dead letter queue
+python -m farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main \
+    dlq-clear --confirm
+
+# Export dead letters for analysis
+python scripts/sisas/export_dead_letters.py \
+    --output artifacts/sisas/dead_letters.json
+```
+
+## 31.5 Signal Analytics
+
+### 31.5.1 Signal Flow Analysis
+
+```bash
+# Generate signal flow report
+python scripts/sisas/generate_signal_flow_report.py \
+    --log-file logs/sisas/signals.jsonl \
+    --time-range "2026-01-23T10:00:00" "2026-01-23T11:00:00" \
+    --output artifacts/reports/signal_flow_report.html
+
+# Analyze signal patterns
+python scripts/sisas/analyze_signal_patterns.py \
+    --log-file logs/sisas/signals.jsonl \
+    --detect-anomalies \
+    --output artifacts/analysis/signal_patterns.json
+
+# Correlation analysis
+python scripts/sisas/signal_correlation_analysis.py \
+    --log-file logs/sisas/signals.jsonl \
+    --output artifacts/analysis/signal_correlations.html
+```
+
+---
+
+# Section 32: Monitoring & Alerting
+
+## 32.1 Prometheus Integration
+
+### 32.1.1 Metrics Export Setup
+
+```bash
+# Start Prometheus exporter
+python -m farfan_pipeline.monitoring.prometheus_exporter \
+    --port 9090 \
+    --interval 10 &
+
+# Configure Prometheus
+cat > prometheus.yml << 'EOF'
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'farfan-pipeline'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+rule_files:
+  - 'alerts.yml'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
+EOF
+
+# Start Prometheus
+prometheus --config.file=prometheus.yml &
+```
+
+### 32.1.2 Custom Metrics
+
+```python
+# Define custom metrics
+from prometheus_client import Counter, Histogram, Gauge
+
+# Counters
+evidence_extracted = Counter(
+    'farfan_evidence_extracted_total',
+    'Total evidence items extracted',
+    ['executor', 'policy_area']
+)
+
+# Histograms
+phase_duration = Histogram(
+    'farfan_phase_duration_seconds',
+    'Phase execution duration',
+    ['phase'],
+    buckets=[1, 5, 10, 30, 60, 120, 300, 600]
+)
+
+# Gauges
+active_executors = Gauge(
+    'farfan_active_executors',
+    'Number of active executors'
+)
+
+# Use metrics
+evidence_extracted.labels(executor='analyzer_one', policy_area='PA01').inc()
+with phase_duration.labels(phase='2').time():
+    # Phase 2 execution
+    pass
+active_executors.set(30)
+```
+
+## 32.2 Alert Configuration
+
+### 32.2.1 Alert Rules
+
+```yaml
+# alerts.yml
+groups:
+  - name: farfan_pipeline
+    interval: 30s
+    rules:
+      - alert: PipelineHighMemoryUsage
+        expr: farfan_memory_usage_bytes > 14*1024*1024*1024
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pipeline memory usage is high"
+          description: "Memory usage is {{ $value | humanize }}B"
+
+      - alert: PipelineCriticalMemoryUsage
+        expr: farfan_memory_usage_bytes > 15*1024*1024*1024
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pipeline memory usage is critical"
+          description: "Memory usage is {{ $value | humanize }}B"
+
+      - alert: HighErrorRate
+        expr: rate(farfan_errors_total[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | printf \"%.2f\" }} errors/sec"
+
+      - alert: SISASDeadLetterBacklog
+        expr: farfan_sisas_dead_letters_total > 500
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SISAS dead letter queue backlog"
+          description: "{{ $value }} signals in dead letter queue"
+
+      - alert: PhaseTimeout
+        expr: farfan_phase_duration_seconds > 1800
+        labels:
+          severity: critical
+        annotations:
+          summary: "Phase execution timeout"
+          description: "Phase {{ $labels.phase }} taking too long"
+
+      - alert: ExecutorCircuitBreakerOpen
+        expr: farfan_circuit_breaker_state == 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Executor circuit breaker open"
+          description: "Circuit breaker for {{ $labels.executor }} is open"
+```
+
+### 32.2.2 Alertmanager Configuration
+
+```yaml
+# alertmanager.yml
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'farfan-alerts@example.com'
+  smtp_auth_username: 'alerts@example.com'
+  smtp_auth_password: 'password'
+
+route:
+  group_by: ['alertname', 'cluster']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 12h
+  receiver: 'team-email'
+  routes:
+    - match:
+        severity: critical
+      receiver: 'team-pager'
+    - match:
+        severity: warning
+      receiver: 'team-email'
+
+receivers:
+  - name: 'team-email'
+    email_configs:
+      - to: 'team@example.com'
+        headers:
+          Subject: '[FARFAN] {{ .GroupLabels.alertname }}'
+
+  - name: 'team-pager'
+    pagerduty_configs:
+      - service_key: 'your-pagerduty-key'
+
+  - name: 'slack'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
+        channel: '#farfan-alerts'
+        title: '{{ .GroupLabels.alertname }}'
+        text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+```
+
+## 32.3 Grafana Dashboards
+
+### 32.3.1 Import Dashboards
+
+```bash
+# Import main dashboard
+curl -X POST http://admin:admin@localhost:3000/api/dashboards/db \
+    -H "Content-Type: application/json" \
+    -d @grafana/dashboards/farfan_main.json
+
+# Import SISAS dashboard
+curl -X POST http://admin:admin@localhost:3000/api/dashboards/db \
+    -H "Content-Type: application/json" \
+    -d @grafana/dashboards/farfan_sisas.json
+
+# Import performance dashboard
+curl -X POST http://admin:admin@localhost:3000/api/dashboards/db \
+    -H "Content-Type: application/json" \
+    -d @grafana/dashboards/farfan_performance.json
+```
+
+### 32.3.2 Custom Dashboard Queries
+
+```promql
+# Phase execution rate
+rate(farfan_phase_complete_total[5m])
+
+# Average phase duration
+avg(farfan_phase_duration_seconds) by (phase)
+
+# Memory usage trend
+farfan_memory_usage_bytes / 1024 / 1024 / 1024
+
+# SISAS signal throughput
+rate(farfan_sisas_signals_emitted_total[1m])
+
+# Error rate by phase
+rate(farfan_errors_total[5m]) by (phase)
+
+# Top slow executors
+topk(10, avg(farfan_executor_duration_seconds) by (executor))
+
+# Circuit breaker status
+sum(farfan_circuit_breaker_state == 2) by (executor)
+```
+
+## 32.4 Log Aggregation
+
+### 32.4.1 ELK Stack Integration
+
+```bash
+# Install Filebeat
+sudo apt-get install filebeat
+
+# Configure Filebeat
+cat > /etc/filebeat/filebeat.yml << 'EOF'
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /home/user/FARFAN_MCDPP/logs/**/*.log
+    fields:
+      application: farfan-pipeline
+    multiline:
+      pattern: '^\d{4}-\d{2}-\d{2}'
+      negate: true
+      match: after
+
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+  index: "farfan-logs-%{+yyyy.MM.dd}"
+
+setup.kibana:
+  host: "localhost:5601"
+EOF
+
+# Start Filebeat
+sudo systemctl start filebeat
+sudo systemctl enable filebeat
+```
+
+### 32.4.2 Centralized Logging
+
+```bash
+# Use syslog
+export FARFAN_LOG_SYSLOG=true
+export FARFAN_SYSLOG_HOST=localhost
+export FARFAN_SYSLOG_PORT=514
+
+# Use remote logging service
+export FARFAN_LOG_REMOTE=true
+export FARFAN_LOG_REMOTE_URL=https://logs.example.com/api/v1/logs
+export FARFAN_LOG_REMOTE_KEY=your-api-key
+```
+
+---
+
+# Section 33: Security Operations
+
+## 33.1 Access Control
+
+### 33.1.1 Authentication Setup
+
+```bash
+# Enable authentication
+export FARFAN_ENABLE_AUTH=true
+export FARFAN_AUTH_METHOD=token  # or jwt, oauth2
+
+# Generate API token
+python scripts/security/generate_api_token.py \
+    --user admin \
+    --scopes read,write,admin \
+    --expires 30d
+
+# Create user
+python scripts/security/create_user.py \
+    --username operator \
+    --password-file /path/to/password.txt \
+    --role operator
+```
+
+### 33.1.2 Authorization Rules
+
+```yaml
+# config/security/authorization.yaml
+roles:
+  admin:
+    permissions:
+      - pipeline:start
+      - pipeline:stop
+      - pipeline:delete
+      - config:read
+      - config:write
+      - users:manage
+
+  operator:
+    permissions:
+      - pipeline:start
+      - pipeline:stop
+      - pipeline:view
+      - config:read
+      - reports:generate
+
+  viewer:
+    permissions:
+      - pipeline:view
+      - reports:view
+      - dashboard:view
+```
+
+## 33.2 Secrets Management
+
+### 33.2.1 Secrets Storage
+
+```bash
+# Use environment variables
+export FARFAN_API_KEY="your-secret-key"
+export FARFAN_DB_PASSWORD="your-db-password"
+
+# Use secrets file (encrypted)
+python scripts/security/encrypt_secrets.py \
+    --input secrets.txt \
+    --output secrets.enc \
+    --key-file key.pem
+
+# Load encrypted secrets
+export FARFAN_SECRETS_FILE=secrets.enc
+export FARFAN_SECRETS_KEY_FILE=key.pem
+
+# Use external secrets manager (AWS Secrets Manager)
+export FARFAN_SECRETS_BACKEND=aws
+export FARFAN_SECRETS_REGION=us-east-1
+export FARFAN_SECRET_NAME=farfan/prod/secrets
+```
+
+### 33.2.2 Key Rotation
+
+```bash
+# Rotate API keys
+python scripts/security/rotate_api_keys.py \
+    --grace-period 7d
+
+# Rotate encryption keys
+python scripts/security/rotate_encryption_keys.py \
+    --re-encrypt-data
+```
+
+## 33.3 Audit Logging
+
+### 33.3.1 Audit Trail
+
+```bash
+# Enable audit logging
+export FARFAN_AUDIT_LOG=true
+export FARFAN_AUDIT_LOG_FILE=logs/audit/audit.log
+
+# Query audit logs
+python scripts/security/query_audit_log.py \
+    --action pipeline:start \
+    --user admin \
+    --time-range "last 24 hours"
+
+# Generate audit report
+python scripts/security/generate_audit_report.py \
+    --start-date 2026-01-01 \
+    --end-date 2026-01-31 \
+    --output reports/audit_january_2026.pdf
+```
+
+## 33.4 Vulnerability Scanning
+
+### 33.4.1 Dependency Scanning
+
+```bash
+# Scan Python dependencies
+pip install safety
+safety check --json > security/dependency_scan.json
+
+# Scan with Snyk
+pip install snyk
+snyk test --json > security/snyk_report.json
+
+# Check for outdated packages
+pip list --outdated
+```
+
+### 33.4.2 Code Scanning
+
+```bash
+# Run Bandit security scanner
+pip install bandit
+bandit -r src/ -f json -o security/bandit_report.json
+
+# Run semgrep
+pip install semgrep
+semgrep --config=auto --json -o security/semgrep_report.json src/
+```
+
+---
+
+# Section 34: Data Management & Maintenance
+
+## 34.1 Data Lifecycle Management
+
+### 34.1.1 Artifact Retention
+
+```bash
+# Configure retention policy
+export FARFAN_ARTIFACT_RETENTION_DAYS=90
+export FARFAN_LOG_RETENTION_DAYS=30
+export FARFAN_TEMP_FILE_RETENTION_HOURS=24
+
+# Clean old artifacts
+python scripts/maintenance/cleanup_artifacts.py \
+    --older-than 90d \
+    --dry-run
+
+# Archive old runs
+python scripts/maintenance/archive_runs.py \
+    --older-than 180d \
+    --archive-dir /mnt/archive/farfan \
+    --compress
+```
+
+### 34.1.2 Log Rotation
+
+```bash
+# Configure logrotate
+cat > /etc/logrotate.d/farfan << 'EOF'
+/home/user/FARFAN_MCDPP/logs/**/*.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    notifempty
+    create 0644 user user
+    sharedscripts
+    postrotate
+        systemctl reload farfan-pipeline || true
+    endscript
+}
+EOF
+
+# Manual log rotation
+logrotate -f /etc/logrotate.d/farfan
+```
+
+## 34.2 Database Maintenance
+
+### 34.2.1 Vacuum & Optimize
+
+```bash
+# Vacuum database
+python scripts/maintenance/vacuum_database.py \
+    --full \
+    --analyze
+
+# Rebuild indexes
+python scripts/maintenance/rebuild_indexes.py \
+    --tables evidence,scores,dimensions
+
+# Analyze query performance
+python scripts/maintenance/analyze_queries.py \
+    --slow-query-threshold 1000 \
+    --output reports/slow_queries.txt
+```
+
+### 34.2.2 Data Export/Import
+
+```bash
+# Export data
+python scripts/export/export_all_data.py \
+    --output exports/farfan_export_$(date +%Y%m%d).tar.gz \
+    --format json \
+    --compress
+
+# Import data
+python scripts/import/import_data.py \
+    --input exports/farfan_export_20260123.tar.gz \
+    --validate \
+    --overwrite=false
+```
+
+## 34.3 Cache Management
+
+### 34.3.1 Cache Operations
+
+```bash
+# Clear all caches
+python scripts/maintenance/clear_caches.py --all
+
+# Clear specific cache
+python scripts/maintenance/clear_caches.py --type embeddings
+
+# Warm cache
+python scripts/maintenance/warm_caches.py \
+    --questionnaire \
+    --contracts \
+    --embeddings
+
+# Monitor cache hit rate
+python scripts/monitoring/cache_statistics.py
+```
+
+## 34.4 Disk Space Management
+
+### 34.4.1 Space Analysis
+
+```bash
+# Analyze disk usage
+du -h --max-depth=2 artifacts/ | sort -hr | head -20
+
+# Find large files
+find artifacts/ -type f -size +100M -exec ls -lh {} \;
+
+# Disk usage by phase
+for phase in {0..9}; do
+    size=$(du -sh artifacts/latest_run/phase${phase}_* 2>/dev/null | awk '{print $1}')
+    echo "Phase $phase: $size"
+done
+```
+
+### 34.4.2 Space Cleanup
+
+```bash
+# Clean temporary files
+python scripts/maintenance/cleanup_temp_files.py
+
+# Remove duplicate files
+python scripts/maintenance/remove_duplicates.py \
+    --directory artifacts/ \
+    --dry-run
+
+# Compress old artifacts
+find artifacts/ -name "*.json" -mtime +30 -exec gzip {} \;
+```
+
+---
+
+# Section 35: Integration & Extensions
+
+## 35.1 API Integration
+
+### 35.1.1 REST API Client
+
+```python
+# Python client example
+import requests
+
+class FarfanClient:
+    def __init__(self, base_url, api_key):
+        self.base_url = base_url
+        self.headers = {"Authorization": f"Bearer {api_key}"}
+
+    def start_pipeline(self, plan_path, region_id):
+        """Start pipeline execution."""
+        with open(plan_path, 'rb') as f:
+            files = {'file': f}
+            data = {'region_id': region_id}
+            response = requests.post(
+                f"{self.base_url}/api/upload/plan",
+                headers=self.headers,
+                files=files,
+                data=data
+            )
+        return response.json()
+
+    def get_job_status(self, job_id):
+        """Get job status."""
+        response = requests.get(
+            f"{self.base_url}/api/v1/jobs/{job_id}",
+            headers=self.headers
+        )
+        return response.json()
+
+    def get_results(self, job_id):
+        """Get pipeline results."""
+        response = requests.get(
+            f"{self.base_url}/api/v1/jobs/{job_id}/results",
+            headers=self.headers
+        )
+        return response.json()
+
+# Usage
+client = FarfanClient("http://localhost:5000", "your-api-key")
+job = client.start_pipeline("data/plans/plan.pdf", "R01")
+print(f"Job started: {job['job_id']}")
+
+# Poll for completion
+import time
+while True:
+    status = client.get_job_status(job['job_id'])
+    print(f"Status: {status['status']}")
+    if status['status'] in ['completed', 'failed']:
+        break
+    time.sleep(10)
+
+results = client.get_results(job['job_id'])
+```
+
+### 35.1.2 Webhook Integration
+
+```bash
+# Configure webhook
+export FARFAN_WEBHOOK_URL=https://example.com/webhook
+export FARFAN_WEBHOOK_EVENTS=pipeline.started,pipeline.completed,pipeline.failed
+
+# Test webhook
+curl -X POST https://example.com/webhook \
+    -H "Content-Type: application/json" \
+    -d '{
+        "event": "pipeline.completed",
+        "job_id": "job_20260123_103000",
+        "status": "completed",
+        "duration": 3456.78,
+        "timestamp": "2026-01-23T11:27:36Z"
+    }'
+```
+
+## 35.2 Plugin System
+
+### 35.2.1 Creating Plugins
+
+```python
+# Custom plugin example
+from farfan_pipeline.plugins import BasePlugin
+
+class MyCustomPlugin(BasePlugin):
+    name = "custom_analyzer"
+    version = "1.0.0"
+
+    def on_phase_start(self, phase, context):
+        """Called when phase starts."""
+        print(f"Phase {phase} starting")
+
+    def on_phase_complete(self, phase, context, results):
+        """Called when phase completes."""
+        print(f"Phase {phase} completed with {len(results)} items")
+
+    def on_evidence_extracted(self, evidence):
+        """Called when evidence is extracted."""
+        # Custom processing
+        enhanced_evidence = self.enhance_evidence(evidence)
+        return enhanced_evidence
+
+    def enhance_evidence(self, evidence):
+        """Custom evidence enhancement."""
+        # Your logic here
+        return evidence
+
+# Register plugin
+from farfan_pipeline.plugins import PluginRegistry
+registry = PluginRegistry()
+registry.register(MyCustomPlugin())
+```
+
+### 35.2.2 Plugin Management
+
+```bash
+# List installed plugins
+python -m farfan_pipeline.plugins list
+
+# Enable plugin
+python -m farfan_pipeline.plugins enable custom_analyzer
+
+# Disable plugin
+python -m farfan_pipeline.plugins disable custom_analyzer
+
+# Install plugin from file
+python -m farfan_pipeline.plugins install plugins/my_plugin.py
+```
+
+## 35.3 External Tool Integration
+
+### 35.3.1 Jupyter Notebook Integration
+
+```python
+# Use in Jupyter notebook
+import sys
+sys.path.append('/home/user/FARFAN_MCDPP')
+
+from farfan_pipeline.orchestration.orchestrator import Orchestrator
+from farfan_pipeline.orchestration.factory import UnifiedFactory
+
+# Interactive pipeline execution
+orchestrator = Orchestrator()
+results = orchestrator.run_phases(
+    plan_pdf="data/plans/test.pdf",
+    start_phase=0,
+    end_phase=9
+)
+
+# Visualize results
+import pandas as pd
+import plotly.express as px
+
+scores_df = pd.DataFrame(results['phase3_scores'])
+fig = px.histogram(scores_df, x='score', nbins=50)
+fig.show()
+```
+
+### 35.3.2 CI/CD Integration
+
+```yaml
+# .github/workflows/pipeline-test.yml
+name: Pipeline Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          bash install.sh
+          source farfan-env/bin/activate
+
+      - name: Run tests
+        run: |
+          source farfan-env/bin/activate
+          pytest tests/ -v --cov=farfan_pipeline
+
+      - name: Run mini pipeline
+        run: |
+          source farfan-env/bin/activate
+          python scripts/run_policy_pipeline_verified.py \
+            --plan tests/fixtures/sample_plan.pdf \
+            --artifacts-dir artifacts/ci_test \
+            --end-phase 3
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: pipeline-artifacts
+          path: artifacts/ci_test
+```
+
+## 35.4 Data Export Formats
+
+### 35.4.1 Export to Various Formats
+
+```bash
+# Export to CSV
+python scripts/export/export_to_csv.py \
+    --scores artifacts/latest_run/phase3_scores/scores.json \
+    --output reports/scores.csv
+
+# Export to Excel
+python scripts/export/export_to_excel.py \
+    --artifacts-dir artifacts/latest_run \
+    --output reports/complete_analysis.xlsx \
+    --include-all
+
+# Export to JSON (formatted)
+python scripts/export/export_to_json.py \
+    --artifacts-dir artifacts/latest_run \
+    --output reports/analysis.json \
+    --pretty
+
+# Export to Parquet
+python scripts/export/export_to_parquet.py \
+    --scores artifacts/latest_run/phase3_scores/scores.json \
+    --output data/scores.parquet
+
+# Export to database
+python scripts/export/export_to_database.py \
+    --artifacts-dir artifacts/latest_run \
+    --db-url postgresql://localhost/farfan \
+    --create-tables
+```
+
+### 35.4.2 Report Generation Formats
+
+```bash
+# Generate PDF report
+python -m farfan_pipeline.phases.Phase_09.report_generator \
+    --artifacts-dir artifacts/latest_run \
+    --output reports/final_report.pdf \
+    --template enhanced \
+    --format pdf
+
+# Generate Word document
+python scripts/export/export_to_docx.py \
+    --artifacts-dir artifacts/latest_run \
+    --template templates/report_template.docx \
+    --output reports/final_report.docx
+
+# Generate PowerPoint presentation
+python scripts/export/export_to_pptx.py \
+    --artifacts-dir artifacts/latest_run \
+    --template templates/presentation_template.pptx \
+    --output reports/presentation.pptx
+```
+
+---
+
+# Section 36: Complete Command Reference
+
+## 36.1 Quick Command Index
+
+### Pipeline Execution
+```bash
+# Full pipeline
+farfan-pipeline --plan <pdf> --start-phase 0 --end-phase 9
+
+# Specific phase range
+farfan-pipeline --plan <pdf> --start-phase 2 --end-phase 5
+
+# With custom configuration
+farfan-pipeline --plan <pdf> --config config.yaml --seed 42
+
+# Resume from checkpoint
+farfan-pipeline --resume-from-checkpoint latest
+
+# Dry run (validation only)
+farfan-pipeline --plan <pdf> --dry-run --verbose
+```
+
+### SISAS Operations
+```bash
+# Health check
+python -m SISAS.main health --bus-stats --consumer-health
+
+# Run irrigation
+python -m SISAS.main run --csv-path <sabana> --all
+
+# Check vocabulary
+python -m SISAS.main check
+
+# Consumer status
+python -m SISAS.main consumer-status <consumer_id>
+
+# DLQ management
+python -m SISAS.main dlq-list --limit 50
+python -m SISAS.main dlq-replay --signal-ids <ids>
+python -m SISAS.main dlq-clear --confirm
+```
+
+### Dashboard & Visualization
+```bash
+# Start dashboard
+python -m farfan_pipeline.dashboard_atroz_.dashboard_server
+
+# Generate visualizations
+python scripts/visualization/generate_score_heatmap.py --scores <file>
+python scripts/visualization/generate_signal_flow.py --log <file>
+python scripts/visualization/generate_evidence_network.py --evidence <file>
+
+# Performance metrics
+curl http://localhost:5000/api/v1/metrics/system | jq
+```
+
+### Validation & Testing
+```bash
+# Validate installation
+python scripts/setup/validate_installation.py
+
+# Validate contracts
+python scripts/validation/validate_all_contracts.py
+
+# Validate artifacts
+python scripts/validation/validate_all_artifacts.py --artifacts-dir <dir>
+
+# Run tests
+pytest tests/ -v --cov=farfan_pipeline
+```
+
+### Maintenance
+```bash
+# Cleanup artifacts
+python scripts/maintenance/cleanup_artifacts.py --older-than 90d
+
+# Vacuum database
+python scripts/maintenance/vacuum_database.py --full
+
+# Clear caches
+python scripts/maintenance/clear_caches.py --all
+
+# Backup
+bash scripts/backup/daily_backup.sh
+```
+
+---
+
+## 36.2 Environment Variables Reference
+
+```bash
+# Core Settings
+FARFAN_MODE=DEV|PROD|TEST
+FARFAN_SEED=42
+FARFAN_LOG_LEVEL=DEBUG|INFO|WARNING|ERROR
+FARFAN_DEBUG=true|false
+
+# Paths
+FARFAN_DATA_DIR=/path/to/data
+FARFAN_ARTIFACTS_DIR=/path/to/artifacts
+FARFAN_LOGS_DIR=/path/to/logs
+FARFAN_CONFIG_DIR=/path/to/config
+
+# SISAS
+FARFAN_SISAS_ENABLE=true|false
+FARFAN_SISAS_BUS_QUEUE_SIZE=50000
+FARFAN_SISAS_CONSUMER_THREADS=4
+FARFAN_SISAS_GATE_STRICT=true|false
+
+# Performance
+FARFAN_MAX_MEMORY_MB=8192
+FARFAN_MAX_WORKERS=4
+FARFAN_TIMEOUT_SECONDS=300
+FARFAN_ENABLE_CACHING=true|false
+FARFAN_CACHE_SIZE_MB=2048
+
+# Dashboard
+FARFAN_DASHBOARD_HOST=0.0.0.0
+FARFAN_DASHBOARD_PORT=5000
+FARFAN_DASHBOARD_DEBUG=false
+
+# Security
+FARFAN_ENABLE_AUTH=true|false
+FARFAN_API_KEY=your-secret-key
+FARFAN_AUDIT_LOG=true|false
+
+# Monitoring
+FARFAN_ENABLE_METRICS=true|false
+FARFAN_METRICS_PORT=9090
+FARFAN_ENABLE_PROFILING=false
+```
+
+---
+
+## 36.3 File Structure Reference
+
+```
+FARFAN_MCDPP/
+├── artifacts/                    # Pipeline outputs
+│   ├── phase0_bootstrap/
+│   ├── phase1_chunks/
+│   ├── phase2_evidence/
+│   ├── phase3_scores/
+│   ├── phase4_dimensions/
+│   ├── phase5_areas/
+│   ├── phase6_clusters/
+│   ├── phase7_macro/
+│   ├── phase8_recommendations/
+│   ├── phase9_reports/
+│   └── visualizations/
+├── canonic_questionnaire_central/ # Canonical questionnaire
+│   ├── questionnaire_monolith.json
+│   ├── questionnaire_schema.json
+│   └── governance/
+├── config/                        # Configuration files
+│   ├── calibration/
+│   ├── parametrization/
+│   ├── pdm/
+│   └── sisas/
+├── data/                          # Input data
+│   ├── plans/
+│   └── questionnaires/
+├── docs/                          # Documentation
+│   ├── TECHNICAL_RUNBOOK.md
+│   ├── CONFIG_REFERENCE.md
+│   └── design/
+├── logs/                          # Log files
+│   ├── orchestrator/
+│   ├── phases/
+│   ├── sisas/
+│   ├── executors/
+│   └── metrics/
+├── scripts/                       # Utility scripts
+│   ├── analysis/
+│   ├── benchmarking/
+│   ├── diagnostics/
+│   ├── enforcement/
+│   ├── export/
+│   ├── generation/
+│   ├── maintenance/
+│   ├── monitoring/
+│   ├── sisas/
+│   ├── transformation/
+│   ├── validation/
+│   └── visualization/
+├── src/farfan_pipeline/          # Source code
+│   ├── calibration/
+│   ├── dashboard_atroz_/
+│   ├── infrastructure/
+│   │   └── irrigation_using_signals/
+│   │       └── SISAS/
+│   ├── methods/
+│   ├── orchestration/
+│   └── phases/
+│       ├── Phase_00/ through Phase_09/
+├── tests/                         # Test suite
+│   ├── integration/
+│   ├── unit/
+│   └── smoke/
+├── install.sh                     # Installation script
+├── requirements.txt               # Python dependencies
+├── setup.py                       # Package setup
+└── README.md                      # Project README
+```
+
+---
+
+*End of Comprehensive Technical Runbook - Version 3.0.0*
 *All commands verified on 2026-01-21*
 
 *End of Technical Runbook*
