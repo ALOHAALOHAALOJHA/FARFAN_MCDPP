@@ -523,7 +523,7 @@ class FactoryAuditor:
         """Count load_questionnaire calls outside factory."""
         count = 0
         for py_file in self.repo_root.rglob("*.py"):
-            if any(x in py_file.parts for x in ["__pycache__", ".pytest_cache", ".git", "test", "docs"]):
+            if any(x in py_file.parts for x in ["__pycache__", ".pytest_cache", ".git", "test", "tests", "docs", "examples"]):
                 continue
             if "phase2_10_00_factory.py" in str(py_file):
                 continue
@@ -572,11 +572,19 @@ class FactoryAuditor:
             has_contract_execution = False
             has_batch_execution = False
 
-        # Check for method injection/loading
+        # Check for method injection/loading (more specific patterns)
         has_method_loading = False
         if self.factory_path.exists():
             factory_content = self.factory_path.read_text(encoding='utf-8')
-            has_method_loading = "method" in factory_content.lower() and "inject" in factory_content.lower()
+            # Look for specific method injection patterns
+            method_patterns = [
+                "inject_method",
+                "method_binding",
+                "load_method",
+                "_method_cache",
+                "MethodRegistry",
+            ]
+            has_method_loading = any(pattern in factory_content for pattern in method_patterns)
             print(f"  {'✅' if has_method_loading else '❌'} Method injection capability")
 
         passed = has_class_registry and (has_contract_execution or has_batch_execution)
