@@ -441,7 +441,7 @@ def test_adapter_integration_with_phase8_input_contract(valid_macro_score, valid
     Integration test: Verify adapter output passes Phase 8 input contract validation.
     """
     from farfan_pipeline.phases.Phase_08.contracts.phase7_to_phase8_adapter import Phase7To8Adapter
-    from farfan_pipeline.phases.Phase_08.contracts.phase8_input_contract import validate_phase8_input_contract
+    from farfan_pipeline.phases.Phase_08.contracts.phase8_10_00_input_contract import validate_phase8_input_contract
     
     adapter = Phase7To8Adapter()
     result = adapter.adapt(valid_macro_score, valid_phase5_output)
