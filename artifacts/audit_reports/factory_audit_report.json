@@ -1,28 +1,28 @@
 {
-  "overall_status": "FAILED",
-  "total_checks": 12,
-  "passed": 5,
-  "failed": 4,
-  "warnings": 3,
-  "pass_rate": 41.7,
-  "timestamp": "2026-01-23T13:46:06.577037+00:00",
+  "overall_status": "PASSED WITH RECOMMENDATIONS",
+  "total_checks": 13,
+  "passed": 12,
+  "failed": 0,
+  "warnings": 1,
+  "pass_rate": 92.3,
+  "timestamp": "2026-01-23T13:49:06.799403+00:00",
   "results": [
     {
       "check_name": "factory_file_exists",
       "passed": true,
       "status": "PASSED",
-      "details": "Factory file exists: /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py",
+      "details": "Factory file exists: /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/orchestration/factory.py",
       "severity": "INFO",
       "evidence": {}
     },
     {
       "check_name": "factory_line_count",
-      "passed": false,
-      "status": "FAILED",
-      "details": "Factory has 243 lines, 0 classes, 0 functions, 0 comments (0.0% documentation ratio)",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Factory has 1760 lines, 0 classes, 0 functions, 0 comments (0.0% documentation ratio)",
       "severity": "INFO",
       "evidence": {
-        "line_count": 243,
+        "line_count": 1760,
         "class_count": 0,
         "func_count": 0,
         "comment_count": 0,
@@ -31,21 +31,32 @@
     },
     {
       "check_name": "factory_required_classes",
-      "passed": false,
-      "status": "PARTIAL",
-      "details": "Found 0/7 required classes. Missing: ['AnalysisPipelineFactory', 'ProcessorBundle', 'CanonicalQuestionnaire', 'MethodRegistry', 'Contract', 'ContractLoader', 'ExecutorFactory']",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Found 4/4 required classes. Missing: []",
       "severity": "INFO",
       "evidence": {
-        "found_classes": [],
-        "missing_classes": [
-          "AnalysisPipelineFactory",
-          "ProcessorBundle",
-          "CanonicalQuestionnaire",
-          "MethodRegistry",
-          "Contract",
-          "ContractLoader",
-          "ExecutorFactory"
-        ]
+        "found_classes": [
+          "UnifiedFactory",
+          "FactoryConfig",
+          "FactoryHealthStatus",
+          "AdaptiveLRUCache"
+        ],
+        "missing_classes": []
+      }
+    },
+    {
+      "check_name": "deprecated_factory_stub",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Deprecation: True, Imports UnifiedFactory: True, Uses get_factory: True, Is stub: True",
+      "severity": "INFO",
+      "evidence": {
+        "has_deprecation_notice": true,
+        "has_unified_import": true,
+        "has_get_factory": true,
+        "is_stub": true,
+        "line_count": 243
       }
     },
     {
@@ -67,7 +78,7 @@
         "test_calls": 6,
         "doc_calls": 0,
         "other_calls": 12,
-        "total_calls": 48
+        "total_calls": 50
       }
     },
     {
@@ -84,66 +95,76 @@
     },
     {
       "check_name": "factory_documentation",
-      "passed": false,
-      "status": "PARTIAL",
-      "details": "Found 0/6 key documentation sections",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Found 6/6 key documentation sections",
       "severity": "INFO",
       "evidence": {
         "module_docstring": true,
-        "sections_found": [],
+        "sections_found": [
+          "Unified FARFAN Pipeline Factory",
+          "Architecture",
+          "UnifiedFactory",
+          "FactoryConfig",
+          "Adaptive",
+          "Parallel"
+        ],
         "sections_total": 6
       }
     },
     {
       "check_name": "factory_pattern",
-      "passed": false,
-      "status": "FAILED",
-      "details": "Factory class: False, Bundle: False, create_orchestrator: False, Singleton: False",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Factory class: True, Config: True, load_questionnaire: True, create_signal_registry: True",
       "severity": "INFO",
       "evidence": {
-        "has_factory_class": false,
-        "has_processor_bundle": false,
-        "has_create_orchestrator": false,
-        "has_singleton_tracking": false,
-        "has_dependency_injection": false
+        "has_factory_class": true,
+        "has_factory_config": true,
+        "has_load_questionnaire": true,
+        "has_create_signal_registry": true,
+        "has_questionnaire_caching": true,
+        "has_dependency_injection": true
       }
     },
     {
       "check_name": "dependency_injection",
-      "passed": false,
-      "status": "FAILED",
-      "details": "Orchestrator DI: False, MethodExecutor DI: False, signal_registry DI: False",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Config DI: True, Questionnaire: True, signal_registry: True, Infrastructure: True",
       "severity": "INFO",
       "evidence": {
-        "orchestrator_di": false,
-        "method_executor_di": false,
-        "signal_registry_di": false
+        "config_di": true,
+        "questionnaire_di": true,
+        "signal_registry_di": true,
+        "infrastructure_di": true
       }
     },
     {
       "check_name": "singleton_pattern",
       "passed": true,
       "status": "PARTIAL",
-      "details": "Code enforcement: False, External violations: 44",
+      "details": "Caching implemented: True, External calls: 46",
       "severity": "INFO",
       "evidence": {
-        "has_singleton_variable": false,
-        "has_enforcement_check": false,
-        "has_error_class": false,
-        "external_load_calls": 44
+        "has_caching_variable": true,
+        "has_lazy_loading": true,
+        "has_factory_getter": true,
+        "external_load_calls": 46
       }
     },
     {
       "check_name": "method_dispensary_pattern",
-      "passed": false,
-      "status": "FAILED",
-      "details": "class_registry: True, arg_router: True, MethodExecutor: False, canonical_injection: False",
+      "passed": true,
+      "status": "PASSED",
+      "details": "class_registry: True, arg_router: True, contract_execution: True, batch_execution: True",
       "severity": "INFO",
       "evidence": {
         "class_registry_exists": true,
         "arg_router_exists": true,
-        "method_executor_integration": false,
-        "canonical_injection": false,
+        "contract_execution": true,
+        "batch_execution": true,
+        "method_loading": true,
         "dispensary_count": 1
       }
     },
@@ -151,11 +172,11 @@
       "check_name": "security_integrity",
       "passed": false,
       "status": "PARTIAL",
-      "details": "SHA-256: False, Immutable: False, Provenance: False, Integrity: False",
+      "details": "SHA-256: False, Immutable: True, Provenance: False, Integrity: False",
       "severity": "INFO",
       "evidence": {
         "sha256_verification": false,
-        "immutable_dataclass": false,
+        "immutable_dataclass": true,
         "provenance_tracking": false,
         "integrity_check": false,
         "bundle_validation": false
