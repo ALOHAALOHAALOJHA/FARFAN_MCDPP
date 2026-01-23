@@ -4,11 +4,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Set
+from typing import Any, Callable, Dict, List, Optional, Set, Protocol
 from collections import defaultdict
 from queue import Queue, Empty
 from threading import Lock
+from pathlib import Path
 import logging
+import json
 
 from . signal import Signal, SignalCategory
 from .contracts import PublicationContract, ConsumptionContract, ContractRegistry
@@ -38,6 +40,106 @@ class BusMessage:
     def acknowledge(self, consumer_id: str):
         """Marca el mensaje como recibido por un consumidor"""
         self.acknowledged_by.add(consumer_id)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert bus message to dictionary for serialization."""
+        return {
+            "signal": self.signal.to_dict() if hasattr(self.signal, 'to_dict') else str(self.signal),
+            "publisher_vehicle": self.publisher_vehicle,
+            "published_at": self.published_at.isoformat(),
+            "message_id": self.message_id,
+            "acknowledged_by": list(self.acknowledged_by),
+        }
+
+
+# =============================================================================
+# MESSAGE PERSISTENCE BACKEND
+# =============================================================================
+
+class MessagePersistenceBackend(Protocol):
+    """Protocol for message persistence backends."""
+
+    def persist_messages(self, bus_name: str, messages: List[BusMessage]) -> None:
+        """Persist messages to storage."""
+        ...
+
+    def retrieve_messages(self, bus_name: str, limit: int = 100) -> List[BusMessage]:
+        """Retrieve messages from storage."""
+        ...
+
+
+class FileSystemMessagePersistence:
+    """File-based persistence for bus messages."""
+
+    def __init__(self, storage_dir: str = "artifacts/sisas/message_history"):
+        """Initialize persistence with directory path.
+
+        Args:
+            storage_dir: Directory to store message history
+        """
+        self.storage_dir = Path(storage_dir)
+        self.storage_dir.mkdir(parents=True, exist_ok=True)
+        self._logger = logging.getLogger(__name__)
+
+    def persist_messages(self, bus_name: str, messages: List[BusMessage]) -> None:
+        """Persist messages to file system."""
+        if not messages:
+            return
+
+        bus_dir = self.storage_dir / bus_name
+        bus_dir.mkdir(parents=True, exist_ok=True)
+
+        timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+        message_file = bus_dir / f"messages_{timestamp}.jsonl"
+
+        with open(message_file, 'w', encoding='utf-8') as f:
+            for msg in messages:
+                f.write(json.dumps(msg.to_dict()) + '\n')
+
+        self._logger.info(f"Persisted {len(messages)} messages from {bus_name} to {message_file}")
+
+    def retrieve_messages(self, bus_name: str, limit: int = 100) -> List[BusMessage]:
+        """Retrieve messages from file system."""
+        bus_dir = self.storage_dir / bus_name
+        if not bus_dir.exists():
+            return []
+
+        messages = []
+        message_files = sorted(bus_dir.glob("messages_*.jsonl"), reverse=True)
+
+        for message_file in message_files:
+            if len(messages) >= limit:
+                break
+
+            with open(message_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    if len(messages) >= limit:
+                        break
+                    if not line.strip():
+                        continue
+                    # Note: Full reconstruction would require Signal deserialization
+                    # For now, we just store the messages for historical purposes
+                    messages.append(json.loads(line))
+
+        return messages
+
+
+# Global message persistence backend
+_message_persistence_backend: Optional[MessagePersistenceBackend] = None
+
+
+def configure_message_persistence(backend: MessagePersistenceBackend) -> None:
+    """Configure the global message persistence backend."""
+    global _message_persistence_backend
+    _message_persistence_backend = backend
+
+
+def get_message_persistence_backend() -> Optional[MessagePersistenceBackend]:
+    """Get the configured message persistence backend, or create default."""
+    global _message_persistence_backend
+    if _message_persistence_backend is None:
+        _message_persistence_backend = FileSystemMessagePersistence()
+    return _message_persistence_backend
 
 
 @dataclass
@@ -201,14 +303,24 @@ class SignalBus:
     
     def _persist_overflow(self):
         """Persiste mensajes cuando excede el límite"""
-        # Implementar persistencia a disco/DB
         overflow_count = len(self._message_history) - self._max_history_size
         if overflow_count > 0:
             # Los primeros N mensajes van a persistencia
             to_persist = self._message_history[:overflow_count]
             self._message_history = self._message_history[overflow_count:]
-            # TODO: Escribir to_persist a almacenamiento persistente
-            self._logger.info(f"Persisted {overflow_count} messages from {self.name}")
+
+            # IMPLEMENTED: Persist messages to storage backend
+            persistence_backend = get_message_persistence_backend()
+            if persistence_backend:
+                try:
+                    persistence_backend.persist_messages(self.name, to_persist)
+                    self._logger.info(f"Persisted {overflow_count} messages from {self.name} to storage")
+                except Exception as e:
+                    self._logger.error(f"Failed to persist messages from {self.name}: {e}")
+                    # Keep messages in memory if persistence fails
+                    self._message_history = to_persist + self._message_history
+            else:
+                self._logger.warning(f"No persistence backend configured, messages from {self.name} will be lost")
 
 
 @dataclass

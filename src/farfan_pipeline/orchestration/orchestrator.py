@@ -125,6 +125,31 @@ except ImportError:
     initialize_sisas = None  # type: ignore
 
 # =============================================================================
+# PHASE 0 GATE RESULT IMPORT
+# =============================================================================
+# Import GateResult from Phase 0 exit gates for use in Phase0ValidationResult
+try:
+    from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import GateResult
+    GATE_RESULT_AVAILABLE = True
+except ImportError:
+    GATE_RESULT_AVAILABLE = False
+    # Define a fallback GateResult if import fails
+    @dataclass
+    class GateResult:
+        passed: bool
+        gate_name: str
+        gate_id: int
+        reason: str | None = None
+
+        def to_dict(self) -> dict:
+            return {
+                "passed": self.passed,
+                "gate_name": self.gate_name,
+                "gate_id": self.gate_id,
+                "reason": self.reason,
+            }
+
+# =============================================================================
 # LOGGER CONFIGURATION
 # =============================================================================
 
@@ -1270,6 +1295,40 @@ class ExecutionTrace:
         import json
         with open(path, "w") as f:
             json.dump(self.to_dict(), f, indent=2, default=str)
+
+
+@dataclass
+class Phase0ValidationResult:
+    """Result of Phase 0 validation gates.
+
+    This dataclass captures the comprehensive validation results from Phase 0,
+    including all gate checks, input integrity verification, and determinism checks.
+
+    Attributes:
+        all_passed: True if all gates passed successfully
+        gate_results: List of individual gate check results
+        validation_time: ISO 8601 timestamp of validation execution
+        seed_snapshot: Dictionary containing random seed values (python, numpy, etc.)
+        questionnaire_sha256: SHA-256 hash of canonical questionnaire
+        input_pdf_sha256: SHA-256 hash of input PDF document
+    """
+    all_passed: bool
+    gate_results: list  # list[GateResult] - can't use forward ref here
+    validation_time: str
+    seed_snapshot: dict
+    questionnaire_sha256: str
+    input_pdf_sha256: str
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for serialization."""
+        return {
+            "all_passed": self.all_passed,
+            "gate_results": [gr.to_dict() if hasattr(gr, 'to_dict') else gr for gr in self.gate_results],
+            "validation_time": self.validation_time,
+            "seed_snapshot": self.seed_snapshot,
+            "questionnaire_sha256": self.questionnaire_sha256,
+            "input_pdf_sha256": self.input_pdf_sha256,
+        }
 
 
 class UnifiedOrchestrator:
