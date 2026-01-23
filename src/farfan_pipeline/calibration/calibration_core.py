@@ -295,16 +295,6 @@ They are NOT phenomenological appearances but real structures with
 causal powers that can be DETECTED through retroduction.
 """
 
-# Update EpistemicLevel documentation
-EpistemicLevel.__doc__ += """
-
-CRITICAL REALIST FOUNDATION:
-    N0-N4 levels map to Bhaskar's stratified reality:
-    - N1-EMP: Operates in EMPIRICAL domain (observations)
-    - N2-INF: Bridges EMPIRICAL to ACTUAL (events)
-    - N3-AUD: Validates ACTUAL domain patterns
-    - N4-META: Identifies REAL domain mechanisms
-"""
 
 
 # =============================================================================

@@ -27,12 +27,13 @@ Questionnaire Access Architecture:
     CRITICAL: Phase 0 does NOT load or parse questionnaire content.
 
     Questionnaire access hierarchy (per factory.py):
-        Level 1: AnalysisPipelineFactory (ONLY owner, loads CanonicalQuestionnaire)
+        Level 1: UnifiedFactory (ONLY owner, loads CanonicalQuestionnaire)
+                 ❌ DEPRECATED: AnalysisPipelineFactory → use UnifiedFactory
         Level 2: QuestionnaireResourceProvider (scoped access, no I/O)
         Level 3: Orchestrator (accesses via Provider)
         Level 4: Signals (alternative access path)
 
-    Phase 0 validates FILE INTEGRITY only, NOT content. Factory loads after Phase 0 passes.
+    Phase 0 validates FILE INTEGRITY only, NOT content. UnifiedFactory loads after Phase 0 passes.
 
 Author: Phase 0 Compliance Team
 Version: 2.0.1
