@@ -21,7 +21,6 @@ Version: 1.0.0
 Date: 2026-01-23
 """
 
-import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
