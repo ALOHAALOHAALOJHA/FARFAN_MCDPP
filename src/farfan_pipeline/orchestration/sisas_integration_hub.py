@@ -257,7 +257,7 @@ except ImportError:
     VALIDATORS['DepurationValidator'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.harmonization import HarmonizationValidator
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.harmonization.harmonization_validator import HarmonizationValidator
     VALIDATORS['HarmonizationValidator'] = HarmonizationValidator
 except ImportError:
     VALIDATORS['HarmonizationValidator'] = None
@@ -357,7 +357,7 @@ class SISASIntegrationHub:
     2. Registers ALL 17 consumers (phases 0-9)
     3. Connects ALL 10 extractors (MC01-MC10) to emit via SDO
     4. Initializes ALL 8 vehicles
-    5. Initializes ALL 7+ buses (structural, integrity, epistemic, etc.)
+    5. Initializes ALL 8 buses (structural, integrity, epistemic, contrast, operational, consumption, orchestration, universal)
     6. Initializes contract system (Publication, Consumption, Irrigation + Registry)
     7. Initializes validators (Depuration + Harmonization)
     8. Configures wiring system
@@ -674,7 +674,7 @@ class SISASIntegrationHub:
                 self._buses['registry'] = BusRegistry()
 
                 # Count available bus types
-                bus_types_count = len([bt for bt in BusType])
+                bus_types_count = len(BusType)
                 self._status.buses_available = bus_types_count
 
                 # Create buses for each type
@@ -829,7 +829,7 @@ class SISASIntegrationHub:
             f"  ✓ Irrigation Units: {self._status.irrigation_units_loaded}",
             f"  ✓ Items Irrigable: {self._status.items_irrigable}",
             "",
-            f"INTEGRATION STATUS: {'✅ FULLY INTEGRATED' if self._status.is_fully_integrated() else '⚠️ PARTIAL'}",
+            f"INTEGRATION STATUS: {'[FULLY INTEGRATED]' if self._status.is_fully_integrated() else '[PARTIAL]'}",
             "=" * 80,
         ]
         return "\n".join(lines)
