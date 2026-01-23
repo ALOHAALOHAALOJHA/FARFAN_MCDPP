@@ -12,7 +12,62 @@ Each of the ten phases (0-9) operates under a strict Manifesto that defines inpu
 
 The Signal Infrastructure for SOTA Analysis Systems (SISAS) manages the propagation of irrigation signals across the pipeline, governed by the SISAS 2.0 Specification. Signal routing is optimized by the 'Acupuncture' framework, which utilizes an Inverted Signal Index and Lazy Loading to reduce routing complexity from O(n) to O(1). Pattern redundancy is minimized through a prototype inheritance chain that cascades definitions from Cluster to Policy Area to Dimension to Slot to Question.
 
-## Performance & Optimization
+```
+FARFAN_MCDPP/
+├── src/farfan_pipeline/           # Main source code
+│   ├── orchestration/             # Orchestrator & UnifiedFactory
+│   │   ├── orchestrator.py        # Unified orchestrator (2600+ lines)
+│   │   ├── factory.py             # UnifiedFactory (component factory)
+│   │   ├── seed_registry.py       # Determinism enforcement
+│   │   └── gates/                 # Validation gates
+│   ├── calibration/               # Calibration system
+│   │   ├── calibration_core.py
+│   │   ├── epistemic_core.py
+│   │   └── registry.py
+│   ├── methods/                   # Analytical methods (74 classes)
+│   │   ├── analyzer_one.py
+│   │   ├── derek_beach.py
+│   │   ├── policy_processor.py
+│   │   └── bayesian_multilevel_system.py
+│   ├── phases/                    # Phase implementations
+│   │   ├── Phase_00/              # Bootstrap & validation
+│   │   ├── Phase_02/              # Evidence extraction
+│   │   └── ...
+│   └── infrastructure/            # SISAS & utilities
+├── canonic_questionnaire_central/ # Canonical questionnaire
+│   ├── governance/                # Method mappings (237 methods)
+│   │   ├── METHODS_TO_QUESTIONS_AND_FILES.json
+│   │   └── METHODS_OPERACIONALIZACION.json
+│   └── config/                    # Schema definitions
+├── tests/                         # Test suite
+├── scripts/                       # Utility scripts
+├── contracts/                     # Phase chain reports
+├── docs/                          # Documentation
+│   └── TECHNICAL_RUNBOOK.md       # Complete technical reference
+├── requirements.txt               # Core dependencies
+├── requirements-dev.txt           # Development dependencies
+├── pyproject.toml                 # Project configuration
+└── README.md                      # This file
+```
+
+---
+
+## API Reference
+
+### Orchestrator
+
+```python
+from farfan_pipeline.orchestration.orchestrator import (
+    OrchestratorConfig,
+    UnifiedOrchestrator,
+    ScoredMicroQuestion,
+    MacroEvaluation,
+    MethodExecutor,
+    ResourceLimits,
+    PhaseInstrumentation,
+    Evidence,
+    Orchestrator,  # Alias for UnifiedOrchestrator
+)
 
 Phase 5 implements a High Performance Area Aggregator that achieves 50x speedups through a combination of `asyncio` Parallel Processing, NumPy/Numba Vectorization, and Adaptive LRU Caching. The system is designed for Graceful Degradation, automatically falling back to safe baseline implementations if optional dependencies like Numba are unavailable, ensuring execution continuity without sacrificing correctness.
 

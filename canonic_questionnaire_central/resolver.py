@@ -8,18 +8,22 @@ This resolver:
 1. Assembles modular assets into unified QuestionnairePort-compatible payload
 2. Maintains hash integrity across modular structure
 3. Provides provenance tracking for governance
-4. Is the ONLY authorized source for AnalysisPipelineFactory
+4. Is the ONLY authorized source for UnifiedFactory (replaces deprecated AnalysisPipelineFactory)
 5. [v2.0] Integrates Signal Distribution Orchestrator for active signal routing
 
 GOVERNANCE:
 - All questionnaire access MUST go through this resolver
 - Direct file reads are PROHIBITED outside this module
-- SISAS receives questionnaire from Factory, which uses this resolver
+- SISAS receives questionnaire from UnifiedFactory, which uses this resolver
 - [v2.0] Signal dispatch goes through SDO for validation and routing
 
+Factory Migration:
+- ❌ DEPRECATED: AnalysisPipelineFactory (phase2_10_00_factory.py - stub only)
+- ✅ CURRENT: UnifiedFactory (orchestration/factory.py)
+
 Author: F. A. R.F.A.N Pipeline Team
-Version: 2.0.0
-Date: 2026-01-14
+Version: 2.0.1
+Date: 2026-01-23
 """
 
 from __future__ import annotations
@@ -138,9 +142,9 @@ class CanonicalQuestionnaire:
     Assembled canonical questionnaire implementing QuestionnairePort.
 
     This is the object passed to:
-    - AnalysisPipelineFactory
-    - QuestionnaireSignalRegistry (via Factory)
-    - Orchestrator (via Factory)
+    - UnifiedFactory (replaces deprecated AnalysisPipelineFactory)
+    - QuestionnaireSignalRegistry (via UnifiedFactory)
+    - Orchestrator (via UnifiedFactory)
     """
 
     _data: dict[str, Any]
@@ -221,8 +225,9 @@ class CanonicalQuestionnaireResolver:
         resolver = CanonicalQuestionnaireResolver()
         questionnaire = resolver.resolve()
 
-        # Pass to Factory
-        factory = AnalysisPipelineFactory(questionnaire=questionnaire)
+        # Pass to UnifiedFactory (NEW - replaces deprecated AnalysisPipelineFactory)
+        from farfan_pipeline.orchestration.factory import UnifiedFactory, FactoryConfig
+        factory = UnifiedFactory(config=FactoryConfig(project_root=Path(".")))
         
         # Access SDO for signal dispatch
         resolver.sdo.dispatch(signal)
