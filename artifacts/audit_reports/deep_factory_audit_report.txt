@@ -1,0 +1,106 @@
+DEEP FACTORY AUDIT REPORT
+================================================================================
+Total Issues: 97
+
+DEPRECATED REFERENCES:
+  canonic_questionnaire_central/resolver.py:11 - AnalysisPipelineFactory (code)
+  canonic_questionnaire_central/resolver.py:141 - AnalysisPipelineFactory (code)
+  canonic_questionnaire_central/resolver.py:225 - AnalysisPipelineFactory (code)
+  scripts/audit/audit_factory.py:5 - AnalysisPipelineFactory (code)
+  scripts/audit/audit_factory.py:63 - AnalysisPipelineFactory (docstring)
+  scripts/audit/audit_factory.py:401 - AnalysisPipelineFactory (comment)
+  scripts/audit/audit_factory.py:649 - ProcessorBundle (comment)
+  scripts/audit/audit_factory.py:651 - ProcessorBundle (code)
+  scripts/audit/deep_factory_audit.py:10 - AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:11 - ProcessorBundle (code)
+  scripts/audit/deep_factory_audit.py:12 - executor_factory (code)
+  scripts/audit/deep_factory_audit.py:36 - AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:37 - ProcessorBundle (code)
+  scripts/audit/deep_factory_audit.py:38 - executor_factory (code)
+  scripts/audit/deep_factory_audit.py:39 - AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:39 - phase2_10_00_factory.AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:203 - AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:206 - AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:311 - AnalysisPipelineFactory (code)
+  scripts/audit/deep_factory_audit.py:312 - ProcessorBundle (code)
+  src/farfan_pipeline/orchestration/factory.py:9 - executor_factory (code)
+  src/farfan_pipeline/orchestration/factory.py:251 - executor_factory (code)
+  src/farfan_pipeline/orchestration/factory.py:1683 - executor_factory (code)
+  src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py:30 - AnalysisPipelineFactory (code)
+  src/farfan_pipeline/phases/Phase_00/primitives/phase0_10_01_providers.py:42 - AnalysisPipelineFactory (code)
+  src/farfan_pipeline/phases/Phase_00/primitives/phase0_10_01_providers.py:233 - AnalysisPipelineFactory (code)
+  src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/questionnaire_access_audit.py:35 - AnalysisPipelineFactory (code)
+  FACTORY_AUDIT_REPAIR_SUMMARY.md:24 - AnalysisPipelineFactory (code)
+  FACTORY_AUDIT_REPAIR_SUMMARY.md:25 - ProcessorBundle (code)
+  docs/PHASE_0_ORCHESTRATOR_FACTORY_ALIGNMENT_AUDIT.md:161 - AnalysisPipelineFactory (code)
+  docs/PHASE_0_ORCHESTRATOR_FACTORY_ALIGNMENT_AUDIT.md:172 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:42 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:43 - ProcessorBundle (code)
+  docs/FACTORY_AUDIT_REPORT.md:183 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:197 - ProcessorBundle (comment)
+  docs/FACTORY_AUDIT_REPORT.md:199 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:284 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:318 - ProcessorBundle (code)
+  docs/FACTORY_AUDIT_REPORT.md:329 - ProcessorBundle (code)
+  docs/FACTORY_AUDIT_REPORT.md:416 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:417 - AnalysisPipelineFactory (code)
+  docs/FACTORY_AUDIT_REPORT.md:482 - AnalysisPipelineFactory (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:199 - AnalysisPipelineFactory (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:296 - AnalysisPipelineFactory (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:841 - AnalysisPipelineFactory (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:931 - ProcessorBundle (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:941 - AnalysisPipelineFactory (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:1292 - ProcessorBundle (code)
+  docs/CANONICAL_PHASE_ARCHITECTURE.md:1327 - AnalysisPipelineFactory (code)
+  docs/TECHNICAL_RUNBOOK.md:962 - AnalysisPipelineFactory (code)
+  docs/TECHNICAL_RUNBOOK.md:968 - AnalysisPipelineFactory (code)
+  docs/TECHNICAL_RUNBOOK.md:3046 - AnalysisPipelineFactory (comment)
+  docs/TECHNICAL_RUNBOOK.md:3065 - AnalysisPipelineFactory (code)
+  docs/TECHNICAL_RUNBOOK.md:3069 - AnalysisPipelineFactory (code)
+  docs/TECHNICAL_RUNBOOK.md:3105 - ProcessorBundle (code)
+  docs/TECHNICAL_RUNBOOK.md:3111 - AnalysisPipelineFactory (code)
+  docs/TECHNICAL_RUNBOOK.md:3112 - AnalysisPipelineFactory (code)
+  docs/policies/GLOBAL_NAMING_POLICY.md:2713 - ProcessorBundle (code)
+  docs/policies/GLOBAL_NAMING_POLICY.md:2725 - ProcessorBundle (code)
+  docs/policies/GLOBAL_NAMING_POLICY.md:3004 - ProcessorBundle (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:5 - AnalysisPipelineFactory (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:19 - AnalysisPipelineFactory (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:20 - ProcessorBundle (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:57 - AnalysisPipelineFactory (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:153 - ProcessorBundle (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:166 - AnalysisPipelineFactory (code)
+  docs/audit/AUDIT_FACTORY_PATTERN.md:203 - AnalysisPipelineFactory (code)
+  docs/audit/AUDIT_EXECUTOR_METHODS.md:18 - executor_factory (code)
+  docs/audit/AUDIT_EXECUTOR_METHODS.md:211 - executor_factory (code)
+  docs/phase_specs/PHASE_0_ARCHITECTURE_COMPLIANCE.md:24 - AnalysisPipelineFactory (code)
+  docs/phase_specs/PHASE_0_ARCHITECTURE_COMPLIANCE.md:93 - AnalysisPipelineFactory (code)
+  docs/phase_specs/PHASE_0_ARCHITECTURE_COMPLIANCE.md:176 - AnalysisPipelineFactory (code)
+  docs/phase_specs/PHASE_0_ARCHITECTURE_COMPLIANCE.md:202 - AnalysisPipelineFactory (code)
+  docs/phase_specs/PHASE_0_ARCHITECTURE_COMPLIANCE.md:228 - AnalysisPipelineFactory (code)
+  src/farfan_pipeline/orchestration/README.md:533 - executor_factory (code)
+
+DOCUMENTATION ISSUES:
+  README.md: Discusses factory but doesn't mention UnifiedFactory
+  canonic_questionnaire_central/resolver.py: References AnalysisPipelineFactory without deprecation notice
+  canonic_questionnaire_central/resolver.py: Discusses factory but doesn't mention UnifiedFactory
+  src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py: References AnalysisPipelineFactory without deprecation notice
+  src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py: Discusses factory but doesn't mention UnifiedFactory
+
+MISSING MIGRATIONS:
+  tests/test_phase2_sisas_checklist.py
+  tests/test_factory_adversarial.py
+  tests/test_factory_integration.py
+  tests/test_modular_resolver.py
+  tests/test_signal_irrigation_comprehensive_audit.py
+  tests/test_signal_irrigation_audit.py
+  tests/test_orchestrator_signal_validation.py
+  scripts/audit/deep_factory_audit.py
+  tests/phase2/test_phase2_e2e_adversarial.py
+  tests/phase2/test_phase2_comprehensive_e2e.py
+  src/farfan_pipeline/methods/policy_processor.py
+  src/farfan_pipeline/dashboard_atroz_/signal_extraction_sota.py
+  src/farfan_pipeline/orchestration/factory.py
+  src/farfan_pipeline/phases/Phase_02/tests/phase2_10_00_test_comprehensive_e2e.py
+  src/farfan_pipeline/infrastructure/irrigation_using_signals/audit_signal_irrigation.py
+  src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py
+  src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/_deprecated/signal_wiring_fixes.py

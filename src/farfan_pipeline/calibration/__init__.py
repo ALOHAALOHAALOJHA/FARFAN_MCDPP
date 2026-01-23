@@ -6,21 +6,29 @@ Bayesian calibration, validation, and parameter estimation.
 
 Key Exports:
 ------------
-- CalibrationResult: Result of calibration process
-- PDPCalibrator: PDP calibration system
+- CalibrationMetrics: Result of calibration process
+- Phase1PDMCalibrator: PDM calibration system
 """
 
 from farfan_pipeline.calibration.pdm_calibrator import (
-    CalibrationResult,
-    PDPCalibrator,
+    CalibrationMetrics,
+    Phase1PDMCalibrator,
 )
 
 from farfan_pipeline.calibration.registry import (
-    CalibrationRegistry,
+    EpistemicCalibrationRegistry,
 )
+
+# Alias for backward compatibility
+CalibrationResult = CalibrationMetrics
+PDPCalibrator = Phase1PDMCalibrator
+CalibrationRegistry = EpistemicCalibrationRegistry
 
 __all__ = [
     "CalibrationResult",
+    "CalibrationMetrics",
     "PDPCalibrator",
+    "Phase1PDMCalibrator",
     "CalibrationRegistry",
+    "EpistemicCalibrationRegistry",
 ]

@@ -1,17 +1,17 @@
 {
   "overall_status": "PASSED WITH RECOMMENDATIONS",
-  "total_checks": 12,
-  "passed": 11,
+  "total_checks": 13,
+  "passed": 12,
   "failed": 0,
   "warnings": 1,
-  "pass_rate": 91.7,
-  "timestamp": "2026-01-18T20:17:24.336267+00:00",
+  "pass_rate": 92.3,
+  "timestamp": "2026-01-23T14:27:50.379733+00:00",
   "results": [
     {
       "check_name": "factory_file_exists",
       "passed": true,
       "status": "PASSED",
-      "details": "Factory file exists: /Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py",
+      "details": "Factory file exists: /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/orchestration/factory.py",
       "severity": "INFO",
       "evidence": {}
     },
@@ -19,10 +19,10 @@
       "check_name": "factory_line_count",
       "passed": true,
       "status": "PASSED",
-      "details": "Factory has 2042 lines, 0 classes, 0 functions, 0 comments (0.0% documentation ratio)",
+      "details": "Factory has 1760 lines, 0 classes, 0 functions, 0 comments (0.0% documentation ratio)",
       "severity": "INFO",
       "evidence": {
-        "line_count": 2042,
+        "line_count": 1760,
         "class_count": 0,
         "func_count": 0,
         "comment_count": 0,
@@ -31,22 +31,32 @@
     },
     {
       "check_name": "factory_required_classes",
-      "passed": false,
-      "status": "PARTIAL",
-      "details": "Found 2/7 required classes. Missing: ['CanonicalQuestionnaire', 'MethodRegistry', 'Contract', 'ContractLoader', 'ExecutorFactory']",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Found 4/4 required classes. Missing: []",
       "severity": "INFO",
       "evidence": {
         "found_classes": [
-          "AnalysisPipelineFactory",
-          "ProcessorBundle"
+          "UnifiedFactory",
+          "FactoryConfig",
+          "FactoryHealthStatus",
+          "AdaptiveLRUCache"
         ],
-        "missing_classes": [
-          "CanonicalQuestionnaire",
-          "MethodRegistry",
-          "Contract",
-          "ContractLoader",
-          "ExecutorFactory"
-        ]
+        "missing_classes": []
+      }
+    },
+    {
+      "check_name": "deprecated_factory_stub",
+      "passed": true,
+      "status": "PASSED",
+      "details": "Deprecation: True, Imports UnifiedFactory: True, Uses get_factory: True, Is stub: True",
+      "severity": "INFO",
+      "evidence": {
+        "has_deprecation_notice": true,
+        "has_unified_import": true,
+        "has_get_factory": true,
+        "is_stub": true,
+        "line_count": 243
       }
     },
     {
@@ -61,14 +71,14 @@
       "check_name": "single_questionnaire_load_point",
       "passed": true,
       "status": "PARTIAL",
-      "details": "Factory calls: 1, Test calls: 4, Doc calls: 0, Other: 10",
+      "details": "Factory calls: 1, Test calls: 6, Doc calls: 0, Other: 12",
       "severity": "INFO",
       "evidence": {
         "factory_calls": 1,
-        "test_calls": 4,
+        "test_calls": 6,
         "doc_calls": 0,
-        "other_calls": 10,
-        "total_calls": 37
+        "other_calls": 12,
+        "total_calls": 50
       }
     },
     {
@@ -87,15 +97,17 @@
       "check_name": "factory_documentation",
       "passed": true,
       "status": "PASSED",
-      "details": "Found 4/6 key documentation sections",
+      "details": "Found 6/6 key documentation sections",
       "severity": "INFO",
       "evidence": {
         "module_docstring": true,
         "sections_found": [
-          "Factory Pattern",
-          "Dependency Injection",
-          "SIN_CARRETA",
-          "Design Principles"
+          "Unified FARFAN Pipeline Factory",
+          "Architecture",
+          "UnifiedFactory",
+          "FactoryConfig",
+          "Adaptive",
+          "Parallel"
         ],
         "sections_total": 6
       }
@@ -104,13 +116,14 @@
       "check_name": "factory_pattern",
       "passed": true,
       "status": "PASSED",
-      "details": "Factory class: True, Bundle: True, create_orchestrator: True, Singleton: True",
+      "details": "Factory class: True, Config: True, load_questionnaire: True, create_signal_registry: True",
       "severity": "INFO",
       "evidence": {
         "has_factory_class": true,
-        "has_processor_bundle": true,
-        "has_create_orchestrator": true,
-        "has_singleton_tracking": true,
+        "has_factory_config": true,
+        "has_load_questionnaire": true,
+        "has_create_signal_registry": true,
+        "has_questionnaire_caching": true,
         "has_dependency_injection": true
       }
     },
@@ -118,53 +131,55 @@
       "check_name": "dependency_injection",
       "passed": true,
       "status": "PASSED",
-      "details": "Orchestrator DI: True, MethodExecutor DI: True, signal_registry DI: True",
+      "details": "Config DI: True, Questionnaire: True, signal_registry: True, Infrastructure: True",
       "severity": "INFO",
       "evidence": {
-        "orchestrator_di": true,
-        "method_executor_di": true,
-        "signal_registry_di": true
+        "config_di": true,
+        "questionnaire_di": true,
+        "signal_registry_di": true,
+        "infrastructure_di": true
       }
     },
     {
       "check_name": "singleton_pattern",
       "passed": true,
       "status": "PARTIAL",
-      "details": "Code enforcement: True, External violations: 25",
+      "details": "Caching implemented: True, External calls: 27",
       "severity": "INFO",
       "evidence": {
-        "has_singleton_variable": true,
-        "has_enforcement_check": true,
-        "has_error_class": true,
-        "external_load_calls": 25
+        "has_caching_variable": true,
+        "has_lazy_loading": true,
+        "has_factory_getter": true,
+        "external_load_calls": 27
       }
     },
     {
       "check_name": "method_dispensary_pattern",
       "passed": true,
       "status": "PASSED",
-      "details": "class_registry: True, arg_router: True, MethodExecutor: True, canonical_injection: True",
+      "details": "class_registry: True, arg_router: True, contract_execution: True, batch_execution: True",
       "severity": "INFO",
       "evidence": {
         "class_registry_exists": true,
         "arg_router_exists": true,
-        "method_executor_integration": true,
-        "canonical_injection": true,
+        "contract_execution": true,
+        "batch_execution": true,
+        "method_loading": true,
         "dispensary_count": 1
       }
     },
     {
       "check_name": "security_integrity",
-      "passed": true,
-      "status": "PASSED",
-      "details": "SHA-256: True, Immutable: True, Provenance: True, Integrity: True",
+      "passed": false,
+      "status": "PARTIAL",
+      "details": "SHA-256: False, Immutable: True, Provenance: False, Integrity: False",
       "severity": "INFO",
       "evidence": {
-        "sha256_verification": true,
+        "sha256_verification": false,
         "immutable_dataclass": true,
-        "provenance_tracking": true,
-        "integrity_check": true,
-        "bundle_validation": true
+        "provenance_tracking": false,
+        "integrity_check": false,
+        "bundle_validation": false
       }
     }
   ]
