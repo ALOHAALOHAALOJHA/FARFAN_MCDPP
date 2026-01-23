@@ -2494,7 +2494,41 @@ class UnifiedOrchestrator:
                 "critical": True
             }
 
-            # Invariant 3: Validation Gate (SP13) - Check from package quality metrics
+            # Invariant 3: 10 Policy Areas
+            # Extract policy areas from chunks (assuming they have policy_area attribute)
+            policy_areas_found = set()
+            for chunk in smart_chunks:
+                if hasattr(chunk, 'policy_area') and chunk.policy_area:
+                    policy_areas_found.add(chunk.policy_area)
+            policy_areas_count = len(policy_areas_found)
+            invariant_10_policy_areas = (policy_areas_count == 10)
+            constitutional_invariants["invariant_10_policy_areas"] = {
+                "name": "10 Policy Areas Invariant",
+                "expected": 10,
+                "actual": policy_areas_count,
+                "passed": invariant_10_policy_areas,
+                "critical": True
+            }
+            self.logger.info(f"[P1] Invariant Check: 10 Policy Areas = {invariant_10_policy_areas} (actual: {policy_areas_count})")
+
+            # Invariant 4: 6 Dimensions
+            # Extract dimensions from chunks (assuming they have dimension attribute)
+            dimensions_found = set()
+            for chunk in smart_chunks:
+                if hasattr(chunk, 'dimension') and chunk.dimension:
+                    dimensions_found.add(chunk.dimension)
+            dimensions_count = len(dimensions_found)
+            invariant_6_dimensions = (dimensions_count == 6)
+            constitutional_invariants["invariant_6_dimensions"] = {
+                "name": "6 Dimensions Invariant",
+                "expected": 6,
+                "actual": dimensions_count,
+                "passed": invariant_6_dimensions,
+                "critical": True
+            }
+            self.logger.info(f"[P1] Invariant Check: 6 Dimensions = {invariant_6_dimensions} (actual: {dimensions_count})")
+
+            # Invariant 5: Validation Gate (SP13) - Check from package quality metrics
             validation_passed = canonical_package.quality_metrics.constitutional_invariants_passed if canonical_package else False
             constitutional_invariants["invariant_validation_gate"] = {
                 "name": "Validation Gate Invariant (SP13)",
@@ -2742,6 +2776,41 @@ class UnifiedOrchestrator:
         # Get performance metrics from factory
         perf_metrics = self.factory.get_performance_metrics()
 
+        # ====================================================================
+        # CONSTITUTIONAL INVARIANTS VALIDATION FOR PHASE 2
+        # ====================================================================
+        self.logger.info("[P2] Validating constitutional invariants")
+        
+        constitutional_invariants = {}
+        
+        # Invariant 1: 300 Contracts (30 base questions × 10 policy areas)
+        total_contracts = len(contracts)
+        invariant_300_contracts = (total_contracts == 300)
+        constitutional_invariants["invariant_300_contracts"] = {
+            "name": "300 Contracts Constitutional Invariant",
+            "expected": 300,
+            "actual": total_contracts,
+            "passed": invariant_300_contracts,
+            "critical": True  # Critical per CANONICAL_PHASE_ARCHITECTURE.md
+        }
+        self.logger.info(f"[P2] Invariant Check: 300 Contracts = {invariant_300_contracts} (actual: {total_contracts})")
+        
+        # Invariant 2: Input validation from Phase 1
+        canonical_input = self.context.get_phase_output(PhaseID.PHASE_1)
+        invariant_p1_input = (canonical_input is not None)
+        constitutional_invariants["invariant_p1_input"] = {
+            "name": "Phase 1 Input Validation",
+            "expected": "CanonPolicyPackage from P1",
+            "actual": "Present" if canonical_input else "Missing",
+            "passed": invariant_p1_input,
+            "critical": True
+        }
+        self.logger.info(f"[P2] Invariant Check: Phase 1 Input = {invariant_p1_input}")
+        
+        all_invariants_passed = all(
+            inv["passed"] for inv in constitutional_invariants.values()
+        )
+
         return {
             "task_results": task_results,
             "status": "completed",
@@ -2749,6 +2818,8 @@ class UnifiedOrchestrator:
             "components_available": list(components.keys()),
             "execution_strategy": execution_plan["execution_strategy"] if execution_plan else "sequential",
             "performance_metrics": perf_metrics,
+            "constitutional_invariants": constitutional_invariants,
+            "all_invariants_passed": all_invariants_passed,
         }
 
     # =========================================================================
@@ -3620,6 +3691,26 @@ class UnifiedOrchestrator:
             self.logger.info(f"Area Scores: {actual_count} (expected: {expected_count})")
             self.logger.info("=" * 80)
 
+            # ====================================================================
+            # CONSTITUTIONAL INVARIANTS VALIDATION FOR PHASE 5
+            # ====================================================================
+            constitutional_invariants = {}
+            
+            # Invariant 1: 10 Policy Area Scores
+            invariant_10_areas = (actual_count == 10)
+            constitutional_invariants["invariant_10_policy_areas"] = {
+                "name": "10 Policy Area Scores Constitutional Invariant",
+                "expected": 10,
+                "actual": actual_count,
+                "passed": invariant_10_areas,
+                "critical": True
+            }
+            self.logger.info(f"[P5] Invariant Check: 10 Policy Areas = {invariant_10_areas} (actual: {actual_count})")
+            
+            all_invariants_passed = all(
+                inv["passed"] for inv in constitutional_invariants.values()
+            )
+
             # Store in context
             self.context.phase_outputs[PhaseID.PHASE_5] = area_scores
 
@@ -3633,6 +3724,8 @@ class UnifiedOrchestrator:
                 "synthesis": synthesis_result,
                 "validation_passed": validation_valid,
                 "cluster_assignments_valid": cluster_valid,
+                "constitutional_invariants": constitutional_invariants,
+                "all_invariants_passed": all_invariants_passed,
             }
 
         except PhaseExecutionError:
