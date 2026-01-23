@@ -1,3 +1,0 @@
-file: data/plans/Plan_2.pdf
-page_count: 327
-title: 
