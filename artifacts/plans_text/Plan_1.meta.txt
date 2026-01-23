@@ -1,3 +1,0 @@
-file: data/plans/Plan_1.pdf
-page_count: 78
-title: PLAN DE DESARROLLO TIMBIQUÍ
