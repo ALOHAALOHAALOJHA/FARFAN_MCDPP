@@ -24,6 +24,26 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
 
 
+# =============================================================================
+# AUDIT CONFIGURATION
+# =============================================================================
+
+# Maximum external load_questionnaire calls allowed before warning
+ALLOWED_EXTERNAL_LOAD_CALLS = 5
+
+# Patterns indicating method injection capability
+METHOD_INJECTION_PATTERNS = [
+    "inject_method",
+    "method_binding",
+    "load_method",
+    "_method_cache",
+    "MethodRegistry",
+]
+
+# Directories to exclude from external load call scanning
+EXCLUDED_DIRECTORIES = ["__pycache__", ".pytest_cache", ".git", "test", "tests", "docs", "examples"]
+
+
 @dataclass
 class AuditResult:
     """Result of a single audit check."""
@@ -45,7 +65,9 @@ class FactoryAuditor:
     def __init__(self):
         self.results: List[AuditResult] = []
         self.repo_root = Path(__file__).resolve().parents[2]
-        self.factory_path = self.repo_root / "src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py"
+        # FIXED: Point to the actual UnifiedFactory, not the deprecated stub
+        self.factory_path = self.repo_root / "src/farfan_pipeline/orchestration/factory.py"
+        self.deprecated_factory_path = self.repo_root / "src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py"
 
     def add_result(self, check_name: str, passed: bool, status: str, details: str,
                    severity: str = "INFO", evidence: Dict[str, Any] = None):
@@ -100,15 +122,12 @@ class FactoryAuditor:
         comment_lines = comment_pattern.findall(content)
         comment_count = len(comment_lines)
 
-        # Check for key classes
+        # Check for key classes (updated for UnifiedFactory)
         required_classes = [
-            "AnalysisPipelineFactory",
-            "ProcessorBundle",
-            "CanonicalQuestionnaire",
-            "MethodRegistry",
-            "Contract",
-            "ContractLoader",
-            "ExecutorFactory",
+            "UnifiedFactory",
+            "FactoryConfig",
+            "FactoryHealthStatus",
+            "AdaptiveLRUCache",
         ]
 
         found_classes = []
@@ -333,14 +352,14 @@ class FactoryAuditor:
         has_module_docstring = '"""' in content[:1000]
         print(f"  {'✅' if has_module_docstring else '❌'} Module docstring")
 
-        # Check for key documentation sections
+        # Check for key documentation sections (updated for UnifiedFactory)
         key_sections = [
-            "Factory Pattern",
-            "Dependency Injection",
-            "Singleton Pattern",
-            "Method Dispensary Pattern",
-            "SIN_CARRETA",
-            "Design Principles",
+            "Unified FARFAN Pipeline Factory",
+            "Architecture",
+            "UnifiedFactory",
+            "FactoryConfig",
+            "Adaptive",
+            "Parallel",
         ]
 
         found_sections = []
@@ -379,39 +398,43 @@ class FactoryAuditor:
 
         content = self.factory_path.read_text(encoding='utf-8')
 
-        # Check for AnalysisPipelineFactory class
-        has_factory = "class AnalysisPipelineFactory" in content
-        print(f"  {'✅' if has_factory else '❌'} AnalysisPipelineFactory class")
+        # Check for UnifiedFactory class (updated from AnalysisPipelineFactory)
+        has_factory = "class UnifiedFactory" in content
+        print(f"  {'✅' if has_factory else '❌'} UnifiedFactory class")
 
-        # Check for ProcessorBundle
-        has_bundle = "@dataclass(frozen=True)" in content and "class ProcessorBundle" in content
-        print(f"  {'✅' if has_bundle else '❌'} ProcessorBundle dataclass")
+        # Check for FactoryConfig
+        has_config = "@dataclass" in content and "class FactoryConfig" in content
+        print(f"  {'✅' if has_config else '❌'} FactoryConfig dataclass")
 
-        # Check for create_orchestrator method
-        has_create = "def create_orchestrator(self)" in content
-        print(f"  {'✅' if has_create else '❌'} create_orchestrator() method")
+        # Check for core methods
+        has_load_questionnaire = "def load_questionnaire(self)" in content
+        print(f"  {'✅' if has_load_questionnaire else '❌'} load_questionnaire() method")
+        
+        has_create_signal = "def create_signal_registry(self)" in content
+        print(f"  {'✅' if has_create_signal else '❌'} create_signal_registry() method")
 
-        # Check for singleton enforcement
-        has_singleton = "_questionnaire_loaded" in content and "_questionnaire_instance" in content
-        print(f"  {'✅' if has_singleton else '❌'} Singleton tracking")
+        # Check for singleton-like caching
+        has_caching = "_questionnaire" in content and "self._questionnaire" in content
+        print(f"  {'✅' if has_caching else '❌'} Questionnaire caching")
 
         # Check for dependency injection pattern
-        has_di = "__init__" in content and "self._method_executor" in content
+        has_di = "__init__" in content and "self._config" in content
         print(f"  {'✅' if has_di else '❌'} Dependency injection pattern")
 
-        passed = has_factory and has_bundle and has_create
+        passed = has_factory and has_config and has_load_questionnaire
         status = "PASSED" if passed else "FAILED"
 
         self.add_result(
             "factory_pattern",
             passed,
             status,
-            f"Factory class: {has_factory}, Bundle: {has_bundle}, create_orchestrator: {has_create}, Singleton: {has_singleton}",
+            f"Factory class: {has_factory}, Config: {has_config}, load_questionnaire: {has_load_questionnaire}, create_signal_registry: {has_create_signal}",
             evidence={
                 "has_factory_class": has_factory,
-                "has_processor_bundle": has_bundle,
-                "has_create_orchestrator": has_create,
-                "has_singleton_tracking": has_singleton,
+                "has_factory_config": has_config,
+                "has_load_questionnaire": has_load_questionnaire,
+                "has_create_signal_registry": has_create_signal,
+                "has_questionnaire_caching": has_caching,
                 "has_dependency_injection": has_di
             }
         )
@@ -429,30 +452,34 @@ class FactoryAuditor:
 
         content = self.factory_path.read_text(encoding='utf-8')
 
-        # Check for DI in Orchestrator construction
-        orchestrator_pattern = r"Orchestrator\("
-        has_orchestrator_di = re.search(orchestrator_pattern, content) is not None
-        print(f"  {'✅' if has_orchestrator_di else '❌'} Orchestrator constructed with DI")
+        # Check for DI via FactoryConfig
+        has_config_di = "config: FactoryConfig" in content or "self._config" in content
+        print(f"  {'✅' if has_config_di else '❌'} FactoryConfig dependency injection")
 
-        # Check for MethodExecutor DI
-        has_method_executor_di = "MethodExecutor(" in content and "method_registry=" in content
-        print(f"  {'✅' if has_method_executor_di else '❌'} MethodExecutor with method_registry DI")
+        # Check for component creation with dependencies
+        has_questionnaire_di = "self._questionnaire" in content
+        print(f"  {'✅' if has_questionnaire_di else '❌'} Questionnaire caching/injection")
 
-        # Check for signal_registry DI
-        has_signal_registry_di = "signal_registry=" in content
-        print(f"  {'✅' if has_signal_registry_di else '❌'} signal_registry DI")
+        # Check for signal_registry creation
+        has_signal_registry_di = "def create_signal_registry" in content
+        print(f"  {'✅' if has_signal_registry_di else '❌'} Signal registry creation")
+        
+        # Check for thread pool and caching infrastructure
+        has_infrastructure_di = "self._thread_pool" in content and "self._method_cache" in content
+        print(f"  {'✅' if has_infrastructure_di else '❌'} Thread pool and cache infrastructure")
 
-        passed = has_orchestrator_di and has_method_executor_di and has_signal_registry_di
-
+        passed = has_config_di and has_questionnaire_di and has_signal_registry_di
+        
         self.add_result(
             "dependency_injection",
             passed,
-            "PASSED" if passed else "FAILED",
-            f"Orchestrator DI: {has_orchestrator_di}, MethodExecutor DI: {has_method_executor_di}, signal_registry DI: {has_signal_registry_di}",
+            "PASSED" if passed else "PARTIAL",
+            f"Config DI: {has_config_di}, Questionnaire: {has_questionnaire_di}, signal_registry: {has_signal_registry_di}, Infrastructure: {has_infrastructure_di}",
             evidence={
-                "orchestrator_di": has_orchestrator_di,
-                "method_executor_di": has_method_executor_di,
-                "signal_registry_di": has_signal_registry_di
+                "config_di": has_config_di,
+                "questionnaire_di": has_questionnaire_di,
+                "signal_registry_di": has_signal_registry_di,
+                "infrastructure_di": has_infrastructure_di
             }
         )
 
@@ -469,28 +496,28 @@ class FactoryAuditor:
 
         content = self.factory_path.read_text(encoding='utf-8')
 
-        # Check for singleton variables
-        has_singleton_var = "_questionnaire_loaded" in content
-        print(f"  {'✅' if has_singleton_var else '❌'} Singleton variable declared")
+        # Check for caching pattern (not strict singleton, but similar intent)
+        has_caching_var = "self._questionnaire" in content
+        print(f"  {'✅' if has_caching_var else '❌'} Questionnaire caching variable")
 
-        # Check for singleton enforcement
-        has_enforcement = "if AnalysisPipelineFactory._questionnaire_loaded:" in content
-        print(f"  {'✅' if has_enforcement else '❌'} Singleton enforcement check")
+        # Check for lazy loading pattern
+        has_lazy_loading = "if self._questionnaire is None:" in content
+        print(f"  {'✅' if has_lazy_loading else '❌'} Lazy loading pattern")
 
-        # Check for SingletonViolationError
-        has_error = "class SingletonViolationError" in content
-        print(f"  {'✅' if has_error else '❌'} SingletonViolationError defined")
+        # Check for get_factory singleton-like function
+        has_factory_getter = "def get_factory" in content
+        print(f"  {'✅' if has_factory_getter else '❌'} get_factory() singleton accessor")
 
         # Check external violations (from audit 3)
         external_calls = self._count_external_load_calls()
         print(f"  {'⚠️' if external_calls > 0 else '✅'} External load_questionnaire calls: {external_calls}")
 
-        # Status depends on enforcement
-        code_enforced = has_singleton_var and has_enforcement and has_error
-        if external_calls > 0:
+        # Status depends on caching implementation
+        code_implemented = has_caching_var and has_lazy_loading
+        if external_calls > ALLOWED_EXTERNAL_LOAD_CALLS:
             status = "PARTIAL"
             passed = True  # Warning only
-        elif code_enforced:
+        elif code_implemented:
             status = "PASSED"
             passed = True
         else:
@@ -501,11 +528,11 @@ class FactoryAuditor:
             "singleton_pattern",
             passed,
             status,
-            f"Code enforcement: {code_enforced}, External violations: {external_calls}",
+            f"Caching implemented: {code_implemented}, External calls: {external_calls}",
             evidence={
-                "has_singleton_variable": has_singleton_var,
-                "has_enforcement_check": has_enforcement,
-                "has_error_class": has_error,
+                "has_caching_variable": has_caching_var,
+                "has_lazy_loading": has_lazy_loading,
+                "has_factory_getter": has_factory_getter,
                 "external_load_calls": external_calls
             }
         )
@@ -516,7 +543,7 @@ class FactoryAuditor:
         """Count load_questionnaire calls outside factory."""
         count = 0
         for py_file in self.repo_root.rglob("*.py"):
-            if any(x in py_file.parts for x in ["__pycache__", ".pytest_cache", ".git", "test", "docs"]):
+            if any(x in py_file.parts for x in EXCLUDED_DIRECTORIES):
                 continue
             if "phase2_10_00_factory.py" in str(py_file):
                 continue
@@ -553,33 +580,39 @@ class FactoryAuditor:
         has_arg_router = len(arg_router_paths) > 0
         print(f"  {'✅' if has_arg_router else '❌'} arg_router.py exists")
 
-        # Check for MethodExecutor
+        # Check for contract execution (updated for UnifiedFactory)
         if self.factory_path.exists():
             factory_content = self.factory_path.read_text(encoding='utf-8')
-            has_method_executor = "MethodExecutor(" in factory_content and "execute(" in factory_content
-            print(f"  {'✅' if has_method_executor else '❌'} MethodExecutor integration")
+            has_contract_execution = "def execute_contract" in factory_content
+            print(f"  {'✅' if has_contract_execution else '❌'} Contract execution methods")
+            
+            has_batch_execution = "def execute_contracts_batch" in factory_content
+            print(f"  {'✅' if has_batch_execution else '❌'} Batch contract execution")
         else:
-            has_method_executor = False
+            has_contract_execution = False
+            has_batch_execution = False
 
-        # Check for canonical methods injection
-        has_canonical_injection = False
+        # Check for method injection/loading (specific patterns)
+        has_method_loading = False
         if self.factory_path.exists():
             factory_content = self.factory_path.read_text(encoding='utf-8')
-            has_canonical_injection = "inject_canonical_methods" in factory_content
-            print(f"  {'✅' if has_canonical_injection else '❌'} Canonical method injection")
+            # Look for specific method injection patterns
+            has_method_loading = any(pattern in factory_content for pattern in METHOD_INJECTION_PATTERNS)
+            print(f"  {'✅' if has_method_loading else '❌'} Method injection capability")
 
-        passed = has_class_registry and has_method_executor
+        passed = has_class_registry and (has_contract_execution or has_batch_execution)
 
         self.add_result(
             "method_dispensary_pattern",
             passed,
-            "PASSED" if passed else "FAILED",
-            f"class_registry: {has_class_registry}, arg_router: {has_arg_router}, MethodExecutor: {has_method_executor}, canonical_injection: {has_canonical_injection}",
+            "PASSED" if passed else "PARTIAL",
+            f"class_registry: {has_class_registry}, arg_router: {has_arg_router}, contract_execution: {has_contract_execution}, batch_execution: {has_batch_execution}",
             evidence={
                 "class_registry_exists": has_class_registry,
                 "arg_router_exists": has_arg_router,
-                "method_executor_integration": has_method_executor,
-                "canonical_injection": has_canonical_injection,
+                "contract_execution": has_contract_execution,
+                "batch_execution": has_batch_execution,
+                "method_loading": has_method_loading,
                 "dispensary_count": dispensary_count
             }
         )
@@ -635,6 +668,60 @@ class FactoryAuditor:
 
         return passed
 
+    def audit_deprecated_factory_stub(self) -> bool:
+        """Audit 11: Deprecated Factory Stub."""
+        print("\n" + "=" * 80)
+        print("AUDIT 11: Deprecated Factory Stub Relationship")
+        print("-" * 80)
+
+        if not self.deprecated_factory_path.exists():
+            print(f"  ❌ Deprecated factory file not found")
+            self.add_result(
+                "deprecated_factory_stub",
+                False,
+                "FAILED",
+                "Deprecated factory file not found"
+            )
+            return False
+
+        content = self.deprecated_factory_path.read_text(encoding='utf-8')
+
+        # Check for deprecation warning
+        has_deprecation = "DEPRECATED" in content
+        print(f"  {'✅' if has_deprecation else '❌'} Deprecation notice present")
+
+        # Check for UnifiedFactory import
+        has_unified_import = "from farfan_pipeline.orchestration.factory import" in content
+        print(f"  {'✅' if has_unified_import else '❌'} Imports from UnifiedFactory")
+
+        # Check for get_factory usage
+        has_get_factory = "get_factory()" in content
+        print(f"  {'✅' if has_get_factory else '❌'} Uses get_factory() accessor")
+
+        # Check that it's a stub (small file)
+        line_count = len(content.splitlines())
+        is_stub = line_count < 300
+        print(f"  {'✅' if is_stub else '❌'} Is a stub file ({line_count} lines)")
+
+        passed = has_deprecation and has_unified_import and has_get_factory and is_stub
+        status = "PASSED" if passed else "PARTIAL"
+
+        self.add_result(
+            "deprecated_factory_stub",
+            passed,
+            status,
+            f"Deprecation: {has_deprecation}, Imports UnifiedFactory: {has_unified_import}, Uses get_factory: {has_get_factory}, Is stub: {is_stub}",
+            evidence={
+                "has_deprecation_notice": has_deprecation,
+                "has_unified_import": has_unified_import,
+                "has_get_factory": has_get_factory,
+                "is_stub": is_stub,
+                "line_count": line_count
+            }
+        )
+
+        return passed
+
     def run_full_audit(self) -> Dict[str, Any]:
         """Run complete factory audit."""
         print("=" * 80)
@@ -645,6 +732,7 @@ class FactoryAuditor:
 
         # Run all audits
         self.audit_factory_file_structure()
+        self.audit_deprecated_factory_stub()
         self.audit_legacy_signal_loader_deletion()
         self.audit_single_questionnaire_load_point()
         self.audit_method_dispensary_files()

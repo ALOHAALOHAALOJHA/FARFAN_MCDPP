@@ -1,3 +1,0 @@
-file: data/plans/Plan_3.pdf
-page_count: 170
-title: 
