@@ -67,6 +67,10 @@ from farfan_pipeline.orchestration.orchestrator import (
     ExecutionContext,
     PipelineResult,
     UnifiedOrchestrator,
+
+    # Phase 0 validation types
+    Phase0ValidationResult,
+    GateResult,
 )
 
 # Import compatibility classes
@@ -77,12 +81,27 @@ from farfan_pipeline.orchestration.compatibility import (
     AbortSignal,
 )
 
+# Import ContractEnforcer from scripts (for contract validation)
+try:
+    import sys
+    from pathlib import Path
+    # Add scripts directory to path if not already there
+    scripts_dir = Path(__file__).parent.parent.parent.parent / "scripts"
+    if scripts_dir.exists() and str(scripts_dir) not in sys.path:
+        sys.path.insert(0, str(scripts_dir))
+    from enforcement.enforce_contracts import ContractEnforcer as _ContractEnforcer
+    ContractEnforcer = _ContractEnforcer
+except ImportError:
+    # If import fails, create a minimal stub
+    class ContractEnforcer:
+        """Minimal ContractEnforcer stub for backward compatibility."""
+        def __init__(self):
+            import warnings
+            warnings.warn("Full ContractEnforcer not available - using stub")
+
 # Aliases for backward compatibility
 PipelineOrchestrator = UnifiedOrchestrator
 Orchestrator = UnifiedOrchestrator
-ContractEnforcer = None  # TODO: Implement in unified orchestrator
-Phase0ValidationResult = None  # TODO: Implement in unified orchestrator
-GateResult = None  # TODO: Implement in unified orchestrator
 
 # Import execute_phase_with_timeout for backward compatibility
 try:

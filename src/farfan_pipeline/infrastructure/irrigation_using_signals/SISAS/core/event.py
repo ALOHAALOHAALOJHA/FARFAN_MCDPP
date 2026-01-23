@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Protocol
 from uuid import uuid4
 import json
+from pathlib import Path
+import logging
 
 
 class EventType(Enum):
@@ -136,6 +138,111 @@ class Event:
     def add_error(self, error: str):
         """Añade error de procesamiento"""
         self.processing_errors.append(error)
+
+
+# =============================================================================
+# COLD STORAGE BACKEND FOR EVENT ARCHIVING
+# =============================================================================
+
+class ColdStorageBackend(Protocol):
+    """Protocol for cold storage backends (file, database, S3, etc.)"""
+
+    def store_events(self, archive_id: str, events: List[Event]) -> None:
+        """Store events to cold storage."""
+        ...
+
+    def retrieve_events(self, archive_id: str) -> List[Event]:
+        """Retrieve events from cold storage."""
+        ...
+
+    def list_archives(self) -> List[str]:
+        """List available archive IDs."""
+        ...
+
+
+class FileSystemColdStorage:
+    """File-based cold storage implementation for archived events."""
+
+    def __init__(self, storage_dir: str = "artifacts/sisas/cold_storage"):
+        """Initialize cold storage with directory path.
+
+        Args:
+            storage_dir: Directory to store archived events
+        """
+        self.storage_dir = Path(storage_dir)
+        self.storage_dir.mkdir(parents=True, exist_ok=True)
+        self._logger = logging.getLogger(__name__)
+
+    def store_events(self, archive_id: str, events: List[Event]) -> None:
+        """Store events to file system."""
+        archive_path = self.storage_dir / f"{archive_id}.jsonl"
+
+        with open(archive_path, 'w', encoding='utf-8') as f:
+            for event in events:
+                f.write(json.dumps(event.to_dict()) + '\n')
+
+        self._logger.info(f"Stored {len(events)} events to {archive_path}")
+
+    def retrieve_events(self, archive_id: str) -> List[Event]:
+        """Retrieve events from file system."""
+        archive_path = self.storage_dir / f"{archive_id}.jsonl"
+
+        if not archive_path.exists():
+            return []
+
+        events = []
+        with open(archive_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                event_data = json.loads(line)
+                event = Event(
+                    event_id=event_data['event_id'],
+                    event_type=EventType(event_data['event_type']),
+                    timestamp=datetime.fromisoformat(event_data['timestamp']),
+                    source_component=event_data.get('source_component', ''),
+                    source_file=event_data.get('source_file', ''),
+                    source_path=event_data.get('source_path', ''),
+                    phase=event_data.get('phase', ''),
+                    consumer_scope=event_data.get('consumer_scope', ''),
+                    correlation_id=event_data.get('correlation_id'),
+                    causation_id=event_data.get('causation_id'),
+                    processed=event_data.get('processed', False)
+                )
+                if event_data.get('payload'):
+                    event.payload = EventPayload(
+                        data=event_data['payload']['data'],
+                        schema_version=event_data['payload'].get('schema_version', '1.0.0')
+                    )
+                events.append(event)
+
+        return events
+
+    def list_archives(self) -> List[str]:
+        """List all available archive IDs."""
+        archives = []
+        for path in self.storage_dir.glob("*.jsonl"):
+            archives.append(path.stem)
+        return sorted(archives)
+
+
+# Global cold storage backend (configurable)
+_cold_storage_backend: Optional[ColdStorageBackend] = None
+
+
+def configure_cold_storage(backend: ColdStorageBackend) -> None:
+    """Configure the global cold storage backend."""
+    global _cold_storage_backend
+    _cold_storage_backend = backend
+
+
+def get_cold_storage_backend() -> Optional[ColdStorageBackend]:
+    """Get the configured cold storage backend, or create default file-based one."""
+    global _cold_storage_backend
+    if _cold_storage_backend is None:
+        # Create default file-based backend
+        _cold_storage_backend = FileSystemColdStorage()
+    return _cold_storage_backend
 
 
 @dataclass
@@ -342,7 +449,22 @@ class EventStore:
         # memoria, los eventos archivados deben moverse a almacenamiento
         # persistente externo (DB, S3, etc.) en lugar de eliminarse.
 
-        # TODO: Implementar estrategia de almacenamiento en frío para
-        # eventos archivados (database, object storage, etc.)
+        # IMPLEMENTED: Cold storage strategy
+        # Use ColdStorageBackend to persist archived events
+        cold_storage = get_cold_storage_backend()
+        if cold_storage and to_archive:
+            try:
+                archive_id = f"archive_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
+                cold_storage.store_events(archive_id, to_archive)
+
+                # Only remove from memory after successful cold storage
+                self.events = [e for e in self.events if e not in to_archive]
+
+                logger = logging.getLogger(__name__)
+                logger.info(f"Archived {len(to_archive)} events to cold storage: {archive_id}")
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.error(f"Failed to archive events to cold storage: {e}")
+                # Keep events in memory if cold storage fails
 
         return len(to_archive)
