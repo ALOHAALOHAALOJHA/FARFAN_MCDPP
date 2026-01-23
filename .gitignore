@@ -159,3 +159,5 @@ new_enhanced_rules.json
 =[0-9]*
 *.py.bak
 constraints.txt
+.vscode/gemini-mcp/
+.mcp-debug-tools/
