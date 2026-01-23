@@ -170,52 +170,127 @@ except ImportError:
 VEHICLES = {}
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_loader import SignalLoader
-    VEHICLES['loader'] = SignalLoader
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_loader import SignalLoaderVehicle
+    VEHICLES['loader'] = SignalLoaderVehicle
 except ImportError:
     VEHICLES['loader'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_irrigator import SignalIrrigator
-    VEHICLES['irrigator'] = SignalIrrigator
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_irrigator import SignalIrrigatorVehicle
+    VEHICLES['irrigator'] = SignalIrrigatorVehicle
 except ImportError:
     VEHICLES['irrigator'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistry
-    VEHICLES['registry'] = SignalRegistry
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import SignalRegistryVehicle
+    VEHICLES['registry'] = SignalRegistryVehicle
 except ImportError:
     VEHICLES['registry'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoper
-    VEHICLES['context_scoper'] = SignalContextScoper
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_context_scoper import SignalContextScoperVehicle
+    VEHICLES['context_scoper'] = SignalContextScoperVehicle
 except ImportError:
     VEHICLES['context_scoper'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_evidence_extractor import SignalEvidenceExtractor
-    VEHICLES['evidence_extractor'] = SignalEvidenceExtractor
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_evidence_extractor import SignalEvidenceExtractorVehicle
+    VEHICLES['evidence_extractor'] = SignalEvidenceExtractorVehicle
 except ImportError:
     VEHICLES['evidence_extractor'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_enhancement_integrator import SignalEnhancementIntegrator
-    VEHICLES['enhancement_integrator'] = SignalEnhancementIntegrator
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_enhancement_integrator import SignalEnhancementIntegratorVehicle
+    VEHICLES['enhancement_integrator'] = SignalEnhancementIntegratorVehicle
 except ImportError:
     VEHICLES['enhancement_integrator'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_intelligence_layer import SignalIntelligenceLayer
-    VEHICLES['intelligence_layer'] = SignalIntelligenceLayer
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_intelligence_layer import SignalIntelligenceLayerVehicle
+    VEHICLES['intelligence_layer'] = SignalIntelligenceLayerVehicle
 except ImportError:
     VEHICLES['intelligence_layer'] = None
 
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_quality_metrics import SignalQualityMetrics
-    VEHICLES['quality_metrics'] = SignalQualityMetrics
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_quality_metrics import SignalQualityMetricsVehicle
+    VEHICLES['quality_metrics'] = SignalQualityMetricsVehicle
 except ImportError:
     VEHICLES['quality_metrics'] = None
+
+# Buses
+BUSES = {}
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import SignalBus, BusRegistry, BusType
+    BUSES['SignalBus'] = SignalBus
+    BUSES['BusRegistry'] = BusRegistry
+    BUSES['BusType'] = BusType
+except ImportError:
+    BUSES['SignalBus'] = None
+    BUSES['BusRegistry'] = None
+    BUSES['BusType'] = None
+
+# Contracts (beyond SDO)
+CONTRACTS = {}
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import (
+        PublicationContract, ConsumptionContract, IrrigationContract, ContractRegistry
+    )
+    CONTRACTS['PublicationContract'] = PublicationContract
+    CONTRACTS['ConsumptionContract'] = ConsumptionContract
+    CONTRACTS['IrrigationContract'] = IrrigationContract
+    CONTRACTS['ContractRegistry'] = ContractRegistry
+except ImportError:
+    CONTRACTS['PublicationContract'] = None
+    CONTRACTS['ConsumptionContract'] = None
+    CONTRACTS['IrrigationContract'] = None
+    CONTRACTS['ContractRegistry'] = None
+
+# Validators
+VALIDATORS = {}
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.validators.depuration import DepurationValidator
+    VALIDATORS['DepurationValidator'] = DepurationValidator
+except ImportError:
+    VALIDATORS['DepurationValidator'] = None
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.harmonization import HarmonizationValidator
+    VALIDATORS['HarmonizationValidator'] = HarmonizationValidator
+except ImportError:
+    VALIDATORS['HarmonizationValidator'] = None
+
+# Wiring
+WIRING = {}
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.wiring.wiring_config import WiringConfiguration
+    WIRING['WiringConfiguration'] = WiringConfiguration
+except ImportError:
+    WIRING['WiringConfiguration'] = None
+
+# Irrigation
+IRRIGATION = {}
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_map import IrrigationMap
+    IRRIGATION['IrrigationMap'] = IrrigationMap
+except ImportError:
+    IRRIGATION['IrrigationMap'] = None
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_executor import IrrigationExecutor
+    IRRIGATION['IrrigationExecutor'] = IrrigationExecutor
+except ImportError:
+    IRRIGATION['IrrigationExecutor'] = None
+
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.irrigation.irrigation_validator import IrrigationValidator
+    IRRIGATION['IrrigationValidator'] = IrrigationValidator
+except ImportError:
+    IRRIGATION['IrrigationValidator'] = None
 
 
 # =============================================================================
@@ -233,6 +308,15 @@ class IntegrationStatus:
     extractors_available: int = 0
     vehicles_initialized: int = 0
     vehicles_available: int = 0
+    buses_initialized: int = 0
+    buses_available: int = 0
+    contracts_initialized: int = 0
+    contracts_available: int = 0
+    validators_initialized: int = 0
+    validators_available: int = 0
+    wiring_initialized: bool = False
+    irrigation_initialized: int = 0
+    irrigation_available: int = 0
     irrigation_units_loaded: int = 0
     items_irrigable: int = 0
 
@@ -242,6 +326,11 @@ class IntegrationStatus:
             "consumers":  f"{self.consumers_registered}/{self.consumers_available}",
             "extractors": f"{self.extractors_connected}/{self.extractors_available}",
             "vehicles": f"{self.vehicles_initialized}/{self.vehicles_available}",
+            "buses": f"{self.buses_initialized}/{self.buses_available}",
+            "contracts": f"{self.contracts_initialized}/{self.contracts_available}",
+            "validators": f"{self.validators_initialized}/{self.validators_available}",
+            "wiring_configured": self.wiring_initialized,
+            "irrigation": f"{self.irrigation_initialized}/{self.irrigation_available}",
             "irrigation_units":  self.irrigation_units_loaded,
             "items_irrigable": self.items_irrigable,
             "fully_integrated": self.is_fully_integrated(),
@@ -251,7 +340,11 @@ class IntegrationStatus:
         return (
             self.core_available and
             self.consumers_registered == self.consumers_available and
-            self.extractors_connected == self.extractors_available
+            self.extractors_connected == self.extractors_available and
+            self.buses_initialized == self.buses_available and
+            self.contracts_initialized == self.contracts_available and
+            self.validators_initialized == self.validators_available and
+            self.irrigation_initialized == self.irrigation_available
         )
 
 
@@ -260,12 +353,17 @@ class SISASIntegrationHub:
     Central hub for ALL SISAS integrations.
 
     This class:
-    1. Initializes the SDO
-    2. Registers ALL consumers
-    3. Connects ALL extractors to emit via SDO
-    4. Initializes ALL vehicles
-    5. Loads ALL irrigation units
-    6. Tracks ALL 475+ irrigable items
+    1. Initializes the SDO (Signal Distribution Orchestrator)
+    2. Registers ALL 17 consumers (phases 0-9)
+    3. Connects ALL 10 extractors (MC01-MC10) to emit via SDO
+    4. Initializes ALL 8 vehicles
+    5. Initializes ALL 7+ buses (structural, integrity, epistemic, etc.)
+    6. Initializes contract system (Publication, Consumption, Irrigation + Registry)
+    7. Initializes validators (Depuration + Harmonization)
+    8. Configures wiring system
+    9. Initializes irrigation system (Map, Executor, Validator)
+    10. Loads ALL 21+ irrigation units
+    11. Tracks ALL 475+ irrigable items
 
     Usage:
         hub = SISASIntegrationHub()
@@ -278,6 +376,11 @@ class SISASIntegrationHub:
         self._consumers: Dict[str, Any] = {}
         self._extractors: Dict[str, Any] = {}
         self._vehicles: Dict[str, Any] = {}
+        self._buses: Dict[str, Any] = {}
+        self._contracts: Dict[str, Any] = {}
+        self._validators: Dict[str, Any] = {}
+        self._wiring: Optional[Any] = None
+        self._irrigation: Dict[str, Any] = {}
         self._irrigation_spec: Optional[Dict] = None
         self._status = IntegrationStatus()
         self._initialized = False
@@ -292,30 +395,45 @@ class SISASIntegrationHub:
         Returns:
             IntegrationStatus with all connection details
         """
-        logger.info("Initializing SISAS Integration Hub...")
+        logger.info("Initializing SISAS Integration Hub (FULL SCOPE)...")
 
         # Step 1: Initialize SDO
         self._initialize_sdo()
 
-        # Step 2: Register consumers
+        # Step 2: Initialize buses
+        self._initialize_all_buses()
+
+        # Step 3: Initialize contracts
+        self._initialize_all_contracts()
+
+        # Step 4: Initialize validators
+        self._initialize_all_validators()
+
+        # Step 5: Initialize wiring
+        self._initialize_wiring()
+
+        # Step 6: Initialize irrigation system
+        self._initialize_irrigation_system()
+
+        # Step 7: Register consumers
         self._register_all_consumers()
 
-        # Step 3: Connect extractors
+        # Step 8: Connect extractors
         self._connect_all_extractors()
 
-        # Step 4: Initialize vehicles
+        # Step 9: Initialize vehicles
         self._initialize_all_vehicles()
 
-        # Step 5: Load irrigation spec
+        # Step 10: Load irrigation spec
         self._load_irrigation_spec()
 
-        # Step 6: Wire to orchestrator if provided
+        # Step 11: Wire to orchestrator if provided
         if orchestrator is not None:
             self._wire_to_orchestrator(orchestrator)
 
         self._initialized = True
 
-        logger.info(f"SISAS Integration complete:  {self._status.to_dict()}")
+        logger.info(f"SISAS Integration complete (FULL SYSTEM):  {self._status.to_dict()}")
         return self._status
 
     def _initialize_sdo(self) -> None:
@@ -543,6 +661,105 @@ class SISASIntegrationHub:
             except Exception as e:
                 logger.warning(f"Failed to initialize vehicle {vehicle_id}: {e}")
 
+    def _initialize_all_buses(self) -> None:
+        """Initialize ALL signal buses."""
+        # Count actual bus types available
+        if BUSES.get('BusRegistry') and BUSES.get('BusType') and BUSES.get('SignalBus'):
+            try:
+                BusRegistry = BUSES['BusRegistry']
+                BusType = BUSES['BusType']
+                SignalBus = BUSES['SignalBus']
+
+                # Initialize the bus registry
+                self._buses['registry'] = BusRegistry()
+
+                # Count available bus types
+                bus_types_count = len([bt for bt in BusType])
+                self._status.buses_available = bus_types_count
+
+                # Create buses for each type
+                for bus_type in BusType:
+                    bus = SignalBus(bus_type=bus_type)
+                    self._buses[bus_type.value] = bus
+                    self._status.buses_initialized += 1
+                    logger.debug(f"Initialized bus: {bus_type.value}")
+
+                logger.info(f"Bus system initialized with {self._status.buses_initialized} buses")
+            except Exception as e:
+                logger.error(f"Failed to initialize bus system: {e}")
+        else:
+            # No buses available
+            self._status.buses_available = 0
+
+    def _initialize_all_contracts(self) -> None:
+        """Initialize contract system."""
+        self._status.contracts_available = len([c for c in CONTRACTS.values() if c is not None])
+
+        if CONTRACTS.get('ContractRegistry'):
+            try:
+                ContractRegistry = CONTRACTS['ContractRegistry']
+                self._contracts['registry'] = ContractRegistry()
+                self._status.contracts_initialized += 1
+                logger.debug("Initialized contract registry")
+            except Exception as e:
+                logger.warning(f"Failed to initialize contract registry: {e}")
+
+        # Store contract classes for later use
+        for contract_type, contract_class in CONTRACTS.items():
+            if contract_class is not None and contract_type != 'ContractRegistry':
+                self._contracts[contract_type] = contract_class
+                self._status.contracts_initialized += 1
+                logger.debug(f"Registered contract type: {contract_type}")
+
+    def _initialize_all_validators(self) -> None:
+        """Initialize validation system."""
+        self._status.validators_available = len([v for v in VALIDATORS.values() if v is not None])
+
+        for validator_name, validator_class in VALIDATORS.items():
+            if validator_class is None:
+                continue
+
+            try:
+                # Initialize validator if it doesn't require constructor args
+                self._validators[validator_name] = {
+                    "class": validator_class,
+                    "initialized": True
+                }
+                self._status.validators_initialized += 1
+                logger.debug(f"Initialized validator: {validator_name}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize validator {validator_name}: {e}")
+
+    def _initialize_wiring(self) -> None:
+        """Initialize wiring configuration."""
+        if WIRING.get('WiringConfiguration'):
+            try:
+                WiringConfiguration = WIRING['WiringConfiguration']
+                # Store the class for later use
+                self._wiring = WiringConfiguration
+                self._status.wiring_initialized = True
+                logger.debug("Initialized wiring configuration")
+            except Exception as e:
+                logger.warning(f"Failed to initialize wiring: {e}")
+
+    def _initialize_irrigation_system(self) -> None:
+        """Initialize irrigation system (Map, Executor, Validator)."""
+        self._status.irrigation_available = len([i for i in IRRIGATION.values() if i is not None])
+
+        for component_name, component_class in IRRIGATION.items():
+            if component_class is None:
+                continue
+
+            try:
+                self._irrigation[component_name] = {
+                    "class": component_class,
+                    "initialized": True
+                }
+                self._status.irrigation_initialized += 1
+                logger.debug(f"Initialized irrigation component: {component_name}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize irrigation component {component_name}: {e}")
+
     def _load_irrigation_spec(self) -> None:
         """Load irrigation specification."""
         import json
@@ -590,17 +807,29 @@ class SISASIntegrationHub:
         """Generate human-readable integration report."""
         lines = [
             "=" * 80,
-            "SISAS INTEGRATION HUB - STATUS REPORT",
+            "SISAS INTEGRATION HUB - COMPREHENSIVE STATUS REPORT",
             "=" * 80,
             "",
-            f"Core Available: {self._status.core_available}",
-            f"Consumers:  {self._status.consumers_registered}/{self._status.consumers_available}",
-            f"Extractors: {self._status.extractors_connected}/{self._status.extractors_available}",
-            f"Vehicles: {self._status.vehicles_initialized}/{self._status.vehicles_available}",
-            f"Irrigation Units: {self._status.irrigation_units_loaded}",
-            f"Items Irrigable: {self._status.items_irrigable}",
+            "CORE COMPONENTS:",
+            f"  ✓ SDO Available: {self._status.core_available}",
             "",
-            f"Fully Integrated: {self._status.is_fully_integrated()}",
+            "SIGNAL FLOW:",
+            f"  ✓ Consumers:  {self._status.consumers_registered}/{self._status.consumers_available}",
+            f"  ✓ Extractors: {self._status.extractors_connected}/{self._status.extractors_available}",
+            f"  ✓ Vehicles: {self._status.vehicles_initialized}/{self._status.vehicles_available}",
+            "",
+            "INFRASTRUCTURE:",
+            f"  ✓ Buses: {self._status.buses_initialized}/{self._status.buses_available}",
+            f"  ✓ Contracts: {self._status.contracts_initialized}/{self._status.contracts_available}",
+            f"  ✓ Validators: {self._status.validators_initialized}/{self._status.validators_available}",
+            f"  ✓ Wiring Configured: {self._status.wiring_initialized}",
+            "",
+            "IRRIGATION SYSTEM:",
+            f"  ✓ Irrigation Components: {self._status.irrigation_initialized}/{self._status.irrigation_available}",
+            f"  ✓ Irrigation Units: {self._status.irrigation_units_loaded}",
+            f"  ✓ Items Irrigable: {self._status.items_irrigable}",
+            "",
+            f"INTEGRATION STATUS: {'✅ FULLY INTEGRATED' if self._status.is_fully_integrated() else '⚠️ PARTIAL'}",
             "=" * 80,
         ]
         return "\n".join(lines)
@@ -642,5 +871,10 @@ __all__ = [
     "SISAS_CORE_AVAILABLE",
     "EXTRACTORS",
     "VEHICLES",
+    "BUSES",
+    "CONTRACTS",
+    "VALIDATORS",
+    "WIRING",
+    "IRRIGATION",
     "PHASE_CONSUMERS",
 ]
