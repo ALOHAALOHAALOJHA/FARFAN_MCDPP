@@ -1,11 +1,11 @@
 {
   "summary": {
     "total": 48,
-    "passed": 26,
-    "failed": 22,
-    "score": 54.166666666666664,
-    "start_time": "2026-01-23T13:47:13.360664+00:00",
-    "end_time": "2026-01-23T13:47:13.481057+00:00"
+    "passed": 30,
+    "failed": 18,
+    "score": 62.5,
+    "start_time": "2026-01-23T13:49:47.222937+00:00",
+    "end_time": "2026-01-23T13:49:47.549466+00:00"
   },
   "tests": [
     {
@@ -14,7 +14,7 @@
       "passed": false,
       "error": "TypeError: SignalContext.__init__() got an unexpected keyword argument 'policy_area'",
       "details": {},
-      "duration_ms": 38.90371322631836
+      "duration_ms": 230.81517219543457
     },
     {
       "name": "Event creation and storage",
@@ -22,7 +22,7 @@
       "passed": false,
       "error": "AttributeError: type object 'EventType' has no attribute 'FILE_LOADED'",
       "details": {},
-      "duration_ms": 0.003814697265625
+      "duration_ms": 0.0050067901611328125
     },
     {
       "name": "Bus creation and registry",
@@ -30,7 +30,7 @@
       "passed": false,
       "error": "TypeError: SignalBus.__init__() got an unexpected keyword argument 'bus_id'",
       "details": {},
-      "duration_ms": 0.0026226043701171875
+      "duration_ms": 0.0045299530029296875
     },
     {
       "name": "Contract creation and registry",
@@ -38,7 +38,7 @@
       "passed": false,
       "error": "AttributeError: 'ContractRegistry' object has no attribute 'register'",
       "details": {},
-      "duration_ms": 0.01621246337890625
+      "duration_ms": 0.019550323486328125
     },
     {
       "name": "Structural signals",
@@ -46,7 +46,7 @@
       "passed": false,
       "error": "TypeError: StructuralAlignmentSignal.__init__() got an unexpected keyword argument 'source_file'",
       "details": {},
-      "duration_ms": 24.625539779663086
+      "duration_ms": 0.00476837158203125
     },
     {
       "name": "Integrity signals",
@@ -54,7 +54,7 @@
       "passed": false,
       "error": "TypeError: EventPresenceSignal.__init__() got an unexpected keyword argument 'source_file'",
       "details": {},
-      "duration_ms": 0.0045299530029296875
+      "duration_ms": 0.0035762786865234375
     },
     {
       "name": "Epistemic signals",
@@ -62,7 +62,7 @@
       "passed": false,
       "error": "AttributeError: type object 'DeterminacyLevel' has no attribute 'DETERMINATE'",
       "details": {},
-      "duration_ms": 0.0030994415283203125
+      "duration_ms": 0.0021457672119140625
     },
     {
       "name": "Contrast signals",
@@ -70,7 +70,7 @@
       "passed": false,
       "error": "AttributeError: type object 'DivergenceType' has no attribute 'SCORE_DIVERGENCE'",
       "details": {},
-      "duration_ms": 0.002384185791015625
+      "duration_ms": 0.0021457672119140625
     },
     {
       "name": "Operational signals",
@@ -78,7 +78,7 @@
       "passed": false,
       "error": "AttributeError: type object 'ExecutionStatus' has no attribute 'SUCCESS'",
       "details": {},
-      "duration_ms": 0.0019073486328125
+      "duration_ms": 0.0021457672119140625
     },
     {
       "name": "Consumption signals",
@@ -86,7 +86,7 @@
       "passed": false,
       "error": "ValueError: Signal MUST have a context (axiom:  contextual)",
       "details": {},
-      "duration_ms": 0.02384185791015625
+      "duration_ms": 0.01811981201171875
     },
     {
       "name": "Orchestration signals",
@@ -96,7 +96,7 @@
       "details": {
         "orchestration_signal_created": true
       },
-      "duration_ms": 0.03504753112792969
+      "duration_ms": 0.029802322387695312
     },
     {
       "name": "Pillar 1: DepurationValidator",
@@ -104,7 +104,7 @@
       "passed": false,
       "error": "AttributeError: 'DepurationValidator' object has no attribute 'validate_file'",
       "details": {},
-      "duration_ms": 2.7151107788085938
+      "duration_ms": 2.4983882904052734
     },
     {
       "name": "Pillar 2: SDO",
@@ -116,7 +116,7 @@
         "metrics_available": true,
         "health_status": "HEALTHY"
       },
-      "duration_ms": 6.798744201660156
+      "duration_ms": 0.031948089599609375
     },
     {
       "name": "Pillar 3: WiringConfiguration",
@@ -127,7 +127,7 @@
         "wiring_created": true,
         "has_validate_method": true
       },
-      "duration_ms": 16.400575637817383
+      "duration_ms": 4.057645797729492
     },
     {
       "name": "Pillar 4: HarmonizationValidator",
@@ -138,7 +138,7 @@
         "validator_created": true,
         "has_validate_method": true
       },
-      "duration_ms": 16.135692596435547
+      "duration_ms": 2.0885467529296875
     },
     {
       "name": "Vehicle: BaseVehicle",
@@ -149,7 +149,7 @@
         "class_exists": true,
         "is_base": true
       },
-      "duration_ms": 0.0035762786865234375
+      "duration_ms": 0.003337860107421875
     },
     {
       "name": "Vehicle: SignalRegistryVehicle",
@@ -160,7 +160,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.017404556274414062
+      "duration_ms": 0.01621246337890625
     },
     {
       "name": "Vehicle: SignalContextScoper",
@@ -171,7 +171,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.010251998901367188
+      "duration_ms": 0.011682510375976562
     },
     {
       "name": "Vehicle: SignalQualityMetrics",
@@ -182,7 +182,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.022649765014648438
+      "duration_ms": 0.019311904907226562
     },
     {
       "name": "Vehicle: SignalIrrigator",
@@ -193,7 +193,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.0054836273193359375
+      "duration_ms": 0.0069141387939453125
     },
     {
       "name": "Vehicle: SignalLoader",
@@ -204,7 +204,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.0064373016357421875
+      "duration_ms": 0.00667572021484375
     },
     {
       "name": "Vehicle: SignalEnhancementIntegrator",
@@ -215,7 +215,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.0133514404296875
+      "duration_ms": 0.013589859008789062
     },
     {
       "name": "Vehicle: SignalEvidenceExtractor",
@@ -226,7 +226,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.01239776611328125
+      "duration_ms": 0.012636184692382812
     },
     {
       "name": "Vehicle: SignalIntelligenceLayer",
@@ -237,7 +237,7 @@
         "instantiated": true,
         "has_process": true
       },
-      "duration_ms": 0.01239776611328125
+      "duration_ms": 0.0133514404296875
     },
     {
       "name": "Consumer: phase0",
@@ -245,7 +245,7 @@
       "passed": false,
       "error": "TypeError: Can't instantiate abstract class Phase0AssemblyConsumer without an implementation for abstract method 'process_signal'",
       "details": {},
-      "duration_ms": 0.5700588226318359
+      "duration_ms": 0.5612373352050781
     },
     {
       "name": "Consumer: phase1",
@@ -253,7 +253,7 @@
       "passed": false,
       "error": "TypeError: Can't instantiate abstract class Phase1ExtractionConsumer without an implementation for abstract method 'process_signal'",
       "details": {},
-      "duration_ms": 0.49591064453125
+      "duration_ms": 0.4909038543701172
     },
     {
       "name": "Consumer: phase2",
@@ -265,7 +265,7 @@
         "has_consume": true,
         "has_contract": true
       },
-      "duration_ms": 0.03409385681152344
+      "duration_ms": 0.03147125244140625
     },
     {
       "name": "Consumer: phase3",
@@ -273,7 +273,7 @@
       "passed": false,
       "error": "TypeError: Can't instantiate abstract class Phase3ValidationConsumer without an implementation for abstract method 'process_signal'",
       "details": {},
-      "duration_ms": 0.49996376037597656
+      "duration_ms": 0.5104541778564453
     },
     {
       "name": "Consumer: phase4",
@@ -285,7 +285,7 @@
         "has_consume": true,
         "has_contract": true
       },
-      "duration_ms": 0.02956390380859375
+      "duration_ms": 0.029087066650390625
     },
     {
       "name": "Consumer: phase5",
@@ -297,7 +297,7 @@
         "has_consume": true,
         "has_contract": true
       },
-      "duration_ms": 0.013828277587890625
+      "duration_ms": 0.017642974853515625
     },
     {
       "name": "Consumer: phase6",
@@ -309,7 +309,7 @@
         "has_consume": true,
         "has_contract": true
       },
-      "duration_ms": 0.01049041748046875
+      "duration_ms": 0.0133514404296875
     },
     {
       "name": "Consumer: phase7",
@@ -321,7 +321,7 @@
         "has_consume": true,
         "has_contract": true
       },
-      "duration_ms": 0.014066696166992188
+      "duration_ms": 0.015735626220703125
     },
     {
       "name": "Consumer: phase8",
@@ -329,7 +329,7 @@
       "passed": false,
       "error": "TypeError: Can't instantiate abstract class Phase8MacroConsumer without an implementation for abstract method 'process_signal'",
       "details": {},
-      "duration_ms": 0.47326087951660156
+      "duration_ms": 0.484466552734375
     },
     {
       "name": "Consumer: phase9",
@@ -341,7 +341,7 @@
         "has_consume": true,
         "has_contract": true
       },
-      "duration_ms": 0.021696090698242188
+      "duration_ms": 0.024557113647460938
     },
     {
       "name": "IrrigationMap",
@@ -367,7 +367,7 @@
           "gap_summary": {}
         }
       },
-      "duration_ms": 2.924680709838867
+      "duration_ms": 2.7959346771240234
     },
     {
       "name": "IrrigationExecutor",
@@ -378,7 +378,7 @@
         "executor_created": true,
         "has_irrigate": false
       },
-      "duration_ms": 2.151012420654297
+      "duration_ms": 2.1185874938964844
     },
     {
       "name": "IrrigationValidator",
@@ -386,7 +386,7 @@
       "passed": false,
       "error": "TypeError: IrrigationValidator.__init__() missing 2 required positional arguments: 'signal_vocabulary' and 'capability_vocabulary'",
       "details": {},
-      "duration_ms": 0.9834766387939453
+      "duration_ms": 1.0688304901123047
     },
     {
       "name": "ConsumptionContract validation",
@@ -397,7 +397,7 @@
         "contract_valid": true,
         "signal_types": 3
       },
-      "duration_ms": 0.01430511474609375
+      "duration_ms": 0.011682510375976562
     },
     {
       "name": "IrrigationContract validation",
@@ -405,7 +405,7 @@
       "passed": false,
       "error": "TypeError: IrrigationContract.__init__() got an unexpected keyword argument 'target_phase'",
       "details": {},
-      "duration_ms": 0.00476837158203125
+      "duration_ms": 0.0045299530029296875
     },
     {
       "name": "Create \u2192 Dispatch \u2192 Consume flow",
@@ -418,7 +418,7 @@
         "signals_received": 1,
         "flow_complete": true
       },
-      "duration_ms": 0.3001689910888672
+      "duration_ms": 0.17762184143066406
     },
     {
       "name": "Multi-consumer dispatch",
@@ -430,7 +430,7 @@
         "consumers_received": 3,
         "all_received": true
       },
-      "duration_ms": 0.10633468627929688
+      "duration_ms": 0.10895729064941406
     },
     {
       "name": "SDO gates configured",
@@ -443,7 +443,7 @@
         "gate_3_capability": false,
         "gate_4_irrigation": false
       },
-      "duration_ms": 0.0059604644775390625
+      "duration_ms": 0.0064373016357421875
     },
     {
       "name": "SDO metrics",
@@ -461,7 +461,7 @@
         ],
         "metrics_complete": true
       },
-      "duration_ms": 0.008106231689453125
+      "duration_ms": 0.00762939453125
     },
     {
       "name": "SDO dead letter handling",
@@ -469,39 +469,64 @@
       "passed": false,
       "error": "ValueError: Invalid phase: phase_99",
       "details": {},
-      "duration_ms": 0.0073909759521484375
+      "duration_ms": 0.007152557373046875
     },
     {
       "name": "UnifiedOrchestrator creation",
       "category": "ORCHESTRATOR",
-      "passed": false,
-      "error": "ModuleNotFoundError: No module named 'blake3'",
-      "details": {},
-      "duration_ms": 1.6717910766601562
+      "passed": true,
+      "error": "",
+      "details": {
+        "orchestrator_created": true,
+        "has_context": true,
+        "sisas_enabled": true
+      },
+      "duration_ms": 22.542476654052734
     },
     {
       "name": "UnifiedOrchestrator consumers",
       "category": "ORCHESTRATOR",
-      "passed": false,
-      "error": "ModuleNotFoundError: No module named 'blake3'",
-      "details": {},
-      "duration_ms": 1.3387203216552734
+      "passed": true,
+      "error": "",
+      "details": {
+        "has_consumer_configs": true,
+        "consumer_count": 10,
+        "all_10_phases": true
+      },
+      "duration_ms": 19.45638656616211
     },
     {
       "name": "UnifiedOrchestrator phase methods",
       "category": "ORCHESTRATOR",
-      "passed": false,
-      "error": "ModuleNotFoundError: No module named 'blake3'",
-      "details": {},
-      "duration_ms": 1.1756420135498047
+      "passed": true,
+      "error": "",
+      "details": {
+        "phase_methods_found": 10,
+        "all_10_phases": true,
+        "methods": [
+          "_execute_phase_00",
+          "_execute_phase_01",
+          "_execute_phase_02",
+          "_execute_phase_03",
+          "_execute_phase_04",
+          "_execute_phase_05",
+          "_execute_phase_06",
+          "_execute_phase_07",
+          "_execute_phase_08",
+          "_execute_phase_09"
+        ]
+      },
+      "duration_ms": 17.97175407409668
     },
     {
       "name": "UnifiedOrchestrator signal emission",
       "category": "ORCHESTRATOR",
-      "passed": false,
-      "error": "ModuleNotFoundError: No module named 'blake3'",
-      "details": {},
-      "duration_ms": 1.1382102966308594
+      "passed": true,
+      "error": "",
+      "details": {
+        "has_emit_method": true
+      },
+      "duration_ms": 18.016815185546875
     }
   ]
 }
