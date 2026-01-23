@@ -14,6 +14,10 @@ on:
       - 'src/farfan_pipeline/phases/**/interphase/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   validate-signatures:
     name: Validate Interphase Signatures
