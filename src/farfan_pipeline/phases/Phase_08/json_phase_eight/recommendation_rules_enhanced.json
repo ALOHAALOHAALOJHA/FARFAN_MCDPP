@@ -74204,20 +74204,70 @@
           }
         }
       ]
+    },
+    {
+      "rule_id": "REC-MACRO-SYNERGY-ALERT",
+      "level": "MACRO",
+      "when": {
+        "macro_band": "SATISFACTORIO",
+        "variance_alert": "MODERADA",
+        "priority_micro_gaps": [
+          "PA01-DIM01",
+          "PA01-DIM03"
+        ]
+      },
+      "template": {
+        "problem": "Detected potential synergy loss due to concurrent gaps in PA01-DIM01 and PA01-DIM03, affecting overall gender equity baseline and funding.",
+        "intervention": "Activate synergistic intervention protocol: synchronize gender baseline updates with budget planning to maximize impact.",
+        "indicator": {
+          "name": "Synergy recovery index",
+          "target": 0.85,
+          "unit": "ratio",
+          "acceptable_range": [0.0, 1.0]
+        },
+        "responsible": {
+          "entity": "Synergy Task Force",
+          "role": "Coordinator",
+          "partners": ["Planning", "Finance"]
+        },
+        "horizon": {
+          "start": "T0",
+          "end": "T1"
+        },
+        "verification": [],
+        "cost": {
+            "estimate": 50000000,
+            "currency": "COP",
+            "basis": "fixed"
+        }
+      },
+      "execution": {
+        "trigger_condition": "manual",
+        "blocking": false,
+        "auto_apply": true,
+        "requires_approval": true,
+        "approval_roles": ["Manager"]
+      },
+      "budget": {
+        "estimated_cost_cop": 50000000,
+        "cost_breakdown": {},
+        "funding_sources": [],
+        "fiscal_year": 2026
+      }
     }
   ],
   "integrity": {
     "expected_rule_counts": {
       "MICRO": 300,
       "MESO": 54,
-      "MACRO": 5,
-      "total": 359
+      "MACRO": 6,
+      "total": 360
     },
     "actual_rule_counts": {
       "MICRO": 300,
       "MESO": 54,
-      "MACRO": 5,
-      "total": 359
+      "MACRO": 6,
+      "total": 360
     },
     "validation_checksum": "0c4a8804bf86b6926322eeb627822a7e8515ad5a2c288674e53db03858924256",
     "generated_date": "2026-01-16T05:44:04.828634Z"
