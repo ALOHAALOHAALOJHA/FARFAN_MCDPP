@@ -90,6 +90,22 @@ try:
 except ImportError:
     _SignalRegistry = None  # type: ignore
 
+# SISAS Event System Integration
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
+        Event,
+        EventStore,
+        EventType,
+        EventPayload,
+    )
+    SISAS_EVENTS_AVAILABLE = True
+except ImportError:
+    SISAS_EVENTS_AVAILABLE = False
+    Event = None  # type: ignore
+    EventStore = None  # type: ignore
+    EventType = None  # type: ignore
+    EventPayload = None  # type: ignore
+
 try:
     import blake3
 
@@ -307,6 +323,7 @@ class IrrigationSynchronizer:
         signal_registry: SignalRegistry | None = None,
         contracts: list[dict[str, Any]] | None = None,
         enable_join_table: bool = False,
+        event_store: Any | None = None,  # SISAS EventStore
     ) -> None:
         """Initialize synchronizer with questionnaire and chunks.
 
@@ -317,6 +334,7 @@ class IrrigationSynchronizer:
             signal_registry: SignalRegistry for Phase 5 signal resolution (initialized if None)
             contracts: Optional list of executor contracts for JOIN table (Q001-Q300.v3.json)
             enable_join_table: Enable canonical JOIN table architecture (default: False)
+            event_store: Optional SISAS EventStore for event-driven irrigation
 
         Raises:
             ValueError: If chunk matrix validation fails or no chunks provided
@@ -329,6 +347,12 @@ class IrrigationSynchronizer:
         self.executor_contracts = contracts
         self.enable_join_table = enable_join_table and SYNCHRONIZER_AVAILABLE
         self.join_table: list[ExecutorChunkBinding] | None = None
+
+        # SISAS Event System Integration
+        self.event_store = event_store if event_store is not None else (
+            EventStore() if SISAS_EVENTS_AVAILABLE else None
+        )
+        self._event_emission_enabled = SISAS_EVENTS_AVAILABLE and self.event_store is not None
 
         if signal_registry is None and _SignalRegistry is not None:
             self.signal_registry: SignalRegistry | None = _SignalRegistry()
@@ -349,6 +373,7 @@ class IrrigationSynchronizer:
                             "chunk_count": self.chunk_count,
                             "chunk_matrix_validated": True,
                             "mode": "preprocessed_document",
+                            "event_store_enabled": self._event_emission_enabled,
                             "timestamp": time.time(),
                         }
                     )
@@ -391,6 +416,50 @@ class IrrigationSynchronizer:
             raise ValueError(
                 "Either preprocessed_document or document_chunks must be provided"
             )
+
+    def _emit_event(
+        self,
+        event_type: Any,
+        source_component: str,
+        payload_data: dict[str, Any],
+        correlation_id: str | None = None,
+        causation_id: str | None = None,
+    ) -> str | None:
+        """
+        Emit an event to the EventStore (if available).
+        
+        Args:
+            event_type: EventType enum value
+            source_component: Component emitting the event
+            payload_data: Event payload data
+            correlation_id: Optional correlation ID for tracing
+            causation_id: Optional causation ID linking to parent event
+            
+        Returns:
+            Event ID if event was emitted, None otherwise
+        """
+        if not self._event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
+            return None
+            
+        try:
+            event = Event(
+                event_type=event_type,
+                source_component=source_component,
+                phase="phase_02",
+                consumer_scope="Phase_02",
+                correlation_id=correlation_id or self.correlation_id,
+                causation_id=causation_id,
+                payload=EventPayload(data=payload_data),
+            )
+            event_id = self.event_store.append(event)
+            logger.debug(
+                f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
+                extra={"event_id": event_id, "correlation_id": correlation_id or self.correlation_id}
+            )
+            return event_id
+        except Exception as e:
+            logger.warning(f"Failed to emit event: {e}")
+            return None
 
     def _count_questions(self) -> int:
         """Count total questions across all dimensions."""
