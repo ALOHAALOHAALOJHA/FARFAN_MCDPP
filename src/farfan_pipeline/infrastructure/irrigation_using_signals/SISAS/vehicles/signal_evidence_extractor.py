@@ -14,6 +14,18 @@ from ..signal_types.types.epistemic import (
     MethodApplicationSignal
 )
 
+# Import for ExtractionResult bridge
+try:
+    import sys
+    from pathlib import Path
+    # Add extractors to path if needed
+    extractor_path = Path(__file__).parents[2] / "extractors"
+    if str(extractor_path) not in sys.path:
+        sys.path.insert(0, str(extractor_path))
+    from empirical_extractor_base import ExtractionResult
+except ImportError:
+    ExtractionResult = None
+
 @dataclass
 class SignalEvidenceExtractorVehicle(BaseVehicle):
     """
@@ -108,8 +120,17 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
     def process(self, data: Any, context: SignalContext) -> List[Signal]:
         """
         Procesa datos y extrae evidencia empírica y aplicación de métodos.
+        
+        Enhanced to support ExtractionResult conversion to Signal.
         """
         signals = []
+
+        # Bridge: If data is ExtractionResult, convert to signals
+        if ExtractionResult and isinstance(data, ExtractionResult):
+            converted_signals = self.convert_extraction_result_to_signals(data, context)
+            signals.extend(converted_signals)
+            self.stats["signals_generated"] += len(converted_signals)
+            return signals
 
         # Crear evento
         event = self.create_event(
@@ -136,6 +157,92 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
             signals.append(method_signal)
 
         self.stats["signals_generated"] += len(signals)
+        return signals
+    
+    def convert_extraction_result_to_signals(
+        self, 
+        extraction_result: 'ExtractionResult',
+        context: SignalContext
+    ) -> List[Signal]:
+        """
+        BRIDGE: Convert ExtractionResult from empirical extractors to SISAS Signal objects.
+        
+        This method bridges the gap between standalone extractors and SISAS irrigation.
+        It transforms raw extraction results into properly formatted signals that can be
+        published to buses and consumed by downstream consumers.
+        
+        Args:
+            extraction_result: Result from empirical extractor (MC01-MC10)
+            context: Signal context for routing
+            
+        Returns:
+            List of Signal objects ready for bus publication
+        """
+        signals = []
+        
+        # Create event for traceability
+        event = self.create_event(
+            event_type="signal_generated",
+            payload={
+                "extractor_id": extraction_result.extractor_id,
+                "signal_type": extraction_result.signal_type,
+                "matches_count": len(extraction_result.matches),
+                "confidence": extraction_result.confidence,
+            },
+            source_file=context.node_id,
+            source_path=f"{context.node_type}/{context.node_id}",
+            phase=context.phase,
+            consumer_scope=context.consumer_scope
+        )
+        
+        source = self.create_signal_source(event)
+        
+        # Map confidence to SignalConfidence enum
+        confidence_mapping = {
+            (0.0, 0.3): SignalConfidence.LOW,
+            (0.3, 0.6): SignalConfidence.MEDIUM,
+            (0.6, 0.85): SignalConfidence.HIGH,
+            (0.85, 1.0): SignalConfidence.VERY_HIGH,
+        }
+        signal_confidence = SignalConfidence.INDETERMINATE
+        for (low, high), conf in confidence_mapping.items():
+            if low <= extraction_result.confidence < high:
+                signal_confidence = conf
+                break
+        
+        # Create MethodApplicationSignal for the extraction
+        method_signal = MethodApplicationSignal(
+            context=context,
+            source=source,
+            question_id=context.node_id,
+            method_id=extraction_result.extractor_id,
+            method_result="SUCCESS" if extraction_result.validation_passed else "VALIDATION_FAILED",
+            extraction_successful=extraction_result.validation_passed,
+            extracted_values=[m.get("text", str(m)) for m in extraction_result.matches[:10]],  # Limit to 10
+            processing_time_ms=extraction_result.metadata.get("processing_time_ms", 0.0),
+            confidence=signal_confidence,
+            rationale=f"Extractor {extraction_result.extractor_id} found {len(extraction_result.matches)} matches. "
+                      f"Validation: {'PASSED' if extraction_result.validation_passed else 'FAILED'}"
+        )
+        signals.append(method_signal)
+        
+        # If there are validation errors, also create an error signal
+        if not extraction_result.validation_passed and extraction_result.validation_errors:
+            from ..signal_types.types.operational import FailureModeSignal, FailureMode
+            
+            error_signal = FailureModeSignal(
+                context=context,
+                source=source,
+                execution_id=f"{extraction_result.extractor_id}_{event.event_id}",
+                failure_mode=FailureMode.VALIDATION_ERROR,
+                error_message="; ".join(extraction_result.validation_errors[:3]),  # First 3 errors
+                recoverable=True,
+                retry_count=0,
+                confidence=SignalConfidence.VERY_HIGH,  # High confidence in the failure
+                rationale=f"Extractor validation failed with {len(extraction_result.validation_errors)} errors"
+            )
+            signals.append(error_signal)
+        
         return signals
 
     def _extract_text(self, data: Any) -> str:
