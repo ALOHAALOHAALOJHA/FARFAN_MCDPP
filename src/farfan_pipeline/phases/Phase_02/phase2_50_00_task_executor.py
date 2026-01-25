@@ -79,6 +79,22 @@ from typing import Any, Final
 from farfan_pipeline.phases.Phase_02.phase2_50_01_task_planner import ExecutableTask
 from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import ExecutionPlan
 
+# SISAS Event System Integration
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
+        Event,
+        EventStore,
+        EventType,
+        EventPayload,
+    )
+    SISAS_EVENTS_AVAILABLE = True
+except ImportError:
+    SISAS_EVENTS_AVAILABLE = False
+    Event = None  # type: ignore
+    EventStore = None  # type: ignore
+    EventType = None  # type: ignore
+    EventPayload = None  # type: ignore
+
 logger: Final = logging.getLogger(__name__)
 
 # === DATA STRUCTURES ===
@@ -362,6 +378,7 @@ class ParallelTaskExecutor:
         use_processes: bool = False,
         calibration_registry: Any = None,  # FASE 4.2
         pdm_profile: Any = None,  # FASE 4.2
+        event_store: Any | None = None,  # SISAS EventStore
     ) -> None:
         """
         Initialize ParallelTaskExecutor.
@@ -378,6 +395,7 @@ class ParallelTaskExecutor:
             use_processes: Use ProcessPoolExecutor instead of ThreadPoolExecutor
             calibration_registry: FASE 4.2 - Epistemic calibration registry
             pdm_profile: FASE 4.2 - PDM structural profile
+            event_store: Optional SISAS EventStore for event-driven irrigation
         """
         if signal_registry is None:
             raise ValueError(
@@ -395,6 +413,12 @@ class ParallelTaskExecutor:
         self.use_processes = use_processes
         self.calibration_registry = calibration_registry  # FASE 4.2
         self.pdm_profile = pdm_profile  # FASE 4.2
+        
+        # SISAS Event System Integration
+        self.event_store = event_store if event_store is not None else (
+            EventStore() if SISAS_EVENTS_AVAILABLE else None
+        )
+        self._event_emission_enabled = SISAS_EVENTS_AVAILABLE and self.event_store is not None
 
         # Build question lookup index
         self._question_index = self._build_question_index()
@@ -441,6 +465,20 @@ class ParallelTaskExecutor:
             List of TaskResult objects in original task order.
         """
         plan_id = plan.plan_id
+        correlation_id = plan.correlation_id
+
+        # Emit IRRIGATION_STARTED event
+        plan_start_event_id = self._emit_event(
+            event_type=EventType.IRRIGATION_STARTED if SISAS_EVENTS_AVAILABLE else "irrigation_started",
+            source_component="parallel_task_executor",
+            payload_data={
+                "plan_id": plan_id,
+                "task_count": len(plan.tasks),
+                "execution_mode": "parallel",
+                "max_workers": self.max_workers,
+            },
+            correlation_id=correlation_id,
+        )
 
         # Resume from checkpoint if available
         completed_ids: set[str] = set()
@@ -488,8 +526,36 @@ class ParallelTaskExecutor:
 
             for result in level_results:
                 all_results[result.task_id] = result
+                
+                # Emit event for each task result
                 if result.success:
                     completed_ids.add(result.task_id)
+                    self._emit_event(
+                        event_type=EventType.SIGNAL_GENERATED if SISAS_EVENTS_AVAILABLE else "signal_generated",
+                        source_component="parallel_task_executor",
+                        payload_data={
+                            "task_id": result.task_id,
+                            "question_id": result.question_id,
+                            "policy_area_id": result.policy_area_id,
+                            "success": True,
+                            "execution_time_ms": result.execution_time_ms,
+                        },
+                        correlation_id=correlation_id,
+                        causation_id=plan_start_event_id,
+                    )
+                else:
+                    self._emit_event(
+                        event_type=EventType.IRRIGATION_FAILED if SISAS_EVENTS_AVAILABLE else "irrigation_failed",
+                        source_component="parallel_task_executor",
+                        payload_data={
+                            "task_id": result.task_id,
+                            "question_id": result.question_id,
+                            "error": result.error or "Unknown error",
+                        },
+                        correlation_id=correlation_id,
+                        causation_id=plan_start_event_id,
+                    )
+                    
                 tasks_since_checkpoint += 1
 
                 # Checkpoint periodically
@@ -508,6 +574,20 @@ class ParallelTaskExecutor:
             if task.task_id in all_results:
                 ordered_results.append(all_results[task.task_id])
 
+        # Emit IRRIGATION_COMPLETED event
+        self._emit_event(
+            event_type=EventType.IRRIGATION_COMPLETED if SISAS_EVENTS_AVAILABLE else "irrigation_completed",
+            source_component="parallel_task_executor",
+            payload_data={
+                "plan_id": plan_id,
+                "total_tasks": len(ordered_results),
+                "successful": sum(1 for r in ordered_results if r.success),
+                "failed": sum(1 for r in ordered_results if not r.success),
+            },
+            correlation_id=correlation_id,
+            causation_id=plan_start_event_id,
+        )
+
         logger.info(
             "Parallel task execution complete",
             extra={
@@ -519,8 +599,52 @@ class ParallelTaskExecutor:
         )
 
         return ordered_results
+    
+    def _emit_event(
+        self,
+        event_type: Any,
+        source_component: str,
+        payload_data: dict[str, Any],
+        correlation_id: str | None = None,
+        causation_id: str | None = None,
+    ) -> str | None:
+        """
+        Emit an event to the EventStore (if available).
+        
+        Args:
+            event_type: EventType enum value
+            source_component: Component emitting the event
+            payload_data: Event payload data
+            correlation_id: Optional correlation ID for tracing
+            causation_id: Optional causation ID linking to parent event
+            
+        Returns:
+            Event ID if event was emitted, None otherwise
+        """
+        if not self._event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
+            return None
+            
+        try:
+            event = Event(
+                event_type=event_type,
+                source_component=source_component,
+                phase="phase_02",
+                consumer_scope="Phase_02",
+                correlation_id=correlation_id,
+                causation_id=causation_id,
+                payload=EventPayload(data=payload_data),
+            )
+            event_id = self.event_store.append(event)
+            logger.debug(
+                f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
+                extra={"event_id": event_id, "correlation_id": correlation_id}
+            )
+            return event_id
+        except Exception as e:
+            logger.warning(f"Failed to emit event: {e}")
+            return None
 
-    def _group_by_level(self, tasks: list[ExecutableTask]) -> dict[int, list[ExecutableTask]]:
+    def execute_plan_parallel(self, plan: ExecutionPlan) -> list[TaskResult]:
         """
         Group tasks by their epistemic level (N1=1, N2=2, etc.).
 
@@ -1285,6 +1409,7 @@ class TaskExecutor:
         validation_orchestrator: Any | None = None,
         calibration_registry: Any = None,  # FASE 4.2: EpistemicCalibrationRegistry
         pdm_profile: Any = None,  # FASE 4.2: MockPDMProfile
+        event_store: Any | None = None,  # SISAS EventStore
     ) -> None:
         """
         Initialize TaskExecutor.
@@ -1297,6 +1422,7 @@ class TaskExecutor:
             validation_orchestrator: Optional validation tracking
             calibration_registry: FASE 4.2 - Epistemic calibration registry for N1/N2/N3
             pdm_profile: FASE 4.2 - PDM structural profile for dynamic adjustments
+            event_store: Optional SISAS EventStore for event-driven irrigation
 
         Raises:
             ValueError: If signal_registry is None
@@ -1314,6 +1440,12 @@ class TaskExecutor:
         self.validation_orchestrator = validation_orchestrator
         self.calibration_registry = calibration_registry  # FASE 4.2
         self.pdm_profile = pdm_profile  # FASE 4.2
+
+        # SISAS Event System Integration
+        self.event_store = event_store if event_store is not None else (
+            EventStore() if SISAS_EVENTS_AVAILABLE else None
+        )
+        self._event_emission_enabled = SISAS_EVENTS_AVAILABLE and self.event_store is not None
 
         # Build question lookup index
         self._question_index = self._build_question_index()
@@ -1349,6 +1481,50 @@ class TaskExecutor:
 
         return index
 
+    def _emit_event(
+        self,
+        event_type: Any,
+        source_component: str,
+        payload_data: dict[str, Any],
+        correlation_id: str | None = None,
+        causation_id: str | None = None,
+    ) -> str | None:
+        """
+        Emit an event to the EventStore (if available).
+        
+        Args:
+            event_type: EventType enum value
+            source_component: Component emitting the event
+            payload_data: Event payload data
+            correlation_id: Optional correlation ID for tracing
+            causation_id: Optional causation ID linking to parent event
+            
+        Returns:
+            Event ID if event was emitted, None otherwise
+        """
+        if not self._event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
+            return None
+            
+        try:
+            event = Event(
+                event_type=event_type,
+                source_component=source_component,
+                phase="phase_02",
+                consumer_scope="Phase_02",
+                correlation_id=correlation_id,
+                causation_id=causation_id,
+                payload=EventPayload(data=payload_data),
+            )
+            event_id = self.event_store.append(event)
+            logger.debug(
+                f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
+                extra={"event_id": event_id, "correlation_id": correlation_id}
+            )
+            return event_id
+        except Exception as e:
+            logger.warning(f"Failed to emit event: {e}")
+            return None
+
     def execute_plan(self, execution_plan: ExecutionPlan) -> list[TaskResult]:
         """
         Execute all tasks in ExecutionPlan.
@@ -1363,20 +1539,60 @@ class TaskExecutor:
             ExecutionError: If execution fails
         """
         results: list[TaskResult] = []
+        correlation_id = execution_plan.correlation_id
+
+        # Emit IRRIGATION_STARTED event
+        plan_start_event_id = self._emit_event(
+            event_type=EventType.IRRIGATION_STARTED if SISAS_EVENTS_AVAILABLE else "irrigation_started",
+            source_component="task_executor",
+            payload_data={
+                "plan_id": execution_plan.plan_id,
+                "task_count": len(execution_plan.tasks),
+                "execution_mode": "sequential",
+            },
+            correlation_id=correlation_id,
+        )
 
         logger.info(
             "Starting task execution",
             extra={
                 "plan_id": execution_plan.plan_id,
                 "task_count": len(execution_plan.tasks),
-                "correlation_id": execution_plan.correlation_id,
+                "correlation_id": correlation_id,
             },
         )
 
         for i, task in enumerate(execution_plan.tasks):
+            # Emit IRRIGATION_REQUESTED event for each task
+            task_start_event_id = self._emit_event(
+                event_type=EventType.IRRIGATION_REQUESTED if SISAS_EVENTS_AVAILABLE else "irrigation_requested",
+                source_component="task_executor",
+                payload_data={
+                    "task_id": task.task_id,
+                    "question_id": task.question_id,
+                    "policy_area_id": task.policy_area_id,
+                },
+                correlation_id=correlation_id,
+                causation_id=plan_start_event_id,
+            )
+
             try:
                 result = self._execute_task(task)
                 results.append(result)
+                
+                # Emit success event
+                self._emit_event(
+                    event_type=EventType.SIGNAL_GENERATED if SISAS_EVENTS_AVAILABLE else "signal_generated",
+                    source_component="task_executor",
+                    payload_data={
+                        "task_id": result.task_id,
+                        "question_id": result.question_id,
+                        "success": True,
+                        "execution_time_ms": result.execution_time_ms,
+                    },
+                    correlation_id=correlation_id,
+                    causation_id=task_start_event_id,
+                )
 
                 if (i + 1) % 50 == 0:
                     logger.info(f"Progress: {i + 1}/{len(execution_plan.tasks)} tasks completed")
@@ -1389,6 +1605,19 @@ class TaskExecutor:
                         "question_id": task.question_id,
                         "error": str(e),
                     },
+                )
+
+                # Emit failure event
+                self._emit_event(
+                    event_type=EventType.IRRIGATION_FAILED if SISAS_EVENTS_AVAILABLE else "irrigation_failed",
+                    source_component="task_executor",
+                    payload_data={
+                        "task_id": task.task_id,
+                        "question_id": task.question_id,
+                        "error": str(e),
+                    },
+                    correlation_id=correlation_id,
+                    causation_id=task_start_event_id,
                 )
 
                 # Create failure result
@@ -1404,6 +1633,20 @@ class TaskExecutor:
                     error=str(e),
                 )
                 results.append(result)
+
+        # Emit IRRIGATION_COMPLETED event
+        self._emit_event(
+            event_type=EventType.IRRIGATION_COMPLETED if SISAS_EVENTS_AVAILABLE else "irrigation_completed",
+            source_component="task_executor",
+            payload_data={
+                "plan_id": execution_plan.plan_id,
+                "total_tasks": len(results),
+                "successful": sum(1 for r in results if r.success),
+                "failed": sum(1 for r in results if not r.success),
+            },
+            correlation_id=correlation_id,
+            causation_id=plan_start_event_id,
+        )
 
         logger.info(
             "Task execution complete",
