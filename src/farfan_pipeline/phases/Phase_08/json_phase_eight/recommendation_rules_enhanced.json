@@ -74206,6 +74206,248 @@
       ]
     }
   ],
+  "bifurcation_patterns": {
+    "version": "1.0.0",
+    "description": "Exponential value injection through dimensional resonance, cross-pollination, temporal cascades, and synergy detection",
+    "enabled": true,
+    "dimensional_resonance": {
+      "description": "When a dimension improves, related dimensions benefit (MICRO level only)",
+      "mechanism": "resonance_coefficient * gap * bonus_multiplier",
+      "bonus_multiplier": 0.3,
+      "threshold": 0.3,
+      "mappings": {
+        "DIM01": {
+          "description": "Alignment (DIM01) enables Finance (DIM02) and Beliefs (DIM03)",
+          "resonances": {
+            "DIM02": {
+              "strength": 0.4,
+              "rationale": "Strategic alignment enables financial planning clarity",
+              "evidence_required": ["strategic_plan_coherence", "budget_alignment"]
+            },
+            "DIM03": {
+              "strength": 0.3,
+              "rationale": "Clear goals improve belief calibration",
+              "evidence_required": ["goal_communication", "stakeholder_buyin"]
+            }
+          }
+        },
+        "DIM02": {
+          "description": "Finance (DIM02) reinforces Alignment (DIM01) and enables Execution (DIM05)",
+          "resonances": {
+            "DIM01": {
+              "strength": 0.3,
+              "rationale": "Budget constraints clarify strategic priorities",
+              "evidence_required": ["fiscal_space_analysis", "priority_ranking"]
+            },
+            "DIM05": {
+              "strength": 0.5,
+              "rationale": "Funding enables execution capacity",
+              "evidence_required": ["budget_allocation", "resource_availability"]
+            }
+          }
+        },
+        "DIM03": {
+          "description": "Beliefs (DIM03) supports Alignment (DIM01) and Causality (DIM04)",
+          "resonances": {
+            "DIM01": {
+              "strength": 0.3,
+              "rationale": "Shared beliefs enable consensus on direction",
+              "evidence_required": ["belief_assessment", "consensus_building"]
+            },
+            "DIM04": {
+              "strength": 0.4,
+              "rationale": "Prior beliefs inform causal model construction",
+              "evidence_required": ["belief_to_cause_mapping", "hypothesis_generation"]
+            }
+          }
+        },
+        "DIM04": {
+          "description": "Causality (DIM04) strengthens Beliefs (DIM03) and Evidence (DIM06)",
+          "resonances": {
+            "DIM03": {
+              "strength": 0.3,
+              "rationale": "Causal models validate or challenge prior beliefs",
+              "evidence_required": ["belief_validation", "model_revision"]
+            },
+            "DIM06": {
+              "strength": 0.5,
+              "rationale": "Causal clarity improves evidence collection design",
+              "evidence_required": ["causal_indicators", "measurement_plan"]
+            }
+          }
+        },
+        "DIM05": {
+          "description": "Execution (DIM05) depends on Finance (DIM02) and generates Evidence (DIM06)",
+          "resonances": {
+            "DIM02": {
+              "strength": 0.4,
+              "rationale": "Execution reveals actual resource needs",
+              "evidence_required": ["cost_tracking", "efficiency_analysis"]
+            },
+            "DIM06": {
+              "strength": 0.3,
+              "rationale": "Implementation produces measurable results",
+              "evidence_required": ["output_indicators", "outcome_tracking"]
+            }
+          }
+        },
+        "DIM06": {
+          "description": "Evidence (DIM06) validates Causality (DIM04) and guides Execution (DIM05)",
+          "resonances": {
+            "DIM04": {
+              "strength": 0.4,
+              "rationale": "Evidence confirms or refutes causal hypotheses",
+              "evidence_required": ["hypothesis_testing", "causal_validation"]
+            },
+            "DIM05": {
+              "strength": 0.3,
+              "rationale": "Results inform implementation adjustments",
+              "evidence_required": ["performance_monitoring", "adaptive_management"]
+            }
+          }
+        }
+      }
+    },
+    "cross_pollination": {
+      "description": "When fixing PA01 partially fixes PA03 (shared structural dependencies)",
+      "mechanism": "pattern_strength * gap * bonus_multiplier",
+      "bonus_multiplier": 0.25,
+      "threshold": 0.25,
+      "patterns": {
+        "PA01-PA03": {
+          "source_pa": "PA01",
+          "target_pa": "PA03",
+          "strength": 0.4,
+          "rationale": "Both rely on strategic planning and institutional design",
+          "shared_dimensions": ["DIM01", "DIM03", "DIM04"],
+          "intervention_sequence": [
+            "First: Strengthen PA01 strategic alignment",
+            "Then: PA03 governance structures benefit from clearer direction"
+          ]
+        },
+        "PA02-PA05": {
+          "source_pa": "PA02",
+          "target_pa": "PA05",
+          "strength": 0.35,
+          "rationale": "Financial planning connects directly to execution capacity",
+          "shared_dimensions": ["DIM02", "DIM05", "DIM06"],
+          "intervention_sequence": [
+            "First: Improve PA02 financial clarity and budgeting",
+            "Then: PA05 execution benefits from resource availability"
+          ]
+        },
+        "PA03-PA04": {
+          "source_pa": "PA03",
+          "target_pa": "PA04",
+          "strength": 0.3,
+          "rationale": "Institutional design enables effective monitoring",
+          "shared_dimensions": ["DIM01", "DIM04", "DIM06"],
+          "intervention_sequence": [
+            "First: Establish PA03 governance structures",
+            "Then: PA04 monitoring can track performance effectively"
+          ]
+        }
+      }
+    },
+    "temporal_cascades": {
+      "description": "Short-term fixes unlock long-term capabilities",
+      "mechanism": "multiplier_accumulation across cascade orders",
+      "max_depth": 3,
+      "cascades": {
+        "MICRO": {
+          "DIM01-to-DIM03": {
+            "source": "DIM01",
+            "target": "DIM03",
+            "horizon_months": 12,
+            "multiplier": 1.5,
+            "effect": "Improved alignment enables better belief calibration",
+            "second_order_targets": ["DIM04", "DIM06"],
+            "third_order_targets": ["DIM02", "DIM05"],
+            "prerequisites": [
+              "strategic_document_approved",
+              "leadership_alignment_confirmed"
+            ]
+          },
+          "DIM02-to-DIM05": {
+            "source": "DIM02",
+            "target": "DIM05",
+            "horizon_months": 18,
+            "multiplier": 1.7,
+            "effect": "Financial clarity enhances execution capacity",
+            "second_order_targets": ["DIM06"],
+            "third_order_targets": ["DIM04"],
+            "prerequisites": [
+              "budget_approved",
+              "fiscal_space_identified"
+            ]
+          },
+          "DIM04-to-DIM06": {
+            "source": "DIM04",
+            "target": "DIM06",
+            "horizon_months": 15,
+            "multiplier": 1.6,
+            "effect": "Causal models improve evidence collection design",
+            "second_order_targets": ["DIM05", "DIM02"],
+            "third_order_targets": ["DIM01"],
+            "prerequisites": [
+              "causal_model_validated",
+              "indicators_defined"
+            ]
+          }
+        },
+        "MESO": {
+          "CL01-to-CL02": {
+            "source": "CL01",
+            "target": "CL02",
+            "horizon_months": 24,
+            "multiplier": 1.4,
+            "effect": "Core capacity extends to adjacent clusters",
+            "second_order_targets": ["CL03", "CL04"],
+            "third_order_targets": [],
+            "prerequisites": [
+              "cluster_governance_active",
+              "interagency_agreements_signed"
+            ]
+          }
+        }
+      }
+    },
+    "synergy_detection": {
+      "description": "Two interventions together > sum of parts",
+      "mechanism": "product of (1 + pair_strength) for all synergistic pairs",
+      "synergy_types": {
+        "same_pa_different_dim": {
+          "strength": 0.3,
+          "description": "Same policy area, different dimensions have natural synergy",
+          "example": "PA01-DIM01 + PA01-DIM02 = 1.3x combined effect"
+        },
+        "different_pa_same_dim": {
+          "strength": 0.25,
+          "description": "Different policy areas sharing dimension have moderate synergy",
+          "example": "PA01-DIM04 + PA03-DIM04 = 1.25x combined effect"
+        },
+        "same_cluster": {
+          "strength": 0.4,
+          "description": "MESO level: same cluster recommendations have high synergy",
+          "example": "CL01 recommendations = 1.4x when bundled"
+        }
+      }
+    },
+    "amplification_config": {
+      "max_amplification_factor": 10.0,
+      "max_hidden_value_ratio": 5.0,
+      "max_cascade_bonus": 2.0,
+      "max_synergy_multiplier": 3.0,
+      "formula": {
+        "description": "amplification = (1 + hidden_ratio + cascade_bonus) * synergy_mult",
+        "components": {
+          "hidden_ratio": "sum(cp.bonus) / base_count, capped at max_hidden_value_ratio",
+          "cascade_bonus": "sum(tc.multiplier - 1.0) for order > 1, capped at max_cascade_bonus",
+          "synergy_mult": "product(1 + pair_strength), capped at max_synergy_multiplier"
+        }
+      }
+    }
+  },
   "integrity": {
     "expected_rule_counts": {
       "MICRO": 300,
