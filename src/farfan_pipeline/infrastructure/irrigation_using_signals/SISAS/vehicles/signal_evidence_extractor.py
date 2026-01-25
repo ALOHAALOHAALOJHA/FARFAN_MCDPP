@@ -136,7 +136,7 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
 
         # Bridge: If data is ExtractionResult, convert to signals
         # Use duck typing to avoid import dependency issues
-        if HAS_EXTRACTION_RESULT and ExtractionResult and isinstance(data, ExtractionResult):
+        if HAS_EXTRACTION_RESULT and ExtractionResult is not None and isinstance(data, ExtractionResult):
             converted_signals = self.convert_extraction_result_to_signals(data, context)
             signals.extend(converted_signals)
             self.stats["signals_generated"] += len(converted_signals)

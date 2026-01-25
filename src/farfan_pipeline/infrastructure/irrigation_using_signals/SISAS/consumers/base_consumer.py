@@ -146,11 +146,11 @@ class BaseConsumer(ABC):
         # Determine failure mode based on error type
         failure_mode_mapping = {
             ValueError: FailureMode.VALIDATION_ERROR,
-            KeyError: FailureMode.DATA_MISSING,
+            KeyError: FailureMode.VALIDATION_ERROR,  # Map to existing enum value
             TypeError: FailureMode.TRANSFORMATION_ERROR,
-            RuntimeError: FailureMode.SYSTEM_ERROR,
+            RuntimeError: FailureMode.UNKNOWN,  # Map to existing enum value
         }
-        failure_mode = failure_mode_mapping.get(type(error), FailureMode.PROCESSING_ERROR)
+        failure_mode = failure_mode_mapping.get(type(error), FailureMode.UNKNOWN)
         
         # Create context for failure signal
         context = SignalContext(

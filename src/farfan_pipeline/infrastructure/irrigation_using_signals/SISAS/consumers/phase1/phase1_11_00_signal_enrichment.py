@@ -104,8 +104,7 @@ class Phase1SignalEnrichmentConsumer(BaseConsumer):
         method_id = getattr(signal, 'method_id', '')
         
         # Check if this is an MC extractor signal
-        if method_id.startswith('MC') or any(mc in method_id for mc in ['MC01', 'MC02', 'MC03', 'MC04', 'MC05', 
-                                                                          'MC06', 'MC07', 'MC08', 'MC09', 'MC10']):
+        if method_id.startswith('MC'):
             question_id = getattr(signal, 'question_id', 'unknown')
             
             if question_id not in self._mc_signal_buffer:
