@@ -195,6 +195,8 @@ class SignalContext:
 class SignalSource:
     """
     Origen de una señal - trazabilidad completa
+    
+    ENHANCED: Ancestry tracking for cross-phase awareness.
     """
     event_id: str                    # ID del evento que generó la señal
     source_file: str                 # Archivo JSON canónico de origen
@@ -202,14 +204,54 @@ class SignalSource:
     generation_timestamp: datetime   # Cuándo se generó
     generator_vehicle: str           # Qué vehículo la generó
     
+    # ENHANCED: Ancestry tracking
+    parent_signal_id: Optional[str] = None  # ID of signal that triggered this one
+    ancestry_chain: List[str] = field(default_factory=list)  # Full ancestry path
+    phase_origin: Optional[str] = None  # Original phase where signal chain started
+    
     def to_dict(self) -> Dict[str, Any]:
         return {
             "event_id": self.event_id,
             "source_file": self.source_file,
             "source_path": self.source_path,
             "generation_timestamp": self. generation_timestamp.isoformat(),
-            "generator_vehicle": self.generator_vehicle
+            "generator_vehicle": self.generator_vehicle,
+            "parent_signal_id": self.parent_signal_id,
+            "ancestry_chain": self.ancestry_chain,
+            "phase_origin": self.phase_origin
         }
+    
+    def with_parent(self, parent_signal_id: str, parent_ancestry: List[str], parent_phase: str) -> 'SignalSource':
+        """
+        ANCESTRY TRACKING: Create a new SignalSource with ancestry information.
+        
+        This enables cross-phase signal lineage tracking, showing how signals
+        evolve and transform across phases.
+        
+        Args:
+            parent_signal_id: ID of the parent signal
+            parent_ancestry: Ancestry chain of parent
+            parent_phase: Phase where parent originated
+            
+        Returns:
+            New SignalSource with updated ancestry
+        """
+        # Build new ancestry chain
+        new_ancestry = parent_ancestry + [parent_signal_id] if parent_ancestry else [parent_signal_id]
+        
+        # Use parent's phase_origin if it exists, otherwise use parent's phase
+        phase_origin = parent_phase if not parent_ancestry else (self.phase_origin or parent_phase)
+        
+        return SignalSource(
+            event_id=self.event_id,
+            source_file=self.source_file,
+            source_path=self.source_path,
+            generation_timestamp=self.generation_timestamp,
+            generator_vehicle=self.generator_vehicle,
+            parent_signal_id=parent_signal_id,
+            ancestry_chain=new_ancestry,
+            phase_origin=phase_origin
+        )
 
 
 @dataclass

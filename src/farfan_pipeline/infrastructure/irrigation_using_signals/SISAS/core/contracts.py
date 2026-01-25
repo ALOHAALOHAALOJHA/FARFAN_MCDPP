@@ -159,6 +159,9 @@ class ConsumptionContract:
     def matches_signal(self, signal: Any) -> bool:
         """
         Verifica si una señal cumple los filtros del contrato.
+        
+        ENHANCED: Cross-phase awareness support.
+        Allows filtering by phase ancestry rather than strict single-phase matching.
         """
         # Verificar tipo
         if signal.signal_type not in self. subscribed_signal_types: 
@@ -167,6 +170,56 @@ class ConsumptionContract:
         # Verificar filtros de contexto
         if self.context_filters:
             signal_context = signal.context. to_dict() if signal.context else {}
+            
+            for filter_key, filter_values in self.context_filters.items():
+                signal_value = signal_context.get(filter_key)
+                
+                # ENHANCED: Cross-phase support
+                # If filter_key is "phase" and filter_values includes "ALL_PHASES"
+                # or if filter includes "CROSS_PHASE", allow any phase
+                if filter_key == "phase":
+                    if "ALL_PHASES" in filter_values or "CROSS_PHASE" in filter_values:
+                        continue  # Skip phase filtering
+                    
+                    # Check for phase ancestry (e.g., phase_01 can see phase_00)
+                    if signal_value:
+                        # Extract phase number
+                        signal_phase_num = self._extract_phase_number(signal_value)
+                        allowed_phases = [self._extract_phase_number(pv) for pv in filter_values]
+                        
+                        # Allow signal if it's from current phase or earlier phases
+                        if signal_phase_num is not None and any(
+                            signal_phase_num <= allowed_phase 
+                            for allowed_phase in allowed_phases 
+                            if allowed_phase is not None
+                        ):
+                            continue
+                
+                # Standard filtering
+                if signal_value not in filter_values:
+                    return False
+        
+        return True
+    
+    def _extract_phase_number(self, phase_str: str) -> Optional[int]:
+        """
+        Extract phase number from phase string.
+        
+        Examples:
+            "phase_01" -> 1
+            "phase_1" -> 1
+            "PHASE_01" -> 1
+            "invalid" -> None
+        
+        Args:
+            phase_str: Phase string identifier
+            
+        Returns:
+            Phase number or None if not extractable
+        """
+        import re
+        match = re.search(r'(\d+)', phase_str)
+        return int(match.group(1)) if match else None
             
             for filter_key, allowed_values in self.context_filters.items():
                 if filter_key in signal_context:

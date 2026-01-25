@@ -46,8 +46,8 @@ class Phase1SignalEnrichmentConsumer(BaseConsumer):
             ],
             subscribed_buses=["structural_bus", "integrity_bus", "epistemic_bus"],
             context_filters={
-                "phase": ["phase_01"],
-                "consumer_scope": ["Phase_01"]
+                "phase": ["phase_01", "phase_00", "CROSS_PHASE"],  # ENHANCED: Cross-phase awareness
+                "consumer_scope": ["Phase_01", "Phase_00"]  # ENHANCED: Can see Phase 0 bootstrap signals
             },
             required_capabilities=["can_extract", "can_enrich"]
         )
