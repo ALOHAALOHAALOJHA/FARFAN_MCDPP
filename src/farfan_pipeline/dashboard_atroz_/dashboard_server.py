@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+from pathlib import Path
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -94,14 +95,53 @@ EVIDENCE_STREAM = [
     },
 ]
 
-from flask import Flask, Response
+from flask import Flask, Response, redirect, url_for
+
+
+# Path to static files directory
+STATIC_DIR = Path(__file__).parent / "static"
 
 
 @app.route("/")
 def index():
+    """Serve dashboard main page.
+
+    Priority order:
+    1. PROJECT_ROOT/dashboard.html (custom dashboard)
+    2. static/sisas-ecosystem-view-enhanced.html (default SISAS view)
+    3. Redirect to /api/v1/regions (API fallback)
+    """
+    # Try custom dashboard in project root
     dashboard_path = PROJECT_ROOT / "dashboard.html"
-    with open(str(dashboard_path), encoding="utf-8") as f:
-        return Response(f.read(), mimetype="text/html")
+    if dashboard_path.exists():
+        with open(str(dashboard_path), encoding="utf-8") as f:
+            return Response(f.read(), mimetype="text/html")
+
+    # Fall back to SISAS ecosystem view
+    sisas_path = STATIC_DIR / "sisas-ecosystem-view-enhanced.html"
+    if sisas_path.exists():
+        with open(str(sisas_path), encoding="utf-8") as f:
+            return Response(f.read(), mimetype="text/html")
+
+    # API fallback - return JSON with available endpoints
+    return jsonify({
+        "status": "online",
+        "message": "ATROZ Dashboard API v1",
+        "dashboard_ui": "No dashboard.html found",
+        "endpoints": {
+            "regions": "/api/v1/regions",
+            "sisas_status": "/api/v1/sisas/status",
+            "canonical": "/api/v1/canonical/questions",
+            "static_files": "/static/"
+        }
+    })
+
+
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    """Serve static files from the dashboard static directory."""
+    from flask import send_from_directory
+    return send_from_directory(str(STATIC_DIR), filename)
 
 
 @app.route("/api/pdet-regions", methods=["GET"])

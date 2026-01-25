@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
 from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
-from farfan_pipeline.orchestration.phase_id import PhaseID
+from farfan_pipeline.orchestration.orchestrator import PhaseID
 
 logger = logging.getLogger(__name__)
 
