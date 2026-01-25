@@ -529,16 +529,3 @@ class IrrigationExecutor:
         )
         
         return rollback_result
-            if total > 0 else 0
-        )
-
-        return {
-            "total_executions": total,
-            "successful": successful,
-            "failed": failed,
-            "success_rate": (successful / total * 100) if total > 0 else 0,
-            "total_signals_generated": total_signals,
-            "total_signals_published": total_published,
-            "avg_duration_ms": avg_duration,
-            "current_phase": self.current_phase.value
-        }
