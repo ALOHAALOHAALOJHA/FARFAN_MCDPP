@@ -43,7 +43,8 @@ FARFAN_MCDPP/
 ├── scripts/                       # Utility scripts
 ├── contracts/                     # Phase chain reports
 ├── docs/                          # Documentation
-│   └── TECHNICAL_RUNBOOK.md       # Complete technical reference
+│   ├── TECHNICAL_RUNBOOK.md       # 🎯 UNIFIED Technical Runbook (v3.0.0)
+│   └── RUNBOOK_MIGRATION_GUIDE.md # Migration from legacy runbooks
 ├── requirements.txt               # Core dependencies
 ├── requirements-dev.txt           # Development dependencies
 ├── pyproject.toml                 # Project configuration
@@ -77,12 +78,45 @@ The reporting engine in Phase 9 generates artifacts across four distinct templat
 
 ## Operations & Validation
 
-Installation is standardized via standard Python tooling. Use `pip install -e .` to install the package and its dependencies in editable mode. Pipeline architecture can be verified using `bash scripts/validate_architecture.sh`. Policy analysis is executed through the canonical entry point:
+### 📖 Complete Documentation
+
+**For complete installation, configuration, and operation instructions, see:**
+
+**[`docs/TECHNICAL_RUNBOOK.md`](docs/TECHNICAL_RUNBOOK.md)** - Comprehensive Technical Runbook (v3.0.0)
+
+The Technical Runbook provides exhaustive coverage of:
+- **Installation & Setup** (Section 24): One-command install, manual setup, Docker, verification
+- **All Phase Commands** (Sections 3-12): Phase 0-9 detailed operations
+- **SISAS Integration** (Section 13): Complete signal infrastructure reference
+- **Troubleshooting** (Section 21): 12 subsections covering common issues and solutions
+- **CQVR Quality Validation** (Section 25): Contract evaluation and remediation
+- **CI/CD & Deployment** (Section 26): GitHub Actions, staging, production deployment
+- **Complete Command Index** (Section 22): All 200+ commands with verification status
+
+### Quick Start
 
 ```bash
+# Install (one command)
+bash install.sh
+source farfan-env/bin/activate
+
+# Verify installation
+python scripts/verify_dependencies.py
+
+# Run pipeline
 farfan-pipeline
 # or
 python -m farfan_pipeline.entrypoint.main
 ```
+
+### Legacy Documentation
+
+**⛔ The following documents have been deprecated and merged into the Technical Runbook:**
+- ~~`docs/DEPLOYMENT_GUIDE.md`~~ → See Sections 24, 26
+- ~~`docs/TROUBLESHOOTING.md`~~ → See Section 21
+- ~~`docs/design/OPERATIONAL_GUIDE.md`~~ → See Section 24
+- ~~`DEPLOYMENT.md`~~ → See Sections 24, 26
+
+For migration details, see [`docs/RUNBOOK_MIGRATION_GUIDE.md`](docs/RUNBOOK_MIGRATION_GUIDE.md)
 
 Validation protocols demand rigorous statistical compliance, requiring expert correlation (r>0.7) and inter-rater reliability (κ>0.6) for model acceptance.
