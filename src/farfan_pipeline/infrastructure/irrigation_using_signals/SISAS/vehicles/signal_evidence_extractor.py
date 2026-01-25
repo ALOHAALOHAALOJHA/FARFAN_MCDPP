@@ -16,15 +16,24 @@ from ..signal_types.types.epistemic import (
 
 # Import for ExtractionResult bridge
 try:
-    import sys
-    from pathlib import Path
-    # Add extractors to path if needed
-    extractor_path = Path(__file__).parents[2] / "extractors"
-    if str(extractor_path) not in sys.path:
-        sys.path.insert(0, str(extractor_path))
-    from empirical_extractor_base import ExtractionResult
+    # Try to import from the actual location
+    from farfan_pipeline.infrastructure.extractors.empirical_extractor_base import ExtractionResult
+    HAS_EXTRACTION_RESULT = True
 except ImportError:
+    # If import fails, define minimal interface for duck typing
+    HAS_EXTRACTION_RESULT = False
     ExtractionResult = None
+    
+    # Define minimal interface for type checking
+    class _DuckTypedExtractionResult:
+        """Duck-typed interface for ExtractionResult when import unavailable."""
+        extractor_id: str
+        signal_type: str
+        matches: list
+        confidence: float
+        metadata: dict
+        validation_passed: bool
+        validation_errors: list
 
 @dataclass
 class SignalEvidenceExtractorVehicle(BaseVehicle):
@@ -126,7 +135,14 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
         signals = []
 
         # Bridge: If data is ExtractionResult, convert to signals
-        if ExtractionResult and isinstance(data, ExtractionResult):
+        # Use duck typing to avoid import dependency issues
+        if HAS_EXTRACTION_RESULT and ExtractionResult and isinstance(data, ExtractionResult):
+            converted_signals = self.convert_extraction_result_to_signals(data, context)
+            signals.extend(converted_signals)
+            self.stats["signals_generated"] += len(converted_signals)
+            return signals
+        elif hasattr(data, 'extractor_id') and hasattr(data, 'matches') and hasattr(data, 'confidence'):
+            # Duck typing: If it looks like ExtractionResult, treat it as such
             converted_signals = self.convert_extraction_result_to_signals(data, context)
             signals.extend(converted_signals)
             self.stats["signals_generated"] += len(converted_signals)
@@ -161,7 +177,7 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
     
     def convert_extraction_result_to_signals(
         self, 
-        extraction_result: 'ExtractionResult',
+        extraction_result: Any,  # Use Any for duck typing
         context: SignalContext
     ) -> List[Signal]:
         """
@@ -172,9 +188,12 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
         published to buses and consumed by downstream consumers.
         
         ENHANCED: Automatic confidence tuning from calibration data.
+        Uses duck typing to handle ExtractionResult regardless of import success.
         
         Args:
-            extraction_result: Result from empirical extractor (MC01-MC10)
+            extraction_result: Result from empirical extractor (MC01-MC10) with attributes:
+                - extractor_id, signal_type, matches, confidence, metadata, 
+                  validation_passed, validation_errors
             context: Signal context for routing
             
         Returns:
@@ -182,14 +201,23 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
         """
         signals = []
         
+        # Extract attributes using getattr for duck typing
+        extractor_id = getattr(extraction_result, 'extractor_id', 'unknown')
+        signal_type = getattr(extraction_result, 'signal_type', 'unknown')
+        matches = getattr(extraction_result, 'matches', [])
+        confidence = getattr(extraction_result, 'confidence', 0.0)
+        metadata = getattr(extraction_result, 'metadata', {})
+        validation_passed = getattr(extraction_result, 'validation_passed', True)
+        validation_errors = getattr(extraction_result, 'validation_errors', [])
+        
         # Create event for traceability
         event = self.create_event(
             event_type="signal_generated",
             payload={
-                "extractor_id": extraction_result.extractor_id,
-                "signal_type": extraction_result.signal_type,
-                "matches_count": len(extraction_result.matches),
-                "confidence": extraction_result.confidence,
+                "extractor_id": extractor_id,
+                "signal_type": signal_type,
+                "matches_count": len(matches),
+                "confidence": confidence,
             },
             source_file=context.node_id,
             source_path=f"{context.node_type}/{context.node_id}",
@@ -201,10 +229,10 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
         
         # ENHANCED: Automatic confidence tuning from calibration data
         signal_confidence = self._tune_confidence_from_calibration(
-            extraction_result.confidence,
-            extraction_result.extractor_id,
-            len(extraction_result.matches),
-            extraction_result.metadata
+            confidence,
+            extractor_id,
+            len(matches),
+            metadata
         )
         
         # Create MethodApplicationSignal for the extraction
@@ -212,32 +240,32 @@ class SignalEvidenceExtractorVehicle(BaseVehicle):
             context=context,
             source=source,
             question_id=context.node_id,
-            method_id=extraction_result.extractor_id,
-            method_result="SUCCESS" if extraction_result.validation_passed else "VALIDATION_FAILED",
-            extraction_successful=extraction_result.validation_passed,
-            extracted_values=[m.get("text", str(m)) for m in extraction_result.matches[:10]],  # Limit to 10
-            processing_time_ms=extraction_result.metadata.get("processing_time_ms", 0.0),
+            method_id=extractor_id,
+            method_result="SUCCESS" if validation_passed else "VALIDATION_FAILED",
+            extraction_successful=validation_passed,
+            extracted_values=[m.get("text", str(m)) if isinstance(m, dict) else str(m) for m in matches[:10]],  # Limit to 10
+            processing_time_ms=metadata.get("processing_time_ms", 0.0),
             confidence=signal_confidence,
-            rationale=f"Extractor {extraction_result.extractor_id} found {len(extraction_result.matches)} matches. "
-                      f"Validation: {'PASSED' if extraction_result.validation_passed else 'FAILED'}. "
+            rationale=f"Extractor {extractor_id} found {len(matches)} matches. "
+                      f"Validation: {'PASSED' if validation_passed else 'FAILED'}. "
                       f"Calibrated confidence: {signal_confidence}"
         )
         signals.append(method_signal)
         
         # If there are validation errors, also create an error signal
-        if not extraction_result.validation_passed and extraction_result.validation_errors:
+        if not validation_passed and validation_errors:
             from ..signal_types.types.operational import FailureModeSignal, FailureMode
             
             error_signal = FailureModeSignal(
                 context=context,
                 source=source,
-                execution_id=f"{extraction_result.extractor_id}_{event.event_id}",
+                execution_id=f"{extractor_id}_{event.event_id}",
                 failure_mode=FailureMode.VALIDATION_ERROR,
-                error_message="; ".join(extraction_result.validation_errors[:3]),  # First 3 errors
+                error_message="; ".join(str(e) for e in validation_errors[:3]),  # First 3 errors
                 recoverable=True,
                 retry_count=0,
                 confidence=SignalConfidence.VERY_HIGH,  # High confidence in the failure
-                rationale=f"Extractor validation failed with {len(extraction_result.validation_errors)} errors"
+                rationale=f"Extractor validation failed with {len(validation_errors)} errors"
             )
             signals.append(error_signal)
         

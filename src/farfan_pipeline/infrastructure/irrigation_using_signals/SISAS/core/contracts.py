@@ -220,13 +220,6 @@ class ConsumptionContract:
         import re
         match = re.search(r'(\d+)', phase_str)
         return int(match.group(1)) if match else None
-            
-            for filter_key, allowed_values in self.context_filters.items():
-                if filter_key in signal_context:
-                    if signal_context[filter_key] not in allowed_values:
-                        return False
-        
-        return True
     
     def to_dict(self) -> Dict[str, Any]:
         return {
