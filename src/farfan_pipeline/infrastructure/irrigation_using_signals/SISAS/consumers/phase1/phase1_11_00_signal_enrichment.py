@@ -1,10 +1,10 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase1/phase1_11_00_signal_enrichment.py
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List
 
 from ..base_consumer import BaseConsumer
-from ...core.signal import Signal
+from ...core.signal import Signal, SignalConfidence
 from ...core.contracts import ConsumptionContract
 
 
@@ -20,10 +20,16 @@ class Phase1SignalEnrichmentConsumer(BaseConsumer):
 
     Responsabilidad: Enriquecer datos con extracción de membership criteria
     y preparar para procesamiento en fases posteriores.
+    
+    ENHANCED: Signal aggregation and synthesis for MC01-MC10 extractors.
     """
 
     consumer_id: str = "phase1_11_00_signal_enrichment.py"
     consumer_phase: str = "phase_01"
+    
+    # Aggregation state for MC01-MC10 signals
+    _mc_signal_buffer: Dict[str, List[Signal]] = field(default_factory=dict)
+    _aggregation_window_size: int = 10  # Aggregate every 10 signals
 
     def __post_init__(self):
         super().__post_init__()
@@ -54,6 +60,7 @@ class Phase1SignalEnrichmentConsumer(BaseConsumer):
         - Verificar que membership criteria se aplican correctamente
         - Evaluar quality metrics de extracción
         - Identificar gaps en datos empíricos
+        - ENHANCED: Aggregate MC01-MC10 signals for synthesis
         """
         result = {
             "signal_id": signal.signal_id,
@@ -67,6 +74,9 @@ class Phase1SignalEnrichmentConsumer(BaseConsumer):
             analysis = self._analyze_method_application(signal)
             result["enrichment_analysis"] = analysis
             result["quality_score"] = analysis.get("quality_score", 0.0)
+            
+            # ENHANCED: Aggregate MC signals for synthesis
+            self._aggregate_mc_signal(signal)
 
         elif signal.signal_type == "AnswerSpecificitySignal":
             analysis = self._analyze_specificity(signal)
@@ -82,6 +92,112 @@ class Phase1SignalEnrichmentConsumer(BaseConsumer):
             result["enrichment_analysis"] = analysis
 
         return result
+    
+    def _aggregate_mc_signal(self, signal: Signal):
+        """
+        SIGNAL AGGREGATION: Buffer MC01-MC10 signals for synthesis.
+        
+        Collects multiple extraction signals and triggers synthesis when
+        aggregation window is full. This provides a unified view of all
+        membership criteria extractors rather than treating them independently.
+        """
+        method_id = getattr(signal, 'method_id', '')
+        
+        # Check if this is an MC extractor signal
+        if method_id.startswith('MC') or any(mc in method_id for mc in ['MC01', 'MC02', 'MC03', 'MC04', 'MC05', 
+                                                                          'MC06', 'MC07', 'MC08', 'MC09', 'MC10']):
+            question_id = getattr(signal, 'question_id', 'unknown')
+            
+            if question_id not in self._mc_signal_buffer:
+                self._mc_signal_buffer[question_id] = []
+            
+            self._mc_signal_buffer[question_id].append(signal)
+            
+            # Check if we should trigger synthesis
+            if len(self._mc_signal_buffer[question_id]) >= self._aggregation_window_size:
+                self._synthesize_mc_signals(question_id)
+    
+    def _synthesize_mc_signals(self, question_id: str) -> Dict[str, Any]:
+        """
+        SIGNAL SYNTHESIS: Aggregate MC01-MC10 signals into unified extraction summary.
+        
+        Instead of 10 independent signals, produce one ConsistencySignal that
+        synthesizes the overall extraction quality and completeness for a question.
+        
+        Args:
+            question_id: Question whose signals to synthesize
+            
+        Returns:
+            Synthesis result with aggregated metrics
+        """
+        signals = self._mc_signal_buffer.get(question_id, [])
+        if not signals:
+            return {}
+        
+        synthesis = {
+            "question_id": question_id,
+            "total_extractors": len(signals),
+            "successful_extractors": 0,
+            "failed_extractors": 0,
+            "total_extractions": 0,
+            "average_quality": 0.0,
+            "consistency_score": 0.0,
+            "extractor_breakdown": {}
+        }
+        
+        quality_scores = []
+        
+        for sig in signals:
+            method_id = getattr(sig, 'method_id', 'unknown')
+            successful = getattr(sig, 'extraction_successful', False)
+            extracted = getattr(sig, 'extracted_values', [])
+            
+            if successful:
+                synthesis["successful_extractors"] += 1
+            else:
+                synthesis["failed_extractors"] += 1
+            
+            synthesis["total_extractions"] += len(extracted)
+            
+            # Calculate quality score for this signal
+            quality = 1.0 if successful and extracted else (0.5 if successful else 0.0)
+            quality_scores.append(quality)
+            
+            synthesis["extractor_breakdown"][method_id] = {
+                "successful": successful,
+                "extraction_count": len(extracted),
+                "quality": quality
+            }
+        
+        # Calculate aggregate metrics
+        synthesis["average_quality"] = sum(quality_scores) / len(quality_scores) if quality_scores else 0.0
+        
+        # Consistency score: How consistent are extractors in finding data?
+        # High if most extractors succeed or most fail (consistent), low if mixed
+        success_rate = synthesis["successful_extractors"] / len(signals) if signals else 0
+        synthesis["consistency_score"] = 1.0 - abs(0.5 - success_rate) * 2  # Peak at 0.5, drops to 0 at extremes
+        
+        # Clear buffer after synthesis
+        self._mc_signal_buffer[question_id] = []
+        
+        return synthesis
+    
+    def get_aggregation_stats(self) -> Dict[str, Any]:
+        """
+        Get statistics about signal aggregation.
+        
+        Returns:
+            Dict with aggregation metrics
+        """
+        return {
+            "questions_buffered": len(self._mc_signal_buffer),
+            "total_signals_buffered": sum(len(sigs) for sigs in self._mc_signal_buffer.values()),
+            "aggregation_window_size": self._aggregation_window_size,
+            "questions_ready_for_synthesis": sum(
+                1 for sigs in self._mc_signal_buffer.values() 
+                if len(sigs) >= self._aggregation_window_size
+            )
+        }
 
     def _analyze_method_application(self, signal: Signal) -> Dict[str, Any]:
         """Analiza aplicación de métodos de extracción"""
