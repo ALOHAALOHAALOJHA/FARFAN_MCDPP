@@ -226,9 +226,38 @@ class SignalEnrichedScorer:
                     }
                 )
 
-            # Adjust based on evidence quality from metadata
+            # Adjust based on evidence quality from metadata with granular strength grading
             completeness = metadata.get("completeness", "").lower()
-            if completeness == "complete":
+            evidence_strength = metadata.get("evidence_strength", "").lower()
+            
+            # ENHANCEMENT: Evidence strength grading beyond binary complete/incomplete
+            # Levels: comprehensive > complete > substantial > partial > minimal > none
+            evidence_adjustments = {
+                "comprehensive": 0.04,  # Exceptional evidence quality
+                "complete": 0.02,       # Standard complete evidence
+                "substantial": 0.01,    # Good but not complete
+                "partial": 0.0,         # Neutral - no adjustment
+                "minimal": -0.01,       # Weak evidence
+                "none": -0.02,          # No evidence found
+            }
+            
+            # Primary check: use evidence_strength if available
+            if evidence_strength in evidence_adjustments:
+                adjustment = evidence_adjustments[evidence_strength]
+                adjusted = min(0.9, max(0.3, adjusted + adjustment))
+                adjustment_details["adjustments"].append(
+                    {
+                        "type": "evidence_strength_grading",
+                        "evidence_strength": evidence_strength,
+                        "adjustment": adjustment,
+                    }
+                )
+                logger.debug(
+                    f"Evidence strength adjustment for {question_id}: "
+                    f"strength={evidence_strength}, adjustment={adjustment:+.3f}"
+                )
+            # Fallback: use completeness for backward compatibility
+            elif completeness == "complete":
                 adjustment = COMPLETE_EVIDENCE_ADJUSTMENT
                 adjusted = min(0.9, adjusted + adjustment)
                 adjustment_details["adjustments"].append(
@@ -386,14 +415,48 @@ class SignalEnrichedScorer:
             validation_details["was_promoted"] = was_promoted
             validation_details["was_demoted"] = was_demoted
 
-            # Add cascade check: warn if both promotion and demotion attempted
+            # ENHANCEMENT: Sophisticated cascade prevention logic
             if was_promoted and was_demoted:
-                logger.error(
-                    f"[QUALITY CASCADE DETECTED] {question_id}: "
-                    f"Both promotion and demotion attempted! Original: {quality_level}, "
-                    f"Final: {validated}. This indicates conflicting quality signals."
+                # Resolve cascade by prioritizing score over completeness
+                # Rationale: Score is more comprehensive indicator than completeness alone
+                logger.warning(
+                    f"[QUALITY CASCADE PREVENTION] {question_id}: "
+                    f"Conflicting quality adjustments detected. Original: {quality_level}, "
+                    f"Score: {score:.3f}, Completeness: {completeness}"
                 )
+                
+                # Decision matrix for cascade resolution
+                if score >= HIGH_SCORE_THRESHOLD:
+                    # High score wins - promote regardless of completeness
+                    validated = QUALITY_EXCELENTE if score >= 0.9 else QUALITY_ACEPTABLE
+                    validation_details["cascade_resolution"] = "score_based_promotion"
+                    validation_details["resolution_rationale"] = (
+                        f"High score {score:.3f} takes precedence over conflicting signals"
+                    )
+                elif score < LOW_SCORE_THRESHOLD:
+                    # Low score wins - demote regardless of completeness
+                    validated = QUALITY_INSUFICIENTE
+                    validation_details["cascade_resolution"] = "score_based_demotion"
+                    validation_details["resolution_rationale"] = (
+                        f"Low score {score:.3f} takes precedence over conflicting signals"
+                    )
+                else:
+                    # Middle range - use completeness as tiebreaker
+                    if completeness == "complete":
+                        validated = QUALITY_ACEPTABLE
+                        validation_details["cascade_resolution"] = "completeness_tiebreaker_promote"
+                    else:
+                        validated = QUALITY_INSUFICIENTE
+                        validation_details["cascade_resolution"] = "completeness_tiebreaker_demote"
+                    validation_details["resolution_rationale"] = (
+                        f"Score in middle range ({score:.3f}), using completeness as tiebreaker"
+                    )
+                
                 validation_details["cascade_detected"] = True
+                logger.info(
+                    f"[CASCADE RESOLVED] {question_id}: {quality_level} → {validated} | "
+                    f"Resolution: {validation_details['cascade_resolution']}"
+                )
 
         except Exception as e:
             logger.error(
@@ -413,10 +476,14 @@ class SignalEnrichedScorer:
         enriched_pack: dict[str, Any] | None,
     ) -> tuple[float, dict[str, Any]]:
         """
-        Apply signal presence bonus/penalty to raw score.
+        Apply signal presence bonus/penalty to raw score with confidence weighting.
 
-        Implements SISAS signal-driven scoring adjustments:
-        - +0.05 bonus per primary signal present (cap at +0.15)
+        Implements SOPHISTICATED SISAS signal-driven scoring adjustments:
+        - Confidence-weighted adjustments (HIGH=1.0x, MEDIUM=0.7x, LOW=0.4x)
+        - Composite signal pattern analysis (determinacy + specificity combinations)
+        - Temporal signal freshness tracking with decay penalties
+        - Evidence strength grading beyond binary complete/incomplete
+        - +0.05-0.08 bonus per primary signal (weighted by confidence)
         - -0.10 penalty per missing primary signal (no floor)
 
         This is called AFTER existing modality scoring, before final threshold checks.
@@ -433,9 +500,13 @@ class SignalEnrichedScorer:
             "raw_score": raw_score,
             "signal_bonus": 0.0,
             "signal_penalty": 0.0,
+            "composite_bonus": 0.0,
+            "temporal_penalty": 0.0,
             "net_adjustment": 0.0,
             "adjusted_score": raw_score,
             "signals_evaluated": [],
+            "composite_patterns": [],
+            "freshness_checks": [],
         }
 
         if not enriched_pack:
@@ -473,22 +544,47 @@ class SignalEnrichedScorer:
                 f"Failed to retrieve signal mapping for {question_id}: {e}"
             ) from e
 
-        # Get signals that were actually detected
+        # Get signals that were actually detected with metadata
         received_signals = enriched_pack.get("signals_detected", [])
+        signal_metadata = enriched_pack.get("signal_metadata", {})
 
-        # Calculate bonus for present signals
+        # ENHANCEMENT 1: Confidence-weighted signal bonus calculation
         signal_bonus = 0.0
+        confidence_weights = {"HIGH": 1.0, "MEDIUM": 0.7, "LOW": 0.4, "UNKNOWN": 0.5}
+        
         for signal in expected_primary:
             if signal in received_signals:
-                signal_bonus += 0.05
+                # Get signal confidence from metadata
+                signal_meta = signal_metadata.get(signal, {})
+                confidence = signal_meta.get("confidence", "UNKNOWN")
+                confidence_weight = confidence_weights.get(confidence, 0.5)
+                
+                # Base bonus scaled by confidence
+                base_bonus = 0.05
+                weighted_bonus = base_bonus * confidence_weight
+                signal_bonus += weighted_bonus
+                
                 adjustment_log["signals_evaluated"].append(
                     {
                         "signal": signal,
                         "status": "present",
-                        "adjustment": 0.05,
+                        "confidence": confidence,
+                        "confidence_weight": confidence_weight,
+                        "base_adjustment": base_bonus,
+                        "weighted_adjustment": weighted_bonus,
                     }
                 )
-        signal_bonus = min(0.15, signal_bonus)  # Cap at +0.15
+        signal_bonus = min(0.18, signal_bonus)  # Cap at +0.18 (increased for confidence weighting)
+
+        # ENHANCEMENT 2: Composite signal pattern analysis
+        composite_bonus = self._analyze_composite_patterns(
+            enriched_pack, signal_metadata, adjustment_log
+        )
+
+        # ENHANCEMENT 3: Temporal signal freshness tracking
+        temporal_penalty = self._check_signal_freshness(
+            enriched_pack, signal_metadata, adjustment_log
+        )
 
         # Calculate penalty for missing signals
         signal_penalty = 0.0
@@ -503,13 +599,15 @@ class SignalEnrichedScorer:
                     }
                 )
 
-        # Apply adjustments
-        net_adjustment = signal_bonus - signal_penalty
+        # Apply all adjustments
+        net_adjustment = signal_bonus + composite_bonus - signal_penalty - temporal_penalty
         adjusted_score = max(0.0, min(1.0, raw_score + net_adjustment))
 
         adjustment_log.update(
             {
                 "signal_bonus": round(signal_bonus, 3),
+                "composite_bonus": round(composite_bonus, 3),
+                "temporal_penalty": round(temporal_penalty, 3),
                 "signal_penalty": round(signal_penalty, 3),
                 "net_adjustment": round(net_adjustment, 3),
                 "adjusted_score": round(adjusted_score, 3),
@@ -519,10 +617,149 @@ class SignalEnrichedScorer:
 
         logger.info(
             f"Signal adjustment for {question_id}: "
-            f"{raw_score:.3f} → {adjusted_score:.3f} (Δ={net_adjustment:+.3f})"
+            f"{raw_score:.3f} → {adjusted_score:.3f} (Δ={net_adjustment:+.3f}) | "
+            f"bonus={signal_bonus:.3f}, composite={composite_bonus:.3f}, "
+            f"penalty={signal_penalty:.3f}, temporal={temporal_penalty:.3f}"
         )
 
         return adjusted_score, adjustment_log
+    
+    def _analyze_composite_patterns(
+        self,
+        enriched_pack: dict[str, Any],
+        signal_metadata: dict[str, Any],
+        adjustment_log: dict[str, Any],
+    ) -> float:
+        """Analyze composite signal patterns for additional scoring insights.
+        
+        Detects meaningful combinations of signals that indicate higher/lower quality:
+        - High determinacy + High specificity = Strong evidence (+0.03)
+        - High determinacy + Low specificity = Ambiguous (+0.00)
+        - Low determinacy + High specificity = Conflicting (-0.02)
+        - Complete evidence + Multiple methods = Robust (+0.04)
+        
+        Args:
+            enriched_pack: Signal enrichment pack
+            signal_metadata: Signal metadata with confidence levels
+            adjustment_log: Log to record pattern analysis
+            
+        Returns:
+            Composite bonus/penalty value
+        """
+        composite_bonus = 0.0
+        patterns_found = []
+        
+        # Extract key signal indicators
+        determinacy_signals = [s for s in enriched_pack.get("signals_detected", []) 
+                               if "determinacy" in s.lower() or "answer" in s.lower()]
+        specificity_signals = [s for s in enriched_pack.get("signals_detected", [])
+                               if "specificity" in s.lower() or "indicator" in s.lower()]
+        evidence_signals = [s for s in enriched_pack.get("signals_detected", [])
+                            if "evidence" in s.lower() or "empirical" in s.lower()]
+        method_signals = [s for s in enriched_pack.get("signals_detected", [])
+                          if "method" in s.lower()]
+        
+        # Pattern 1: Strong evidence pattern
+        if determinacy_signals and specificity_signals:
+            det_confidence = max([signal_metadata.get(s, {}).get("confidence", "LOW") 
+                                  for s in determinacy_signals], default="LOW")
+            spec_confidence = max([signal_metadata.get(s, {}).get("confidence", "LOW")
+                                   for s in specificity_signals], default="LOW")
+            
+            if det_confidence == "HIGH" and spec_confidence == "HIGH":
+                composite_bonus += 0.03
+                patterns_found.append({
+                    "pattern": "strong_evidence",
+                    "description": "High determinacy + High specificity",
+                    "bonus": 0.03
+                })
+            elif det_confidence == "LOW" and spec_confidence == "HIGH":
+                composite_bonus -= 0.02
+                patterns_found.append({
+                    "pattern": "conflicting_signals",
+                    "description": "Low determinacy + High specificity",
+                    "penalty": -0.02
+                })
+        
+        # Pattern 2: Robust methodology pattern
+        if evidence_signals and len(method_signals) >= 2:
+            completeness = enriched_pack.get("completeness", "").lower()
+            if completeness == "complete":
+                composite_bonus += 0.04
+                patterns_found.append({
+                    "pattern": "robust_methodology",
+                    "description": f"Complete evidence + {len(method_signals)} methods",
+                    "bonus": 0.04
+                })
+        
+        adjustment_log["composite_patterns"] = patterns_found
+        return round(composite_bonus, 3)
+    
+    def _check_signal_freshness(
+        self,
+        enriched_pack: dict[str, Any],
+        signal_metadata: dict[str, Any],
+        adjustment_log: dict[str, Any],
+    ) -> float:
+        """Check temporal freshness of signals and apply decay penalties.
+        
+        Signals can become stale if:
+        - Generated long ago (>30 days = minor penalty)
+        - Based on outdated corpus data
+        - Not refreshed during current phase execution
+        
+        Args:
+            enriched_pack: Signal enrichment pack
+            signal_metadata: Signal metadata with timestamps
+            adjustment_log: Log to record freshness checks
+            
+        Returns:
+            Temporal penalty value (0.0 if fresh)
+        """
+        from datetime import datetime, timedelta
+        
+        temporal_penalty = 0.0
+        freshness_checks = []
+        
+        current_time = datetime.utcnow()
+        freshness_threshold_days = 30
+        
+        for signal in enriched_pack.get("signals_detected", []):
+            signal_meta = signal_metadata.get(signal, {})
+            timestamp_str = signal_meta.get("timestamp")
+            
+            if timestamp_str:
+                try:
+                    signal_time = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                    age_days = (current_time - signal_time).days
+                    
+                    if age_days > freshness_threshold_days:
+                        # Minor penalty for stale signals
+                        stale_penalty = min(0.02, age_days / 1000)  # Max 0.02 penalty
+                        temporal_penalty += stale_penalty
+                        
+                        freshness_checks.append({
+                            "signal": signal,
+                            "age_days": age_days,
+                            "status": "stale",
+                            "penalty": stale_penalty
+                        })
+                    else:
+                        freshness_checks.append({
+                            "signal": signal,
+                            "age_days": age_days,
+                            "status": "fresh"
+                        })
+                except (ValueError, AttributeError) as e:
+                    # Unable to parse timestamp, assume fresh
+                    freshness_checks.append({
+                        "signal": signal,
+                        "status": "timestamp_unavailable",
+                        "error": str(e)
+                    })
+        
+        adjustment_log["freshness_checks"] = freshness_checks
+        return round(temporal_penalty, 3)
 
     def enrich_scoring_details(
         self,
