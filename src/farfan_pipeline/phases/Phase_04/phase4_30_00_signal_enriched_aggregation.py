@@ -680,7 +680,6 @@ class SignalMetadataEnricher:
     
     def _detect_signal_correlations(self, signal_ids: list[str]) -> dict[str, Any]:
         """Detect correlations between signals"""
-        correlations = []
         
         # Check for correlation groups
         for sig_id in signal_ids:
