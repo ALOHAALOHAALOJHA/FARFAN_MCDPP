@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATROZ Dashboard Enhanced - Data Mining & Analytics</title>
+
+    <!-- ATROZ Styles -->
+    <link rel="stylesheet" href="/static/css/atroz-dashboard.css">
+    <link rel="stylesheet" href="/static/css/atroz-analytics-enhanced.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@200;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--atroz-red-900) 0%, var(--bg-card) 100%);
+            border-bottom: 2px solid var(--atroz-red-500);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(196, 30, 58, 0.2) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .dashboard-title {
+            position: relative;
+            z-index: 1;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--atroz-red-500);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 20px rgba(196, 30, 58, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            position: relative;
+            z-index: 1;
+            font-size: 1.2rem;
+            color: var(--atroz-blue-electric);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .dashboard-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: var(--atroz-blue-electric);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover,
+        .nav-button.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--atroz-blue-electric);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .municipality-selector {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .municipality-selector-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--atroz-blue-electric);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .municipality-selector-input {
+            width: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            padding: 0.75rem;
+            color: var(--ink);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border: 1px solid rgba(196, 30, 58, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--atroz-red-500);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .insight-text {
+            font-size: 0.9rem;
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .geo-heatmap-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .geo-heatmap-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--atroz-blue-electric);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .subregion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .subregion-card {
+            background: rgba(0, 10, 10, 0.8);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .subregion-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .subregion-card.high-score {
+            border-color: var(--atroz-green-toxic);
+        }
+
+        .subregion-card.medium-score {
+            border-color: var(--atroz-copper-500);
+        }
+
+        .subregion-card.low-score {
+            border-color: var(--atroz-red-500);
+        }
+
+        .subregion-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--atroz-blue-electric);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .subregion-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .subregion-muni-count {
+            font-size: 0.75rem;
+            color: rgba(229, 231, 235, 0.6);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">⚡ ATROZ ⚡</h1>
+        <p class="dashboard-subtitle">Advanced Analytics & Data Mining for 170 PDET Municipalities</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="dashboard-nav">
+        <button class="nav-button active" onclick="showSection('overview')">Overview</button>
+        <button class="nav-button" onclick="showSection('data-mining')">Data Mining</button>
+        <button class="nav-button" onclick="showSection('comparative')">Comparative Analysis</button>
+        <button class="nav-button" onclick="showSection('trends')">Trends & Forecasting</button>
+        <button class="nav-button" onclick="showSection('geographic')">Geographic Heatmap</button>
+        <button class="nav-button" onclick="showSection('municipality')">Municipality Drill-Down</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="analytics-container">
+
+        <!-- OVERVIEW SECTION -->
+        <div id="section-overview" class="dashboard-section active">
+            <div class="analytics-grid">
+                <div class="analytics-card full-width">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">System Overview</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div id="overview-stats" class="stats-grid"></div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Policy Area Distribution</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart-policy-areas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">PDET Subregion Performance</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart-subregions"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <div class="insight-title">📊 Key Insights</div>
+                <div class="insight-text">
+                    The ATROZ dashboard now provides comprehensive data mining and analytics across 305 canonic questions
+                    covering 10 policy areas for all 170 PDET municipalities. New capabilities include advanced statistical
+                    analysis, predictive forecasting, and interactive geographic visualizations.
+                </div>
+            </div>
+        </div>
+
+        <!-- DATA MINING SECTION -->
+        <div id="section-data-mining" class="dashboard-section">
+            <div class="query-builder">
+                <h2 class="query-builder-header">🔍 Advanced Data Mining Query</h2>
+
+                <div class="query-builder-row">
+                    <div class="query-field">
+                        <label class="query-field-label">Policy Areas</label>
+                        <select id="query-policy-areas" class="query-field-select" multiple>
+                            <option value="PA01">PA01 - Mujeres y Género</option>
+                            <option value="PA02">PA02 - Violencia y Conflicto</option>
+                            <option value="PA03">PA03 - Ambiente</option>
+                            <option value="PA04">PA04 - Derechos Económicos</option>
+                            <option value="PA05">PA05 - Víctimas y Paz</option>
+                            <option value="PA06">PA06 - Niñez y Juventud</option>
+                            <option value="PA07">PA07 - Tierras y Territorios</option>
+                            <option value="PA08">PA08 - Líderes DDHH</option>
+                            <option value="PA09">PA09 - Crisis PPL</option>
+                            <option value="PA10">PA10 - Migración</option>
+                        </select>
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Dimensions</label>
+                        <select id="query-dimensions" class="query-field-select" multiple>
+                            <option value="DIM01">DIM01 - Insumos</option>
+                            <option value="DIM02">DIM02 - Actividades</option>
+                            <option value="DIM03">DIM03 - Productos</option>
+                            <option value="DIM04">DIM04 - Resultados</option>
+                            <option value="DIM05">DIM05 - Impactos</option>
+                            <option value="DIM06">DIM06 - Coherencia</option>
+                        </select>
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Aggregation Level</label>
+                        <select id="query-aggregation" class="query-field-select">
+                            <option value="municipality">Municipality</option>
+                            <option value="subregion">Subregion</option>
+                            <option value="policy_area">Policy Area</option>
+                            <option value="dimension">Dimension</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="query-builder-row">
+                    <div class="query-field">
+                        <label class="query-field-label">Min Score</label>
+                        <input id="query-min-score" class="query-field-input" type="number" min="0" max="100" placeholder="0">
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Max Score</label>
+                        <input id="query-max-score" class="query-field-input" type="number" min="0" max="100" placeholder="100">
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Question Range (Start)</label>
+                        <input id="query-question-start" class="query-field-input" type="number" min="1" max="305" placeholder="1">
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Question Range (End)</label>
+                        <input id="query-question-end" class="query-field-input" type="number" min="1" max="305" placeholder="305">
+                    </div>
+                </div>
+
+                <div class="query-actions">
+                    <button class="btn-query-execute" onclick="executeDataMiningQuery()">Execute Query</button>
+                    <button class="btn-query-reset" onclick="resetQuery()">Reset</button>
+                    <button class="btn-export" onclick="exportResults('json')">Export JSON</button>
+                    <button class="btn-export" onclick="exportResults('csv')">Export CSV</button>
+                </div>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="analytics-card full-width">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Query Results Statistics</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div id="query-results-stats"></div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Anomalies Detected</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <ul id="anomalies-list" class="anomalies-list"></ul>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Geographic Clusters</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div id="geographic-clusters"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPARATIVE ANALYSIS SECTION -->
+        <div id="section-comparative" class="dashboard-section">
+            <div class="query-builder">
+                <h2 class="query-builder-header">⚖️ Comparative Analysis</h2>
+
+                <div class="query-builder-row">
+                    <div class="query-field">
+                        <label class="query-field-label">Entity A (Municipality Code)</label>
+                        <input id="comparative-entity-a" class="query-field-input" placeholder="05001">
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Entity B (Municipality Code)</label>
+                        <input id="comparative-entity-b" class="query-field-input" placeholder="05002">
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Entity Type</label>
+                        <select id="comparative-type" class="query-field-select">
+                            <option value="municipality">Municipality</option>
+                            <option value="subregion">Subregion</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="query-actions">
+                    <button class="btn-query-execute" onclick="executeComparativeAnalysis()">Compare</button>
+                </div>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Radar Comparison</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart-comparative"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Significant Differences</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div id="comparative-differences"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRENDS SECTION -->
+        <div id="section-trends" class="dashboard-section">
+            <div class="query-builder">
+                <h2 class="query-builder-header">📈 Trend Analysis & Forecasting</h2>
+
+                <div class="query-builder-row">
+                    <div class="query-field">
+                        <label class="query-field-label">Entity (Municipality Code)</label>
+                        <input id="trend-entity" class="query-field-input" placeholder="05001">
+                    </div>
+
+                    <div class="query-field">
+                        <label class="query-field-label">Time Window (Days)</label>
+                        <input id="trend-window" class="query-field-input" type="number" value="90">
+                    </div>
+                </div>
+
+                <div class="query-actions">
+                    <button class="btn-query-execute" onclick="executeTrendAnalysis()">Analyze Trends</button>
+                </div>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="analytics-card full-width">
+                    <div class="analytics-card-header">
+                        <h2 class="analytics-card-title">Trend & Forecast</h2>
+                    </div>
+                    <div class="analytics-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart-trend"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GEOGRAPHIC HEATMAP SECTION -->
+        <div id="section-geographic" class="dashboard-section">
+            <div class="geo-heatmap-container">
+                <h2 class="geo-heatmap-title">🗺️ PDET Subregion Performance Heatmap</h2>
+                <div id="subregion-heatmap" class="subregion-grid"></div>
+            </div>
+        </div>
+
+        <!-- MUNICIPALITY DRILL-DOWN SECTION -->
+        <div id="section-municipality" class="dashboard-section">
+            <div class="municipality-selector">
+                <label class="municipality-selector-label">Select Municipality</label>
+                <input id="municipality-search" class="municipality-selector-input" type="text" placeholder="Enter municipality code (e.g., 05001)">
+                <button class="btn-query-execute" style="margin-top: 1rem; width: 100%;" onclick="loadMunicipalityProfile()">Load Profile</button>
+            </div>
+
+            <div id="municipality-profile"></div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/atroz-analytics-enhanced.js"></script>
+    <script>
+        // Initialize analytics engine
+        const analytics = new AtrozAnalytics();
+
+        // Section navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(`section-${sectionName}`).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Initialize section if needed
+            if (sectionName === 'geographic') {
+                loadGeographicHeatmap();
+            } else if (sectionName === 'overview') {
+                loadOverview();
+            }
+        }
+
+        // Execute data mining query
+        async function executeDataMiningQuery() {
+            const queryParams = {
+                policy_areas: Array.from(document.getElementById('query-policy-areas').selectedOptions).map(o => o.value),
+                dimensions: Array.from(document.getElementById('query-dimensions').selectedOptions).map(o => o.value),
+                aggregation_level: document.getElementById('query-aggregation').value,
+                min_score: parseFloat(document.getElementById('query-min-score').value) || undefined,
+                max_score: parseFloat(document.getElementById('query-max-score').value) || undefined,
+            };
+
+            const questionStart = parseInt(document.getElementById('query-question-start').value);
+            const questionEnd = parseInt(document.getElementById('query-question-end').value);
+            if (questionStart && questionEnd) {
+                queryParams.question_range = [questionStart, questionEnd];
+            }
+
+            try {
+                const result = await analytics.executeDataMiningQuery(queryParams);
+                displayQueryResults(result);
+            } catch (error) {
+                alert('Query failed: ' + error.message);
+            }
+        }
+
+        // Display query results
+        function displayQueryResults(result) {
+            // Display statistics
+            if (result.statistics) {
+                analytics.createStatsSummary('query-results-stats', result.statistics);
+            }
+
+            // Display anomalies
+            const anomaliesList = document.getElementById('anomalies-list');
+            anomaliesList.innerHTML = '';
+            if (result.anomalies && result.anomalies.length > 0) {
+                result.anomalies.forEach(anomaly => {
+                    const li = document.createElement('li');
+                    li.className = 'anomaly-item';
+                    li.innerHTML = `
+                        <div class="anomaly-label">Z-Score: ${anomaly.z_score.toFixed(2)}</div>
+                        <div class="anomaly-details">Deviation: ${anomaly.deviation.toFixed(2)}</div>
+                    `;
+                    anomaliesList.appendChild(li);
+                });
+            } else {
+                anomaliesList.innerHTML = '<li class="anomaly-item">No anomalies detected</li>';
+            }
+
+            // Display geographic clusters
+            const clustersContainer = document.getElementById('geographic-clusters');
+            if (result.geographic_clusters && result.geographic_clusters.length > 0) {
+                let html = '<div class="stats-grid">';
+                result.geographic_clusters.slice(0, 6).forEach(cluster => {
+                    html += `
+                        <div class="stat-card">
+                            <div class="stat-label">${cluster.subregion}</div>
+                            <div class="stat-value">${cluster.mean_score.toFixed(1)}</div>
+                            <div class="stat-label">${cluster.municipality_count} munis</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                clustersContainer.innerHTML = html;
+            }
+        }
+
+        // Reset query
+        function resetQuery() {
+            document.getElementById('query-policy-areas').selectedIndex = -1;
+            document.getElementById('query-dimensions').selectedIndex = -1;
+            document.getElementById('query-aggregation').value = 'municipality';
+            document.getElementById('query-min-score').value = '';
+            document.getElementById('query-max-score').value = '';
+            document.getElementById('query-question-start').value = '';
+            document.getElementById('query-question-end').value = '';
+        }
+
+        // Export results
+        async function exportResults(format) {
+            const queryParams = {
+                policy_areas: Array.from(document.getElementById('query-policy-areas').selectedOptions).map(o => o.value),
+                dimensions: Array.from(document.getElementById('query-dimensions').selectedOptions).map(o => o.value),
+                aggregation_level: document.getElementById('query-aggregation').value,
+            };
+
+            try {
+                await analytics.exportResults(queryParams, format);
+            } catch (error) {
+                alert('Export failed: ' + error.message);
+            }
+        }
+
+        // Execute comparative analysis
+        async function executeComparativeAnalysis() {
+            const entityA = document.getElementById('comparative-entity-a').value;
+            const entityB = document.getElementById('comparative-entity-b').value;
+            const entityType = document.getElementById('comparative-type').value;
+
+            if (!entityA || !entityB) {
+                alert('Please enter both entity codes');
+                return;
+            }
+
+            try {
+                const result = await analytics.generateComparativeAnalysis(entityA, entityB, entityType);
+                analytics.createComparativeChart('chart-comparative', result);
+
+                // Display differences
+                const differencesContainer = document.getElementById('comparative-differences');
+                if (result.significant_differences && result.significant_differences.length > 0) {
+                    let html = '<ul class="anomalies-list">';
+                    result.significant_differences.forEach(diff => {
+                        html += `
+                            <li class="anomaly-item">
+                                <div class="anomaly-label">${diff.metric}</div>
+                                <div class="anomaly-details">Difference: ${diff.difference_percentage.toFixed(1)}%</div>
+                                <div class="anomaly-details">Better: ${diff.better_performer}</div>
+                            </li>
+                        `;
+                    });
+                    html += '</ul>';
+                    differencesContainer.innerHTML = html;
+                }
+            } catch (error) {
+                alert('Comparative analysis failed: ' + error.message);
+            }
+        }
+
+        // Execute trend analysis
+        async function executeTrendAnalysis() {
+            const entity = document.getElementById('trend-entity').value;
+            const timeWindow = parseInt(document.getElementById('trend-window').value);
+
+            if (!entity) {
+                alert('Please enter an entity code');
+                return;
+            }
+
+            try {
+                const result = await analytics.generateTrendAnalysis(entity, 'municipality', timeWindow);
+                analytics.createTrendChart('chart-trend', result);
+            } catch (error) {
+                alert('Trend analysis failed: ' + error.message);
+            }
+        }
+
+        // Load geographic heatmap
+        async function loadGeographicHeatmap() {
+            // Mock data for 16 PDET subregions
+            const subregions = [
+                { name: 'Alto Patía', score: 68.5, municipalities: 24 },
+                { name: 'Arauca', score: 72.1, municipalities: 4 },
+                { name: 'Bajo Cauca', score: 65.3, municipalities: 13 },
+                { name: 'Caguán', score: 71.8, municipalities: 17 },
+                { name: 'Catatumbo', score: 59.2, municipalities: 8 },
+                { name: 'Chocó', score: 62.7, municipalities: 14 },
+                { name: 'Macarena', score: 70.4, municipalities: 12 },
+                { name: 'Montes de María', score: 75.6, municipalities: 15 },
+                { name: 'Pacífico Medio', score: 64.9, municipalities: 4 },
+                { name: 'Pacífico Nariñense', score: 67.3, municipalities: 11 },
+                { name: 'Putumayo', score: 69.1, municipalities: 9 },
+                { name: 'Sierra Nevada', score: 73.8, municipalities: 15 },
+                { name: 'Sur de Bolívar', score: 66.5, municipalities: 7 },
+                { name: 'Sur de Córdoba', score: 71.2, municipalities: 5 },
+                { name: 'Sur del Tolima', score: 74.3, municipalities: 4 },
+                { name: 'Urabá', score: 68.9, municipalities: 10 }
+            ];
+
+            const heatmapContainer = document.getElementById('subregion-heatmap');
+            heatmapContainer.innerHTML = '';
+
+            subregions.forEach(subregion => {
+                const scoreClass = subregion.score >= 70 ? 'high-score' :
+                                  subregion.score >= 60 ? 'medium-score' : 'low-score';
+                const scoreColor = subregion.score >= 70 ? 'var(--atroz-green-toxic)' :
+                                  subregion.score >= 60 ? 'var(--atroz-copper-500)' : 'var(--atroz-red-500)';
+
+                const card = document.createElement('div');
+                card.className = `subregion-card ${scoreClass}`;
+                card.innerHTML = `
+                    <div class="subregion-name">${subregion.name}</div>
+                    <div class="subregion-score" style="color: ${scoreColor};">${subregion.score.toFixed(1)}</div>
+                    <div class="subregion-muni-count">${subregion.municipalities} municipalities</div>
+                `;
+                heatmapContainer.appendChild(card);
+            });
+        }
+
+        // Load municipality profile
+        async function loadMunicipalityProfile() {
+            const code = document.getElementById('municipality-search').value;
+
+            if (!code) {
+                alert('Please enter a municipality code');
+                return;
+            }
+
+            try {
+                const profile = await analytics.getMunicipalityProfile(code);
+                displayMunicipalityProfile(profile);
+            } catch (error) {
+                alert('Failed to load municipality profile: ' + error.message);
+            }
+        }
+
+        // Display municipality profile
+        function displayMunicipalityProfile(profile) {
+            const container = document.getElementById('municipality-profile');
+
+            let html = `
+                <div class="municipality-panel">
+                    <div class="municipality-header">
+                        <h2 class="municipality-title">Municipality Profile</h2>
+                        <div class="municipality-code">${profile.municipality_code}</div>
+                    </div>
+
+                    <div class="municipality-metrics">
+                        <div class="metric-box">
+                            <div class="metric-box-label">Overall Score</div>
+                            <div class="metric-box-value">${profile.overall_statistics?.mean?.toFixed(1) || 'N/A'}</div>
+                            <div class="metric-box-subtext">Mean across all areas</div>
+                        </div>
+
+                        <div class="metric-box">
+                            <div class="metric-box-label">Ranking</div>
+                            <div class="metric-box-value">#${profile.comparative_ranking?.rank || 'N/A'}</div>
+                            <div class="metric-box-subtext">of ${profile.comparative_ranking?.total || 170} municipalities</div>
+                        </div>
+
+                        <div class="metric-box">
+                            <div class="metric-box-label">Percentile</div>
+                            <div class="metric-box-value">${profile.comparative_ranking?.percentile?.toFixed(0) || 'N/A'}%</div>
+                            <div class="metric-box-subtext">Performance percentile</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Load overview
+        function loadOverview() {
+            const mockStats = {
+                count: 170,
+                mean: 65.3,
+                median: 64.8,
+                std_dev: 8.7,
+                min: 42.1,
+                max: 82.5,
+                p95: 78.2
+            };
+
+            analytics.createStatsSummary('overview-stats', mockStats);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadOverview();
+        });
+    </script>
+</body>
+</html>
