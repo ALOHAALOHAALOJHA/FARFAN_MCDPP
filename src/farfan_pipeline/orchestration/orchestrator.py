@@ -2128,6 +2128,7 @@ class UnifiedOrchestrator:
             - wiring_components: Initialized WiringComponents
             - exit_gate_results: All 7 gate validations aligned with contract
         """
+        from pathlib import Path as PathLib
         from farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner import (
             VerifiedPipelineRunner,
         )
@@ -2156,11 +2157,11 @@ class UnifiedOrchestrator:
             self.logger.info("[P0] Part 1: Running P0.0-P0.3 via VerifiedPipelineRunner")
 
             # Prepare paths for VerifiedPipelineRunner
-            plan_pdf_path = Path(self.config.document_path) if self.config.document_path else Path("input.pdf")
-            questionnaire_path = Path(self.config.questionnaire_path) if self.config.questionnaire_path else Path("canonic_questionnaire_central/_registry/questionnaire_monolith.json")
+            plan_pdf_path = PathLib(self.config.document_path) if self.config.document_path else PathLib("input.pdf")
+            questionnaire_path = PathLib(self.config.questionnaire_path) if self.config.questionnaire_path else PathLib("canonic_questionnaire_central/_registry/questionnaire_monolith.json")
 
             # Create artifacts directory
-            artifacts_dir = Path("artifacts") / "phase0"
+            artifacts_dir = PathLib("artifacts") / "phase0"
 
             # Initialize VerifiedPipelineRunner
             runner = VerifiedPipelineRunner(
@@ -2271,13 +2272,19 @@ class UnifiedOrchestrator:
 
             # Store in context for subsequent phases
             self.context.wiring = wiring_components
+            
+            # FORCE ARTICULATION: Update orchestrator factory with the bootstrapped one
+            if hasattr(wiring_components, 'factory') and wiring_components.factory:
+                self.factory = wiring_components.factory
+                self.logger.info("[P0] Orchestrator factory updated from bootstrap wiring")
+
             self.context.phase_outputs[PhaseID.PHASE_0] = canonical_input
 
             return {
                 "status": "completed",
                 "canonical_input": canonical_input.to_dict() if hasattr(canonical_input, 'to_dict') else str(canonical_input),
                 "wiring_components": {
-                    "factory_instances": wiring_components.factory.factory_instances,
+                    "factory_status": wiring_components.factory.get_health_status().to_dict() if hasattr(wiring_components.factory, 'get_health_status') else "unknown",
                     "argrouter_routes": wiring_components.arg_router.get_special_route_coverage() if wiring_components and wiring_components.arg_router else 0,
                 },
                 "exit_gates": exit_gates,

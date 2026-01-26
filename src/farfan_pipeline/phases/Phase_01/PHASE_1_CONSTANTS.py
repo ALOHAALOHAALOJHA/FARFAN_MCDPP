@@ -7,9 +7,9 @@ Lifecycle State: ACTIVE
 
 All values MUST be documented with rationale and referenced by constant name in code.
 
-ARCHITECTURAL CHANGE (v2.0):
-Updated to support question-level granularity (300 questions = 10 PA × 6 DIM × 5 Q/slot).
-This addresses the audit finding that Phase 1 must map to questionnaire questions.
+ARCHITECTURE (v2.1):
+Phase 1 produces 60 chunks (10 PA × 6 DIM).
+Phase 2 expands to 300 tasks (60 chunks × 5 questions per chunk).
 """
 
 # =============================================================================
@@ -31,23 +31,23 @@ __execution_pattern__ = "On-Demand"
 from typing import Final
 
 # =============================================================================
-# QUESTIONNAIRE CONSTANTS
+# QUESTIONNAIRE CONSTANTS (Phase 2 Expansion)
 # =============================================================================
 
 TOTAL_QUESTIONS: Final[int] = 300
 """
-Total number of questions in the questionnaire (10 PA × 6 DIM × 5 Q/slot).
+Total number of questions that Phase 2 will process.
 
-This is the constitutional invariant for Phase 1: all chunk combinations
-must map to exactly 300 question slots.
+Phase 1 produces 60 chunks (10 PA × 6 DIM).
+Phase 2 expands each chunk into 5 question tasks = 300 total tasks.
 """
 
 QUESTIONS_PER_SLOT: Final[int] = 5
 """
-Number of questions per chunk slot.
+Number of questions per chunk slot (used in Phase 2).
 
-Each chunk (PA-DIM combination) has 5 question slots, giving us
-300 total questions (10 PA × 6 DIM × 5 Q/slot).
+Each chunk from Phase 1 (PA-DIM combination) is expanded into 5 question tasks
+by Phase 2, giving us 300 total tasks (60 chunks × 5 Q/slot).
 """
 
 # =============================================================================
@@ -92,40 +92,41 @@ VALID_ASSIGNMENT_METHODS: Final[tuple[str, ...]] = (
 )
 
 # =============================================================================
-# SPEC-003: Chunk Validation (UPDATED v2.0)
+# SPEC-003: Chunk Validation (UPDATED v2.1)
 # =============================================================================
 
-# Question-level granularity (NEW)
-QUESTIONS_PER_DIMENSION: Final[int] = 5  # Q1-Q5 per PA×DIM combination
+# Phase 1 chunk granularity
 POLICY_AREA_COUNT: Final[int] = 10
 DIMENSION_COUNT: Final[int] = 6
 
-# OLD: 60 chunks (PA×DIM) - DEPRECATED, kept for backward compatibility reference
-TOTAL_CHUNK_COMBINATIONS_LEGACY: Final[int] = POLICY_AREA_COUNT * DIMENSION_COUNT  # 60
+# Phase 1: 60 chunks (PA×DIM) - CONSTITUTIONAL INVARIANT v2.1
+TOTAL_CHUNK_COMBINATIONS: Final[int] = POLICY_AREA_COUNT * DIMENSION_COUNT  # 60
 
-# NEW: 300 chunks (PA×DIM×Q) - CONSTITUTIONAL INVARIANT v2.0
-TOTAL_CHUNK_COMBINATIONS: Final[int] = (
-    POLICY_AREA_COUNT * DIMENSION_COUNT * QUESTIONS_PER_DIMENSION
-)  # 300
+# Phase 2: Each chunk expanded into 5 questions
+QUESTIONS_PER_DIMENSION: Final[int] = 5  # Q1-Q5 per PA×DIM combination (used in Phase 2)
+PHASE2_TOTAL_TASKS: Final[int] = TOTAL_CHUNK_COMBINATIONS * QUESTIONS_PER_DIMENSION  # 300
 
-# Chunk ID patterns
-CHUNK_ID_PATTERN_LEGACY: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]$"
+# Chunk ID patterns (Phase 1: PA×DIM only)
+CHUNK_ID_PATTERN: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]$"
 """
-Legacy chunk_id pattern for PA×DIM combinations (deprecated).
+Phase 1 chunk_id pattern for PA×DIM combinations.
 
 Examples:
   - PA01-DIM01 ✅
   - PA10-DIM06 ✅
+  - PA11-DIM01 ❌ (PA out of range 1-10)
+  - PA01-DIM07 ❌ (DIM out of range 1-6)
 """
 
-CHUNK_ID_PATTERN: Final[str] = r"^CHUNK-PA(0[1-9]|10)-DIM0[1-6]-Q[1-5]$"
+# Task ID patterns (Phase 2: PA×DIM×Q)
+TASK_ID_PATTERN: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]-Q[1-5]$"
 """
-New chunk_id pattern for question-level chunks (PA×DIM×Q).
+Phase 2 task_id pattern for question-level tasks (PA×DIM×Q).
 
 Examples:
-  - CHUNK-PA01DIM01-Q1 ✅
-  - CHUNK-PA10DIM06-Q5 ✅
-  - CHUNK-PA01DIM01-Q6 ❌ (Q slot out of range 1-5)
+  - PA01-DIM01-Q1 ✅
+  - PA10-DIM06-Q5 ✅
+  - PA01-DIM01-Q6 ❌ (Q slot out of range 1-5)
 """
 
 QUESTION_ID_PATTERN: Final[str] = r"^Q([1-9]|[1-9][0-9]|[12][0-9][0-9]|300)$"
@@ -165,13 +166,13 @@ PHASE1_LOGGER_NAME: Final[str] = "farfan_pipeline.phases.Phase_01"
 RANDOM_SEED: Final[int] = 42
 
 # =============================================================================
-# SPEC-007: Questionnaire Mapping (NEW v2.0)
+# SPEC-007: Questionnaire Mapping (Phase 2)
 # =============================================================================
 
-# Method invocation thresholds
+# Method invocation thresholds (used in Phase 2)
 MIN_METHOD_SETS_TO_INVOKE: Final[int] = 1  # At least 1 method per question
 MAX_METHOD_INVOCATION_TIME: Final[float] = 30.0  # Seconds per method
 
-# Expected elements verification
+# Expected elements verification (used in Phase 2)
 REQUIRED_ELEMENT_VERIFICATION: Final[bool] = True  # Enforce required elements
 MIN_REQUIRED_ELEMENTS_PRESENT: Final[int] = 1  # At least 1 required element

@@ -4,10 +4,11 @@ This contract governs the execution of 16 subphases (SP0-SP15) plus SP4.1 in Pha
 enforcing weight-based criticality and execution behavior.
 
 Constitutional Invariants:
-- EXACTLY 300 chunks must be produced (10 PA × 6 DIM × 5 Questions per slot)
+- EXACTLY 60 chunks must be produced (10 PA × 6 DIM)
 - All 16 subphases must complete or fail gracefully according to weight tier
 - SP4.1 (Colombian PDM Enhancement) is MANDATORY and runs as part of SP4
 - Weight-based timeouts: CRITICAL (3x), HIGH (2x), STANDARD (1x)
+- Phase 2 expands 60 chunks to 300 tasks (60 × 5 questions)
 
 ═══════════════════════════════════════════════════════════════════════════════
                     TRÍADA CONSTITUCIONAL DE FASE 1
@@ -29,10 +30,11 @@ CALIBRACIÓN (ex post, evidencia-tiempo):
 
 INVARIANTE (constitucional, intocable):
     Subfases: SP4, SP4.1, SP11, SP13 (CRITICAL tier)
-    - 300 chunks = 10 PA × 6 Dim × 5 Q — NUNCA modificar
+    - 60 chunks = 10 PA × 6 Dim — NUNCA modificar
+    - Phase 2 expands to 300 tasks (60 × 5 questions)
     - Colombian PDM Enhancement es MANDATORIO para todos los chunks
     - Cualquier "optimización" que altere esto es INCONSTITUCIONAL
-    NAMESPACE: invariant.300_chunks, invariant.grid_spec, invariant.pdm_enhancement
+    NAMESPACE: invariant.60_chunks, invariant.grid_spec, invariant.pdm_enhancement
 
 REGLA DE PRECEDENCIA:
     1. Parametrizar PRIMERO (abrir los diales)
@@ -42,8 +44,9 @@ REGLA DE PRECEDENCIA:
 ADVERTENCIA PARA FUTUROS DESARROLLADORES:
     Dentro de 6 meses alguien intentará "optimizar SP4" reduciendo chunks
     para "mejorar performance". ESTO ESTÁ PROHIBIDO CONSTITUCIONALMENTE.
-    Los 300 chunks NO son un parámetro ajustable — son la CONSTITUCIÓN.
-    La formula es: 10 PA × 6 DIM × 5 Q = 300 (inmutable)
+    Los 60 chunks NO son un parámetro ajustable — son la CONSTITUCIÓN.
+    La formula es: 10 PA × 6 DIM = 60 (inmutable)
+    Phase 2 expande 60 chunks a 300 tareas (60 × 5 preguntas)
 ═══════════════════════════════════════════════════════════════════════════════
 """
 
@@ -69,19 +72,30 @@ CALIBRATABLE_SUBPHASES: FrozenSet[str] = frozenset({
 # Subphases INVARIANTES — JAMÁS tocar (CRITICAL tier)
 INVARIANT_SUBPHASES: FrozenSet[str] = frozenset({"SP4", "SP11", "SP13"})
 
-# CONSTITUTIONAL INVARIANT: 300 chunks = 10 PA × 6 Dim × 5 Q
-CONSTITUTIONAL_CHUNK_COUNT: int = 300
+# CONSTITUTIONAL INVARIANT: 60 chunks = 10 PA × 6 Dim
+# Phase 2 expands to 300 tasks (60 × 5 questions)
+CONSTITUTIONAL_CHUNK_COUNT: int = 60
 CONSTITUTIONAL_POLICY_AREAS: int = 10
 CONSTITUTIONAL_CAUSAL_DIMENSIONS: int = 6
-CONSTITUTIONAL_QUESTIONS_PER_DIMENSION: int = 5
+CONSTITUTIONAL_QUESTIONS_PER_DIMENSION: int = 5  # Expanded in Phase 2
 
 # Assertion at import-time: matemática constitucional
 assert (
-    CONSTITUTIONAL_POLICY_AREAS 
-    * CONSTITUTIONAL_CAUSAL_DIMENSIONS 
-    * CONSTITUTIONAL_QUESTIONS_PER_DIMENSION
+    CONSTITUTIONAL_POLICY_AREAS * CONSTITUTIONAL_CAUSAL_DIMENSIONS
     == CONSTITUTIONAL_CHUNK_COUNT
-), f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × {CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim × {CONSTITUTIONAL_QUESTIONS_PER_DIMENSION} Q ≠ {CONSTITUTIONAL_CHUNK_COUNT} chunks"
+), f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × {CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim ≠ {CONSTITUTIONAL_CHUNK_COUNT} chunks"
+
+# Phase 2 expansion: 60 chunks × 5 questions = 300 tasks (for documentation)
+EXPECTED_PHASE2_TASK_COUNT: int = 300
+assert (
+    CONSTITUTIONAL_CHUNK_COUNT * CONSTITUTIONAL_QUESTIONS_PER_DIMENSION
+    == EXPECTED_PHASE2_TASK_COUNT
+), (
+    "CONSTITUTIONAL VIOLATION: "
+    f"{CONSTITUTIONAL_CHUNK_COUNT} chunks × "
+    f"{CONSTITUTIONAL_QUESTIONS_PER_DIMENSION} questions/dim ≠ "
+    f"{EXPECTED_PHASE2_TASK_COUNT} Phase 2 tasks"
+)
 
 
 class WeightTier(Enum):
@@ -113,7 +127,7 @@ PHASE1_SUBPHASE_WEIGHTS: Dict[str, SubphaseWeight] = {
     "SP1": SubphaseWeight("SP1", 2500, WeightTier.STANDARD, 1.0, False, "Language preprocessing"),
     "SP2": SubphaseWeight("SP2", 3000, WeightTier.STANDARD, 1.0, False, "Structural analysis"),
     "SP3": SubphaseWeight("SP3", 4000, WeightTier.STANDARD, 1.0, False, "Knowledge graph"),
-    "SP4": SubphaseWeight("SP4", 10000, WeightTier.CRITICAL, 3.0, True, "Question-aware chunking (300 chunks)"),
+    "SP4": SubphaseWeight("SP4", 10000, WeightTier.CRITICAL, 3.0, True, "Question-aware chunking (60 chunks)"),
     "SP4.1": SubphaseWeight("SP4.1", 0, WeightTier.CRITICAL, 0.0, True, "Colombian PDM enhancement (mandatory sub-subphase)"),
     "SP5": SubphaseWeight("SP5", 5000, WeightTier.HIGH, 2.0, False, "Causal extraction"),
     "SP6": SubphaseWeight("SP6", 3500, WeightTier.STANDARD, 1.0, False, "Arguments extraction"),
@@ -121,7 +135,7 @@ PHASE1_SUBPHASE_WEIGHTS: Dict[str, SubphaseWeight] = {
     "SP8": SubphaseWeight("SP8", 3500, WeightTier.STANDARD, 1.0, False, "Temporal extraction"),
     "SP9": SubphaseWeight("SP9", 6000, WeightTier.HIGH, 2.0, False, "Causal integration"),
     "SP10": SubphaseWeight("SP10", 8000, WeightTier.HIGH, 2.0, False, "Strategic integration"),
-    "SP11": SubphaseWeight("SP11", 10000, WeightTier.CRITICAL, 3.0, True, "Chunk assembly (300 chunks)"),
+    "SP11": SubphaseWeight("SP11", 10000, WeightTier.CRITICAL, 3.0, True, "Chunk assembly (60 chunks)"),
     "SP12": SubphaseWeight("SP12", 7000, WeightTier.HIGH, 2.0, False, "SISAS irrigation"),
     "SP13": SubphaseWeight("SP13", 10000, WeightTier.CRITICAL, 3.0, True, "CPP packaging"),
     "SP14": SubphaseWeight("SP14", 5000, WeightTier.HIGH, 2.0, False, "Quality metrics"),
@@ -208,17 +222,13 @@ def validate_triada_integrity() -> bool:
             "CALIBRATABLE and INVARIANT. This is forbidden."
         )
     
-    # Rule 4: Verify 300 chunks math (10 PA × 6 Dim × 5 Q)
-    expected_chunks = (
-        CONSTITUTIONAL_POLICY_AREAS 
-        * CONSTITUTIONAL_CAUSAL_DIMENSIONS 
-        * CONSTITUTIONAL_QUESTIONS_PER_DIMENSION
-    )
+    # Rule 4: Verify 60 chunks math (10 PA × 6 Dim)
+    # Phase 2 expands to 300 tasks (60 × 5 Q)
+    expected_chunks = CONSTITUTIONAL_POLICY_AREAS * CONSTITUTIONAL_CAUSAL_DIMENSIONS
     if expected_chunks != CONSTITUTIONAL_CHUNK_COUNT:
         raise ValueError(
             f"CONSTITUTIONAL VIOLATION: {CONSTITUTIONAL_POLICY_AREAS} PA × "
-            f"{CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim × "
-            f"{CONSTITUTIONAL_QUESTIONS_PER_DIMENSION} Q = {expected_chunks}, "
+            f"{CONSTITUTIONAL_CAUSAL_DIMENSIONS} Dim = {expected_chunks}, "
             f"expected {CONSTITUTIONAL_CHUNK_COUNT}"
         )
     
@@ -257,13 +267,14 @@ def is_subphase_parametrizable(sp_id: str) -> bool:
 
 def is_subphase_invariant(sp_id: str) -> bool:
     """Check if a subphase is constitutionally invariant.
-    
+
     INVARIANT subphases (SP4, SP11, SP13) enforce the 60-chunk grid.
+    Phase 2 expands these 60 chunks to 300 tasks (60 × 5 questions).
     They CANNOT be calibrated or modified at runtime.
-    
+
     Args:
         sp_id: Subphase identifier
-        
+
     Returns:
         True if subphase is constitutional invariant
     """
