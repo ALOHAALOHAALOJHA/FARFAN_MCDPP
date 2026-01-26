@@ -95,7 +95,6 @@ try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
         Event,
         EventStore,
-        EventType,
         EventPayload,
     )
     SISAS_EVENTS_AVAILABLE = True
@@ -103,7 +102,6 @@ except ImportError:
     SISAS_EVENTS_AVAILABLE = False
     Event = None  # type: ignore
     EventStore = None  # type: ignore
-    EventType = None  # type: ignore
     EventPayload = None  # type: ignore
 
 try:
