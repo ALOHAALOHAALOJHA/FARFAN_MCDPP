@@ -15,15 +15,15 @@
     "total_methods": 652,
     "by_epistemology": {
       "N2-INF": 379,
-      "N1-EMP": 165,
-      "N3-AUD": 108
+      "N1-EMP": 163,
+      "N3-AUD": 110
     },
     "by_capacity": {
       "CA-O": 338,
-      "CA-I": 165,
-      "CP-O": 14,
+      "CA-I": 163,
+      "CP-O": 15,
       "CO-O": 41,
-      "CO-S": 94
+      "CO-S": 95
     },
     "by_file": {
       "embedding_policy.py": 74,
@@ -42,9 +42,9 @@
       "processor_config_schema.py": 3,
       "causal_inference_dowhy.py": 9
     },
-    "high_confidence": 403,
+    "high_confidence": 399,
     "medium_confidence": 27,
-    "low_confidence": 222
+    "low_confidence": 226
   },
   "methods": [
     {
@@ -55,9 +55,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -68,9 +68,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -81,9 +81,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -94,9 +94,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -107,9 +107,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -120,9 +120,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -133,9 +133,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -146,9 +146,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -159,9 +159,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -185,9 +185,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -198,9 +198,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -211,9 +211,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -276,9 +276,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -289,9 +289,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -302,9 +302,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -419,9 +419,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -432,9 +432,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.8,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Method name starts with 'process'"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -445,9 +445,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -497,9 +497,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -523,9 +523,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -536,9 +536,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -575,9 +575,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -601,9 +601,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -614,9 +614,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -627,9 +627,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.8,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Method name starts with 'process'"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -640,9 +640,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -653,9 +653,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -666,9 +666,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -679,9 +679,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -692,9 +692,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -718,9 +718,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -731,9 +731,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -744,9 +744,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -757,9 +757,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -770,9 +770,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -783,9 +783,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -822,9 +822,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -835,9 +835,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -848,9 +848,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -887,9 +887,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -900,9 +900,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -913,9 +913,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -926,9 +926,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -939,9 +939,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -952,9 +952,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -965,9 +965,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -978,9 +978,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -991,9 +991,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1004,9 +1004,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1017,9 +1017,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1212,9 +1212,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1225,9 +1225,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1264,9 +1264,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1277,9 +1277,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1290,9 +1290,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1303,9 +1303,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1355,9 +1355,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1368,9 +1368,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1394,9 +1394,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1459,9 +1459,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1498,9 +1498,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1511,9 +1511,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1524,9 +1524,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1537,9 +1537,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1641,9 +1641,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1771,9 +1771,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1797,9 +1797,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1810,9 +1810,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1823,9 +1823,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1862,9 +1862,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1875,9 +1875,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1888,9 +1888,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1901,9 +1901,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1914,9 +1914,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1927,9 +1927,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -1940,9 +1940,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2044,9 +2044,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2135,9 +2135,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2161,9 +2161,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2174,9 +2174,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2239,9 +2239,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2278,9 +2278,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2291,9 +2291,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2551,9 +2551,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2564,9 +2564,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2577,9 +2577,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2590,9 +2590,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2603,9 +2603,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2681,9 +2681,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2694,9 +2694,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2707,9 +2707,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2720,9 +2720,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2746,9 +2746,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -2759,9 +2759,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -3643,9 +3643,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -3656,9 +3656,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -3682,9 +3682,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -3708,9 +3708,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -3721,9 +3721,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -3734,9 +3734,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4254,9 +4254,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4267,9 +4267,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4280,9 +4280,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4293,9 +4293,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4306,9 +4306,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4319,9 +4319,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4371,9 +4371,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4397,9 +4397,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4410,9 +4410,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4423,9 +4423,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4436,9 +4436,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4813,9 +4813,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4839,9 +4839,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -4852,9 +4852,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5372,9 +5372,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5385,9 +5385,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5398,9 +5398,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5411,9 +5411,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5424,9 +5424,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5437,9 +5437,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5476,9 +5476,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5489,9 +5489,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.8,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Method name starts with 'process'"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5528,9 +5528,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5580,9 +5580,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5606,9 +5606,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5619,9 +5619,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5970,9 +5970,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5983,9 +5983,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -5996,9 +5996,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6009,9 +6009,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6022,9 +6022,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6048,9 +6048,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6087,9 +6087,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6113,9 +6113,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6126,9 +6126,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6165,9 +6165,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6178,9 +6178,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6191,9 +6191,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6217,9 +6217,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6230,9 +6230,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6243,9 +6243,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6269,9 +6269,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6282,9 +6282,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6295,9 +6295,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6308,9 +6308,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6321,9 +6321,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6334,9 +6334,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6360,9 +6360,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6373,9 +6373,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6386,9 +6386,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6399,9 +6399,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6412,9 +6412,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6425,9 +6425,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6438,9 +6438,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6451,9 +6451,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6464,9 +6464,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6477,9 +6477,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6490,9 +6490,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6503,9 +6503,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6516,9 +6516,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6529,9 +6529,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6542,9 +6542,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6555,9 +6555,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6568,9 +6568,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6581,9 +6581,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6594,9 +6594,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6607,9 +6607,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6620,9 +6620,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6646,9 +6646,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6659,9 +6659,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6672,9 +6672,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6685,9 +6685,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6698,9 +6698,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6711,9 +6711,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6776,9 +6776,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6789,9 +6789,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6815,9 +6815,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -6893,9 +6893,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7192,9 +7192,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7205,9 +7205,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7335,9 +7335,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7439,9 +7439,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7452,9 +7452,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7465,9 +7465,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7491,9 +7491,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7504,9 +7504,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.8,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Method name starts with 'process'"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7517,9 +7517,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7530,9 +7530,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7543,9 +7543,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7556,9 +7556,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7569,9 +7569,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7582,9 +7582,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7595,9 +7595,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7608,9 +7608,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7621,9 +7621,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7634,9 +7634,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7647,9 +7647,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7660,9 +7660,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7673,9 +7673,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7686,9 +7686,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7699,9 +7699,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7751,9 +7751,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7764,9 +7764,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7777,9 +7777,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7790,9 +7790,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -7803,9 +7803,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8034,9 +8034,9 @@
       "method_name": "_initialize_pdm_patterns",
       "file_path": "contradiction_deteccion.py",
       "is_public": false,
-      "epistemological_level": "N1-EMP",
-      "output_type": "FACT",
-      "capacity_type": "CA-I",
+      "epistemological_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": "CO-S",
       "classification_confidence": 0.9,
       "classification_evidence": [
         "Class 'PolicyContradictionDetector' is in CLASS_LEVEL_MAPPING"
@@ -8047,9 +8047,9 @@
       "method_name": "detect",
       "file_path": "contradiction_deteccion.py",
       "is_public": true,
-      "epistemological_level": "N1-EMP",
-      "output_type": "FACT",
-      "capacity_type": "CA-I",
+      "epistemological_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": "CP-O",
       "classification_confidence": 0.9,
       "classification_evidence": [
         "Class 'PolicyContradictionDetector' is in CLASS_LEVEL_MAPPING"
@@ -8141,9 +8141,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8167,9 +8167,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8180,9 +8180,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8258,9 +8258,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8271,9 +8271,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8297,9 +8297,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8310,9 +8310,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8323,9 +8323,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8336,9 +8336,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8349,9 +8349,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8362,9 +8362,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8414,9 +8414,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8427,9 +8427,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8440,9 +8440,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8453,9 +8453,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8466,9 +8466,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8479,9 +8479,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8492,9 +8492,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8505,9 +8505,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     },
     {
@@ -8518,9 +8518,9 @@
       "epistemological_level": "N2-INF",
       "output_type": "PARAMETER",
       "capacity_type": "CA-O",
-      "classification_confidence": 0.3,
+      "classification_confidence": 0.2,
       "classification_evidence": [
-        "Default classification (insufficient pattern match)"
+        "UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)"
       ]
     }
   ]

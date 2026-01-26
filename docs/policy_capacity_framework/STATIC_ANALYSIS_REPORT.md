@@ -36,27 +36,27 @@ Classification is based on:
 
 | Level | Count | Percentage |
 |-------|-------|------------|
-| N1-EMP | 165 | 25.3% |
+| N1-EMP | 163 | 25.0% |
 | N2-INF | 379 | 58.1% |
-| N3-AUD | 108 | 16.6% |
+| N3-AUD | 110 | 16.9% |
 
 ### Policy Capacity Distribution
 
 | Capacity Type | Count | Percentage |
 |---------------|-------|------------|
-| CA-I | 165 | 25.3% |
+| CA-I | 163 | 25.0% |
 | CA-O | 338 | 51.8% |
 | CO-O | 41 | 6.3% |
-| CO-S | 94 | 14.4% |
-| CP-O | 14 | 2.1% |
+| CO-S | 95 | 14.6% |
+| CP-O | 15 | 2.3% |
 
 ### Classification Confidence
 
 | Level | Count |
 |-------|-------|
-| High (≥0.8) | 403 |
+| High (≥0.8) | 399 |
 | Medium (≥0.5) | 27 |
-| Low (<0.5) | 222 |
+| Low (<0.5) | 226 |
 
 ---
 
@@ -79,13 +79,13 @@ First 20 methods with high confidence classification:
 | BayesianNumericalAnalyzer | _null_evaluation | embedding_policy.py | N2-INF | CA-O | 0.90 |
 | BayesianNumericalAnalyzer | serialize_posterior_samples | embedding_policy.py | N2-INF | CA-O | 0.90 |
 | BayesianNumericalAnalyzer | compare_policies | embedding_policy.py | N2-INF | CA-O | 0.90 |
-| PolicyAnalysisEmbedder | process_document | embedding_policy.py | N2-INF | CA-O | 0.80 |
 | PolicyAnalysisEmbedder | evaluate_policy_numerical_consistency | embedding_policy.py | N2-INF | CA-O | 0.80 |
 | PolicyAnalysisEmbedder | compare_policy_interventions | embedding_policy.py | N2-INF | CA-O | 0.80 |
 | PolicyAnalysisEmbedder | _embed_texts | embedding_policy.py | N2-INF | CA-O | 0.80 |
 | PolicyAnalysisEmbedder | _extract_numerical_values | embedding_policy.py | N1-EMP | CA-I | 0.80 |
 | PolicyAnalysisEmbedder | _compute_overall_confidence | embedding_policy.py | N2-INF | CA-O | 0.80 |
-| EmbeddingPolicyProducer | process_document | embedding_policy.py | N2-INF | CA-O | 0.80 |
+| EmbeddingPolicyProducer | evaluate_numerical_consistency | embedding_policy.py | N2-INF | CA-O | 0.80 |
+| EmbeddingPolicyProducer | compare_policy_interventions | embedding_policy.py | N2-INF | CA-O | 0.80 |
 
 ---
 

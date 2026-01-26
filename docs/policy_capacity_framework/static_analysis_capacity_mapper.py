@@ -119,7 +119,7 @@ METHOD_NAME_PATTERNS = {
     EpistemologicalLevel.N2_INF: {
         "prefixes": ["analyze_", "_analyze_", "score_", "_score_", "calculate_", "_calculate_",
                      "infer_", "_infer_", "evaluate_", "_evaluate_", "compare_", "_compare_",
-                     "compute_", "_compute_", "embed_", "_embed_", "process", "_process",
+                     "compute_", "_compute_", "embed_", "_embed_",
                      "integrate_", "_integrate_", "aggregate_", "_aggregate_"],
         "keywords": ["bayesian", "posterior", "likelihood", "confidence", "semantic", "inference"],
     },
@@ -139,7 +139,6 @@ CLASS_LEVEL_MAPPING = {
     "CausalExtractor": EpistemologicalLevel.N1_EMP,
     "PDETMunicipalPlanAnalyzer": EpistemologicalLevel.N1_EMP,
     "SemanticProcessor": EpistemologicalLevel.N1_EMP,
-    "PolicyContradictionDetector": EpistemologicalLevel.N1_EMP,  # has extract methods
     "MunicipalAnalyzer": EpistemologicalLevel.N1_EMP,
     "DocumentProcessor": EpistemologicalLevel.N1_EMP,
     
@@ -155,6 +154,7 @@ CLASS_LEVEL_MAPPING = {
     "DispersionEngine": EpistemologicalLevel.N2_INF,
     
     # N3-AUD classes
+    "PolicyContradictionDetector": EpistemologicalLevel.N3_AUD,  # Detects contradictions
     "FinancialAuditor": EpistemologicalLevel.N3_AUD,
     "IndustrialGradeValidator": EpistemologicalLevel.N3_AUD,
     "AdvancedDAGValidator": EpistemologicalLevel.N3_AUD,
@@ -245,8 +245,8 @@ class StaticMethodAnalyzer:
         with open(file_path, 'r', encoding='utf-8') as f:
             try:
                 tree = ast.parse(f.read(), filename=str(file_path))
-            except SyntaxError as e:
-                print(f"Syntax error in {file_path.name}: {e}")
+            except (SyntaxError, UnicodeDecodeError) as e:
+                print(f"Syntax/encoding error in {file_path.name}: {e}")
                 return
         
         for node in ast.walk(tree):
@@ -261,8 +261,8 @@ class StaticMethodAnalyzer:
             if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 method_name = item.name
                 
-                # Skip magic methods and truly private methods
-                if method_name.startswith("__"):
+                # Skip magic methods (dunder methods like __init__)
+                if method_name.startswith("__") and method_name.endswith("__"):
                     continue
                 
                 is_public = not method_name.startswith("_")
@@ -318,11 +318,13 @@ class EpistemologicalClassifier:
                 if level:
                     break
         
-        # Default: N2-INF if we can't classify
+        # Default: Mark as unclassified if we can't determine level
+        # This avoids systematic bias toward N2-INF
         if level is None:
+            # Use N2-INF as fallback but flag with very low confidence
             level = EpistemologicalLevel.N2_INF
-            confidence = 0.3
-            evidence.append("Default classification (insufficient pattern match)")
+            confidence = 0.2  # Lower confidence to indicate uncertainty
+            evidence.append("UNCLASSIFIED - defaulted to N2-INF (insufficient pattern match)")
         
         # Set level and output type
         method.epistemological_level = level.code
