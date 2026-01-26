@@ -16,21 +16,26 @@ Effective-Date: 2026-01-13
 """
 
 # METADATA
-__version__ = "1.0.0"
+__version__ = "2.0.0"  # SISAS integration
 __phase__ = 7
 __stage__ = 20
 __order__ = 0
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2026-01-13T00:00:00Z"
-__modified__ = "2026-01-13T00:00:00Z"
+__modified__ = "2026-01-25T00:00:00Z"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "Per-Task"
 
 import logging
 import statistics
-from typing import Any
+from typing import Any, TYPE_CHECKING
 from datetime import datetime
 from uuid import uuid4
+
+if TYPE_CHECKING:
+    from farfan_pipeline.phases.Phase_02.registries.questionnaire_signal_registry import (
+        QuestionnaireSignalRegistry,
+    )
 
 from farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score import ClusterScore
 from farfan_pipeline.phases.Phase_07.phase7_10_00_macro_score import MacroScore
@@ -74,6 +79,8 @@ class MacroAggregator:
         - Strategic alignment scoring (vertical, horizontal, temporal)
         - Quality classification based on normalized score
         - Uncertainty propagation from cluster scores
+        - SISAS signal registry integration for dynamic weight consumption
+        - Provenance tracking for SISAS-sourced configurations
     """
     
     def __init__(
@@ -82,6 +89,7 @@ class MacroAggregator:
         enable_gap_detection: bool = True,
         enable_coherence_analysis: bool = True,
         enable_alignment_scoring: bool = True,
+        signal_registry: "QuestionnaireSignalRegistry | None" = None,
     ):
         """
         Initialize MacroAggregator.
@@ -91,8 +99,20 @@ class MacroAggregator:
             enable_gap_detection: Whether to detect systemic gaps
             enable_coherence_analysis: Whether to compute cross-cutting coherence
             enable_alignment_scoring: Whether to compute strategic alignment
+            signal_registry: Optional SISAS QuestionnaireSignalRegistry for dynamic
+                weight consumption and provenance tracking
         """
-        self.cluster_weights = cluster_weights or CLUSTER_WEIGHTS.copy()
+        # SISAS integration
+        self.signal_registry = signal_registry
+        self.sisas_source: str = "legacy_constant"  # Track weight source
+        self.sisas_provenance: dict[str, Any] = {}  # Provenance from SISAS
+        
+        # Load weights from SISAS if registry provided, otherwise use static weights
+        if signal_registry is not None:
+            self.cluster_weights = self._load_weights_from_sisas(signal_registry)
+        else:
+            self.cluster_weights = cluster_weights or CLUSTER_WEIGHTS.copy()
+        
         self.enable_gap_detection = enable_gap_detection
         self.enable_coherence_analysis = enable_coherence_analysis
         self.enable_alignment_scoring = enable_alignment_scoring
@@ -105,6 +125,58 @@ class MacroAggregator:
             self.cluster_weights = {
                 k: v / weight_sum for k, v in self.cluster_weights.items()
             }
+    
+    def _load_weights_from_sisas(
+        self, registry: "QuestionnaireSignalRegistry"
+    ) -> dict[str, float]:
+        """
+        Load cluster weights from SISAS signal registry.
+        
+        Attempts to fetch AssemblySignalPack for MACRO_1 level.
+        Falls back to CLUSTER_WEIGHTS constant if SISAS data unavailable.
+        
+        Args:
+            registry: QuestionnaireSignalRegistry instance
+            
+        Returns:
+            Dictionary of cluster_id -> weight
+        """
+        try:
+            # Attempt to get assembly signals for MACRO level
+            assembly_pack = registry.get_assembly_signals("MACRO_1")
+            
+            if assembly_pack is not None:
+                cluster_weights = getattr(assembly_pack, "cluster_weights", None)
+                if cluster_weights and isinstance(cluster_weights, dict):
+                    # Validate required clusters present
+                    required = set(INPUT_CLUSTERS)
+                    found = set(cluster_weights.keys())
+                    if required.issubset(found):
+                        self.sisas_source = "sisas_registry"
+                        self.sisas_provenance = {
+                            "pack_id": getattr(assembly_pack, "pack_id", "unknown"),
+                            "source_hash": getattr(assembly_pack, "source_hash", "unknown"),
+                            "level": "MACRO_1",
+                        }
+                        logger.info(
+                            f"Loaded cluster weights from SISAS registry: "
+                            f"pack_id={self.sisas_provenance.get('pack_id')}"
+                        )
+                        return {k: cluster_weights[k] for k in INPUT_CLUSTERS}
+                    else:
+                        logger.warning(
+                            f"SISAS cluster_weights missing required clusters: "
+                            f"{required - found}, falling back to constants"
+                        )
+            
+            logger.debug("SISAS assembly signals not available, using constant weights")
+            
+        except Exception as e:
+            logger.warning(f"SISAS weight loading failed: {e}, using constant weights")
+        
+        # Fallback to static constants
+        self.sisas_source = "legacy_constant"
+        return CLUSTER_WEIGHTS.copy()
     
     def aggregate(self, cluster_scores: list[ClusterScore]) -> MacroScore:
         """
@@ -143,8 +215,12 @@ class MacroAggregator:
         # Step 7: Uncertainty propagation
         score_std, ci_95 = self._propagate_uncertainty(cluster_scores)
         
-        # Step 8: Assemble cluster details
+        # Step 8: Assemble cluster details with SISAS provenance
         cluster_details = self._assemble_cluster_details(cluster_scores)
+        cluster_details["sisas_provenance"] = {
+            "source": self.sisas_source,
+            "weights_from": self.sisas_provenance if self.sisas_provenance else "constants",
+        }
         
         # Step 9: Generate evaluation ID and provenance
         evaluation_id = f"EVAL_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
@@ -169,7 +245,7 @@ class MacroAggregator:
             provenance_node_id=provenance_node_id,
             aggregation_method="weighted_average",
             evaluation_timestamp=datetime.utcnow().isoformat() + "Z",
-            pipeline_version="1.0.0",
+            pipeline_version="2.0.0",  # Updated for SISAS integration
         )
         
         # Validate output contract

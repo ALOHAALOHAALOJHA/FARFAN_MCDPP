@@ -19,20 +19,25 @@ from __future__ import annotations
 # METADATA
 # =============================================================================
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"  # SISAS integration
 __phase__ = 7
 __stage__ = 10
 __order__ = 10
 __author__ = "F.A.R.F.A.N Core Team - Empirical Corpus Integration"
 __created__ = "2026-01-12"
-__modified__ = "2026-01-12"
+__modified__ = "2026-01-25"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
 
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.consumers.phase7.phase7_meso_consumer import (
+        Phase7MesoConsumer,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +66,8 @@ class SystemicGap:
         normative_compliance_score: Normative compliance score (0.0-1.0)
         recommendation: Actionable recommendation
         context: Optional contextual information
+        signal_informed: Whether gap was enhanced by live SISAS signals
+        signal_severity_adjustment: Adjustment factor from signals (1.0 = no change)
     """
 
     area_id: str
@@ -72,6 +79,9 @@ class SystemicGap:
     normative_compliance_score: float = 0.0
     recommendation: str = ""
     context: dict[str, Any] = field(default_factory=dict)
+    # SISAS signal integration
+    signal_informed: bool = False
+    signal_severity_adjustment: float = 1.0
 
 
 # =============================================================================
@@ -83,12 +93,14 @@ class SystemicGapDetector:
     """Detects systemic gaps using normative baseline.
 
     Enhanced gap detection that combines quality-level thresholds with
-    normative compliance validation from empirical corpus.
+    normative compliance validation from empirical corpus and optional
+    SISAS signal-informed severity adjustments.
 
     Attributes:
         score_threshold: Score threshold for gap detection (default: 0.55)
         normative_validator: NormativeComplianceValidator instance
         enable_normative_validation: Enable normative baseline validation
+        signal_consumer: Optional Phase7MesoConsumer for signal insights
     """
 
     def __init__(
@@ -96,6 +108,7 @@ class SystemicGapDetector:
         score_threshold: float = 0.55,
         corpus_path: Path | str | None = None,
         enable_normative_validation: bool = True,
+        signal_consumer: "Phase7MesoConsumer | None" = None,
     ):
         """Initialize systemic gap detector.
 
@@ -103,9 +116,11 @@ class SystemicGapDetector:
             score_threshold: Score threshold for gap detection (INSUFICIENTE)
             corpus_path: Optional path to normative_compliance.json
             enable_normative_validation: Enable normative baseline validation
+            signal_consumer: Optional Phase7MesoConsumer for signal insights
         """
         self.score_threshold = score_threshold
         self.enable_normative_validation = enable_normative_validation
+        self.signal_consumer = signal_consumer
 
         # Load normative compliance validator
         self.normative_validator = None
@@ -123,6 +138,10 @@ class SystemicGapDetector:
                     f"falling back to quality-level only detection: {e}"
                 )
                 self.enable_normative_validation = False
+        
+        # Signal consumer availability check
+        if signal_consumer is not None:
+            logger.info("SystemicGapDetector initialized with SISAS signal consumer")
 
     def detect_gaps(
         self,
@@ -141,6 +160,9 @@ class SystemicGapDetector:
             List of SystemicGap objects, sorted by priority
         """
         gaps = []
+        
+        # Get signal insights if consumer available
+        signal_insights = self._get_insights_from_signals()
 
         for area in area_scores:
             area_id = getattr(area, "area_id", "UNKNOWN")
@@ -162,11 +184,16 @@ class SystemicGapDetector:
                         extracted_norms_by_area or {},
                         context_by_area or {},
                     )
+                
+                # Enhanced: Apply signal-based severity adjustment
+                if signal_insights:
+                    self._enhance_gap_with_signals(gap, area_id, signal_insights)
 
                 gaps.append(gap)
                 logger.info(
                     f"Systemic gap detected: {area_name} "
-                    f"(score={normalized_score:.3f}, priority={gap.priority})"
+                    f"(score={normalized_score:.3f}, priority={gap.priority}, "
+                    f"signal_informed={gap.signal_informed})"
                 )
 
         # Sort gaps by priority (CRITICAL first)
@@ -175,6 +202,58 @@ class SystemicGapDetector:
 
         logger.info(f"Total systemic gaps detected: {len(gaps)}")
         return gaps
+    
+    def _get_insights_from_signals(self) -> dict[str, Any] | None:
+        """Get accumulated insights from signal consumer if available."""
+        if self.signal_consumer is None:
+            return None
+        
+        try:
+            insights = self.signal_consumer.get_insights()
+            return {
+                "data_completeness": insights.data_completeness_level,
+                "integrity_violations": insights.integrity_violations,
+                "empirical_support": insights.empirical_support_levels,
+                "low_determinacy": insights.low_determinacy_areas,
+                "divergences": insights.divergences_detected,
+                "severity_factor": insights.severity_adjustment_factor,
+            }
+        except Exception as e:
+            logger.warning(f"Failed to get signal insights: {e}")
+            return None
+    
+    def _enhance_gap_with_signals(
+        self,
+        gap: SystemicGap,
+        area_id: str,
+        insights: dict[str, Any],
+    ) -> None:
+        """Enhance gap detection with signal-derived insights."""
+        gap.signal_informed = True
+        
+        # Apply severity adjustment from divergence signals
+        severity_factor = insights.get("severity_factor", 1.0)
+        gap.signal_severity_adjustment = severity_factor
+        
+        # Check if area has low empirical support - boost priority
+        empirical_support = insights.get("empirical_support", {})
+        if area_id in empirical_support:
+            support_level = empirical_support[area_id]
+            if support_level < 0.5 and gap.priority not in ["CRITICAL"]:
+                gap.priority = "HIGH"
+                logger.debug(f"Gap {area_id} priority boosted due to low empirical support")
+        
+        # Check if area has low determinacy - boost priority
+        low_determinacy = insights.get("low_determinacy", [])
+        if area_id in low_determinacy and gap.priority == "MEDIUM":
+            gap.priority = "HIGH"
+            logger.debug(f"Gap {area_id} priority boosted due to low determinacy")
+        
+        # Apply severity factor to recommendation
+        if severity_factor > 1.0:
+            gap.recommendation = (
+                f"[SISAS: severity×{severity_factor:.1f}] {gap.recommendation}"
+            )
 
     def _normalize_score(self, score: float) -> float:
         """Normalize score from 0-3 to 0-1 range.

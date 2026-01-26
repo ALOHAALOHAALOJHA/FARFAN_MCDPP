@@ -7,7 +7,7 @@ Stage: 25 (Bifurcation)
 Order: 00
 Type: ENG
 Lifecycle: ACTIVE
-Version: 1.0.0
+Version: 2.0.0
 Effective-Date: 2026-01-25
 
 This module implements the BIFURCATOR, which takes standard recommendations from
@@ -18,6 +18,13 @@ RecommendationEngine and discovers hidden multiplicative value through four stra
 3. TEMPORAL CASCADES: Short-term fixes unlock long-term capabilities
 4. SYNERGY DETECTION: Two interventions together > sum of parts
 
+Enhancement Value (v2.0):
+- SISAS signal integration for pattern-aware bifurcation
+- Load bifurcation patterns from JSON (aligns with recommendation_rules_enhanced.json)
+- Signal-based priority scoring for cascades and pollinations
+- Enhanced provenance with signal metadata
+- Configurable pattern source (JSON or hardcoded fallback)
+
 Author: F.A.R.F.A.N Core Team
 Python: 3.10+
 """
@@ -26,7 +33,7 @@ Python: 3.10+
 # METADATA
 # =============================================================================
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 __phase__ = 8
 __stage__ = 25
 __order__ = 0
@@ -40,13 +47,23 @@ __execution_pattern__ = "On-Demand"
 # IMPORTS
 # =============================================================================
 
+import json
 import logging
 import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from itertools import combinations
-from typing import Any, TypeAlias
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, TypeAlias
+
+if TYPE_CHECKING:
+    try:
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+            QuestionnaireSignalRegistry,
+        )
+    except ImportError:
+        QuestionnaireSignalRegistry = Any  # type: ignore
 
 # =============================================================================
 # TYPE ALIASES
@@ -72,11 +89,23 @@ DEFAULT_LEVEL = "MICRO"
 SCORE_KEY_PATTERN = re.compile(r"^(PA\d{2})-(DIM\d{2})$")
 
 # =============================================================================
-# CONSTANTS - Dimensional Resonance (MICRO only)
+# CONSTANTS - Signal-Based Priority Thresholds
+# =============================================================================
+
+# Priority scoring thresholds (aligned with signal enrichment)
+CRITICAL_SCORE_THRESHOLD = 0.3  # Scores below this are critical
+LOW_SCORE_THRESHOLD = 0.5  # Scores below this are low
+CRITICAL_PRIORITY_BOOST = 0.3  # Priority boost for critical scores
+LOW_PRIORITY_BOOST = 0.2  # Priority boost for low scores
+STRONG_PATTERN_THRESHOLD = 5  # Pattern count for strong support
+ACTIONABILITY_BOOST = 0.15  # Boost for high actionability
+
+# =============================================================================
+# DEFAULT FALLBACK PATTERNS (used when JSON loading fails)
 # =============================================================================
 
 # When a dimension improves, which related dimensions benefit?
-DIMENSIONAL_RESONANCE: dict[str, dict[str, float]] = {
+DEFAULT_DIMENSIONAL_RESONANCE: dict[str, dict[str, float]] = {
     "DIM01": {"DIM02": 0.4, "DIM03": 0.3},  # Alignment -> Finance, Beliefs
     "DIM02": {"DIM01": 0.3, "DIM05": 0.5},  # Finance -> Alignment, Execution
     "DIM03": {"DIM01": 0.3, "DIM04": 0.4},  # Beliefs -> Alignment, Causality
@@ -85,28 +114,16 @@ DIMENSIONAL_RESONANCE: dict[str, dict[str, float]] = {
     "DIM06": {"DIM04": 0.4, "DIM05": 0.3},  # Evidence -> Causality, Execution
 }
 
-# =============================================================================
-# CONSTANTS - Cross-Pollination Patterns
-# =============================================================================
-
 # Shared structural patterns between PAs that enable cross-pollination
-CROSS_POLLINATION_PATTERNS: dict[str, dict[str, float]] = {
-    # PA01-PA03: Both rely on strategic planning
-    "PA01": {"PA03": 0.4},
-    # PA02-PA05: Financial planning connects to execution
-    "PA02": {"PA05": 0.35},
-    # PA03-PA04: Institutional design enables monitoring
-    "PA03": {"PA04": 0.3},
+DEFAULT_CROSS_POLLINATION_PATTERNS: dict[str, dict[str, float]] = {
+    "PA01": {"PA03": 0.4},  # Strategic planning connection
+    "PA02": {"PA05": 0.35},  # Financial-exection connection
+    "PA03": {"PA04": 0.3},  # Governance-monitoring connection
 }
 
-# =============================================================================
-# CONSTANTS - Temporal Cascade Patterns
-# =============================================================================
-
 # Short-term fixes that unlock long-term capabilities
-TEMPORAL_CASCADE_PATTERNS: dict[str, dict[str, dict[str, Any]]] = {
+DEFAULT_TEMPORAL_CASCADE_PATTERNS: dict[str, dict[str, dict[str, Any]]] = {
     "MICRO": {
-        # DIM01 improvement unlocks DIM03 capability
         "DIM01": {
             "DIM03": {
                 "horizon_months": 12,
@@ -123,7 +140,6 @@ TEMPORAL_CASCADE_PATTERNS: dict[str, dict[str, dict[str, Any]]] = {
         },
     },
     "MESO": {
-        # Cluster 1 improvement unlocks Cluster 2
         "CL01": {
             "CL02": {
                 "horizon_months": 24,
@@ -195,6 +211,9 @@ class CrossPollinationNode:
     mechanism: str
     estimated_bonus_score: float
     evidence: dict[str, Any] = field(default_factory=dict)
+    # NEW: Signal-based enhancement
+    signal_confidence: float = 0.0
+    signal_patterns: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -207,6 +226,9 @@ class TemporalCascade:
     horizon_months: int
     cascade_multiplier: float
     effect_description: str
+    # NEW: Signal-based enhancement
+    signal_confidence: float = 0.0
+    prerequisite_signals: list[str] = field(default_factory=list)
 
     def get_temporal_id(self) -> str:
         """Generate unique ID for this cascade."""
@@ -219,12 +241,22 @@ class SynergyMatrix:
 
     _synergies: dict[SynergyPair, float] = field(default_factory=dict)
     _pair_counts: dict[SynergyPair, int] = field(default_factory=dict)
+    # NEW: Signal-based enhancement
+    _signal_support: dict[SynergyPair, float] = field(default_factory=dict)
 
-    def add_synergy(self, rule_a: str, rule_b: str, strength: float) -> None:
-        """Add or update a synergy pair."""
+    def add_synergy(
+        self,
+        rule_a: str,
+        rule_b: str,
+        strength: float,
+        signal_confidence: float = 0.0
+    ) -> None:
+        """Add or update a synergy pair with optional signal confidence."""
         pair = tuple(sorted((rule_a, rule_b)))
         self._synergies[pair] = max(self._synergies.get(pair, 0.0), strength)
         self._pair_counts[pair] = self._pair_counts.get(pair, 0) + 1
+        if signal_confidence > 0:
+            self._signal_support[pair] = max(self._signal_support.get(pair, 0.0), signal_confidence)
 
     def get_synergy_multiplier(self, rule_ids: set[str]) -> float:
         """
@@ -238,7 +270,10 @@ class SynergyMatrix:
         multiplier = 1.0
         for pair, strength in self._synergies.items():
             if pair[0] in rule_ids and pair[1] in rule_ids:
-                multiplier *= (1.0 + strength)
+                # Apply signal boost if available
+                signal_boost = self._signal_support.get(pair, 0.0)
+                effective_strength = strength * (1.0 + signal_boost)
+                multiplier *= (1.0 + effective_strength)
 
         return min(multiplier, 5.0)  # Cap at 5x for sanity
 
@@ -268,6 +303,8 @@ class BifurcationResult:
     synergy_matrix: SynergyMatrix = field(default_factory=SynergyMatrix)
     generated_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
+    # NEW: Signal-based enrichment metadata
+    signal_enrichment: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
@@ -297,6 +334,8 @@ class BifurcationResult:
                     "strength": round(cp.pollination_strength, 3),
                     "mechanism": cp.mechanism,
                     "bonus": round(cp.estimated_bonus_score, 4),
+                    "signal_confidence": round(cp.signal_confidence, 3),
+                    "signal_patterns": cp.signal_patterns,
                 }
                 for cp in sorted_cps
             ],
@@ -308,12 +347,16 @@ class BifurcationResult:
                     "horizon": tc.horizon_months,
                     "multiplier": round(tc.cascade_multiplier, 3),
                     "effect": tc.effect_description,
+                    "signal_confidence": round(tc.signal_confidence, 3),
+                    "prerequisite_signals": tc.prerequisite_signals,
                 }
                 for tc in sorted_cascades
             ],
             "synergy_pairs": self.synergy_matrix._synergies.copy(),
+            "signal_support": self.synergy_matrix._signal_support.copy(),
             "generated_at": self.generated_at,
             "metadata": self.metadata,
+            "signal_enrichment": self.signal_enrichment,
         }
 
 
@@ -337,6 +380,13 @@ class RecommendationBifurcator:
     3. TEMPORAL CASCADES: Short-term fixes unlock long-term capabilities
     4. SYNERGY DETECTION: Two interventions together > sum of parts
 
+    v2.0 Enhancements
+    -----------------
+    - SISAS signal integration for pattern-aware bifurcation
+    - Load bifurcation patterns from JSON (aligns with recommendation_rules_enhanced.json)
+    - Signal-based priority scoring for cascades and pollinations
+    - Enhanced provenance with signal metadata
+
     Parameters
     ----------
     enable_resonance : bool, default=True
@@ -347,6 +397,8 @@ class RecommendationBifurcator:
         Enable temporal cascade identification (all levels).
     enable_synergies : bool, default=True
         Enable synergy matrix construction (all levels).
+    enable_signal_enrichment : bool, default=True
+        Enable SISAS signal-based enrichment (v2.0).
     resonance_threshold : float, default=0.3
         Minimum resonance strength to consider (0.0-1.0).
     pollination_threshold : float, default=0.25
@@ -355,15 +407,27 @@ class RecommendationBifurcator:
         Maximum cascade depth (1, 2, or 3).
     amplification_config : AmplificationConfig | None, default=None
         Configuration for amplification calculation caps.
+    signal_registry : QuestionnaireSignalRegistry | None, default=None
+        SISAS signal registry for pattern-aware bifurcation.
+    rules_path : str | Path | None, default=None
+        Path to JSON rules file containing bifurcation_patterns.
 
     Attributes
     ----------
     amplification_config : AmplificationConfig
         Configuration for amplification calculation caps.
+    signal_registry : QuestionnaireSignalRegistry | None
+        SISAS signal registry for signal-based enhancements.
+    bifurcation_patterns : dict[str, Any]
+        Loaded bifurcation patterns from JSON or defaults.
 
     Examples
     --------
-    >>> bifurcator = RecommendationBifurcator()
+    >>> from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    ...     QuestionnaireSignalRegistry
+    ... )
+    >>> registry = QuestionnaireSignalRegistry()
+    >>> bifurcator = RecommendationBifurcator(signal_registry=registry)
     >>> result = bifurcator.bifurcate(recommendations, "MICRO")
     >>> print(f"Amplification: {result.amplification_factor:.2f}x")
     Amplification: 2.47x
@@ -373,6 +437,7 @@ class RecommendationBifurcator:
     - Input order does not affect output (deterministic ordering applied)
     - Invalid `score_key` formats are skipped with debug logging
     - `level` is normalized to MICRO/MESO/MACRO (defaults to MICRO)
+    - Bifurcation patterns loaded from JSON if available, otherwise uses defaults
     """
 
     def __init__(
@@ -381,25 +446,220 @@ class RecommendationBifurcator:
         enable_pollination: bool = True,
         enable_cascades: bool = True,
         enable_synergies: bool = True,
+        enable_signal_enrichment: bool = True,
         resonance_threshold: float = 0.3,
         pollination_threshold: float = 0.25,
         cascade_max_depth: int = 3,
         amplification_config: AmplificationConfig | None = None,
+        signal_registry: QuestionnaireSignalRegistry | None = None,
+        rules_path: str | Path | None = None,
     ) -> None:
         self.enable_resonance = enable_resonance
         self.enable_pollination = enable_pollination
         self.enable_cascades = enable_cascades
         self.enable_synergies = enable_synergies
+        self.enable_signal_enrichment = enable_signal_enrichment
         self.resonance_threshold = resonance_threshold
         self.pollination_threshold = pollination_threshold
         self.cascade_max_depth = min(max(1, cascade_max_depth), 3)
         self.amplification_config = amplification_config or AmplificationConfig()
+        self.signal_registry = signal_registry
+
+        # Load bifurcation patterns from JSON
+        self.bifurcation_patterns = self._load_bifurcation_patterns(rules_path)
 
         logger.info(
-            f"RecommendationBifurcator initialized: "
+            f"RecommendationBifurcator v2.0 initialized: "
             f"resonance={enable_resonance}, pollination={enable_pollination}, "
-            f"cascades={enable_cascades}, synergies={enable_synergies}"
+            f"cascades={enable_cascades}, synergies={enable_synergies}, "
+            f"signal_enrichment={enable_signal_enrichment}, "
+            f"signal_registry={'enabled' if signal_registry else 'disabled'}"
         )
+
+    def _load_bifurcation_patterns(
+        self, rules_path: str | Path | None
+    ) -> dict[str, Any]:
+        """
+        Load bifurcation patterns from JSON rules file.
+
+        Falls back to default patterns if JSON loading fails.
+        """
+        if rules_path is None:
+            # Try default path
+            rules_path = (
+                Path(__file__).resolve().parent
+                / "json_phase_eight"
+                / "recommendation_rules_enhanced.json"
+            )
+
+        rules_path = Path(rules_path)
+
+        if not rules_path.exists():
+            logger.warning(
+                f"Bifurcation patterns file not found: {rules_path}. Using defaults."
+            )
+            return self._get_default_patterns()
+
+        try:
+            with open(rules_path, encoding="utf-8") as f:
+                rules = json.load(f)
+
+            patterns = rules.get("bifurcation_patterns", {})
+            if not patterns:
+                logger.warning(
+                    "No bifurcation_patterns section found in JSON. Using defaults."
+                )
+                return self._get_default_patterns()
+
+            logger.info(
+                f"Loaded bifurcation patterns from JSON: "
+                f"{len(patterns.get('dimensional_resonance', {}).get('mappings', {}))} resonance mappings, "
+                f"{len(patterns.get('cross_pollination', {}).get('patterns', {}))} pollination patterns, "
+                f"{sum(len(c) for c in patterns.get('temporal_cascades', {}).get('cascades', {}).values())} cascade patterns"
+            )
+            return patterns
+
+        except (json.JSONDecodeError, IOError) as e:
+            logger.warning(f"Failed to load bifurcation patterns from JSON: {e}. Using defaults.")
+            return self._get_default_patterns()
+
+    def _get_default_patterns(self) -> dict[str, Any]:
+        """Return default fallback patterns."""
+        return {
+            "dimensional_resonance": {
+                "mappings": DEFAULT_DIMENSIONAL_RESONANCE,
+                "threshold": self.resonance_threshold,
+                "bonus_multiplier": 0.3,
+            },
+            "cross_pollination": {
+                "patterns": DEFAULT_CROSS_POLLINATION_PATTERNS,
+                "threshold": self.pollination_threshold,
+                "bonus_multiplier": 0.25,
+            },
+            "temporal_cascades": {
+                "cascades": DEFAULT_TEMPORAL_CASCADE_PATTERNS,
+                "max_depth": self.cascade_max_depth,
+            },
+            "synergy_detection": {
+                "synergy_types": {
+                    "same_pa_different_dim": {"strength": 0.3},
+                    "different_pa_same_dim": {"strength": 0.25},
+                    "same_cluster": {"strength": 0.4},
+                }
+            },
+        }
+
+    def _get_dimensional_resonance_mappings(self) -> dict[str, dict[str, float]]:
+        """Get dimensional resonance mappings from loaded patterns."""
+        dr = self.bifurcation_patterns.get("dimensional_resonance", {})
+        mappings = dr.get("mappings", {})
+        if not mappings:
+            return DEFAULT_DIMENSIONAL_RESONANCE
+
+        # Convert JSON structure to simple dict
+        result = {}
+        for dim_id, config in mappings.items():
+            if isinstance(config, dict) and "resonances" in config:
+                result[dim_id] = {
+                    target: r.get("strength", 0.0)
+                    for target, r in config["resonances"].items()
+                }
+            else:
+                result[dim_id] = config
+        return result
+
+    def _get_cross_pollination_patterns(self) -> dict[str, dict[str, float]]:
+        """Get cross-pollination patterns from loaded patterns."""
+        cp = self.bifurcation_patterns.get("cross_pollination", {})
+        patterns = cp.get("patterns", {})
+        if not patterns:
+            return DEFAULT_CROSS_POLLINATION_PATTERNS
+
+        # Convert JSON structure to simple dict
+        result = {}
+        for pattern_id, config in patterns.items():
+            if isinstance(config, dict):
+                source = config.get("source_pa")
+                target = config.get("target_pa")
+                strength = config.get("strength", 0.0)
+                if source and target:
+                    if source not in result:
+                        result[source] = {}
+                    result[source][target] = strength
+        return result
+
+    def _get_temporal_cascade_patterns(self) -> dict[str, dict[str, dict[str, Any]]]:
+        """Get temporal cascade patterns from loaded patterns."""
+        tc = self.bifurcation_patterns.get("temporal_cascades", {})
+        cascades = tc.get("cascades", {})
+        if not cascades:
+            return DEFAULT_TEMPORAL_CASCADE_PATTERNS
+
+        # Convert JSON structure to simple dict
+        result = {}
+        for level, level_patterns in cascades.items():
+            result[level] = {}
+            for cascade_id, config in level_patterns.items():
+                if isinstance(config, dict):
+                    source = config.get("source")
+                    if source:
+                        result[level][source] = {}
+        return cascades if cascades else DEFAULT_TEMPORAL_CASCADE_PATTERNS
+
+    def _get_signal_confidence(
+        self,
+        score_key: str,
+        score_data: dict[str, Any] | None,
+    ) -> tuple[float, list[str]]:
+        """
+        Get signal confidence score for a given score_key.
+
+        Returns:
+            Tuple of (confidence_score, pattern_names)
+        """
+        if not self.enable_signal_enrichment or not self.signal_registry:
+            return 0.0, []
+
+        if not score_data:
+            return 0.0, []
+
+        try:
+            # Extract question ID from score_data
+            question_global = score_data.get("question_global")
+            if not isinstance(question_global, int):
+                return 0.0, []
+
+            question_id = f"Q{question_global:03d}"
+
+            # Get question mapping from registry (correct method)
+            question_mapping = self.signal_registry.get_question_mapping(question_id)
+
+            if question_mapping is None:
+                return 0.0, []
+
+            # QuestionSignalMapping has expected_patterns (list of pattern IDs)
+            pattern_ids = question_mapping.expected_patterns or []
+            pattern_count = len(pattern_ids)
+
+            # Calculate confidence based on pattern count
+            # More patterns = higher signal confidence
+            if pattern_count >= STRONG_PATTERN_THRESHOLD:
+                confidence = 0.2 + (pattern_count - STRONG_PATTERN_THRESHOLD) * 0.05
+            else:
+                confidence = pattern_count * 0.04
+
+            # Also consider empirical availability
+            empirical_availability = question_mapping.empirical_availability or 1.0
+            confidence *= empirical_availability
+
+            # Get signal information for pattern names
+            signal_names = question_mapping.all_signals or []
+
+            return min(confidence, 0.5), signal_names
+
+        except Exception as exc:
+            logger.debug(f"Signal confidence lookup failed for {score_key}: {exc}")
+            return 0.0, []
 
     def bifurcate(
         self,
@@ -417,7 +677,7 @@ class RecommendationBifurcator:
         level : str
             Analysis level (MICRO/MESO/MACRO). Will be normalized.
         score_data : dict[str, Any] | None, default=None
-            Optional score data for gap calculations.
+            Optional score data for gap calculations and signal enrichment.
 
         Returns
         -------
@@ -468,6 +728,13 @@ class RecommendationBifurcator:
 
         bifurcated_count = original_count + len(cross_pollinations) + len(temporal_cascades)
 
+        # Build signal enrichment metadata
+        signal_enrichment = {
+            "enabled": self.enable_signal_enrichment,
+            "registry_available": self.signal_registry is not None,
+            "patterns_source": "JSON" if self.bifurcation_patterns else "DEFAULT",
+        }
+
         return BifurcationResult(
             level=level,
             original_count=original_count,
@@ -484,6 +751,7 @@ class RecommendationBifurcator:
                 "cascades_enabled": self.enable_cascades,
                 "synergies_enabled": self.enable_synergies,
             },
+            signal_enrichment=signal_enrichment,
         )
 
     def _detect_dimensional_resonance(
@@ -493,6 +761,7 @@ class RecommendationBifurcator:
     ) -> list[CrossPollinationNode]:
         """Detect dimensional resonance opportunities (MICRO level only)."""
         resonances = []
+        mappings = self._get_dimensional_resonance_mappings()
 
         for rec in recommendations:
             metadata = _safe_get_metadata(rec)
@@ -504,10 +773,10 @@ class RecommendationBifurcator:
 
             pa_id, dim_id = parsed
 
-            if dim_id not in DIMENSIONAL_RESONANCE:
+            if dim_id not in mappings:
                 continue
 
-            for target_dim, strength in DIMENSIONAL_RESONANCE[dim_id].items():
+            for target_dim, strength in mappings[dim_id].items():
                 if strength < self.resonance_threshold:
                     continue
 
@@ -516,7 +785,18 @@ class RecommendationBifurcator:
                 # Tolerancia a gap None/invalido
                 raw_gap = metadata.get("gap")
                 original_gap = abs(float(raw_gap)) if isinstance(raw_gap, (int, float)) else 0.0
-                bonus = original_gap * strength * 0.3
+
+                # Get signal confidence
+                signal_confidence, signal_patterns = self._get_signal_confidence(
+                    metadata.get("score_key", ""), score_data
+                )
+
+                # Apply signal boost to bonus
+                signal_boost = 1.0 + signal_confidence
+                bonus_multiplier = self.bifurcation_patterns.get(
+                    "dimensional_resonance", {}
+                ).get("bonus_multiplier", 0.3)
+                bonus = original_gap * strength * bonus_multiplier * signal_boost
 
                 resonances.append(CrossPollinationNode(
                     source_rule_id=rec.get("rule_id", "UNKNOWN"),
@@ -529,7 +809,9 @@ class RecommendationBifurcator:
                         "target_dim": target_dim,
                         "resonance_coefficient": strength,
                         "original_gap": original_gap,
-                    }
+                    },
+                    signal_confidence=signal_confidence,
+                    signal_patterns=signal_patterns,
                 ))
 
         logger.debug(f"Found {len(resonances)} dimensional resonances")
@@ -543,6 +825,7 @@ class RecommendationBifurcator:
     ) -> list[CrossPollinationNode]:
         """Detect cross-pollination opportunities between recommendations."""
         pollinations = []
+        patterns = self._get_cross_pollination_patterns()
 
         # For MICRO level, include dimensional resonance
         if level == "MICRO" and self.enable_resonance:
@@ -567,11 +850,21 @@ class RecommendationBifurcator:
             pa_b, _ = parsed_b
 
             # Check for cross-pollination patterns
-            if pa_a in CROSS_POLLINATION_PATTERNS:
-                for target_pa, strength in CROSS_POLLINATION_PATTERNS[pa_a].items():
+            if pa_a in patterns:
+                for target_pa, strength in patterns[pa_a].items():
                     if pa_b == target_pa and strength >= self.pollination_threshold:
                         gap_a = metadata_a.get("gap", 0.0)
-                        bonus = abs(float(gap_a)) * strength * 0.25 if isinstance(gap_a, (int, float)) else 0.0
+                        base_bonus = abs(float(gap_a)) if isinstance(gap_a, (int, float)) else 0.0
+
+                        # Get signal confidence
+                        signal_confidence, signal_patterns = self._get_signal_confidence(score_key_a, score_data)
+
+                        # Apply signal boost
+                        signal_boost = 1.0 + signal_confidence
+                        bonus_multiplier = self.bifurcation_patterns.get(
+                            "cross_pollination", {}
+                        ).get("bonus_multiplier", 0.25)
+                        bonus = base_bonus * strength * bonus_multiplier * signal_boost
 
                         pollinations.append(CrossPollinationNode(
                             source_rule_id=rec_a.get("rule_id", "UNKNOWN"),
@@ -583,7 +876,9 @@ class RecommendationBifurcator:
                                 "source_pa": pa_a,
                                 "target_pa": pa_b,
                                 "pattern_strength": strength,
-                            }
+                            },
+                            signal_confidence=signal_confidence,
+                            signal_patterns=signal_patterns,
                         ))
 
         logger.debug(f"Found {len(pollinations)} cross-pollinations")
@@ -597,9 +892,10 @@ class RecommendationBifurcator:
     ) -> list[TemporalCascade]:
         """Detect temporal cascade opportunities."""
         cascades = []
-        patterns = TEMPORAL_CASCADE_PATTERNS.get(level, {})
+        patterns = self._get_temporal_cascade_patterns()
+        level_patterns = patterns.get(level, {})
 
-        if not patterns:
+        if not level_patterns:
             return cascades
 
         for rec in recommendations:
@@ -616,14 +912,21 @@ class RecommendationBifurcator:
             elif level == "MESO":
                 source = metadata.get("cluster_id")
 
-            if source is None or source not in patterns:
+            if source is None or source not in level_patterns:
                 continue
 
+            # Get signal confidence for prerequisites
+            signal_confidence, prerequisite_signals = self._get_signal_confidence(score_key, score_data)
+
             # Build cascades up to max depth
-            for target, config in patterns[source].items():
+            for target, config in level_patterns[source].items():
                 horizon = config.get("horizon_months", 12)
                 multiplier = config.get("multiplier", 1.0)
                 effect = config.get("effect", "")
+
+                # Apply signal boost to multiplier
+                signal_boost = 1.0 + (signal_confidence * 0.5)
+                enhanced_multiplier = multiplier * signal_boost
 
                 # First-order cascade
                 cascades.append(TemporalCascade(
@@ -631,32 +934,38 @@ class RecommendationBifurcator:
                     target_key=target,
                     order=1,
                     horizon_months=horizon,
-                    cascade_multiplier=multiplier,
+                    cascade_multiplier=enhanced_multiplier,
                     effect_description=effect,
+                    signal_confidence=signal_confidence,
+                    prerequisite_signals=prerequisite_signals,
                 ))
 
                 # Second-order cascades (if target is also a source)
-                if self.cascade_max_depth >= 2 and target in patterns:
-                    for second_target, second_config in patterns[target].items():
+                if self.cascade_max_depth >= 2 and target in level_patterns:
+                    for second_target, second_config in level_patterns[target].items():
                         cascades.append(TemporalCascade(
                             root_rule_id=rule_id,
                             target_key=second_target,
                             order=2,
                             horizon_months=horizon + second_config.get("horizon_months", 12),
-                            cascade_multiplier=multiplier * second_config.get("multiplier", 1.0),
+                            cascade_multiplier=enhanced_multiplier * second_config.get("multiplier", 1.0),
                             effect_description=f"Second-order: {effect} -> {second_config.get('effect', '')}",
+                            signal_confidence=signal_confidence * 0.8,  # Decay for second order
+                            prerequisite_signals=prerequisite_signals,
                         ))
 
                         # Third-order cascades
-                        if self.cascade_max_depth >= 3 and second_target in patterns:
-                            for third_target, third_config in patterns[second_target].items():
+                        if self.cascade_max_depth >= 3 and second_target in level_patterns:
+                            for third_target, third_config in level_patterns[second_target].items():
                                 cascades.append(TemporalCascade(
                                     root_rule_id=rule_id,
                                     target_key=third_target,
                                     order=3,
                                     horizon_months=horizon + second_config.get("horizon_months", 12) + third_config.get("horizon_months", 12),
-                                    cascade_multiplier=multiplier * second_config.get("multiplier", 1.0) * third_config.get("multiplier", 1.0),
+                                    cascade_multiplier=enhanced_multiplier * second_config.get("multiplier", 1.0) * third_config.get("multiplier", 1.0),
                                     effect_description=f"Third-order: {effect} -> ... -> {third_config.get('effect', '')}",
+                                    signal_confidence=signal_confidence * 0.6,  # Decay for third order
+                                    prerequisite_signals=prerequisite_signals,
                                 ))
 
         logger.debug(f"Found {len(cascades)} temporal cascades")
@@ -670,6 +979,9 @@ class RecommendationBifurcator:
     ) -> SynergyMatrix:
         """Build synergy matrix detecting pairs that work better together."""
         matrix = SynergyMatrix()
+        synergy_types = self.bifurcation_patterns.get("synergy_detection", {}).get(
+            "synergy_types", {}
+        )
 
         # Analyze pairs for synergistic potential
         for rec_a, rec_b in combinations(recommendations, 2):
@@ -697,10 +1009,10 @@ class RecommendationBifurcator:
 
                 # Same PA, different DIM -> moderate synergy
                 if pa_a == pa_b and dim_a != dim_b:
-                    synergy = 0.3
+                    synergy = synergy_types.get("same_pa_different_dim", {}).get("strength", 0.3)
                 # Different PA, same DIM -> moderate synergy
                 elif pa_a != pa_b and dim_a == dim_b:
-                    synergy = 0.25
+                    synergy = synergy_types.get("different_pa_same_dim", {}).get("strength", 0.25)
 
             # Cluster-based synergy for MESO
             if level == "MESO":
@@ -709,10 +1021,15 @@ class RecommendationBifurcator:
 
                 # Same cluster recommendations have synergy
                 if cluster_a and cluster_b and cluster_a == cluster_b:
-                    synergy = max(synergy, 0.4)
+                    synergy = max(synergy, synergy_types.get("same_cluster", {}).get("strength", 0.4))
 
             if synergy > 0:
-                matrix.add_synergy(rule_a, rule_b, synergy)
+                # Get signal confidence for this pair
+                sig_conf_a, _ = self._get_signal_confidence(score_key_a, score_data)
+                sig_conf_b, _ = self._get_signal_confidence(score_key_b, score_data)
+                combined_signal_confidence = (sig_conf_a + sig_conf_b) / 2
+
+                matrix.add_synergy(rule_a, rule_b, synergy, combined_signal_confidence)
 
         logger.debug(f"Built synergy matrix with {len(matrix._synergies)} pairs")
         return matrix
