@@ -9,7 +9,8 @@ a new aggregation dimension based on the Policy Capacity Framework.
 
 import json
 import math
-from typing import Dict, List, Tuple, Any
+import os
+from typing import Dict, List, Tuple, Any, Optional
 from dataclasses import dataclass, asdict
 from enum import Enum
 from collections import defaultdict
@@ -71,9 +72,24 @@ class Method:
     epistemology: Epistemology
     method_level: MethodLevel
     output_type: OutputType
-    capacity_type: object = None
+    capacity_type: Optional['CapacityType'] = None
     capacity_score: float = 0.0
 
+
+# Wu Framework: 9 Capacity Types
+# Mathematical Model Constants
+# Wu et al. (2015) - Formula 1: Base Capacity Score Weights
+# C_base(e,l,o) = α × E(e) + β × L(l) + γ × O(o)
+# α: Epistemology weight - theoretical foundation importance (highest)
+# β: Method level weight - analytical sophistication importance (medium)
+# γ: Output type weight - deliverable nature importance (lowest)
+ALPHA = 0.4  # Epistemology weight
+BETA = 0.35  # Method level weight
+GAMMA = 0.25  # Output type weight
+
+# Default output directory - can be overridden via OUTPUT_DIR environment variable
+DEFAULT_OUTPUT_DIR = "/tmp"
+OUTPUT_DIR = os.getenv("POLICY_CAPACITY_OUTPUT_DIR", DEFAULT_OUTPUT_DIR)
 
 # Wu Framework: 9 Capacity Types
 CAPACITY_MATRIX = {
@@ -243,11 +259,10 @@ def calculate_base_score(method):
         OutputType.CONSTRAINT: 1.2,
     }
     
-    α, β, γ = 0.4, 0.35, 0.25
-    
-    score = (α * E_weights[method.epistemology] +
-            β * L_weights[method.method_level] +
-            γ * O_weights[method.output_type])
+    # Use module-level constants with theoretical justification
+    score = (ALPHA * E_weights[method.epistemology] +
+            BETA * L_weights[method.method_level] +
+            GAMMA * O_weights[method.output_type])
     
     return round(score, 4)
 
@@ -404,14 +419,17 @@ def main():
         }
     }
     
-    # Save JSON
-    json_path = "/tmp/policy_capacity_analysis.json"
+    # Save JSON - use configurable output directory
+    json_path = os.path.join(OUTPUT_DIR, "policy_capacity_analysis.json")
     with open(json_path, 'w') as f:
         json.dump(json_output, f, indent=2)
     print(f"   ✓ JSON saved: {json_path}")
     
     # Generate markdown report
     print("5. Generating markdown report...")
+    
+    # Save markdown - use configurable output directory
+    markdown_path = os.path.join(OUTPUT_DIR, "POLICY_CAPACITY_FRAMEWORK_PLAN.md")
     
     markdown = f"""# Policy Capacity Framework Implementation Plan
 ## Wu, Ramesh & Howlett (2015) Analysis
@@ -677,10 +695,10 @@ First 10 methods:
 """
     
     # Save markdown
-    md_path = "/tmp/POLICY_CAPACITY_FRAMEWORK_PLAN.md"
-    with open(md_path, 'w') as f:
+    
+    with open(markdown_path, 'w') as f:
         f.write(markdown)
-    print(f"   ✓ Markdown saved: {md_path}")
+    print(f"   ✓ Markdown saved: {markdown_path}")
     
     # Summary
     print()
@@ -698,7 +716,7 @@ First 10 methods:
     print()
     print("Output Files:")
     print(f"  - {json_path}")
-    print(f"  - {md_path}")
+    print(f"  - {markdown_path}")
     print()
     print("=" * 80)
     print("ANALYSIS COMPLETE")
