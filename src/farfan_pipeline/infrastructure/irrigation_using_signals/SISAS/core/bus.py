@@ -297,6 +297,84 @@ class SignalBus:
         """Obtiene estadísticas del bus"""
         return self._stats. copy()
     
+    def check_consumer_backpressure(self, consumer_id: str, threshold: int = 100) -> Dict[str, Any]:
+        """
+        ENHANCEMENT: Check if a consumer is experiencing backpressure.
+        
+        Backpressure occurs when a consumer cannot keep up with the rate of
+        incoming signals. This can cause the bus queue to grow unbounded.
+        
+        Args:
+            consumer_id: Consumer to check
+            threshold: Number of unacknowledged messages that indicates backpressure
+            
+        Returns:
+            Dict with backpressure status and metrics
+        """
+        backpressure_status = {
+            "consumer_id": consumer_id,
+            "has_backpressure": False,
+            "unacknowledged_count": 0,
+            "oldest_unacknowledged_age_seconds": 0,
+            "recommendation": "normal_operation"
+        }
+        
+        # Count unacknowledged messages for this consumer
+        unacknowledged = []
+        for msg in self._message_history:
+            if consumer_id not in msg.acknowledged_by:
+                unacknowledged.append(msg)
+        
+        backpressure_status["unacknowledged_count"] = len(unacknowledged)
+        
+        if len(unacknowledged) > threshold:
+            backpressure_status["has_backpressure"] = True
+            backpressure_status["recommendation"] = "slow_down_publishing"
+            
+            # Calculate age of oldest unacknowledged message
+            if unacknowledged:
+                oldest = min(unacknowledged, key=lambda m: m.published_at)
+                age = (datetime.utcnow() - oldest.published_at).total_seconds()
+                backpressure_status["oldest_unacknowledged_age_seconds"] = age
+                
+                self._logger.warning(
+                    f"[BACKPRESSURE DETECTED] Consumer {consumer_id} has {len(unacknowledged)} "
+                    f"unacknowledged messages (threshold: {threshold}), oldest: {age:.0f}s"
+                )
+        
+        return backpressure_status
+    
+    def adaptive_publish_rate(self, target_consumer: Optional[str] = None) -> float:
+        """
+        ENHANCEMENT: Calculate adaptive publishing rate based on consumer health.
+        
+        Returns a multiplier (0.0-1.0) to apply to publishing rate:
+        - 1.0 = full speed (no backpressure)
+        - 0.5 = slow down by 50%
+        - 0.1 = slow down by 90% (severe backpressure)
+        
+        Args:
+            target_consumer: Optional specific consumer to check (checks all if None)
+            
+        Returns:
+            Rate multiplier between 0.1 and 1.0
+        """
+        consumers_to_check = [target_consumer] if target_consumer else list(self._subscribers.keys())
+        
+        max_backpressure = 0.0
+        for consumer_id in consumers_to_check:
+            bp_status = self.check_consumer_backpressure(consumer_id)
+            if bp_status["has_backpressure"]:
+                # Calculate backpressure severity (0.0-1.0)
+                unack_count = bp_status["unacknowledged_count"]
+                severity = min(1.0, unack_count / 500)  # 500 messages = full backpressure
+                max_backpressure = max(max_backpressure, severity)
+        
+        # Convert severity to rate multiplier (inverse relationship)
+        rate_multiplier = max(0.1, 1.0 - max_backpressure)
+        
+        return rate_multiplier
+    
     def get_subscriber_count(self) -> int:
         """Número de suscriptores"""
         return len(self._subscribers)

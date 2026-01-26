@@ -1,0 +1,103 @@
+{
+  "summary": {
+    "total_checks": 13,
+    "passed": 9,
+    "fatal_failures": 4,
+    "warnings": 0,
+    "duration_seconds": 0.22727322578430176,
+    "all_fatal_passed": false
+  },
+  "results": [
+    {
+      "check_id": "INT-F2-002",
+      "category": "CONSTITUTIONAL",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Expected 60 unique chunks, got 60"
+    },
+    {
+      "check_id": "INT-F2-003",
+      "category": "CONSTITUTIONAL",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Expected 30 executors, structure provides 30"
+    },
+    {
+      "check_id": "INT-F2-004",
+      "category": "CONSTITUTIONAL",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Question global range 1-300 has 300 unique values"
+    },
+    {
+      "check_id": "INT-F2-005",
+      "category": "CONSTITUTIONAL",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Coverage complete: 300/300"
+    },
+    {
+      "check_id": "SISAS-PRE-001",
+      "category": "SISAS_PRECONDITION",
+      "passed": false,
+      "severity": "FATAL",
+      "message": "Questionnaire at /Users/recovered/Downloads/FARFAN_MCDPP/canonic_questionnaire_central/questionnaire_monolith.json: exists=False"
+    },
+    {
+      "check_id": "CONTRACT-001",
+      "category": "CONTRACT",
+      "passed": false,
+      "severity": "FATAL",
+      "message": "Found 0/300 contracts (minimum required: 30)"
+    },
+    {
+      "check_id": "CONTRACT-002",
+      "category": "CONTRACT",
+      "passed": false,
+      "severity": "FATAL",
+      "message": "Checked 0 V3 contracts, 0 invalid"
+    },
+    {
+      "check_id": "CONTRACT-003",
+      "category": "CONTRACT",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Checked 0 contracts, 0 mismatches"
+    },
+    {
+      "check_id": "CONTRACT-005",
+      "category": "CONTRACT",
+      "passed": false,
+      "severity": "FATAL",
+      "message": "Contract verification: passed=False, errors=30"
+    },
+    {
+      "check_id": "MANIFEST-000",
+      "category": "MANIFEST",
+      "passed": true,
+      "severity": "WARNING",
+      "message": "Manifest at /Users/recovered/Downloads/FARFAN_MCDPP/artifacts/manifests/verification_manifest.json: exists=True"
+    },
+    {
+      "check_id": "MANIFEST-001",
+      "category": "MANIFEST",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "success field present: True, value: False"
+    },
+    {
+      "check_id": "MANIFEST-005",
+      "category": "MANIFEST",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "policy_areas_loaded: 10"
+    },
+    {
+      "check_id": "SISAS-2.3-001",
+      "category": "SISAS_INJECTION",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Expected common_kwargs fields defined: ['signal_pack', 'enriched_pack', 'document_context', 'question_patterns']"
+    }
+  ]
+}

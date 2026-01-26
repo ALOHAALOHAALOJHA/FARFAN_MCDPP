@@ -280,17 +280,26 @@ async def get_radar(
 
 @router.get("/visualization/phylogram/{region_id}")
 async def get_phylogram(region_id: str, _: None = Depends(require_atroz_headers)) -> dict[str, Any]:
-    return {"regionId": region_id, "type": "phylogram", "data": []}
+    """Phase 4 Dimension DAG - Micro-question → Dimension aggregation provenance."""
+    from .api_v1_visualizations import PhylogramBuilder
+    builder = PhylogramBuilder(region_id)
+    return await builder.build()
 
 
 @router.get("/visualization/mesh/{region_id}")
 async def get_mesh(region_id: str, _: None = Depends(require_atroz_headers)) -> dict[str, Any]:
-    return {"regionId": region_id, "type": "mesh", "data": []}
+    """Phase 5 Policy Area Clustering - MESO-level cluster topology."""
+    from .api_v1_visualizations import MeshBuilder
+    builder = MeshBuilder(region_id)
+    return await builder.build()
 
 
 @router.get("/visualization/helix/{region_id}")
 async def get_helix(region_id: str, _: None = Depends(require_atroz_headers)) -> dict[str, Any]:
-    return {"regionId": region_id, "type": "helix", "data": []}
+    """Phase 7 Coherence Metrics - Triple helix (strategic/operational/institutional)."""
+    from .api_v1_visualizations import HelixBuilder
+    builder = HelixBuilder(region_id)
+    return await builder.build()
 
 
 @router.get("/timeline/regions/{region_id}", response_model=list[TimelinePoint])
@@ -373,6 +382,163 @@ async def export_municipality(
     payload: ExportRequest, _: None = Depends(require_atroz_headers)
 ) -> Response:
     return _export_bytes("municipality", payload)
+
+
+# ============================================================================
+# SISAS Signal Metrics & Pattern Mining Endpoints
+# ============================================================================
+
+@router.get("/signals/metrics")
+async def get_sisas_metrics(_: None = Depends(require_atroz_headers)) -> dict[str, Any]:
+    """Get SISAS signal system observability metrics."""
+    from .api_v1_sisas_mining import SISASMetricsProvider
+    provider = SISASMetricsProvider()
+    return await provider.get_metrics()
+
+
+@router.get("/signals/extraction/{region_id}")
+async def get_signal_extraction(
+    region_id: str, _: None = Depends(require_atroz_headers)
+) -> dict[str, Any]:
+    """Get signal extraction/pattern mining results for a region."""
+    from .api_v1_sisas_mining import SISASMetricsProvider
+    provider = SISASMetricsProvider()
+    return await provider.get_extraction_results(region_id)
+
+
+# ============================================================================
+# Entity Registry Endpoints
+# ============================================================================
+
+@router.get("/entities/registry")
+async def get_entity_registry(
+    category: str | None = Query(default=None, description="Filter by category"),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Get canonical entity registry from CQC."""
+    from .api_v1_sisas_mining import EntityRegistryProvider
+    provider = EntityRegistryProvider()
+    return await provider.get_registry(category)
+
+
+@router.get("/entities/search")
+async def search_entities(
+    q: str = Query(..., description="Search query"),
+    category: str | None = Query(default=None, description="Filter by category"),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Search entities in the canonical registry."""
+    from .api_v1_sisas_mining import EntityRegistryProvider
+    provider = EntityRegistryProvider()
+    return await provider.search_entities(q, category)
+
+
+# ============================================================================
+# Reporting Automation Endpoints
+# ============================================================================
+
+@router.get("/reports/schedules")
+async def get_report_schedules(_: None = Depends(require_atroz_headers)) -> dict[str, Any]:
+    """Get all report schedules."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.get_schedules()
+
+
+@router.post("/reports/schedules")
+async def create_report_schedule(
+    schedule: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Create new report schedule."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.create_schedule(schedule)
+
+
+@router.put("/reports/schedules/{schedule_id}")
+async def update_report_schedule(
+    schedule_id: str,
+    updates: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Update existing report schedule."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.update_schedule(schedule_id, updates)
+
+
+@router.delete("/reports/schedules/{schedule_id}")
+async def delete_report_schedule(
+    schedule_id: str, _: None = Depends(require_atroz_headers)
+) -> dict[str, Any]:
+    """Delete report schedule."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.delete_schedule(schedule_id)
+
+
+@router.post("/reports/generate")
+async def generate_report(
+    request: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Generate report immediately."""
+    from .api_v1_reports import ReportGenerator
+    generator = ReportGenerator()
+    return await generator.generate_report(request)
+
+
+@router.get("/reports/{report_id}/status")
+async def get_report_status(
+    report_id: str, _: None = Depends(require_atroz_headers)
+) -> dict[str, Any]:
+    """Get report generation status."""
+    from .api_v1_reports import ReportGenerator
+    generator = ReportGenerator()
+    return await generator.get_report_status(report_id)
+
+
+@router.get("/reports/notify/config")
+async def get_notification_config(_: None = Depends(require_atroz_headers)) -> dict[str, Any]:
+    """Get notification configuration."""
+    from .api_v1_reports import NotificationManager
+    manager = NotificationManager()
+    return await manager.get_config()
+
+
+@router.put("/reports/notify/config")
+async def update_notification_config(
+    config: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Update notification configuration."""
+    from .api_v1_reports import NotificationManager
+    manager = NotificationManager()
+    return await manager.update_config(config)
+
+
+@router.post("/reports/notify/trigger")
+async def trigger_notification(
+    event: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Trigger notification based on event."""
+    from .api_v1_reports import NotificationManager
+    manager = NotificationManager()
+    return await manager.trigger_notification(event)
+
+
+@router.post("/reports/trigger-on-completion/{run_id}")
+async def register_completion_hook(
+    run_id: str,
+    hook_config: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Register completion hook for a pipeline run."""
+    from .api_v1_reports import CompletionHooks
+    hooks = CompletionHooks()
+    return await hooks.register_hook(run_id, hook_config)
 
 
 @router.websocket("/realtime")

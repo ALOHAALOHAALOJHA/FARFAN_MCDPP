@@ -19,10 +19,8 @@ if TYPE_CHECKING:
     )
     from farfan_pipeline.phases.Phase_02.phase2_10_03_executor_config import ExecutorConfig
     from farfan_pipeline.phases.Phase_02.phase2_60_02_arg_router import ExtendedArgRouter
-    from farfan_pipeline.phases.Phase_00.primitives.providers import (
-        CoreModuleFactory,
-        QuestionnaireResourceProvider,
-    )
+    from farfan_pipeline.orchestration.factory import UnifiedFactory
+    from farfan_pipeline.phases.Phase_00.primitives.providers import QuestionnaireResourceProvider
     # Forward reference to Validator to avoid cycle
     from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import WiringValidator
 
@@ -206,8 +204,7 @@ class WiringComponents:
     signal_client: SignalClient
     signal_registry: SignalRegistry
     executor_config: ExecutorConfig
-    factory: CoreModuleFactory
-    arg_router: ExtendedArgRouter
+    factory: UnifiedFactory    arg_router: ExtendedArgRouter
     class_registry: dict[str, type]
     validator: WiringValidator
     flags: WiringFeatureFlags

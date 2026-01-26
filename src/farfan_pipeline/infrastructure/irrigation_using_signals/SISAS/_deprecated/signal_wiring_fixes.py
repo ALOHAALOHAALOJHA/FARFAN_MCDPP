@@ -161,7 +161,7 @@ def integrate_consumption_tracking_in_extraction(
         consumption_tracker: Consumption tracker instance
         source_text: Source text used for matching
     """
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
         track_pattern_match_from_evidence,
     )
 
@@ -211,7 +211,7 @@ def verify_pattern_scope_before_application(
         >>> is_valid, msg = verify_pattern_scope_before_application(pattern, context, "PA01", "Q001")
         >>> assert is_valid
     """
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
         verify_pattern_scope,
     )
 
