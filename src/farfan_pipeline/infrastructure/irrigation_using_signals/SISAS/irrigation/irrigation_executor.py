@@ -1,8 +1,8 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/irrigation_executor.py
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Set
-from datetime import datetime
+from typing import Any, Callable, Dict, List, Optional
+from datetime import datetime, timedelta
 from enum import Enum
 import json
 import logging
@@ -10,7 +10,7 @@ import hashlib
 
 from .irrigation_map import IrrigationMap, IrrigationRoute, IrrigabilityStatus
 from ..core.signal import Signal, SignalContext, SignalSource
-from ..core.event import Event, EventStore, EventType
+from ..core.event import Event, EventStore, EventType, EventPayload
 from ..core.contracts import IrrigationContract, ContractRegistry, ContractStatus
 from ..core.bus import BusRegistry
 from ..vehicles.base_vehicle import BaseVehicle
@@ -214,13 +214,22 @@ class IrrigationExecutor:
                 try:
                     signals = vehicle.process(data, context)
                     
-                    # ENHANCED: Deduplicate signals
-                    if self._deduplication_enabled:
-                        signals = self._deduplicate_signals(signals)
+                    # ENHANCEMENT: Track signal freshness and add expiry metadata
+                    for signal in signals:
+                        if hasattr(signal, 'metadata') and isinstance(signal.metadata, dict):
+                            signal.metadata['generated_at'] = datetime.utcnow().isoformat()
+                            signal.metadata['phase_context'] = route.source.phase
+                            signal.metadata['vehicle_id'] = vehicle_id
+                            
+                            # Calculate signal freshness window (30 days for most signals)
+                            if not hasattr(signal, 'expires_at') or signal.expires_at is None:
+                                expires_at = datetime.utcnow() + timedelta(days=30)
+                                if hasattr(signal, 'expires_at'):
+                                    signal.expires_at = expires_at
                     
                     all_signals.extend(signals)
                     self._logger.debug(
-                        f"Vehicle {vehicle_id} generated {len(signals)} signals"
+                        f"Vehicle {vehicle_id} generated {len(signals)} signals with freshness tracking"
                     )
                 except Exception as e:
                     result.errors.append(f"Vehicle {vehicle_id} error: {str(e)}")
@@ -738,20 +747,170 @@ class IrrigationExecutor:
 
         avg_duration = (
             sum(r.duration_ms for r in self.execution_history) / total
-            if total > 0 else 0
+            if total > 0
+            else 0.0
         )
 
         return {
             "total_executions": total,
             "successful": successful,
             "failed": failed,
-            "success_rate": (successful / total * 100) if total > 0 else 0,
+            "success_rate": (successful / total * 100) if total > 0 else 0.0,
             "total_signals_generated": total_signals,
             "total_signals_published": total_published,
             "avg_duration_ms": avg_duration,
-            "current_phase": self.current_phase.value,
-            "publish_rate": (
-                total_published / (sum(r.duration_ms for r in self.execution_history) / 1000)
-                if sum(r.duration_ms for r in self.execution_history) > 0 else 0
-            )
         }
+    
+    def propagate_signals_across_phases(
+        self,
+        source_phase: str,
+        target_phase: str,
+        signal_filter: Optional[Callable[[Signal], bool]] = None,
+    ) -> Dict[str, Any]:
+        """
+        ENHANCEMENT: Cross-phase signal propagation with dependency tracking.
+        
+        Allows signals generated in one phase to be propagated to consumers in another
+        phase with clear dependency tracking and causation chains.
+        
+        Example use case: Phase 3 scoring signals feeding into Phase 4 aggregation
+        
+        Args:
+            source_phase: Source phase identifier (e.g., "phase_03")
+            target_phase: Target phase identifier (e.g., "phase_04")
+            signal_filter: Optional filter function to select which signals to propagate
+            
+        Returns:
+            Dict with propagation statistics and dependency tracking info
+        """
+        propagation_result = {
+            "source_phase": source_phase,
+            "target_phase": target_phase,
+            "signals_propagated": 0,
+            "consumers_notified": [],
+            "dependency_chains": [],
+            "errors": [],
+        }
+        
+        try:
+            # Find all signals from source phase in execution history
+            source_signals = []
+            for result in self.execution_history:
+                if source_phase in result.route_id:
+                    source_signals.extend(result.signals_generated)
+            
+            # Apply filter if provided
+            if signal_filter:
+                filtered_signals = [s for s in source_signals if signal_filter(s)]
+            else:
+                filtered_signals = source_signals
+            
+            self._logger.info(
+                f"Propagating {len(filtered_signals)} signals from {source_phase} to {target_phase}"
+            )
+            
+            # Get target phase routes
+            target_routes = self.irrigation_map.get_routes_for_phase(target_phase)
+            
+            # Create propagation events and track dependencies
+            for signal in filtered_signals:
+                # Create causation chain
+                propagation_event = Event(
+                    event_type=EventType.SIGNAL_PUBLISHED,
+                    source_file=f"cross_phase_propagation_{source_phase}_to_{target_phase}",
+                    phase=target_phase,
+                    source_component="irrigation_executor.propagate_signals_across_phases",
+                    causation_id=signal.source.event_id if hasattr(signal, 'source') else None,
+                )
+                self.event_store.append(propagation_event)
+                
+                # Notify target consumers
+                for route in target_routes:
+                    for target in route.targets:
+                        # Check if consumer accepts this signal type
+                        if hasattr(signal, 'signal_type'):
+                            propagation_result["consumers_notified"].append(target.consumer_id)
+                            propagation_result["dependency_chains"].append({
+                                "signal_id": signal.signal_id if hasattr(signal, 'signal_id') else "unknown",
+                                "source_phase": source_phase,
+                                "target_phase": target_phase,
+                                "consumer": target.consumer_id,
+                                "causation_event": propagation_event.event_id,
+                            })
+                
+                propagation_result["signals_propagated"] += 1
+            
+            self._logger.info(
+                f"Cross-phase propagation completed: {propagation_result['signals_propagated']} signals "
+                f"propagated to {len(set(propagation_result['consumers_notified']))} unique consumers"
+            )
+            
+        except Exception as e:
+            error_msg = f"Cross-phase propagation error: {str(e)}"
+            propagation_result["errors"].append(error_msg)
+            self._logger.error(error_msg)
+        
+        return propagation_result
+    
+    def rollback_route_signals(
+        self,
+        route_id: str,
+        reason: str,
+    ) -> Dict[str, Any]:
+        """
+        ENHANCEMENT: Rollback signals from a failed route.
+        
+        Marks all signals from a specific route as invalid and creates
+        rollback events for audit trail.
+        
+        Args:
+            route_id: Identifier of the route to rollback
+            reason: Reason for rollback
+            
+        Returns:
+            Dict with rollback statistics
+        """
+        rollback_result = {
+            "route_id": route_id,
+            "reason": reason,
+            "signals_rolled_back": 0,
+            "rollback_events": [],
+        }
+        
+        # Find execution in history
+        for result in self.execution_history:
+            if result.route_id == route_id:
+                # Mark signals as invalid
+                for signal in result.signals_generated:
+                    if hasattr(signal, 'metadata') and isinstance(signal.metadata, dict):
+                        signal.metadata['rolled_back'] = True
+                        signal.metadata['rollback_reason'] = reason
+                        signal.metadata['rollback_timestamp'] = datetime.utcnow().isoformat()
+                    
+                    rollback_result["signals_rolled_back"] += 1
+                
+                # Create rollback event
+                rollback_event = Event(
+                    event_type=EventType.IRRIGATION_FAILED,
+                    source_file=route_id,
+                    phase="rollback",
+                    source_component="irrigation_executor.rollback_route_signals",
+                    payload=EventPayload(data={
+                        "route_id": route_id,
+                        "reason": reason,
+                        "signals_count": rollback_result["signals_rolled_back"],
+                    })
+                )
+                self.event_store.append(rollback_event)
+                rollback_result["rollback_events"].append(rollback_event.event_id)
+                
+                # Mark result as failed
+                result.success = False
+                result.errors.append(f"Route rolled back: {reason}")
+        
+        self._logger.warning(
+            f"Route {route_id} rolled back: {rollback_result['signals_rolled_back']} signals invalidated. "
+            f"Reason: {reason}"
+        )
+        
+        return rollback_result

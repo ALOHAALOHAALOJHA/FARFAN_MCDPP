@@ -514,3 +514,84 @@ class EventStore:
                 # Keep events in memory if cold storage fails
 
         return len(to_archive)
+    
+    def get_causality_chain(self, event_id: str, max_depth: int = 10) -> List[Event]:
+        """
+        ENHANCEMENT: Build complete causality chain for an event.
+        
+        Traces the causation chain from the given event backwards through
+        causation_id links to understand the full history of how this event
+        came to be.
+        
+        Args:
+            event_id: Starting event ID
+            max_depth: Maximum depth to traverse (prevents infinite loops)
+            
+        Returns:
+            List of events in causality chain, ordered from root cause to given event
+        """
+        chain = []
+        current_id = event_id
+        depth = 0
+        
+        while current_id and depth < max_depth:
+            event = self.get_by_id(current_id)
+            if event is None:
+                break
+            
+            chain.insert(0, event)  # Insert at beginning for correct ordering
+            current_id = event.causation_id
+            depth += 1
+        
+        return chain
+    
+    def get_correlation_group(self, correlation_id: str) -> List[Event]:
+        """
+        ENHANCEMENT: Get all events with the same correlation_id.
+        
+        Correlation IDs group related events that are part of the same
+        logical operation (e.g., all events from a single phase execution).
+        
+        Args:
+            correlation_id: Correlation identifier
+            
+        Returns:
+            List of all events sharing this correlation_id
+        """
+        return [e for e in self.events if e.correlation_id == correlation_id]
+    
+    def replay_events(
+        self,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        event_types: Optional[List[EventType]] = None,
+    ) -> List[Event]:
+        """
+        ENHANCEMENT: Replay events for testing or debugging.
+        
+        Returns events in chronological order within specified time range
+        and optionally filtered by event type.
+        
+        Args:
+            start_time: Start of time range (inclusive)
+            end_time: End of time range (inclusive)
+            event_types: Optional list of event types to filter
+            
+        Returns:
+            List of events in chronological order
+        """
+        filtered_events = self.events
+        
+        # Filter by time range
+        if start_time:
+            filtered_events = [e for e in filtered_events if e.timestamp >= start_time]
+        if end_time:
+            filtered_events = [e for e in filtered_events if e.timestamp <= end_time]
+        
+        # Filter by event type
+        if event_types:
+            type_values = [et.value for et in event_types]
+            filtered_events = [e for e in filtered_events if e.event_type.value in type_values]
+        
+        # Sort chronologically
+        return sorted(filtered_events, key=lambda e: e.timestamp)
