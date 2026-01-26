@@ -1,11 +1,12 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/irrigation_executor.py
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Set
 from datetime import datetime
 from enum import Enum
 import json
 import logging
+import hashlib
 
 from .irrigation_map import IrrigationMap, IrrigationRoute, IrrigabilityStatus
 from ..core.signal import Signal, SignalContext, SignalSource
@@ -99,6 +100,11 @@ class IrrigationExecutor:
     4. Publicar en buses
     5. Notificar a consumidores
     6. Registrar todo para auditoría
+    
+    ENHANCED:
+    - Signal deduplication to avoid redundant processing
+    - Signal caching for deterministic results
+    - Performance optimization
     """
 
     irrigation_map: IrrigationMap = field(default_factory=IrrigationMap)
@@ -118,6 +124,17 @@ class IrrigationExecutor:
 
     # Resultados
     execution_history: List[IrrigationResult] = field(default_factory=list)
+    
+    # ENHANCED: Signal deduplication and caching
+    _signal_cache: Dict[str, Signal] = field(default_factory=dict)
+    _signal_hashes: Set[str] = field(default_factory=set)
+    _deduplication_enabled: bool = True
+    _cache_enabled: bool = True
+    _deduplication_stats: Dict[str, int] = field(default_factory=lambda: {
+        "total_signals": 0,
+        "duplicates_detected": 0,
+        "cache_hits": 0
+    })
 
     # Logger
     _logger: logging.Logger = field(default=None)
@@ -196,6 +213,11 @@ class IrrigationExecutor:
 
                 try:
                     signals = vehicle.process(data, context)
+                    
+                    # ENHANCED: Deduplicate signals
+                    if self._deduplication_enabled:
+                        signals = self._deduplicate_signals(signals)
+                    
                     all_signals.extend(signals)
                     self._logger.debug(
                         f"Vehicle {vehicle_id} generated {len(signals)} signals"
@@ -337,6 +359,107 @@ class IrrigationExecutor:
             recoverable=True
         )
 
+    def _deduplicate_signals(self, signals: List[Signal]) -> List[Signal]:
+        """
+        DEDUPLICATION: Remove duplicate signals based on content hash.
+        
+        This addresses the sophistication gap S3 where redundant signals
+        are generated multiple times across SP3-SP10, wasting resources.
+        
+        Uses content-based hashing to identify semantically identical signals
+        even if they have different signal_ids or timestamps.
+        
+        Args:
+            signals: List of signals to deduplicate
+            
+        Returns:
+            List of unique signals (duplicates removed)
+        """
+        unique_signals = []
+        
+        for signal in signals:
+            self._deduplication_stats["total_signals"] += 1
+            
+            # Compute content hash for signal
+            signal_hash = self._compute_signal_hash(signal)
+            
+            # Check if we've seen this signal before
+            if signal_hash in self._signal_hashes:
+                self._deduplication_stats["duplicates_detected"] += 1
+                self._logger.debug(f"Duplicate signal detected: {signal_hash[:8]}")
+                
+                # Check cache for existing signal
+                if self._cache_enabled and signal_hash in self._signal_cache:
+                    self._deduplication_stats["cache_hits"] += 1
+                    # Return cached signal instead of new one (preserves timestamps, etc.)
+                    unique_signals.append(self._signal_cache[signal_hash])
+                    continue
+            else:
+                # New unique signal
+                self._signal_hashes.add(signal_hash)
+                
+                # Cache the signal if caching enabled
+                if self._cache_enabled:
+                    self._signal_cache[signal_hash] = signal
+                
+                unique_signals.append(signal)
+        
+        if len(signals) != len(unique_signals):
+            self._logger.info(
+                f"Deduplication: {len(signals)} → {len(unique_signals)} "
+                f"({len(signals) - len(unique_signals)} duplicates removed)"
+            )
+        
+        return unique_signals
+    
+    def _compute_signal_hash(self, signal: Signal) -> str:
+        """
+        Compute content-based hash for signal deduplication.
+        
+        Hash is based on semantic content (type, context, payload) not
+        metadata (timestamp, signal_id) to identify true duplicates.
+        
+        Args:
+            signal: Signal to hash
+            
+        Returns:
+            SHA256 hash string
+        """
+        # Build hashable representation
+        hash_content = {
+            "signal_type": getattr(signal, 'signal_type', ''),
+            "context": {
+                "node_type": signal.context.node_type if hasattr(signal, 'context') and signal.context else '',
+                "node_id": signal.context.node_id if hasattr(signal, 'context') and signal.context else '',
+                "phase": signal.context.phase if hasattr(signal, 'context') and signal.context else '',
+            },
+            "payload": str(getattr(signal, 'payload', ''))[:1000],  # First 1000 chars to avoid huge payloads
+        }
+        
+        # Convert to stable JSON string
+        hash_string = json.dumps(hash_content, sort_keys=True)
+        
+        # Compute SHA256 hash
+        return hashlib.sha256(hash_string.encode()).hexdigest()
+    
+    def get_deduplication_stats(self) -> Dict[str, Any]:
+        """
+        Get deduplication and caching statistics.
+        
+        Returns:
+            Dict with deduplication metrics
+        """
+        total = self._deduplication_stats["total_signals"]
+        duplicates = self._deduplication_stats["duplicates_detected"]
+        
+        return {
+            **self._deduplication_stats,
+            "deduplication_rate": (duplicates / total * 100) if total > 0 else 0.0,
+            "cache_hit_rate": (self._deduplication_stats["cache_hits"] / duplicates * 100) if duplicates > 0 else 0.0,
+            "cache_size": len(self._signal_cache),
+            "unique_signals": len(self._signal_hashes)
+        }
+
     def get_execution_summary(self) -> Dict[str, Any]:
         """Resumen de ejecuciones"""
         total = len(self.execution_history)
@@ -359,5 +482,6 @@ class IrrigationExecutor:
             "total_signals_generated": total_signals,
             "total_signals_published": total_published,
             "avg_duration_ms": avg_duration,
-            "current_phase": self.current_phase.value
+            "current_phase": self.current_phase.value,
+            "deduplication_stats": self.get_deduplication_stats()
         }
