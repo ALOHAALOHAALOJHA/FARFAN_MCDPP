@@ -65,23 +65,210 @@ __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
 
+import asyncio
 import hashlib
 import json
 import logging
 import os
 import threading
+from collections.abc import Callable
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from functools import wraps
 from pathlib import Path
-from typing import Any, Final
+from typing import Any, Final, Protocol, TypeAlias, runtime_checkable
 
 from farfan_pipeline.phases.Phase_02.phase2_50_01_task_planner import ExecutableTask
 from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import ExecutionPlan
 
+# SISAS Event System Integration
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
+        Event,
+        EventStore,
+        EventType,
+        EventPayload,
+    )
+    SISAS_EVENTS_AVAILABLE = True
+except ImportError:
+    SISAS_EVENTS_AVAILABLE = False
+    Event = None  # type: ignore
+    EventStore = None  # type: ignore
+    EventType = None  # type: ignore
+    EventPayload = None  # type: ignore
+
+# OpenTelemetry Integration (SOTA: Distributed Tracing)
+try:
+    from opentelemetry import trace
+    from opentelemetry.trace import Status, StatusCode
+    OTEL_AVAILABLE = True
+    tracer = trace.get_tracer(__name__, version=__version__)
+except ImportError:
+    OTEL_AVAILABLE = False
+    tracer = None  # type: ignore
+
 logger: Final = logging.getLogger(__name__)
 
+# =============================================================================
+# SOTA: TYPE ALIASES & VALUE OBJECTS (Python 3.12+)
+# =============================================================================
+
+# Type aliases for clarity and type safety
+CorrelationId: TypeAlias = str
+CausationId: TypeAlias = str
+EventId: TypeAlias = str
+TaskId: TypeAlias = str
+
 # === DATA STRUCTURES ===
+
+
+# =============================================================================
+# SOTA: OBSERVABILITY DECORATORS (OpenTelemetry Integration)
+# =============================================================================
+
+# NOTE: Event Batching
+# A previous implementation included an `EventBatcher` class for micro-batch
+# event processing, but it was never wired into the execution flow and didn't
+# actually write to EventStore. It has been removed to avoid dead, misleading code.
+# Future implementations should integrate batching directly with EventStore.
+
+def traced_operation(operation_name: str):
+    """
+    SOTA: Automatic distributed tracing with OpenTelemetry.
+    Wraps async/sync functions with trace spans for full observability.
+    """
+    def decorator(func: Callable) -> Callable:
+        if not OTEL_AVAILABLE:
+            return func  # Graceful degradation
+        
+        if asyncio.iscoroutinefunction(func):
+            @wraps(func)
+            async def async_wrapper(*args, **kwargs):
+                with tracer.start_as_current_span(f"{operation_name}") as span:
+                    span.set_attribute("operation.name", operation_name)
+                    span.set_attribute("function.name", func.__name__)
+                    try:
+                        result = await func(*args, **kwargs)
+                        span.set_status(Status(StatusCode.OK))
+                        return result
+                    except Exception as e:
+                        span.set_status(Status(StatusCode.ERROR, str(e)))
+                        span.record_exception(e)
+                        raise
+            return async_wrapper
+        else:
+            @wraps(func)
+            def sync_wrapper(*args, **kwargs):
+                with tracer.start_as_current_span(f"{operation_name}") as span:
+                    span.set_attribute("operation.name", operation_name)
+                    span.set_attribute("function.name", func.__name__)
+                    try:
+                        result = func(*args, **kwargs)
+                        span.set_status(Status(StatusCode.OK))
+                        return result
+                    except Exception as e:
+                        span.set_status(Status(StatusCode.ERROR, str(e)))
+                        span.record_exception(e)
+                        raise
+            return sync_wrapper
+    return decorator
+
+
+@contextmanager
+def event_operation_span(operation: str, event_id: EventId | None = None):
+    """SOTA: Context manager for fine-grained event operation tracing"""
+    if not OTEL_AVAILABLE:
+        yield None
+        return
+    
+    with tracer.start_as_current_span(f"event.{operation}") as span:
+        if event_id:
+            span.set_attribute("event.id", event_id)
+        span.set_attribute("event.operation", operation)
+        yield span
+
+
+# =============================================================================
+# SOTA: BATCH EVENT PROCESSING FOR PERFORMANCE
+# =============================================================================
+
+# NOTE: Event Batching
+# A previous implementation included an `EventBatcher` class for micro-batch
+# event processing, but it was never wired into the execution flow and didn't
+# actually write to EventStore or use its flush interval. It has been removed
+# to avoid dead, misleading code. Future implementations should integrate
+# batching directly with EventStore's append operations.
+
+
+# =============================================================================
+# SHARED EVENT EMISSION HELPER (DRY Principle)
+# =============================================================================
+
+def _emit_event_shared(
+    event_store: Any,
+    event_emission_enabled: bool,
+    event_type: Any,
+    source_component: str,
+    payload_data: dict[str, Any],
+    correlation_id: CorrelationId | None = None,
+    causation_id: CausationId | None = None,
+) -> EventId | None:
+    """
+    Shared helper for emitting SISAS events with OpenTelemetry tracing.
+    
+    This encapsulates the common logic used by task executors to construct,
+    append, and trace events in a single location (DRY principle).
+    
+    Args:
+        event_store: EventStore instance
+        event_emission_enabled: Whether event emission is enabled
+        event_type: EventType enum value
+        source_component: Component emitting the event
+        payload_data: Event payload data
+        correlation_id: Optional correlation ID for tracing
+        causation_id: Optional causation ID linking to parent event
+        
+    Returns:
+        Event ID if event was emitted, None otherwise
+    """
+    if not event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
+        return None
+    
+    with event_operation_span("emit", None) as span:
+        try:
+            event = Event(
+                event_type=event_type,
+                source_component=source_component,
+                phase="phase_02",
+                consumer_scope="Phase_02",
+                correlation_id=correlation_id,
+                causation_id=causation_id,
+                payload=EventPayload(data=payload_data),
+            )
+            event_id = event_store.append(event)
+            
+            # SOTA: Add trace context
+            if span and OTEL_AVAILABLE:
+                span.set_attribute("event.id", event_id)
+                span.set_attribute("event.type", str(event_type))
+                span.set_attribute("event.correlation_id", correlation_id or "none")
+            
+            logger.debug(
+                f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
+                extra={
+                    "event_id": event_id,
+                    "correlation_id": correlation_id,
+                    "trace_id": span.get_span_context().trace_id if span and OTEL_AVAILABLE else None,
+                }
+            )
+            return event_id
+        except Exception as e:
+            logger.warning(f"Failed to emit event: {e}", exc_info=True)
+            if span and OTEL_AVAILABLE:
+                span.record_exception(e)
+            return None
 
 
 @dataclass(frozen=True, slots=True)
@@ -362,6 +549,7 @@ class ParallelTaskExecutor:
         use_processes: bool = False,
         calibration_registry: Any = None,  # FASE 4.2
         pdm_profile: Any = None,  # FASE 4.2
+        event_store: Any | None = None,  # SISAS EventStore
     ) -> None:
         """
         Initialize ParallelTaskExecutor.
@@ -378,6 +566,7 @@ class ParallelTaskExecutor:
             use_processes: Use ProcessPoolExecutor instead of ThreadPoolExecutor
             calibration_registry: FASE 4.2 - Epistemic calibration registry
             pdm_profile: FASE 4.2 - PDM structural profile
+            event_store: Optional SISAS EventStore for event-driven irrigation
         """
         if signal_registry is None:
             raise ValueError(
@@ -395,6 +584,16 @@ class ParallelTaskExecutor:
         self.use_processes = use_processes
         self.calibration_registry = calibration_registry  # FASE 4.2
         self.pdm_profile = pdm_profile  # FASE 4.2
+        
+        # SISAS Event System Integration
+        # IMPORTANT: If event_store is None, a new EventStore instance is created.
+        # For correlation tracking across executor instances, callers MUST pass
+        # the SAME EventStore instance to all components. Consider using a
+        # singleton pattern or factory to ensure shared EventStore access.
+        self.event_store = event_store if event_store is not None else (
+            EventStore() if SISAS_EVENTS_AVAILABLE else None
+        )
+        self._event_emission_enabled = SISAS_EVENTS_AVAILABLE and self.event_store is not None
 
         # Build question lookup index
         self._question_index = self._build_question_index()
@@ -441,6 +640,20 @@ class ParallelTaskExecutor:
             List of TaskResult objects in original task order.
         """
         plan_id = plan.plan_id
+        correlation_id = plan.correlation_id
+
+        # Emit IRRIGATION_STARTED event
+        plan_start_event_id = self._emit_event(
+            event_type=EventType.IRRIGATION_STARTED if SISAS_EVENTS_AVAILABLE else "irrigation_started",
+            source_component="parallel_task_executor",
+            payload_data={
+                "plan_id": plan_id,
+                "task_count": len(plan.tasks),
+                "execution_mode": "parallel",
+                "max_workers": self.max_workers,
+            },
+            correlation_id=correlation_id,
+        )
 
         # Resume from checkpoint if available
         completed_ids: set[str] = set()
@@ -488,8 +701,36 @@ class ParallelTaskExecutor:
 
             for result in level_results:
                 all_results[result.task_id] = result
+                
+                # Emit event for each task result
                 if result.success:
                     completed_ids.add(result.task_id)
+                    self._emit_event(
+                        event_type=EventType.SIGNAL_GENERATED if SISAS_EVENTS_AVAILABLE else "signal_generated",
+                        source_component="parallel_task_executor",
+                        payload_data={
+                            "task_id": result.task_id,
+                            "question_id": result.question_id,
+                            "policy_area_id": result.policy_area_id,
+                            "success": True,
+                            "execution_time_ms": result.execution_time_ms,
+                        },
+                        correlation_id=correlation_id,
+                        causation_id=plan_start_event_id,
+                    )
+                else:
+                    self._emit_event(
+                        event_type=EventType.IRRIGATION_FAILED if SISAS_EVENTS_AVAILABLE else "irrigation_failed",
+                        source_component="parallel_task_executor",
+                        payload_data={
+                            "task_id": result.task_id,
+                            "question_id": result.question_id,
+                            "error": result.error or "Unknown error",
+                        },
+                        correlation_id=correlation_id,
+                        causation_id=plan_start_event_id,
+                    )
+                    
                 tasks_since_checkpoint += 1
 
                 # Checkpoint periodically
@@ -508,6 +749,20 @@ class ParallelTaskExecutor:
             if task.task_id in all_results:
                 ordered_results.append(all_results[task.task_id])
 
+        # Emit IRRIGATION_COMPLETED event
+        self._emit_event(
+            event_type=EventType.IRRIGATION_COMPLETED if SISAS_EVENTS_AVAILABLE else "irrigation_completed",
+            source_component="parallel_task_executor",
+            payload_data={
+                "plan_id": plan_id,
+                "total_tasks": len(ordered_results),
+                "successful": sum(1 for r in ordered_results if r.success),
+                "failed": sum(1 for r in ordered_results if not r.success),
+            },
+            correlation_id=correlation_id,
+            causation_id=plan_start_event_id,
+        )
+
         logger.info(
             "Parallel task execution complete",
             extra={
@@ -519,8 +774,41 @@ class ParallelTaskExecutor:
         )
 
         return ordered_results
+    
+    @traced_operation("event.emit")
+    def _emit_event(
+        self,
+        event_type: Any,
+        source_component: str,
+        payload_data: dict[str, Any],
+        correlation_id: CorrelationId | None = None,
+        causation_id: CausationId | None = None,
+    ) -> EventId | None:
+        """
+        Emit event using shared helper function.
+        
+        Args:
+            event_type: EventType enum value
+            source_component: Component emitting the event
+            payload_data: Event payload data
+            correlation_id: Optional correlation ID for tracing
+            causation_id: Optional causation ID linking to parent event
+            
+        Returns:
+            Event ID if event was emitted, None otherwise
+        """
+        return _emit_event_shared(
+            event_store=self.event_store,
+            event_emission_enabled=self._event_emission_enabled,
+            event_type=event_type,
+            source_component=source_component,
+            payload_data=payload_data,
+            correlation_id=correlation_id,
+            causation_id=causation_id,
+        )
 
-    def _group_by_level(self, tasks: list[ExecutableTask]) -> dict[int, list[ExecutableTask]]:
+    @traced_operation("execution.plan.parallel")
+    def execute_plan_parallel(self, plan: ExecutionPlan) -> list[TaskResult]:
         """
         Group tasks by their epistemic level (N1=1, N2=2, etc.).
 
@@ -1285,6 +1573,7 @@ class TaskExecutor:
         validation_orchestrator: Any | None = None,
         calibration_registry: Any = None,  # FASE 4.2: EpistemicCalibrationRegistry
         pdm_profile: Any = None,  # FASE 4.2: MockPDMProfile
+        event_store: Any | None = None,  # SISAS EventStore
     ) -> None:
         """
         Initialize TaskExecutor.
@@ -1297,6 +1586,7 @@ class TaskExecutor:
             validation_orchestrator: Optional validation tracking
             calibration_registry: FASE 4.2 - Epistemic calibration registry for N1/N2/N3
             pdm_profile: FASE 4.2 - PDM structural profile for dynamic adjustments
+            event_store: Optional SISAS EventStore for event-driven irrigation
 
         Raises:
             ValueError: If signal_registry is None
@@ -1314,6 +1604,16 @@ class TaskExecutor:
         self.validation_orchestrator = validation_orchestrator
         self.calibration_registry = calibration_registry  # FASE 4.2
         self.pdm_profile = pdm_profile  # FASE 4.2
+
+        # SISAS Event System Integration
+        # IMPORTANT: If event_store is None, a new EventStore instance is created.
+        # For correlation tracking across executor instances, callers MUST pass
+        # the SAME EventStore instance to all components. Consider using a
+        # singleton pattern or factory to ensure shared EventStore access.
+        self.event_store = event_store if event_store is not None else (
+            EventStore() if SISAS_EVENTS_AVAILABLE else None
+        )
+        self._event_emission_enabled = SISAS_EVENTS_AVAILABLE and self.event_store is not None
 
         # Build question lookup index
         self._question_index = self._build_question_index()
@@ -1349,6 +1649,39 @@ class TaskExecutor:
 
         return index
 
+    @traced_operation("event.emit")
+    def _emit_event(
+        self,
+        event_type: Any,
+        source_component: str,
+        payload_data: dict[str, Any],
+        correlation_id: CorrelationId | None = None,
+        causation_id: CausationId | None = None,
+    ) -> EventId | None:
+        """
+        Emit event using shared helper function.
+        
+        Args:
+            event_type: EventType enum value
+            source_component: Component emitting the event
+            payload_data: Event payload data
+            correlation_id: Optional correlation ID for tracing
+            causation_id: Optional causation ID linking to parent event
+            
+        Returns:
+            Event ID if event was emitted, None otherwise
+        """
+        return _emit_event_shared(
+            event_store=self.event_store,
+            event_emission_enabled=self._event_emission_enabled,
+            event_type=event_type,
+            source_component=source_component,
+            payload_data=payload_data,
+            correlation_id=correlation_id,
+            causation_id=causation_id,
+        )
+
+    @traced_operation("execution.plan.sequential")
     def execute_plan(self, execution_plan: ExecutionPlan) -> list[TaskResult]:
         """
         Execute all tasks in ExecutionPlan.
@@ -1363,20 +1696,60 @@ class TaskExecutor:
             ExecutionError: If execution fails
         """
         results: list[TaskResult] = []
+        correlation_id = execution_plan.correlation_id
+
+        # Emit IRRIGATION_STARTED event
+        plan_start_event_id = self._emit_event(
+            event_type=EventType.IRRIGATION_STARTED if SISAS_EVENTS_AVAILABLE else "irrigation_started",
+            source_component="task_executor",
+            payload_data={
+                "plan_id": execution_plan.plan_id,
+                "task_count": len(execution_plan.tasks),
+                "execution_mode": "sequential",
+            },
+            correlation_id=correlation_id,
+        )
 
         logger.info(
             "Starting task execution",
             extra={
                 "plan_id": execution_plan.plan_id,
                 "task_count": len(execution_plan.tasks),
-                "correlation_id": execution_plan.correlation_id,
+                "correlation_id": correlation_id,
             },
         )
 
         for i, task in enumerate(execution_plan.tasks):
+            # Emit IRRIGATION_REQUESTED event for each task
+            task_start_event_id = self._emit_event(
+                event_type=EventType.IRRIGATION_REQUESTED if SISAS_EVENTS_AVAILABLE else "irrigation_requested",
+                source_component="task_executor",
+                payload_data={
+                    "task_id": task.task_id,
+                    "question_id": task.question_id,
+                    "policy_area_id": task.policy_area_id,
+                },
+                correlation_id=correlation_id,
+                causation_id=plan_start_event_id,
+            )
+
             try:
                 result = self._execute_task(task)
                 results.append(result)
+                
+                # Emit success event
+                self._emit_event(
+                    event_type=EventType.SIGNAL_GENERATED if SISAS_EVENTS_AVAILABLE else "signal_generated",
+                    source_component="task_executor",
+                    payload_data={
+                        "task_id": result.task_id,
+                        "question_id": result.question_id,
+                        "success": True,
+                        "execution_time_ms": result.execution_time_ms,
+                    },
+                    correlation_id=correlation_id,
+                    causation_id=task_start_event_id,
+                )
 
                 if (i + 1) % 50 == 0:
                     logger.info(f"Progress: {i + 1}/{len(execution_plan.tasks)} tasks completed")
@@ -1389,6 +1762,19 @@ class TaskExecutor:
                         "question_id": task.question_id,
                         "error": str(e),
                     },
+                )
+
+                # Emit failure event
+                self._emit_event(
+                    event_type=EventType.IRRIGATION_FAILED if SISAS_EVENTS_AVAILABLE else "irrigation_failed",
+                    source_component="task_executor",
+                    payload_data={
+                        "task_id": task.task_id,
+                        "question_id": task.question_id,
+                        "error": str(e),
+                    },
+                    correlation_id=correlation_id,
+                    causation_id=task_start_event_id,
                 )
 
                 # Create failure result
@@ -1404,6 +1790,20 @@ class TaskExecutor:
                     error=str(e),
                 )
                 results.append(result)
+
+        # Emit IRRIGATION_COMPLETED event
+        self._emit_event(
+            event_type=EventType.IRRIGATION_COMPLETED if SISAS_EVENTS_AVAILABLE else "irrigation_completed",
+            source_component="task_executor",
+            payload_data={
+                "plan_id": execution_plan.plan_id,
+                "total_tasks": len(results),
+                "successful": sum(1 for r in results if r.success),
+                "failed": sum(1 for r in results if not r.success),
+            },
+            correlation_id=correlation_id,
+            causation_id=plan_start_event_id,
+        )
 
         logger.info(
             "Task execution complete",
