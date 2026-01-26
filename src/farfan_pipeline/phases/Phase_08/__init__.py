@@ -154,16 +154,77 @@ def get_interface_validator() -> "Phase8InterfaceValidator":
     return Phase8InterfaceValidator()
 
 
+# Comprehensive Guide Integration (NEW in v1.0)
+def get_transformation_pipeline() -> "TransformationPipeline":
+    """Get the complete 8-step transformation pipeline (FARFAN → PDM)."""
+    from .phase8_32_00_transformation_pipeline import TransformationPipeline
+    return TransformationPipeline()
+
+
+def transform_farfan_to_pdm(
+    municipality_id: str,
+    municipality_category: "MunicipalCategory",
+    policy_area: str,
+    dimension: str,
+    farfan_diagnostic: dict,
+    capacity_evidence: dict
+) -> "PipelineResult":
+    """
+    Convenience function: Transform FARFAN diagnostic to PDM recommendation.
+    
+    This is the PRIMARY entry point for Comprehensive Guide transformation.
+    
+    Args:
+        municipality_id: Municipality identifier
+        municipality_category: Municipal category (1-6)
+        policy_area: Policy area (PA01-PA10)
+        dimension: Dimension (DIM01-DIM06)
+        farfan_diagnostic: FARFAN diagnostic data with scores and evidence
+        capacity_evidence: Evidence for 9-dimensional capacity assessment
+        
+    Returns:
+        PipelineResult with complete transformation
+        
+    Example:
+        >>> from farfan_pipeline.phases.Phase_08 import (
+        ...     transform_farfan_to_pdm,
+        ...     MunicipalCategory,
+        ...     CapacityDimension
+        ... )
+        >>> result = transform_farfan_to_pdm(
+        ...     municipality_id="MUN_05001",
+        ...     municipality_category=MunicipalCategory.CATEGORY_5,
+        ...     policy_area="PA01",
+        ...     dimension="DIM01",
+        ...     farfan_diagnostic={...},
+        ...     capacity_evidence={CapacityDimension.ORGANIZATIONAL_OPERATIONAL: [...]}
+        ... )
+        >>> print(result.prose_recommendation.full_text)
+    """
+    from .phase8_32_00_transformation_pipeline import transform_farfan_to_pdm as _transform
+    return _transform(
+        municipality_id=municipality_id,
+        municipality_category=municipality_category,
+        policy_area=policy_area,
+        dimension=dimension,
+        farfan_diagnostic=farfan_diagnostic,
+        capacity_evidence=capacity_evidence
+    )
+
+
 # Public API
 __all__ = [
     # Version info
     "__version__",
     "__phase__",
     "__codename__",
-    # Primary getter
+    # Primary getter (v3.0)
     "get_unified_bifurcator",
     # Backward compatibility aliases
     "get_recommendation_engine",
     "get_recommendation_bifurcator",
     "get_interface_validator",
+    # Comprehensive Guide (v1.0 - NEW)
+    "get_transformation_pipeline",
+    "transform_farfan_to_pdm",
 ]
