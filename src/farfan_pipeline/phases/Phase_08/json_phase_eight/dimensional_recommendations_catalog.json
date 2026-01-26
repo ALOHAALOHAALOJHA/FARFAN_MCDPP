@@ -1,0 +1,2289 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "title": "Dimensional Recommendations Catalog",
+    "purpose": "Layer 1: Dimensional base recommendations (transversal, PA-independent)",
+    "created": "2026-01-26",
+    "dimensions_covered": 6,
+    "score_bands": 5,
+    "total_pas": 10,
+    "architecture": "Dimensional-first design eliminates redundancy by storing CORE intervention logic once per DIM×Band, with PA-specific variations handled through instantiation_mappings",
+    "traceability": "Each dimensional recommendation maps to specific questions (Q001-Q300) enabling full audit trail",
+    "compliance_framework": "Aligned with Colombian DNP guidelines for territorial planning (Ley 152/1994), SGR methodology, and MGA technical requirements",
+    "usage_notes": [
+      "This catalog provides DIMENSIONAL templates independent of specific PAs (Políticas Prioritarias)",
+      "To instantiate a recommendation for a specific PA, combine: dimensional template + instantiation_mappings[PA_ID]",
+      "Example: For PA01-DIM01-CRISIS, use DIM01.CRISIS template + instantiation_mappings.PA01 variables",
+      "Legal frameworks, responsible entities, and reporting systems are PA-specific and retrieved from mappings",
+      "This design eliminates 270 redundant rules (300 original - 30 dimensional = 270 eliminated)",
+      "Maintains full traceability: Each recommendation traces to specific questions (Q001-Q300)"
+    ],
+    "architectural_benefits": {
+      "redundancy_elimination": "90% reduction in duplicated intervention logic",
+      "maintainability": "Single source of truth for each DIM×Band intervention",
+      "extensibility": "New PAs added only to instantiation_mappings, no logic duplication",
+      "consistency": "Core intervention logic consistent across all PAs",
+      "auditability": "Clear separation between universal logic and PA-specific parameters"
+    }
+  },
+  "dimensions": {
+    "DIM01": {
+      "id": "DIM01",
+      "name": "Insumos (Diagnóstico y Líneas Base)",
+      "description": "Capa fundacional - Datos diagnósticos, líneas base, recursos e institucionales. Basado en metodologías DNP para caracterización territorial y priorización de problemas públicos.",
+      "causal_position": 1,
+      "question_range": "Q001-Q005",
+      "questions": [
+        "Q001",
+        "Q002",
+        "Q003",
+        "Q004",
+        "Q005"
+      ],
+      "recommendations_by_band": {
+        "CRISIS": {
+          "band_code": "CRISIS",
+          "score_range": [
+            0.0,
+            0.81
+          ],
+          "intervention_logic": "Realizar barrido de urgencia con fuentes primarias y contrastar obligatoriamente con **Teridata** y **Censo DANE** para subsanar inconsistencias críticas.",
+          "core_activities": [
+            "Barrido de urgencia con fuentes primarias (encuestas, censos, registros administrativos)",
+            "Contraste obligatorio con TerriData y Censo DANE para validar inconsistencias",
+            "Articulación con secretarías sectoriales y dependencias técnicas",
+            "Generación de informe de diagnóstico crítico",
+            "Cargue de datos validados en sistemas oficiales"
+          ],
+          "expected_products": [
+            "Informe diagnóstico con datos corregidos y validados",
+            "Matriz de inconsistencias detectadas y subsanadas",
+            "Actas de validación técnica intersectorial",
+            "Reporte de cumplimiento en plataforma SSP/TerriData",
+            "Base de datos depurada con respaldo de fuentes primarias"
+          ],
+          "method_bindings": {
+            "primary_method": "SemanticProcessor.chunk_text",
+            "questions_covered": [
+              "Q001",
+              "Q002",
+              "Q003",
+              "Q004",
+              "Q005"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 3,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim01_crisis_legal_framework",
+            "responsible_entity_key": "pa_lead_dim01",
+            "reporting_system_key": "pa_monitoring_dim01"
+          },
+          "outcome_indicators": [
+            "Tasa de completitud de datos diagnósticos >= 95%",
+            "Inconsistencias críticas subsanadas >= 90%",
+            "Validación técnica aprobada por órgano competente",
+            "Score DIM01 >= 0.81 (salida de banda CRISIS)"
+          ]
+        },
+        "CRITICO": {
+          "band_code": "CRITICO",
+          "score_range": [
+            0.81,
+            1.66
+          ],
+          "intervention_logic": "Articular mesas de validación técnica con secretarías sectoriales y ajustar la batería de indicadores según lineamientos del **Kit de Planeación Territorial (KPT)**.",
+          "core_activities": [
+            "Convocatoria y operación de mesas técnicas de validación",
+            "Ajuste de batería de indicadores según lineamientos KPT-DNP",
+            "Revisión de desagregación y enfoque diferencial",
+            "Alineación con determinantes sectoriales",
+            "Actualización de sistemas de información"
+          ],
+          "expected_products": [
+            "Actas de mesas técnicas con acuerdos suscritos",
+            "Batería de indicadores actualizada y validada",
+            "Matriz de desagregación (sexo, edad, etnia, ubicación)",
+            "Informe de alineación con determinantes sectoriales",
+            "Cargue actualizado en KPT y sistemas territoriales"
+          ],
+          "method_bindings": {
+            "primary_method": "SemanticProcessor.chunk_text",
+            "questions_covered": [
+              "Q001",
+              "Q002",
+              "Q003",
+              "Q004",
+              "Q005"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 6,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim01_critico_legal_framework",
+            "responsible_entity_key": "pa_lead_dim01",
+            "reporting_system_key": "pa_monitoring_dim01"
+          },
+          "outcome_indicators": [
+            "Batería de indicadores validada al 100% por DNP/sector",
+            "Desagregación diferencial implementada >= 80%",
+            "Alineación con determinantes >= 85%",
+            "Score DIM01 >= 1.66 (salida de banda CRÍTICO)"
+          ]
+        },
+        "ACEPTABLE": {
+          "band_code": "ACEPTABLE",
+          "score_range": [
+            1.66,
+            2.31
+          ],
+          "intervention_logic": "Refinar la desagregación de datos (sexo, edad, ubicación) para cumplir con el enfoque diferencial exigido por el **DNP** y la **Ley 1757**.",
+          "core_activities": [
+            "Refinamiento de desagregación de datos (sexo, edad, ubicación)",
+            "Implementación de enfoque diferencial según DNP",
+            "Fortalecimiento de fuentes de información secundarias",
+            "Mejora de calidad del dato y trazabilidad",
+            "Sincronización con plataformas nacionales"
+          ],
+          "expected_products": [
+            "Matriz de desagregación completa y validada",
+            "Informe de cumplimiento de enfoque diferencial",
+            "Protocolo de calidad del dato implementado",
+            "Integración con fuentes secundarias (DANE, sectoriales)",
+            "Dashboard de monitoreo de línea base actualizado"
+          ],
+          "method_bindings": {
+            "primary_method": "SemanticProcessor.chunk_text",
+            "questions_covered": [
+              "Q001",
+              "Q002",
+              "Q003",
+              "Q004",
+              "Q005"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 9,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim01_aceptable_legal_framework",
+            "responsible_entity_key": "pa_lead_dim01",
+            "reporting_system_key": "pa_monitoring_dim01"
+          },
+          "outcome_indicators": [
+            "Desagregación diferencial >= 90%",
+            "Calidad del dato (completitud, validez) >= 92%",
+            "Sincronización con fuentes nacionales >= 88%",
+            "Score DIM01 >= 2.31 (salida de banda ACEPTABLE)"
+          ]
+        },
+        "BUENO": {
+          "band_code": "BUENO",
+          "score_range": [
+            2.31,
+            2.71
+          ],
+          "intervention_logic": "Georreferenciar la oferta institucional y la demanda social utilizando sistemas GIS locales integrados al **SisPT**.",
+          "core_activities": [
+            "Georreferenciación de oferta institucional y demanda social",
+            "Integración con sistemas GIS locales y SisPT",
+            "Análisis espacial de brechas y prioridades",
+            "Optimización de focalización territorial",
+            "Generación de cartografía temática"
+          ],
+          "expected_products": [
+            "Mapas georreferenciados de oferta y demanda",
+            "Análisis de brechas territoriales",
+            "Integración con SisPT (Sistema de Planeación Territorial)",
+            "Atlas municipal de política pública sectorial",
+            "Dashboard GIS interactivo para toma de decisiones"
+          ],
+          "method_bindings": {
+            "primary_method": "SemanticProcessor.chunk_text",
+            "questions_covered": [
+              "Q001",
+              "Q002",
+              "Q003",
+              "Q004",
+              "Q005"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 12,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim01_bueno_legal_framework",
+            "responsible_entity_key": "pa_lead_dim01",
+            "reporting_system_key": "pa_monitoring_dim01"
+          },
+          "outcome_indicators": [
+            "Cobertura de georreferenciación >= 95%",
+            "Integración con SisPT funcional al 100%",
+            "Precisión de focalización territorial >= 90%",
+            "Score DIM01 >= 2.71 (salida de banda BUENO)"
+          ]
+        },
+        "EXCELENTE": {
+          "band_code": "EXCELENTE",
+          "score_range": [
+            2.71,
+            3.01
+          ],
+          "intervention_logic": "Publicar el diagnóstico en formatos de **Datos Abiertos** (Ley 1712) y documentar lecciones aprendidas para el repositorio de gestión del conocimiento.",
+          "core_activities": [
+            "Publicación de diagnóstico en Datos Abiertos (Ley 1712)",
+            "Documentación de lecciones aprendidas",
+            "Creación de repositorio de buenas prácticas",
+            "Transferencia de conocimiento a otros municipios",
+            "Liderazgo en innovación diagnóstica territorial"
+          ],
+          "expected_products": [
+            "Datasets en datos abiertos (formato estándar)",
+            "Documento de lecciones aprendidas publicado",
+            "Repositorio de buenas prácticas documentado",
+            "Presentaciones en espacios de intercambio territorial",
+            "Reconocimiento como referente departamental/nacional"
+          ],
+          "method_bindings": {
+            "primary_method": "SemanticProcessor.chunk_text",
+            "questions_covered": [
+              "Q001",
+              "Q002",
+              "Q003",
+              "Q004",
+              "Q005"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 18,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim01_excelente_legal_framework",
+            "responsible_entity_key": "pa_lead_dim01",
+            "reporting_system_key": "pa_monitoring_dim01"
+          },
+          "outcome_indicators": [
+            "Datasets publicados y descargados >= 50 veces",
+            "Lecciones aprendidas adoptadas por >= 3 municipios",
+            "Reconocimiento formal por DNP u organismo multilateral",
+            "Score DIM01 sostenido >= 2.71 por 12+ meses"
+          ]
+        }
+      }
+    },
+    "DIM02": {
+      "id": "DIM02",
+      "name": "Productos (Metas e Indicadores)",
+      "description": "Definición de productos esperados, metas cuantificables e indicadores de seguimiento según marco lógico MGA y SISAS (Sistema de Seguimiento).",
+      "causal_position": 2,
+      "question_range": "Q006-Q010",
+      "questions": [
+        "Q006",
+        "Q007",
+        "Q008",
+        "Q009",
+        "Q010"
+      ],
+      "recommendations_by_band": {
+        "CRISIS": {
+          "band_code": "CRISIS",
+          "score_range": [
+            0.0,
+            0.81
+          ],
+          "intervention_logic": "Redefinir el **Plan Indicativo** de emergencia, priorizando metas de resultado con vigencias futuras excepcionales si es necesario.",
+          "core_activities": [
+            "Redefinición del Plan Indicativo de emergencia",
+            "Priorización de metas de resultado urgentes",
+            "Gestión de vigencias futuras excepcionales",
+            "Alineación con Plan Plurianual de Inversiones",
+            "Ajuste de cronograma crítico"
+          ],
+          "expected_products": [
+            "Plan Indicativo de emergencia aprobado",
+            "Matriz de metas priorizadas con responsables",
+            "Solicitud de vigencias futuras (si aplica)",
+            "Cronograma ajustado y validado",
+            "Reporte de cumplimiento en SISAS"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q006",
+              "Q007",
+              "Q008",
+              "Q009",
+              "Q010"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 3,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim02_crisis_legal_framework",
+            "responsible_entity_key": "pa_lead_dim02",
+            "reporting_system_key": "pa_monitoring_dim02"
+          },
+          "outcome_indicators": [
+            "Plan Indicativo aprobado por autoridad competente",
+            "Metas críticas priorizadas >= 80%",
+            "Cronograma validado por Planeación",
+            "Score DIM02 >= 0.81"
+          ]
+        },
+        "CRITICO": {
+          "band_code": "CRITICO",
+          "score_range": [
+            0.81,
+            1.66
+          ],
+          "intervention_logic": "Ajustar el **POAI** (Plan Operativo Anual de Inversiones) para asegurar flujo de caja inmediato a las actividades críticas.",
+          "core_activities": [
+            "Ajuste del POAI (Plan Operativo Anual de Inversiones)",
+            "Aseguramiento de flujo de caja inmediato",
+            "Revisión de fuentes de financiación",
+            "Sincronización con PAC (Plan Anual de Caja)",
+            "Optimización de ejecución presupuestal"
+          ],
+          "expected_products": [
+            "POAI ajustado con flujo de caja garantizado",
+            "Matriz de fuentes de financiación validada",
+            "PAC sincronizado con proyectos críticos",
+            "Informe de viabilidad financiera",
+            "Compromisos presupuestales adquiridos"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q006",
+              "Q007",
+              "Q008",
+              "Q009",
+              "Q010"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 6,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim02_critico_legal_framework",
+            "responsible_entity_key": "pa_lead_dim02",
+            "reporting_system_key": "pa_monitoring_dim02"
+          },
+          "outcome_indicators": [
+            "Flujo de caja asegurado >= 85% de necesidad",
+            "POAI aprobado por Hacienda y Planeación",
+            "Compromisos adquiridos >= 70%",
+            "Score DIM02 >= 1.66"
+          ]
+        },
+        "ACEPTABLE": {
+          "band_code": "ACEPTABLE",
+          "score_range": [
+            1.66,
+            2.31
+          ],
+          "intervention_logic": "Sincronizar el cronograma de contratación con el **Plan Anual de Adquisiciones (PAA)** en SECOP II.",
+          "core_activities": [
+            "Sincronización cronograma con PAA (Plan Anual de Adquisiciones)",
+            "Integración con SECOP II",
+            "Optimización de tiempos contractuales",
+            "Fortalecimiento de banco de proyectos",
+            "Mejora de capacidad de ejecución"
+          ],
+          "expected_products": [
+            "PAA sincronizado con cronograma de proyectos",
+            "Procesos publicados en SECOP II",
+            "Cronograma de contratación optimizado",
+            "Banco de proyectos actualizado",
+            "Dashboard de seguimiento de contratación"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q006",
+              "Q007",
+              "Q008",
+              "Q009",
+              "Q010"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 9,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim02_aceptable_legal_framework",
+            "responsible_entity_key": "pa_lead_dim02",
+            "reporting_system_key": "pa_monitoring_dim02"
+          },
+          "outcome_indicators": [
+            "Sincronización PAA-cronograma >= 90%",
+            "Procesos en SECOP II >= 95%",
+            "Reducción tiempos contractuales >= 15%",
+            "Score DIM02 >= 2.31"
+          ]
+        },
+        "BUENO": {
+          "band_code": "BUENO",
+          "score_range": [
+            2.31,
+            2.71
+          ],
+          "intervention_logic": "Optimizar la ruta crítica de proyectos mediante metodologías ágiles o tablero de control en tiempo real.",
+          "core_activities": [
+            "Optimización de ruta crítica con metodologías ágiles",
+            "Implementación de tablero de control en tiempo real",
+            "Gestión de riesgos de cronograma",
+            "Mejora continua de procesos",
+            "Innovación en gestión de proyectos"
+          ],
+          "expected_products": [
+            "Ruta crítica optimizada y monitoreada",
+            "Tablero de control en tiempo real operativo",
+            "Matriz de riesgos de cronograma gestionada",
+            "Indicadores de eficiencia mejorados",
+            "Metodología ágil documentada"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q006",
+              "Q007",
+              "Q008",
+              "Q009",
+              "Q010"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 12,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim02_bueno_legal_framework",
+            "responsible_entity_key": "pa_lead_dim02",
+            "reporting_system_key": "pa_monitoring_dim02"
+          },
+          "outcome_indicators": [
+            "Cumplimiento de hitos >= 92%",
+            "Variación de cronograma <= 10%",
+            "Eficiencia de ejecución >= 88%",
+            "Score DIM02 >= 2.71"
+          ]
+        },
+        "EXCELENTE": {
+          "band_code": "EXCELENTE",
+          "score_range": [
+            2.71,
+            3.01
+          ],
+          "intervention_logic": "Establecer un esquema de gerencia de proyectos (PMO) que sirva de referente departamental.",
+          "core_activities": [
+            "Establecimiento de PMO (Project Management Office)",
+            "Referente departamental en gestión de proyectos",
+            "Transferencia de mejores prácticas",
+            "Innovación en herramientas de seguimiento",
+            "Liderazgo en gobernanza de proyectos"
+          ],
+          "expected_products": [
+            "PMO operativo con protocolos documentados",
+            "Reconocimiento como referente territorial",
+            "Guías metodológicas compartidas",
+            "Plataforma de seguimiento innovadora",
+            "Red de aprendizaje con otros municipios"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q006",
+              "Q007",
+              "Q008",
+              "Q009",
+              "Q010"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 18,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim02_excelente_legal_framework",
+            "responsible_entity_key": "pa_lead_dim02",
+            "reporting_system_key": "pa_monitoring_dim02"
+          },
+          "outcome_indicators": [
+            "PMO certificado o reconocido formalmente",
+            "Adopción de metodología por >= 3 entidades",
+            "Cumplimiento de cronograma >= 95%",
+            "Score DIM02 sostenido >= 2.71"
+          ]
+        }
+      }
+    },
+    "DIM03": {
+      "id": "DIM03",
+      "name": "Procesos (Gestión y Ejecución)",
+      "description": "Capacidades de gestión administrativa, ejecución presupuestal, contratación y cumplimiento de requisitos técnicos (MGA, banco de proyectos).",
+      "causal_position": 3,
+      "question_range": "Q011-Q015",
+      "questions": [
+        "Q011",
+        "Q012",
+        "Q013",
+        "Q014",
+        "Q015"
+      ],
+      "recommendations_by_band": {
+        "CRISIS": {
+          "band_code": "CRISIS",
+          "score_range": [
+            0.0,
+            0.81
+          ],
+          "intervention_logic": "Subsanar inmediatamente requisitos críticos en **MGA Web** para evitar la desfinanciación por parte del SGR o SGP.",
+          "core_activities": [
+            "Subsanación inmediata de requisitos críticos en MGA Web",
+            "Revisión de elegibilidad de proyectos ante SGR/SGP",
+            "Corrección de fichas técnicas y cadenas de valor",
+            "Articulación con banco de proyectos municipal",
+            "Prevención de desfinanciación"
+          ],
+          "expected_products": [
+            "Fichas MGA corregidas y validadas",
+            "Certificación de elegibilidad de proyectos",
+            "Informe de cumplimiento de requisitos técnicos",
+            "Respaldo de viabilidad ante fuentes de financiación",
+            "Plan de contingencia financiera"
+          ],
+          "method_bindings": {
+            "primary_method": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            "questions_covered": [
+              "Q011",
+              "Q012",
+              "Q013",
+              "Q014",
+              "Q015"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 3,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim03_crisis_legal_framework",
+            "responsible_entity_key": "pa_lead_dim03",
+            "reporting_system_key": "pa_monitoring_dim03"
+          },
+          "outcome_indicators": [
+            "Requisitos críticos subsanados >= 95%",
+            "Proyectos elegibles certificados >= 90%",
+            "Riesgo de desfinanciación eliminado",
+            "Score DIM03 >= 0.81"
+          ]
+        },
+        "CRITICO": {
+          "band_code": "CRITICO",
+          "score_range": [
+            0.81,
+            1.66
+          ],
+          "intervention_logic": "Revisar la cadena de valor en la **MGA** y asegurar el cargue correcto en **Swift-BPIN** o **SUIFP-Territorial**.",
+          "core_activities": [
+            "Revisión de cadena de valor en MGA",
+            "Cargue correcto en SUIFP-Territorial o Swift-BPIN",
+            "Validación de estructuración técnica",
+            "Alineación con lineamientos sectoriales",
+            "Fortalecimiento de banco de proyectos"
+          ],
+          "expected_products": [
+            "Cadenas de valor validadas en MGA",
+            "Proyectos cargados en plataformas nacionales",
+            "Informe de estructuración técnica",
+            "Certificación de alineación sectorial",
+            "Banco de proyectos actualizado"
+          ],
+          "method_bindings": {
+            "primary_method": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            "questions_covered": [
+              "Q011",
+              "Q012",
+              "Q013",
+              "Q014",
+              "Q015"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 6,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim03_critico_legal_framework",
+            "responsible_entity_key": "pa_lead_dim03",
+            "reporting_system_key": "pa_monitoring_dim03"
+          },
+          "outcome_indicators": [
+            "Proyectos correctamente cargados >= 88%",
+            "Validación técnica aprobada >= 85%",
+            "Alineación sectorial >= 90%",
+            "Score DIM03 >= 1.66"
+          ]
+        },
+        "ACEPTABLE": {
+          "band_code": "ACEPTABLE",
+          "score_range": [
+            1.66,
+            2.31
+          ],
+          "intervention_logic": "Fortalecer la estructuración técnica de proyectos (Fase III) para aumentar el índice de viabilidad en los OCAD o ministerios.",
+          "core_activities": [
+            "Fortalecimiento de estructuración técnica (Fase III MGA)",
+            "Aumento de índice de viabilidad ante OCAD/ministerios",
+            "Mejora de calidad de proyectos de inversión",
+            "Optimización de perfil de riesgo",
+            "Capacitación de equipos técnicos"
+          ],
+          "expected_products": [
+            "Proyectos en Fase III con viabilidad incrementada",
+            "Índice de aprobación ante OCAD mejorado",
+            "Matriz de calidad de proyectos",
+            "Perfil de riesgo optimizado",
+            "Plan de capacitación ejecutado"
+          ],
+          "method_bindings": {
+            "primary_method": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            "questions_covered": [
+              "Q011",
+              "Q012",
+              "Q013",
+              "Q014",
+              "Q015"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 9,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim03_aceptable_legal_framework",
+            "responsible_entity_key": "pa_lead_dim03",
+            "reporting_system_key": "pa_monitoring_dim03"
+          },
+          "outcome_indicators": [
+            "Índice de viabilidad >= 75%",
+            "Calidad técnica de proyectos >= 85%",
+            "Equipos capacitados >= 90%",
+            "Score DIM03 >= 2.31"
+          ]
+        },
+        "BUENO": {
+          "band_code": "BUENO",
+          "score_range": [
+            2.31,
+            2.71
+          ],
+          "intervention_logic": "Diversificar fuentes de financiación (Obras por Impuestos, Regalías, Cooperación) alineadas al **Marco Fiscal de Mediano Plazo**.",
+          "core_activities": [
+            "Diversificación de fuentes de financiación",
+            "Implementación de Obras por Impuestos",
+            "Gestión de recursos de Regalías y Cooperación",
+            "Alineación con Marco Fiscal de Mediano Plazo",
+            "Innovación financiera territorial"
+          ],
+          "expected_products": [
+            "Portafolio diversificado de fuentes",
+            "Proyectos de Obras por Impuestos estructurados",
+            "Recursos adicionales gestionados",
+            "Sostenibilidad fiscal validada",
+            "Estrategia de financiación innovadora"
+          ],
+          "method_bindings": {
+            "primary_method": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            "questions_covered": [
+              "Q011",
+              "Q012",
+              "Q013",
+              "Q014",
+              "Q015"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 12,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim03_bueno_legal_framework",
+            "responsible_entity_key": "pa_lead_dim03",
+            "reporting_system_key": "pa_monitoring_dim03"
+          },
+          "outcome_indicators": [
+            "Fuentes diversificadas >= 3 tipos",
+            "Recursos adicionales gestionados >= 20%",
+            "Sostenibilidad fiscal garantizada",
+            "Score DIM03 >= 2.71"
+          ]
+        },
+        "EXCELENTE": {
+          "band_code": "EXCELENTE",
+          "score_range": [
+            2.71,
+            3.01
+          ],
+          "intervention_logic": "Implementar un banco de proyectos de alta maduración listo para ventanilla única nacional.",
+          "core_activities": [
+            "Banco de proyectos de alta maduración",
+            "Ventanilla única nacional (proyectos listos)",
+            "Referente en estructuración de proyectos",
+            "Transferencia de metodologías",
+            "Liderazgo en innovación financiera"
+          ],
+          "expected_products": [
+            "Banco de proyectos certificado con alta maduración",
+            "Proyectos presentados en ventanilla nacional",
+            "Reconocimiento como referente territorial",
+            "Metodologías documentadas y compartidas",
+            "Red de aprendizaje activa"
+          ],
+          "method_bindings": {
+            "primary_method": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            "questions_covered": [
+              "Q011",
+              "Q012",
+              "Q013",
+              "Q014",
+              "Q015"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 18,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim03_excelente_legal_framework",
+            "responsible_entity_key": "pa_lead_dim03",
+            "reporting_system_key": "pa_monitoring_dim03"
+          },
+          "outcome_indicators": [
+            "Proyectos con maduración >= 80% listos",
+            "Reconocimiento formal por DNP/sectorial",
+            "Metodología adoptada por >= 3 entidades",
+            "Score DIM03 sostenido >= 2.71"
+          ]
+        }
+      }
+    },
+    "DIM04": {
+      "id": "DIM04",
+      "name": "Resultados (Medición de Impacto)",
+      "description": "Medición de cambios en condiciones poblacionales, cumplimiento de metas de resultado, alineación con ODS y reporte en plataformas oficiales (Sinergia, TerriData).",
+      "causal_position": 4,
+      "question_range": "Q016-Q020",
+      "questions": [
+        "Q016",
+        "Q017",
+        "Q018",
+        "Q019",
+        "Q020"
+      ],
+      "recommendations_by_band": {
+        "CRISIS": {
+          "band_code": "CRISIS",
+          "score_range": [
+            0.0,
+            0.81
+          ],
+          "intervention_logic": "Reconstruir la matriz de resultados para garantizar su medición en **Sinergia** y evitar sanciones de órganos de control.",
+          "core_activities": [
+            "Reconstrucción de matriz de resultados",
+            "Garantizar medición en plataforma Sinergia",
+            "Prevenir sanciones de órganos de control",
+            "Validación de indicadores de resultado",
+            "Alineación con PDM y PND"
+          ],
+          "expected_products": [
+            "Matriz de resultados reconstruida y validada",
+            "Indicadores configurados en Sinergia",
+            "Informe de cumplimiento para órganos de control",
+            "Plan de medición de resultados",
+            "Línea base de indicadores establecida"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q016",
+              "Q017",
+              "Q018",
+              "Q019",
+              "Q020"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 3,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim04_crisis_legal_framework",
+            "responsible_entity_key": "pa_lead_dim04",
+            "reporting_system_key": "pa_monitoring_dim04"
+          },
+          "outcome_indicators": [
+            "Matriz de resultados completa >= 95%",
+            "Indicadores en Sinergia >= 90%",
+            "Riesgo de sanción eliminado",
+            "Score DIM04 >= 0.81"
+          ]
+        },
+        "CRITICO": {
+          "band_code": "CRITICO",
+          "score_range": [
+            0.81,
+            1.66
+          ],
+          "intervention_logic": "Alinear las metas de producto con los Objetivos de Desarrollo Sostenible (**ODS**) y el Plan Nacional de Desarrollo.",
+          "core_activities": [
+            "Alineación de metas con ODS (Objetivos de Desarrollo Sostenible)",
+            "Sincronización con Plan Nacional de Desarrollo",
+            "Validación de teoría del cambio",
+            "Fortalecimiento de sistema de monitoreo",
+            "Reportería periódica en plataformas oficiales"
+          ],
+          "expected_products": [
+            "Matriz de alineación con ODS",
+            "Metas sincronizadas con PND",
+            "Teoría del cambio validada",
+            "Sistema de monitoreo operativo",
+            "Reportes periódicos en Sinergia/TerriData"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q016",
+              "Q017",
+              "Q018",
+              "Q019",
+              "Q020"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 6,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim04_critico_legal_framework",
+            "responsible_entity_key": "pa_lead_dim04",
+            "reporting_system_key": "pa_monitoring_dim04"
+          },
+          "outcome_indicators": [
+            "Alineación con ODS >= 80%",
+            "Sincronización con PND >= 85%",
+            "Reportería periódica al día >= 95%",
+            "Score DIM04 >= 1.66"
+          ]
+        },
+        "ACEPTABLE": {
+          "band_code": "ACEPTABLE",
+          "score_range": [
+            1.66,
+            2.31
+          ],
+          "intervention_logic": "Implementar auditorías de calidad al dato para los reportes al **SPI** (Seguimiento a Proyectos de Inversión).",
+          "core_activities": [
+            "Auditorías de calidad del dato para SPI",
+            "Mejora de sistemas de recolección de información",
+            "Validación de fuentes de verificación",
+            "Optimización de procesos de medición",
+            "Capacitación en gestión de la información"
+          ],
+          "expected_products": [
+            "Informe de auditoría de calidad del dato",
+            "Protocolos de recolección mejorados",
+            "Fuentes de verificación validadas",
+            "Procesos de medición optimizados",
+            "Equipos capacitados en gestión de información"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q016",
+              "Q017",
+              "Q018",
+              "Q019",
+              "Q020"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 9,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim04_aceptable_legal_framework",
+            "responsible_entity_key": "pa_lead_dim04",
+            "reporting_system_key": "pa_monitoring_dim04"
+          },
+          "outcome_indicators": [
+            "Calidad del dato >= 90%",
+            "Fuentes verificadas >= 92%",
+            "Procesos optimizados >= 85%",
+            "Score DIM04 >= 2.31"
+          ]
+        },
+        "BUENO": {
+          "band_code": "BUENO",
+          "score_range": [
+            2.31,
+            2.71
+          ],
+          "intervention_logic": "Establecer evaluaciones de desempeño intermedias con participación ciudadana (Consejos Territoriales de Planeación).",
+          "core_activities": [
+            "Evaluaciones de desempeño intermedias",
+            "Participación ciudadana (Consejos Territoriales)",
+            "Ajustes basados en resultados preliminares",
+            "Mejora continua de intervenciones",
+            "Rendición de cuentas participativa"
+          ],
+          "expected_products": [
+            "Informes de evaluación intermedia",
+            "Actas de participación ciudadana",
+            "Plan de ajuste basado en evidencia",
+            "Mejoras implementadas documentadas",
+            "Audiencias de rendición de cuentas realizadas"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q016",
+              "Q017",
+              "Q018",
+              "Q019",
+              "Q020"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 12,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim04_bueno_legal_framework",
+            "responsible_entity_key": "pa_lead_dim04",
+            "reporting_system_key": "pa_monitoring_dim04"
+          },
+          "outcome_indicators": [
+            "Evaluaciones intermedias realizadas >= 2 por año",
+            "Participación ciudadana >= 80% de convocados",
+            "Ajustes implementados >= 75%",
+            "Score DIM04 >= 2.71"
+          ]
+        },
+        "EXCELENTE": {
+          "band_code": "EXCELENTE",
+          "score_range": [
+            2.71,
+            3.01
+          ],
+          "intervention_logic": "Diseñar evaluaciones de impacto ex-post para medir el retorno social de la inversión (SROI).",
+          "core_activities": [
+            "Evaluaciones de impacto ex-post",
+            "Medición de retorno social de inversión (SROI)",
+            "Documentación de casos de éxito",
+            "Liderazgo en medición de resultados",
+            "Transferencia de metodologías de evaluación"
+          ],
+          "expected_products": [
+            "Evaluaciones de impacto rigurosas",
+            "Análisis SROI documentado",
+            "Casos de éxito publicados",
+            "Reconocimiento como referente",
+            "Metodologías compartidas con otros territorios"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q016",
+              "Q017",
+              "Q018",
+              "Q019",
+              "Q020"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 18,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim04_excelente_legal_framework",
+            "responsible_entity_key": "pa_lead_dim04",
+            "reporting_system_key": "pa_monitoring_dim04"
+          },
+          "outcome_indicators": [
+            "Evaluaciones de impacto realizadas >= 2",
+            "SROI positivo demostrado",
+            "Reconocimiento por organismos nacionales/internacionales",
+            "Score DIM04 sostenido >= 2.71"
+          ]
+        }
+      }
+    },
+    "DIM05": {
+      "id": "DIM05",
+      "name": "Riesgos (Transparencia y Control)",
+      "description": "Gestión de riesgos de corrupción, transparencia contractual, rendición de cuentas y cumplimiento de directrices DAFP y órganos de control.",
+      "causal_position": 5,
+      "question_range": "Q021-Q025",
+      "questions": [
+        "Q021",
+        "Q022",
+        "Q023",
+        "Q024",
+        "Q025"
+      ],
+      "recommendations_by_band": {
+        "CRISIS": {
+          "band_code": "CRISIS",
+          "score_range": [
+            0.0,
+            0.81
+          ],
+          "intervention_logic": "Activar el mapa de riesgos de corrupción y gestión contractual según la metodología del **DAFP**.",
+          "core_activities": [
+            "Activación de mapa de riesgos de corrupción (DAFP)",
+            "Revisión de procesos contractuales críticos",
+            "Implementación de controles urgentes",
+            "Reporte a órganos de control",
+            "Plan de acción anticorrupción"
+          ],
+          "expected_products": [
+            "Mapa de riesgos activado y publicado",
+            "Informe de revisión contractual",
+            "Controles implementados documentados",
+            "Reporte a Contraloría/Procuraduría",
+            "Plan anticorrupción en ejecución"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q021",
+              "Q022",
+              "Q023",
+              "Q024",
+              "Q025"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 3,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim05_crisis_legal_framework",
+            "responsible_entity_key": "pa_lead_dim05",
+            "reporting_system_key": "pa_monitoring_dim05"
+          },
+          "outcome_indicators": [
+            "Mapa de riesgos completo >= 95%",
+            "Controles críticos implementados >= 90%",
+            "Hallazgos críticos subsanados",
+            "Score DIM05 >= 0.81"
+          ]
+        },
+        "CRITICO": {
+          "band_code": "CRITICO",
+          "score_range": [
+            0.81,
+            1.66
+          ],
+          "intervention_logic": "Incorporar determinantes de gestión del riesgo de desastres (**Ley 1523**) en la planificación sectorial.",
+          "core_activities": [
+            "Incorporación de gestión de riesgo de desastres (Ley 1523)",
+            "Alineación con planes de emergencia y contingencia",
+            "Fortalecimiento de sistemas de alerta temprana",
+            "Capacitación en gestión del riesgo",
+            "Integración con planificación sectorial"
+          ],
+          "expected_products": [
+            "Plan de gestión del riesgo incorporado",
+            "Alineación con POMCA/PNGRD validada",
+            "Sistemas de alerta temprana operativos",
+            "Equipos capacitados",
+            "Planificación sectorial con enfoque de riesgo"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q021",
+              "Q022",
+              "Q023",
+              "Q024",
+              "Q025"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 6,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim05_critico_legal_framework",
+            "responsible_entity_key": "pa_lead_dim05",
+            "reporting_system_key": "pa_monitoring_dim05"
+          },
+          "outcome_indicators": [
+            "Plan de riesgo integrado >= 85%",
+            "Sistemas de alerta operativos >= 90%",
+            "Capacitaciones realizadas >= 80%",
+            "Score DIM05 >= 1.66"
+          ]
+        },
+        "ACEPTABLE": {
+          "band_code": "ACEPTABLE",
+          "score_range": [
+            1.66,
+            2.31
+          ],
+          "intervention_logic": "Actualizar el plan de sostenibilidad fiscal y financiera en concordancia con la **Ley 617** y **Ley 819**.",
+          "core_activities": [
+            "Actualización de plan de sostenibilidad fiscal (Ley 617, 819)",
+            "Fortalecimiento de marco fiscal de mediano plazo",
+            "Gestión de pasivos contingentes",
+            "Optimización de estructura de deuda",
+            "Mejora de indicadores de solvencia"
+          ],
+          "expected_products": [
+            "Plan de sostenibilidad fiscal actualizado",
+            "Marco fiscal de mediano plazo robusto",
+            "Matriz de pasivos contingentes",
+            "Estrategia de gestión de deuda",
+            "Indicadores de solvencia mejorados"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q021",
+              "Q022",
+              "Q023",
+              "Q024",
+              "Q025"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 9,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim05_aceptable_legal_framework",
+            "responsible_entity_key": "pa_lead_dim05",
+            "reporting_system_key": "pa_monitoring_dim05"
+          },
+          "outcome_indicators": [
+            "Sostenibilidad fiscal garantizada",
+            "Indicadores de solvencia >= categoría media",
+            "Pasivos contingentes controlados",
+            "Score DIM05 >= 2.31"
+          ]
+        },
+        "BUENO": {
+          "band_code": "BUENO",
+          "score_range": [
+            2.31,
+            2.71
+          ],
+          "intervention_logic": "Integrar salvaguardas sociales y ambientales en todos los proyectos de inversión mayor.",
+          "core_activities": [
+            "Integración de salvaguardas sociales y ambientales",
+            "Cumplimiento de estándares internacionales",
+            "Gestión de impactos socioambientales",
+            "Consulta previa y participación comunitaria",
+            "Monitoreo de compromisos socioambientales"
+          ],
+          "expected_products": [
+            "Marco de salvaguardas implementado",
+            "Certificación de cumplimiento de estándares",
+            "Evaluaciones de impacto socioambiental",
+            "Procesos de consulta previa realizados",
+            "Sistema de monitoreo de compromisos"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q021",
+              "Q022",
+              "Q023",
+              "Q024",
+              "Q025"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 12,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim05_bueno_legal_framework",
+            "responsible_entity_key": "pa_lead_dim05",
+            "reporting_system_key": "pa_monitoring_dim05"
+          },
+          "outcome_indicators": [
+            "Salvaguardas implementadas >= 90%",
+            "Cumplimiento de estándares certificado",
+            "Consultas previas realizadas >= 100%",
+            "Score DIM05 >= 2.71"
+          ]
+        },
+        "EXCELENTE": {
+          "band_code": "EXCELENTE",
+          "score_range": [
+            2.71,
+            3.01
+          ],
+          "intervention_logic": "Liderar la adopción de estándares ESG (Ambiental, Social y Gobernanza) en la administración pública local.",
+          "core_activities": [
+            "Adopción de estándares ESG (Environmental, Social, Governance)",
+            "Liderazgo en gobernanza pública sostenible",
+            "Reporte de sostenibilidad según GRI",
+            "Certificaciones internacionales",
+            "Referente en transparencia y ética pública"
+          ],
+          "expected_products": [
+            "Reporte ESG publicado",
+            "Certificaciones obtenidas (ISO, GRI, etc.)",
+            "Reconocimiento como gobierno sostenible",
+            "Buenas prácticas documentadas",
+            "Liderazgo en red de gobiernos responsables"
+          ],
+          "method_bindings": {
+            "primary_method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "questions_covered": [
+              "Q021",
+              "Q022",
+              "Q023",
+              "Q024",
+              "Q025"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 18,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim05_excelente_legal_framework",
+            "responsible_entity_key": "pa_lead_dim05",
+            "reporting_system_key": "pa_monitoring_dim05"
+          },
+          "outcome_indicators": [
+            "Reporte ESG publicado y verificado",
+            "Certificaciones internacionales >= 2",
+            "Reconocimiento por organismos multilaterales",
+            "Score DIM05 sostenido >= 2.71"
+          ]
+        }
+      }
+    },
+    "DIM06": {
+      "id": "DIM06",
+      "name": "Causalidad (Coherencia Sistémica)",
+      "description": "Validación de cadenas causales (problema-objetivo-meta-indicador), coherencia del marco lógico y alineación con teoría del cambio según lineamientos DNP.",
+      "causal_position": 6,
+      "question_range": "Q026-Q030",
+      "questions": [
+        "Q026",
+        "Q027",
+        "Q028",
+        "Q029",
+        "Q030"
+      ],
+      "recommendations_by_band": {
+        "CRISIS": {
+          "band_code": "CRISIS",
+          "score_range": [
+            0.0,
+            0.81
+          ],
+          "intervention_logic": "Restablecer la lógica causal del plan mediante árboles de problemas y objetivos validados por el **DNP**.",
+          "core_activities": [
+            "Restablecimiento de lógica causal (árboles de problemas/objetivos)",
+            "Validación por DNP o entidad técnica competente",
+            "Reconstrucción de cadena de resultados",
+            "Alineación con marco lógico MGA",
+            "Corrección de inconsistencias críticas"
+          ],
+          "expected_products": [
+            "Árboles de problemas y objetivos validados",
+            "Cadena de resultados coherente",
+            "Marco lógico alineado",
+            "Informe de validación DNP",
+            "Plan corregido y aprobado"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q026",
+              "Q027",
+              "Q028",
+              "Q029",
+              "Q030"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 3,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim06_crisis_legal_framework",
+            "responsible_entity_key": "pa_lead_dim06",
+            "reporting_system_key": "pa_monitoring_dim06"
+          },
+          "outcome_indicators": [
+            "Lógica causal validada >= 95%",
+            "Coherencia del marco lógico >= 90%",
+            "Aprobación por DNP obtenida",
+            "Score DIM06 >= 0.81"
+          ]
+        },
+        "CRITICO": {
+          "band_code": "CRITICO",
+          "score_range": [
+            0.81,
+            1.66
+          ],
+          "intervention_logic": "Documentar la trazabilidad de decisiones para responder a requerimientos de la **Contraloría General**.",
+          "core_activities": [
+            "Documentación de trazabilidad de decisiones",
+            "Preparación para requerimientos de Contraloría",
+            "Fortalecimiento de sistemas de gestión documental",
+            "Mejora de transparencia en procesos decisorios",
+            "Capacitación en rendición de cuentas"
+          ],
+          "expected_products": [
+            "Matriz de trazabilidad de decisiones",
+            "Respuestas preparadas para órganos de control",
+            "Sistema documental fortalecido",
+            "Protocolos de transparencia implementados",
+            "Equipos capacitados en rendición"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q026",
+              "Q027",
+              "Q028",
+              "Q029",
+              "Q030"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 6,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim06_critico_legal_framework",
+            "responsible_entity_key": "pa_lead_dim06",
+            "reporting_system_key": "pa_monitoring_dim06"
+          },
+          "outcome_indicators": [
+            "Trazabilidad documentada >= 90%",
+            "Respuesta a requerimientos oportuna >= 95%",
+            "Sistema documental certificado",
+            "Score DIM06 >= 1.66"
+          ]
+        },
+        "ACEPTABLE": {
+          "band_code": "ACEPTABLE",
+          "score_range": [
+            1.66,
+            2.31
+          ],
+          "intervention_logic": "Fortalecer los canales de rendición de cuentas permanente más allá de las audiencias públicas obligatorias.",
+          "core_activities": [
+            "Fortalecimiento de rendición de cuentas permanente",
+            "Implementación de canales adicionales de participación",
+            "Mejora de audiencias públicas",
+            "Transparencia activa en datos y decisiones",
+            "Mecanismos de diálogo ciudadano"
+          ],
+          "expected_products": [
+            "Estrategia de rendición de cuentas permanente",
+            "Canales de participación diversificados",
+            "Audiencias públicas mejoradas",
+            "Portal de transparencia actualizado",
+            "Espacios de diálogo establecidos"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q026",
+              "Q027",
+              "Q028",
+              "Q029",
+              "Q030"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 9,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim06_aceptable_legal_framework",
+            "responsible_entity_key": "pa_lead_dim06",
+            "reporting_system_key": "pa_monitoring_dim06"
+          },
+          "outcome_indicators": [
+            "Audiencias públicas >= 4 por año",
+            "Canales de participación >= 5 activos",
+            "Satisfacción ciudadana con rendición >= 70%",
+            "Score DIM06 >= 2.31"
+          ]
+        },
+        "BUENO": {
+          "band_code": "BUENO",
+          "score_range": [
+            2.31,
+            2.71
+          ],
+          "intervention_logic": "Sistematizar experiencias exitosas para el **Banco de Éxitos** de la administración pública.",
+          "core_activities": [
+            "Sistematización de experiencias exitosas",
+            "Alimentación del Banco de Éxitos de administración pública",
+            "Documentación de innovaciones",
+            "Transferencia de conocimiento",
+            "Participación en redes de aprendizaje"
+          ],
+          "expected_products": [
+            "Casos de éxito sistematizados",
+            "Publicación en Banco de Éxitos",
+            "Documentación de innovaciones",
+            "Presentaciones en espacios de intercambio",
+            "Membresía en redes de aprendizaje"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q026",
+              "Q027",
+              "Q028",
+              "Q029",
+              "Q030"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 12,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim06_bueno_legal_framework",
+            "responsible_entity_key": "pa_lead_dim06",
+            "reporting_system_key": "pa_monitoring_dim06"
+          },
+          "outcome_indicators": [
+            "Casos sistematizados >= 5",
+            "Publicaciones en Banco de Éxitos >= 3",
+            "Presentaciones realizadas >= 4",
+            "Score DIM06 >= 2.71"
+          ]
+        },
+        "EXCELENTE": {
+          "band_code": "EXCELENTE",
+          "score_range": [
+            2.71,
+            3.01
+          ],
+          "intervention_logic": "Constituirse en nodo de buenas prácticas de gobernanza territorial reconocido por organismos multilaterales.",
+          "core_activities": [
+            "Liderazgo como nodo de buenas prácticas de gobernanza",
+            "Reconocimiento por organismos multilaterales",
+            "Transferencia de modelo de gestión",
+            "Innovación en gobernanza territorial",
+            "Referente internacional en gestión pública"
+          ],
+          "expected_products": [
+            "Certificación como gobierno de excelencia",
+            "Reconocimientos internacionales",
+            "Modelo de gestión documentado y transferido",
+            "Publicaciones académicas/técnicas",
+            "Red de gobiernos liderada"
+          ],
+          "method_bindings": {
+            "primary_method": "CausalExtractor.extract_causal_hierarchy",
+            "questions_covered": [
+              "Q026",
+              "Q027",
+              "Q028",
+              "Q029",
+              "Q030"
+            ],
+            "data_sources": [
+              "TerriData",
+              "DANE",
+              "Sinergia",
+              "SECOP",
+              "MGA Web"
+            ],
+            "verification_platforms": [
+              "SSP",
+              "SPI",
+              "SISAS"
+            ]
+          },
+          "duration_months": 18,
+          "pa_instantiation_variables": {
+            "legal_framework_key": "dim06_excelente_legal_framework",
+            "responsible_entity_key": "pa_lead_dim06",
+            "reporting_system_key": "pa_monitoring_dim06"
+          },
+          "outcome_indicators": [
+            "Reconocimientos internacionales >= 2",
+            "Modelo adoptado por >= 5 territorios",
+            "Publicaciones >= 3",
+            "Score DIM06 sostenido >= 2.71"
+          ]
+        }
+      }
+    }
+  },
+  "instantiation_mappings": {
+    "PA01": {
+      "canonical_name": "Derechos de las mujeres e igualdad de género",
+      "responsible_entity": "Secretaría de la Mujer Municipal en articulación con Secretaría de la Mujer / Alta Consejería",
+      "sector_role": "lidera la política pública de género",
+      "base_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_lead_dim01": "Secretaría de la Mujer Municipal",
+      "dim01_crisis_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim01_aceptable_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim01_bueno_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim01_excelente_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_lead_dim02": "Secretaría de la Mujer Municipal",
+      "dim02_crisis_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim02_aceptable_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim02_bueno_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim02_excelente_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_lead_dim03": "Secretaría de la Mujer Municipal",
+      "dim03_crisis_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim03_aceptable_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim03_bueno_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim03_excelente_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_lead_dim04": "Secretaría de la Mujer Municipal",
+      "dim04_crisis_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim04_aceptable_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim04_bueno_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim04_excelente_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_lead_dim05": "Secretaría de la Mujer Municipal",
+      "dim05_crisis_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim05_aceptable_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim05_bueno_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim05_excelente_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_lead_dim06": "Secretaría de la Mujer Municipal",
+      "dim06_crisis_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim06_aceptable_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim06_bueno_legal_framework": "Ley 1257 de 2008 y CONPES 4080",
+      "dim06_excelente_legal_framework": "Ley 1257 de 2008 y CONPES 4080"
+    },
+    "PA02": {
+      "canonical_name": "Prevención de la violencia y seguridad ciudadana",
+      "responsible_entity": "Secretaría de Gobierno y Seguridad en articulación con Secretaría de Gobierno / Consejo de Seguridad",
+      "sector_role": "lidera la seguridad y convivencia ciudadana",
+      "base_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_lead_dim01": "Secretaría de Gobierno y Seguridad",
+      "dim01_crisis_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim01_aceptable_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim01_bueno_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim01_excelente_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_lead_dim02": "Secretaría de Gobierno y Seguridad",
+      "dim02_crisis_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim02_aceptable_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim02_bueno_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim02_excelente_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_lead_dim03": "Secretaría de Gobierno y Seguridad",
+      "dim03_crisis_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim03_aceptable_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim03_bueno_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim03_excelente_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_lead_dim04": "Secretaría de Gobierno y Seguridad",
+      "dim04_crisis_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim04_aceptable_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim04_bueno_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim04_excelente_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_lead_dim05": "Secretaría de Gobierno y Seguridad",
+      "dim05_crisis_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim05_aceptable_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim05_bueno_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim05_excelente_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_lead_dim06": "Secretaría de Gobierno y Seguridad",
+      "dim06_crisis_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim06_aceptable_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim06_bueno_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa",
+      "dim06_excelente_legal_framework": "Ley 1801 (Código de Policía) y Política de Seguridad y Defensa"
+    },
+    "PA03": {
+      "canonical_name": "Gestión ambiental y cambio climático",
+      "responsible_entity": "Secretaría de Medio Ambiente en articulación con Secretaría de Ambiente / CAR",
+      "sector_role": "lidera la gestión ambiental y cambio climático",
+      "base_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_lead_dim01": "Secretaría de Medio Ambiente",
+      "dim01_crisis_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim01_aceptable_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim01_bueno_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim01_excelente_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_lead_dim02": "Secretaría de Medio Ambiente",
+      "dim02_crisis_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim02_aceptable_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim02_bueno_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim02_excelente_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_lead_dim03": "Secretaría de Medio Ambiente",
+      "dim03_crisis_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim03_aceptable_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim03_bueno_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim03_excelente_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_lead_dim04": "Secretaría de Medio Ambiente",
+      "dim04_crisis_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim04_aceptable_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim04_bueno_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim04_excelente_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_lead_dim05": "Secretaría de Medio Ambiente",
+      "dim05_crisis_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim05_aceptable_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim05_bueno_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim05_excelente_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_lead_dim06": "Secretaría de Medio Ambiente",
+      "dim06_crisis_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim06_aceptable_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim06_bueno_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales",
+      "dim06_excelente_legal_framework": "Ley 99 de 1993 y Determinantes Ambientales"
+    },
+    "PA04": {
+      "canonical_name": "Desarrollo social integral (salud, educación, bienestar)",
+      "responsible_entity": "Secretaría de Desarrollo Social en articulación con Secretarías de Salud y Educación",
+      "sector_role": "lidera derechos económicos, sociales y culturales",
+      "base_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_lead_dim01": "Secretaría de Desarrollo Social",
+      "dim01_crisis_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim01_aceptable_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim01_bueno_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim01_excelente_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_lead_dim02": "Secretaría de Desarrollo Social",
+      "dim02_crisis_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim02_aceptable_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim02_bueno_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim02_excelente_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_lead_dim03": "Secretaría de Desarrollo Social",
+      "dim03_crisis_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim03_aceptable_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim03_bueno_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim03_excelente_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_lead_dim04": "Secretaría de Desarrollo Social",
+      "dim04_crisis_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim04_aceptable_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim04_bueno_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim04_excelente_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_lead_dim05": "Secretaría de Desarrollo Social",
+      "dim05_crisis_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim05_aceptable_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim05_bueno_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim05_excelente_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_lead_dim06": "Secretaría de Desarrollo Social",
+      "dim06_crisis_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim06_aceptable_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim06_bueno_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)",
+      "dim06_excelente_legal_framework": "Ley 100, Ley 115 y Ley 715 (SGP)"
+    },
+    "PA05": {
+      "canonical_name": "Atención y reparación integral a víctimas del conflicto",
+      "responsible_entity": "Oficina de Derechos Humanos en articulación con Mesa de Víctimas / Unidad de Víctimas",
+      "sector_role": "lidera política de víctimas y paz",
+      "base_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_lead_dim01": "Oficina de Derechos Humanos",
+      "dim01_crisis_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim01_aceptable_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim01_bueno_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim01_excelente_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_lead_dim02": "Oficina de Derechos Humanos",
+      "dim02_crisis_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim02_aceptable_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim02_bueno_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim02_excelente_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_lead_dim03": "Oficina de Derechos Humanos",
+      "dim03_crisis_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim03_aceptable_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim03_bueno_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim03_excelente_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_lead_dim04": "Oficina de Derechos Humanos",
+      "dim04_crisis_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim04_aceptable_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim04_bueno_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim04_excelente_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_lead_dim05": "Oficina de Derechos Humanos",
+      "dim05_crisis_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim05_aceptable_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim05_bueno_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim05_excelente_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_lead_dim06": "Oficina de Derechos Humanos",
+      "dim06_crisis_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim06_aceptable_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim06_bueno_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)",
+      "dim06_excelente_legal_framework": "Ley 1448 de 2011 (Ley de Víctimas)"
+    },
+    "PA06": {
+      "canonical_name": "Protección integral de niñez y adolescencia",
+      "responsible_entity": "Secretaría de Educación y Juventud en articulación con ICBF / Comisaría de Familia",
+      "sector_role": "lidera políticas de niñez, adolescencia y juventud",
+      "base_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_lead_dim01": "Secretaría de Educación y Juventud",
+      "dim01_crisis_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim01_aceptable_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim01_bueno_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim01_excelente_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_lead_dim02": "Secretaría de Educación y Juventud",
+      "dim02_crisis_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim02_aceptable_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim02_bueno_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim02_excelente_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_lead_dim03": "Secretaría de Educación y Juventud",
+      "dim03_crisis_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim03_aceptable_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim03_bueno_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim03_excelente_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_lead_dim04": "Secretaría de Educación y Juventud",
+      "dim04_crisis_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim04_aceptable_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim04_bueno_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim04_excelente_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_lead_dim05": "Secretaría de Educación y Juventud",
+      "dim05_crisis_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim05_aceptable_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim05_bueno_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim05_excelente_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_lead_dim06": "Secretaría de Educación y Juventud",
+      "dim06_crisis_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim06_aceptable_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim06_bueno_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado",
+      "dim06_excelente_legal_framework": "Ley 1098 (Código Infancia) y Política de Estado"
+    },
+    "PA07": {
+      "canonical_name": "Desarrollo rural, agricultura y tierras",
+      "responsible_entity": "Secretaría de Tierras y Desarrollo Rural en articulación con Agencia Nacional de Tierras / Secretaría de Agricultura",
+      "sector_role": "lidera política de tierras y territorios",
+      "base_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_lead_dim01": "Secretaría de Tierras y Desarrollo Rural",
+      "dim01_crisis_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim01_aceptable_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim01_bueno_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim01_excelente_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_lead_dim02": "Secretaría de Tierras y Desarrollo Rural",
+      "dim02_crisis_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim02_aceptable_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim02_bueno_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim02_excelente_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_lead_dim03": "Secretaría de Tierras y Desarrollo Rural",
+      "dim03_crisis_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim03_aceptable_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim03_bueno_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim03_excelente_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_lead_dim04": "Secretaría de Tierras y Desarrollo Rural",
+      "dim04_crisis_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim04_aceptable_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim04_bueno_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim04_excelente_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_lead_dim05": "Secretaría de Tierras y Desarrollo Rural",
+      "dim05_crisis_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim05_aceptable_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim05_bueno_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim05_excelente_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_lead_dim06": "Secretaría de Tierras y Desarrollo Rural",
+      "dim06_crisis_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim06_aceptable_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim06_bueno_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)",
+      "dim06_excelente_legal_framework": "Ley 160 de 1994 y Acuerdo de Paz (Punto 1)"
+    },
+    "PA08": {
+      "canonical_name": "Derechos humanos y memoria histórica",
+      "responsible_entity": "Secretaría de Gobierno en articulación con Oficina de DDHH / Personería",
+      "sector_role": "lidera protección de líderes y defensores",
+      "base_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_lead_dim01": "Secretaría de Gobierno",
+      "dim01_crisis_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim01_aceptable_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim01_bueno_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim01_excelente_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_lead_dim02": "Secretaría de Gobierno",
+      "dim02_crisis_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim02_aceptable_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim02_bueno_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim02_excelente_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_lead_dim03": "Secretaría de Gobierno",
+      "dim03_crisis_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim03_aceptable_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim03_bueno_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim03_excelente_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_lead_dim04": "Secretaría de Gobierno",
+      "dim04_crisis_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim04_aceptable_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim04_bueno_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim04_excelente_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_lead_dim05": "Secretaría de Gobierno",
+      "dim05_crisis_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim05_aceptable_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim05_bueno_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim05_excelente_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_lead_dim06": "Secretaría de Gobierno",
+      "dim06_crisis_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim06_aceptable_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim06_bueno_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría",
+      "dim06_excelente_legal_framework": "Decreto 1066 de 2015 y Directiva 002 Procuraduría"
+    },
+    "PA09": {
+      "canonical_name": "Reinserción social y sistema penitenciario",
+      "responsible_entity": "Secretaría de Inclusión Social en articulación con INPEC / USPEC / Secretaría de Gobierno",
+      "sector_role": "lidera atención a crisis y PPL",
+      "base_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_lead_dim01": "Secretaría de Inclusión Social",
+      "dim01_crisis_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim01_aceptable_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim01_bueno_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim01_excelente_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_lead_dim02": "Secretaría de Inclusión Social",
+      "dim02_crisis_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim02_aceptable_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim02_bueno_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim02_excelente_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_lead_dim03": "Secretaría de Inclusión Social",
+      "dim03_crisis_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim03_aceptable_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim03_bueno_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim03_excelente_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_lead_dim04": "Secretaría de Inclusión Social",
+      "dim04_crisis_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim04_aceptable_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim04_bueno_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim04_excelente_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_lead_dim05": "Secretaría de Inclusión Social",
+      "dim05_crisis_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim05_aceptable_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim05_bueno_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim05_excelente_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_lead_dim06": "Secretaría de Inclusión Social",
+      "dim06_crisis_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim06_aceptable_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim06_bueno_legal_framework": "Ley 65 de 1993 (Código Penitenciario)",
+      "dim06_excelente_legal_framework": "Ley 65 de 1993 (Código Penitenciario)"
+    },
+    "PA10": {
+      "canonical_name": "Migración y fronteras",
+      "responsible_entity": "Gerencia de Atención a Migrantes en articulación con Migración Colombia / Gerencia de Fronteras",
+      "sector_role": "lidera gestión migratoria",
+      "base_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_lead_dim01": "Gerencia de Atención a Migrantes",
+      "dim01_crisis_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_monitoring_dim01": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim01_critico_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim01_aceptable_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim01_bueno_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim01_excelente_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_lead_dim02": "Gerencia de Atención a Migrantes",
+      "dim02_crisis_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_monitoring_dim02": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim02_critico_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim02_aceptable_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim02_bueno_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim02_excelente_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_lead_dim03": "Gerencia de Atención a Migrantes",
+      "dim03_crisis_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_monitoring_dim03": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim03_critico_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim03_aceptable_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim03_bueno_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim03_excelente_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_lead_dim04": "Gerencia de Atención a Migrantes",
+      "dim04_crisis_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_monitoring_dim04": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim04_critico_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim04_aceptable_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim04_bueno_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim04_excelente_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_lead_dim05": "Gerencia de Atención a Migrantes",
+      "dim05_crisis_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_monitoring_dim05": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim05_critico_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim05_aceptable_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim05_bueno_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim05_excelente_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_lead_dim06": "Gerencia de Atención a Migrantes",
+      "dim06_crisis_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "pa_monitoring_dim06": "Sistema de Seguimiento de Planes (SSP) / Plataforma sectorial específica",
+      "dim06_critico_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim06_aceptable_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim06_bueno_legal_framework": "Ley 2136 de 2021 y CONPES 3950",
+      "dim06_excelente_legal_framework": "Ley 2136 de 2021 y CONPES 3950"
+    }
+  }
+}
