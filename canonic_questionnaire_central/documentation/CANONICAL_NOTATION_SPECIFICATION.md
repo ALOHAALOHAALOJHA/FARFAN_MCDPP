@@ -2,9 +2,10 @@
 ## Sistema de Evaluación Causal para Planes de Desarrollo Territorial
 
 **Versión**: 4.0.0  
-**Fecha**: 2026-01-04  
-**Estado**: CANÓNICO - FUENTE ÚNICA DE VERDAD  
-**Autor**: Sistema F.A.R.F.A.N
+**Fecha**: 2026-01-26 (Updated)  
+**Estado**: FROZEN ❄️ - FUENTE ÚNICA DE VERDAD  
+**Autor**: Sistema F.A.R.F.A.N  
+**Freeze Manifest**: Ver `CANONIC_FREEZE_MANIFEST.md`
 
 ---
 

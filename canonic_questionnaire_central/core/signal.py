@@ -83,8 +83,8 @@ class SignalScope:
     slot: str  # D1-Q1, D2-Q5, ALL, etc.
     
     def __post_init__(self):
-        # Validate phase
-        valid_phases = {f"phase_{i}" for i in range(10)}
+        # Validate phase (phase_00 through phase_09 - two-digit format)
+        valid_phases = {f"phase_{i:02d}" for i in range(10)}
         if self.phase not in valid_phases:
             raise ValueError(f"Invalid phase: {self.phase}")
         

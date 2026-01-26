@@ -356,8 +356,8 @@ class CanonicalQuestionnaireResolver:
         # Phases 4-6: Scoring
         for phase_num in [4, 5, 6]:
             self._sdo.register_consumer(
-                consumer_id=f"phase_{phase_num}_scoring",
-                scopes=[{"phase": f"phase_{phase_num}", "policy_area": "ALL", "slot": "ALL"}],
+                consumer_id=f"phase_{phase_num:02d}_scoring",
+                scopes=[{"phase": f"phase_{phase_num:02d}", "policy_area": "ALL", "slot": "ALL"}],
                 capabilities=["SCORING_ENGINE", "WEIGHT_APPLICATION"],
                 handler=self._handle_scoring_signal
             )

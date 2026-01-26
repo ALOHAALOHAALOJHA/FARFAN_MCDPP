@@ -1,4 +1,7 @@
 DOCUMENTO MAESTRO: POLÍTICA DE ACCESO AL CUESTIONARIO
+=======================================================
+**Estado**: FROZEN ❄️ | **Fecha**: 2026-01-26 | **Ver**: `CANONIC_FREEZE_MANIFEST.md`
+
 PARTE I: DECLARACIÓN DE POLÍTICA
 
 1.1 PROPÓSITO

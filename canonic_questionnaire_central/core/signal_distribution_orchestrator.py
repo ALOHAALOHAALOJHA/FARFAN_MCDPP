@@ -304,9 +304,8 @@ class SignalDistributionOrchestrator:
         """
         errors = []
 
-        # SCOPE-001: Valid Phase
-        valid_phases = ['phase_0', 'phase_1', 'phase_2', 'phase_3', 'phase_4',
-                       'phase_5', 'phase_6', 'phase_7', 'phase_8', 'phase_9']
+        # SCOPE-001: Valid Phase (two-digit format: phase_00 through phase_09)
+        valid_phases = [f'phase_{i:02d}' for i in range(10)]
         if signal.scope.phase not in valid_phases:
             errors.append(f"INVALID_PHASE: {signal.scope.phase} not in {valid_phases}")
 
