@@ -9,6 +9,9 @@ Key Features:
 - Priority classification (CRITICAL/HIGH/MEDIUM/LOW)
 - Contextual validation rules (PDET, ethnic, coastal)
 - Gap remediation recommendations
+- SISAS signal-informed severity adjustment (v2.0)
+- Full event traceability correlation chains (v2.1)
+- Cluster-level irrigation health integration (v2.1)
 
 EMPIRICAL BASELINE: 14 PDT Colombia 2024-2027
 SOURCE: canonic_questionnaire_central/_registry/entities/normative_compliance.json
@@ -19,13 +22,13 @@ from __future__ import annotations
 # METADATA
 # =============================================================================
 
-__version__ = "2.0.0"  # SISAS integration
+__version__ = "2.1.0"  # SISAS integration + event traceability
 __phase__ = 7
 __stage__ = 10
 __order__ = 10
 __author__ = "F.A.R.F.A.N Core Team - Empirical Corpus Integration"
 __created__ = "2026-01-12"
-__modified__ = "2026-01-25"
+__modified__ = "2026-01-26"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
 
@@ -68,6 +71,9 @@ class SystemicGap:
         context: Optional contextual information
         signal_informed: Whether gap was enhanced by live SISAS signals
         signal_severity_adjustment: Adjustment factor from signals (1.0 = no change)
+        correlation_chain: Traceability of events that influenced this gap
+        empirical_support_level: Level of empirical support for this area (0.0-1.0)
+        determinacy_level: Answer determinacy level for this area (0.0-1.0)
     """
 
     area_id: str
@@ -82,6 +88,10 @@ class SystemicGap:
     # SISAS signal integration
     signal_informed: bool = False
     signal_severity_adjustment: float = 1.0
+    # Event traceability (v2.1.0)
+    correlation_chain: list[str] = field(default_factory=list)
+    empirical_support_level: float = 1.0
+    determinacy_level: float = 1.0
 
 
 # =============================================================================
@@ -204,12 +214,34 @@ class SystemicGapDetector:
         return gaps
     
     def _get_insights_from_signals(self) -> dict[str, Any] | None:
-        """Get accumulated insights from signal consumer if available."""
+        """Get accumulated insights from signal consumer if available.
+        
+        Enhanced v2.1.0: Includes full traceability chain for event correlation.
+        """
         if self.signal_consumer is None:
             return None
         
         try:
             insights = self.signal_consumer.get_insights()
+            
+            # Build correlation chain from processed signals
+            correlation_chain: list[str] = []
+            if hasattr(insights, "correlation_chain"):
+                correlation_chain = insights.correlation_chain or []
+            
+            # Extract cluster-level metrics if available (v2.1.0)
+            cluster_metrics: dict[str, Any] = {}
+            if hasattr(insights, "cluster_metrics"):
+                cluster_metrics = {
+                    cid: {
+                        "irrigation_health": m.irrigation_health,
+                        "mapping_coverage": len(m.mapping_scores) if m.mapping_scores else 0,
+                        "alignment_avg": (sum(m.alignment_scores) / len(m.alignment_scores)) 
+                                         if m.alignment_scores else 0.0,
+                    }
+                    for cid, m in (insights.cluster_metrics or {}).items()
+                }
+            
             return {
                 "data_completeness": insights.data_completeness_level,
                 "integrity_violations": insights.integrity_violations,
@@ -217,6 +249,10 @@ class SystemicGapDetector:
                 "low_determinacy": insights.low_determinacy_areas,
                 "divergences": insights.divergences_detected,
                 "severity_factor": insights.severity_adjustment_factor,
+                # v2.1.0 traceability enhancements
+                "correlation_chain": correlation_chain,
+                "cluster_metrics": cluster_metrics,
+                "determinacy_levels": getattr(insights, "determinacy_levels", {}),
             }
         except Exception as e:
             logger.warning(f"Failed to get signal insights: {e}")
@@ -228,32 +264,70 @@ class SystemicGapDetector:
         area_id: str,
         insights: dict[str, Any],
     ) -> None:
-        """Enhance gap detection with signal-derived insights."""
+        """Enhance gap detection with signal-derived insights.
+        
+        Enhanced v2.1.0: Full event traceability correlation and cluster metrics.
+        """
         gap.signal_informed = True
+        
+        # v2.1.0: Capture correlation chain for full traceability
+        correlation_chain = insights.get("correlation_chain", [])
+        gap.correlation_chain = correlation_chain.copy() if correlation_chain else []
         
         # Apply severity adjustment from divergence signals
         severity_factor = insights.get("severity_factor", 1.0)
         gap.signal_severity_adjustment = severity_factor
         
-        # Check if area has low empirical support - boost priority
+        # v2.1.0: Capture empirical support level for this area
         empirical_support = insights.get("empirical_support", {})
         if area_id in empirical_support:
-            support_level = empirical_support[area_id]
-            if support_level < 0.5 and gap.priority not in ["CRITICAL"]:
+            gap.empirical_support_level = empirical_support[area_id]
+            # Boost priority if support is critically low
+            if gap.empirical_support_level < 0.3 and gap.priority not in ["CRITICAL"]:
+                gap.priority = "CRITICAL"
+                logger.debug(f"Gap {area_id} priority CRITICAL due to very low empirical support")
+            elif gap.empirical_support_level < 0.5 and gap.priority not in ["CRITICAL", "HIGH"]:
                 gap.priority = "HIGH"
                 logger.debug(f"Gap {area_id} priority boosted due to low empirical support")
         
-        # Check if area has low determinacy - boost priority
+        # v2.1.0: Capture determinacy level for this area
+        determinacy_levels = insights.get("determinacy_levels", {})
         low_determinacy = insights.get("low_determinacy", [])
+        if area_id in determinacy_levels:
+            gap.determinacy_level = determinacy_levels[area_id]
+        elif area_id in low_determinacy:
+            gap.determinacy_level = 0.4  # Default low value
+            
+        # Check if area has low determinacy - boost priority
         if area_id in low_determinacy and gap.priority == "MEDIUM":
             gap.priority = "HIGH"
             logger.debug(f"Gap {area_id} priority boosted due to low determinacy")
+        
+        # v2.1.0: Cluster metrics integration
+        cluster_metrics = insights.get("cluster_metrics", {})
+        for cluster_id, metrics in cluster_metrics.items():
+            if area_id.startswith(cluster_id.replace("cluster_", "PA").split("_")[0]):
+                irrigation_health = metrics.get("irrigation_health", 1.0)
+                if irrigation_health < 0.5:
+                    # Poor irrigation health indicates data quality issues
+                    severity_factor = max(severity_factor, 1.0 + (1.0 - irrigation_health))
+                    gap.signal_severity_adjustment = severity_factor
+                    gap.correlation_chain.append(f"cluster:{cluster_id}:low_irrigation_health")
         
         # Apply severity factor to recommendation
         if severity_factor > 1.0:
             gap.recommendation = (
                 f"[SISAS: severity×{severity_factor:.1f}] {gap.recommendation}"
             )
+        
+        # v2.1.0: Append traceability info to context
+        gap.context["sisas_traceability"] = {
+            "correlation_chain": gap.correlation_chain,
+            "empirical_support": gap.empirical_support_level,
+            "determinacy": gap.determinacy_level,
+            "severity_adjustment": gap.signal_severity_adjustment,
+            "signal_count": len(correlation_chain),
+        }
 
     def _normalize_score(self, score: float) -> float:
         """Normalize score from 0-3 to 0-1 range.

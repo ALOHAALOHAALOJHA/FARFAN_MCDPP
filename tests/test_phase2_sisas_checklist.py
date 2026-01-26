@@ -34,19 +34,25 @@ import pytest
 # ============================================================================
 # PATH SETUP - Ensure imports work from project root
 # ============================================================================
-
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 # ============================================================================
 # CONDITIONAL IMPORTS - Handle missing dependencies gracefully
 # ============================================================================
 
 try:
-    from orchestration.settings import PROJECT_ROOT as FARFAN_PROJECT_ROOT
-
+    # Try importing from src first if possible (canonical path)
+    from farfan_pipeline.orchestration.settings import PROJECT_ROOT as FARFAN_PROJECT_ROOT
     PATHS_AVAILABLE = True
 except ImportError:
-    FARFAN_PROJECT_ROOT = PROJECT_ROOT
-    PATHS_AVAILABLE = False
+    try:
+        from orchestration.settings import PROJECT_ROOT as FARFAN_PROJECT_ROOT
+        PATHS_AVAILABLE = True
+    except ImportError:
+        FARFAN_PROJECT_ROOT = PROJECT_ROOT
+        PATHS_AVAILABLE = False
 
 # Legacy imports removed - orchestration.orchestrator namespace eliminated
 # Per canonical_architecture.md, these classes either don't exist or have moved

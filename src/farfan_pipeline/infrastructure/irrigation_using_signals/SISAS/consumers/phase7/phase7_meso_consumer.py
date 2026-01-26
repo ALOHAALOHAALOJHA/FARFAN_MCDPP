@@ -130,6 +130,8 @@ class AggregatedInsights:
     # Epistemic insights
     empirical_support_levels: Dict[str, float] = field(default_factory=dict)
     low_determinacy_areas: List[str] = field(default_factory=list)
+    # v2.1.0: Per-area determinacy level tracking for gap detection
+    determinacy_levels: Dict[str, float] = field(default_factory=dict)
     
     # Contrast insights
     divergences_detected: List[Dict[str, Any]] = field(default_factory=list)
@@ -251,6 +253,7 @@ class AggregatedInsights:
         Export comprehensive payload for MacroAggregator consumption.
         
         This is the main API for MacroAggregator to consume SISAS irrigation data.
+        Enhanced v2.1.0: Includes determinacy_levels and correlation_chain.
         """
         return {
             "overall_health": round(self.compute_overall_health(), 4),
@@ -261,12 +264,16 @@ class AggregatedInsights:
             "dimension_coverage": dict(self.dimension_signal_counts),
             "integrity_violations_count": len(self.integrity_violations),
             "low_determinacy_areas": self.low_determinacy_areas,
+            # v2.1.0: Per-area determinacy levels for gap detection
+            "determinacy_levels": dict(self.determinacy_levels),
             "divergences_count": len(self.divergences_detected),
             "upstream_phases_complete": sum(
                 1 for s in self.upstream_phase_statuses.values() if s == "COMPLETE"
             ),
             "signals_processed": self.signals_processed_count,
             "phase_correlation_id": self.phase_correlation_id,
+            # v2.1.0: Full correlation chain for traceability
+            "correlation_chain": self.correlation_chain.copy(),
         }
 
 
@@ -571,8 +578,28 @@ class Phase7MesoConsumer(BaseConsumer):
         elif signal.signal_type == "AnswerDeterminacySignal":
             determinacy = getattr(signal, "determinacy_level", None)
             area_id = getattr(signal, "policy_area_id", "unknown")
-            if determinacy and hasattr(determinacy, "value") and determinacy.value == "INDETERMINATE":
-                self.aggregated_insights.low_determinacy_areas.append(area_id)
+            
+            # v2.1.0: Track numeric determinacy level per area
+            if determinacy:
+                # Determinacy may be enum or numeric
+                if hasattr(determinacy, "value"):
+                    # Enum-based: map to numeric
+                    determinacy_map = {
+                        "DETERMINATE": 1.0,
+                        "PROBABLE": 0.75,
+                        "UNCERTAIN": 0.5,
+                        "INDETERMINATE": 0.25,
+                    }
+                    level = determinacy_map.get(determinacy.value, 0.5)
+                    self.aggregated_insights.determinacy_levels[area_id] = level
+                    
+                    if determinacy.value == "INDETERMINATE":
+                        self.aggregated_insights.low_determinacy_areas.append(area_id)
+                elif isinstance(determinacy, (int, float)):
+                    # Already numeric
+                    self.aggregated_insights.determinacy_levels[area_id] = float(determinacy)
+                    if determinacy < 0.4:
+                        self.aggregated_insights.low_determinacy_areas.append(area_id)
         
         analysis = {
             "support_level": str(getattr(signal, "support_level", "UNKNOWN")),
