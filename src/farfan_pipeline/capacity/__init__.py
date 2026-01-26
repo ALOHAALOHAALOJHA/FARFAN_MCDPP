@@ -98,6 +98,13 @@ from farfan_pipeline.capacity.phase_integration import (
     PhaseAware,
 )
 
+from farfan_pipeline.capacity.phase_aware_aggregation import (
+    PhaseAggregationConfig,
+    PhaseAwareAggregationResult,
+    PhaseAwareCapacityAggregator,
+    PhaseAggregationPipeline,
+)
+
 __all__ = [
     # Types
     "PolicySkill",
@@ -130,7 +137,7 @@ __all__ = [
     "ICIResult",
     "CapacityDiagnostics",
     "GapAnalysisResult",
-    # Phase Integration (NEW)
+    # Phase Integration
     "CanonicalPhase",
     "PhaseCapacityMapping",
     "DEFAULT_PHASE_CAPACITY_MAPPINGS",
@@ -139,6 +146,11 @@ __all__ = [
     "PhaseProgressionIndex",
     "PhaseCapacityAdapter",
     "PhaseAware",
+    # Phase-Aware Aggregation
+    "PhaseAggregationConfig",
+    "PhaseAwareAggregationResult",
+    "PhaseAwareCapacityAggregator",
+    "PhaseAggregationPipeline",
 ]
 
 __version__ = "2.0.0"  # Major version bump for phase integration
