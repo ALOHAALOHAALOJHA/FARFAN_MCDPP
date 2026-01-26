@@ -31,7 +31,6 @@ except ImportError:
 # OpenTelemetry for distributed tracing (SOTA)
 try:
     from opentelemetry import trace
-    from opentelemetry.trace import Status, StatusCode
     OTEL_AVAILABLE = True
     tracer = trace.get_tracer(__name__)
 except ImportError:
