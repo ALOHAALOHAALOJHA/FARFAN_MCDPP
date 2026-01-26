@@ -1,0 +1,3286 @@
+{
+  "metadata": {
+    "generated_at": "2026-01-26T02:48:36.417199",
+    "framework": "Wu, Ramesh & Howlett (2015) Policy Capacity Framework",
+    "version": "1.0.0",
+    "total_methods": 237
+  },
+  "framework_definition": {
+    "capacity_matrix": {
+      "CA-I": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "CA-O": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "CA-S": {
+        "code": "CA-S",
+        "skill": "Analytical",
+        "level": "Systemic",
+        "description": "Systemic analytical capacity"
+      },
+      "CO-I": {
+        "code": "CO-I",
+        "skill": "Operational",
+        "level": "Individual",
+        "description": "Individual operational capacity"
+      },
+      "CO-O": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "CO-S": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "CP-I": {
+        "code": "CP-I",
+        "skill": "Political",
+        "level": "Individual",
+        "description": "Individual political capacity"
+      },
+      "CP-O": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "CP-S": {
+        "code": "CP-S",
+        "skill": "Political",
+        "level": "Systemic",
+        "description": "Systemic political capacity"
+      }
+    },
+    "equipment_congregations": [
+      {
+        "name": "Evidence-Action Nexus",
+        "skills": [
+          "Analytical",
+          "Operational"
+        ],
+        "coefficient": 1.35,
+        "description": "Synergy between analytical rigor and operational implementation"
+      },
+      {
+        "name": "Strategic Intelligence",
+        "skills": [
+          "Analytical",
+          "Political"
+        ],
+        "coefficient": 1.42,
+        "description": "Synergy between evidence-based analysis and political feasibility"
+      },
+      {
+        "name": "Adaptive Governance",
+        "skills": [
+          "Operational",
+          "Political"
+        ],
+        "coefficient": 1.28,
+        "description": "Synergy between execution capacity and political legitimacy"
+      },
+      {
+        "name": "Integrated Capacity",
+        "skills": [
+          "Analytical",
+          "Operational",
+          "Political"
+        ],
+        "coefficient": 1.75,
+        "description": "Full trinity: evidence, execution, and legitimacy"
+      }
+    ]
+  },
+  "method_mappings": [
+    {
+      "method_id": "M001",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M002",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M003",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M004",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M005",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M006",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M007",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M008",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M009",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M010",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M011",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M012",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M013",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M014",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M015",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M016",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M017",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M018",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M019",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M020",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M021",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M022",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M023",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M024",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M025",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M026",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M027",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M028",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M029",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M030",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M031",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M032",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M033",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M034",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M035",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M036",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M037",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M038",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M039",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M040",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M041",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M042",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M043",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M044",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M045",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M046",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M047",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M048",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M049",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M050",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M051",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M052",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M053",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M054",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M055",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M056",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M057",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M058",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M059",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M060",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M061",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M062",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M063",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M064",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N1-EMP",
+      "output_type": "FACT",
+      "capacity_type": {
+        "code": "CA-I",
+        "skill": "Analytical",
+        "level": "Individual",
+        "description": "Individual analytical capacity"
+      },
+      "base_score": 0.89
+    },
+    {
+      "method_id": "M065",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M066",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M067",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M068",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M069",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M070",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M071",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M072",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M073",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M074",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M075",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M076",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M077",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M078",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M079",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M080",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M081",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M082",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M083",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M084",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M085",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M086",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M087",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M088",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M089",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M090",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M091",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M092",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M093",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M094",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M095",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M096",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M097",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M098",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M099",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M100",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M101",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M102",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M103",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M104",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M105",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M106",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M107",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M108",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M109",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M110",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M111",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M112",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M113",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M114",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M115",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M116",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M117",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M118",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M119",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M120",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M121",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M122",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M123",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M124",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M125",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M126",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M127",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M128",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M129",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M130",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M131",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M132",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M133",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M134",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M135",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M136",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M137",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M138",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M139",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M140",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M141",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M142",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M143",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M144",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M145",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M146",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M147",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M148",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M149",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M150",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M151",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M152",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M153",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M154",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M155",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M156",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M157",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M158",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M159",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M160",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M161",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M162",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M163",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M164",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M165",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M166",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M167",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M168",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M169",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M170",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M171",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M172",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M173",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M174",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M175",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M176",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M177",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M178",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M179",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M180",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M181",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M182",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M183",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M184",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M185",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M186",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M187",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CO-O",
+        "skill": "Operational",
+        "level": "Organizational",
+        "description": "Organizational operational capacity"
+      },
+      "base_score": 1.143
+    },
+    {
+      "method_id": "M188",
+      "epistemology": "Bayesianismo subjetivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CP-O",
+        "skill": "Political",
+        "level": "Organizational",
+        "description": "Organizational political capacity"
+      },
+      "base_score": 1.175
+    },
+    {
+      "method_id": "M189",
+      "epistemology": "Empirismo positivista",
+      "method_level": "N2-INF",
+      "output_type": "PARAMETER",
+      "capacity_type": {
+        "code": "CA-O",
+        "skill": "Analytical",
+        "level": "Organizational",
+        "description": "Organizational analytical capacity"
+      },
+      "base_score": 1.115
+    },
+    {
+      "method_id": "M190",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M191",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M192",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M193",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M194",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M195",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M196",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M197",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M198",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M199",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M200",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M201",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M202",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M203",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M204",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M205",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M206",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M207",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M208",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M209",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M210",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M211",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M212",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M213",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M214",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M215",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M216",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M217",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M218",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M219",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M220",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M221",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M222",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M223",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M224",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M225",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M226",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M227",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M228",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M229",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M230",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M231",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M232",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M233",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M234",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M235",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M236",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    },
+    {
+      "method_id": "M237",
+      "epistemology": "Falsacionismo popperiano",
+      "method_level": "N3-AUD",
+      "output_type": "CONSTRAINT",
+      "capacity_type": {
+        "code": "CO-S",
+        "skill": "Operational",
+        "level": "Systemic",
+        "description": "Systemic operational capacity"
+      },
+      "base_score": 1.368
+    }
+  ],
+  "capacity_scores": {
+    "capacity_scores": {
+      "CA-I": 1.068,
+      "CP-O": 1.41,
+      "CA-O": 1.338,
+      "CO-O": 1.3716,
+      "CO-S": 1.6416
+    },
+    "integrated_capacity_index": 0.7885,
+    "method_distribution": {
+      "CA-I": 64,
+      "CP-O": 42,
+      "CA-O": 42,
+      "CO-O": 41,
+      "CO-S": 48
+    },
+    "total_methods": 237
+  },
+  "aggregation_formulas": {
+    "individual_to_organizational": {
+      "formula": "C_org = (\u03a3 C_ind_i^p)^(1/p) \u00d7 \u03ba_org",
+      "parameters": {
+        "p": 1.2,
+        "\u03ba_org": 0.85
+      },
+      "description": "Power mean aggregation with organizational capacity factor"
+    },
+    "organizational_to_systemic": {
+      "formula": "C_sys = \u221a(C_org_mean \u00d7 C_org_max) \u00d7 \u03ba_sys",
+      "parameters": {
+        "\u03ba_sys": 0.9
+      },
+      "description": "Geometric mean of average and maximum"
+    },
+    "equipment_congregation_multiplier": {
+      "formula": "M_equip = 1 + \u03b4 \u00d7 ln(1 + n_skills) \u00d7 \u03c1_congregation",
+      "parameters": {
+        "\u03b4": 0.3
+      }
+    },
+    "transformation_matrix": [
+      [
+        1.0,
+        0.75,
+        0.5
+      ],
+      [
+        0.25,
+        1.0,
+        0.8
+      ],
+      [
+        0.1,
+        0.35,
+        1.0
+      ]
+    ]
+  },
+  "mathematical_model": {
+    "base_capacity_score": {
+      "formula": "C_base = \u03b1 \u00d7 E_weight + \u03b2 \u00d7 L_weight + \u03b3 \u00d7 O_weight",
+      "parameters": {
+        "\u03b1": 0.4,
+        "\u03b2": 0.35,
+        "\u03b3": 0.25
+      }
+    },
+    "systemic_capacity_score": {
+      "formula": "C_systemic = \u03a3(C_base_i \u00d7 W_agg_i \u00d7 M_equip) / N"
+    },
+    "aggregation_weight": {
+      "formula": "W_agg = \u03b7 \u00d7 exp(-\u03bb \u00d7 \u0394_level)",
+      "parameters": {
+        "\u03b7": 0.85,
+        "\u03bb": 0.15
+      }
+    }
+  },
+  "transformation_recommendations": {
+    "new_files_to_create": [
+      {
+        "file": "capacity_mappings.json",
+        "location": "config/",
+        "purpose": "Store method \u2192 capacity type mappings"
+      },
+      {
+        "file": "capacity_aggregation.py",
+        "location": "src/aggregation/",
+        "purpose": "Implement capacity-based aggregation functions"
+      }
+    ],
+    "important_notes": [
+      "Do NOT modify question definitions (Q001-Q300)",
+      "Do NOT modify contract structures",
+      "Keep existing Micro\u2192Meso\u2192Macro pipeline intact",
+      "Add capacity dimension as complementary, not replacement"
+    ]
+  }
+}
