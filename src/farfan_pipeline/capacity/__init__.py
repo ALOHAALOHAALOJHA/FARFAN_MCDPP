@@ -87,6 +87,24 @@ from farfan_pipeline.capacity.ici_calculator import (
     GapAnalysisResult,
 )
 
+from farfan_pipeline.capacity.phase_integration import (
+    CanonicalPhase,
+    PhaseCapacityMapping,
+    DEFAULT_PHASE_CAPACITY_MAPPINGS,
+    PhaseCapacityScore,
+    CapacityFlowMetrics,
+    PhaseProgressionIndex,
+    PhaseCapacityAdapter,
+    PhaseAware,
+)
+
+from farfan_pipeline.capacity.phase_aware_aggregation import (
+    PhaseAggregationConfig,
+    PhaseAwareAggregationResult,
+    PhaseAwareCapacityAggregator,
+    PhaseAggregationPipeline,
+)
+
 __all__ = [
     # Types
     "PolicySkill",
@@ -119,7 +137,21 @@ __all__ = [
     "ICIResult",
     "CapacityDiagnostics",
     "GapAnalysisResult",
+    # Phase Integration
+    "CanonicalPhase",
+    "PhaseCapacityMapping",
+    "DEFAULT_PHASE_CAPACITY_MAPPINGS",
+    "PhaseCapacityScore",
+    "CapacityFlowMetrics",
+    "PhaseProgressionIndex",
+    "PhaseCapacityAdapter",
+    "PhaseAware",
+    # Phase-Aware Aggregation
+    "PhaseAggregationConfig",
+    "PhaseAwareAggregationResult",
+    "PhaseAwareCapacityAggregator",
+    "PhaseAggregationPipeline",
 ]
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"  # Major version bump for phase integration
 __author__ = "F.A.R.F.A.N. Core Team"
