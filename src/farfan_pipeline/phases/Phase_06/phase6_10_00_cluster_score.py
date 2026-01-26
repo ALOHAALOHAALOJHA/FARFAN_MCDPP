@@ -49,8 +49,11 @@ from typing import (
     Self,
     TypeAlias,
     TypedDict,
-    override,
 )
+try:
+    from typing import override
+except ImportError:
+    from typing_extensions import override
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
