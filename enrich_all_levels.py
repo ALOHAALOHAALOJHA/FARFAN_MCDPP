@@ -251,7 +251,6 @@ def enhance_meso_rule(rule: dict) -> dict:
 def enhance_macro_rule(rule: dict) -> dict:
     """Enhance MACRO (system-level) rule with guide compliance."""
     macro_band = rule['when'].get('macro_band', 'SATISFACTORIO')
-    variance_alert = rule['when'].get('variance_alert', 'BAJA')
     
     # Value chain for MACRO level (systemic transformation)
     if macro_band in ['EXCELENTE', 'BUENO']:
