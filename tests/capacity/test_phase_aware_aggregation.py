@@ -27,7 +27,6 @@ import pytest
 from typing import Dict, List
 
 from farfan_pipeline.capacity.types import (
-    PolicySkill,
     PolicyLevel,
     CapacityType,
     CapacityScore,
