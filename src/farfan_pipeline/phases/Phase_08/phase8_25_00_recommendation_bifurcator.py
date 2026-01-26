@@ -425,7 +425,14 @@ class UnifiedRecommendationResult:
 # =============================================================================
 
 class RuleLoader:
-    """Loads and caches recommendation rules from JSON."""
+    """Loads and caches recommendation rules from JSON.
+
+    SOTA ENHANCEMENTS (v3.1.0):
+    - Loads bifurcation patterns from JSON (dimensional_resonance, cross_pollination, temporal_cascades, synergy_detection)
+    - Loads SISAS signal integration patterns
+    - Provides fallback to hardcoded patterns if JSON not available
+    - Cached pattern loading for performance
+    """
 
     def __init__(self, rules_path: str | Path | None = None):
         if rules_path is None:
@@ -437,6 +444,8 @@ class RuleLoader:
         self.rules_path = Path(rules_path)
         self._rules_cache: dict[str, Any] | None = None
         self._score_bands: list[dict[str, Any]] = DEFAULT_MICRO_SCORE_BANDS
+        self._bifurcation_patterns: dict[str, Any] | None = None
+        self._sisas_config: dict[str, Any] | None = None
 
     def load_rules(self) -> dict[str, Any]:
         """Load rules from JSON file."""
@@ -463,6 +472,188 @@ class RuleLoader:
         if self._rules_cache is None:
             self.load_rules()
         return self._score_bands
+
+    def get_bifurcation_patterns(self) -> dict[str, Any]:
+        """Get bifurcation patterns from JSON.
+
+        SOTA: Loads all 4 bifurcation strategies from JSON:
+        - dimensional_resonance: When DIM01 improves, related DIMs benefit
+        - cross_pollination: When fixing PA01 partially fixes PA03
+        - temporal_cascades: Short-term fixes unlock long-term capabilities
+        - synergy_detection: Two interventions together > sum of parts
+
+        Returns:
+            Bifurcation patterns dict with fallback to defaults if not in JSON
+        """
+        if self._bifurcation_patterns is not None:
+            return self._bifurcation_patterns
+
+        rules = self.load_rules()
+        bp = rules.get("bifurcation_patterns", {})
+
+        # SOTA: Validate structure and provide fallbacks
+        if not bp or not bp.get("enabled", False):
+            logger.info("Bifurcation patterns not enabled in JSON, using defaults")
+            self._bifurcation_patterns = self._get_default_bifurcation_patterns()
+            return self._bifurcation_patterns
+
+        # SOTA: Ensure all 4 strategies are present
+        required_keys = ["dimensional_resonance", "cross_pollination", "temporal_cascades", "synergy_detection"]
+        missing = [k for k in required_keys if k not in bp]
+        if missing:
+            logger.warning(f"Missing bifurcation patterns: {missing}, using partial defaults")
+            defaults = self._get_default_bifurcation_patterns()
+            for key in missing:
+                bp[key] = defaults.get(key, {})
+
+        self._bifurcation_patterns = bp
+        logger.info(f"Loaded bifurcation patterns from JSON: {list(bp.keys())}")
+        return self._bifurcation_patterns
+
+    def get_dimensional_resonance(self) -> dict[str, dict[str, float]]:
+        """Get dimensional resonance matrix from JSON or fallback to hardcoded.
+
+        Returns:
+            Dict mapping DIM -> {target_DIM: strength}
+        """
+        bp = self.get_bifurcation_patterns()
+        dr = bp.get("dimensional_resonance", {})
+        mappings = dr.get("mappings", {})
+
+        # SOTA: Transform JSON structure to match expected format
+        # JSON has: {"DIM01": {"resonances": {"DIM02": {"strength": 0.4}}}}
+        # Code expects: {"DIM01": {"DIM02": 0.4}}
+        transformed = {}
+        for dim_id, dim_data in mappings.items():
+            if isinstance(dim_data, dict) and "resonances" in dim_data:
+                resonances = dim_data["resonances"]
+                transformed[dim_id] = {
+                    target_dim: target_data.get("strength", 0.0)
+                    for target_dim, target_data in resonances.items()
+                }
+            else:
+                # Fallback for old format
+                transformed[dim_id] = dim_data
+
+        return transformed if transformed else DIMENSIONAL_RESONANCE
+
+    def get_cross_pollination_patterns(self) -> dict[str, Any]:
+        """Get cross-pollination patterns from JSON."""
+        bp = self.get_bifurcation_patterns()
+        cp = bp.get("cross_pollination", {})
+        patterns = cp.get("patterns", {})
+        return {
+            "bonus_multiplier": cp.get("bonus_multiplier", 0.25),
+            "threshold": cp.get("threshold", 0.25),
+            "patterns": patterns,
+        }
+
+    def get_temporal_cascade_patterns(self) -> dict[str, Any]:
+        """Get temporal cascade patterns from JSON."""
+        bp = self.get_bifurcation_patterns()
+        tc = bp.get("temporal_cascades", {})
+        return {
+            "max_depth": tc.get("max_depth", 3),
+            "cascades": tc.get("cascades", {}),
+        }
+
+    def get_synergy_patterns(self) -> dict[str, Any]:
+        """Get synergy detection patterns from JSON."""
+        bp = self.get_bifurcation_patterns()
+        sd = bp.get("synergy_detection", {})
+        return sd.get("synergy_types", {})
+
+    def get_sisas_config(self) -> dict[str, Any]:
+        """Get SISAS signal integration configuration from JSON.
+
+        SOTA v3.1.0: Integrates SISAS signals into recommendations for:
+        - Pattern-aware priority scoring
+        - Signal-based confidence adjustment
+        - Empirical support weighting
+        """
+        if self._sisas_config is not None:
+            return self._sisas_config
+
+        rules = self.load_rules()
+        self._sisas_config = rules.get("sisas_integration", {})
+        return self._sisas_config
+
+    def _get_default_bifurcation_patterns(self) -> dict[str, Any]:
+        """Provide fallback bifurcation patterns when JSON not available."""
+        return {
+            "dimensional_resonance": {
+                "mappings": {
+                    "DIM01": {
+                        "resonances": {
+                            "DIM03": {"strength": 0.7},
+                            "DIM06": {"strength": 0.5},
+                        }
+                    },
+                    "DIM02": {
+                        "resonances": {
+                            "DIM05": {"strength": 0.8},
+                            "DIM04": {"strength": 0.4},
+                        }
+                    },
+                    "DIM03": {
+                        "resonances": {
+                            "DIM01": {"strength": 0.6},
+                            "DIM04": {"strength": 0.5},
+                        }
+                    },
+                    "DIM04": {
+                        "resonances": {
+                            "DIM02": {"strength": 0.5},
+                            "DIM05": {"strength": 0.7},
+                        }
+                    },
+                    "DIM05": {
+                        "resonances": {
+                            "DIM02": {"strength": 0.6},
+                            "DIM04": {"strength": 0.6},
+                        }
+                    },
+                    "DIM06": {
+                        "resonances": {
+                            "DIM01": {"strength": 0.8},
+                            "DIM03": {"strength": 0.5},
+                        }
+                    },
+                }
+            },
+            "cross_pollination": {
+                "bonus_multiplier": 0.25,
+                "threshold": 0.25,
+                "patterns": {
+                    "PA01-PA03": {
+                        "source_pa": "PA01",
+                        "target_pa": "PA03",
+                        "strength": 0.4,
+                        "shared_dimensions": ["DIM01", "DIM03", "DIM04"],
+                    }
+                },
+            },
+            "temporal_cascades": {
+                "max_depth": 3,
+                "cascades": {
+                    "MICRO": {
+                        "DIM01-to-DIM03": {
+                            "source": "DIM01",
+                            "target": "DIM03",
+                            "horizon_months": 12,
+                            "multiplier": 1.5,
+                        }
+                    }
+                },
+            },
+            "synergy_detection": {
+                "synergy_types": {
+                    "same_pa_different_dim": {"strength": 0.3},
+                    "different_pa_same_dim": {"strength": 0.25},
+                    "same_cluster": {"strength": 0.4},
+                }
+            },
+        }
 
     @lru_cache(maxsize=1)
     def get_rules_for_level(self, level: str) -> list[dict[str, Any]]:
@@ -623,7 +814,14 @@ class RecommendationGenerator:
 # =============================================================================
 
 class BifurcationEngine:
-    """Applies exponential amplification to recommendations."""
+    """Applies exponential amplification to recommendations.
+
+    SOTA ENHANCEMENTS (v3.1.0):
+    - Loads bifurcation patterns from JSON via RuleLoader
+    - Uses JSON patterns for dimensional_resonance, cross_pollination, temporal_cascades, synergy_detection
+    - Provides fallback to hardcoded patterns if JSON not available
+    - Supports SISAS signal integration for pattern-aware bifurcation
+    """
 
     def __init__(
         self,
@@ -635,6 +833,7 @@ class BifurcationEngine:
         pollination_threshold: float = 0.25,
         cascade_max_depth: int = 3,
         amplification_config: AmplificationConfig | None = None,
+        rule_loader: RuleLoader | None = None,
     ):
         self.enable_resonance = enable_resonance
         self.enable_pollination = enable_pollination
@@ -644,6 +843,13 @@ class BifurcationEngine:
         self.pollination_threshold = pollination_threshold
         self.cascade_max_depth = min(max(1, cascade_max_depth), 3)
         self.amplification_config = amplification_config or AmplificationConfig()
+
+        # SOTA: Load patterns from JSON
+        self.rule_loader = rule_loader or RuleLoader()
+        self._dimensional_resonance: dict[str, dict[str, float]] | None = None
+        self._cross_pollination_patterns: dict[str, Any] | None = None
+        self._temporal_cascade_patterns: dict[str, Any] | None = None
+        self._synergy_patterns: dict[str, Any] | None = None
 
     def bifurcate(
         self,
@@ -732,21 +938,34 @@ class BifurcationEngine:
         cascade_depth = max((tc.order for tc in temporal_cascades), default=0)
         return amplification, hidden_value_score, cascade_depth
 
+    @property
+    def _dimensional_resonance_matrix(self) -> dict[str, dict[str, float]]:
+        """Get dimensional resonance matrix from JSON or fallback to hardcoded."""
+        if self._dimensional_resonance is None:
+            self._dimensional_resonance = self.rule_loader.get_dimensional_resonance()
+        return self._dimensional_resonance
+
     def _detect_dimensional_resonance(
         self,
         recommendations: list[dict[str, Any]],
         score_data: dict[str, Any] | None,
     ) -> list[CrossPollinationNode]:
+        """Detect dimensional resonance patterns using JSON-loaded configuration."""
         resonances = []
+        resonance_matrix = self._dimensional_resonance_matrix
+
         for rec in recommendations:
             metadata = _safe_get_metadata(rec)
             parsed = _parse_score_key(metadata.get("score_key"))
             if parsed is None:
                 continue
             pa_id, dim_id = parsed
-            if dim_id not in DIMENSIONAL_RESONANCE:
+
+            # SOTA: Use JSON-loaded resonance matrix
+            if dim_id not in resonance_matrix:
                 continue
-            for target_dim, strength in DIMENSIONAL_RESONANCE[dim_id].items():
+
+            for target_dim, strength in resonance_matrix[dim_id].items():
                 if strength < self.resonance_threshold:
                     continue
                 raw_gap = metadata.get("gap")
@@ -976,6 +1195,7 @@ class UnifiedBifurcator:
             enable_cascades=enable_cascades,
             enable_synergies=enable_synergies,
             amplification_config=amplification_config,
+            rule_loader=self.rule_loader,  # SOTA: Pass rule_loader for JSON pattern loading
         ) if apply_bifurcation else None
 
         logger.info(

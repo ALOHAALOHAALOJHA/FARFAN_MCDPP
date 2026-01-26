@@ -11,14 +11,12 @@ Module: src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py
 Purpose: Implement macro-level aggregation logic
 Owner: phase7_20
 Lifecycle: ACTIVE
-Version: 1.1.0
-Effective-Date: 2026-01-22
-Enhancements:
-    - v1.1.0: Added granular stage-level checkpointing support
+Version: 1.0.0
+Effective-Date: 2026-01-13
 """
 
 # METADATA
-__version__ = "2.1.0"  # SISAS irrigation integration
+__version__ = "2.0.0"  # SISAS integration
 __phase__ = 7
 __stage__ = 20
 __order__ = 0
@@ -31,7 +29,7 @@ __execution_pattern__ = "Per-Task"
 import logging
 import statistics
 from typing import Any, TYPE_CHECKING
-from datetime import datetime, timezone
+from datetime import datetime
 from uuid import uuid4
 
 if TYPE_CHECKING:
@@ -44,12 +42,6 @@ if TYPE_CHECKING:
     )
 
 from farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score import ClusterScore
-
-# Type hint for checkpoint manager to avoid circular imports
-if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_07.phase7_30_00_checkpoint_manager import (
-        Phase7CheckpointManager,
-    )
 from farfan_pipeline.phases.Phase_07.phase7_10_00_macro_score import MacroScore
 from farfan_pipeline.phases.Phase_07.phase7_10_00_phase_7_constants import (
     CLUSTER_WEIGHTS,
@@ -92,19 +84,14 @@ IRRIGATION_HEALTH_WEIGHT = 0.15  # Weight of irrigation health in final score ad
 
 class MacroAggregator:
     """
-<<<<<<< HEAD
-    Phase 7 Macro Aggregator.
-
-=======
     Phase 7 Macro Aggregator with SISAS Irrigation Integration.
     
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
     Aggregates 4 ClusterScore objects into a single holistic MacroScore.
-
+    
     Contract:
         Input:  4 ClusterScore (CLUSTER_MESO_1 through CLUSTER_MESO_4)
         Output: 1 MacroScore (holistic evaluation)
-
+        
     Features:
         - Weighted averaging of cluster scores (equal weights by default)
         - Cross-cutting coherence analysis (strategic, operational, institutional)
@@ -112,9 +99,6 @@ class MacroAggregator:
         - Strategic alignment scoring (vertical, horizontal, temporal)
         - Quality classification based on normalized score
         - Uncertainty propagation from cluster scores
-<<<<<<< HEAD
-        - Granular stage-level checkpointing (v1.1.0)
-=======
         - SISAS signal registry integration for dynamic weight consumption
         - SISAS irrigation signal integration for coherence adjustment
         - Divergence-amplified gap severity from irrigation signals
@@ -126,38 +110,29 @@ class MacroAggregator:
         2. Amplify gap severity based on divergence signals detected
         3. Track per-cluster irrigation health in cluster_details
         4. Include irrigation provenance (correlation_ids) for audit traceability
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
     """
-
+    
     def __init__(
         self,
         cluster_weights: dict[str, float] | None = None,
         enable_gap_detection: bool = True,
         enable_coherence_analysis: bool = True,
         enable_alignment_scoring: bool = True,
-<<<<<<< HEAD
-        checkpoint_manager: "Phase7CheckpointManager | None" = None,
-=======
         signal_registry: "QuestionnaireSignalRegistry | None" = None,
         irrigation_consumer: "Phase7MesoConsumer | None" = None,
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
     ):
         """
         Initialize MacroAggregator.
-
+        
         Args:
             cluster_weights: Custom weights for clusters (default: equal weights)
             enable_gap_detection: Whether to detect systemic gaps
             enable_coherence_analysis: Whether to compute cross-cutting coherence
             enable_alignment_scoring: Whether to compute strategic alignment
-<<<<<<< HEAD
-            checkpoint_manager: Optional checkpoint manager for granular stage recovery
-=======
             signal_registry: Optional SISAS QuestionnaireSignalRegistry for dynamic
                 weight consumption and provenance tracking
             irrigation_consumer: Optional Phase7MesoConsumer providing aggregated
                 irrigation insights for coherence adjustment and gap amplification
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
         """
         # SISAS integration
         self.signal_registry = signal_registry
@@ -177,9 +152,8 @@ class MacroAggregator:
         self.enable_gap_detection = enable_gap_detection
         self.enable_coherence_analysis = enable_coherence_analysis
         self.enable_alignment_scoring = enable_alignment_scoring
-        self.checkpoint_manager = checkpoint_manager
         self.gap_detector = SystemicGapDetector() if enable_gap_detection else None
-
+        
         # Validate weights sum to 1.0
         weight_sum = sum(self.cluster_weights.values())
         if abs(weight_sum - 1.0) > 1e-6:
@@ -301,193 +275,82 @@ class MacroAggregator:
     
     def aggregate(self, cluster_scores: list[ClusterScore]) -> MacroScore:
         """
-<<<<<<< HEAD
-        Aggregate cluster scores into macro score.
-
-=======
-        Aggregate cluster scores into macro score with SISAS irrigation integration.
+        Aggregate cluster scores into macro score with SISAS irrigation enrichment.
         
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
         Args:
             cluster_scores: List of 4 ClusterScore objects
-
-        Returns:
-<<<<<<< HEAD
-            MacroScore: Holistic evaluation
-
-=======
-            MacroScore: Holistic evaluation with SISAS-enriched metrics
             
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
+        Returns:
+            MacroScore: Holistic evaluation with irrigation-adjusted coherence
+            
         Raises:
             ValueError: If preconditions are violated
-
-        Checkpoint Support (v1.1.0):
-            If checkpoint_manager is provided, saves checkpoints after each stage
-            enabling granular mid-execution recovery.
         """
         # Validate preconditions
         self._validate_input(cluster_scores)
-<<<<<<< HEAD
-
-=======
         
-        # =======================================================================
-        # SISAS IRRIGATION INTEGRATION: Load irrigation payload if available
-        # =======================================================================
+        # Load irrigation payload if consumer available
         self._irrigation_payload = self._load_irrigation_payload()
-        irrigation_enabled = self._irrigation_payload is not None
         
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
         # Step 1: Compute weighted mean score
         raw_score = self._compute_weighted_score(cluster_scores)
-        self._save_checkpoint_if_enabled(
-            "STAGE_WEIGHTED_SCORE",
-            {"raw_score": raw_score},
-            {"description": "Weighted score computation complete"}
-        )
-
+        
         # Step 2: Normalize score
         score_normalized = raw_score / 3.0
-
+        
         # Step 3: Classify quality
         quality_level = self._classify_quality(score_normalized)
-        self._save_checkpoint_if_enabled(
-            "STAGE_QUALITY_CLASSIFICATION",
-            {"quality_level": quality_level, "score_normalized": score_normalized},
-            {"description": "Quality classification complete"}
-        )
-
-        # Step 4: Cross-cutting coherence analysis
+        
+        # Step 4: Cross-cutting coherence analysis with irrigation adjustment
         coherence, coherence_breakdown = self._compute_coherence(cluster_scores)
-<<<<<<< HEAD
-        self._save_checkpoint_if_enabled(
-            "STAGE_COHERENCE_ANALYSIS",
-            {"coherence": coherence, "coherence_breakdown": coherence_breakdown},
-            {"description": "Cross-cutting coherence analysis complete"}
-        )
-
-        # Step 5: Systemic gap detection
-        systemic_gaps, gap_severity = self._detect_gaps(cluster_scores)
-        self._save_checkpoint_if_enabled(
-            "STAGE_GAP_DETECTION",
-            {"systemic_gaps": systemic_gaps, "gap_severity": gap_severity},
-            {"description": "Systemic gap detection complete", "gaps_count": len(systemic_gaps)}
-        )
-
-=======
         
-        # =======================================================================
-        # SISAS: Apply coherence adjustment from irrigation variance
-        # =======================================================================
-        if irrigation_enabled:
-            coherence_adjustment = self._get_coherence_adjustment()
-            adjusted_coherence = coherence * coherence_adjustment
-            coherence_breakdown["sisas_adjustment"] = {
-                "original_coherence": round(coherence, 4),
-                "adjustment_factor": round(coherence_adjustment, 4),
-                "adjusted_coherence": round(adjusted_coherence, 4),
-                "irrigation_variance_detected": coherence_adjustment < 1.0,
-            }
-            coherence = adjusted_coherence
+        # Apply SISAS irrigation coherence adjustment
+        coherence_adjustment = self._get_coherence_adjustment()
+        coherence_adjusted = coherence * coherence_adjustment
+        coherence_breakdown["irrigation_adjustment"] = coherence_adjustment
+        coherence_breakdown["coherence_pre_adjustment"] = coherence
         
-        # Step 5: Systemic gap detection
+        # Step 5: Systemic gap detection with severity amplification
         systemic_gaps, gap_severity = self._detect_gaps(cluster_scores)
         
-        # =======================================================================
-        # SISAS: Amplify gap severity from divergence signals
-        # =======================================================================
-        if irrigation_enabled and systemic_gaps:
-            gap_amplifier = self._get_gap_severity_amplifier()
-            if gap_amplifier > 1.0:
-                # Upgrade severity levels based on amplifier
-                severity_upgrade = {
-                    "LOW": "MODERATE" if gap_amplifier > 1.3 else "LOW",
-                    "MODERATE": "SEVERE" if gap_amplifier > 1.5 else "MODERATE",
-                    "SEVERE": "CRITICAL" if gap_amplifier > 1.7 else "SEVERE",
-                    "CRITICAL": "CRITICAL",
-                }
-                gap_severity = {
-                    area: severity_upgrade.get(sev, sev)
-                    for area, sev in gap_severity.items()
-                }
-                logger.info(
-                    f"SISAS gap amplification applied: amplifier={gap_amplifier:.2f}"
-                )
-        
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
         # Step 6: Strategic alignment scoring
         alignment, alignment_breakdown = self._compute_alignment(cluster_scores)
-        self._save_checkpoint_if_enabled(
-            "STAGE_ALIGNMENT_SCORING",
-            {"alignment": alignment, "alignment_breakdown": alignment_breakdown},
-            {"description": "Strategic alignment scoring complete"}
-        )
-
+        
         # Step 7: Uncertainty propagation
         score_std, ci_95 = self._propagate_uncertainty(cluster_scores)
-<<<<<<< HEAD
-        self._save_checkpoint_if_enabled(
-            "STAGE_UNCERTAINTY_PROPAGATION",
-            {"score_std": score_std, "confidence_interval_95": ci_95},
-            {"description": "Uncertainty propagation complete"}
-        )
-
-        # Step 8: Assemble cluster details
-        cluster_details = self._assemble_cluster_details(cluster_scores)
-
-=======
         
-        # Step 8: Assemble cluster details with SISAS provenance
+        # Step 8: Assemble cluster details with SISAS provenance and irrigation health
         cluster_details = self._assemble_cluster_details(cluster_scores)
         cluster_details["sisas_provenance"] = {
             "source": self.sisas_source,
             "weights_from": self.sisas_provenance if self.sisas_provenance else "constants",
         }
         
-        # =======================================================================
-        # SISAS: Add per-cluster irrigation health and correlation chain
-        # =======================================================================
-        if irrigation_enabled:
-            cluster_irrigation = self._irrigation_payload.get("cluster_metrics", {})
-            cluster_details["irrigation_integration"] = {
-                "enabled": True,
-                "signals_processed": self._irrigation_payload.get("signals_processed", 0),
-                "coherence_adjustment": self._get_coherence_adjustment(),
+        # Add irrigation enrichment metadata
+        if self._irrigation_payload:
+            cluster_details["irrigation_enrichment"] = {
+                "overall_health": self._irrigation_payload.get("overall_health", 0.0),
+                "coherence_adjustment_applied": coherence_adjustment,
                 "gap_severity_amplifier": self._get_gap_severity_amplifier(),
-                "overall_irrigation_health": self._irrigation_payload.get("overall_health", 0.0),
-                "per_cluster_health": {
-                    cid: metrics.get("irrigation_health", 0.0)
-                    for cid, metrics in cluster_irrigation.items()
+                "signals_processed": self._irrigation_payload.get("signals_processed", 0),
+                "correlation_id": self._irrigation_payload.get("phase_correlation_id"),
+                "cluster_irrigation_health": {
+                    k: v.get("irrigation_health", 0.0) 
+                    for k, v in self._irrigation_payload.get("cluster_metrics", {}).items()
                 },
-                "phase_correlation_id": self._irrigation_payload.get("phase_correlation_id"),
-                "integrity_violations": self._irrigation_payload.get("integrity_violations_count", 0),
-                "divergences_detected": self._irrigation_payload.get("divergences_count", 0),
-            }
-            
-            # Apply irrigation health weight to final score adjustment
-            irrigation_health = self._irrigation_payload.get("overall_health", 1.0)
-            score_adjustment = 1.0 - ((1.0 - irrigation_health) * IRRIGATION_HEALTH_WEIGHT)
-            cluster_details["irrigation_integration"]["score_adjustment"] = round(score_adjustment, 4)
-            
-        else:
-            cluster_details["irrigation_integration"] = {
-                "enabled": False,
-                "reason": "No irrigation_consumer provided",
             }
         
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
         # Step 9: Generate evaluation ID and provenance
         evaluation_id = f"EVAL_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
         provenance_node_id = f"PROV_MACRO_{uuid4().hex[:8]}"
-
+        
         # Step 10: Construct MacroScore
         macro_score = MacroScore(
             evaluation_id=evaluation_id,
             score=min(MAX_SCORE, max(MIN_SCORE, raw_score)),  # Clamp to bounds
             score_normalized=score_normalized,
             quality_level=quality_level,
-            cross_cutting_coherence=coherence,
+            cross_cutting_coherence=coherence_adjusted,  # Use adjusted coherence
             coherence_breakdown=coherence_breakdown,
             systemic_gaps=systemic_gaps,
             gap_severity=gap_severity,
@@ -500,38 +363,22 @@ class MacroAggregator:
             provenance_node_id=provenance_node_id,
             aggregation_method="weighted_average",
             evaluation_timestamp=datetime.utcnow().isoformat() + "Z",
-<<<<<<< HEAD
-            pipeline_version="1.1.0",
-=======
-            pipeline_version="2.1.0",  # SISAS irrigation integration
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
+            pipeline_version="2.1.0",  # Updated for irrigation integration
         )
-
+        
         # Validate output contract
         input_cluster_ids = {cs.cluster_id for cs in cluster_scores}
         is_valid, error_message = Phase7OutputContract.validate(macro_score, input_cluster_ids)
         if not is_valid:
             raise ValueError(f"Phase 7 output contract violation: {error_message}")
-<<<<<<< HEAD
-
-        # Save final aggregation checkpoint
-        self._save_checkpoint_if_enabled(
-            "STAGE_AGGREGATION_FINAL",
-            {"evaluation_id": evaluation_id, "macro_score": macro_score},
-            {"description": "Macro aggregation complete", "status": "success"}
-        )
-
-=======
         
-        # Enhanced logging with SISAS metrics
->>>>>>> claude/atroz-dashboard-sisas-Hppzu
         logger.info(
             f"Macro aggregation complete: score={raw_score:.3f}, "
-            f"quality={quality_level}, coherence={coherence:.3f}, "
-            f"alignment={alignment:.3f}, gaps={len(systemic_gaps)}, "
-            f"sisas_irrigation={'enabled' if irrigation_enabled else 'disabled'}"
+            f"quality={quality_level}, coherence={coherence_adjusted:.3f} "
+            f"(adj={coherence_adjustment:.3f}), alignment={alignment:.3f}, "
+            f"gaps={len(systemic_gaps)}"
         )
-
+        
         return macro_score
     
     def _validate_input(self, cluster_scores: list[ClusterScore]) -> None:
@@ -607,9 +454,21 @@ class MacroAggregator:
     def _detect_gaps(
         self, cluster_scores: list[ClusterScore]
     ) -> tuple[list[str], dict[str, str]]:
-        """Detect systemic gaps across all policy areas."""
+        """
+        Detect systemic gaps across all policy areas with irrigation amplification.
+        
+        When irrigation signals indicate divergences, gap severity is amplified.
+        Normalized threshold: 0.55 * 3 = 1.65 on 0-3 scale.
+        """
         if not self.enable_gap_detection or not self.gap_detector:
             return [], {}
+        
+        # Get severity amplifier from irrigation signals
+        severity_amplifier = self._get_gap_severity_amplifier()
+        
+        # Normalized threshold for 0-3 scale
+        # SYSTEMIC_GAP_THRESHOLD is 0.55 (normalized), multiply by 3 for raw scale
+        effective_threshold = SYSTEMIC_GAP_THRESHOLD * MAX_SCORE  # 0.55 * 3 = 1.65
         
         # Collect all policy areas with scores below threshold
         gaps = []
@@ -617,18 +476,37 @@ class MacroAggregator:
         
         for cs in cluster_scores:
             # Check weakest area in cluster
-            if cs.weakest_area and cs.score < SYSTEMIC_GAP_THRESHOLD:
+            # Use raw score comparison against effective threshold
+            if cs.weakest_area and cs.score < effective_threshold:
                 area_id = cs.weakest_area
                 if area_id not in gaps:
                     gaps.append(area_id)
                     
-                    # Determine severity based on score
+                    # Determine base severity based on score
+                    # Thresholds adjusted for 0-3 scale
                     if cs.score < 1.0:  # < 33%
-                        severity[area_id] = "CRITICAL"
+                        base_severity = "CRITICAL"
                     elif cs.score < 1.35:  # < 45%
-                        severity[area_id] = "SEVERE"
+                        base_severity = "SEVERE"
                     else:
-                        severity[area_id] = "MODERATE"
+                        base_severity = "MODERATE"
+                    
+                    # Apply irrigation severity amplification
+                    # Amplifier > 1.0 can upgrade severity level
+                    if severity_amplifier > 1.3 and base_severity == "MODERATE":
+                        severity[area_id] = "SEVERE"
+                    elif severity_amplifier > 1.5 and base_severity == "SEVERE":
+                        severity[area_id] = "CRITICAL"
+                    else:
+                        severity[area_id] = base_severity
+        
+        # Also consider irrigation low_determinacy_areas as potential gaps
+        if self._irrigation_payload:
+            low_determinacy = self._irrigation_payload.get("low_determinacy_areas", [])
+            for area_id in low_determinacy:
+                if area_id not in gaps:
+                    gaps.append(area_id)
+                    severity[area_id] = "MODERATE"  # Indeterminate areas get moderate severity
         
         return gaps, severity
     
@@ -706,43 +584,3 @@ class MacroAggregator:
                 "areas": cs.areas,
             }
         return details
-
-    def _save_checkpoint_if_enabled(
-        self,
-        stage_id: str,
-        output: dict[str, Any],
-        metadata: dict[str, Any],
-    ) -> None:
-        """
-        Save checkpoint after stage completion if checkpoint manager is enabled.
-
-        Args:
-            stage_id: Stage identifier (e.g., "STAGE_COHERENCE_ANALYSIS")
-            output: Output data from stage execution
-            metadata: Additional metadata about the execution
-
-        This enables granular mid-execution recovery, allowing the pipeline
-        to resume from intermediate stages instead of re-running the entire
-        aggregation from scratch.
-
-        Checkpoint Strategy (v1.1.0):
-            - Saves after each major computational stage
-            - Enables O(k) recovery where k = stages completed
-            - Prevents O(n) recomputation for long-running aggregations
-            - Thread-safe checkpoint operations
-        """
-        if self.checkpoint_manager is not None:
-            try:
-                self.checkpoint_manager.save_stage_checkpoint(
-                    stage_id=stage_id,
-                    output=output,
-                    metadata={
-                        **metadata,
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
-                        "aggregator_version": __version__,
-                    },
-                )
-                logger.debug(f"[P7] Checkpoint saved: {stage_id}")
-            except Exception as e:
-                # Checkpoint failure should not halt aggregation
-                logger.warning(f"[P7] Failed to save checkpoint for {stage_id}: {e}")
