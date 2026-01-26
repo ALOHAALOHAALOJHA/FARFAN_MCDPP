@@ -5,6 +5,18 @@ Policy Capacity Type Definitions
 This module defines the core type system for the Wu, Ramesh & Howlett (2015)
 Policy Capacity Framework implementation.
 
+INTEGRATION WITH CORE TYPES:
+---------------------------
+This module integrates with farfan_pipeline.core.types which defines:
+- DimensionAnalitica: 6 analytical dimensions (D1-D6)
+- EpistemicOutputType: Output types (FACT, PARAMETER, CONSTRAINT, etc.)
+- EvidenceStrength: Bayesian evidence classification
+
+The capacity framework maps epistemological levels to analytical dimensions:
+- N1-EMP (Empirical) → D1_CONTEXTO, D3_IMPLEMENTACION
+- N2-INF (Inferential) → D2_DISEÑO, D4_SEGUIMIENTO  
+- N3-AUD (Audit) → D5_EVALUACION, D6_MECANISMOS
+
 The type system includes:
 - PolicySkill: The three skills (Analytical, Operational, Political)
 - PolicyLevel: The three levels (Individual, Organizational, Systemic)
@@ -41,7 +53,23 @@ from typing import (
     TypeVar,
     Union,
     Any,
+    TYPE_CHECKING,
 )
+
+# Import from core types to ensure alignment
+try:
+    from farfan_pipeline.core.types import (
+        EpistemicOutputType,
+        EvidenceStrength,
+        DimensionAnalitica,
+        DiagnosticPowerType,
+    )
+    CORE_TYPES_AVAILABLE = True
+except ImportError:
+    # Fallback definitions for standalone testing
+    CORE_TYPES_AVAILABLE = False
+    EpistemicOutputType = Literal["FACT", "PARAMETER", "CONSTRAINT", "NARRATIVE", "META_ANALYSIS"]
+    DiagnosticPowerType = Literal["negligible", "low", "moderate", "high", "decisive"]
 
 
 # ============================================================================
@@ -475,6 +503,26 @@ class EpistemologicalLevel(Enum):
             self.N4_META: 2.5,
         }
         return weights[self]
+    
+    def to_analytical_dimensions(self) -> List[int]:
+        """
+        Map epistemological level to DimensionAnalitica values.
+        
+        Integration with core/types.py DimensionAnalitica:
+        - N1-EMP → D1_CONTEXTO (1), D3_IMPLEMENTACION (3) [descriptive/process]
+        - N2-INF → D2_DISEÑO (2), D4_SEGUIMIENTO (4) [theoretical/metric]
+        - N3-AUD → D5_EVALUACION (5), D6_MECANISMOS (6) [outcome/mechanistic]
+        
+        Returns list of DimensionAnalitica integer values.
+        """
+        mapping = {
+            self.N0_INFRA: [],  # Infrastructure has no analytical dimension
+            self.N1_EMP: [1, 3],  # D1_CONTEXTO, D3_IMPLEMENTACION
+            self.N2_INF: [2, 4],  # D2_DISEÑO, D4_SEGUIMIENTO
+            self.N3_AUD: [5, 6],  # D5_EVALUACION, D6_MECANISMOS
+            self.N4_META: [6],    # D6_MECANISMOS (meta-level)
+        }
+        return mapping[self]
     
     @classmethod
     def from_code(cls, code: str) -> "EpistemologicalLevel":

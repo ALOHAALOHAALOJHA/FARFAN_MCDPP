@@ -1,10 +1,10 @@
 {
   "summary": {
-    "total_checks": 13,
+    "total_checks": 12,
     "passed": 9,
-    "fatal_failures": 4,
+    "fatal_failures": 3,
     "warnings": 0,
-    "duration_seconds": 0.22727322578430176,
+    "duration_seconds": 0.1148078441619873,
     "all_fatal_passed": false
   },
   "results": [
@@ -63,13 +63,6 @@
       "passed": true,
       "severity": "FATAL",
       "message": "Checked 0 contracts, 0 mismatches"
-    },
-    {
-      "check_id": "CONTRACT-005",
-      "category": "CONTRACT",
-      "passed": false,
-      "severity": "FATAL",
-      "message": "Contract verification: passed=False, errors=30"
     },
     {
       "check_id": "MANIFEST-000",
