@@ -176,9 +176,6 @@ def generate_value_chain_for_rule(rule: dict, pa_info: dict) -> dict:
     dim_id = rule['when']['dim_id']
     band = rule['rule_id'].split('-')[-1]  # Extract band from rule_id
     
-    # Extract score from 'when' condition
-    score_lt = rule['when'].get('score_lt', 3.0)
-    
     # Determine central problem based on band and dimension
     dim_names = {
         "DIM01": "diagnóstico y líneas base",
