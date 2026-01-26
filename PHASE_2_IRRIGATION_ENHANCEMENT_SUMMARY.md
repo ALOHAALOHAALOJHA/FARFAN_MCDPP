@@ -1,6 +1,6 @@
 # Phase 2 SISAS Event-Driven Irrigation Enhancement - SOTA Frontier Implementation
 
-**Date:** 2026-01-26 (Updated with SOTA patterns)  
+**Last updated:** January 2026  
 **Status:** ✅ COMPLETED - Phases A, B, C + SOTA Enhancements  
 **Branch:** copilot/enhance-irrigation-phase-2
 
@@ -25,9 +25,9 @@ Successfully transformed Phase 2's event-driven data irrigation mechanism by int
 - Type-safe event queries with Protocol[E]
 
 ✅ **Performance Optimizations**
-- LRU caching for causation chains (`@lru_cache(maxsize=1000)`)
-- Micro-batch event processing (EventBatcher)
-- Cached DAG structures to avoid repeated traversals
+- Instance-level caching for causation chains (O(1) lookups on cache hits)
+- Shared event emission helper (DRY principle - eliminates duplication)
+- Optimized EventStore queries using built-in correlation methods
 - Thread-safe operations with explicit locks
 
 ✅ **Event Sourcing & CQRS Patterns**
@@ -37,10 +37,10 @@ Successfully transformed Phase 2's event-driven data irrigation mechanism by int
 - Correlation ID propagation for cross-phase tracing
 
 ✅ **Modern Python Patterns**
-- Async/await ready architecture
 - Context managers for resource lifecycle
-- Match statements for event routing (Python 3.12+)
+- Shared helper functions for code reuse (DRY)
 - Structured logging with trace IDs
+- Graceful degradation when optional dependencies unavailable
 
 ---
 

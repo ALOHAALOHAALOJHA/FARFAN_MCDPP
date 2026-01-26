@@ -73,12 +73,12 @@ import os
 import threading
 from collections.abc import Callable
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from contextlib import asynccontextmanager, contextmanager
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from functools import lru_cache, wraps
+from functools import wraps
 from pathlib import Path
-from typing import Any, Final, Protocol, TypeAlias, TypeVar, runtime_checkable
+from typing import Any, Final, Protocol, TypeAlias, runtime_checkable
 
 from farfan_pipeline.phases.Phase_02.phase2_50_01_task_planner import ExecutableTask
 from farfan_pipeline.phases.Phase_02.phase2_40_03_irrigation_synchronizer import ExecutionPlan
@@ -101,7 +101,7 @@ except ImportError:
 
 # OpenTelemetry Integration (SOTA: Distributed Tracing)
 try:
-    from opentelemetry import trace, context as otel_context
+    from opentelemetry import trace
     from opentelemetry.trace import Status, StatusCode
     OTEL_AVAILABLE = True
     tracer = trace.get_tracer(__name__, version=__version__)
@@ -121,39 +121,18 @@ CausationId: TypeAlias = str
 EventId: TypeAlias = str
 TaskId: TypeAlias = str
 
-E = TypeVar('E', bound=Event)
-
 # === DATA STRUCTURES ===
-
-
-# =============================================================================
-# SOTA: PROTOCOLS FOR DUCK TYPING WITH RUNTIME CHECKS
-# =============================================================================
-
-@runtime_checkable
-class EventEmitter(Protocol):
-    """Protocol for components that emit events (SOTA: Explicit contracts)"""
-    
-    def emit_event(
-        self,
-        event_type: EventType | str,
-        payload_data: dict[str, Any],
-        correlation_id: CorrelationId | None = None,
-        causation_id: CausationId | None = None,
-    ) -> EventId | None: ...
-
-
-@runtime_checkable
-class EventQueryable(Protocol[E]):
-    """Protocol for event stores with query capabilities (SOTA: Generic constraints)"""
-    
-    def query_by_correlation(self, correlation_id: CorrelationId) -> list[E]: ...
-    def query_by_causation(self, causation_id: CausationId) -> list[E]: ...
 
 
 # =============================================================================
 # SOTA: OBSERVABILITY DECORATORS (OpenTelemetry Integration)
 # =============================================================================
+
+# NOTE: Event Batching
+# A previous implementation included an `EventBatcher` class for micro-batch
+# event processing, but it was never wired into the execution flow and didn't
+# actually write to EventStore. It has been removed to avoid dead, misleading code.
+# Future implementations should integrate batching directly with EventStore.
 
 def traced_operation(operation_name: str):
     """
@@ -215,32 +194,81 @@ def event_operation_span(operation: str, event_id: EventId | None = None):
 # SOTA: BATCH EVENT PROCESSING FOR PERFORMANCE
 # =============================================================================
 
-class EventBatcher:
+# NOTE: Event Batching
+# A previous implementation included an `EventBatcher` class for micro-batch
+# event processing, but it was never wired into the execution flow and didn't
+# actually write to EventStore or use its flush interval. It has been removed
+# to avoid dead, misleading code. Future implementations should integrate
+# batching directly with EventStore's append operations.
+
+
+# =============================================================================
+# SHARED EVENT EMISSION HELPER (DRY Principle)
+# =============================================================================
+
+def _emit_event_shared(
+    event_store: Any,
+    event_emission_enabled: bool,
+    event_type: Any,
+    source_component: str,
+    payload_data: dict[str, Any],
+    correlation_id: CorrelationId | None = None,
+    causation_id: CausationId | None = None,
+) -> EventId | None:
     """
-    SOTA: Micro-batch event processing for reduced overhead.
-    Collects events and emits in configurable batches.
+    Shared helper for emitting SISAS events with OpenTelemetry tracing.
+    
+    This encapsulates the common logic used by task executors to construct,
+    append, and trace events in a single location (DRY principle).
+    
+    Args:
+        event_store: EventStore instance
+        event_emission_enabled: Whether event emission is enabled
+        event_type: EventType enum value
+        source_component: Component emitting the event
+        payload_data: Event payload data
+        correlation_id: Optional correlation ID for tracing
+        causation_id: Optional causation ID linking to parent event
+        
+    Returns:
+        Event ID if event was emitted, None otherwise
     """
+    if not event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
+        return None
     
-    def __init__(self, batch_size: int = 10, flush_interval_ms: int = 100):
-        self.batch_size = batch_size
-        self.flush_interval_ms = flush_interval_ms
-        self._batch: list[Event] = []
-        self._lock = threading.Lock()
-    
-    def add_event(self, event: Event) -> None:
-        """Add event to batch, auto-flush if batch_size reached"""
-        with self._lock:
-            self._batch.append(event)
-            if len(self._batch) >= self.batch_size:
-                self._flush()
-    
-    def _flush(self) -> None:
-        """Emit batched events to EventStore"""
-        if not self._batch:
-            return
-        # Batch write to EventStore (implementation in EventStore)
-        logger.debug(f"Flushing {len(self._batch)} events in batch")
-        self._batch.clear()
+    with event_operation_span("emit", None) as span:
+        try:
+            event = Event(
+                event_type=event_type,
+                source_component=source_component,
+                phase="phase_02",
+                consumer_scope="Phase_02",
+                correlation_id=correlation_id,
+                causation_id=causation_id,
+                payload=EventPayload(data=payload_data),
+            )
+            event_id = event_store.append(event)
+            
+            # SOTA: Add trace context
+            if span and OTEL_AVAILABLE:
+                span.set_attribute("event.id", event_id)
+                span.set_attribute("event.type", str(event_type))
+                span.set_attribute("event.correlation_id", correlation_id or "none")
+            
+            logger.debug(
+                f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
+                extra={
+                    "event_id": event_id,
+                    "correlation_id": correlation_id,
+                    "trace_id": span.get_span_context().trace_id if span and OTEL_AVAILABLE else None,
+                }
+            )
+            return event_id
+        except Exception as e:
+            logger.warning(f"Failed to emit event: {e}", exc_info=True)
+            if span and OTEL_AVAILABLE:
+                span.record_exception(e)
+            return None
 
 
 @dataclass(frozen=True, slots=True)
@@ -558,6 +586,10 @@ class ParallelTaskExecutor:
         self.pdm_profile = pdm_profile  # FASE 4.2
         
         # SISAS Event System Integration
+        # IMPORTANT: If event_store is None, a new EventStore instance is created.
+        # For correlation tracking across executor instances, callers MUST pass
+        # the SAME EventStore instance to all components. Consider using a
+        # singleton pattern or factory to ensure shared EventStore access.
         self.event_store = event_store if event_store is not None else (
             EventStore() if SISAS_EVENTS_AVAILABLE else None
         )
@@ -753,13 +785,7 @@ class ParallelTaskExecutor:
         causation_id: CausationId | None = None,
     ) -> EventId | None:
         """
-        SOTA Enhanced: Emit event with OpenTelemetry tracing and batch support.
-        
-        Improvements over simple version:
-        - Automatic distributed tracing via @traced_operation
-        - Type-safe with TypeAlias parameters
-        - Structured span attributes for observability
-        - Graceful degradation when systems unavailable
+        Emit event using shared helper function.
         
         Args:
             event_type: EventType enum value
@@ -771,43 +797,15 @@ class ParallelTaskExecutor:
         Returns:
             Event ID if event was emitted, None otherwise
         """
-        if not self._event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
-            return None
-        
-        with event_operation_span("emit", None) as span:
-            try:
-                event = Event(
-                    event_type=event_type,
-                    source_component=source_component,
-                    phase="phase_02",
-                    consumer_scope="Phase_02",
-                    correlation_id=correlation_id,
-                    causation_id=causation_id,
-                    payload=EventPayload(data=payload_data),
-                )
-                event_id = self.event_store.append(event)
-                
-                # SOTA: Add span attributes for tracing
-                if span and OTEL_AVAILABLE:
-                    span.set_attribute("event.id", event_id)
-                    span.set_attribute("event.type", str(event_type))
-                    span.set_attribute("event.correlation_id", correlation_id or "none")
-                    span.set_attribute("event.causation_id", causation_id or "none")
-                
-                logger.debug(
-                    f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
-                    extra={
-                        "event_id": event_id,
-                        "correlation_id": correlation_id,
-                        "trace_id": span.get_span_context().trace_id if span and OTEL_AVAILABLE else None,
-                    }
-                )
-                return event_id
-            except Exception as e:
-                logger.warning(f"Failed to emit event: {e}", exc_info=True)
-                if span and OTEL_AVAILABLE:
-                    span.record_exception(e)
-                return None
+        return _emit_event_shared(
+            event_store=self.event_store,
+            event_emission_enabled=self._event_emission_enabled,
+            event_type=event_type,
+            source_component=source_component,
+            payload_data=payload_data,
+            correlation_id=correlation_id,
+            causation_id=causation_id,
+        )
 
     @traced_operation("execution.plan.parallel")
     def execute_plan_parallel(self, plan: ExecutionPlan) -> list[TaskResult]:
@@ -1608,6 +1606,10 @@ class TaskExecutor:
         self.pdm_profile = pdm_profile  # FASE 4.2
 
         # SISAS Event System Integration
+        # IMPORTANT: If event_store is None, a new EventStore instance is created.
+        # For correlation tracking across executor instances, callers MUST pass
+        # the SAME EventStore instance to all components. Consider using a
+        # singleton pattern or factory to ensure shared EventStore access.
         self.event_store = event_store if event_store is not None else (
             EventStore() if SISAS_EVENTS_AVAILABLE else None
         )
@@ -1657,7 +1659,7 @@ class TaskExecutor:
         causation_id: CausationId | None = None,
     ) -> EventId | None:
         """
-        SOTA Enhanced: Emit event with OpenTelemetry tracing and type safety.
+        Emit event using shared helper function.
         
         Args:
             event_type: EventType enum value
@@ -1669,41 +1671,15 @@ class TaskExecutor:
         Returns:
             Event ID if event was emitted, None otherwise
         """
-        if not self._event_emission_enabled or not SISAS_EVENTS_AVAILABLE:
-            return None
-        
-        with event_operation_span("emit", None) as span:
-            try:
-                event = Event(
-                    event_type=event_type,
-                    source_component=source_component,
-                    phase="phase_02",
-                    consumer_scope="Phase_02",
-                    correlation_id=correlation_id,
-                    causation_id=causation_id,
-                    payload=EventPayload(data=payload_data),
-                )
-                event_id = self.event_store.append(event)
-                
-                # SOTA: Add trace context
-                if span and OTEL_AVAILABLE:
-                    span.set_attribute("event.id", event_id)
-                    span.set_attribute("event.type", str(event_type))
-                
-                logger.debug(
-                    f"Event emitted: {event_type.value if hasattr(event_type, 'value') else event_type}",
-                    extra={
-                        "event_id": event_id,
-                        "correlation_id": correlation_id,
-                        "trace_id": span.get_span_context().trace_id if span and OTEL_AVAILABLE else None,
-                    }
-                )
-                return event_id
-            except Exception as e:
-                logger.warning(f"Failed to emit event: {e}", exc_info=True)
-                if span and OTEL_AVAILABLE:
-                    span.record_exception(e)
-                return None
+        return _emit_event_shared(
+            event_store=self.event_store,
+            event_emission_enabled=self._event_emission_enabled,
+            event_type=event_type,
+            source_component=source_component,
+            payload_data=payload_data,
+            correlation_id=correlation_id,
+            causation_id=causation_id,
+        )
 
     @traced_operation("execution.plan.sequential")
     def execute_plan(self, execution_plan: ExecutionPlan) -> list[TaskResult]:

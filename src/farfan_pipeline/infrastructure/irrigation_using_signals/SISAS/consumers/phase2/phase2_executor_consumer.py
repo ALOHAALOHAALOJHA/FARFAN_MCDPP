@@ -4,15 +4,12 @@
 SOTA Enhanced Phase 2 Executor Consumer with Advanced Event Processing.
 
 Improvements:
-- Async event query capabilities
-- LRU caching for causation chains
+- EventStore queries for causation chains
 - OpenTelemetry tracing integration
 - Protocol-based type safety
 """
 
-import asyncio
 from dataclasses import dataclass
-from functools import lru_cache
 from typing import Any, Dict, List, Optional, Protocol, TypeAlias, runtime_checkable
 
 from ..base_consumer import BaseConsumer
@@ -21,12 +18,11 @@ from ...core.contracts import ConsumptionContract
 
 # EventStore integration
 try:
-    from ...core.event import Event, EventType
+    from ...core.event import Event
     EVENTSTORE_AVAILABLE = True
 except ImportError:
     EVENTSTORE_AVAILABLE = False
     Event = None  # type: ignore
-    EventType = None  # type: ignore
 
 # OpenTelemetry for distributed tracing (SOTA)
 try:
@@ -77,6 +73,9 @@ class Phase2ExecutorConsumer(BaseConsumer):
 
     def __post_init__(self):
         super().__post_init__()
+        
+        # Instance-level cache for causation chains (fixes LRU cache issue with instance methods)
+        self._causation_chain_cache: Dict[EventId, tuple[str, ...]] = {}
 
         self.consumption_contract = ConsumptionContract(
             contract_id="CC_PHASE2_EXECUTOR",
@@ -198,13 +197,12 @@ class Phase2ExecutorConsumer(BaseConsumer):
                 "error": str(e)
             }
     
-    @lru_cache(maxsize=1000)
     def _build_causation_chain_cached(self, event_id: EventId) -> tuple[str, ...]:
         """
-        SOTA: LRU-cached causation chain building for performance.
+        Instance-level cached causation chain building for performance.
         
-        Caches causation paths to avoid repeated EventStore traversals.
-        Returns tuple (immutable) for hashability in cache.
+        Uses a dictionary cache stored on the instance to avoid LRU cache
+        issues with instance methods (self parameter is not hashable).
         
         Args:
             event_id: Starting event ID
@@ -215,8 +213,21 @@ class Phase2ExecutorConsumer(BaseConsumer):
         if not self.event_store or not EVENTSTORE_AVAILABLE:
             return ()
         
+        # Check cache first
+        if event_id in self._causation_chain_cache:
+            return self._causation_chain_cache[event_id]
+        
+        # Build and cache
         chain_list = self._build_causation_chain_uncached(event_id)
-        return tuple(e.event_id for e in chain_list)
+        result = tuple(e.event_id for e in chain_list)
+        
+        # Store in cache (limit cache size to prevent memory issues)
+        if len(self._causation_chain_cache) > 1000:
+            # Simple FIFO eviction - remove oldest entry
+            self._causation_chain_cache.pop(next(iter(self._causation_chain_cache)))
+        
+        self._causation_chain_cache[event_id] = result
+        return result
     
     def _build_causation_chain(self, event: Any) -> List[Any]:
         """
@@ -268,16 +279,24 @@ class Phase2ExecutorConsumer(BaseConsumer):
         """
         Get all events with the same correlation_id.
         
+        Uses EventStore's optimized correlation query when available,
+        falling back to in-memory filtering if needed.
+        
         Args:
             correlation_id: Correlation ID to query
             
         Returns:
             List of related events
         """
-        # Query all phase_02 events
-        phase_events = self.event_store.get_by_phase("phase_02")
+        if not self.event_store or not EVENTSTORE_AVAILABLE:
+            return []
         
-        # Filter by correlation_id
+        # Use EventStore's optimized method if available
+        if hasattr(self.event_store, 'get_by_correlation'):
+            return self.event_store.get_by_correlation(correlation_id)
+        
+        # Fallback: Query all phase_02 events and filter by correlation_id
+        phase_events = self.event_store.get_by_phase("phase_02")
         related = [e for e in phase_events if e.correlation_id == correlation_id]
         
         return related
