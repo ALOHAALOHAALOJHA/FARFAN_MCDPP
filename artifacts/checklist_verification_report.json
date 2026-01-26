@@ -1,11 +1,11 @@
 {
   "summary": {
-    "total_checks": 12,
-    "passed": 9,
-    "fatal_failures": 3,
+    "total_checks": 13,
+    "passed": 13,
+    "fatal_failures": 0,
     "warnings": 0,
-    "duration_seconds": 0.1148078441619873,
-    "all_fatal_passed": false
+    "duration_seconds": 0.49207615852355957,
+    "all_fatal_passed": true
   },
   "results": [
     {
@@ -39,30 +39,37 @@
     {
       "check_id": "SISAS-PRE-001",
       "category": "SISAS_PRECONDITION",
-      "passed": false,
+      "passed": true,
       "severity": "FATAL",
-      "message": "Questionnaire at /Users/recovered/Downloads/FARFAN_MCDPP/canonic_questionnaire_central/questionnaire_monolith.json: exists=False"
+      "message": "Modular questionnaire: resolver=True, policy_areas=True, dimensions=True, registry=True"
+    },
+    {
+      "check_id": "SISAS-PRE-003",
+      "category": "SISAS_PRECONDITION",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Found 10 policy areas"
     },
     {
       "check_id": "CONTRACT-001",
       "category": "CONTRACT",
-      "passed": false,
+      "passed": true,
       "severity": "FATAL",
-      "message": "Found 0/300 contracts (minimum required: 30)"
+      "message": "Found 300 V4 contracts (minimum required: 30)"
     },
     {
       "check_id": "CONTRACT-002",
       "category": "CONTRACT",
-      "passed": false,
+      "passed": true,
       "severity": "FATAL",
-      "message": "Checked 0 V3 contracts, 0 invalid"
+      "message": "Checked 300 V4 contracts, 0 invalid"
     },
     {
       "check_id": "CONTRACT-003",
       "category": "CONTRACT",
       "passed": true,
       "severity": "FATAL",
-      "message": "Checked 0 contracts, 0 mismatches"
+      "message": "Checked 300 contracts, 0 mismatches"
     },
     {
       "check_id": "MANIFEST-000",

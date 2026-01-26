@@ -226,22 +226,27 @@ def project_root() -> Path:
 
 @pytest.fixture(scope="module")
 def executor_contracts_dir(project_root: Path) -> Path:
-    """Return the executor contracts directory."""
+    """Return the executor contracts directory (V4 format)."""
     return (
         project_root
         / "src"
         / "farfan_pipeline"
         / "phases"
         / "Phase_02"
-        / "json_files_phase_two"
-        / "executor_contracts"
-        / "specialized"
+        / "generated_contracts"
     )
 
 
 @pytest.fixture(scope="module")
+def questionnaire_modular_dir(project_root: Path) -> Path:
+    """Return path to modular questionnaire directory."""
+    return project_root / "canonic_questionnaire_central"
+
+
+@pytest.fixture(scope="module")
 def questionnaire_path(project_root: Path) -> Path:
-    """Return path to questionnaire monolith."""
+    """Return path to questionnaire monolith (deprecated - use modular)."""
+    # DEPRECATED: Questionnaire was modularized, this is kept for backward compatibility
     return project_root / "canonic_questionnaire_central" / "questionnaire_monolith.json"
 
 
@@ -418,48 +423,48 @@ class TestConstitutionalInvariants:
 class TestSISASPreconditions:
     """Tests for SISAS signal registry preconditions."""
 
-    def test_sisas_pre_001_questionnaire_exists(self, questionnaire_path: Path):
-        """[SISAS-PRE-001] Verify questionnaire monolith exists."""
-        exists = questionnaire_path.exists()
+    def test_sisas_pre_001_questionnaire_modular_exists(self, questionnaire_modular_dir: Path):
+        """[SISAS-PRE-001] Verify modular questionnaire structure exists."""
+        # Check for modular structure components
+        resolver_exists = (questionnaire_modular_dir / "resolver.py").exists()
+        policy_areas_exists = (questionnaire_modular_dir / "policy_areas").exists()
+        dimensions_exists = (questionnaire_modular_dir / "dimensions").exists()
+        registry_exists = (questionnaire_modular_dir / "_registry" / "questionnaire_index.json").exists()
+
+        passed = resolver_exists and policy_areas_exists and dimensions_exists and registry_exists
 
         result = CheckResult(
             check_id="SISAS-PRE-001",
             category="SISAS_PRECONDITION",
-            description="QuestionnaireSignalRegistry source file exists",
-            passed=exists,
+            description="Modular questionnaire structure exists",
+            passed=passed,
             severity="FATAL",
-            message=f"Questionnaire at {questionnaire_path}: exists={exists}",
-            evidence={"path": str(questionnaire_path), "exists": exists},
+            message=f"Modular questionnaire: resolver={resolver_exists}, policy_areas={policy_areas_exists}, dimensions={dimensions_exists}, registry={registry_exists}",
+            evidence={
+                "modular_dir": str(questionnaire_modular_dir),
+                "resolver_exists": resolver_exists,
+                "policy_areas_exists": policy_areas_exists,
+                "dimensions_exists": dimensions_exists,
+                "registry_exists": registry_exists,
+            },
         )
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    def test_sisas_pre_003_policy_areas_structure(self, questionnaire_path: Path):
-        """[SISAS-PRE-003] Verify 10 policy areas in questionnaire."""
-        if not questionnaire_path.exists():
-            pytest.skip("Questionnaire not found")
+    def test_sisas_pre_003_policy_areas_structure(self, questionnaire_modular_dir: Path):
+        """[SISAS-PRE-003] Verify 10 policy areas in modular questionnaire."""
+        policy_areas_dir = questionnaire_modular_dir / "policy_areas"
+        if not policy_areas_dir.exists():
+            pytest.skip("policy_areas directory not found")
 
-        with open(questionnaire_path, "r", encoding="utf-8") as f:
-            questionnaire = json.load(f)
-
-        # Check for policy areas in various possible locations
+        # Policy areas are organized as subdirectories (e.g., PA01_mujeres_genero/)
+        pa_dirs = [d for d in policy_areas_dir.iterdir() if d.is_dir() and d.name.startswith("PA")]
         policy_areas_found = set()
-
-        # Try blocks.policy_areas
-        if "blocks" in questionnaire:
-            blocks = questionnaire["blocks"]
-            if "policy_areas" in blocks:
-                for pa in blocks["policy_areas"]:
-                    pa_id = pa.get("policy_area_id") or pa.get("id")
-                    if pa_id:
-                        policy_areas_found.add(pa_id)
-
-        # Try extracting from micro_questions
-        if "blocks" in questionnaire and "micro_questions" in questionnaire["blocks"]:
-            for q in questionnaire["blocks"]["micro_questions"]:
-                pa_id = q.get("policy_area_id")
-                if pa_id:
-                    policy_areas_found.add(pa_id)
+        for d in pa_dirs:
+            # Extract PAxx from directory name
+            match = re.match(r'(PA\d{2})', d.name)
+            if match:
+                policy_areas_found.add(match.group(1))
 
         expected_pas = {f"PA{i:02d}" for i in range(1, 11)}
         passed = len(policy_areas_found) >= 10 or policy_areas_found == expected_pas
@@ -467,7 +472,7 @@ class TestSISASPreconditions:
         result = CheckResult(
             check_id="SISAS-PRE-003",
             category="SISAS_PRECONDITION",
-            description="10 SignalPacks cargados (PA01-PA10)",
+            description="10 policy_areas directorios (PA01-PA10)",
             passed=passed,
             severity="FATAL",
             message=f"Found {len(policy_areas_found)} policy areas",
@@ -675,64 +680,63 @@ class TestSISASPreconditions:
 
 
 # ============================================================================
-# SECTION 3: CONTRACT V3 VALIDATION
+# SECTION 3: CONTRACT V4 VALIDATION
 # ============================================================================
 
 
 class TestContractValidation:
-    """Tests for V3 contract validation."""
+    """Tests for V4 contract validation."""
 
     def test_contract_001_30_contracts_exist(self, executor_contracts_dir: Path):
-        """[CONTRACT-001] Verify 300 specialized executor contracts exist (Q001-Q300)."""
-        # Updated: The repo uses Q{nnn}.v3.json naming for 300 specialized contracts
-        expected_count = 300
-        expected_contracts = [f"Q{i:03d}" for i in range(1, expected_count + 1)]
-
+        """[CONTRACT-001] Verify specialized executor contracts exist (V4 format)."""
+        # V4 contracts use naming: Q{nnn}_PA{nn}_contract_v4.json
         existing_contracts = []
-        missing_contracts = []
+        invalid_contracts = []
 
-        for contract_id in expected_contracts:
-            v3_path = executor_contracts_dir / f"{contract_id}.v3.json"
+        # Find all V4 contract files
+        for contract_file in executor_contracts_dir.glob("*_contract_v4.json"):
+            try:
+                with open(contract_file, "r", encoding="utf-8") as f:
+                    contract = json.load(f)
+                existing_contracts.append(contract_file.name)
+            except Exception as e:
+                invalid_contracts.append({"file": contract_file.name, "error": str(e)})
 
-            if v3_path.exists():
-                existing_contracts.append(contract_id)
-            else:
-                missing_contracts.append(contract_id)
-
-        # Pass if we have at least 30 contracts (original requirement) or all 300
+        # Pass if we have at least 30 contracts
         passed = len(existing_contracts) >= 30
 
         result = CheckResult(
             check_id="CONTRACT-001",
             category="CONTRACT",
-            description=f"Contratos V3 especializados ({len(existing_contracts)}/300)",
+            description=f"Contratos V4 especializados ({len(existing_contracts)}/30+)",
             passed=passed,
             severity="FATAL",
-            message=f"Found {len(existing_contracts)}/300 contracts (minimum required: 30)",
+            message=f"Found {len(existing_contracts)} V4 contracts (minimum required: 30)",
             evidence={
                 "existing": len(existing_contracts),
-                "missing_count": len(missing_contracts),
-                "missing_sample": missing_contracts[:10] if missing_contracts else [],
+                "invalid_count": len(invalid_contracts),
+                "sample_contracts": existing_contracts[:10],
                 "contracts_dir": str(executor_contracts_dir),
             },
         )
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    def test_contract_002_v3_structure(self, executor_contracts_dir: Path):
-        """[CONTRACT-002] Verify V3 contracts have required fields."""
-        v3_required_fields = ["identity", "executor_binding", "method_binding", "question_context"]
+    def test_contract_002_v4_structure(self, executor_contracts_dir: Path):
+        """[CONTRACT-002] Verify V4 contracts have required fields."""
+        # V4 required fields based on executor_contract.v4.schema.json
+        v4_required_fields = ["identity", "executor_binding", "method_binding", "question_context"]
 
         contracts_checked = 0
         invalid_contracts = []
 
-        for contract_file in executor_contracts_dir.glob("Q*.v3.json"):
+        for contract_file in executor_contracts_dir.glob("*_contract_v4.json"):
             contracts_checked += 1
             try:
                 with open(contract_file, "r", encoding="utf-8") as f:
                     contract = json.load(f)
 
-                missing_fields = [field for field in v3_required_fields if field not in contract]
+                missing_fields = [field for field in v4_required_fields if field not in contract]
                 if missing_fields:
                     invalid_contracts.append(
                         {"file": contract_file.name, "missing": missing_fields}
@@ -747,39 +751,44 @@ class TestContractValidation:
         result = CheckResult(
             check_id="CONTRACT-002",
             category="CONTRACT",
-            description="Cada contrato V3 tiene campos requeridos",
+            description="Cada contrato V4 tiene campos requeridos",
             passed=passed,
             severity="FATAL",
-            message=f"Checked {contracts_checked} V3 contracts, {len(invalid_contracts)} invalid",
+            message=f"Checked {contracts_checked} V4 contracts, {len(invalid_contracts)} invalid",
             evidence={
                 "checked": contracts_checked,
                 "invalid": invalid_contracts[:5],
-                "required_fields": v3_required_fields,
+                "required_fields": v4_required_fields,
             },
         )
         _checklist_report.add(result)
-        # This is a warning if no V3 contracts exist yet
+        # This is a warning if no V4 contracts exist yet
         if contracts_checked == 0:
-            pytest.skip("No V3 contracts found to validate")
+            pytest.skip("No V4 contracts found to validate")
         assert result.passed, result.message
 
-    def test_contract_003_identity_base_slot_match(self, executor_contracts_dir: Path):
-        """[CONTRACT-003] Verify identity.question_id matches filename."""
+    def test_contract_003_identity_question_match(self, executor_contracts_dir: Path):
+        """[CONTRACT-003] Verify identity.contract_id matches filename (V4 format)."""
         mismatches = []
         contracts_checked = 0
 
-        for contract_file in executor_contracts_dir.glob("Q*.v3.json"):
+        for contract_file in executor_contracts_dir.glob("*_contract_v4.json"):
             contracts_checked += 1
-            # Extract Q{nnn} from filename
-            expected_id = contract_file.stem.replace(".v3", "")
+            # Extract Q{nnn}_PA{nn} from V4 filename (e.g., Q025_PA05_contract_v4.json -> Q025_PA05)
+            match = re.match(r'(Q\d+_PA\d+)_contract_v4\.json', contract_file.name)
+            if not match:
+                mismatches.append({"file": contract_file.name, "error": "Cannot extract contract ID"})
+                continue
+
+            expected_id = match.group(1)
 
             try:
                 with open(contract_file, "r", encoding="utf-8") as f:
                     contract = json.load(f)
 
                 identity = contract.get("identity", {})
-                # Check for question_id or base_slot depending on schema
-                actual_id = identity.get("question_id") or identity.get("base_slot")
+                # V4 uses contract_id field (e.g., "Q002_PA03")
+                actual_id = identity.get("contract_id")
 
                 if actual_id and actual_id != expected_id:
                     mismatches.append(
@@ -793,7 +802,7 @@ class TestContractValidation:
         result = CheckResult(
             check_id="CONTRACT-003",
             category="CONTRACT",
-            description="identity.question_id coincide con nombre de archivo",
+            description="identity.contract_id coincide con nombre de archivo (V4)",
             passed=passed,
             severity="FATAL",
             message=f"Checked {contracts_checked} contracts, {len(mismatches)} mismatches",
@@ -801,7 +810,7 @@ class TestContractValidation:
         )
         _checklist_report.add(result)
         if contracts_checked == 0:
-            pytest.skip("No V3 contracts found to validate")
+            pytest.skip("No V4 contracts found to validate")
         assert result.passed, result.message
 
     @pytest.mark.skipif(
