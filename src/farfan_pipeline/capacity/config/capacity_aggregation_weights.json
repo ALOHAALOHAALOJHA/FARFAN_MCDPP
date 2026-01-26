@@ -1,0 +1,290 @@
+{
+  "_metadata": {
+    "name": "Capacity Aggregation Configuration",
+    "version": "1.0.0",
+    "framework": "Wu, Ramesh & Howlett (2015)",
+    "description": "Aggregation weights, transformation matrix, and ICI calculation parameters",
+    "last_updated": "2026-01-26",
+    "aggregation_philosophy": "Capacity flows from Individual → Organizational → Systemic with transformation coefficients"
+  },
+
+  "aggregation_formulas": {
+    "aggregation_weight": {
+      "formula": "W_agg(i, j) = η × exp(-λ × Δ_level(i, j))",
+      "description": "Weight for aggregating from source level i to target level j",
+      "parameters": {
+        "eta": {
+          "symbol": "η",
+          "name": "Base weight",
+          "default_value": 0.85,
+          "valid_range": [0.5, 1.0],
+          "description": "Maximum aggregation weight (at zero distance)"
+        },
+        "lambda_decay": {
+          "symbol": "λ",
+          "name": "Decay parameter",
+          "default_value": 0.15,
+          "valid_range": [0.05, 0.50],
+          "description": "Rate of weight decay with level distance"
+        },
+        "delta_level": {
+          "symbol": "Δ_level",
+          "name": "Level distance",
+          "values": {
+            "Individual_to_Individual": 0,
+            "Individual_to_Organizational": 1,
+            "Individual_to_Systemic": 2,
+            "Organizational_to_Individual": 1,
+            "Organizational_to_Organizational": 0,
+            "Organizational_to_Systemic": 1,
+            "Systemic_to_Individual": 2,
+            "Systemic_to_Organizational": 1,
+            "Systemic_to_Systemic": 0
+          }
+        }
+      },
+      "example": {
+        "source": "Individual",
+        "target": "Organizational",
+        "delta_level": 1,
+        "eta": 0.85,
+        "lambda": 0.15,
+        "calculation": "W = 0.85 × exp(-0.15 × 1) = 0.85 × 0.861 = 0.732",
+        "result": 0.732
+      }
+    },
+    "individual_to_organizational": {
+      "formula": "C_org = (Σ C_ind_i^p)^(1/p) × κ_org",
+      "description": "Power mean aggregation from Individual to Organizational level",
+      "parameters": {
+        "p": {
+          "symbol": "p",
+          "name": "Power parameter",
+          "default_value": 1.2,
+          "valid_range": [1.0, 2.0],
+          "interpretation": {
+            "p=1": "Arithmetic mean - equal treatment",
+            "p=1.2": "Slight emphasis on larger values (default)",
+            "p=2": "Root mean square - strong emphasis on large values"
+          }
+        },
+        "kappa_org": {
+          "symbol": "κ_org",
+          "name": "Organizational capacity factor",
+          "default_value": 0.85,
+          "valid_range": [0.7, 1.0],
+          "description": "Efficiency of aggregating individual capacities to organizational level"
+        }
+      },
+      "example": {
+        "individual_scores": [1.0, 1.2, 0.8],
+        "p": 1.2,
+        "kappa_org": 0.85,
+        "power_sum": "1.0^1.2 + 1.2^1.2 + 0.8^1.2 = 1.0 + 1.245 + 0.767 = 3.012",
+        "power_mean": "(3.012 / 3)^(1/1.2) = 1.004^0.833 = 1.003",
+        "result": "1.003 × 0.85 = 0.853"
+      }
+    },
+    "organizational_to_systemic": {
+      "formula": "C_sys = √(C_org_mean × C_org_max) × κ_sys",
+      "description": "Geometric mean of average and maximum organizational capacities",
+      "parameters": {
+        "kappa_sys": {
+          "symbol": "κ_sys",
+          "name": "Systemic capacity factor",
+          "default_value": 0.90,
+          "valid_range": [0.8, 1.0],
+          "description": "Efficiency of aggregating organizational capacities to systemic level"
+        }
+      },
+      "rationale": "Systemic capacity requires both breadth (mean) and depth (max)",
+      "example": {
+        "organizational_scores": [1.2, 0.9, 1.5],
+        "mean": 1.2,
+        "max": 1.5,
+        "geometric_mean": "√(1.2 × 1.5) = √1.8 = 1.342",
+        "kappa_sys": 0.90,
+        "result": "1.342 × 0.90 = 1.208"
+      }
+    },
+    "integrated_capacity_index": {
+      "formula": "ICI = Σ[w_skill × Σ(w_level × C(skill, level))] / 9",
+      "description": "Holistic metric of overall policy capacity",
+      "parameters": {
+        "skill_weights": {
+          "Analytical": 0.40,
+          "Operational": 0.35,
+          "Political": 0.25,
+          "sum_constraint": 1.0
+        },
+        "level_weights": {
+          "Individual": 0.25,
+          "Organizational": 0.35,
+          "Systemic": 0.40,
+          "sum_constraint": 1.0
+        },
+        "normalization_divisor": 9
+      },
+      "interpretation": {
+        "excellent": "ICI ≥ 0.85",
+        "good": "0.70 ≤ ICI < 0.85",
+        "moderate": "0.50 ≤ ICI < 0.70",
+        "needs_improvement": "ICI < 0.50"
+      }
+    }
+  },
+
+  "transformation_matrix": {
+    "description": "Cross-level influence coefficients (row=source, column=target)",
+    "interpretation": "T[i][j] = contribution weight from level i to level j",
+    "matrix": {
+      "Individual": {
+        "Individual": 1.00,
+        "Organizational": 0.75,
+        "Systemic": 0.50
+      },
+      "Organizational": {
+        "Individual": 0.25,
+        "Organizational": 1.00,
+        "Systemic": 0.80
+      },
+      "Systemic": {
+        "Individual": 0.10,
+        "Organizational": 0.35,
+        "Systemic": 1.00
+      }
+    },
+    "properties": {
+      "diagonal_elements": "1.0 (full self-contribution)",
+      "upper_triangular": "Stronger (upward aggregation)",
+      "lower_triangular": "Weaker (spillover effects downward)",
+      "row_sums": {
+        "Individual": 2.25,
+        "Organizational": 2.05,
+        "Systemic": 1.45
+      },
+      "column_sums": {
+        "Individual": 1.35,
+        "Organizational": 2.10,
+        "Systemic": 2.30
+      },
+      "interpretation": {
+        "row_sum": "Total influence capacity of a level",
+        "column_sum": "Total dependence of a level on others"
+      }
+    },
+    "alternative_matrices": {
+      "high_upward_influence": {
+        "description": "Emphasizes upward capacity accumulation",
+        "matrix": {
+          "Individual": {"Individual": 1.00, "Organizational": 0.85, "Systemic": 0.65},
+          "Organizational": {"Individual": 0.25, "Organizational": 1.00, "Systemic": 0.90},
+          "Systemic": {"Individual": 0.10, "Organizational": 0.35, "Systemic": 1.00}
+        }
+      },
+      "balanced": {
+        "description": "More balanced cross-level influence",
+        "matrix": {
+          "Individual": {"Individual": 1.00, "Organizational": 0.60, "Systemic": 0.40},
+          "Organizational": {"Individual": 0.40, "Organizational": 1.00, "Systemic": 0.60},
+          "Systemic": {"Individual": 0.20, "Organizational": 0.50, "Systemic": 1.00}
+        }
+      }
+    }
+  },
+
+  "level_weights": {
+    "description": "Weights for each policy level in aggregation calculations",
+    "weights": {
+      "Individual": {
+        "value": 0.25,
+        "rationale": "Foundational building blocks of capacity"
+      },
+      "Organizational": {
+        "value": 0.35,
+        "rationale": "Primary locus of policy implementation"
+      },
+      "Systemic": {
+        "value": 0.40,
+        "rationale": "Ultimate expression of policy capacity"
+      }
+    },
+    "sum_constraint": 1.0
+  },
+
+  "skill_weights": {
+    "description": "Weights for each policy skill in aggregation calculations",
+    "weights": {
+      "Analytical": {
+        "value": 0.40,
+        "rationale": "Evidence-based policy requires strong analytical foundation"
+      },
+      "Operational": {
+        "value": 0.35,
+        "rationale": "Implementation success is critical for policy effectiveness"
+      },
+      "Political": {
+        "value": 0.25,
+        "rationale": "Political capacity enables but doesn't determine policy success"
+      }
+    },
+    "sum_constraint": 1.0
+  },
+
+  "gap_analysis_thresholds": {
+    "description": "Thresholds for identifying and classifying capacity gaps",
+    "severity_thresholds": {
+      "critical": {
+        "ratio_below": 0.3,
+        "description": "Urgent intervention required"
+      },
+      "major": {
+        "ratio_below": 0.5,
+        "description": "Significant improvement needed"
+      },
+      "minor": {
+        "ratio_below": 0.7,
+        "description": "Moderate attention required"
+      },
+      "acceptable": {
+        "ratio_above": 0.7,
+        "description": "Within acceptable range"
+      }
+    },
+    "target_scores": {
+      "ici_target": 0.85,
+      "coverage_percentage_target": 10.0,
+      "balance_ratio_maximum": 2.0
+    }
+  },
+
+  "configuration_profiles": {
+    "default": {
+      "name": "Default Configuration",
+      "eta": 0.85,
+      "lambda_decay": 0.15,
+      "power_mean_p": 1.2,
+      "kappa_org": 0.85,
+      "kappa_sys": 0.90,
+      "congregation_delta": 0.3
+    },
+    "high_synergy": {
+      "name": "High Synergy Configuration",
+      "eta": 0.90,
+      "lambda_decay": 0.10,
+      "power_mean_p": 1.3,
+      "kappa_org": 0.90,
+      "kappa_sys": 0.95,
+      "congregation_delta": 0.5
+    },
+    "conservative": {
+      "name": "Conservative Configuration",
+      "eta": 0.80,
+      "lambda_decay": 0.20,
+      "power_mean_p": 1.1,
+      "kappa_org": 0.80,
+      "kappa_sys": 0.85,
+      "congregation_delta": 0.2
+    }
+  }
+}

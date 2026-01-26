@@ -1,0 +1,263 @@
+{
+  "_metadata": {
+    "name": "Policy Capacity Mappings",
+    "version": "1.0.0",
+    "framework": "Wu, Ramesh & Howlett (2015)",
+    "description": "Configuration for mapping epistemological levels to capacity types",
+    "last_updated": "2026-01-26",
+    "total_methods_supported": 652
+  },
+
+  "epistemology_to_skill_mapping": {
+    "_description": "Maps epistemological foundations to policy skills",
+    "Empirismo positivista": {
+      "primary_skill": "Analytical",
+      "rationale": "Fact-based empirical observation aligns with analytical capacity"
+    },
+    "Bayesianismo subjetivista": {
+      "primary_skill": "Political",
+      "rationale": "Belief-based probabilistic reasoning aligns with political judgment"
+    },
+    "Falsacionismo popperiano": {
+      "primary_skill": "Operational",
+      "rationale": "Testability and validation aligns with operational implementation"
+    },
+    "Instrumentalismo": {
+      "primary_skill": "Operational",
+      "rationale": "Practical utility focus aligns with operational concerns"
+    },
+    "Reflexividad crítica": {
+      "primary_skill": "Analytical",
+      "rationale": "Meta-analysis requires analytical sophistication"
+    }
+  },
+
+  "level_to_capacity_level_mapping": {
+    "_description": "Maps method levels to policy capacity levels",
+    "N0-INFRA": {
+      "capacity_level": "Individual",
+      "rationale": "Infrastructure support operates at individual tool level"
+    },
+    "N1-EMP": {
+      "capacity_level": "Individual",
+      "rationale": "Empirical extraction is individual analytical work"
+    },
+    "N2-INF": {
+      "capacity_level": "Organizational",
+      "rationale": "Inferential computation requires organizational resources"
+    },
+    "N3-AUD": {
+      "capacity_level": "Systemic",
+      "rationale": "Audit and validation operates at systemic level with veto power"
+    },
+    "N4-META": {
+      "capacity_level": "Systemic",
+      "rationale": "Meta-analysis synthesizes across systemic scope"
+    }
+  },
+
+  "capacity_type_definitions": {
+    "CA-I": {
+      "code": "CA-I",
+      "skill": "Analytical",
+      "level": "Individual",
+      "name": "Individual Analytical Capacity",
+      "description": "Personal skills in research, data analysis, evidence interpretation",
+      "indicators": [
+        "Research methodology competence",
+        "Data literacy",
+        "Statistical analysis skills",
+        "Evidence synthesis ability"
+      ]
+    },
+    "CA-O": {
+      "code": "CA-O",
+      "skill": "Analytical",
+      "level": "Organizational",
+      "name": "Organizational Analytical Capacity",
+      "description": "Institutional resources for analysis and evidence processing",
+      "indicators": [
+        "Research unit presence",
+        "Data infrastructure quality",
+        "Analytical protocols",
+        "Evidence management systems"
+      ]
+    },
+    "CA-S": {
+      "code": "CA-S",
+      "skill": "Analytical",
+      "level": "Systemic",
+      "name": "Systemic Analytical Capacity",
+      "description": "Broader epistemic infrastructure and knowledge networks",
+      "indicators": [
+        "Research network strength",
+        "Academic partnerships",
+        "Knowledge sharing systems",
+        "Societal data infrastructure"
+      ]
+    },
+    "CO-I": {
+      "code": "CO-I",
+      "skill": "Operational",
+      "level": "Individual",
+      "name": "Individual Operational Capacity",
+      "description": "Personal skills in implementation and project management",
+      "indicators": [
+        "Project management skills",
+        "Resource allocation ability",
+        "Coordination competence",
+        "Delivery track record"
+      ]
+    },
+    "CO-O": {
+      "code": "CO-O",
+      "skill": "Operational",
+      "level": "Organizational",
+      "name": "Organizational Operational Capacity",
+      "description": "Institutional resources for policy implementation",
+      "indicators": [
+        "Budget adequacy",
+        "Staffing levels",
+        "Process maturity",
+        "Technology infrastructure"
+      ]
+    },
+    "CO-S": {
+      "code": "CO-S",
+      "skill": "Operational",
+      "level": "Systemic",
+      "name": "Systemic Operational Capacity",
+      "description": "Inter-organizational coordination and delivery networks",
+      "indicators": [
+        "Public-private partnerships",
+        "Service delivery networks",
+        "Inter-agency coordination",
+        "Collective action mechanisms"
+      ]
+    },
+    "CP-I": {
+      "code": "CP-I",
+      "skill": "Political",
+      "level": "Individual",
+      "name": "Individual Political Capacity",
+      "description": "Personal skills in stakeholder engagement and negotiation",
+      "indicators": [
+        "Negotiation skills",
+        "Communication ability",
+        "Network building",
+        "Political acumen"
+      ]
+    },
+    "CP-O": {
+      "code": "CP-O",
+      "skill": "Political",
+      "level": "Organizational",
+      "name": "Organizational Political Capacity",
+      "description": "Institutional resources for political engagement",
+      "indicators": [
+        "Consultation mechanisms",
+        "Stakeholder management systems",
+        "Communication infrastructure",
+        "Public affairs capacity"
+      ]
+    },
+    "CP-S": {
+      "code": "CP-S",
+      "skill": "Political",
+      "level": "Systemic",
+      "name": "Systemic Political Capacity",
+      "description": "Broader political environment and democratic legitimacy",
+      "indicators": [
+        "Societal trust levels",
+        "Democratic legitimacy",
+        "Civic engagement norms",
+        "Institutional basis for agreement"
+      ]
+    }
+  },
+
+  "mapping_rules": {
+    "_description": "Rules for mapping methods to capacity types based on classification",
+    "N1-EMP": {
+      "primary_capacity": "CA-I",
+      "secondary_capacity": null,
+      "split_rule": null,
+      "rationale": "Empirical extraction maps directly to Individual Analytical"
+    },
+    "N2-INF": {
+      "primary_capacity": "CA-O",
+      "secondary_capacity": "CO-O",
+      "split_rule": "class_based",
+      "primary_class_keywords": ["Semantic", "Bayesian", "Numerical", "Analyzer", "Adaptive", "Prior", "Generative"],
+      "secondary_class_keywords": ["Mechanism", "Teoria", "Cambio", "Evidence", "Integrator", "Dispersion", "Theory"],
+      "rationale": "Inferential methods split between Analytical-Org and Operational-Org"
+    },
+    "N3-AUD": {
+      "primary_capacity": "CO-S",
+      "secondary_capacity": "CP-O",
+      "split_rule": "name_based",
+      "primary_method_keywords": ["validate", "audit", "check", "verify", "test", "assess"],
+      "secondary_method_keywords": ["detect", "contradict", "consistency", "coherence", "conflict", "contradiction"],
+      "rationale": "Audit methods split between Operational-Systemic and Political-Org"
+    }
+  },
+
+  "class_overrides": {
+    "_description": "Explicit capacity type assignments for specific classes",
+    "TextMiningEngine": "CA-I",
+    "IndustrialPolicyProcessor": "CA-I",
+    "CausalExtractor": "CA-I",
+    "PDETMunicipalPlanAnalyzer": "CA-I",
+    "SemanticProcessor": "CA-I",
+    "BayesianNumericalAnalyzer": "CA-O",
+    "AdaptivePriorCalculator": "CA-O",
+    "HierarchicalGenerativeModel": "CA-O",
+    "SemanticAnalyzer": "CA-O",
+    "BayesianMechanismInference": "CO-O",
+    "TeoriaCambio": "CO-O",
+    "BayesianEvidenceIntegrator": "CO-O",
+    "DispersionEngine": "CO-O",
+    "PolicyContradictionDetector": "CP-O",
+    "FinancialAuditor": "CO-S",
+    "IndustrialGradeValidator": "CO-S",
+    "AdvancedDAGValidator": "CO-S",
+    "BayesianCounterfactualAuditor": "CO-S",
+    "OperationalizationAuditor": "CO-S",
+    "TemporalLogicVerifier": "CO-S",
+    "ContradictionDominator": "CP-O",
+    "LogicalConsistencyChecker": "CO-S",
+    "DAGCycleDetector": "CO-S",
+    "StatisticalGateAuditor": "CO-S"
+  },
+
+  "scoring_weights": {
+    "epistemology_weights": {
+      "Empirismo positivista": 0.85,
+      "Bayesianismo subjetivista": 1.00,
+      "Falsacionismo popperiano": 0.92,
+      "Instrumentalismo": 0.50,
+      "Reflexividad crítica": 0.80
+    },
+    "level_weights": {
+      "N0-INFRA": 0.5,
+      "N1-EMP": 1.0,
+      "N2-INF": 1.5,
+      "N3-AUD": 2.0,
+      "N4-META": 2.5
+    },
+    "output_type_weights": {
+      "FACT": 0.8,
+      "PARAMETER": 1.0,
+      "CONSTRAINT": 1.2,
+      "INFRASTRUCTURE": 0.4,
+      "META_ANALYSIS": 1.1,
+      "NARRATIVE": 0.9
+    },
+    "formula_coefficients": {
+      "alpha": 0.4,
+      "beta": 0.35,
+      "gamma": 0.25,
+      "_constraint": "alpha + beta + gamma = 1.0"
+    }
+  }
+}

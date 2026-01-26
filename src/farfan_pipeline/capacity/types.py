@@ -489,7 +489,6 @@ class EpistemologicalLevel(Enum):
 # EQUIPMENT CONGREGATION
 # ============================================================================
 
-@unique
 class EquipmentCongregation(Enum):
     """
     Equipment Congregation types with synergy coefficients.
