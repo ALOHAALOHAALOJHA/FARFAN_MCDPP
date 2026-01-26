@@ -76,7 +76,7 @@ ExecutionPlan = None
 
 # SISAS Signal Registry - REAL PATHS after repo reorganization
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.vehicles.signal_registry import (
         QuestionnaireSignalRegistry as SISASSignalRegistry,
         create_signal_registry,
     )
