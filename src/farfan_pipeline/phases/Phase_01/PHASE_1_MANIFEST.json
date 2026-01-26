@@ -7,7 +7,7 @@
   "created_at": "2026-01-04",
   "updated_at": "2026-01-18",
   "owner": "farfan_pipeline. phases.Phase_one",
-  "description": "Phase 1 performs question-aware chunking (300 chunks: 10 PA \u00d7 6 Dim \u00d7 5 Q), Colombian PDM enhancement (default behavior), and multi-level semantic enrichment to produce domain-enriched SmartChunks. Colombian PDM enhancement recognizes regulatory frameworks, territorial indicators, financial markers, and differential approach patterns constitutionally mandated for all chunks.",
+  "description": "Phase 1 performs question-aware chunking (60 chunks: 10 PA × 6 Dim), Colombian PDM enhancement (default behavior), and multi-level semantic enrichment to produce domain-enriched SmartChunks. Phase 2 expands to 300 tasks (60 chunks × 5 questions). Colombian PDM enhancement recognizes regulatory frameworks, territorial indicators, financial markers, and differential approach patterns constitutionally mandated for all chunks.",
   "subphases": [
     {
       "id": "SP0",
@@ -39,7 +39,7 @@
     },
     {
       "id": "SP4",
-      "name": "Question-Aware Chunking (300 chunks)",
+      "name": "Question-Aware Chunking (60 chunks)",
       "module": "phase1_07_00_sp4_question_aware",
       "weight": 10000,
       "tier": "CRITICAL",
@@ -99,7 +99,7 @@
     },
     {
       "id": "SP11",
-      "name": "SmartChunk Assembly (300 chunks)",
+      "name": "SmartChunk Assembly (60 chunks)",
       "module": "phase1_13_00_cpp_ingestion",
       "weight": 10000,
       "tier": "CRITICAL",
@@ -359,13 +359,14 @@
     "stages": 11,
     "subphases": 16,
     "subphases_with_sub": 17,
-    "constitutional_chunks": 300,
+    "constitutional_chunks": 60,
     "policy_areas": 10,
     "dimensions": 6,
     "questions_per_dimension": 5,
+    "phase2_expansion": 300,
     "colombian_pdm_enhancement": "MANDATORY",
     "critical_subphases": ["SP4", "SP4.1", "SP11", "SP13"],
     "high_subphases": ["SP5", "SP9", "SP10", "SP12", "SP14", "SP15"],
-    "formula": "10 PA × 6 DIM × 5 Q = 300 chunks"
+    "formula": "Phase 1: 10 PA × 6 DIM = 60 chunks; Phase 2: 60 × 5 Q = 300 tasks"
   }
 }

@@ -92,8 +92,8 @@ def _lazy_import_phase2_dependencies():
 # Imports from refactored modules
 from farfan_pipeline.phases.Phase_00.primitives.providers import (
     QuestionnaireResourceProvider,
-    CoreModuleFactory,
 )
+from farfan_pipeline.orchestration.factory import UnifiedFactory, FactoryConfig
 from farfan_pipeline.phases.Phase_00.interphase.wiring_types import (
     WiringComponents,
     WiringFeatureFlags,
@@ -488,8 +488,8 @@ class WiringBootstrap:
         provider: QuestionnaireResourceProvider,
         registry: SignalRegistry,
         config: "ExecutorConfig",
-    ) -> CoreModuleFactory:
-        """Create CoreModuleFactory with DI.
+    ) -> UnifiedFactory:
+        """Create UnifiedFactory with DI.
 
         Args:
             provider: QuestionnaireResourceProvider
@@ -497,7 +497,7 @@ class WiringBootstrap:
             config: ExecutorConfig for injection
 
         Returns:
-            CoreModuleFactory instance
+            UnifiedFactory instance
 
         Raises:
             WiringInitializationError: If creation fails
@@ -505,13 +505,16 @@ class WiringBootstrap:
         logger.info("wiring_init_phase", phase="create_factory")
 
         try:
-            factory = CoreModuleFactory(
-                data_dir=provider.data_dir,
+            factory_config = FactoryConfig(
+                project_root=provider.data_dir.parent.parent if provider.data_dir else Path("."),
+                sisas_enabled=self.flags.enable_http_signals or True,  # Default to true for unified
             )
+            factory = UnifiedFactory(config=factory_config)
 
             logger.info(
                 "factory_created",
                 data_dir=str(provider.data_dir),
+                factory_type="UnifiedFactory"
             )
 
             return factory
@@ -799,7 +802,7 @@ class WiringBootstrap:
         self,
         provider: QuestionnaireResourceProvider,
         registry: SignalRegistry,
-        factory: CoreModuleFactory,
+        factory: UnifiedFactory,
         router: "ExtendedArgRouter",
     ) -> dict[str, str]:
         """Compute hashes for initialized components.

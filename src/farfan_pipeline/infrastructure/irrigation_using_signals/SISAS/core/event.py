@@ -419,6 +419,52 @@ class EventStore:
         """Obtiene eventos que tuvieron errores de procesamiento"""
         return [e for e in self.events if e.processing_errors]
 
+    def query(self, predicate: Callable[[Event], bool]) -> List[Event]:
+        """
+        Query events using a predicate function.
+        
+        Examples:
+            # Find all phase_01 events with specific source
+            store.query(lambda e: e.phase == "phase_01" and "PDM" in e.source_file)
+            
+            # Find recent events
+            cutoff = datetime.utcnow() - timedelta(hours=1)
+            store.query(lambda e: e.timestamp > cutoff)
+            
+            # Complex multi-field query
+            store.query(lambda e: e.event_type == EventType.CANONICAL_DATA_LOADED 
+                                  and e.payload and "questions" in e.payload.data)
+        
+        Args:
+            predicate: Function that returns True for matching events
+            
+        Returns:
+            List of events matching the predicate
+        """
+        return [e for e in self.events if predicate(e)]
+
+    def query_with_payload_filter(self, payload_predicate: Callable[[Dict[str, Any]], bool]) -> List[Event]:
+        """
+        Query events by filtering their payload data.
+        
+        Examples:
+            # Find events with specific payload content
+            store.query_with_payload_filter(lambda p: p.get("source_type") == "PDM")
+            
+            # Find events with large payloads
+            store.query_with_payload_filter(lambda p: len(str(p)) > 10000)
+        
+        Args:
+            payload_predicate: Function that returns True for matching payloads
+            
+        Returns:
+            List of events with matching payloads
+        """
+        return [
+            e for e in self.events 
+            if e.payload and payload_predicate(e.payload.data)
+        ]
+
     def archive_processed(self, older_than_days: int = 30, archive_path: str = None) -> int:
         """
         Archiva (NO elimina) eventos procesados más antiguos que N días.
