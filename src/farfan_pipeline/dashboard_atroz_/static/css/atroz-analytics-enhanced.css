@@ -1,0 +1,498 @@
+/**
+ * ATROZ Dashboard - Enhanced Analytics Styles
+ * ============================================
+ *
+ * Extends the ATROZ visual language with advanced analytics components:
+ * - Data mining query builder
+ * - Interactive visualizations
+ * - Comparative analysis views
+ * - Heatmaps and correlation matrices
+ * - Municipality drill-down panels
+ *
+ * Maintains ATROZ color palette and design principles
+ */
+
+/* === Color Palette === */
+:root {
+    --atroz-red-900: #3A0E0E;
+    --atroz-red-500: #C41E3A;
+    --atroz-blue-electric: #00D4FF;
+    --atroz-green-toxic: #39FF14;
+    --atroz-copper-500: #B2642E;
+    --atroz-copper-oxide: #17A589;
+    --atroz-purple-glow: #9333EA;
+    --ink: #E5E7EB;
+    --bg: #0A0A0A;
+    --bg-card: #151515;
+}
+
+/* === Analytics Container === */
+.analytics-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* === Query Builder === */
+.query-builder {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(196, 30, 58, 0.05) 100%);
+    border: 1px solid rgba(196, 30, 58, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.query-builder-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--atroz-red-500);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.query-builder-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.query-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.query-field-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--atroz-blue-electric);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.query-field-input,
+.query-field-select {
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.75rem;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.query-field-input:focus,
+.query-field-select:focus {
+    outline: none;
+    border-color: var(--atroz-blue-electric);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.query-field-input::placeholder {
+    color: rgba(229, 231, 235, 0.4);
+}
+
+.query-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-query-execute,
+.btn-query-reset,
+.btn-export {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-query-execute {
+    background: linear-gradient(135deg, var(--atroz-red-500) 0%, #8B0000 100%);
+    color: white;
+}
+
+.btn-query-execute:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(196, 30, 58, 0.4);
+}
+
+.btn-query-reset {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--atroz-blue-electric);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.btn-query-reset:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--atroz-blue-electric);
+}
+
+.btn-export {
+    background: linear-gradient(135deg, var(--atroz-green-toxic) 0%, #00B300 100%);
+    color: var(--bg);
+}
+
+.btn-export:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(57, 255, 20, 0.4);
+}
+
+/* === Analytics Grid === */
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(0, 212, 255, 0.03) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.analytics-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--atroz-red-500), var(--atroz-blue-electric));
+}
+
+.analytics-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.analytics-card-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--atroz-blue-electric);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.analytics-card-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--atroz-red-500);
+}
+
+.analytics-card-body {
+    min-height: 300px;
+    position: relative;
+}
+
+/* === Chart Container === */
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+.chart-container canvas {
+    max-height: 100%;
+}
+
+/* === Stats Grid === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.stat-card {
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--atroz-blue-electric);
+    box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+}
+
+.stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--atroz-blue-electric);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--atroz-red-500);
+}
+
+/* === Correlation Heatmap === */
+.correlation-heatmap {
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+.heatmap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.heatmap-table th {
+    background: var(--atroz-red-900);
+    color: var(--ink);
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.heatmap-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.heatmap-table td:hover {
+    transform: scale(1.1);
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+/* === Municipality Drill-Down Panel === */
+.municipality-panel {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(196, 30, 58, 0.05) 100%);
+    border: 2px solid var(--atroz-red-500);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.municipality-panel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(196, 30, 58, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.municipality-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.municipality-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--atroz-red-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.municipality-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--atroz-blue-electric);
+    background: rgba(0, 212, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.municipality-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.metric-box {
+    background: rgba(0, 10, 10, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.metric-box:hover {
+    border-color: var(--atroz-blue-electric);
+    box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+    transform: translateY(-4px);
+}
+
+.metric-box-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--atroz-blue-electric);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.metric-box-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--atroz-red-500);
+}
+
+.metric-box-subtext {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(229, 231, 235, 0.6);
+    margin-top: 0.5rem;
+}
+
+/* === Anomalies List === */
+.anomalies-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.anomaly-item {
+    background: rgba(196, 30, 58, 0.1);
+    border-left: 3px solid var(--atroz-red-500);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.anomaly-item:hover {
+    background: rgba(196, 30, 58, 0.2);
+    transform: translateX(4px);
+}
+
+.anomaly-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--atroz-red-500);
+    margin-bottom: 0.5rem;
+}
+
+.anomaly-details {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--ink);
+}
+
+/* === Loading State === */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 10, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 12px;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(0, 212, 255, 0.2);
+    border-top-color: var(--atroz-blue-electric);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* === Responsive Design === */
+@media (max-width: 1200px) {
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-container {
+        padding: 1rem;
+    }
+
+    .query-builder-row {
+        grid-template-columns: 1fr;
+    }
+
+    .municipality-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* === Print Styles === */
+@media print {
+    .query-builder,
+    .query-actions,
+    .btn-export {
+        display: none;
+    }
+
+    .analytics-card {
+        page-break-inside: avoid;
+    }
+}
