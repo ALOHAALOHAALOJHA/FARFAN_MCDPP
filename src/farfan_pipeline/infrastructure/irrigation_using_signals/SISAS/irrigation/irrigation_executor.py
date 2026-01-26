@@ -1,11 +1,12 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/irrigation_executor.py
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Set
 from datetime import datetime
 from enum import Enum
 import json
 import logging
+import hashlib
 
 from .irrigation_map import IrrigationMap, IrrigationRoute, IrrigabilityStatus
 from ..core.signal import Signal, SignalContext, SignalSource
@@ -99,6 +100,11 @@ class IrrigationExecutor:
     4. Publicar en buses
     5. Notificar a consumidores
     6. Registrar todo para auditoría
+    
+    ENHANCED:
+    - Signal deduplication to avoid redundant processing
+    - Signal caching for deterministic results
+    - Performance optimization
     """
 
     irrigation_map: IrrigationMap = field(default_factory=IrrigationMap)
@@ -118,6 +124,17 @@ class IrrigationExecutor:
 
     # Resultados
     execution_history: List[IrrigationResult] = field(default_factory=list)
+    
+    # ENHANCED: Signal deduplication and caching
+    _signal_cache: Dict[str, Signal] = field(default_factory=dict)
+    _signal_hashes: Set[str] = field(default_factory=set)
+    _deduplication_enabled: bool = True
+    _cache_enabled: bool = True
+    _deduplication_stats: Dict[str, int] = field(default_factory=lambda: {
+        "total_signals": 0,
+        "duplicates_detected": 0,
+        "cache_hits": 0
+    })
 
     # Logger
     _logger: logging.Logger = field(default=None)
@@ -196,6 +213,11 @@ class IrrigationExecutor:
 
                 try:
                     signals = vehicle.process(data, context)
+                    
+                    # ENHANCED: Deduplicate signals
+                    if self._deduplication_enabled:
+                        signals = self._deduplicate_signals(signals)
+                    
                     all_signals.extend(signals)
                     self._logger.debug(
                         f"Vehicle {vehicle_id} generated {len(signals)} signals"
