@@ -46,8 +46,11 @@ EventId: TypeAlias = str
 class EventQueryable(Protocol):
     """Protocol for event stores with query capabilities"""
     
-    def get_by_id(self, event_id: EventId) -> Optional[Event]: ...
-    def get_by_phase(self, phase: str) -> List[Event]: ...
+    def get_by_id(self, event_id: EventId) -> Optional[Event]:
+        pass
+
+    def get_by_phase(self, phase: str) -> List[Event]:
+        pass
 
 
 @dataclass
