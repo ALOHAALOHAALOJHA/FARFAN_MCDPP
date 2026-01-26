@@ -21,12 +21,11 @@ from ...core.contracts import ConsumptionContract
 
 # EventStore integration
 try:
-    from ...core.event import Event, EventStore, EventType
+    from ...core.event import Event, EventType
     EVENTSTORE_AVAILABLE = True
 except ImportError:
     EVENTSTORE_AVAILABLE = False
     Event = None  # type: ignore
-    EventStore = None  # type: ignore
     EventType = None  # type: ignore
 
 # OpenTelemetry for distributed tracing (SOTA)
