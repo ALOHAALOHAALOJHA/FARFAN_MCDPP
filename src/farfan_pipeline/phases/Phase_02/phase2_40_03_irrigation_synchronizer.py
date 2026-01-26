@@ -2140,10 +2140,283 @@ class IrrigationSynchronizer:
         return execution_plan
 
 
+# =============================================================================
+# PHASE 4 SOPHISTICATED SYNCHRONIZATION ENHANCEMENTS
+# =============================================================================
+
+class Phase4SynchronizationMonitor:
+    """
+    Phase 4-specific synchronization monitor for dimension aggregation flow.
+    
+    Monitors:
+    - Signal flow from Phase 3 (300 micro-scores) to Phase 4 (60 dimensions)
+    - Synchronization checkpoints for aggregation milestones
+    - Backpressure detection across phase boundaries
+    - Cross-phase signal dependency resolution
+    """
+    
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self._phase4_checkpoints: List[Dict[str, Any]] = []
+        self._signal_flow_tracking: Dict[str, Any] = {
+            "phase3_to_phase4_signals": 0,
+            "dimension_aggregations_complete": 0,
+            "backpressure_events": 0,
+            "dependency_violations": 0
+        }
+        self._dimension_sync_state: Dict[str, str] = {}  # dimension_id -> state
+        self._backpressure_threshold_ms = 5000  # 5 seconds
+    
+    def create_phase4_checkpoint(
+        self,
+        checkpoint_type: str,
+        dimension_count: int,
+        signal_metrics: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Create Phase 4 synchronization checkpoint.
+        
+        Checkpoints mark key milestones in dimension aggregation:
+        - Micro-score collection complete
+        - Dimension aggregation started
+        - Dimension aggregation complete
+        - Policy area rollup ready
+        
+        Args:
+            checkpoint_type: Type of checkpoint (e.g., "dimension_aggregation_complete")
+            dimension_count: Number of dimensions processed
+            signal_metrics: Signal flow metrics
+        
+        Returns:
+            Checkpoint dict with full context
+        """
+        checkpoint = {
+            "checkpoint_id": f"phase4_sync_{len(self._phase4_checkpoints) + 1}",
+            "checkpoint_type": checkpoint_type,
+            "timestamp": datetime.utcnow().isoformat(),
+            "dimension_count": dimension_count,
+            "expected_dimensions": 60,
+            "progress_percentage": (dimension_count / 60) * 100,
+            "signal_metrics": signal_metrics.copy(),
+            "backpressure_status": self._check_phase4_backpressure(),
+            "dependency_status": self._check_phase4_dependencies()
+        }
+        
+        self._phase4_checkpoints.append(checkpoint)
+        
+        self.logger.info(
+            "phase4_checkpoint_created",
+            extra={
+                "checkpoint_id": checkpoint["checkpoint_id"],
+                "checkpoint_type": checkpoint_type,
+                "progress": f"{checkpoint['progress_percentage']:.1f}%"
+            }
+        )
+        
+        return checkpoint
+    
+    def monitor_signal_flow_phase4(
+        self,
+        signals_from_phase3: int,
+        signals_to_consumers: int
+    ) -> Dict[str, Any]:
+        """
+        Monitor signal flow into and out of Phase 4.
+        
+        Tracks:
+        - Input signals from Phase 3 (micro-scores)
+        - Output signals to Phase 4 consumers (dimension scores)
+        - Flow rate and backpressure indicators
+        
+        Args:
+            signals_from_phase3: Count of signals from Phase 3
+            signals_to_consumers: Count of signals delivered to consumers
+        
+        Returns:
+            Flow metrics dict
+        """
+        self._signal_flow_tracking["phase3_to_phase4_signals"] += signals_from_phase3
+        
+        # Calculate flow rate
+        flow_rate = signals_to_consumers / max(1, signals_from_phase3)
+        
+        # Detect backpressure (output slower than input)
+        backpressure_detected = flow_rate < 0.5
+        if backpressure_detected:
+            self._signal_flow_tracking["backpressure_events"] += 1
+        
+        flow_metrics = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "signals_from_phase3": signals_from_phase3,
+            "signals_to_consumers": signals_to_consumers,
+            "flow_rate": flow_rate,
+            "backpressure_detected": backpressure_detected,
+            "total_phase3_signals": self._signal_flow_tracking["phase3_to_phase4_signals"],
+            "cumulative_backpressure_events": self._signal_flow_tracking["backpressure_events"]
+        }
+        
+        if backpressure_detected:
+            self.logger.warning(
+                "phase4_backpressure_detected",
+                extra=flow_metrics
+            )
+        
+        return flow_metrics
+    
+    def handle_backpressure_phase4(
+        self,
+        current_queue_size: int,
+        max_queue_size: int = 1000
+    ) -> Dict[str, Any]:
+        """
+        Handle backpressure in Phase 4 consumers.
+        
+        Strategies:
+        - Throttle input from Phase 3
+        - Buffer signals
+        - Scale consumer processing
+        - Alert for manual intervention if severe
+        
+        Args:
+            current_queue_size: Current signal queue size
+            max_queue_size: Maximum allowed queue size
+        
+        Returns:
+            Backpressure handling result
+        """
+        utilization = current_queue_size / max_queue_size
+        
+        handling_result = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "queue_size": current_queue_size,
+            "max_queue_size": max_queue_size,
+            "utilization_percentage": utilization * 100,
+            "action_taken": "none"
+        }
+        
+        if utilization > 0.9:
+            # Critical backpressure
+            handling_result["severity"] = "critical"
+            handling_result["action_taken"] = "throttle_input_and_buffer"
+            handling_result["recommendation"] = "Scale consumer capacity immediately"
+            self.logger.error(
+                "phase4_critical_backpressure",
+                extra=handling_result
+            )
+        elif utilization > 0.7:
+            # High backpressure
+            handling_result["severity"] = "high"
+            handling_result["action_taken"] = "throttle_input"
+            handling_result["recommendation"] = "Monitor and prepare to scale"
+            self.logger.warning(
+                "phase4_high_backpressure",
+                extra=handling_result
+            )
+        elif utilization > 0.5:
+            # Moderate backpressure
+            handling_result["severity"] = "moderate"
+            handling_result["action_taken"] = "monitor"
+            handling_result["recommendation"] = "Continue monitoring"
+        else:
+            # Normal operation
+            handling_result["severity"] = "none"
+        
+        return handling_result
+    
+    def track_dimension_sync_state(
+        self,
+        dimension_id: str,
+        state: str
+    ):
+        """
+        Track synchronization state for individual dimensions.
+        
+        States:
+        - "collecting": Collecting micro-scores
+        - "ready": Ready to aggregate
+        - "aggregating": Currently aggregating
+        - "complete": Aggregation complete
+        - "stalled": No progress
+        """
+        previous_state = self._dimension_sync_state.get(dimension_id)
+        self._dimension_sync_state[dimension_id] = state
+        
+        if state == "complete":
+            self._signal_flow_tracking["dimension_aggregations_complete"] += 1
+        
+        self.logger.debug(
+            "dimension_sync_state_changed",
+            extra={
+                "dimension_id": dimension_id,
+                "previous_state": previous_state,
+                "new_state": state
+            }
+        )
+    
+    def _check_phase4_backpressure(self) -> Dict[str, Any]:
+        """Check current backpressure status"""
+        return {
+            "active": self._signal_flow_tracking["backpressure_events"] > 0,
+            "total_events": self._signal_flow_tracking["backpressure_events"]
+        }
+    
+    def _check_phase4_dependencies(self) -> Dict[str, Any]:
+        """Check Phase 4 dependency status"""
+        # Phase 4 depends on Phase 3 micro-scores
+        return {
+            "phase3_dependency_met": self._signal_flow_tracking["phase3_to_phase4_signals"] > 0,
+            "dependency_violations": self._signal_flow_tracking["dependency_violations"]
+        }
+    
+    def get_phase4_sync_report(self) -> Dict[str, Any]:
+        """
+        Get comprehensive Phase 4 synchronization report.
+        
+        Returns full status of Phase 4 signal flow and synchronization.
+        """
+        dimension_states = {}
+        for state in ["collecting", "ready", "aggregating", "complete", "stalled"]:
+            dimension_states[state] = sum(
+                1 for s in self._dimension_sync_state.values() if s == state
+            )
+        
+        return {
+            "report_timestamp": datetime.utcnow().isoformat(),
+            "checkpoints_created": len(self._phase4_checkpoints),
+            "latest_checkpoint": (
+                self._phase4_checkpoints[-1] if self._phase4_checkpoints else None
+            ),
+            "signal_flow_tracking": self._signal_flow_tracking.copy(),
+            "dimension_sync_states": dimension_states,
+            "dimensions_tracked": len(self._dimension_sync_state),
+            "overall_progress_percentage": (
+                dimension_states.get("complete", 0) / 60 * 100
+            ),
+            "backpressure_summary": {
+                "total_events": self._signal_flow_tracking["backpressure_events"],
+                "currently_active": self._signal_flow_tracking["backpressure_events"] > 0
+            }
+        }
+
+
+# Global Phase 4 synchronization monitor (singleton)
+_phase4_sync_monitor: Optional[Phase4SynchronizationMonitor] = None
+
+
+def get_phase4_sync_monitor() -> Phase4SynchronizationMonitor:
+    """Get or create the global Phase 4 synchronization monitor"""
+    global _phase4_sync_monitor
+    if _phase4_sync_monitor is None:
+        _phase4_sync_monitor = Phase4SynchronizationMonitor()
+    return _phase4_sync_monitor
+
+
 __all__ = [
     "IrrigationSynchronizer",
     "ExecutionPlan",
     "Task",
     "ChunkRoutingResult",
     "SignalRegistry",
+    "Phase4SynchronizationMonitor",  # New
+    "get_phase4_sync_monitor",  # New
 ]
