@@ -1,6 +1,6 @@
 {
-  "version": "3.0.0",
-  "last_updated": "2026-01-17T09:41:49.896829+00:00",
+  "version": "3.1.0",
+  "last_updated": "2026-01-26T04:07:49.654999+00:00",
   "enhanced_features": [
     "template_parameterization",
     "execution_logic",
@@ -14,7 +14,8 @@
     "momentum_tracking",
     "transformation_pathways",
     "crisis_management",
-    "excellence_sustaining"
+    "excellence_sustaining",
+    "sisas_signal_integration"
   ],
   "scoring_scenarios": [
     "CRISIS (0.00-0.80): Emergency intervention",
@@ -74223,12 +74224,18 @@
           "name": "Synergy recovery index",
           "target": 0.85,
           "unit": "ratio",
-          "acceptable_range": [0.0, 1.0]
+          "acceptable_range": [
+            0.0,
+            1.0
+          ]
         },
         "responsible": {
           "entity": "Synergy Task Force",
           "role": "Coordinator",
-          "partners": ["Planning", "Finance"]
+          "partners": [
+            "Planning",
+            "Finance"
+          ]
         },
         "horizon": {
           "start": "T0",
@@ -74236,9 +74243,9 @@
         },
         "verification": [],
         "cost": {
-            "estimate": 50000000,
-            "currency": "COP",
-            "basis": "fixed"
+          "estimate": 50000000,
+          "currency": "COP",
+          "basis": "fixed"
         }
       },
       "execution": {
@@ -74246,7 +74253,9 @@
         "blocking": false,
         "auto_apply": true,
         "requires_approval": true,
-        "approval_roles": ["Manager"]
+        "approval_roles": [
+          "Manager"
+        ]
       },
       "budget": {
         "estimated_cost_cop": 50000000,
@@ -74272,12 +74281,18 @@
             "DIM02": {
               "strength": 0.4,
               "rationale": "Strategic alignment enables financial planning clarity",
-              "evidence_required": ["strategic_plan_coherence", "budget_alignment"]
+              "evidence_required": [
+                "strategic_plan_coherence",
+                "budget_alignment"
+              ]
             },
             "DIM03": {
               "strength": 0.3,
               "rationale": "Clear goals improve belief calibration",
-              "evidence_required": ["goal_communication", "stakeholder_buyin"]
+              "evidence_required": [
+                "goal_communication",
+                "stakeholder_buyin"
+              ]
             }
           }
         },
@@ -74287,12 +74302,18 @@
             "DIM01": {
               "strength": 0.3,
               "rationale": "Budget constraints clarify strategic priorities",
-              "evidence_required": ["fiscal_space_analysis", "priority_ranking"]
+              "evidence_required": [
+                "fiscal_space_analysis",
+                "priority_ranking"
+              ]
             },
             "DIM05": {
               "strength": 0.5,
               "rationale": "Funding enables execution capacity",
-              "evidence_required": ["budget_allocation", "resource_availability"]
+              "evidence_required": [
+                "budget_allocation",
+                "resource_availability"
+              ]
             }
           }
         },
@@ -74302,12 +74323,18 @@
             "DIM01": {
               "strength": 0.3,
               "rationale": "Shared beliefs enable consensus on direction",
-              "evidence_required": ["belief_assessment", "consensus_building"]
+              "evidence_required": [
+                "belief_assessment",
+                "consensus_building"
+              ]
             },
             "DIM04": {
               "strength": 0.4,
               "rationale": "Prior beliefs inform causal model construction",
-              "evidence_required": ["belief_to_cause_mapping", "hypothesis_generation"]
+              "evidence_required": [
+                "belief_to_cause_mapping",
+                "hypothesis_generation"
+              ]
             }
           }
         },
@@ -74317,12 +74344,18 @@
             "DIM03": {
               "strength": 0.3,
               "rationale": "Causal models validate or challenge prior beliefs",
-              "evidence_required": ["belief_validation", "model_revision"]
+              "evidence_required": [
+                "belief_validation",
+                "model_revision"
+              ]
             },
             "DIM06": {
               "strength": 0.5,
               "rationale": "Causal clarity improves evidence collection design",
-              "evidence_required": ["causal_indicators", "measurement_plan"]
+              "evidence_required": [
+                "causal_indicators",
+                "measurement_plan"
+              ]
             }
           }
         },
@@ -74332,12 +74365,18 @@
             "DIM02": {
               "strength": 0.4,
               "rationale": "Execution reveals actual resource needs",
-              "evidence_required": ["cost_tracking", "efficiency_analysis"]
+              "evidence_required": [
+                "cost_tracking",
+                "efficiency_analysis"
+              ]
             },
             "DIM06": {
               "strength": 0.3,
               "rationale": "Implementation produces measurable results",
-              "evidence_required": ["output_indicators", "outcome_tracking"]
+              "evidence_required": [
+                "output_indicators",
+                "outcome_tracking"
+              ]
             }
           }
         },
@@ -74347,12 +74386,18 @@
             "DIM04": {
               "strength": 0.4,
               "rationale": "Evidence confirms or refutes causal hypotheses",
-              "evidence_required": ["hypothesis_testing", "causal_validation"]
+              "evidence_required": [
+                "hypothesis_testing",
+                "causal_validation"
+              ]
             },
             "DIM05": {
               "strength": 0.3,
               "rationale": "Results inform implementation adjustments",
-              "evidence_required": ["performance_monitoring", "adaptive_management"]
+              "evidence_required": [
+                "performance_monitoring",
+                "adaptive_management"
+              ]
             }
           }
         }
@@ -74369,7 +74414,11 @@
           "target_pa": "PA03",
           "strength": 0.4,
           "rationale": "Both rely on strategic planning and institutional design",
-          "shared_dimensions": ["DIM01", "DIM03", "DIM04"],
+          "shared_dimensions": [
+            "DIM01",
+            "DIM03",
+            "DIM04"
+          ],
           "intervention_sequence": [
             "First: Strengthen PA01 strategic alignment",
             "Then: PA03 governance structures benefit from clearer direction"
@@ -74380,7 +74429,11 @@
           "target_pa": "PA05",
           "strength": 0.35,
           "rationale": "Financial planning connects directly to execution capacity",
-          "shared_dimensions": ["DIM02", "DIM05", "DIM06"],
+          "shared_dimensions": [
+            "DIM02",
+            "DIM05",
+            "DIM06"
+          ],
           "intervention_sequence": [
             "First: Improve PA02 financial clarity and budgeting",
             "Then: PA05 execution benefits from resource availability"
@@ -74391,7 +74444,11 @@
           "target_pa": "PA04",
           "strength": 0.3,
           "rationale": "Institutional design enables effective monitoring",
-          "shared_dimensions": ["DIM01", "DIM04", "DIM06"],
+          "shared_dimensions": [
+            "DIM01",
+            "DIM04",
+            "DIM06"
+          ],
           "intervention_sequence": [
             "First: Establish PA03 governance structures",
             "Then: PA04 monitoring can track performance effectively"
@@ -74411,8 +74468,14 @@
             "horizon_months": 12,
             "multiplier": 1.5,
             "effect": "Improved alignment enables better belief calibration",
-            "second_order_targets": ["DIM04", "DIM06"],
-            "third_order_targets": ["DIM02", "DIM05"],
+            "second_order_targets": [
+              "DIM04",
+              "DIM06"
+            ],
+            "third_order_targets": [
+              "DIM02",
+              "DIM05"
+            ],
             "prerequisites": [
               "strategic_document_approved",
               "leadership_alignment_confirmed"
@@ -74424,8 +74487,12 @@
             "horizon_months": 18,
             "multiplier": 1.7,
             "effect": "Financial clarity enhances execution capacity",
-            "second_order_targets": ["DIM06"],
-            "third_order_targets": ["DIM04"],
+            "second_order_targets": [
+              "DIM06"
+            ],
+            "third_order_targets": [
+              "DIM04"
+            ],
             "prerequisites": [
               "budget_approved",
               "fiscal_space_identified"
@@ -74437,8 +74504,13 @@
             "horizon_months": 15,
             "multiplier": 1.6,
             "effect": "Causal models improve evidence collection design",
-            "second_order_targets": ["DIM05", "DIM02"],
-            "third_order_targets": ["DIM01"],
+            "second_order_targets": [
+              "DIM05",
+              "DIM02"
+            ],
+            "third_order_targets": [
+              "DIM01"
+            ],
             "prerequisites": [
               "causal_model_validated",
               "indicators_defined"
@@ -74452,7 +74524,10 @@
             "horizon_months": 24,
             "multiplier": 1.4,
             "effect": "Core capacity extends to adjacent clusters",
-            "second_order_targets": ["CL03", "CL04"],
+            "second_order_targets": [
+              "CL03",
+              "CL04"
+            ],
             "third_order_targets": [],
             "prerequisites": [
               "cluster_governance_active",
@@ -74511,7 +74586,104 @@
       "MACRO": 6,
       "total": 360
     },
-    "validation_checksum": "0c4a8804bf86b6926322eeb627822a7e8515ad5a2c288674e53db03858924256",
-    "generated_date": "2026-01-16T05:44:04.828634Z"
+    "validation_checksum": "updated_sisas_v3.1.0",
+    "generated_date": "2026-01-26T04:07:49.655501+00:00"
+  },
+  "sisas_integration": {
+    "version": "1.0.0",
+    "enabled": true,
+    "description": "SISAS signal integration for pattern-aware recommendation generation",
+    "signal_types": {
+      "UNCERTAINTY_SIGNAL": {
+        "priority_boost": 0.2,
+        "threshold": 0.3,
+        "description": "High uncertainty increases recommendation priority"
+      },
+      "CONFIDENCE_SIGNAL": {
+        "priority_boost": 0.15,
+        "threshold": 0.7,
+        "description": "Low confidence increases recommendation priority"
+      },
+      "COHERENCE_SIGNAL": {
+        "priority_boost": 0.1,
+        "threshold": 0.5,
+        "description": "Low coherence increases recommendation priority"
+      },
+      "EMPIRICAL_SUPPORT_SIGNAL": {
+        "priority_boost": 0.25,
+        "threshold": 0.4,
+        "description": "Low empirical support increases recommendation priority"
+      }
+    },
+    "pattern_mappings": {
+      "MICRO": {
+        "question_mapping": {
+          "description": "Map questions to patterns for signal enrichment",
+          "source": "canonic_questionnaire_central/_registry/signal_mappings.json"
+        },
+        "dimension_patterns": {
+          "DIM01": [
+            "alignment_pattern",
+            "goal_clarity_pattern"
+          ],
+          "DIM02": [
+            "financial_pattern",
+            "budget_pattern"
+          ],
+          "DIM03": [
+            "belief_pattern",
+            "prior_belief_pattern"
+          ],
+          "DIM04": [
+            "causality_pattern",
+            "intervention_pattern"
+          ],
+          "DIM05": [
+            "execution_pattern",
+            "capacity_pattern"
+          ],
+          "DIM06": [
+            "evidence_pattern",
+            "monitoring_pattern"
+          ]
+        }
+      },
+      "MESO": {
+        "cluster_signals": {
+          "description": "Cluster-level signal aggregation",
+          "metrics": [
+            "irrigation_health",
+            "mapping_coverage",
+            "alignment_avg"
+          ]
+        }
+      },
+      "MACRO": {
+        "system_signals": {
+          "description": "System-level signal synthesis",
+          "metrics": [
+            "overall_health",
+            "upstream_completeness",
+            "variance_alert"
+          ]
+        }
+      }
+    },
+    "priority_scoring": {
+      "base_score": "gap * band_weight",
+      "signal_adjustment": "1.0 + (signal_strength * priority_boost)",
+      "empirical_bonus": "empirical_support_level * 0.2",
+      "max_amplification": 2.0
+    },
+    "provenance": {
+      "track_signals": true,
+      "include_correlation_chain": true,
+      "require_signal_metadata": false
+    },
+    "validation": {
+      "require_signal_registry": false,
+      "allow_missing_patterns": true,
+      "fallback_to_defaults": true
+    }
   }
 }
