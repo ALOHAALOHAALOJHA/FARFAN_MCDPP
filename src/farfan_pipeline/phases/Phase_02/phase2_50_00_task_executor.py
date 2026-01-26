@@ -121,7 +121,6 @@ CausationId: TypeAlias = str
 EventId: TypeAlias = str
 TaskId: TypeAlias = str
 
-T = TypeVar('T')
 E = TypeVar('E', bound=Event)
 
 # === DATA STRUCTURES ===
