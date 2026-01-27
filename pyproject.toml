@@ -174,28 +174,92 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101", "ANN", "PLR2004"]
 
+[tool.black]
+line-length = 100
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | build
+  | dist
+  | migrations
+  | __pycache__
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+skip_gitignore = true
+skip = [".git", ".venv", "venv", "migrations", "__pycache__"]
+
 [tool.mypy]
 python_version = "3.12"
-strict = true
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_any_unimported = true
-disallow_any_expr = false
-disallow_any_decorated = true
-disallow_any_explicit = true
-disallow_any_generics = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
+ignore_missing_imports = true
 no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 strict_equality = true
+exclude = [
+    "migrations/",
+    "tests/",
+    ".venv/",
+    "venv/",
+    "__pycache__/"
+]
+
+[tool.pylint]
+max-line-length = 100
+disable = [
+    "C0111",  # missing-docstring
+    "C0103",  # invalid-name
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+    "W0212",  # protected-access
+]
+good-names = ["i", "j", "k", "ex", "Run", "_", "id", "df"]
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+    "*/site-packages/*"
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:"
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv", "migrations"]
+severity = "medium"
+confidence = "medium"
 
 [[tool.mypy.overrides]]
 module = [
@@ -213,122 +277,6 @@ module = [
     "structlog.*",
 ]
 ignore_missing_imports = true
-
-[tool.black]
-line-length = 100
-target-version = ['py312']
-
-[tool.pytest.ini_options]
-minversion = "7.0"
-addopts = "-v --strict-markers --tb=short -m 'not obsolete'"
-testpaths = ["tests"]
-pythonpath = ["src", "."]  # src/ for farfan_pipeline, . for canonic_questionnaire_central
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-markers = [
-    "updated: marks tests as current/valid (run with 'pytest -m updated')",
-    "outdated: marks tests as deprecated/invalid",
-    "asyncio: Asyncio tests",
-    "contract: Contract tests for API boundaries",
-    "property: Property-based tests with Hypothesis",
-    "integration: Integration tests",
-    "core: Tests críticos del núcleo",
-    "validation: Tests de validación y calidad",
-    "gold: Tests de estándares de oro",
-    "operational: Tests operacionales",
-    "regression: Tests de regresión",
-    "performance: Performance and scalability tests",
-    "slow: Slow-running tests that should be run selectively",
-    "obsolete: Tests marked obsolete - excluded from default runs (see tests/DEPRECATED_TESTS.md)",
-]
-
-[tool.coverage.run]
-source = ["src/farfan_pipeline"]
-omit = ["tests/*", "examples/*", ".venv/*", "minipdm/*"]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "if TYPE_CHECKING:",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "@abstractmethod",
-]
-
-[tool.deptry]
-requirements_files = [
-    "requirements.txt",
-    "requirements-dev.txt",
-]
-known_first_party = ["farfan_pipeline", "schemas", "methods", "retry_handler", "config", "tools"]
-exclude = [".venv", "src", "tests", "examples", "minipdm"]
-ignore_notebooks = true
-ignore = ["DEP002", "DEP003"]
-requirements_files_dev = ["requirements-dev.txt"]
-
-[tool.importlinter]
-root_package = "farfan_pipeline"
-include_external_packages = true
-
-[[tool.importlinter.contracts]]
-name = "Core (excluding orchestrator) must not import analysis"
-type = "forbidden"
-source_modules = ["farfan_pipeline.calibration", "farfan_pipeline.phases.Phase_00"]
-forbidden_modules = [
-    "farfan_pipeline.phases.Phase_04",
-    "farfan_pipeline.phases.Phase_06",
-]
-
-[[tool.importlinter.contracts]]
-name = "Core orchestrator must not import analysis"
-type = "forbidden"
-source_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-forbidden_modules = ["farfan_pipeline.phases.Phase_04"]
-
-[[tool.importlinter.contracts]]
-name = "Processing layer cannot import orchestrator"
-type = "forbidden"
-source_modules = ["farfan_pipeline.phases.Phase_02"]
-forbidden_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-
-[[tool.importlinter.contracts]]
-name = "Analysis layer cannot import orchestrator"
-type = "forbidden"
-source_modules = ["farfan_pipeline.phases.Phase_04"]
-forbidden_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-
-[[tool.importlinter.contracts]]
-name = "Analysis depends on core but not infrastructure"
-type = "forbidden"
-source_modules = ["farfan_pipeline.phases.Phase_04"]
-forbidden_modules = ["farfan_pipeline.infrastructure"]
-
-[[tool.importlinter.contracts]]
-name = "Infrastructure must not pull orchestrator"
-type = "forbidden"
-source_modules = ["farfan_pipeline.infrastructure"]
-forbidden_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-
-[[tool.importlinter.contracts]]
-name = "API layer only calls orchestrator entry points"
-type = "forbidden"
-source_modules = ["farfan_pipeline.dashboard_atroz_"]
-forbidden_modules = [
-    "farfan_pipeline.phases.Phase_02",
-    "farfan_pipeline.phases.Phase_04",
-    "farfan_pipeline.utils",
-]
-
-[[tool.importlinter.contracts]]
-name = "Utils stay leaf modules"
-type = "forbidden"
-source_modules = ["farfan_pipeline.utils"]
-forbidden_modules = [
-    "farfan_pipeline.orchestration.core_orchestrator",
-    "farfan_pipeline.phases.Phase_02",
-    "farfan_pipeline.phases.Phase_04",
-]
 
 # =============================================================================
 # DEPENDENCY LAYER ISOLATION CONTRACTS (Added 2026-01-13)

@@ -7356,8 +7356,9 @@ class CDAFFramework:
         try:
             cycles = list(nx.simple_cycles(graph))
             audit["cycles"] = cycles
-        except:
-            pass
+        except Exception as e:
+            logger.warning("cycle_detection_failed", error=str(e), error_type=type(e).__name__)
+            audit["cycles"] = []
 
         # Calculate coherence score
         connected_ratio = 1.0 - (len(audit["disconnected_nodes"]) / max(len(nodes), 1))
@@ -8648,8 +8649,8 @@ class BayesianCounterfactualAuditor:
                 # Aplicar ecuación estructural
                 try:
                     computed_values[node] = equations[node](parent_values, noise=0.0)
-                except:
-                    # Fallback
+                except (TypeError, KeyError, ValueError) as e:
+                    logger.debug("structural_equation_fallback", node=node, error=str(e))
                     computed_values[node] = sum(parent_values.values()) / max(len(parent_values), 1)
 
         return float(np.clip(computed_values.get(target, 0.5), 0.0, 1.0))
@@ -8715,7 +8716,8 @@ class BayesianCounterfactualAuditor:
             try:
                 result = self.counterfactual_query(intervention, target, perturbed_evidence)
                 perturbed_effects.append(result["causal_effect"])
-            except:
+            except (KeyError, TypeError, ValueError) as e:
+                logger.debug("counterfactual_query_fallback", error=str(e), using_baseline=True)
                 perturbed_effects.append(baseline_effect)
 
         # Máxima variación
@@ -10603,7 +10605,8 @@ def _run_quality_gates() -> dict[str, bool]:
         for pattern_name, pattern in PDT_PATTERNS.items():
             _ = pattern.pattern
         results["regex_compile"] = True
-    except:
+    except (AttributeError, re.error) as e:
+        logger.warning("regex_compile_failed", error=str(e), error_type=type(e).__name__)
         results["regex_compile"] = False
 
     levels = list(MICRO_LEVELS.values())
