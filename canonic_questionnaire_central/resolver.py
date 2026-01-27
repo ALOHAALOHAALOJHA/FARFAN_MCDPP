@@ -1133,8 +1133,8 @@ class CanonicalQuestionnaireResolver:
             )
             if result.returncode == 0:
                 return result.stdout.strip()[:12]
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug("git_commit_unavailable", error=str(e))
         return None
 
 

@@ -673,6 +673,7 @@ class CrystallizationCheckpoint:
         
         try:
             with open(latest, 'rb') as f:
+                # SECURITY: Safe - loading internal checkpoint files created by this application
                 data = pickle.load(f)
             
             logger.info(f"SP{subphase_num} checkpoint loaded from {Path(latest).name}")

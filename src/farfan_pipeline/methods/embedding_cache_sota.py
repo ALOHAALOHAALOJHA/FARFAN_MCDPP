@@ -666,6 +666,9 @@ class SOTAEmbeddingCache:
         for cache_file in cache_dir.glob("*.pkl"):
             try:
                 with open(cache_file, "rb") as f:
+                    # SECURITY NOTE: pickle.load() is safe here because we only load
+                    # from our own cache directory with files created by this application.
+                    # Never use pickle.load() with untrusted or user-provided files.
                     data = pickle.load(f)
 
                 text_hash = data["text_hash"]

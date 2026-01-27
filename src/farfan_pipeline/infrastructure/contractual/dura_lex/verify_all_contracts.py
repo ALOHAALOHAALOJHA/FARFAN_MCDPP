@@ -14,7 +14,18 @@ TOOLS_DIR = CONTRACTS_DIR / "tools"
 TESTS_DIR = CONTRACTS_DIR / "tests"
 
 
-def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> bool:
+def run_command(cmd: list[str], description: str, set_pythonpath: bool = False) -> bool:
+    """
+    Run a command safely without shell=True.
+
+    Args:
+        cmd: Command as a list of arguments (safer than shell string)
+        description: Human-readable description for logging
+        set_pythonpath: Whether to add src/ to PYTHONPATH
+
+    Returns:
+        True if command succeeded, False otherwise
+    """
     print(f"Running {description}...")
     try:
         env = os.environ.copy()
@@ -22,7 +33,7 @@ def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> boo
             cwd = Path.cwd()
             src_path = cwd / "src"
             env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
-        subprocess.check_call(cmd, shell=True, env=env)
+        subprocess.check_call(cmd, env=env)
         print(f"✅ {description} PASSED")
         return True
     except subprocess.CalledProcessError:
@@ -35,7 +46,7 @@ def main() -> None:
 
     # 1. Run Pytest Suite
     print("\n--- 1. RUNNING TESTS ---")
-    if not run_command(f"pytest {TESTS_DIR} -v", "All Contract Tests", set_pythonpath=True):
+    if not run_command(["pytest", str(TESTS_DIR), "-v"], "All Contract Tests", set_pythonpath=True):
         sys.exit(1)
 
     # 2. Run CLI Tools to generate certificates
@@ -43,7 +54,7 @@ def main() -> None:
     tools = sorted(TOOLS_DIR.glob("*.py"))
     for tool in tools:
         tool_name = tool.name
-        if not run_command(f"python {tool}", f"Tool: {tool_name}", set_pythonpath=True):
+        if not run_command(["python", str(tool)], f"Tool: {tool_name}", set_pythonpath=True):
             sys.exit(1)
 
     # 3. Verify Certificates

@@ -7356,8 +7356,9 @@ class CDAFFramework:
         try:
             cycles = list(nx.simple_cycles(graph))
             audit["cycles"] = cycles
-        except:
-            pass
+        except Exception as e:
+            audit["cycles"] = []
+            audit["cycle_check_error"] = str(e)
 
         # Calculate coherence score
         connected_ratio = 1.0 - (len(audit["disconnected_nodes"]) / max(len(nodes), 1))
@@ -8648,8 +8649,8 @@ class BayesianCounterfactualAuditor:
                 # Aplicar ecuación estructural
                 try:
                     computed_values[node] = equations[node](parent_values, noise=0.0)
-                except:
-                    # Fallback
+                except Exception:
+                    # Fallback: use average of parent values
                     computed_values[node] = sum(parent_values.values()) / max(len(parent_values), 1)
 
         return float(np.clip(computed_values.get(target, 0.5), 0.0, 1.0))
@@ -8715,7 +8716,8 @@ class BayesianCounterfactualAuditor:
             try:
                 result = self.counterfactual_query(intervention, target, perturbed_evidence)
                 perturbed_effects.append(result["causal_effect"])
-            except:
+            except Exception:
+                # Fallback to baseline if counterfactual query fails
                 perturbed_effects.append(baseline_effect)
 
         # Máxima variación
@@ -10603,7 +10605,7 @@ def _run_quality_gates() -> dict[str, bool]:
         for pattern_name, pattern in PDT_PATTERNS.items():
             _ = pattern.pattern
         results["regex_compile"] = True
-    except:
+    except Exception:
         results["regex_compile"] = False
 
     levels = list(MICRO_LEVELS.values())

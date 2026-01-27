@@ -257,6 +257,7 @@ class FileSystemNexusStorage(NexusStorage):
             return None
 
         with open(node_file, "rb") as f:
+            # SECURITY: Safe - loading internal node files created by this application
             node = pickle.load(f)
 
         self._node_cache[node_id] = node
@@ -295,6 +296,7 @@ class FileSystemNexusStorage(NexusStorage):
 
         for rel_file in rel_dir.glob(f"{node_id}_*.pkl"):
             with open(rel_file, "rb") as f:
+                # SECURITY: Safe - loading internal relationship files created by this application
                 rel = pickle.load(f)
                 relationships.append(rel)
 
@@ -308,6 +310,7 @@ class FileSystemNexusStorage(NexusStorage):
         all_nodes = []
         for node_file in nodes_dir.glob("*.pkl"):
             with open(node_file, "rb") as f:
+                # SECURITY: Safe - loading internal node files created by this application
                 node = pickle.load(f)
                 all_nodes.append(node)
 
