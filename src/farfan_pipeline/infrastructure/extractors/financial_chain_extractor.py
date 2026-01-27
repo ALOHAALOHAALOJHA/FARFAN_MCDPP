@@ -75,6 +75,16 @@ class FinancialChainExtractor(PatternBasedExtractor):
             signal_type="FINANCIAL_CHAIN", calibration_file=calibration_file, auto_validate=True
         )
 
+        # Default keyword sets from spec
+        self.default_fuente_keywords = {
+            "SGP": ["SGP", "Sistema General de Participaciones", "participaciones"],
+            "PROPIOS": ["recursos propios", "ingresos corrientes", "tributarios"],
+            "SGR": ["SGR", "Sistema General de Regalías", "regalías"],
+            "CREDITO": ["crédito", "endeudamiento", "empréstito"],
+            "COFINANCIACION": ["cofinanciación", "nación", "departamento"],
+            "COOPERACION": ["cooperación internacional", "donaciones"],
+        }
+
         # Load specialized patterns
         self._load_financial_patterns()
 
@@ -97,6 +107,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
         self.monto_patterns = []
         self.fuente_patterns = []
         self.periodo_patterns = []
+        self.fuente_compiled_patterns = []
 
         # Get extraction patterns from calibration
         extraction_patterns = self.calibration.get("extraction_patterns", {})
@@ -108,8 +119,15 @@ class FinancialChainExtractor(PatternBasedExtractor):
                 self.monto_patterns.append(re.compile(pattern_str, re.IGNORECASE | re.MULTILINE))
 
         # Fuente patterns (keyword-based)
+        self.fuente_keywords = self.default_fuente_keywords
         if "fuente_detection" in extraction_patterns:
             self.fuente_keywords = extraction_patterns["fuente_detection"].get("keyword_sets", {})
+
+        # Pre-compile source patterns
+        for fuente_type, keywords in self.fuente_keywords.items():
+            for keyword in keywords:
+                pattern = re.compile(rf"\b{re.escape(keyword)}\b", re.IGNORECASE)
+                self.fuente_compiled_patterns.append((fuente_type, pattern))
 
         # Período patterns
         if "periodo_detection" in extraction_patterns:
@@ -303,30 +321,16 @@ class FinancialChainExtractor(PatternBasedExtractor):
         """Extract funding sources."""
         fuentes = []
 
-        # Default keyword sets from spec
-        default_keywords = {
-            "SGP": ["SGP", "Sistema General de Participaciones", "participaciones"],
-            "PROPIOS": ["recursos propios", "ingresos corrientes", "tributarios"],
-            "SGR": ["SGR", "Sistema General de Regalías", "regalías"],
-            "CREDITO": ["crédito", "endeudamiento", "empréstito"],
-            "COFINANCIACION": ["cofinanciación", "nación", "departamento"],
-            "COOPERACION": ["cooperación internacional", "donaciones"],
-        }
-
-        keyword_sets = getattr(self, "fuente_keywords", default_keywords)
-
-        for fuente_type, keywords in keyword_sets.items():
-            for keyword in keywords:
-                pattern = re.compile(rf"\b{re.escape(keyword)}\b", re.IGNORECASE)
-                for match in pattern.finditer(text):
-                    fuente = {
-                        "text": match.group(0),
-                        "fuente_type": fuente_type,
-                        "start": match.start(),
-                        "end": match.end(),
-                        "confidence": 0.90,
-                    }
-                    fuentes.append(fuente)
+        for fuente_type, pattern in self.fuente_compiled_patterns:
+            for match in pattern.finditer(text):
+                fuente = {
+                    "text": match.group(0),
+                    "fuente_type": fuente_type,
+                    "start": match.start(),
+                    "end": match.end(),
+                    "confidence": 0.90,
+                }
+                fuentes.append(fuente)
 
         return fuentes
 
