@@ -385,6 +385,122 @@ class PipelineDashboardBridge:
             },
         )
         self._emit_event(event)
+        
+        # NEW: Special handling for Phase 9 (Report Generation) completion
+        if phase_id == PhaseID.P09 and event_type == "PHASE_COMPLETE":
+            self._on_phase9_complete(job_id, payload)
+
+    def _on_phase9_complete(self, job_id: str, payload: Dict):
+        """Handle Phase 9 (Report Generation) completion.
+        
+        Emits phase9_report_ready event for dashboard consumption with
+        Carver quality summary and report metadata.
+        
+        Args:
+            job_id: Job identifier
+            payload: Phase completion payload
+        """
+        try:
+            # Extract report summary from payload
+            report_id = payload.get("report_id")
+            plan_name = payload.get("plan_name", "Unknown")
+            macro_score = payload.get("macro_score")
+            
+            # Extract Carver quality summary if available
+            carver_quality_summary = payload.get("carver_quality_summary", {})
+            if not carver_quality_summary and "report" in payload:
+                report_data = payload.get("report", {})
+                if hasattr(report_data, "micro_analyses"):
+                    carver_quality_summary = self._summarize_carver_quality(
+                        report_data.micro_analyses
+                    )
+            
+            # Emit Phase 9 specific event
+            self.socketio.emit(
+                "phase9_report_ready",
+                {
+                    "job_id": job_id,
+                    "report_id": report_id,
+                    "timestamp": datetime.now().isoformat(),
+                    "plan_name": plan_name,
+                    "macro_score": macro_score,
+                    "carver_quality_summary": carver_quality_summary,
+                    "report_available": True,
+                    "institutional_format_ready": True,
+                },
+            )
+            
+            logger.info(
+                f"Phase 9 report ready event emitted for job {job_id}, report {report_id}"
+            )
+            
+        except Exception as e:
+            logger.warning(f"Failed to emit Phase 9 report ready event: {e}")
+
+    def on_phase9_report_published(
+        self,
+        report_id: str,
+        report_summary: Dict[str, Any],
+        quality_metrics: Dict[str, Any],
+    ) -> None:
+        """Handle Phase 9 report publication from AtrozReportPublisher.
+        
+        Called by AtrozReportPublisher when a report is successfully published.
+        Emits WebSocket notification for dashboard real-time updates.
+        
+        Args:
+            report_id: The published report ID
+            report_summary: Summary of the report (plan_name, macro_score, etc.)
+            quality_metrics: Carver quality metrics summary
+        """
+        self.socketio.emit(
+            "phase9_report_published",
+            {
+                "report_id": report_id,
+                "timestamp": datetime.now().isoformat(),
+                "summary": report_summary,
+                "quality_metrics": quality_metrics,
+                "dashboard_sync_complete": True,
+            },
+        )
+        logger.info(f"Phase 9 report publication event emitted for {report_id}")
+
+    def _summarize_carver_quality(
+        self,
+        micro_analyses: List[Any],
+    ) -> Dict[str, Any]:
+        """Summarize Carver quality metrics across micro analyses.
+        
+        Args:
+            micro_analyses: List of QuestionAnalysis or similar objects
+            
+        Returns:
+            Summary dict with aggregate quality statistics
+        """
+        quality_scores = []
+        gate_passed_count = 0
+        
+        for analysis in micro_analyses:
+            carver_quality = getattr(analysis, "carver_quality", None)
+            if carver_quality is not None:
+                depth_score = getattr(carver_quality, "doctoral_depth_score", 0.0)
+                quality_scores.append(depth_score)
+                if getattr(carver_quality, "quality_gate_passed", False):
+                    gate_passed_count += 1
+        
+        if not quality_scores:
+            return {
+                "total_with_quality": 0,
+                "avg_doctoral_depth": 0.0,
+                "gate_pass_rate": 0.0,
+            }
+        
+        return {
+            "total_with_quality": len(quality_scores),
+            "avg_doctoral_depth": round(sum(quality_scores) / len(quality_scores), 4),
+            "gate_pass_rate": round(gate_passed_count / len(quality_scores), 4),
+            "gate_passed_count": gate_passed_count,
+        }
 
     def _get_phase_name(self, phase_id: PhaseID) -> str:
         """Get human-readable phase name.

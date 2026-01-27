@@ -1302,6 +1302,9 @@ class IndustrialPolicyProcessor:
     NOTE: This implementation is hermetic (no runtime questionnaire JSON).
     """
 
+    _pa_regex_cache: ClassVar[re.Pattern | None] = None
+    _kw_to_pas_cache: ClassVar[dict[str, list[str]] | None] = None
+
     def __init__(
         self,
         config: ProcessorConfig | None = None,
@@ -1371,6 +1374,52 @@ class IndustrialPolicyProcessor:
         # Processing statistics
         self.statistics: dict[str, Any] = defaultdict(int)
 
+        # Ensure optimized regex is initialized
+        self._ensure_regex_initialized()
+
+    @classmethod
+    def _ensure_regex_initialized(cls) -> None:
+        """Initialize the optimized regex for policy detection if not already present."""
+        if cls._pa_regex_cache is not None:
+            return
+
+        kw_to_pas_map = defaultdict(list)
+        all_kws = set()
+        for pa_id, pa_data in CANON_POLICY_AREAS.items():
+            for kw in pa_data.get("keywords", []):
+                kwl = kw.lower()
+                kw_to_pas_map[kwl].append(pa_id)
+                all_kws.add(kwl)
+
+        # Propagate containment: if kwA in kwB, finding kwB implies finding kwA
+        sorted_kws = sorted(all_kws, key=len)
+        for i, short_kw in enumerate(sorted_kws):
+            for long_kw in sorted_kws[i + 1 :]:
+                if short_kw in long_kw:
+                    current = set(kw_to_pas_map[long_kw])
+                    short_pas = set(kw_to_pas_map[short_kw])
+                    new_pas = short_pas - current
+                    kw_to_pas_map[long_kw].extend(list(new_pas))
+
+        # Build Trie
+        trie: dict[str, Any] = {}
+        for kw in all_kws:
+            curr = trie
+            for char in kw:
+                curr = curr.setdefault(char, {})
+            curr[""] = None
+
+        # Compile Regex
+        if trie:
+            # Use Lookahead (?=(...)) to allow overlapping matches
+            # The regex matches zero-width but captures the keyword in group 1
+            pattern = cls._trie_to_regex(trie)
+            cls._pa_regex_cache = re.compile(f"(?=({pattern}))")
+        else:
+            cls._pa_regex_cache = None
+
+        cls._kw_to_pas_cache = kw_to_pas_map
+
     def _load_questionnaire(self) -> dict[str, Any]:
         """
         DEPRECATED: Questionnaire loading removed per canonical refactoring.
@@ -1389,15 +1438,26 @@ class IndustrialPolicyProcessor:
         )
         return {"questions": []}
 
-    def _compile_pattern_registry(self) -> dict[CausalDimension, dict[str, list[re.Pattern]]]:
+    def _combine_patterns(self, patterns: list[str]) -> re.Pattern:
+        """Combine multiple regex patterns into a single optimized regex."""
+        if not patterns:
+            # Matches nothing
+            return self.text_processor.compile_pattern(r"(?!)")
+
+        # Sort patterns by length descending to prioritize longer matches (Maximal Munch)
+        sorted_patterns = sorted(patterns, key=len, reverse=True)
+
+        # Combine with non-capturing groups
+        combined = "|".join(f"(?:{p})" for p in sorted_patterns)
+        return self.text_processor.compile_pattern(combined)
+
+    def _compile_pattern_registry(self) -> dict[CausalDimension, dict[str, re.Pattern]]:
         """Compile all causal patterns into efficient regex objects."""
         registry = {}
         for dimension, categories in CAUSAL_PATTERN_TAXONOMY.items():
             registry[dimension] = {}
             for category, patterns in categories.items():
-                registry[dimension][category] = [
-                    self.text_processor.compile_pattern(p) for p in patterns
-                ]
+                registry[dimension][category] = self._combine_patterns(patterns)
         return registry
 
     def _build_canonical_point_patterns(self) -> dict[str, re.Pattern]:
@@ -1410,16 +1470,51 @@ class IndustrialPolicyProcessor:
                 patterns[pa_id] = re.compile(pattern_str, re.IGNORECASE)
         return patterns
 
+    @staticmethod
+    def _trie_to_regex(trie: dict[str, Any]) -> str:
+        """Convert a Trie structure to an optimized regex pattern."""
+        if "" in trie and len(trie) == 1:
+            return ""
+
+        opts = []
+        for char in sorted(trie.keys()):
+            if char == "":
+                continue
+            sub = IndustrialPolicyProcessor._trie_to_regex(trie[char])
+            if sub:
+                opts.append(re.escape(char) + sub)
+            else:
+                opts.append(re.escape(char))
+
+        if not opts:
+            return ""
+
+        if len(opts) == 1:
+            res = opts[0]
+        else:
+            res = "(?:" + "|".join(opts) + ")"
+
+        if "" in trie:
+            res = f"(?:{res})?"
+
+        return res
+
     def _detect_policy_areas(self, text: str) -> list[str]:
         """Detect policy areas present in text using canonical keywords."""
-        detected: list[str] = []
+        if not self._pa_regex_cache or not self._kw_to_pas_cache:
+            return []
+
+        detected = set()
         text_lower = text.lower()
-        for pa_id, pa_data in CANON_POLICY_AREAS.items():
-            for keyword in pa_data.get("keywords", []):
-                if keyword.lower() in text_lower:
-                    detected.append(pa_id)
-                    break
-        return detected
+
+        for match in self._pa_regex_cache.finditer(text_lower):
+            # Because we use lookahead (?=(...)), the actual match is in group 1
+            val = match.group(1)
+            if val in self._kw_to_pas_cache:
+                detected.update(self._kw_to_pas_cache[val])
+
+        # Return results in canonical order
+        return [pa for pa in CANON_POLICY_AREAS if pa in detected]
 
     def _detect_scoring_modality(self, dimension: str, category: str) -> str:
         """Determine appropriate scoring modality for dimension/category."""
@@ -1567,13 +1662,16 @@ class IndustrialPolicyProcessor:
         }
 
     def _match_patterns_in_sentences(
-        self, compiled_patterns: list, relevant_sentences: list[str], **kwargs: Any
+        self,
+        compiled_patterns: list[re.Pattern] | re.Pattern,
+        relevant_sentences: list[str],
+        **kwargs: Any,
     ) -> tuple[list[str], list[int]]:
         """
         Execute pattern matching across relevant sentences and collect matches with positions.
 
         Args:
-            compiled_patterns: List of compiled regex patterns to match
+            compiled_patterns: List of compiled regex patterns or single combined pattern
             relevant_sentences: Filtered sentences to search within
             **kwargs: Additional optional parameters for compatibility
 
@@ -1583,11 +1681,20 @@ class IndustrialPolicyProcessor:
         matches = []
         positions = []
 
-        for compiled_pattern in compiled_patterns:
-            for sentence in relevant_sentences:
-                for match in compiled_pattern.finditer(sentence):
-                    matches.append(match.group(0))
-                    positions.append(match.start())
+        # Handle list (legacy/fallback support)
+        if isinstance(compiled_patterns, list):
+            for compiled_pattern in compiled_patterns:
+                for sentence in relevant_sentences:
+                    for match in compiled_pattern.finditer(sentence):
+                        matches.append(match.group(0))
+                        positions.append(match.start())
+            return matches, positions
+
+        # Optimized single-pass matching
+        for sentence in relevant_sentences:
+            for match in compiled_patterns.finditer(sentence):
+                matches.append(match.group(0))
+                positions.append(match.start())
 
         return matches, positions
 
@@ -1892,15 +1999,15 @@ class IndustrialPolicyProcessor:
                 # Apply scoring modality
                 modality = self._detect_scoring_modality(dimension.value, category)
 
-                compiled_patterns = categories.get(
-                    category,
-                    [self.text_processor.compile_pattern(p) for p in patterns],
-                )
+                compiled_pattern = categories.get(category)
+                if compiled_pattern is None:
+                    # Fallback: combine on fly
+                    compiled_pattern = self._combine_patterns(patterns)
 
                 matches: list[str] = []
-                for pattern in compiled_patterns:
-                    for sentence in sentences:
-                        matches.extend(pattern.findall(sentence))
+                for sentence in sentences:
+                    for match in compiled_pattern.finditer(sentence):
+                        matches.append(match.group(0))
 
                 if matches:
                     confidence = self.scorer.compute_evidence_score(
