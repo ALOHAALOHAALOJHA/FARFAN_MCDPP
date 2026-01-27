@@ -1,122 +1,46 @@
-# F.A.R.F.A.N. Mechanistic Policy Pipeline
+# F.A.R.F.A.N: Deterministic Policy Analysis Framework
 
-## Architecture & Governance
+## 1. Doctrine & Philosophy
+The F.A.R.F.A.N framework operates under the strict SIN_CARRETA doctrine, a non-negotiable mandate for system integrity that prioritizes reproducibility, traceability, and auditability above all other concerns. This doctrine rejects "best effort" execution in favor of binary correctness: a result is either cryptographically verifiable and derived from a fixed configuration hash, or it does not exist. The system employs a "Guilty Until Proven Coherent" stance, treating all inputs and intermediate states as suspect until they pass explicit constitutional gates, ensuring that no silent failures or unverified assumptions can corrupt the analytical output.
 
-The Global Nomenclature and Enforcement Authority (GNEA) protocol mandates a rigid directory structure and naming convention across the `farfan_pipeline` namespace. Phase execution is strictly confined to `farfan_pipeline.phases.Phase_XX` modules, with all external dependencies routed through the Unified Orchestrator at `farfan_pipeline.orchestration.orchestrator`. The root directory is protected against pollution, enforcing the placement of executable logic in `scripts/`, data in `artifacts/`, and documentation in `docs/`. Any import attempting to access the deprecated `cross_cutting_infrastructure` namespace triggers an immediate build failure.
+Determinism in F.A.R.F.A.N is absolute and architectural, not merely aspirational. Every component, from the random number generators to the dictionary iteration order, is explicitly controlled to ensure that the same input configuration yields the exact same bitwise output on any machine. The system enforces the use of seeded `SeedRegistry` for all stochastic operations and validates the configuration hash at startup. Any discrepancy in the execution environment or dependency versions triggers a "Circuit Breaker," halting the pipeline to preserve the integrity of the reproducibility guarantee.
 
-## Phase Execution & Contracts
+## 2. Epistemological Architecture
+The system's cognition is structured into a four-level lattice (N1-N4), forcing a strict separation between empirical observation and synthesized judgment. Level N1 (Empirical) restricts itself to raw extraction of evidence from documents without interpretation. Level N2 (Inference) permits bounded logical deductions based on N1 evidence. Level N3 (Audit) acts as a veto layer, checking the consistency of N1 and N2 outputs against constitutional invariants. Level N4 (Synthesis) generates high-order policy recommendations only after N3 validation is complete. This layering prevents the "hallucination cascade" common in unstructured AI systems by ensuring that higher-order thoughts are built solely on verified lower-order facts.
 
-Each of the ten phases (0-9) operates under a strict Manifesto that defines input/output contracts, requiring Transition Certificates for any data flow between phases (P_N → P_N+1). Phase 0 Hardening acts as a pre-flight gatekeeper, verifying Questionnaire Integrity via SHA256 hashes, validating Method Registry counts, and executing Smoke Tests before pipeline initialization. These gates are non-negotiable; failure in Tier 1 validation (Identity/Assembly) forces immediate reformulation of the component.
+## 3. System Architecture
+The system utilizes a UnifiedFactory pattern to centralize the instantiation of all analytical components, acting as the sole authorized dispensary for object creation. This architectural decision eliminates the "Dependency Injection Sprawl" often found in large Python projects by forcing all dependencies to be declared and resolved in a single, auditable location. The factory integrates with the configuration system to inject settings at runtime, ensuring that no hardcoded values exist within the business logic, and permitting the seamless swapping of implementation strategies without code modification.
 
-## Signal Infrastructure (SISAS)
+The SISAS (Signal Irrigation System) architecture governs the flow of information between independent "Consumers" (executors), treating data as "Signals" that must be routed through validated "Gates." This event-driven model decouples the phases, allowing them to operate as autonomous agents that react to specific signal types (e.g., `SCORING_PRIMARY`, `MACRO_EVAL`). The four gates—Scope Alignment, Value Add, Consumer Capability, and Irrigation Channel—ensure that no signal is dispatched to an incapable or irrelevant consumer, maintaining the "Semantic Hygiene" of the system's internal communication.
 
-The Signal Infrastructure for SOTA Analysis Systems (SISAS) manages the propagation of irrigation signals across the pipeline, governed by the SISAS 2.0 Specification. Signal routing is optimized by the 'Acupuncture' framework, which utilizes an Inverted Signal Index and Lazy Loading to reduce routing complexity from O(n) to O(1). Pattern redundancy is minimized through a prototype inheritance chain that cascades definitions from Cluster to Policy Area to Dimension to Slot to Question.
+## 4. The Canonical Pipeline
+Phase 0 (Bootstrap & Validation) serves as the system's immune system, enforcing seven sequential exit gates that must be cleared before any processing occurs. It validates the structural integrity of the input PDF, the consistency of the configuration hash, and the availability of all required system resources. Failure at any gate triggers an immediate, hard stop, preventing the waste of computational resources on invalid inputs and ensuring that the pipeline only operates on inputs that meet the strict constitutional requirements of the framework.
 
-```
-FARFAN_MCDPP/
-├── src/farfan_pipeline/           # Main source code
-│   ├── orchestration/             # Orchestrator & UnifiedFactory
-│   │   ├── orchestrator.py        # Unified orchestrator (2600+ lines)
-│   │   ├── factory.py             # UnifiedFactory (component factory)
-│   │   ├── seed_registry.py       # Determinism enforcement
-│   │   └── gates/                 # Validation gates
-│   ├── calibration/               # Calibration system
-│   │   ├── calibration_core.py
-│   │   ├── epistemic_core.py
-│   │   └── registry.py
-│   ├── methods/                   # Analytical methods (74 classes)
-│   │   ├── analyzer_one.py
-│   │   ├── derek_beach.py
-│   │   ├── policy_processor.py
-│   │   └── bayesian_multilevel_system.py
-│   ├── phases/                    # Phase implementations
-│   │   ├── Phase_00/              # Bootstrap & validation
-│   │   ├── Phase_02/              # Evidence extraction
-│   │   └── ...
-│   └── infrastructure/            # SISAS & utilities
-├── canonic_questionnaire_central/ # Canonical questionnaire
-│   ├── governance/                # Method mappings (237 methods)
-│   │   ├── METHODS_TO_QUESTIONS_AND_FILES.json
-│   │   └── METHODS_OPERACIONALIZACION.json
-│   └── config/                    # Schema definitions
-├── tests/                         # Test suite
-├── scripts/                       # Utility scripts
-├── contracts/                     # Phase chain reports
-├── docs/                          # Documentation
-│   ├── TECHNICAL_RUNBOOK.md       # 🎯 UNIFIED Technical Runbook (v3.0.0)
-│   └── RUNBOOK_MIGRATION_GUIDE.md # Migration from legacy runbooks
-├── requirements.txt               # Core dependencies
-├── requirements-dev.txt           # Development dependencies
-├── pyproject.toml                 # Project configuration
-└── README.md                      # This file
-```
+Phase 1 (Document Chunking) is responsible for the destructive decomposition of input documents into 300 constitutional fragments, each mapped to a specific policy area and dimension. This process is not merely text splitting; it involves a semantic routing mechanism that ensures every paragraph of the source PDF is evaluated for relevance against the canonical policy definitions. The output is a rigid "CanonPolicyPackage" that guarantees downstream phases receive exactly the data they expect, isolating the chaos of unstructured PDF text to this single boundary layer.
 
----
+Phase 2 (Evidence Extraction) executes 300 deterministic contracts using a UnifiedFactory pattern to spawn isolated executors for each specific question. This phase forbids shared state between executors, ensuring that the evidence extraction for Question X is mathematically independent of Question Y. By enforcing this isolation, the system enables massive parallelism and granular retries, while the transition to Phase 3 is blocked until all 300 contracts have returned a valid Result or explicitly logged a constitutional failure.
 
-## API Reference
+Phase 3 (Scoring Transformation) converts raw text evidence into normalized numerical scores on a strict [0, 3] scale. This transformation is governed by an adversarial validation engine that tests 96 specific attack vectors against the scoring logic, ensuring that no combination of inputs can produce an out-of-bounds score. The scoring logic is O(1) per question, prioritizing determinism and transparency over complex, opaque reasoning, thus fulfilling the "Traceability" requirement of the SIN_CARRETA doctrine.
 
-### Orchestrator
+Phase 4 (Dimension Aggregation) reduces the 300 micro-level scores into 60 consolidated dimension scores using the Choquet Integral to model non-additive interactions between variables. Unlike simple weighted averages which assume independence, the Choquet Integral accounts for the "synergy" or "redundancy" between related policy questions, ensuring that the aggregated score reflects the true systemic capacity rather than a linear sum of parts. This phase is mathematically guaranteed to produce exactly 60 output scores, maintaining the invariant structure required for downstream processing.
 
-```python
-from farfan_pipeline.orchestration.orchestrator import (
-    OrchestratorConfig,
-    UnifiedOrchestrator,
-    ScoredMicroQuestion,
-    MacroEvaluation,
-    MethodExecutor,
-    ResourceLimits,
-    PhaseInstrumentation,
-    Evidence,
-    Orchestrator,  # Alias for UnifiedOrchestrator
-)
+Phase 5 (Policy Area Aggregation) synthesizes the 60 dimension scores into 10 high-level Policy Area scores. This aggregation step is the first point where "political" weighting is applied, reflecting the normative priorities of the development plan. The phase enforces hermeticity invariants, checking that every Policy Area is composed of exactly 6 dimensional inputs, rejecting any partial or malformed structures that may have propagated from upstream errors.
 
-Phase 5 implements a High Performance Area Aggregator that achieves 50x speedups through a combination of `asyncio` Parallel Processing, NumPy/Numba Vectorization, and Adaptive LRU Caching. The system is designed for Graceful Degradation, automatically falling back to safe baseline implementations if optional dependencies like Numba are unavailable, ensuring execution continuity without sacrificing correctness.
+Phase 6 (Cluster Aggregation) further compresses the 10 Policy Areas into 4 Meso-Clusters using the Adaptive Penalty Framework (APF). The APF introduces a non-linear penalty for "unbalanced" development, significantly reducing the score of clusters that show high variance between their constituent policy areas. This mechanism mathematically penalizes "lopsided" development strategies, enforcing a holistic view of territorial capacity where excellence in one area cannot mask negligence in another.
 
-## Quality & Reporting
+Phase 7 (Macro Evaluation) produces the single, definitive MacroScore for the territory, synthesized from the Cross-Cutting Coherence Analysis (CCCA), Systemic Gap Detection (SGD), and Strategic Alignment Scoring (SAS). This final score is not a simple average but a complex vector magnitude that represents the "health" of the policy ecosystem. The phase also generates the "Helix" visualization metrics, mapping the multidimensional performance onto a standardized topological space for comparative analysis.
 
-The reporting engine in Phase 9 generates artifacts across four distinct templates: Enhanced Report, Executive Dashboard, Technical Deep-Dive, and Original Report. All outputs are graded against strict quality thresholds: EXCELENTE (≥85%), BUENO (70-85%), ACEPTABLE (55-70%), and INSUFICIENTE (<55%). The CQVR Scoring System further stratifies contract quality into three tiers, ensuring that only components meeting the highest standards of Identity, Functionality, and Quality are deployed to production.
+Phase 8 (Recommendation Engine) generates the "Recommendation Graph", a directed acyclic graph (DAG) of policy interventions. Unlike static text generation, this engine produces structured actionable items linked specifically to the gaps identified in previous phases. It distinguishes between Micro-recommendations (specific tactical fixes), Meso-recommendations (strategic realignments), and Macro-recommendations (institutional reforms), providing a tiered roadmap for territorial improvement.
 
-## Operations & Validation
+Phase 9 (Report Generation) is the final rendering layer, translating the structured data of previous phases into human-readable artifacts. It assembles the "Executive Summary", "Institutional Annexes", and "Action Plans" strictly from the immutable state of the pipeline. No new calculation or inference is permitted in this phase; it is a pure projection of the system's judgment onto a document surface, ensuring that the report is a faithful 1:1 representation of the analytical result.
 
-### 📖 Complete Documentation
+## 5. Data & Notation
+The Canonical Notation System (e.g., `D1-Q1`, `PA01`) is the linguistic bedrock of the project, serving as the single source of truth for all data interchange. These codes are not mere labels but addressable keys into the knowledge base, with strict format enforcement validated at every interface. Any deviation from this notation results in an immediate contract breach and execution halt, preventing "stringly typed" errors from propagating silently through the system.
 
-**For complete installation, configuration, and operation instructions, see:**
+## 6. Operations & Deployment
+Deployment of the framework is strictly containerized, requiring Python 3.11+ and a specific set of environment variables to function. The `farfan-pipeline` command serves as the singular entry point, encapsulating the complexity of the 10-phase execution. Troubleshooting focuses on "Circuit Breaker" events, where memory limits or determinism violations are flagged; the system prioritizes "failing loud" to prevent the generation of subtle, incorrect results that could mislead policy decisions.
 
-**[`docs/TECHNICAL_RUNBOOK.md`](docs/TECHNICAL_RUNBOOK.md)** - Comprehensive Technical Runbook (v3.0.0)
+The dashboard serves as the real-time visualization interface for the F.A.R.F.A.N pipeline, operating in either "Mock Mode" for testing or "Real Mode" for production visualization. It integrates directly with the UnifiedOrchestrator to display the "Phylogram" (Phase 4 dimension hierarchy), "Mesh" (Phase 5 cluster topology), and "Helix" (Phase 7 coherence metrics). The dashboard's architecture is strictly read-only regarding pipeline state, providing a window into the system's cognition without the ability to corrupt its execution flow.
 
-The Technical Runbook provides exhaustive coverage of:
-- **Installation & Setup** (Section 24): One-command install, manual setup, Docker, verification
-- **All Phase Commands** (Sections 3-12): Phase 0-9 detailed operations
-- **SISAS Integration** (Section 13): Complete signal infrastructure reference
-- **Troubleshooting** (Section 21): 12 subsections covering common issues and solutions
-- **CQVR Quality Validation** (Section 25): Contract evaluation and remediation
-- **CI/CD & Deployment** (Section 26): GitHub Actions, staging, production deployment
-- **Complete Command Index** (Section 22): All 200+ commands with verification status
-
-### Quick Start
-
-```bash
-# Install (one command)
-bash install.sh
-source farfan-env/bin/activate
-
-# Verify installation
-python scripts/verify_dependencies.py
-
-# Run pipeline
-farfan-pipeline
-# or
-python -m farfan_pipeline.entrypoint.main
-```
-
-### Legacy Documentation
-
-**⛔ The following documents have been deprecated and merged into the Technical Runbook:**
-- ~~`docs/DEPLOYMENT_GUIDE.md`~~ → See Sections 24, 26
-- ~~`docs/TROUBLESHOOTING.md`~~ → See Section 21
-- ~~`docs/design/OPERATIONAL_GUIDE.md`~~ → See Section 24
-- ~~`DEPLOYMENT.md`~~ → See Sections 24, 26
-
-For migration details, see [`docs/RUNBOOK_MIGRATION_GUIDE.md`](docs/RUNBOOK_MIGRATION_GUIDE.md)
-
-Validation protocols demand rigorous statistical compliance, requiring expert correlation (r>0.7) and inter-rater reliability (κ>0.6) for model acceptance.
+## 7. Governance & Validation
+The Policy Capacity Framework maps institutional ability to policy goals using empirical validation against real Colombian Territorial Development Plans (PDTs). Validation is not a one-time event but a continuous process driven by the internal validation standards, which demand that the system satisfy H1-H4 invariants—including score bounds [0, 3] and hermeticity—across all test corpuses. The system rejects any algorithmic change that regresses on these "Constitution of Validity" metrics, ensuring that the tool remains a reliable instrument for public policy analysis.
