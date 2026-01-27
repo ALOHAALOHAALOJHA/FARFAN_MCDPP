@@ -41,6 +41,14 @@ from farfan_pipeline.dashboard_atroz_.pipeline_dashboard_bridge import (
 from farfan_pipeline.dashboard_atroz_.api_monitoring_enhanced import register_monitoring_endpoints
 from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
 
+# Import advanced data mining and analytics engines
+from farfan_pipeline.dashboard_atroz_.data_mining_engine import (
+    DataMiningEngine, DataMiningQuery, MiningResult
+)
+from farfan_pipeline.dashboard_atroz_.analytics_engine import (
+    AnalyticsEngine, AnalyticsReport, ComparativeAnalysis, TrendAnalysis, GapAnalysis
+)
+
 # Register enhanced monitoring endpoints
 register_monitoring_endpoints(app)
 
@@ -63,6 +71,10 @@ pipeline_bridge: PipelineDashboardBridge = None
 
 # Dashboard data service for transforming artifacts
 dashboard_data_service = DashboardDataService(jobs_dir=DATA_DIR / "jobs")
+
+# Initialize advanced data mining and analytics engines
+data_mining_engine = DataMiningEngine(data_dir=DATA_DIR)
+analytics_engine = AnalyticsEngine(data_dir=DATA_DIR)
 
 # Evidence stream - will be populated by pipeline analysis
 EVIDENCE_STREAM = [
@@ -1032,6 +1044,298 @@ def get_canonical_clusters():
     ]
 
     return jsonify({"clusters": clusters, "total": len(clusters)})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ADVANCED DATA MINING & ANALYTICS ENDPOINTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@app.route("/api/v1/data-mining/query", methods=["POST"])
+def execute_data_mining_query():
+    """Execute advanced data mining query with filters and aggregations.
+
+    Request Body:
+    {
+        "municipalities": ["05001", "05002"],  // Optional
+        "policy_areas": ["PA01", "PA02"],      // Optional
+        "dimensions": ["DIM01", "DIM03"],      // Optional
+        "clusters": ["CL01"],                  // Optional
+        "subregions": ["arauca"],              // Optional
+        "question_range": [1, 100],            // Optional
+        "min_score": 60.0,                     // Optional
+        "max_score": 90.0,                     // Optional
+        "aggregation_level": "municipality"    // municipality, subregion, policy_area, dimension
+    }
+    """
+    try:
+        from flask import Response
+        query_params = request.get_json()
+
+        # Build data mining query
+        query = DataMiningQuery(
+            municipalities=query_params.get("municipalities"),
+            policy_areas=query_params.get("policy_areas"),
+            dimensions=query_params.get("dimensions"),
+            clusters=query_params.get("clusters"),
+            subregions=query_params.get("subregions"),
+            question_range=tuple(query_params["question_range"]) if query_params.get("question_range") else None,
+            min_score=query_params.get("min_score"),
+            max_score=query_params.get("max_score"),
+            aggregation_level=query_params.get("aggregation_level", "municipality")
+        )
+
+        # Execute query
+        result = data_mining_engine.execute_query(query)
+
+        # Return results
+        return jsonify({
+            "query": {
+                "aggregation_level": result.query.aggregation_level,
+                "filters_applied": {
+                    "municipalities": result.query.municipalities,
+                    "policy_areas": result.query.policy_areas,
+                    "dimensions": result.query.dimensions,
+                    "clusters": result.query.clusters,
+                    "subregions": result.query.subregions,
+                }
+            },
+            "total_records": result.total_records,
+            "filtered_records": result.filtered_records,
+            "statistics": result.statistics,
+            "data": result.data[:100],  # Limit to 100 items for response size
+            "correlations": result.correlations,
+            "anomalies": result.anomalies[:20] if result.anomalies else [],
+            "trends": result.trends,
+            "geographic_clusters": result.geographic_clusters,
+            "timestamp": result.timestamp.isoformat()
+        })
+
+    except Exception as e:
+        logger.error(f"Data mining query failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/data-mining/municipality/<municipality_code>", methods=["GET"])
+def get_municipality_profile(municipality_code: str):
+    """Get comprehensive profile for a specific municipality."""
+    try:
+        profile = data_mining_engine.get_municipality_profile(municipality_code)
+        return jsonify(profile)
+    except Exception as e:
+        logger.error(f"Failed to get municipality profile: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/data-mining/export", methods=["POST"])
+def export_mining_results():
+    """Export mining results to various formats (JSON, CSV, Markdown).
+
+    Request Body:
+    {
+        "query": {...},          // Same as execute_data_mining_query
+        "format": "json"         // json, csv, markdown
+    }
+    """
+    try:
+        from flask import Response
+        request_data = request.get_json()
+        query_params = request_data.get("query", {})
+        export_format = request_data.get("format", "json")
+
+        # Build and execute query
+        query = DataMiningQuery(
+            municipalities=query_params.get("municipalities"),
+            policy_areas=query_params.get("policy_areas"),
+            dimensions=query_params.get("dimensions"),
+            clusters=query_params.get("clusters"),
+            subregions=query_params.get("subregions"),
+            question_range=tuple(query_params["question_range"]) if query_params.get("question_range") else None,
+            min_score=query_params.get("min_score"),
+            max_score=query_params.get("max_score"),
+            aggregation_level=query_params.get("aggregation_level", "municipality")
+        )
+
+        result = data_mining_engine.execute_query(query)
+
+        # Export results
+        exported_data = data_mining_engine.export_results(result, format=export_format)
+
+        # Set appropriate content type
+        content_type = {
+            "json": "application/json",
+            "csv": "text/csv",
+            "markdown": "text/markdown"
+        }.get(export_format, "text/plain")
+
+        return Response(exported_data, mimetype=content_type)
+
+    except Exception as e:
+        logger.error(f"Export failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/comparative", methods=["POST"])
+def generate_comparative_analysis():
+    """Generate comparative analysis between two entities.
+
+    Request Body:
+    {
+        "entity_a": "05001",                // Municipality code, subregion, etc.
+        "entity_b": "05002",
+        "entity_type": "municipality"       // municipality, subregion, policy_area
+    }
+    """
+    try:
+        params = request.get_json()
+
+        analysis = analytics_engine.generate_comparative_analysis(
+            entity_a=params["entity_a"],
+            entity_b=params["entity_b"],
+            entity_type=params.get("entity_type", "municipality")
+        )
+
+        return jsonify({
+            "entity_a": analysis.entity_a,
+            "entity_b": analysis.entity_b,
+            "metrics_comparison": {
+                metric: {"entity_a": val[0], "entity_b": val[1]}
+                for metric, val in analysis.metrics_comparison.items()
+            },
+            "significant_differences": analysis.significant_differences,
+            "similarity_score": analysis.similarity_score,
+            "insights": analysis.insights
+        })
+
+    except Exception as e:
+        logger.error(f"Comparative analysis failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/trend/<entity>", methods=["GET"])
+def generate_trend_analysis(entity: str):
+    """Generate temporal trend analysis for an entity.
+
+    Query params:
+        - entity_type: municipality, subregion (default: municipality)
+        - time_window_days: Number of days to analyze (default: 90)
+    """
+    try:
+        entity_type = request.args.get("entity_type", "municipality")
+        time_window = int(request.args.get("time_window_days", 90))
+
+        analysis = analytics_engine.generate_trend_analysis(
+            entity=entity,
+            entity_type=entity_type,
+            time_window_days=time_window
+        )
+
+        return jsonify({
+            "entity": analysis.entity,
+            "time_period": analysis.time_period,
+            "data_points": [(dt.isoformat(), val) for dt, val in analysis.data_points],
+            "trend_direction": analysis.trend_direction,
+            "growth_rate": analysis.growth_rate,
+            "forecast": [(dt.isoformat(), val) for dt, val in analysis.forecast] if analysis.forecast else None,
+            "confidence_interval": analysis.confidence_interval
+        })
+
+    except Exception as e:
+        logger.error(f"Trend analysis failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/gap/<entity>", methods=["GET"])
+def generate_gap_analysis(entity: str):
+    """Generate gap analysis identifying improvement opportunities.
+
+    Query params:
+        - entity_type: municipality, subregion (default: municipality)
+        - target_level: macro, meso, micro (default: macro)
+    """
+    try:
+        entity_type = request.args.get("entity_type", "municipality")
+        target_level = request.args.get("target_level", "macro")
+
+        analysis = analytics_engine.generate_gap_analysis(
+            entity=entity,
+            entity_type=entity_type,
+            target_level=target_level
+        )
+
+        return jsonify({
+            "entity": analysis.entity,
+            "current_score": analysis.current_score,
+            "target_score": analysis.target_score,
+            "gap": analysis.gap,
+            "gap_percentage": analysis.gap_percentage,
+            "policy_areas_below_target": analysis.policy_areas_below_target,
+            "priority_actions": analysis.priority_actions,
+            "improvement_path": analysis.estimated_improvement_path
+        })
+
+    except Exception as e:
+        logger.error(f"Gap analysis failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/benchmark/<entity>", methods=["GET"])
+def generate_performance_benchmark(entity: str):
+    """Generate performance benchmark comparing entity to reference groups.
+
+    Query params:
+        - entity_type: municipality, subregion (default: municipality)
+    """
+    try:
+        entity_type = request.args.get("entity_type", "municipality")
+
+        benchmark = analytics_engine.generate_performance_benchmark(
+            entity=entity,
+            entity_type=entity_type
+        )
+
+        return jsonify(benchmark)
+
+    except Exception as e:
+        logger.error(f"Benchmark generation failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/correlation", methods=["POST"])
+def generate_correlation_matrix():
+    """Generate correlation matrix between policy areas across entities.
+
+    Request Body:
+    {
+        "entities": ["05001", "05002", "05003", ...],
+        "entity_type": "municipality"
+    }
+    """
+    try:
+        params = request.get_json()
+
+        correlation = analytics_engine.generate_correlation_matrix(
+            entities=params["entities"],
+            entity_type=params.get("entity_type", "municipality")
+        )
+
+        return jsonify(correlation)
+
+    except Exception as e:
+        logger.error(f"Correlation matrix generation failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/questionnaire/metadata", methods=["GET"])
+def get_questionnaire_metadata():
+    """Get complete canonic questionnaire metadata and structure."""
+    return jsonify(data_mining_engine.questionnaire_metadata)
+
+
+@app.route("/api/v1/municipalities/all", methods=["GET"])
+def get_all_municipalities():
+    """Get complete list of 170 PDET municipalities with metadata."""
+    return jsonify(data_mining_engine.municipality_data)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

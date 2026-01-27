@@ -15,6 +15,7 @@ Usage:
         SDOAuditBridge,
         BusAuditEntry,
         BusAuditEventType,
+        enable_full_sdo_audit,
     )
 
     # Get the global audit manager
@@ -23,7 +24,7 @@ Usage:
     # Connect to SDO
     from canonic_questionnaire_central.core import SignalDistributionOrchestrator
     sdo = SignalDistributionOrchestrator()
-    bridge = SDOAuditBridge(sdo, audit_manager)
+    audit_config = enable_full_sdo_audit(sdo)
 
     # Generate health report
     report = audit_manager.get_system_health_report()
@@ -48,6 +49,16 @@ from .bus_audit import (
     get_bus_audit_manager,
 )
 
+from .integration import (
+    # Integration functions
+    enable_sdo_bus_audit,
+    enable_full_sdo_audit,
+    enable_resolver_bus_audit,
+    get_sdo_health_report,
+    export_sdo_audit_trail,
+    get_signal_flow_trace,
+)
+
 __all__ = [
     # Enums
     "BusSystemType",
@@ -62,4 +73,11 @@ __all__ = [
     "LegacyBusAuditBridge",
     # Global manager
     "get_bus_audit_manager",
+    # Integration
+    "enable_sdo_bus_audit",
+    "enable_full_sdo_audit",
+    "enable_resolver_bus_audit",
+    "get_sdo_health_report",
+    "export_sdo_audit_trail",
+    "get_signal_flow_trace",
 ]
