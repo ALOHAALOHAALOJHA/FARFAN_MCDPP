@@ -3823,9 +3823,10 @@ class CausalExtractor:
         # Increase confidence if node has quantitative targets
         if node.target and node.baseline:
             try:
-                float(str(node.target).replace(",", "").replace("%", ""))
+                target_val = float(str(node.target).replace(",", "").replace("%", ""))
                 confidence += 0.2
             except (ValueError, TypeError):
+                # Target value is not numeric, skip confidence boost
                 pass
 
         # Increase confidence if text has causal indicators
@@ -4179,8 +4180,8 @@ class FinancialAuditor:
                                     unit_cost = amount / target_val
                                     self.unit_costs[matched_node] = unit_cost
                                     nodes[matched_node].unit_cost = unit_cost
-                            except (ValueError, TypeError):
-                                pass
+                            except (ValueError, TypeError) as e:
+                                self.logger.debug(f"Could not calculate unit cost: {e}")
 
             except Exception as e:
                 self.logger.debug(f"Error procesando fila financiera: {e}")
@@ -4418,8 +4419,8 @@ class FinancialAuditor:
                                     "sufficiency": sufficiency,
                                 }
                             )
-                except (ValueError, TypeError):
-                    pass
+                except (ValueError, TypeError) as e:
+                    self.logger.debug(f"Could not parse target value for gap analysis: {e}")
 
         return gaps
 
