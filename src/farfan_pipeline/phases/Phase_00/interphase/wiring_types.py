@@ -204,7 +204,8 @@ class WiringComponents:
     signal_client: SignalClient
     signal_registry: SignalRegistry
     executor_config: ExecutorConfig
-    factory: UnifiedFactory    arg_router: ExtendedArgRouter
+    factory: UnifiedFactory
+    arg_router: ExtendedArgRouter
     class_registry: dict[str, type]
     validator: WiringValidator
     flags: WiringFeatureFlags
