@@ -3823,7 +3823,7 @@ class CausalExtractor:
         # Increase confidence if node has quantitative targets
         if node.target and node.baseline:
             try:
-                target_val = float(str(node.target).replace(",", "").replace("%", ""))
+                float(str(node.target).replace(",", "").replace("%", ""))
                 confidence += 0.2
             except (ValueError, TypeError):
                 # Target value is not numeric, skip confidence boost
