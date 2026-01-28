@@ -2072,8 +2072,8 @@ class SemanticAnalyzer:
         if sent_tokenize is not None:
             try:
                 sentences = sent_tokenize(segment)
-            except:
-                # Fallback to simple splitting
+            except (LookupError, ValueError) as e:
+                logger.debug("sent_tokenize_fallback", error=str(e), using_regex_split=True)
                 sentences = [s.strip() for s in re.split(r"[.!?]+", segment) if len(s.strip()) > 10]
         else:
             # Fallback to simple splitting
@@ -2540,8 +2540,8 @@ class TextMiningEngine:
 
                     nltk.download("stopwords")
                     self.stop_words = set(stopwords.words("spanish"))
-                except:
-                    logger.warning("Could not download NLTK stopwords. Using empty set.")
+                except (LookupError, OSError) as e:
+                    logger.warning("nltk_stopwords_download_failed", error=str(e), using_empty_set=True)
 
     def diagnose_critical_links(
         self, semantic_cube: dict[str, Any], performance_analysis: dict[str, Any]
@@ -3274,8 +3274,8 @@ class DocumentProcessor:
 
                         nltk.download("punkt")
                         return sent_tokenize(text, language="spanish")
-                    except:
-                        # Fallback to simple splitting
+                    except (LookupError, OSError) as e:
+                        logger.debug("nltk_punkt_download_failed", error=str(e), using_regex_split=True)
                         return [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 10]
                 except Exception:
                     # Fallback to simple splitting

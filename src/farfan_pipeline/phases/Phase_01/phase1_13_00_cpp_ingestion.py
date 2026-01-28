@@ -2239,7 +2239,7 @@ class Phase1CPPIngestionFullContract:
                     try:
                         return CanonicalSection[canon_val]
                     except Exception:
-                        pass
+                        logger.debug(f"Could not resolve canonical section '{canon_val}', will try fuzzy matching")
             for label, canon in profile.canonical_sections.items():
                 if label.lower() in section_name.lower():
                     return canon

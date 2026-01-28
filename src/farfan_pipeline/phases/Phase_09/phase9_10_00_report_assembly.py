@@ -974,8 +974,8 @@ class ReportAssembler:
                     # Already structured?
                     try:
                         validated_recs.append(Recommendation(**rec))
-                    except:
-                        pass
+                    except (TypeError, ValueError) as e:
+                        logger.debug("recommendation_validation_skipped", error=str(e), rec_keys=list(rec.keys()))
 
             return MacroSummary(
                 overall_posterior=float(cast(Any, raw_macro.get("overall_posterior", 0.0))),
