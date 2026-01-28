@@ -2211,7 +2211,8 @@ class Phase1CPPIngestionFullContract:
                 except Exception:
                     try:
                         return PDMHierarchyLevel(level_val)
-                    except Exception:
+                    except Exception as e:
+                        logger.debug(f"Exception in operation: {str(e)}")
                         return None
             if isinstance(level_val, PDMHierarchyLevel):
                 return level_val
@@ -2222,7 +2223,8 @@ class Phase1CPPIngestionFullContract:
             if isinstance(ann_level, str):
                 try:
                     return PDMHierarchyLevel[ann_level]
-                except Exception:
+                except Exception as e:
+                    logger.debug(f"Exception in operation: {str(e)}")
                     return None
             return None
 

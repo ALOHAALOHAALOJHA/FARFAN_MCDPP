@@ -26,12 +26,15 @@ Author: F.A.R.F.A.N Infrastructure Team
 
 from __future__ import annotations
 
+import logging
 import os
 import sys
 import tempfile
 import uuid
 from pathlib import Path
 from typing import Any, Callable, TypeVar
+
+logger = logging.getLogger(__name__)
 
 __version__ = "1.0.0"
 __all__ = [
@@ -381,15 +384,15 @@ class _FileLock:
             try:
                 msvcrt.locking(self.file_obj.fileno(), msvcrt.LK_LOCK, 1)
                 self.locked = True
-            except (OSError, IOError):
-                pass  # Locking not supported (network drive, etc.)
+            except (OSError, IOError) as e:
+                logger.debug(f"File locking not supported (network drive, etc.): {str(e)}")
         else:
             # Unix locking
             try:
                 fcntl.flock(self.file_obj.fileno(), fcntl.LOCK_EX)
                 self.locked = True
-            except (OSError, IOError, AttributeError):
-                pass  # Locking not supported
+            except (OSError, IOError, AttributeError) as e:
+                logger.debug(f"File locking not supported: {str(e)}")
 
     def release(self):
         """Release lock on file."""
@@ -399,13 +402,13 @@ class _FileLock:
         if sys.platform == "win32" and WINDOWS_LOCK_AVAILABLE:
             try:
                 msvcrt.locking(self.file_obj.fileno(), msvcrt.LK_UNLCK, 1)
-            except (OSError, IOError):
-                pass
+            except (OSError, IOError) as e:
+                logger.debug(f"File unlock failed: {str(e)}")
         else:
             try:
                 fcntl.flock(self.file_obj.fileno(), fcntl.LOCK_UN)
-            except (OSError, IOError, AttributeError):
-                pass
+            except (OSError, IOError, AttributeError) as e:
+                logger.debug(f"File unlock failed: {str(e)}")
 
         self.locked = False
 

@@ -1664,8 +1664,8 @@ class UnifiedFactory:
                     # Pre-warm cache by loading contracts
                     self.load_contracts()
                     prefetched += 1
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.warning(f"Failed to pre-warm cache for contract {contract_id}: {str(e)}")
 
         return prefetched
 

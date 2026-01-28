@@ -260,7 +260,7 @@
       "Refactor CQCLoader to use SISAS vehicles",
       "Replace direct JSON loads with vehicle-based loading",
       "Create irrigation contracts for all 489 files"
-    }
+    ]
   },
   "statistics": {
     "total_groups": 4,

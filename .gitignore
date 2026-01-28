@@ -161,3 +161,6 @@ new_enhanced_rules.json
 constraints.txt
 .vscode/gemini-mcp/
 .mcp-debug-tools/
+
+# Audit script log files
+pipeline_audit_*.log
