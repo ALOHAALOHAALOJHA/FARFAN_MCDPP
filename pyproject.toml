@@ -59,8 +59,6 @@ dependencies = [
     "typing_extensions>=4.10.0",
     "bcrypt>=4.0.0",
 ]
-description = "F.A.R.F.A.N Municipal Comprehensive Development Plans Platform"
-requires-python = ">=3.12"
 
 [tool.black]
 line-length = 100

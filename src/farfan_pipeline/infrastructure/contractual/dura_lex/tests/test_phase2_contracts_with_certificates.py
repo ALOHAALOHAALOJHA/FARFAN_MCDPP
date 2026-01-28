@@ -20,26 +20,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-print("=" * 90)
-print(" " * 15 + "PHASE 2 CONTRACT INTEGRATION TEST")
-print(" " * 20 + "WITH CERTIFICATE GENERATION")
-print("=" * 90)
-
-# Configuration
-CONTRACT_DIR = Path(
-    "src/farfan_pipeline/phases/Phase_02/json_files_phase_two/executor_contracts/specialized"
-)
-OUTPUT_DIR = Path("test_output/certificates")
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-# Test first 15 contracts
-contracts_to_test = sorted(CONTRACT_DIR.glob("*.v3.json"))[:15]
-
-print("\n📊 Configuration:")
-print(f"   Contracts to test: {len(contracts_to_test)}")
-print(f"   Output directory: {OUTPUT_DIR}")
-print(f"   Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
 # === MOCK DATA GENERATORS ===
 
 
@@ -158,135 +138,156 @@ def generate_certificate(
 
 # === MAIN TEST EXECUTION ===
 
-test_results = {"executed": [], "certificates_generated": [], "failed": []}
+if __name__ == "__main__":
+    print("=" * 90)
+    print(" " * 15 + "PHASE 2 CONTRACT INTEGRATION TEST")
+    print(" " * 20 + "WITH CERTIFICATE GENERATION")
+    print("=" * 90)
 
-print("\n" + "=" * 90)
-print("EXECUTING TESTS")
-print("=" * 90)
+    # Configuration
+    CONTRACT_DIR = Path(
+        "src/farfan_pipeline/phases/Phase_02/json_files_phase_two/executor_contracts/specialized"
+    )
+    OUTPUT_DIR = Path("test_output/certificates")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-mock_document = generate_mock_document()
+    # Test first 15 contracts
+    contracts_to_test = sorted(CONTRACT_DIR.glob("*.v3.json"))[:15]
 
-for i, contract_file in enumerate(contracts_to_test, 1):
-    contract_name = contract_file.stem
-    print(f"\n{i:2d}. Testing {contract_name}...")
+    print("\n📊 Configuration:")
+    print(f"   Contracts to test: {len(contracts_to_test)}")
+    print(f"   Output directory: {OUTPUT_DIR}")
+    print(f"   Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    try:
-        # Load contract
-        with open(contract_file) as f:
-            contract = json.load(f)
+    test_results = {"executed": [], "certificates_generated": [], "failed": []}
 
-        # Extract info
-        method_binding = contract.get("method_binding", {})
-        method_count = method_binding.get("method_count", 0)
+    print("\n" + "=" * 90)
+    print("EXECUTING TESTS")
+    print("=" * 90)
 
-        print(f"    • Methods to execute: {method_count}")
+    mock_document = generate_mock_document()
 
-        # Simulate execution
-        method_outputs = generate_mock_method_outputs(method_count)
-        layer_scores = generate_mock_layer_scores()
-        calibrated_score = calculate_choquet_integral(layer_scores)
+    for i, contract_file in enumerate(contracts_to_test, 1):
+        contract_name = contract_file.stem
+        print(f"\n{i:2d}. Testing {contract_name}...")
 
-        print(f"    • Calibrated score: {calibrated_score:.3f}")
+        try:
+            # Load contract
+            with open(contract_file) as f:
+                contract = json.load(f)
 
-        # Generate certificate
-        certificate = generate_certificate(contract, method_outputs, layer_scores, calibrated_score)
+            # Extract info
+            method_binding = contract.get("method_binding", {})
+            method_count = method_binding.get("method_count", 0)
 
-        # Save certificate
-        cert_filename = f"certificate_{contract_name}.json"
-        cert_path = OUTPUT_DIR / cert_filename
+            print(f"    • Methods to execute: {method_count}")
 
-        with open(cert_path, "w") as f:
-            json.dump(certificate, f, indent=2)
+            # Simulate execution
+            method_outputs = generate_mock_method_outputs(method_count)
+            layer_scores = generate_mock_layer_scores()
+            calibrated_score = calculate_choquet_integral(layer_scores)
 
-        print(f"    ✅ Certificate generated: {cert_filename}")
+            print(f"    • Calibrated score: {calibrated_score:.3f}")
 
-        test_results["executed"].append(contract_name)
-        test_results["certificates_generated"].append(str(cert_path))
+            # Generate certificate
+            certificate = generate_certificate(contract, method_outputs, layer_scores, calibrated_score)
 
-    except Exception as e:
-        print(f"    ❌ Error: {str(e)[:50]}")
-        test_results["failed"].append({"contract": contract_name, "error": str(e)})
+            # Save certificate
+            cert_filename = f"certificate_{contract_name}.json"
+            cert_path = OUTPUT_DIR / cert_filename
 
-# === SUMMARY ===
+            with open(cert_path, "w") as f:
+                json.dump(certificate, f, indent=2)
 
-print("\n" + "=" * 90)
-print("TEST SUMMARY")
-print("=" * 90)
+            print(f"    ✅ Certificate generated: {cert_filename}")
 
-total = len(contracts_to_test)
-executed = len(test_results["executed"])
-certificates = len(test_results["certificates_generated"])
-failed = len(test_results["failed"])
+            test_results["executed"].append(contract_name)
+            test_results["certificates_generated"].append(str(cert_path))
 
-print("\n📊 Execution Results:")
-print(f"   Total contracts: {total}")
-print(f"   Successfully executed: {executed}")
-print(f"   Certificates generated: {certificates}")
-print(f"   Failed: {failed}")
+        except Exception as e:
+            print(f"    ❌ Error: {str(e)[:50]}")
+            test_results["failed"].append({"contract": contract_name, "error": str(e)})
 
-if certificates > 0:
-    print(f"\n✅ SUCCESS: Generated {certificates} calibration certificates!")
-    print(f"\n📁 Certificates saved to: {OUTPUT_DIR}/")
-    print("\nSample certificates:")
-    for cert_path in list(test_results["certificates_generated"])[:5]:
-        print(f"   • {Path(cert_path).name}")
-    if len(test_results["certificates_generated"]) > 5:
-        print(f"   ... and {len(test_results['certificates_generated']) - 5} more")
+    # === SUMMARY ===
 
-if failed > 0:
-    print(f"\n⚠️  {failed} contract(s) failed:")
-    for failure in test_results["failed"]:
-        print(f"   • {failure['contract']}: {failure['error'][:50]}")
+    print("\n" + "=" * 90)
+    print("TEST SUMMARY")
+    print("=" * 90)
 
-# === CERTIFICATE VALIDATION ===
+    total = len(contracts_to_test)
+    executed = len(test_results["executed"])
+    certificates = len(test_results["certificates_generated"])
+    failed = len(test_results["failed"])
 
-print("\n" + "=" * 90)
-print("CERTIFICATE VALIDATION")
-print("=" * 90)
+    print("\n📊 Execution Results:")
+    print(f"   Total contracts: {total}")
+    print(f"   Successfully executed: {executed}")
+    print(f"   Certificates generated: {certificates}")
+    print(f"   Failed: {failed}")
 
-if certificates > 0:
-    # Validate first certificate structure
-    sample_cert_path = test_results["certificates_generated"][0]
-    with open(sample_cert_path) as f:
-        sample_cert = json.load(f)
+    if certificates > 0:
+        print(f"\n✅ SUCCESS: Generated {certificates} calibration certificates!")
+        print(f"\n📁 Certificates saved to: {OUTPUT_DIR}/")
+        print("\nSample certificates:")
+        for cert_path in list(test_results["certificates_generated"])[:5]:
+            print(f"   • {Path(cert_path).name}")
+        if len(test_results["certificates_generated"]) > 5:
+            print(f"   ... and {len(test_results['certificates_generated']) - 5} more")
 
-    required_fields = [
-        "certificate_version",
-        "certificate_type",
-        "executor_identity",
-        "execution_summary",
-        "calibration_results",
-        "validation",
-    ]
+    if failed > 0:
+        print(f"\n⚠️  {failed} contract(s) failed:")
+        for failure in test_results["failed"]:
+            print(f"   • {failure['contract']}: {failure['error'][:50]}")
 
-    print("\n✓ Sample Certificate Structure Validation:")
-    all_present = True
-    for field in required_fields:
-        present = field in sample_cert
-        status = "✓" if present else "✗"
-        print(f"   {status} {field}")
-        if not present:
-            all_present = False
+    # === CERTIFICATE VALIDATION ===
 
-    if all_present:
-        print("\n✅ All required fields present in certificates!")
+    print("\n" + "=" * 90)
+    print("CERTIFICATE VALIDATION")
+    print("=" * 90)
+
+    if certificates > 0:
+        # Validate first certificate structure
+        sample_cert_path = test_results["certificates_generated"][0]
+        with open(sample_cert_path) as f:
+            sample_cert = json.load(f)
+
+        required_fields = [
+            "certificate_version",
+            "certificate_type",
+            "executor_identity",
+            "execution_summary",
+            "calibration_results",
+            "validation",
+        ]
+
+        print("\n✓ Sample Certificate Structure Validation:")
+        all_present = True
+        for field in required_fields:
+            present = field in sample_cert
+            status = "✓" if present else "✗"
+            print(f"   {status} {field}")
+            if not present:
+                all_present = False
+
+        if all_present:
+            print("\n✅ All required fields present in certificates!")
+        else:
+            print("\n⚠️  Some fields missing in certificates")
+
+    # === FINAL RESULT ===
+
+    print("\n" + "=" * 90)
+
+    if executed == total and certificates == total:
+        print("🎉 ALL TESTS PASSED!")
+        print(f"   • {total} contracts validated")
+        print(f"   • {certificates} certificates generated")
+        print("   • All certificates have valid structure")
+        exit_code = 0
     else:
-        print("\n⚠️  Some fields missing in certificates")
+        print("⚠️  SOME TESTS FAILED")
+        print(f"   • {failed} failures out of {total}")
+        exit_code = 1
 
-# === FINAL RESULT ===
-
-print("\n" + "=" * 90)
-
-if executed == total and certificates == total:
-    print("🎉 ALL TESTS PASSED!")
-    print(f"   • {total} contracts validated")
-    print(f"   • {certificates} certificates generated")
-    print("   • All certificates have valid structure")
-    exit_code = 0
-else:
-    print("⚠️  SOME TESTS FAILED")
-    print(f"   • {failed} failures out of {total}")
-    exit_code = 1
-
-print("=" * 90)
-sys.exit(exit_code)
+    print("=" * 90)
+    sys.exit(exit_code)
