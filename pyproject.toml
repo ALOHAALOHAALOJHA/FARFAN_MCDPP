@@ -3,176 +3,10 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "farfan-pipeline"
+name = "farfan-mcdpp"
 version = "1.0.0"
-description = "Framework for Advanced Retrieval of Administrative Narratives - Deterministic Policy Analysis Pipeline"
-readme = "README.ES.md"
-requires-python = ">=3.11"  # TODO: Upgrade to 3.12 in production
-license = {text = "Proprietary"}
-authors = [
-    {name = "F.A.R.F.A.N Pipeline Team"}
-]
-keywords = [
-    "policy analysis",
-    "development plans",
-    "Colombian policy",
-    "value chain analysis",
-    "causal mechanisms",
-    "bayesian inference", 
-    "causal inference",
-    "natural language processing",
-    "machine learning",
-]
-classifiers = [
-    "Programming Language :: Python :: 3.12",
-    "Development Status :: 4 - Beta",
-]
-
-dependencies = [
-    "fastapi>=0.109.0",
-    "httpx>=0.27.0",
-    "uvicorn[standard]>=0.27.0",
-    "pydantic>=2.0.0",
-    "transformers>=4.41.0",
-    "sentence-transformers>=3.1.0",
-    "torch>=2.1.0",
-    "pymc>=5.16.0",
-    "scikit-learn>=1.6.0",
-    "numpy>=1.26.4,<2.0.0",
-    "pandas>=2.1.0",
-    "scipy>=1.11.0",
-    "networkx>=3.0",
-    "spacy>=3.7.0",
-    "jsonschema>=4.21.0",
-    "python-dotenv>=1.0.0",
-    "pyyaml>=6.0.0",
-    "flask>=3.0.0",
-    "flask-cors>=4.0.0",
-    "flask-socketio>=5.3.0",
-    "sse-starlette>=2.0.0",
-    "werkzeug>=3.0.0",
-    "structlog>=24.1.0",
-    "img2table>=1.4.0",
-    "opencv-contrib-python-headless>=4.8.0",
-    "pillow>=10.0.0",
-    "tabula-py>=2.9.0",
-    "typing_extensions>=4.10.0",
-    "bcrypt>=4.0.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.0.0",
-    "pytest-asyncio>=0.23.0",
-    "pytest-cov>=4.1.0",
-    "ruff>=0.1.0",
-    "mypy>=1.8.0",
-    "black>=24.0.0",
-    "pip-audit>=2.0.0",
-    "bandit>=1.7.0",
-    "types-PyYAML>=6.0.0",
-]
-
-[project.urls]
-Homepage = "https://github.com/kkkkknhh/SAAAAAA"
-Documentation = "https://github.com/kkkkknhh/SAAAAAA#readme"
-Repository = "https://github.com/kkkkknhh/SAAAAAA"
-Issues = "https://github.com/kkkkknhh/SAAAAAA/issues"
-
-[project.scripts]
-farfan-pipeline = "farfan_pipeline.entrypoint.main:main"
-farfan_core-api = "farfan_pipeline.api.api_server:main"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = [
-    "farfan_pipeline*",
-    # Temporary compatibility shims (legacy top-level import paths)
-    "canonic_phases",
-    "orchestration",
-    "cross_cutting_infrastructure",
-    "methods_dispensary",
-    "dashboard_atroz_",
-]
-namespaces = false
-
-[tool.pyright]
-typeCheckingMode = "strict"
-pythonVersion = "3.12"
-pythonPlatform = "Linux"
-reportMissingImports = true
-reportMissingTypeStubs = true
-reportUnknownParameterType = "error"
-reportUnknownArgumentType = "error"
-reportUnknownMemberType = "error"
-reportUnknownVariableType = "error"
-reportUntypedFunctionDecorator = "error"
-reportUntypedClassDecorator = "error"
-reportUntypedBaseClass = "error"
-reportUnknownLambdaType = "error"
-reportImplicitStringConcatenation = "warning"
-reportMissingTypeArgument = "error"
-reportInvalidTypeVarUse = "error"
-reportCallInDefaultInitializer = "warning"
-reportUnnecessaryIsInstance = "warning"
-reportUnnecessaryCast = "warning"
-reportUnnecessaryComparison = "warning"
-reportUnnecessaryContains = "warning"
-reportAssertAlwaysTrue = "warning"
-reportSelfClsParameterName = "error"
-reportImplicitOverride = "warning"
-reportAny = "error"
-reportOptionalCall = "error"
-reportOptionalMemberAccess = "error"
-reportOptionalIterable = "error"
-reportOptionalContextManager = "error"
-reportOptionalOperand = "error"
-include = [
-    "src/farfan_pipeline/",
-]
-exclude = [
-    "**/__pycache__",
-    "**/.venv",
-    "**/node_modules",
-    "tests/",
-    "examples/",
-    ".git",
-    "minipdm/",
-]
-
-[tool.ruff]
-line-length = 100
-target-version = "py312"
-
-[tool.ruff.lint]
-select = [
-    "E",
-    "F",
-    "W",
-    "I",
-    "N",
-    "UP",
-    "ANN",
-    "S",
-    "B",
-    "A",
-    "C4",
-    "T20",
-    "SIM",
-    "ARG",
-    "PTH",
-    "ERA",
-    "PL",
-    "RUF",
-]
-ignore = [
-    "S101",
-    "PLR0913",
-    "PLR2004",
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "ANN", "PLR2004"]
+description = "F.A.R.F.A.N Municipal Comprehensive Development Plans Platform"
+requires-python = ">=3.12"
 
 [tool.black]
 line-length = 100
@@ -261,109 +95,25 @@ exclude_dirs = ["tests", ".venv", "venv", "migrations"]
 severity = "medium"
 confidence = "medium"
 
-[[tool.mypy.overrides]]
-module = [
-    "img2table.*",
-    "tabula.*",
-    "spacy.*",
-    "sentence_transformers.*",
-    "transformers.*",
-    "pymc.*",
-    "networkx.*",
-    "sklearn.*",
-    "flask_cors.*",
-    "flask_socketio.*",
-    "sse_starlette.*",
-    "structlog.*",
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
 ]
-ignore_missing_imports = true
-
-# =============================================================================
-# DEPENDENCY LAYER ISOLATION CONTRACTS (Added 2026-01-13)
-# =============================================================================
-# These contracts enforce architectural boundaries between dependency layers
-# as defined in infrastructure/dependencies.py
-#
-# Key separations:
-# - NLP layer (transformers, spacy) vs Bayesian layer (pymc, pytensor)
-# - Deep Learning (torch) separated from probabilistic programming
-# - PDF processing centralized in infrastructure/document_processor.py
-# =============================================================================
-
-[[tool.importlinter.contracts]]
-name = "PDF libraries only in document_processor infrastructure"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline.phases",
-    "farfan_pipeline.methods",
-]
-forbidden_modules = [
-    "fitz",
-    "pdfplumber",
-    "pypdf",
-    "img2table",
-    "tabula",
-]
-unmatched_ignore_imports_alerting = "none"
-
-[[tool.importlinter.contracts]]
-name = "Flask (dashboard) isolated from FastAPI (pipeline API)"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline.phases",
-]
-forbidden_modules = [
-    "farfan_pipeline.dashboard_atroz_",
-]
-
-[[tool.importlinter.contracts]]
-name = "Dashboard module does not import pipeline internals"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline.dashboard_atroz_",
-]
-forbidden_modules = [
-    "farfan_pipeline.phases.Phase_02",
-    "farfan_pipeline.phases.Phase_04",
-]
-
-# =============================================================================
-# CANONICAL QUESTIONNAIRE ACCESS CONTRACTS
-# =============================================================================
-
-[[tool.importlinter.contracts]]
-name = "Canonical questionnaire access must use resolver"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline",
-]
-forbidden_modules = [
-    "canonic_questionnaire_central._scripts",
-    "canonic_questionnaire_central._scripts.cqc_loader",
-    "canonic_questionnaire_central._registry",
-    "canonic_questionnaire_central._build",
-]
-
-# =============================================================================
-# SISAS BOUNDARY CONTRACTS
-# =============================================================================
-
-[[tool.importlinter.contracts]]
-name = "SISAS CLI entrypoints are not importable"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline",
-]
-forbidden_modules = [
-    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main",
-]
-
-[[tool.importlinter.contracts]]
-name = "SISAS deprecated modules are forbidden"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline",
-]
-forbidden_modules = [
-    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS._deprecated",
+ignore = ["E501", "B008"]
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "migrations",
+    "build",
+    "dist"
 ]

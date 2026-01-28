@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Automated Code Fixes Application Script
-Applies formatting and style fixes to resolve audit issues
+Script de automatización para aplicar fixes de calidad de código.
+Resuelve automáticamente problemas identificados en el audit.
 """
 
 import json
@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-# Configure logging
+# Configurar logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
@@ -19,10 +19,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class CodeFixAutomation:
-    """Automates code quality fixes across the project"""
+    """Automatiza la corrección de problemas de calidad de código"""
     
     def __init__(self, project_root: Path = None):
-        self.project_root = project_root or Path.cwd().parent
+        self.project_root = project_root or Path.cwd()
         self.stats = {
             'files_processed': 0,
             'fixes_applied': 0,
@@ -30,8 +30,8 @@ class CodeFixAutomation:
         }
     
     def run_black(self) -> Tuple[bool, str]:
-        """Apply Black formatting to all Python files"""
-        logger.info("Running Black formatter...")
+        """Aplica formateo Black a todos los archivos Python"""
+        logger.info("Ejecutando Black formatter...")
         try:
             result = subprocess.run(
                 ['black', '--line-length=100', '.'],
@@ -40,18 +40,18 @@ class CodeFixAutomation:
                 text=True
             )
             if result.returncode == 0:
-                logger.info("✓ Black formatting completed")
+                logger.info("✓ Formateo Black completado")
                 return True, result.stdout
             else:
-                logger.error(f"Black failed: {result.stderr}")
+                logger.error(f"Black falló: {result.stderr}")
                 return False, result.stderr
         except Exception as e:
-            logger.error(f"Error running Black: {e}")
+            logger.error(f"Error ejecutando Black: {e}")
             return False, str(e)
     
     def run_isort(self) -> Tuple[bool, str]:
-        """Fix import sorting issues"""
-        logger.info("Running isort...")
+        """Corrige ordenamiento de imports"""
+        logger.info("Ejecutando isort...")
         try:
             result = subprocess.run(
                 ['isort', '--profile=black', '--line-length=100', '.'],
@@ -60,18 +60,18 @@ class CodeFixAutomation:
                 text=True
             )
             if result.returncode == 0:
-                logger.info("✓ Import sorting completed")
+                logger.info("✓ Ordenamiento de imports completado")
                 return True, result.stdout
             else:
-                logger.error(f"isort failed: {result.stderr}")
+                logger.error(f"isort falló: {result.stderr}")
                 return False, result.stderr
         except Exception as e:
-            logger.error(f"Error running isort: {e}")
+            logger.error(f"Error ejecutando isort: {e}")
             return False, str(e)
     
     def run_autoflake(self) -> Tuple[bool, str]:
-        """Remove unused imports and variables"""
-        logger.info("Running autoflake...")
+        """Elimina imports y variables no usadas"""
+        logger.info("Ejecutando autoflake...")
         try:
             result = subprocess.run(
                 [
@@ -87,20 +87,20 @@ class CodeFixAutomation:
                 text=True
             )
             if result.returncode == 0:
-                logger.info("✓ Unused code removal completed")
+                logger.info("✓ Eliminación de código no usado completada")
                 return True, result.stdout
             else:
-                logger.error(f"autoflake failed: {result.stderr}")
+                logger.error(f"autoflake falló: {result.stderr}")
                 return False, result.stderr
         except Exception as e:
-            logger.error(f"Error running autoflake: {e}")
+            logger.error(f"Error ejecutando autoflake: {e}")
             return False, str(e)
     
     def run_pyupgrade(self) -> Tuple[bool, str]:
-        """Upgrade Python syntax to modern standards"""
-        logger.info("Running pyupgrade...")
+        """Actualiza sintaxis de Python a versiones modernas"""
+        logger.info("Ejecutando pyupgrade...")
         try:
-            # Find all Python files
+            # Buscar todos los archivos Python
             python_files = list(self.project_root.rglob('*.py'))
             
             for py_file in python_files:
@@ -115,15 +115,31 @@ class CodeFixAutomation:
                 if result.returncode == 0:
                     self.stats['files_processed'] += 1
             
-            logger.info(f"✓ Syntax upgrade completed for {self.stats['files_processed']} files")
-            return True, f"Processed {self.stats['files_processed']} files"
+            logger.info(f"✓ Actualización de sintaxis completada para {self.stats['files_processed']} archivos")
+            return True, f"Procesados {self.stats['files_processed']} archivos"
         except Exception as e:
-            logger.error(f"Error running pyupgrade: {e}")
+            logger.error(f"Error ejecutando pyupgrade: {e}")
+            return False, str(e)
+    
+    def run_ruff_fix(self) -> Tuple[bool, str]:
+        """Aplica fixes automáticos con Ruff"""
+        logger.info("Ejecutando Ruff fixes...")
+        try:
+            result = subprocess.run(
+                ['ruff', 'check', '--fix', '.'],
+                cwd=self.project_root,
+                capture_output=True,
+                text=True
+            )
+            logger.info("✓ Ruff fixes aplicados")
+            return True, result.stdout
+        except Exception as e:
+            logger.error(f"Error ejecutando Ruff: {e}")
             return False, str(e)
     
     def fix_line_lengths(self) -> None:
-        """Fix long line issues in Python files"""
-        logger.info("Fixing line length issues...")
+        """Corrige problemas de longitud de línea en archivos Python"""
+        logger.info("Corrigiendo longitud de líneas...")
         
         for py_file in self.project_root.rglob('*.py'):
             if any(skip in str(py_file) for skip in ['.venv', 'venv', '__pycache__']):
@@ -138,9 +154,9 @@ class CodeFixAutomation:
                 
                 for line in lines:
                     if len(line) > 100 and not line.strip().startswith('#'):
-                        # Try to break long lines intelligently
+                        # Intentar romper líneas largas inteligentemente
                         if ',' in line:
-                            # Break at commas
+                            # Romper en comas
                             parts = line.split(',')
                             if len(parts) > 1:
                                 indent = len(line) - len(line.lstrip())
@@ -159,118 +175,90 @@ class CodeFixAutomation:
                     self.stats['fixes_applied'] += 1
                     
             except Exception as e:
-                logger.error(f"Error processing {py_file}: {e}")
-                self.stats['errors'].append(str(py_file))
-    
-    def add_missing_docstrings(self) -> None:
-        """Add basic docstrings to functions and classes missing them"""
-        logger.info("Adding missing docstrings...")
-        
-        import ast
-        
-        for py_file in self.project_root.rglob('*.py'):
-            if any(skip in str(py_file) for skip in ['.venv', 'venv', '__pycache__', 'test']):
-                continue
-                
-            try:
-                with open(py_file, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                
-                tree = ast.parse(content)
-                modified = False
-                
-                for node in ast.walk(tree):
-                    if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
-                        if not ast.get_docstring(node):
-                            # This would require more complex AST manipulation
-                            # For now, just count them
-                            self.stats['fixes_applied'] += 1
-                            
-            except Exception as e:
-                logger.error(f"Error processing {py_file}: {e}")
+                logger.error(f"Error procesando {py_file}: {e}")
                 self.stats['errors'].append(str(py_file))
     
     def install_pre_commit(self) -> None:
-        """Install and set up pre-commit hooks"""
-        logger.info("Installing pre-commit hooks...")
+        """Instala y configura pre-commit hooks"""
+        logger.info("Instalando pre-commit hooks...")
         try:
             subprocess.run(['pip', 'install', 'pre-commit'], check=True)
             subprocess.run(['pre-commit', 'install'], cwd=self.project_root, check=True)
-            logger.info("✓ Pre-commit hooks installed")
+            logger.info("✓ Pre-commit hooks instalados")
         except Exception as e:
-            logger.error(f"Error installing pre-commit: {e}")
+            logger.error(f"Error instalando pre-commit: {e}")
     
     def generate_report(self) -> Dict:
-        """Generate a report of fixes applied"""
+        """Genera reporte de fixes aplicados"""
         report = {
             'timestamp': str(Path.cwd()),
             'stats': self.stats,
             'tools_run': [
-                'black', 'isort', 'autoflake', 'pyupgrade'
+                'black', 'isort', 'autoflake', 'pyupgrade', 'ruff'
             ]
         }
         
-        # Save report
+        # Guardar reporte
         report_path = self.project_root / 'code_fixes_report.json'
         with open(report_path, 'w') as f:
             json.dump(report, f, indent=2)
         
-        logger.info(f"Report saved to {report_path}")
+        logger.info(f"Reporte guardado en {report_path}")
         return report
     
     def apply_all_fixes(self) -> None:
-        """Apply all automated fixes in sequence"""
+        """Aplica todos los fixes automáticos en secuencia"""
         logger.info("=" * 60)
-        logger.info("Starting automated code fixes...")
+        logger.info("Iniciando fixes automáticos de código...")
         logger.info("=" * 60)
         
-        # Install dependencies first
-        logger.info("Installing required tools...")
-        tools = ['black', 'isort', 'autoflake', 'pyupgrade', 'flake8', 'mypy']
+        # Instalar dependencias primero
+        logger.info("Instalando herramientas requeridas...")
+        tools = ['black', 'isort', 'autoflake', 'pyupgrade', 'flake8', 'mypy', 'ruff']
         for tool in tools:
             subprocess.run(['pip', 'install', tool], capture_output=True)
         
-        # Apply fixes in order
+        # Aplicar fixes en orden
         steps = [
-            ("Removing unused code", self.run_autoflake),
-            ("Upgrading syntax", self.run_pyupgrade),
-            ("Sorting imports", self.run_isort),
-            ("Formatting code", self.run_black),
+            ("Eliminando código no usado", self.run_autoflake),
+            ("Actualizando sintaxis", self.run_pyupgrade),
+            ("Ordenando imports", self.run_isort),
+            ("Formateando código", self.run_black),
+            ("Aplicando fixes de Ruff", self.run_ruff_fix),
         ]
         
         for step_name, step_func in steps:
             logger.info(f"\n{step_name}...")
             success, output = step_func()
             if not success:
-                logger.warning(f"Step '{step_name}' had issues but continuing...")
+                logger.warning(f"Paso '{step_name}' tuvo problemas pero continuando...")
         
-        # Additional fixes
+        # Fixes adicionales
         self.fix_line_lengths()
-        self.add_missing_docstrings()
         
-        # Set up pre-commit for future
+        # Configurar pre-commit para el futuro
         self.install_pre_commit()
         
-        # Generate report
+        # Generar reporte
         report = self.generate_report()
         
         logger.info("\n" + "=" * 60)
-        logger.info("SUMMARY:")
-        logger.info(f"Files processed: {self.stats['files_processed']}")
-        logger.info(f"Fixes applied: {self.stats['fixes_applied']}")
-        logger.info(f"Errors encountered: {len(self.stats['errors'])}")
+        logger.info("RESUMEN:")
+        logger.info(f"Archivos procesados: {self.stats['files_processed']}")
+        logger.info(f"Fixes aplicados: {self.stats['fixes_applied']}")
+        logger.info(f"Errores encontrados: {len(self.stats['errors'])}")
         logger.info("=" * 60)
         
         return report
 
 
 def main():
-    """Main execution function"""
+    """Función principal de ejecución"""
     automation = CodeFixAutomation()
     automation.apply_all_fixes()
     
-    # Run a final check
-    logger.info("\nRunning final validation...")
+    # Ejecutar validación final
+    logger.info("\nEjecutando validación final...")
     result = subprocess.run(
         ['flake8', '--count', '--statistics', '--max-line-length=100'],
         cwd=automation.project_root,
@@ -280,9 +268,9 @@ def main():
     
     if result.stdout:
         remaining_issues = len(result.stdout.strip().split('\n'))
-        logger.info(f"Remaining issues after automation: {remaining_issues}")
+        logger.info(f"Problemas restantes después de automatización: {remaining_issues}")
     else:
-        logger.info("✓ All automated fixes applied successfully!")
+        logger.info("✓ ¡Todos los fixes automáticos aplicados exitosamente!")
     
     return 0
 
