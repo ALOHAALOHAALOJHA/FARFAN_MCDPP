@@ -793,8 +793,8 @@ class BaseExecutorWithContract(ABC):
                     score = float(result.get("coherence_score", 1.0))
                     if "< 0.5" in trigger and score < 0.5:
                         return True
-                except (ValueError, TypeError):
-                    pass
+                except (ValueError, TypeError) as e:
+                    logger.debug(f"Could not parse coherence_score for veto evaluation: {e}")
 
             if "semantic_contradiction" in trigger:
                 if result.get("semantic_contradiction_detected") is True:
