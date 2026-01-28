@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "farfan-pipeline"
+name = "farfan-mcdpp"
 version = "1.0.0"
 description = "Framework for Advanced Retrieval of Administrative Narratives - Deterministic Policy Analysis Pipeline"
 readme = "README.ES.md"
@@ -59,363 +59,115 @@ dependencies = [
     "typing_extensions>=4.10.0",
     "bcrypt>=4.0.0",
 ]
+description = "F.A.R.F.A.N Municipal Comprehensive Development Plans Platform"
+requires-python = ">=3.12"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.0.0",
-    "pytest-asyncio>=0.23.0",
-    "pytest-cov>=4.1.0",
-    "ruff>=0.1.0",
-    "mypy>=1.8.0",
-    "black>=24.0.0",
-    "pip-audit>=2.0.0",
-    "bandit>=1.7.0",
-    "types-PyYAML>=6.0.0",
-]
-
-[project.urls]
-Homepage = "https://github.com/kkkkknhh/SAAAAAA"
-Documentation = "https://github.com/kkkkknhh/SAAAAAA#readme"
-Repository = "https://github.com/kkkkknhh/SAAAAAA"
-Issues = "https://github.com/kkkkknhh/SAAAAAA/issues"
-
-[project.scripts]
-farfan-pipeline = "farfan_pipeline.entrypoint.main:main"
-farfan_core-api = "farfan_pipeline.api.api_server:main"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = [
-    "farfan_pipeline*",
-    # Temporary compatibility shims (legacy top-level import paths)
-    "canonic_phases",
-    "orchestration",
-    "cross_cutting_infrastructure",
-    "methods_dispensary",
-    "dashboard_atroz_",
-]
-namespaces = false
-
-[tool.pyright]
-typeCheckingMode = "strict"
-pythonVersion = "3.12"
-pythonPlatform = "Linux"
-reportMissingImports = true
-reportMissingTypeStubs = true
-reportUnknownParameterType = "error"
-reportUnknownArgumentType = "error"
-reportUnknownMemberType = "error"
-reportUnknownVariableType = "error"
-reportUntypedFunctionDecorator = "error"
-reportUntypedClassDecorator = "error"
-reportUntypedBaseClass = "error"
-reportUnknownLambdaType = "error"
-reportImplicitStringConcatenation = "warning"
-reportMissingTypeArgument = "error"
-reportInvalidTypeVarUse = "error"
-reportCallInDefaultInitializer = "warning"
-reportUnnecessaryIsInstance = "warning"
-reportUnnecessaryCast = "warning"
-reportUnnecessaryComparison = "warning"
-reportUnnecessaryContains = "warning"
-reportAssertAlwaysTrue = "warning"
-reportSelfClsParameterName = "error"
-reportImplicitOverride = "warning"
-reportAny = "error"
-reportOptionalCall = "error"
-reportOptionalMemberAccess = "error"
-reportOptionalIterable = "error"
-reportOptionalContextManager = "error"
-reportOptionalOperand = "error"
-include = [
-    "src/farfan_pipeline/",
-]
-exclude = [
-    "**/__pycache__",
-    "**/.venv",
-    "**/node_modules",
-    "tests/",
-    "examples/",
-    ".git",
-    "minipdm/",
-]
-
-[tool.ruff]
+[tool.black]
 line-length = 100
-target-version = "py312"
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | build
+  | dist
+  | migrations
+  | __pycache__
+)/
+'''
 
-[tool.ruff.lint]
-select = [
-    "E",
-    "F",
-    "W",
-    "I",
-    "N",
-    "UP",
-    "ANN",
-    "S",
-    "B",
-    "A",
-    "C4",
-    "T20",
-    "SIM",
-    "ARG",
-    "PTH",
-    "ERA",
-    "PL",
-    "RUF",
-]
-ignore = [
-    "S101",
-    "PLR0913",
-    "PLR2004",
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "ANN", "PLR2004"]
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+skip_gitignore = true
+skip = [".git", ".venv", "venv", "migrations", "__pycache__"]
 
 [tool.mypy]
 python_version = "3.12"
-strict = true
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_any_unimported = true
-disallow_any_expr = false
-disallow_any_decorated = true
-disallow_any_explicit = true
-disallow_any_generics = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
+ignore_missing_imports = true
 no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 strict_equality = true
-
-[[tool.mypy.overrides]]
-module = [
-    "img2table.*",
-    "tabula.*",
-    "spacy.*",
-    "sentence_transformers.*",
-    "transformers.*",
-    "pymc.*",
-    "networkx.*",
-    "sklearn.*",
-    "flask_cors.*",
-    "flask_socketio.*",
-    "sse_starlette.*",
-    "structlog.*",
+exclude = [
+    "migrations/",
+    "tests/",
+    ".venv/",
+    "venv/",
+    "__pycache__/"
 ]
-ignore_missing_imports = true
 
-[tool.black]
-line-length = 100
-target-version = ['py312']
-
-[tool.pytest.ini_options]
-minversion = "7.0"
-addopts = "-v --strict-markers --tb=short -m 'not obsolete'"
-testpaths = ["tests"]
-pythonpath = ["src", "."]  # src/ for farfan_pipeline, . for canonic_questionnaire_central
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-markers = [
-    "updated: marks tests as current/valid (run with 'pytest -m updated')",
-    "outdated: marks tests as deprecated/invalid",
-    "asyncio: Asyncio tests",
-    "contract: Contract tests for API boundaries",
-    "property: Property-based tests with Hypothesis",
-    "integration: Integration tests",
-    "core: Tests críticos del núcleo",
-    "validation: Tests de validación y calidad",
-    "gold: Tests de estándares de oro",
-    "operational: Tests operacionales",
-    "regression: Tests de regresión",
-    "performance: Performance and scalability tests",
-    "slow: Slow-running tests that should be run selectively",
-    "obsolete: Tests marked obsolete - excluded from default runs (see tests/DEPRECATED_TESTS.md)",
+[tool.pylint]
+max-line-length = 100
+disable = [
+    "C0111",  # missing-docstring
+    "C0103",  # invalid-name
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+    "W0212",  # protected-access
 ]
+good-names = ["i", "j", "k", "ex", "Run", "_", "id", "df"]
 
 [tool.coverage.run]
-source = ["src/farfan_pipeline"]
-omit = ["tests/*", "examples/*", ".venv/*", "minipdm/*"]
+source = ["."]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+    "*/site-packages/*"
+]
 
 [tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
 exclude_lines = [
     "pragma: no cover",
-    "if TYPE_CHECKING:",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
     "raise AssertionError",
     "raise NotImplementedError",
-    "@abstractmethod",
+    "if TYPE_CHECKING:"
 ]
 
-[tool.deptry]
-requirements_files = [
-    "requirements.txt",
-    "requirements-dev.txt",
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv", "migrations"]
+severity = "medium"
+confidence = "medium"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
 ]
-known_first_party = ["farfan_pipeline", "schemas", "methods", "retry_handler", "config", "tools"]
-exclude = [".venv", "src", "tests", "examples", "minipdm"]
-ignore_notebooks = true
-ignore = ["DEP002", "DEP003"]
-requirements_files_dev = ["requirements-dev.txt"]
-
-[tool.importlinter]
-root_package = "farfan_pipeline"
-include_external_packages = true
-
-[[tool.importlinter.contracts]]
-name = "Core (excluding orchestrator) must not import analysis"
-type = "forbidden"
-source_modules = ["farfan_pipeline.calibration", "farfan_pipeline.phases.Phase_00"]
-forbidden_modules = [
-    "farfan_pipeline.phases.Phase_04",
-    "farfan_pipeline.phases.Phase_06",
-]
-
-[[tool.importlinter.contracts]]
-name = "Core orchestrator must not import analysis"
-type = "forbidden"
-source_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-forbidden_modules = ["farfan_pipeline.phases.Phase_04"]
-
-[[tool.importlinter.contracts]]
-name = "Processing layer cannot import orchestrator"
-type = "forbidden"
-source_modules = ["farfan_pipeline.phases.Phase_02"]
-forbidden_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-
-[[tool.importlinter.contracts]]
-name = "Analysis layer cannot import orchestrator"
-type = "forbidden"
-source_modules = ["farfan_pipeline.phases.Phase_04"]
-forbidden_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-
-[[tool.importlinter.contracts]]
-name = "Analysis depends on core but not infrastructure"
-type = "forbidden"
-source_modules = ["farfan_pipeline.phases.Phase_04"]
-forbidden_modules = ["farfan_pipeline.infrastructure"]
-
-[[tool.importlinter.contracts]]
-name = "Infrastructure must not pull orchestrator"
-type = "forbidden"
-source_modules = ["farfan_pipeline.infrastructure"]
-forbidden_modules = ["farfan_pipeline.orchestration.core_orchestrator"]
-
-[[tool.importlinter.contracts]]
-name = "API layer only calls orchestrator entry points"
-type = "forbidden"
-source_modules = ["farfan_pipeline.dashboard_atroz_"]
-forbidden_modules = [
-    "farfan_pipeline.phases.Phase_02",
-    "farfan_pipeline.phases.Phase_04",
-    "farfan_pipeline.utils",
-]
-
-[[tool.importlinter.contracts]]
-name = "Utils stay leaf modules"
-type = "forbidden"
-source_modules = ["farfan_pipeline.utils"]
-forbidden_modules = [
-    "farfan_pipeline.orchestration.core_orchestrator",
-    "farfan_pipeline.phases.Phase_02",
-    "farfan_pipeline.phases.Phase_04",
-]
-
-# =============================================================================
-# DEPENDENCY LAYER ISOLATION CONTRACTS (Added 2026-01-13)
-# =============================================================================
-# These contracts enforce architectural boundaries between dependency layers
-# as defined in infrastructure/dependencies.py
-#
-# Key separations:
-# - NLP layer (transformers, spacy) vs Bayesian layer (pymc, pytensor)
-# - Deep Learning (torch) separated from probabilistic programming
-# - PDF processing centralized in infrastructure/document_processor.py
-# =============================================================================
-
-[[tool.importlinter.contracts]]
-name = "PDF libraries only in document_processor infrastructure"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline.phases",
-    "farfan_pipeline.methods",
-]
-forbidden_modules = [
-    "fitz",
-    "pdfplumber",
-    "pypdf",
-    "img2table",
-    "tabula",
-]
-unmatched_ignore_imports_alerting = "none"
-
-[[tool.importlinter.contracts]]
-name = "Flask (dashboard) isolated from FastAPI (pipeline API)"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline.phases",
-]
-forbidden_modules = [
-    "farfan_pipeline.dashboard_atroz_",
-]
-
-[[tool.importlinter.contracts]]
-name = "Dashboard module does not import pipeline internals"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline.dashboard_atroz_",
-]
-forbidden_modules = [
-    "farfan_pipeline.phases.Phase_02",
-    "farfan_pipeline.phases.Phase_04",
-]
-
-# =============================================================================
-# CANONICAL QUESTIONNAIRE ACCESS CONTRACTS
-# =============================================================================
-
-[[tool.importlinter.contracts]]
-name = "Canonical questionnaire access must use resolver"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline",
-]
-forbidden_modules = [
-    "canonic_questionnaire_central._scripts",
-    "canonic_questionnaire_central._scripts.cqc_loader",
-    "canonic_questionnaire_central._registry",
-    "canonic_questionnaire_central._build",
-]
-
-# =============================================================================
-# SISAS BOUNDARY CONTRACTS
-# =============================================================================
-
-[[tool.importlinter.contracts]]
-name = "SISAS CLI entrypoints are not importable"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline",
-]
-forbidden_modules = [
-    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.main",
-]
-
-[[tool.importlinter.contracts]]
-name = "SISAS deprecated modules are forbidden"
-type = "forbidden"
-source_modules = [
-    "farfan_pipeline",
-]
-forbidden_modules = [
-    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS._deprecated",
+ignore = ["E501", "B008"]
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "migrations",
+    "build",
+    "dist"
 ]

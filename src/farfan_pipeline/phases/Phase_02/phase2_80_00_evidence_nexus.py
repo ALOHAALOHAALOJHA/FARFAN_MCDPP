@@ -1134,7 +1134,7 @@ class RequiredElementsRule:
             nodes = graph.get_nodes_by_type(ev_type)
             return len(nodes), [n.node_id for n in nodes]
         except ValueError:
-            pass
+            logger.debug(f"Expected type '{expected}' is not a valid EvidenceType, falling back to pattern-based search")
 
         # 2) Build indices from contract.patterns nodes (produced in _build_graph_from_outputs)
         pattern_nodes = graph.get_nodes_by_source("contract.patterns")
@@ -4186,8 +4186,8 @@ class EvidenceNexus:
                     tags=["contract_pattern", "utility"],
                 )
             )
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Failed to create utility node for contract patterns: {e}", extra={"error_type": type(e).__name__})
 
         return nodes
 
@@ -4701,8 +4701,8 @@ class EvidenceNexus:
                         "waste_ratio": node.content.get("waste_ratio"),
                         "context_filter_stats": node.content.get("context_filter_stats"),
                     }
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Could not extract pattern utility from graph: {e}", extra={"error_type": type(e).__name__})
 
         if signal_pack is not None:
             trace["signal_provenance"] = {
