@@ -208,94 +208,29 @@ class PipelineAuditor:
             logger.error(f"Failed to analyze {file_path}: {str(e)}")
     
     def _analyze_ast(self, tree: ast.AST, file_path: Path, content: str):
-        """Analyze Abstract Syntax Tree"""
+        """Analyze Abstract Syntax Tree using specialized analyzers.
         
-        class ASTVisitor(ast.NodeVisitor):
-            def __init__(self, auditor, file_path, content):
-                self.auditor = auditor
-                self.file_path = file_path
-                self.content = content
-                self.current_function = None
-                self.function_lines = {}
-                
-            def visit_FunctionDef(self, node):
-                self.current_function = node.name
-                self.function_lines[node.name] = (node.lineno, node.end_lineno)
-                
-                # Check for function complexity
-                complexity = self._calculate_cyclomatic_complexity(node)
-                if complexity > 10:
-                    self.auditor.report.issues.append(AuditIssue(
-                        severity="MEDIUM" if complexity < 15 else "HIGH",
-                        category="COMPLEXITY",
-                        file_path=str(self.file_path),
-                        line_number=node.lineno,
-                        description=f"Function '{node.name}' has high cyclomatic complexity: {complexity}",
-                        recommendation="Consider refactoring to reduce complexity",
-                        metrics={"complexity": complexity}
-                    ))
-                
-                # Check for too many parameters
-                if len(node.args.args) > 5:
-                    self.auditor.report.issues.append(AuditIssue(
-                        severity="LOW",
-                        category="CODE_SMELL",
-                        file_path=str(self.file_path),
-                        line_number=node.lineno,
-                        description=f"Function '{node.name}' has {len(node.args.args)} parameters",
-                        recommendation="Consider using configuration objects or reducing parameters"
-                    ))
-                
-                self.generic_visit(node)
-                self.current_function = None
-            
-            def visit_Try(self, node):
-                # Analyze exception handling
-                for handler in node.handlers:
-                    if handler.type is None or (
-                        isinstance(handler.type, ast.Name) and 
-                        handler.type.id in ['Exception', 'BaseException']
-                    ):
-                        if len(handler.body) == 1 and isinstance(handler.body[0], ast.Pass):
-                            self.auditor.report.issues.append(AuditIssue(
-                                severity="HIGH",
-                                category="SILENCED_ERROR",
-                                file_path=str(self.file_path),
-                                line_number=handler.lineno,
-                                description="Silenced exception with pass statement",
-                                recommendation="Log exceptions or handle them appropriately",
-                                code_snippet=self.auditor._get_code_snippet(self.content, handler.lineno)
-                            ))
-                
-                self.generic_visit(node)
-            
-            def visit_Import(self, node):
-                for alias in node.names:
-                    self.auditor.import_graph[str(self.file_path)].add(alias.name)
-                self.generic_visit(node)
-            
-            def visit_ImportFrom(self, node):
-                if node.module:
-                    self.auditor.import_graph[str(self.file_path)].add(node.module)
-                self.generic_visit(node)
-            
-            def _calculate_cyclomatic_complexity(self, node):
-                complexity = 1
-                for child in ast.walk(node):
-                    if isinstance(child, (ast.If, ast.While, ast.For)):
-                        complexity += 1
-                    elif isinstance(child, ast.ExceptHandler):
-                        complexity += 1
-                    elif isinstance(child, ast.With):
-                        complexity += 1
-                    elif isinstance(child, ast.Assert):
-                        complexity += 1
-                    elif isinstance(child, ast.BoolOp):
-                        complexity += len(child.values) - 1
-                return complexity
+        This method delegates to the ast_analyzers module which provides
+        specialized analyzer classes for:
+        - Function complexity analysis
+        - Exception handling pattern detection  
+        - Import tracking
         
-        visitor = ASTVisitor(self, file_path, content)
-        visitor.visit(tree)
+        Complexity: ~2 (orchestration only)
+        """
+        from ast_analyzers import analyze_ast
+        
+        result = analyze_ast(self, tree, file_path, content)
+        
+        # Collect issues from analysis
+        self.report.issues.extend(result.issues)
+        
+        # Update import graph for dependency analysis
+        for imp in result.imports:
+            self.import_graph[str(file_path)].add(imp)
+        
+        # Store function complexity for reporting
+        self.function_complexity.update(result.function_complexity)
     
     def _check_patterns(self, content: str, file_path: Path):
         """Check for problematic patterns in code"""
