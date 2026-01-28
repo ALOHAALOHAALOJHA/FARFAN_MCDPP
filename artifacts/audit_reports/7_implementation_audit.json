@@ -72,7 +72,7 @@
       {
         "vehicle": "signal_irrigator",
         "declared_signals": [],
-        "capabilities": ["can_irrigate": true],
+        "capabilities": [{"name": "can_irrigate", "value": true}],
         "process_method": "return [] (STUB)",
         "gap": "Has irrigation capability but produces no signals",
         "severity": "HIGH",
@@ -81,7 +81,7 @@
       {
         "vehicle": "signal_loader",
         "declared_signals": [],
-        "capabilities": ["can_load": true],
+        "capabilities": [{"name": "can_load", "value": true}],
         "process_method": "return [] (STUB)",
         "gap": "Has load capability but no implementation",
         "severity": "HIGH",
@@ -90,7 +90,7 @@
       {
         "vehicle": "signals",
         "declared_signals": [],
-        "capabilities": ["can_enrich": true],
+        "capabilities": [{"name": "can_enrich", "value": true}],
         "process_method": "return [] (STUB)",
         "gap": "Aggregator vehicle with no implementation",
         "severity": "MEDIUM",

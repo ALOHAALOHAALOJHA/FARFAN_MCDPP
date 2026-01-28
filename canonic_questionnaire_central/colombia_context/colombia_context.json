@@ -2134,9 +2134,8 @@
       ]
     },
     "farfan_role": "Marco fundamental para PA02, PA05, PA07 - Referencia obligatoria DIM05, DIM06"
-  }
-},
-"policy_area_specific_context": {
+  },
+  "policy_area_specific_context": {
   "PA01_gender": {
     "key_frameworks": [
       "Política Pública Nacional de Equidad de Género para las Mujeres",
@@ -2708,4 +2707,3 @@
   }
 }
 }
-        "
