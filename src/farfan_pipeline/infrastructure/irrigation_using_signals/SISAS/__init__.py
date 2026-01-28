@@ -5,6 +5,7 @@ from .core.signal import Signal, SignalContext, SignalSource
 from .core.event import Event, EventStore, EventType
 from .core.contracts import ContractRegistry
 from .core.bus import BusRegistry
+from .vehicles.signal_registry import QuestionnaireSignalRegistry
 
 __all__ = [
     "Signal",
@@ -14,5 +15,6 @@ __all__ = [
     "EventStore",
     "EventType",
     "ContractRegistry",
-    "BusRegistry"
+    "BusRegistry",
+    "QuestionnaireSignalRegistry",
 ]

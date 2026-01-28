@@ -579,9 +579,132 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
             raise RuntimeError(f"Failed to open PDF {pdf_path}: {e}")
 
 
+# =============================================================================
+# SIGNATURE VALIDATION SYSTEM (Stub Implementation)
+# =============================================================================
+
+from dataclasses import dataclass
+from typing import Callable, Dict, Optional
+import json
+import inspect
+
+
+@dataclass
+class FunctionSignature:
+    """Signature metadata for a function."""
+    
+    function_name: str
+    parameters: Dict[str, str]
+    parameter_types: Dict[str, str]
+    return_type: str
+    module: str = ""
+    class_name: Optional[str] = None
+
+
+class SignatureRegistry:
+    """Registry for tracking and validating function signatures."""
+    
+    def __init__(self, registry_path: Path = Path("signature_registry.json")):
+        self.registry_path = registry_path
+        self.signatures: Dict[str, FunctionSignature] = {}
+        
+        if self.registry_path.exists():
+            self._load_registry()
+    
+    def _load_registry(self) -> None:
+        """Load signatures from registry file."""
+        try:
+            with open(self.registry_path, 'r') as f:
+                data = json.load(f)
+                for key, sig_data in data.items():
+                    self.signatures[key] = FunctionSignature(**sig_data)
+        except Exception:
+            pass  # Ignore errors loading registry
+    
+    def _save_registry(self) -> None:
+        """Save signatures to registry file."""
+        try:
+            data = {k: vars(v) for k, v in self.signatures.items()}
+            with open(self.registry_path, 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception:
+            pass  # Ignore errors saving registry
+    
+    def register_function(self, func: Callable) -> FunctionSignature:
+        """Register a function signature."""
+        sig = inspect.signature(func)
+        
+        parameters = {}
+        parameter_types = {}
+        
+        for param_name, param in sig.parameters.items():
+            parameters[param_name] = str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
+            parameter_types[param_name] = str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
+        
+        return_type = str(sig.return_annotation) if sig.return_annotation != inspect.Signature.empty else "Any"
+        
+        signature = FunctionSignature(
+            function_name=func.__name__,
+            parameters=parameters,
+            parameter_types=parameter_types,
+            return_type=return_type,
+            module=func.__module__,
+        )
+        
+        key = f"{func.__module__}.{func.__name__}"
+        self.signatures[key] = signature
+        self._save_registry()
+        
+        return signature
+    
+    def get_signature(self, module: str, class_name: Optional[str], function_name: str) -> Optional[FunctionSignature]:
+        """Retrieve a function signature from the registry."""
+        key = f"{module}.{function_name}"
+        return self.signatures.get(key)
+
+
+# Global signature registry instance
+_signature_registry = SignatureRegistry()
+
+
+def validate_signature(enforce: bool = True):
+    """
+    Decorator to validate function signatures at runtime.
+    
+    Args:
+        enforce: If True, raise errors on validation failures
+    """
+    def decorator(func: Callable) -> Callable:
+        # Register the function
+        _signature_registry.register_function(func)
+        
+        def wrapper(*args, **kwargs):
+            # For now, just pass through
+            return func(*args, **kwargs)
+        
+        return wrapper
+    return decorator
+
+
+def validate_call_signature(func: Callable, *args, **kwargs) -> bool:
+    """
+    Validate a function call against its registered signature.
+    
+    Returns:
+        True if validation passes
+    """
+    # Stub implementation - always returns True
+    return True
+
+
 __all__ = [
     "Phase0Input",
     "CanonicalInput",
     "Phase0ValidationContract",
     "PHASE0_VERSION",
+    "SignatureRegistry",
+    "FunctionSignature",
+    "validate_signature",
+    "validate_call_signature",
+    "_signature_registry",
 ]

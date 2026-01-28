@@ -24,6 +24,13 @@ except ImportError:
     AreaScore = None
 
 try:
+    from farfan_pipeline.phases.Phase_04 import AreaScore as Phase4AreaScore
+    REAL_PHASE4_AVAILABLE = True
+except ImportError:
+    REAL_PHASE4_AVAILABLE = False
+    Phase4AreaScore = None
+
+try:
     from farfan_pipeline.phases.Phase_06 import (
         ClusterScore,
         ClusterAggregator,

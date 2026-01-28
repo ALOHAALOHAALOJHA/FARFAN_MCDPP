@@ -118,6 +118,11 @@ Examples:
   - PA01-DIM07 ❌ (DIM out of range 1-6)
 """
 
+# Legacy pattern for backward compatibility
+CHUNK_ID_PATTERN_LEGACY: Final[str] = CHUNK_ID_PATTERN
+"""Legacy alias for CHUNK_ID_PATTERN for backward compatibility."""
+
+
 # Task ID patterns (Phase 2: PA×DIM×Q)
 TASK_ID_PATTERN: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]-Q[1-5]$"
 """

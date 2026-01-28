@@ -17,6 +17,7 @@ from farfan_pipeline.calibration.pdm_calibrator import (
 
 from farfan_pipeline.calibration.registry import (
     EpistemicCalibrationRegistry,
+    create_registry,
 )
 
 from farfan_pipeline.calibration.calibration_core import (
@@ -39,10 +40,21 @@ from farfan_pipeline.calibration.epistemic_core import (
     get_default_calibration_for_level,
 )
 
+from farfan_pipeline.calibration.type_defaults import (
+    get_type_defaults,
+    get_all_type_defaults,
+    is_operation_prohibited,
+    is_operation_permitted,
+    get_fusion_strategy,
+    validate_fusion_strategy_for_type,
+    get_contract_type_for_question,
+)
+
 # Alias for backward compatibility
 CalibrationResult = CalibrationMetrics
 PDPCalibrator = Phase1PDMCalibrator
 CalibrationRegistry = EpistemicCalibrationRegistry
+EpistemicRegistry = EpistemicCalibrationRegistry  # Additional alias
 
 __all__ = [
     "CalibrationResult",
@@ -51,6 +63,7 @@ __all__ = [
     "Phase1PDMCalibrator",
     "CalibrationRegistry",
     "EpistemicCalibrationRegistry",
+    "EpistemicRegistry",
     "ValidationError",
     "CalibrationBoundsError",
     "ClosedInterval",
@@ -65,4 +78,12 @@ __all__ = [
     "validate_epistemic_level",
     "validate_output_type_for_level",
     "validate_fusion_behavior_for_level",
+    "create_registry",
+    "get_type_defaults",
+    "get_all_type_defaults",
+    "is_operation_prohibited",
+    "is_operation_permitted",
+    "get_fusion_strategy",
+    "validate_fusion_strategy_for_type",
+    "get_contract_type_for_question",
 ]

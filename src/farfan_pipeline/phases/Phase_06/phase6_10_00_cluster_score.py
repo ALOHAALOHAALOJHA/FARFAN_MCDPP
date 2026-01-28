@@ -43,6 +43,7 @@ __execution_pattern__ = "Per-Task"
 
 from dataclasses import dataclass, field
 from typing import (
+    TYPE_CHECKING,
     Any,
     ClassVar,
     Final,
