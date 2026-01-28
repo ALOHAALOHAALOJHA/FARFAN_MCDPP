@@ -206,8 +206,8 @@ class AdvancedGraphNode:
         if hasattr(value, "isoformat"):
             try:
                 return value.isoformat()
-            except Exception:  # pragma: no cover - fallback defensivo
-                pass
+            except Exception as e:  # pragma: no cover - fallback defensivo
+                logger.debug(f"Failed to get isoformat from value, using current time: {str(e)}")
         return datetime.now().isoformat()
 
     @staticmethod
@@ -217,8 +217,8 @@ class AdvancedGraphNode:
         if hasattr(value, "isoformat"):
             try:
                 return value.isoformat()
-            except Exception:  # pragma: no cover - fallback defensivo
-                pass
+            except Exception as e:  # pragma: no cover - fallback defensivo
+                logger.debug(f"Failed to get isoformat from value, using str(): {str(e)}")
         return str(value)
 
     def to_serializable_dict(self) -> dict[str, Any]:

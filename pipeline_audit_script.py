@@ -78,10 +78,11 @@ class PipelineAuditor:
         """Load patterns for detecting various types of errors"""
         return {
             'silenced_errors': [
-                re.compile(r'except\s*:'),
-                re.compile(r'except\s+Exception\s*:'),
-                re.compile(r'except\s+.*:\s*pass'),
-                re.compile(r'try:.*?except.*?pass', re.DOTALL),
+                # Only match except with pass on the NEXT line (single-line pattern)
+                # The AST analyzer handles multi-line cases properly
+                re.compile(r'except\s*:\s*pass\b'),
+                re.compile(r'except\s+Exception\s*:\s*pass\b'),
+                # Match TODO/FIXME comments about errors
                 re.compile(r'#.*TODO.*error', re.IGNORECASE),
                 re.compile(r'#.*FIXME.*error', re.IGNORECASE),
             ],

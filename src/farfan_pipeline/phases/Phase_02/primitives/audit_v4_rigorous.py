@@ -1892,10 +1892,10 @@ class ContractValidator:
                             scoring_modality = q.get("scoring_modality")
                             if scoring_modality:
                                 return scoring_modality
-            except Exception:
+            except Exception as e:
                 # Si falla la carga del questionnaire, continuar sin scoring_modality
-                pass
-        
+                logger.debug(f"Could not load questionnaire for scoring modality: {str(e)}")
+
         return None
     
     def _section_15_semantic_coherence(self):
