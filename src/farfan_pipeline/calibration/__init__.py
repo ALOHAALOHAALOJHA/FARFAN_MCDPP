@@ -50,6 +50,23 @@ from farfan_pipeline.calibration.type_defaults import (
     get_contract_type_for_question,
 )
 
+# Mathematical calibration optimizers (v5.0.0)
+try:
+    from farfan_pipeline.calibration.mathematical_calibration import (
+        N1EmpiricalOptimizer,
+        N2InferentialOptimizer,
+        N3AuditOptimizer,
+        N4MetaOptimizer,
+    )
+    MATHEMATICAL_CALIBRATION_AVAILABLE = True
+except ImportError:
+    # scipy/sklearn not available - mathematical optimization disabled
+    N1EmpiricalOptimizer = None
+    N2InferentialOptimizer = None
+    N3AuditOptimizer = None
+    N4MetaOptimizer = None
+    MATHEMATICAL_CALIBRATION_AVAILABLE = False
+
 # Alias for backward compatibility
 CalibrationResult = CalibrationMetrics
 PDPCalibrator = Phase1PDMCalibrator
@@ -86,4 +103,10 @@ __all__ = [
     "get_fusion_strategy",
     "validate_fusion_strategy_for_type",
     "get_contract_type_for_question",
+    # Mathematical calibration optimizers (v5.0.0)
+    "N1EmpiricalOptimizer",
+    "N2InferentialOptimizer",
+    "N3AuditOptimizer",
+    "N4MetaOptimizer",
+    "MATHEMATICAL_CALIBRATION_AVAILABLE",
 ]
