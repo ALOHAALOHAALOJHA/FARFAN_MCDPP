@@ -1,4 +1,4 @@
-"""
+r"""
 Choquet Adapter - Production Integration Layer for Non-Linear Aggregation
 State-of-the-Art Mathematical Framework
 
