@@ -3669,12 +3669,22 @@ class CausalExtractor:
         source_positions = [m.start() for m in re.finditer(re.escape(source), text, re.IGNORECASE)]
         target_positions = [m.start() for m in re.finditer(re.escape(target), text, re.IGNORECASE)]
 
+        # Optimization: O(N+M) sliding window
+        target_len = len(target_positions)
+        target_idx = 0
+
         for source_pos in source_positions:
             total_windows += 1
-            for target_pos in target_positions:
-                if abs(source_pos - target_pos) <= window_size:
-                    co_occurrences += 1
-                    break
+            low = source_pos - window_size
+            high = source_pos + window_size
+
+            # Advance target_idx until it's >= low
+            while target_idx < target_len and target_positions[target_idx] < low:
+                target_idx += 1
+
+            # Check if current target_idx is within range (equivalent to break logic)
+            if target_idx < target_len and target_positions[target_idx] <= high:
+                co_occurrences += 1
 
         if total_windows > 0:
             proximity_score = co_occurrences / total_windows
