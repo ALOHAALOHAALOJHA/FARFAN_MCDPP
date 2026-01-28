@@ -331,8 +331,8 @@ def normalize_case(path: Path) -> Path:
         try:
             # On Windows/macOS this will resolve to actual case
             return path.resolve()
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Could not resolve path case, using original: {str(e)}")
 
     return path
 

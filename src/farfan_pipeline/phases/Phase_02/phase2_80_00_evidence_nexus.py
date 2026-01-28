@@ -2698,9 +2698,13 @@ class NarrativeSynthesizer:
                     nums = re.findall(r"[\d,. ]+", c.value_summary)
                     if nums:
                         numeric_vals.append((c.evidence_type, nums[0]))
-                except (AttributeError, TypeError):
+                except (AttributeError, TypeError) as e:
                     # If value_summary is missing or not a string, skip this citation.
-                    pass
+                    logger.debug(
+                        "failed_to_extract_numeric_value",
+                        error=str(e),
+                        citation_type=getattr(c, 'evidence_type', 'unknown')
+                    )
 
             if numeric_vals:
                 primary = numeric_vals[0]
@@ -3164,9 +3168,13 @@ class EvidenceNexus:
                     proof = tracker.get_proof()
                     if hasattr(proof, "get_consumption_proof"):
                         legacy_trace["signal_consumption_proof"] = proof.get_consumption_proof()
-            except Exception:
+            except Exception as e:
                 # Never break processing for telemetry failures
-                pass
+                logger.warning(
+                    "telemetry_consumption_tracking_failed",
+                    error=str(e),
+                    exc_info=True
+                )
 
         processing_time_ms = (time.time() - start_time) * 1000
 
@@ -3629,8 +3637,14 @@ class EvidenceNexus:
                     )
                     try:
                         graph.add_edge(edge)
-                    except ValueError:
-                        pass
+                    except ValueError as e:
+                        # Expected: duplicate or invalid edge (e.g., self-loop)
+                        logger.debug(
+                            "skipped_financial_coherence_edge",
+                            error=str(e),
+                            source=edge.source_id[:16],
+                            target=edge.target_id[:16]
+                        )
 
     def _add_logical_consistency_edges(self, graph: EvidenceGraph) -> None:
         """Add edges for logical consistency between policy statements.
@@ -3654,8 +3668,14 @@ class EvidenceNexus:
                     )
                     try:
                         graph.add_edge(edge)
-                    except ValueError:
-                        pass
+                    except ValueError as e:
+                        # Expected: duplicate or invalid edge (e.g., self-loop)
+                        logger.debug(
+                            "skipped_logical_consistency_edge",
+                            error=str(e),
+                            source=edge.source_id[:16],
+                            target=edge.target_id[:16]
+                        )
 
     def _detect_and_mark_contradictions(self, graph: EvidenceGraph) -> None:
         """Detect potential contradictions and create CONTRADICTS edges.
@@ -3683,8 +3703,14 @@ class EvidenceNexus:
                         )
                         try:
                             graph.add_edge(edge)
-                        except ValueError:
-                            pass
+                        except ValueError as e:
+                            # Expected: duplicate or invalid edge
+                            logger.debug(
+                                "skipped_contradiction_edge",
+                                error=str(e),
+                                source=edge.source_id[:16],
+                                target=affected_id[:16]
+                            )
 
     def _determine_method_level(self, source_method: str, contract: dict[str, Any]) -> str:
         """Determine epistemological level (N1/N2/N3) for a method.
@@ -3745,8 +3771,8 @@ class EvidenceNexus:
                         )
                         try:
                             graph.add_edge(edge)
-                        except ValueError:
-                            pass  # Skip cycles
+                        except ValueError as e:
+                            logger.debug(f"Skipping edge that would create cycle: {str(e)}")
 
     def _add_statistical_correlation_edges(self, graph: EvidenceGraph) -> None:
         """Add edges for statistical correlation between quantitative nodes.
@@ -3777,8 +3803,14 @@ class EvidenceNexus:
                 )
                 try:
                     graph.add_edge(edge)
-                except ValueError:
-                    pass
+                except ValueError as e:
+                    # Expected: duplicate or invalid edge
+                    logger.debug(
+                        "skipped_statistical_correlation_edge",
+                        error=str(e),
+                        source=edge.source_id[:16],
+                        target=edge.target_id[:16]
+                    )
 
     def _add_causal_chain_edges(self, graph: EvidenceGraph) -> None:
         """Add edges for causal chain relationships.
@@ -3803,8 +3835,14 @@ class EvidenceNexus:
                     )
                     try:
                         graph.add_edge(edge)
-                    except ValueError:
-                        pass
+                    except ValueError as e:
+                        # Expected: duplicate or invalid edge
+                        logger.debug(
+                            "skipped_causal_chain_edge",
+                            error=str(e),
+                            source=edge.source_id[:16],
+                            target=edge.target_id[:16]
+                        )
 
     def _add_temporal_ordering_edges(self, graph: EvidenceGraph) -> None:
         """Add edges for temporal ordering between temporal evidence.
@@ -3831,8 +3869,14 @@ class EvidenceNexus:
                     )
                     try:
                         graph.add_edge(edge)
-                    except ValueError:
-                        pass
+                    except ValueError as e:
+                        # Expected: duplicate or invalid edge
+                        logger.debug(
+                            "skipped_temporal_ordering_edge",
+                            error=str(e),
+                            source=edge.source_id[:16],
+                            target=edge.target_id[:16]
+                        )
 
     def _apply_contract_level_strategies(
         self,
@@ -4010,9 +4054,14 @@ class EvidenceNexus:
                     # Validate the EvidenceType value
                     EvidenceType(evidence_type_str)
                     contract_type_system[str(pattern_category).upper()] = evidence_type_str
-                except (ValueError, TypeError):
+                except (ValueError, TypeError) as e:
                     # Invalid EvidenceType - skip this mapping
-                    pass
+                    logger.debug(
+                        "invalid_evidence_type_mapping",
+                        error=str(e),
+                        pattern_category=pattern_category,
+                        evidence_type_str=evidence_type_str
+                    )
 
         def _map_category_to_evidence_type(category: str) -> EvidenceType:
             """Map pattern category to EvidenceType using contract's type_system.
@@ -4026,8 +4075,14 @@ class EvidenceNexus:
             if cat in contract_type_system:
                 try:
                     return EvidenceType(contract_type_system[cat])
-                except (ValueError, TypeError):
-                    pass  # Fall through to defaults
+                except (ValueError, TypeError) as e:
+                    # Fall through to defaults
+                    logger.debug(
+                        "invalid_contract_evidence_type",
+                        error=str(e),
+                        category=cat,
+                        mapped_value=contract_type_system[cat]
+                    )
 
             # Default fallback mappings (when contract doesn't specify)
             if cat == "INDICADOR" or cat == "UNIDAD_MEDIDA":
@@ -4125,9 +4180,14 @@ class EvidenceNexus:
                                 text_segment=str(mtxt),
                                 produced_evidence=True,
                             )
-                except Exception:
+                except Exception as e:
                     # Never break execution for tracking failures
-                    pass
+                    logger.warning(
+                        "pattern_match_tracking_failed",
+                        error=str(e),
+                        pattern_id=pattern_id,
+                        exc_info=True
+                    )
 
             confidence_weight = pat.get("confidence_weight")
             try:
@@ -4452,8 +4512,8 @@ class EvidenceNexus:
                     )
                     try:
                         graph.add_edge(edge)
-                    except ValueError:
-                        pass  # Skip if would create cycle
+                    except ValueError as e:
+                        logger.debug(f"Skipping edge that would create cycle: {str(e)}")
 
         # Infer SUPPORTS between related types
         support_pairs = [
@@ -4478,8 +4538,8 @@ class EvidenceNexus:
                         )
                         try:
                             graph.add_edge(edge)
-                        except ValueError:
-                            pass  # Skip if adding SUPPORTS edge would create cycle or is invalid
+                        except ValueError as e:
+                            logger.debug(f"Skipping SUPPORTS edge that would create cycle or is invalid: {str(e)}")
 
     # -------------------------------------------------------------------------
     # B4 RESOLUTION: Level Strategies Application

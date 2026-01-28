@@ -3451,7 +3451,8 @@ class CausalExtractor:
                 return max(0.0, min(1.0, similarity))
 
             return 0.5
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Exception in operation: {str(e)}")
             return 0.5
 
     def _calculate_type_transition_prior(self, source: str, target: str) -> float:
@@ -3835,9 +3836,13 @@ class CausalExtractor:
             try:
                 float(str(node.target).replace(",", "").replace("%", ""))
                 confidence += 0.2
-            except (ValueError, TypeError):
+            except (ValueError, TypeError) as e:
                 # Target value is not numeric, skip confidence boost
-                pass
+                logging.getLogger(__name__).debug(
+                    "Non-numeric target value, skipping confidence boost: %s (error: %s)",
+                    node.target,
+                    str(e)
+                )
 
         # Increase confidence if text has causal indicators
         if link_text:
@@ -8008,7 +8013,8 @@ class HierarchicalGenerativeModel:
                     **{dim_key: float(cvc_data.get(dim_key, 0.0)) for dim_key in self.cvc_priors}
                 )
                 causalidad_scores.append(cvc_model.causalidad_score)
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Exception in operation: {str(e)}")
                 continue
 
         total_samples = len(all_samples)
@@ -8172,7 +8178,8 @@ class HierarchicalGenerativeModel:
                     resultados_capacity=float(cvc_data.get("resultados_capacity", 0.0)),
                     impactos_capacity=float(cvc_data.get("impactos_capacity", 0.0)),
                 )
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Exception in operation: {str(e)}")
                 continue
 
             score = cvc_model.causalidad_score

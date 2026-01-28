@@ -470,8 +470,8 @@ class Tier6SeedConsistencyValidator:
                         remediation="Call random.seed(42) in Phase 0 determinism",
                     )
                 )
-        except Exception:
-            pass  # Can't verify, skip
+        except Exception as e:
+            logger.debug(f"Could not verify random seed state: {str(e)}")  # Can't verify, skip
 
         return violations
 
