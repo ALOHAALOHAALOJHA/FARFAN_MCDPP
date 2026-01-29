@@ -8,7 +8,7 @@
 #
 # DESCRIPTION:
 #   This is the CORRECTED and COMPLETE version of the F.A.R.F.A.N pipeline
-#   execution script. It addresses ALL 30 omisions identified in the static
+#   execution script. It addresses ALL 30 omissions identified in the static
 #   analysis audit.
 #
 # PIPELINE PHASES (COMPREHENSIVE):
@@ -169,15 +169,27 @@ ALL_PHASES=("P00" "P01" "P02" "P03" "P04" "P05" "P06" "P07" "P08" "P09")
 
 # Print colored messages
 info() {
-    echo -e "${BLUE}[INFO]${NC} $1" | tee -a "$LOG_FILE"
+    if [[ -n "$LOG_FILE" ]]; then
+        echo -e "${BLUE}[INFO]${NC} $1" | tee -a "$LOG_FILE"
+    else
+        echo -e "${BLUE}[INFO]${NC} $1"
+    fi
 }
 
 success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1" | tee -a "$LOG_FILE"
+    if [[ -n "$LOG_FILE" ]]; then
+        echo -e "${GREEN}[SUCCESS]${NC} $1" | tee -a "$LOG_FILE"
+    else
+        echo -e "${GREEN}[SUCCESS]${NC} $1"
+    fi
 }
 
 warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1" | tee -a "$LOG_FILE"
+    if [[ -n "$LOG_FILE" ]]; then
+        echo -e "${YELLOW}[WARNING]${NC} $1" | tee -a "$LOG_FILE"
+    else
+        echo -e "${YELLOW}[WARNING]${NC} $1"
+    fi
     WARNING_COUNT=$((WARNING_COUNT + 1))
     if [[ "$FAIL_ON_WARNING" == true ]]; then
         error "Treat warnings as errors enabled"
@@ -186,18 +198,30 @@ warning() {
 }
 
 error() {
-    echo -e "${RED}[ERROR]${NC} $1" | tee -a "$LOG_FILE"
+    if [[ -n "$LOG_FILE" ]]; then
+        echo -e "${RED}[ERROR]${NC} $1" | tee -a "$LOG_FILE"
+    else
+        echo -e "${RED}[ERROR]${NC} $1"
+    fi
 }
 
 debug() {
     if [[ "$DEBUG" == true ]]; then
-        echo -e "${MAGENTA}[DEBUG]${NC} $1" | tee -a "$LOG_FILE"
+        if [[ -n "$LOG_FILE" ]]; then
+            echo -e "${MAGENTA}[DEBUG]${NC} $1" | tee -a "$LOG_FILE"
+        else
+            echo -e "${MAGENTA}[DEBUG]${NC} $1"
+        fi
     fi
 }
 
 verbose() {
     if [[ "$VERBOSE" == true ]]; then
-        echo -e "${CYAN}[VERBOSE]${NC} $1" | tee -a "$LOG_FILE"
+        if [[ -n "$LOG_FILE" ]]; then
+            echo -e "${CYAN}[VERBOSE]${NC} $1" | tee -a "$LOG_FILE"
+        else
+            echo -e "${CYAN}[VERBOSE]${NC} $1"
+        fi
     fi
 }
 
@@ -207,18 +231,30 @@ section() {
     local width=80
     local line=$(printf '=%.0s' $(seq 1 $width))
 
-    echo "" | tee -a "$LOG_FILE"
-    echo -e "${BOLD}${BLUE}$line${NC}" | tee -a "$LOG_FILE"
-    echo -e "${BOLD}${BLUE}  $title${NC}" | tee -a "$LOG_FILE"
-    echo -e "${BOLD}${BLUE}$line${NC}" | tee -a "$LOG_FILE"
-    echo "" | tee -a "$LOG_FILE"
+    if [[ -n "$LOG_FILE" ]]; then
+        echo "" | tee -a "$LOG_FILE"
+        echo -e "${BOLD}${BLUE}$line${NC}" | tee -a "$LOG_FILE"
+        echo -e "${BOLD}${BLUE}  $title${NC}" | tee -a "$LOG_FILE"
+        echo -e "${BOLD}${BLUE}$line${NC}" | tee -a "$LOG_FILE"
+        echo "" | tee -a "$LOG_FILE"
+    else
+        echo ""
+        echo -e "${BOLD}${BLUE}$line${NC}"
+        echo -e "${BOLD}${BLUE}  $title${NC}"
+        echo -e "${BOLD}${BLUE}$line${NC}"
+        echo ""
+    fi
 }
 
 # Print step with progress
 step() {
     local step_num=$((TOTAL_STEPS + 1))
     local step_name="$1"
-    echo -e "${CYAN}[STEP $step_num]${NC} $step_name" | tee -a "$LOG_FILE"
+    if [[ -n "$LOG_FILE" ]]; then
+        echo -e "${CYAN}[STEP $step_num]${NC} $step_name" | tee -a "$LOG_FILE"
+    else
+        echo -e "${CYAN}[STEP $step_num]${NC} $step_name"
+    fi
     TOTAL_STEPS=$((TOTAL_STEPS + 1))
 }
 
@@ -349,9 +385,9 @@ parse_arguments() {
         esac
     done
 
-    # Convert to absolute paths
-    PLAN_PDF="$PROJECT_ROOT/$PLAN_PDF"
-    ARTIFACTS_DIR="$PROJECT_ROOT/$ARTIFACTS_DIR"
+    # Convert to absolute paths (only if relative)
+    [[ "$PLAN_PDF" != /* ]] && PLAN_PDF="$PROJECT_ROOT/$PLAN_PDF"
+    [[ "$ARTIFACTS_DIR" != /* ]] && ARTIFACTS_DIR="$PROJECT_ROOT/$ARTIFACTS_DIR"
 
     # Create artifacts directory
     mkdir -p "$ARTIFACTS_DIR"
