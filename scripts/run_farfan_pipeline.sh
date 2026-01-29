@@ -233,9 +233,9 @@ parse_arguments() {
         esac
     done
 
-    # Convert to absolute paths
-    PLAN_PDF="$PROJECT_ROOT/$PLAN_PDF"
-    ARTIFACTS_DIR="$PROJECT_ROOT/$ARTIFACTS_DIR"
+    # Convert to absolute paths (only if relative)
+    [[ "$PLAN_PDF" != /* ]] && PLAN_PDF="$PROJECT_ROOT/$PLAN_PDF"
+    [[ "$ARTIFACTS_DIR" != /* ]] && ARTIFACTS_DIR="$PROJECT_ROOT/$ARTIFACTS_DIR"
 
     # Create artifacts directory
     mkdir -p "$ARTIFACTS_DIR"
@@ -345,20 +345,22 @@ check_dependencies() {
     fi
 
     # Check critical dependencies
-    local critical_deps=(
-        "torch"
-        "transformers"
-        "sentence_transformers"
-        "pandas"
-        "numpy"
-        "pdfplumber"
-        "pymc"
-        "fastapi"
+    # Map package names to their import names (some differ)
+    declare -A dep_import_map=(
+        ["torch"]="torch"
+        ["transformers"]="transformers"
+        ["sentence_transformers"]="sentence_transformers"
+        ["pandas"]="pandas"
+        ["numpy"]="numpy"
+        ["pdfplumber"]="pdfplumber"
+        ["pymc"]="pymc"
+        ["fastapi"]="fastapi"
     )
 
     local missing_deps=()
-    for dep in "${critical_deps[@]}"; do
-        if ! python -c "import ${dep//_/}" 2>/dev/null; then
+    for dep in "${!dep_import_map[@]}"; do
+        local import_name="${dep_import_map[$dep]}"
+        if ! python -c "import $import_name" 2>/dev/null; then
             missing_deps+=("$dep")
         fi
     done
@@ -383,9 +385,16 @@ set_env_vars() {
     verbose "Set PYTHONHASHSEED=42 for determinism"
 
     # Set manifest secret key
+    # Only use default in test mode; fail otherwise to prevent insecure production deployments
     if [ -z "${MANIFEST_SECRET_KEY:-}" ]; then
-        export MANIFEST_SECRET_KEY="default-dev-key-change-in-production"
-        warning "Using default MANIFEST_SECRET_KEY (change in production)"
+        if [[ "$TEST_MODE" == true ]] || [[ "${NODE_ENV:-}" == "development" ]] || [[ -n "${CI:-}" ]]; then
+            export MANIFEST_SECRET_KEY="default-dev-key-change-in-production"
+            warning "Using default MANIFEST_SECRET_KEY (acceptable in test/dev mode)"
+        else
+            error "MANIFEST_SECRET_KEY is not set and not running in test/dev mode"
+            error "Set MANIFEST_SECRET_KEY environment variable or use --test flag for development"
+            exit 1
+        fi
     else
         verbose "Using custom MANIFEST_SECRET_KEY"
     fi
