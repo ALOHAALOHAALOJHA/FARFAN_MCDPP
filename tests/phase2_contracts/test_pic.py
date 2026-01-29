@@ -3,15 +3,13 @@ Test PIC - Permutation Invariance Contract
 Verifies: Aggregation f(S) = φ(Σ ψ(x)) is order-independent
 Input order independence guarantee
 """
+
 import pytest
 import random
-import sys
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-
-from cross_cutting_infrastructure.contractual.dura_lex.permutation_invariance import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.permutation_invariance import (
     PermutationInvarianceContract,
 )
 
@@ -35,9 +33,7 @@ class TestPermutationInvarianceContract:
         """ψ(x) = confidence score."""
         return item["confidence"]
 
-    def test_pic_001_sum_invariant(
-        self, evidence_scores: list[dict[str, Any]]
-    ) -> None:
+    def test_pic_001_sum_invariant(self, evidence_scores: list[dict[str, Any]]) -> None:
         """PIC-001: Sum aggregation is permutation invariant."""
         original_sum = PermutationInvarianceContract.aggregate(
             evidence_scores, self.transform_confidence
@@ -47,15 +43,11 @@ class TestPermutationInvarianceContract:
         random.seed(42)
         random.shuffle(shuffled)
 
-        shuffled_sum = PermutationInvarianceContract.aggregate(
-            shuffled, self.transform_confidence
-        )
+        shuffled_sum = PermutationInvarianceContract.aggregate(shuffled, self.transform_confidence)
 
         assert abs(original_sum - shuffled_sum) < 1e-10
 
-    def test_pic_002_digest_invariant(
-        self, evidence_scores: list[dict[str, Any]]
-    ) -> None:
+    def test_pic_002_digest_invariant(self, evidence_scores: list[dict[str, Any]]) -> None:
         """PIC-002: Digest is identical regardless of order."""
         digest_original = PermutationInvarianceContract.verify_invariance(
             evidence_scores, self.transform_confidence
@@ -71,9 +63,7 @@ class TestPermutationInvarianceContract:
 
         assert digest_original == digest_shuffled
 
-    def test_pic_003_multiple_permutations(
-        self, evidence_scores: list[dict[str, Any]]
-    ) -> None:
+    def test_pic_003_multiple_permutations(self, evidence_scores: list[dict[str, Any]]) -> None:
         """PIC-003: All permutations produce same digest."""
         base_digest = PermutationInvarianceContract.verify_invariance(
             evidence_scores, self.transform_confidence
@@ -96,14 +86,10 @@ class TestPermutationInvarianceContract:
     def test_pic_005_single_item(self) -> None:
         """PIC-005: Single item produces its own value."""
         single = [{"element_id": "E001", "confidence": 0.75}]
-        result = PermutationInvarianceContract.aggregate(
-            single, self.transform_confidence
-        )
+        result = PermutationInvarianceContract.aggregate(single, self.transform_confidence)
         assert result == 0.75
 
-    def test_pic_006_phase2_weighted_mean(
-        self, evidence_scores: list[dict[str, Any]]
-    ) -> None:
+    def test_pic_006_phase2_weighted_mean(self, evidence_scores: list[dict[str, Any]]) -> None:
         """PIC-006: Weighted mean aggregation is permutation invariant."""
 
         def weighted_transform(item: dict[str, Any]) -> float:
@@ -115,30 +101,20 @@ class TestPermutationInvarianceContract:
         random.seed(999)
         random.shuffle(shuffled)
 
-        sum1 = PermutationInvarianceContract.aggregate(
-            evidence_scores, weighted_transform
-        )
-        sum2 = PermutationInvarianceContract.aggregate(
-            shuffled, weighted_transform
-        )
+        sum1 = PermutationInvarianceContract.aggregate(evidence_scores, weighted_transform)
+        sum2 = PermutationInvarianceContract.aggregate(shuffled, weighted_transform)
 
         # Sum should be equal (within floating point tolerance)
         assert abs(sum1 - sum2) < 1e-10
 
-    def test_pic_007_distributed_safe(
-        self, evidence_scores: list[dict[str, Any]]
-    ) -> None:
+    def test_pic_007_distributed_safe(self, evidence_scores: list[dict[str, Any]]) -> None:
         """PIC-007: Safe for parallel/distributed aggregation."""
         # Simulate distributed chunks
         chunk1 = evidence_scores[:2]
         chunk2 = evidence_scores[2:]
 
-        sum1 = PermutationInvarianceContract.aggregate(
-            chunk1, self.transform_confidence
-        )
-        sum2 = PermutationInvarianceContract.aggregate(
-            chunk2, self.transform_confidence
-        )
+        sum1 = PermutationInvarianceContract.aggregate(chunk1, self.transform_confidence)
+        sum2 = PermutationInvarianceContract.aggregate(chunk2, self.transform_confidence)
         distributed_total = sum1 + sum2
 
         full_total = PermutationInvarianceContract.aggregate(

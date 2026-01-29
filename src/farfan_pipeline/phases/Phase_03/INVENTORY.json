@@ -1,0 +1,109 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 3,
+    "name": "Scoring & Calibration"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_03",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 3 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "primitives",
+      "purpose": "Fundamental mathematical definitions for scoring"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 3 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase3_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 60,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase3_15_00_empirical_thresholds_loader.py",
+      "canonical_name": "phase3_15_00_empirical_thresholds_loader",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "lines_of_code": 430,
+      "purpose": "Empirical thresholds loading"
+    },
+    {
+      "filename": "phase3_20_00_score_extraction.py",
+      "canonical_name": "phase3_20_00_score_extraction",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 320,
+      "purpose": "Score extraction from responses"
+    },
+    {
+      "filename": "phase3_22_00_validation.py",
+      "canonical_name": "phase3_22_00_validation",
+      "type": "ENF",
+      "criticality": "LOW",
+      "lines_of_code": 290,
+      "purpose": "Score validation"
+    },
+    {
+      "filename": "phase3_24_00_signal_enriched_scoring.py",
+      "canonical_name": "phase3_24_00_signal_enriched_scoring",
+      "type": "ENF",
+      "criticality": "LOW",
+      "lines_of_code": 910,
+      "purpose": "Signal-enriched scoring"
+    },
+    {
+      "filename": "phase3_26_00_normative_compliance_validator.py",
+      "canonical_name": "phase3_26_00_normative_compliance_validator",
+      "type": "ENF",
+      "criticality": "LOW",
+      "lines_of_code": 540,
+      "purpose": "Normative compliance validation"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_3_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_3_CONSTANTS.py",
+      "purpose": "Phase 3 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 3"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 3"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "total_python_modules": 6,
+  "total_lines_of_code": 2550,
+  "criticality_summary": {
+    "CRITICAL": 1,
+    "HIGH": 1,
+    "MEDIUM": 0,
+    "LOW": 4
+  }
+}

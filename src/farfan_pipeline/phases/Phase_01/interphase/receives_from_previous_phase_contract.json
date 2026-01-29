@@ -1,0 +1,87 @@
+{
+  "$schema": "phase_contract_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P1-RECEIVES",
+  "contract_type": "receives_from_previous_phase",
+  "phase": {
+    "number": 1,
+    "name": "CPP Ingestion (Canon Policy Package Ingestion)"
+  },
+  "previous_phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap"
+  },
+  "certification": {
+    "status": "CERTIFIED",
+    "compatibility_verified": true,
+    "certified_by": "F.A.R.F.A.N Architecture Team",
+    "certification_date": "2026-01-12",
+    "verification_method": "Phase 0 WiringComponents provides all required inputs"
+  },
+  "input_contract_source": "contracts/phase1_input_contract.py",
+  "received_inputs": [
+    {
+      "name": "CanonicalInput",
+      "type": "dataclass",
+      "required": true,
+      "source": "Phase 0 / phase0_40_00_input_validation.py:Phase0ValidationContract.execute()",
+      "validation": "POST-01 through POST-08 from Phase 0",
+      "description": "Validated input document with computed SHA256 hashes"
+    },
+    {
+      "name": "QuestionnaireSignalRegistry",
+      "type": "QuestionnaireSignalRegistry",
+      "required": true,
+      "source": "Phase 0 / WiringComponents.signal_registry",
+      "validation": "Not None, initialized with questionnaire signals",
+      "description": "Signal registry for questionnaire-based pattern matching (SISAS integration)"
+    }
+  ],
+  "input_preconditions": [
+    {
+      "id": "PRE-01",
+      "description": "PDF exists and is readable",
+      "validation_method": "CanonicalInput.pdf_path.exists() == True",
+      "maps_to": "POST-P0-01",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-02",
+      "description": "PDF SHA256 matches provided hash",
+      "validation_method": "CanonicalInput.pdf_sha256 is valid 64-char hex",
+      "maps_to": "POST-P0-05",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-03",
+      "description": "Questionnaire exists and is valid JSON",
+      "validation_method": "CanonicalInput.questionnaire_path.exists() == True",
+      "maps_to": "POST-P0-05",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-04",
+      "description": "Questionnaire SHA256 matches provided hash",
+      "validation_method": "CanonicalInput.questionnaire_sha256 is valid 64-char hex",
+      "maps_to": "POST-P0-05",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-05",
+      "description": "Phase 0 validation passed",
+      "validation_method": "CanonicalInput.validation_passed == True",
+      "maps_to": "POST-P0-01",
+      "severity": "CRITICAL"
+    }
+  ],
+  "entry_point": {
+    "module": "phase1_20_00_cpp_ingestion.py",
+    "function": "execute_phase_1_with_full_contract",
+    "signature": "execute_phase_1_with_full_contract(canonical_input: CanonicalInput, signal_registry: Optional[QuestionnaireSignalRegistry] = None) -> CanonPolicyPackage"
+  },
+  "notes": [
+    "Phase 1 receives CanonicalInput from Phase 0 via Orchestrator",
+    "QuestionnaireSignalRegistry is injected via Dependency Injection from WiringComponents",
+    "All preconditions are verified in contracts/phase1_input_contract.py"
+  ]
+}

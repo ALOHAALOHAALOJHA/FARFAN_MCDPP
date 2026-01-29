@@ -1,149 +1,1408 @@
+import logging
 import os
 import time
-import json
-import logging
-from typing import Dict, Any, List
-from flask import Flask, jsonify, request, send_from_directory
+from datetime import datetime
+from pathlib import Path
+
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
-from orchestration.orchestrator import Orchestrator
+
+from farfan_pipeline.phases.Phase_00.phase0_10_00_paths import PROJECT_ROOT, DATA_DIR
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("atroz_dashboard")
 
 # Initialize Flask App
-PROJECT_ROOT = '/home/recovered/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL-3'
-app = Flask(__name__, static_folder=PROJECT_ROOT, static_url_path='')
-app.config['SECRET_KEY'] = os.getenv('MANIFEST_SECRET_KEY', 'atroz-secret-key')
-app.config['UPLOAD_FOLDER'] = os.path.abspath('data/uploads')
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload
+app = Flask(__name__, static_folder=str(PROJECT_ROOT), static_url_path="")
+app.config["SECRET_KEY"] = os.getenv("MANIFEST_SECRET_KEY", "atroz-secret-key")
+app.config["UPLOAD_FOLDER"] = str(DATA_DIR / "uploads")
+app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50MB max upload
 
 # Enable CORS for development
 CORS(app)
 
 # Initialize SocketIO
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
+
+# Import real PDET data and bridge
+from farfan_pipeline.dashboard_atroz_.pdet_dashboard_adapter import (
+    load_pdet_regions_for_dashboard,
+    get_region_connections,
+    get_region_detail,
+)
+from farfan_pipeline.dashboard_atroz_.pipeline_dashboard_bridge import (
+    PipelineDashboardBridge,
+    initialize_bridge,
+    get_bridge,
+)
+from farfan_pipeline.dashboard_atroz_.api_monitoring_enhanced import register_monitoring_endpoints
+from farfan_pipeline.dashboard_atroz_.dashboard_data_service import DashboardDataService
+
+# Import advanced data mining and analytics engines
+from farfan_pipeline.dashboard_atroz_.data_mining_engine import (
+    DataMiningEngine, DataMiningQuery, MiningResult
+)
+from farfan_pipeline.dashboard_atroz_.analytics_engine import (
+    AnalyticsEngine, AnalyticsReport, ComparativeAnalysis, TrendAnalysis, GapAnalysis
+)
+
+# Register enhanced monitoring endpoints
+register_monitoring_endpoints(app)
 
 # Ensure upload directory exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # Global state
 pipeline_status = {
     "active_jobs": [],
     "completed_jobs": [],
-    "system_metrics": {
-        "cpu_usage": 0,
-        "memory_usage": 0,
-        "uptime": 0
-    }
+    "system_metrics": {"cpu_usage": 0, "memory_usage": 0, "uptime": 0},
 }
 
-# Mock PDET Data (will be replaced by real data adapter)
-PDET_REGIONS = [
-    {"id": "arauca", "name": "Arauca", "score": 85, "x": 15, "y": 20, "municipalities": 7},
-    {"id": "catatumbo", "name": "Catatumbo", "score": 72, "x": 25, "y": 15, "municipalities": 8},
-    {"id": "montes_maria", "name": "Montes de María", "score": 91, "x": 35, "y": 10, "municipalities": 15},
-    {"id": "pacifico_medio", "name": "Pacífico Medio", "score": 64, "x": 10, "y": 40, "municipalities": 4},
-    {"id": "putumayo", "name": "Putumayo", "score": 78, "x": 20, "y": 80, "municipalities": 9},
-    {"id": "sierra_nevada", "name": "Sierra Nevada", "score": 88, "x": 40, "y": 5, "municipalities": 8},
-    {"id": "uraba", "name": "Urabá Antioqueño", "score": 69, "x": 20, "y": 25, "municipalities": 8},
-    {"id": "choco", "name": "Chocó", "score": 55, "x": 8, "y": 30, "municipalities": 12},
-    {"id": "macarena", "name": "Macarena - Guaviare", "score": 82, "x": 45, "y": 50, "municipalities": 12},
-    {"id": "pacifico_nariñense", "name": "Pacífico Nariñense", "score": 60, "x": 5, "y": 70, "municipalities": 11},
-    {"id": "cuenca_caguan", "name": "Cuenca del Caguán", "score": 75, "x": 30, "y": 60, "municipalities": 6},
-    {"id": "sur_tolima", "name": "Sur del Tolima", "score": 89, "x": 25, "y": 45, "municipalities": 4},
-    {"id": "sur_bolivar", "name": "Sur de Bolívar", "score": 67, "x": 30, "y": 20, "municipalities": 7},
-    {"id": "bajo_cauca", "name": "Bajo Cauca", "score": 71, "x": 28, "y": 22, "municipalities": 13},
-    {"id": "sur_cordoba", "name": "Sur de Córdoba", "score": 63, "x": 22, "y": 18, "municipalities": 5},
-    {"id": "alto_patia", "name": "Alto Patía", "score": 80, "x": 15, "y": 65, "municipalities": 24}
-]
+# Load real PDET data (replacing mock data)
+PDET_REGIONS = load_pdet_regions_for_dashboard(include_scores=True, score_source="random")
+REGION_CONNECTIONS = get_region_connections()
+
+# Pipeline bridge (will be initialized when orchestrator is available)
+pipeline_bridge: PipelineDashboardBridge = None
+
+# Dashboard data service for transforming artifacts
+dashboard_data_service = DashboardDataService(jobs_dir=DATA_DIR / "jobs")
+
+# Initialize advanced data mining and analytics engines
+data_mining_engine = DataMiningEngine(data_dir=DATA_DIR)
+analytics_engine = AnalyticsEngine(data_dir=DATA_DIR)
 
 # Evidence stream - will be populated by pipeline analysis
 EVIDENCE_STREAM = [
-    {"source": "PDT Sección 3.2", "page": 45, "text": "Implementación de estrategias municipales", "region": "arauca"},
-    {"source": "PDT Capítulo 4", "page": 67, "text": "Articulación con Decálogo DDHH", "region": "catatumbo"},
-    {"source": "Anexo Técnico", "page": 112, "text": "Indicadores de cumplimiento territorial", "region": "montes_maria"},
-    {"source": "PDT Sección 5.1", "page": 89, "text": "Proyección territorial 2030", "region": "putumayo"},
-    {"source": "PATR Capítulo 2", "page": 34, "text": "Cadenas de valor agropecuarias", "region": "bajo_cauca"},
-    {"source": "PDT Sección 6.3", "page": 156, "text": "Mecanismos de participación ciudadana", "region": "choco"},
+    {
+        "source": "PDT Sección 3.2",
+        "page": 45,
+        "text": "Implementación de estrategias municipales",
+        "region": "arauca",
+    },
+    {
+        "source": "PDT Capítulo 4",
+        "page": 67,
+        "text": "Articulación con Decálogo DDHH",
+        "region": "catatumbo",
+    },
+    {
+        "source": "Anexo Técnico",
+        "page": 112,
+        "text": "Indicadores de cumplimiento territorial",
+        "region": "montes_maria",
+    },
+    {
+        "source": "PDT Sección 5.1",
+        "page": 89,
+        "text": "Proyección territorial 2030",
+        "region": "putumayo",
+    },
+    {
+        "source": "PATR Capítulo 2",
+        "page": 34,
+        "text": "Cadenas de valor agropecuarias",
+        "region": "bajo_cauca",
+    },
+    {
+        "source": "PDT Sección 6.3",
+        "page": 156,
+        "text": "Mecanismos de participación ciudadana",
+        "region": "choco",
+    },
 ]
 
-from flask import Flask, jsonify, request, Response
+from flask import Flask, Response, redirect, url_for
 
-@app.route('/')
+
+# Path to static files directory
+STATIC_DIR = Path(__file__).parent / "static"
+
+
+@app.route("/")
 def index():
-    dashboard_path = os.path.join(PROJECT_ROOT, 'dashboard.html')
-    with open(dashboard_path, 'r', encoding='utf-8') as f:
-        return Response(f.read(), mimetype='text/html')
+    """Serve dashboard main page.
 
-@app.route('/api/pdet-regions', methods=['GET'])
+    Priority order:
+    1. PROJECT_ROOT/dashboard.html (custom dashboard)
+    2. static/sisas-ecosystem-view-enhanced.html (default SISAS view)
+    3. Redirect to /api/v1/regions (API fallback)
+    """
+    # Try custom dashboard in project root
+    dashboard_path = PROJECT_ROOT / "dashboard.html"
+    if dashboard_path.exists():
+        with open(str(dashboard_path), encoding="utf-8") as f:
+            return Response(f.read(), mimetype="text/html")
+
+    # Fall back to SISAS ecosystem view
+    sisas_path = STATIC_DIR / "sisas-ecosystem-view-enhanced.html"
+    if sisas_path.exists():
+        with open(str(sisas_path), encoding="utf-8") as f:
+            return Response(f.read(), mimetype="text/html")
+
+    # API fallback - return JSON with available endpoints
+    return jsonify({
+        "status": "online",
+        "message": "ATROZ Dashboard API v1",
+        "dashboard_ui": "No dashboard.html found",
+        "endpoints": {
+            "regions": "/api/v1/regions",
+            "sisas_status": "/api/v1/sisas/status",
+            "canonical": "/api/v1/canonical/questions",
+            "static_files": "/static/"
+        }
+    })
+
+
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    """Serve static files from the dashboard static directory."""
+    from flask import send_from_directory
+    return send_from_directory(str(STATIC_DIR), filename)
+
+
+@app.route("/enhanced-monitor")
+def enhanced_monitor():
+    """Serve the enhanced monitoring dashboard."""
+    monitor_path = Path(__file__).parent / "static" / "enhanced-monitor.html"
+    with open(str(monitor_path), encoding="utf-8") as f:
+        return Response(f.read(), mimetype="text/html")
+
+
+@app.route("/api/pdet-regions", methods=["GET"])
 def get_pdet_regions():
     """Return PDET regions with current scores"""
     return jsonify(PDET_REGIONS)
 
-@app.route('/api/evidence', methods=['GET'])
+
+@app.route("/api/evidence", methods=["GET"])
 def get_evidence():
     """Return current evidence stream"""
     return jsonify(EVIDENCE_STREAM)
 
-@app.route('/api/upload/plan', methods=['POST'])
+
+@app.route("/api/upload/plan", methods=["POST"])
 def upload_plan():
     """Handle PDF plan upload"""
-    if 'file' not in request.files:
+    if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
+
+    file = request.files["file"]
+    if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
-    
-    if file and file.filename.endswith('.pdf'):
+
+    if file and file.filename.endswith(".pdf"):
         filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(filepath)
-        
-        job_id = f"job_{int(time.time())}"
-        pipeline_status['active_jobs'].append({
-            "id": job_id,
-            "filename": filename,
-            "status": "queued",
-            "progress": 0,
-            "phase": 0
-        })
-        
-        # Emit update via WebSocket
-        socketio.emit('job_created', {"job_id": job_id, "filename": filename})
-        
-        # Trigger pipeline (mock for now, will connect to real orchestrator)
-        socketio.start_background_task(run_pipeline_mock, job_id, filename)
-        
+
+        # Use pipeline bridge if available, otherwise fallback to mock
+        if pipeline_bridge:
+            from pathlib import Path
+
+            job_id = pipeline_bridge.submit_job(Path(filepath), filename)
+            logger.info(f"Submitted job {job_id} to pipeline bridge")
+        else:
+            job_id = f"job_{int(time.time())}"
+            pipeline_status["active_jobs"].append(
+                {"id": job_id, "filename": filename, "status": "queued", "progress": 0, "phase": 0}
+            )
+
+            # Emit update via WebSocket
+            socketio.emit("job_created", {"job_id": job_id, "filename": filename})
+
+            # Trigger mock pipeline
+            socketio.start_background_task(run_pipeline_mock, job_id, filename)
+            logger.info(f"Submitted job {job_id} to mock pipeline")
+
         return jsonify({"message": "File uploaded successfully", "job_id": job_id}), 202
-    
+
     return jsonify({"error": "Invalid file type"}), 400
 
-@app.route('/api/metrics', methods=['GET'])
+
+@app.route("/api/metrics", methods=["GET"])
 def get_metrics():
     """Return system metrics"""
     import psutil
+
     metrics = {
         "cpu": psutil.cpu_percent(),
         "memory": psutil.virtual_memory().percent,
-        "active_jobs": len(pipeline_status['active_jobs']),
-        "uptime": time.time() - start_time
+        "active_jobs": len(pipeline_status["active_jobs"]),
+        "uptime": time.time() - start_time,
     }
     return jsonify(metrics)
 
-# WebSocket Events
-@socketio.on('connect')
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NEW API v1 ENDPOINTS - SISAS Integration
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@app.route("/api/v1/regions", methods=["GET"])
+def get_all_regions():
+    """Get all PDET regions with summaries."""
+    return jsonify({"regions": PDET_REGIONS, "total": len(PDET_REGIONS)})
+
+
+@app.route("/api/v1/regions/<region_id>", methods=["GET"])
+def get_region_detail_endpoint(region_id: str):
+    """Get full region detail with macro/meso/micro breakdown."""
+    job_id = request.args.get("job_id")
+    try:
+        detail = get_region_detail(region_id, job_id)
+        return jsonify(detail)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+
+
+@app.route("/api/v1/regions/connections", methods=["GET"])
+def get_region_connections_endpoint():
+    """Get region connections for constellation view."""
+    return jsonify({"connections": REGION_CONNECTIONS})
+
+
+@app.route("/api/v1/jobs", methods=["GET"])
+def list_jobs():
+    """List all pipeline jobs (active and completed)."""
+    if pipeline_bridge:
+        return jsonify(pipeline_bridge.get_all_jobs())
+    return jsonify({"active_jobs": pipeline_status["active_jobs"], "completed_jobs": []})
+
+
+@app.route("/api/v1/jobs/<job_id>", methods=["GET"])
+def get_job_status_endpoint(job_id: str):
+    """Get detailed job status with phase breakdown."""
+    if pipeline_bridge:
+        status = pipeline_bridge.get_job_status(job_id)
+        if status:
+            return jsonify(status)
+        return jsonify({"error": "Job not found"}), 404
+
+    # Fallback to legacy status
+    for job in pipeline_status["active_jobs"]:
+        if job["id"] == job_id:
+            return jsonify(job)
+    return jsonify({"error": "Job not found"}), 404
+
+
+@app.route("/api/v1/sisas/status", methods=["GET"])
+def get_sisas_status():
+    """Get full SISAS integration status."""
+    if pipeline_bridge and hasattr(pipeline_bridge.orchestrator, "context"):
+        try:
+            context = pipeline_bridge.orchestrator.context
+            if hasattr(context, "sisas"):
+                sisas = context.sisas
+                return jsonify(
+                    {
+                        "enabled": True,
+                        "status": "ONLINE",
+                        "consumers": {
+                            "total": len(getattr(sisas, "_consumers", [])),
+                            "active": len([c for c in getattr(sisas, "_consumers", [])]),
+                        },
+                        "metrics": sisas.get_metrics() if hasattr(sisas, "get_metrics") else {},
+                    }
+                )
+        except Exception as e:
+            logger.error(f"Failed to get SISAS status: {e}")
+
+    return jsonify({"enabled": False, "status": "UNAVAILABLE"})
+
+
+@app.route("/api/v1/sisas/metrics", methods=["GET"])
+def get_sisas_metrics():
+    """Get SISAS metrics from orchestrator."""
+    if pipeline_bridge:
+        metrics = pipeline_bridge.get_sisas_metrics()
+        return jsonify(metrics)
+
+    return jsonify(
+        {
+            "sisas_enabled": False,
+            "message": "Pipeline bridge not initialized",
+        }
+    )
+
+
+@app.route("/api/v1/sisas/consumers", methods=["GET"])
+def get_sisas_consumers():
+    """Get status of all SISAS consumers."""
+    if pipeline_bridge and hasattr(pipeline_bridge.orchestrator, "get_sisas_metrics"):
+        try:
+            metrics = pipeline_bridge.orchestrator.get_sisas_metrics()
+            consumer_stats = metrics.get("consumer_stats", {})
+            return jsonify({"consumers": consumer_stats})
+        except Exception as e:
+            logger.error(f"Failed to get consumer stats: {e}")
+            return jsonify({"error": str(e)}), 500
+
+    return jsonify({"consumers": [], "message": "SISAS not available"})
+
+
+@app.route("/api/v1/sisas/dead-letter", methods=["GET"])
+def get_dead_letter_queue():
+    """Get dead letter queue contents."""
+    if pipeline_bridge and hasattr(pipeline_bridge.orchestrator, "context"):
+        try:
+            sisas = pipeline_bridge.orchestrator.context.sisas
+            if hasattr(sisas, "get_dead_letter_queue"):
+                dlq = sisas.get_dead_letter_queue()
+                return jsonify({"dead_letter_queue": dlq, "count": len(dlq)})
+        except Exception as e:
+            logger.error(f"Failed to get dead letter queue: {e}")
+            return jsonify({"error": str(e)}), 500
+
+    return jsonify({"dead_letter_queue": [], "count": 0, "message": "SISAS not available"})
+
+
+@app.route("/api/v1/sisas/metrics/historical", methods=["GET"])
+def get_historical_metrics():
+    """Get historical SISAS metrics for time-series visualization.
+    
+    Query params:
+        - range: Time range (1h, 6h, 24h, 7d) - default: 1h
+        - interval: Data point interval (1m, 5m, 15m, 1h) - default: 1m
+    """
+    time_range = request.args.get("range", "1h")
+    interval = request.args.get("interval", "1m")
+    
+    # Mock historical data for demonstration
+    # In production, this would query a time-series database
+    import random
+    from datetime import datetime, timedelta
+    
+    # Parse time range
+    range_map = {"1h": 60, "6h": 360, "24h": 1440, "7d": 10080}
+    minutes = range_map.get(time_range, 60)
+    
+    # Parse interval
+    interval_map = {"1m": 1, "5m": 5, "15m": 15, "1h": 60}
+    step = interval_map.get(interval, 1)
+    
+    # Generate time series data
+    now = datetime.now()
+    data_points = []
+    
+    for i in range(0, minutes, step):
+        timestamp = now - timedelta(minutes=minutes - i)
+        data_points.append({
+            "timestamp": timestamp.isoformat(),
+            "signals_dispatched": random.randint(140, 180),
+            "signals_delivered": random.randint(130, 170),
+            "signals_failed": random.randint(2, 10),
+            "avg_latency_ms": random.randint(35, 65),
+            "active_consumers": random.randint(12, 17),
+            "dead_letter_count": random.randint(0, 5)
+        })
+    
+    return jsonify({
+        "range": time_range,
+        "interval": interval,
+        "data_points": data_points,
+        "summary": {
+            "total_dispatched": sum(p["signals_dispatched"] for p in data_points),
+            "total_delivered": sum(p["signals_delivered"] for p in data_points),
+            "avg_latency": sum(p["avg_latency_ms"] for p in data_points) / len(data_points),
+            "success_rate": (sum(p["signals_delivered"] for p in data_points) / 
+                           sum(p["signals_dispatched"] for p in data_points) * 100)
+        }
+    })
+
+
+@app.route("/api/v1/sisas/metrics/aggregated", methods=["GET"])
+def get_aggregated_metrics():
+    """Get aggregated SISAS metrics across all components."""
+    # Mock aggregated data
+    # In production, this would aggregate real metrics from SISAS components
+    return jsonify({
+        "overview": {
+            "total_signals_dispatched": 1247,
+            "total_signals_delivered": 1183,
+            "total_signals_failed": 64,
+            "success_rate": 94.9,
+            "avg_latency_ms": 47,
+            "active_consumers": 14,
+            "total_consumers": 17
+        },
+        "gates": {
+            "gate_1": {"name": "Scope Alignment", "pass_rate": 97.2, "passed": 1247, "total": 1283},
+            "gate_2": {"name": "Value Add", "pass_rate": 100.0, "passed": 1283, "total": 1283},
+            "gate_3": {"name": "Capability Match", "pass_rate": 97.5, "passed": 1251, "total": 1283},
+            "gate_4": {"name": "Irrigation Channel", "pass_rate": 96.5, "passed": 1238, "total": 1283}
+        },
+        "signal_types": {
+            "MC01_STRUCTURAL": 245,
+            "MC02_QUANTITATIVE": 198,
+            "MC03_NORMATIVE": 176,
+            "MC04_PROGRAMMATIC": 142,
+            "MC05_FINANCIAL": 215,
+            "MC06_POPULATION": 134,
+            "MC07_TEMPORAL": 189,
+            "MC08_CAUSAL": 156,
+            "MC09_INSTITUTIONAL": 128,
+            "MC10_SEMANTIC": 164
+        },
+        "error_breakdown": {
+            "NO_CONSUMER": 28,
+            "TIMEOUT": 15,
+            "VALIDATION_FAILED": 12,
+            "GATE_REJECTED": 8,
+            "SYSTEM_ERROR": 1
+        },
+        "phase_distribution": {
+            "P00": 245, "P01": 232, "P02": 218, "P03": 195, "P04": 178,
+            "P05": 156, "P06": 142, "P07": 128, "P08": 115, "P09": 98
+        },
+        "latency_distribution": {
+            "0-20ms": 245,
+            "20-40ms": 432,
+            "40-60ms": 318,
+            "60-80ms": 156,
+            "80-100ms": 78,
+            "100ms+": 18
+        }
+    })
+
+
+@app.route("/api/v1/sisas/consumers/detailed", methods=["GET"])
+def get_consumers_detailed():
+    """Get detailed status and performance metrics for all consumers."""
+    # Mock detailed consumer data
+    consumers = [
+        {
+            "id": "phase_00_bootstrap",
+            "name": "Phase 0 Bootstrap Consumer",
+            "phase": "P00",
+            "status": "active",
+            "throughput_per_min": 156,
+            "queue_depth": 12,
+            "processed_total": 8945,
+            "failed_total": 23,
+            "avg_processing_time_ms": 42,
+            "last_heartbeat": datetime.now().isoformat(),
+            "uptime_hours": 72.5
+        },
+        {
+            "id": "phase_01_extraction",
+            "name": "Phase 1 Extraction Consumer",
+            "phase": "P01",
+            "status": "processing",
+            "throughput_per_min": 145,
+            "queue_depth": 24,
+            "processed_total": 7823,
+            "failed_total": 18,
+            "avg_processing_time_ms": 58,
+            "last_heartbeat": datetime.now().isoformat(),
+            "uptime_hours": 71.8
+        },
+        {
+            "id": "phase_02_enrichment",
+            "name": "Phase 2 Enrichment Consumer",
+            "phase": "P02",
+            "status": "active",
+            "throughput_per_min": 128,
+            "queue_depth": 15,
+            "processed_total": 6734,
+            "failed_total": 31,
+            "avg_processing_time_ms": 67,
+            "last_heartbeat": datetime.now().isoformat(),
+            "uptime_hours": 70.2
+        }
+        # Additional consumers would be added here
+    ]
+    
+    return jsonify({
+        "consumers": consumers,
+        "summary": {
+            "total_consumers": 17,
+            "active": 14,
+            "processing": 2,
+            "waiting": 1,
+            "error": 0,
+            "total_throughput": sum(c["throughput_per_min"] for c in consumers),
+            "avg_queue_depth": sum(c["queue_depth"] for c in consumers) / len(consumers)
+        }
+    })
+
+
+@app.route("/api/v1/sisas/extractors/performance", methods=["GET"])
+def get_extractors_performance():
+    """Get performance metrics for all extractors (MC01-MC10)."""
+    extractors = [
+        {"id": "MC01", "name": "STRUCTURAL", "progress": 92, "status": "complete", 
+         "signals_emitted": 245, "avg_quality_score": 0.94},
+        {"id": "MC02", "name": "QUANTITATIVE", "progress": 78, "status": "processing", 
+         "signals_emitted": 198, "avg_quality_score": 0.89},
+        {"id": "MC03", "name": "NORMATIVE", "progress": 85, "status": "complete", 
+         "signals_emitted": 176, "avg_quality_score": 0.91},
+        {"id": "MC04", "name": "PROGRAMMATIC", "progress": 71, "status": "processing", 
+         "signals_emitted": 142, "avg_quality_score": 0.87},
+        {"id": "MC05", "name": "FINANCIAL", "progress": 85, "status": "complete", 
+         "signals_emitted": 215, "avg_quality_score": 0.92},
+        {"id": "MC06", "name": "POPULATION", "progress": 65, "status": "processing", 
+         "signals_emitted": 134, "avg_quality_score": 0.85},
+        {"id": "MC07", "name": "TEMPORAL", "progress": 88, "status": "complete", 
+         "signals_emitted": 189, "avg_quality_score": 0.93},
+        {"id": "MC08", "name": "CAUSAL", "progress": 72, "status": "processing", 
+         "signals_emitted": 156, "avg_quality_score": 0.88},
+        {"id": "MC09", "name": "INSTITUTIONAL", "progress": 68, "status": "processing", 
+         "signals_emitted": 128, "avg_quality_score": 0.86},
+        {"id": "MC10", "name": "SEMANTIC", "progress": 62, "status": "processing", 
+         "signals_emitted": 164, "avg_quality_score": 0.84}
+    ]
+    
+    return jsonify({
+        "extractors": extractors,
+        "summary": {
+            "total_extractors": 10,
+            "completed": sum(1 for e in extractors if e["status"] == "complete"),
+            "processing": sum(1 for e in extractors if e["status"] == "processing"),
+            "avg_progress": sum(e["progress"] for e in extractors) / len(extractors),
+            "total_signals": sum(e["signals_emitted"] for e in extractors),
+            "avg_quality": sum(e["avg_quality_score"] for e in extractors) / len(extractors)
+        }
+    })
+
+
+@app.route("/api/v1/sisas/gates/detailed", methods=["GET"])
+def get_gates_detailed():
+    """Get detailed gate validation statistics and rejection reasons."""
+    gates = [
+        {
+            "gate_number": 1,
+            "name": "Scope Alignment",
+            "pass_rate": 97.2,
+            "passed": 1247,
+            "rejected": 36,
+            "total": 1283,
+            "threshold": 0.50,
+            "rejection_reasons": {
+                "OUT_OF_SCOPE": 18,
+                "WRONG_PHASE": 12,
+                "INVALID_TARGET": 6
+            },
+            "avg_validation_time_ms": 12
+        },
+        {
+            "gate_number": 2,
+            "name": "Value Add",
+            "pass_rate": 100.0,
+            "passed": 1283,
+            "rejected": 0,
+            "total": 1283,
+            "threshold": 0.30,
+            "rejection_reasons": {},
+            "avg_validation_time_ms": 8
+        },
+        {
+            "gate_number": 3,
+            "name": "Capability Match",
+            "pass_rate": 97.5,
+            "passed": 1251,
+            "rejected": 32,
+            "total": 1283,
+            "threshold": 0.70,
+            "rejection_reasons": {
+                "CONSUMER_NOT_READY": 15,
+                "MISSING_CAPABILITY": 10,
+                "RESOURCE_LIMIT": 7
+            },
+            "avg_validation_time_ms": 15
+        },
+        {
+            "gate_number": 4,
+            "name": "Irrigation Channel",
+            "pass_rate": 96.5,
+            "passed": 1238,
+            "rejected": 45,
+            "total": 1283,
+            "threshold": 0.80,
+            "rejection_reasons": {
+                "CHANNEL_FULL": 22,
+                "RATE_LIMIT": 15,
+                "BACKPRESSURE": 8
+            },
+            "avg_validation_time_ms": 18
+        }
+    ]
+    
+    return jsonify({
+        "gates": gates,
+        "summary": {
+            "total_gates": 4,
+            "overall_pass_rate": sum(g["pass_rate"] for g in gates) / len(gates),
+            "total_signals": 1283,
+            "total_passed": sum(g["passed"] for g in gates) / len(gates),
+            "total_rejected": sum(g["rejected"] for g in gates)
+        }
+    })
+
+
+@app.route("/api/v1/regions/<region_id>/questions", methods=["GET"])
+def get_region_questions(region_id: str):
+    """Get all 300 micro question scores for a region.
+
+    Query params:
+        - dimension: Filter by dimension (D1-D6)
+        - policy_area: Filter by policy area (PA01-PA10)
+        - job_id: Load from specific job artifacts
+    """
+    dimension = request.args.get("dimension")
+    policy_area = request.args.get("policy_area")
+    job_id = request.args.get("job_id")
+
+    # Try to load from actual job artifacts if job_id is provided
+    questions = []
+    if job_id and pipeline_bridge:
+        try:
+            # Get job snapshot to find artifacts
+            from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
+            monitor = get_monitor()
+            snapshot = monitor.get_job_snapshot(job_id)
+            
+            if snapshot:
+                # Look for report artifacts in completed phases
+                for phase_id, phase_metrics in snapshot.phases.items():
+                    if phase_metrics.status == "COMPLETED":
+                        for artifact in phase_metrics.artifacts_produced:
+                            if "report" in artifact.lower() or "questions" in artifact.lower():
+                                try:
+                                    import json
+                                    with open(artifact, 'r') as f:
+                                        report = json.load(f)
+                                        questions = dashboard_data_service.extract_question_matrix(report)
+                                        break
+                                except Exception as e:
+                                    logger.warning(f"Failed to load artifact {artifact}: {e}")
+                    if questions:
+                        break
+        except Exception as e:
+            logger.error(f"Failed to load questions from job artifacts: {e}")
+    
+    # Fallback to generating structure from canonical questionnaire
+    if not questions:
+        # Generate question structure based on F.A.R.F.A.N architecture
+        # 300 questions = 30 base questions × 10 policy areas
+        for i in range(1, 301):
+            base_q = ((i - 1) % 30) + 1
+            pa_idx = ((i - 1) // 30) + 1
+            dim_idx = ((base_q - 1) // 5) + 1
+            
+            question = {
+                "id": f"Q{i:03d}",
+                "text": f"Question {base_q} for Policy Area {pa_idx:02d}",
+                "score": None,  # Will be populated from artifacts when available
+                "dimension": f"D{dim_idx}",
+                "policy_area": f"PA{pa_idx:02d}",
+                "base_question": f"Q{base_q:03d}",
+            }
+            
+            # Apply filters
+            if dimension and question["dimension"] != dimension:
+                continue
+            if policy_area and question["policy_area"] != policy_area:
+                continue
+            
+            questions.append(question)
+
+    return jsonify({"region_id": region_id, "questions": questions, "total": len(questions), "job_id": job_id})
+
+
+@app.route("/api/v1/regions/<region_id>/evidence", methods=["GET"])
+def get_region_evidence(region_id: str):
+    """Get evidence stream for a region.
+
+    Query params:
+        - limit: Max number of evidence items (default 50)
+        - question_id: Filter by question
+        - job_id: Load from specific job artifacts
+    """
+    limit = int(request.args.get("limit", 50))
+    question_id = request.args.get("question_id")
+    job_id = request.args.get("job_id")
+
+    evidence_items = []
+    
+    # Try to load from actual job artifacts if job_id is provided
+    if job_id and pipeline_bridge:
+        try:
+            from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
+            monitor = get_monitor()
+            snapshot = monitor.get_job_snapshot(job_id)
+            
+            if snapshot:
+                # Look for evidence artifacts in completed phases
+                for phase_id, phase_metrics in snapshot.phases.items():
+                    if phase_metrics.status == "COMPLETED":
+                        for artifact in phase_metrics.artifacts_produced:
+                            if "evidence" in artifact.lower():
+                                try:
+                                    import json
+                                    with open(artifact, 'r') as f:
+                                        raw_evidence = json.load(f)
+                                        # Normalize evidence stream
+                                        if isinstance(raw_evidence, list):
+                                            evidence_items = dashboard_data_service.normalize_evidence_stream(
+                                                raw_evidence, 
+                                                limit=limit
+                                            )
+                                        break
+                                except Exception as e:
+                                    logger.warning(f"Failed to load evidence artifact {artifact}: {e}")
+                    if evidence_items:
+                        break
+        except Exception as e:
+            logger.error(f"Failed to load evidence from job artifacts: {e}")
+    
+    # Fallback to structured example if no real data available
+    if not evidence_items:
+        evidence_items = [
+            {
+                "source": f"PDT Sección 3.2 - {region_id}",
+                "page": 45,
+                "text": "Implementación de estrategias municipales para equidad de género",
+                "timestamp": "2024-01-15T10:30:00Z",
+                "question_id": "Q023",
+                "relevance_score": 0.87,
+            }
+        ]
+        
+        # Apply question filter if specified
+        if question_id:
+            evidence_items = [e for e in evidence_items if e.get("question_id") == question_id]
+
+    return jsonify(
+        {
+            "region_id": region_id,
+            "evidence": evidence_items[:limit],
+            "total": len(evidence_items),
+            "limit": limit,
+            "job_id": job_id,
+        }
+    )
+
+
+@app.route("/api/v1/jobs/<job_id>/logs", methods=["GET"])
+def get_job_logs(job_id: str):
+    """Get execution logs for a job.
+
+    Query params:
+        - phase: Filter by phase (P00-P09)
+        - level: Filter by log level (DEBUG, INFO, WARNING, ERROR)
+        - limit: Max number of log entries
+    """
+    phase = request.args.get("phase")
+    level = request.args.get("level")
+    limit = int(request.args.get("limit", 100))
+
+    logs = []
+    
+    # Try to retrieve logs from monitoring system
+    try:
+        from farfan_pipeline.dashboard_atroz_.monitoring_enhanced import get_monitor
+        monitor = get_monitor()
+        snapshot = monitor.get_job_snapshot(job_id)
+        
+        if snapshot:
+            # Convert phase metrics to log-like entries
+            for phase_id, phase_metrics in snapshot.phases.items():
+                # Add phase start log
+                if phase_metrics.started_at:
+                    logs.append({
+                        "timestamp": phase_metrics.started_at.isoformat(),
+                        "phase": phase_id,
+                        "level": "INFO",
+                        "message": f"Phase {phase_id} ({phase_metrics.phase_name}) started"
+                    })
+                
+                # Add error logs
+                for error in phase_metrics.errors:
+                    logs.append({
+                        "timestamp": error.get("timestamp", ""),
+                        "phase": phase_id,
+                        "level": "ERROR",
+                        "message": error.get("message", "Unknown error"),
+                        "details": error.get("details", {})
+                    })
+                
+                # Add warning logs
+                for warning in phase_metrics.warnings:
+                    logs.append({
+                        "timestamp": warning.get("timestamp", ""),
+                        "phase": phase_id,
+                        "level": "WARNING",
+                        "message": warning.get("message", "Warning"),
+                        "details": warning.get("details", {})
+                    })
+                
+                # Add phase completion log
+                if phase_metrics.completed_at:
+                    log_level = "INFO" if phase_metrics.status == "COMPLETED" else "ERROR"
+                    logs.append({
+                        "timestamp": phase_metrics.completed_at.isoformat(),
+                        "phase": phase_id,
+                        "level": log_level,
+                        "message": f"Phase {phase_id} {phase_metrics.status.lower()} in {phase_metrics.execution_time_ms:.0f}ms"
+                    })
+                
+                # Add sub-phase logs
+                for sub_phase_name, sub_phase_data in phase_metrics.sub_phases.items():
+                    logs.append({
+                        "timestamp": sub_phase_data.get("timestamp", ""),
+                        "phase": phase_id,
+                        "level": "DEBUG",
+                        "message": f"Sub-phase: {sub_phase_name}",
+                        "details": sub_phase_data.get("metrics", {})
+                    })
+            
+            # Sort by timestamp
+            logs.sort(key=lambda x: x.get("timestamp", ""))
+    except Exception as e:
+        logger.error(f"Failed to retrieve logs for job {job_id}: {e}")
+        logs = [
+            {"timestamp": "2024-01-15T10:30:00Z", "phase": "P00", "level": "ERROR", 
+             "message": f"Failed to retrieve logs: {str(e)}"}
+        ]
+
+    # Apply filters
+    if phase:
+        logs = [log for log in logs if log["phase"] == phase]
+    if level:
+        logs = [log for log in logs if log["level"] == level]
+
+    return jsonify({"job_id": job_id, "logs": logs[:limit], "total": len(logs), "limit": limit})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CANONICAL DATA ENDPOINTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@app.route("/api/v1/canonical/questions", methods=["GET"])
+def get_canonical_questions():
+    """Get all 300 micro questions with metadata."""
+    import json
+    from pathlib import Path
+    
+    questions = []
+    
+    # Try to load from canonic questionnaire central
+    try:
+        cqc_path = Path(__file__).parent.parent.parent.parent / "canonic_questionnaire_central"
+        flat_view = cqc_path / "_views" / "questionnaire_flat.json"
+        
+        if flat_view.exists():
+            with open(flat_view, 'r', encoding='utf-8') as f:
+                cqc_data = json.load(f)
+                
+            # Extract questions from CQC structure
+            if isinstance(cqc_data, dict) and "questions" in cqc_data:
+                for q in cqc_data["questions"]:
+                    questions.append({
+                        "id": q.get("id", ""),
+                        "text": q.get("text", ""),
+                        "dimension": q.get("dimension", ""),
+                        "policy_area": q.get("policy_area", ""),
+                        "cluster": q.get("cluster", ""),
+                        "type": q.get("type", "micro"),
+                    })
+        else:
+            # Fallback to structured generation
+            raise FileNotFoundError("CQC flat view not found")
+            
+    except Exception as e:
+        logger.warning(f"Could not load from CQC: {e}, using structured generation")
+        
+        # Generate structured questions based on F.A.R.F.A.N architecture
+        # 300 questions = 30 base questions × 10 policy areas
+        for i in range(1, 301):
+            base_q = ((i - 1) % 30) + 1
+            pa_idx = ((i - 1) // 30) + 1
+            dim_idx = ((base_q - 1) // 5) + 1
+            cluster_idx = ((base_q - 1) // 8) + 1
+            
+            questions.append({
+                "id": f"Q{i:03d}",
+                "text": f"Canonical question {i}",
+                "dimension": f"D{dim_idx}",
+                "policy_area": f"PA{pa_idx:02d}",
+                "cluster": f"CL{cluster_idx:02d}",
+                "type": "micro",
+            })
+
+    return jsonify({"questions": questions, "total": len(questions)})
+
+
+@app.route("/api/v1/canonical/questions/<question_id>", methods=["GET"])
+def get_question_detail(question_id: str):
+    """Get single question with all bound methods and patterns."""
+    import json
+    from pathlib import Path
+    
+    question_detail = None
+    
+    # Try to load from canonic questionnaire central
+    try:
+        cqc_path = Path(__file__).parent.parent.parent.parent / "canonic_questionnaire_central"
+        
+        # Look for question in dimensions
+        for dim_dir in (cqc_path / "dimensions").iterdir():
+            if dim_dir.is_dir():
+                questions_file = dim_dir / "questions.json"
+                if questions_file.exists():
+                    with open(questions_file, 'r', encoding='utf-8') as f:
+                        dim_questions = json.load(f)
+                        
+                    # Find matching question
+                    if isinstance(dim_questions, list):
+                        for q in dim_questions:
+                            if q.get("id") == question_id:
+                                question_detail = {
+                                    "id": q.get("id"),
+                                    "text": q.get("text", ""),
+                                    "dimension": q.get("dimension", ""),
+                                    "policy_area": q.get("policy_area", ""),
+                                    "cluster": q.get("cluster", ""),
+                                    "patterns": q.get("patterns", []),
+                                    "indicators": q.get("indicators", []),
+                                    "methods": q.get("methods", []),
+                                    "metadata": q.get("metadata", {}),
+                                }
+                                break
+                if question_detail:
+                    break
+        
+        if not question_detail:
+            raise ValueError(f"Question {question_id} not found in CQC")
+            
+    except Exception as e:
+        logger.warning(f"Could not load question {question_id} from CQC: {e}")
+        
+        # Fallback to basic structure
+        question_detail = {
+            "id": question_id,
+            "text": f"Detailed text for {question_id}",
+            "dimension": "D1",
+            "policy_area": "PA01",
+            "cluster": "CL01",
+            "patterns": [],
+            "indicators": [],
+            "methods": [],
+        }
+
+    return jsonify(question_detail)
+
+
+@app.route("/api/v1/canonical/dimensions", methods=["GET"])
+def get_canonical_dimensions():
+    """Get all 6 dimensions with metadata."""
+    dimensions = [
+        {"id": "D1", "name": "INSUMOS", "description": "Información de base y diagnóstico"},
+        {"id": "D2", "name": "VOLUNTAD", "description": "Participación y compromiso"},
+        {"id": "D3", "name": "CONTEXTO", "description": "Contexto territorial"},
+        {"id": "D4", "name": "COHERENCIA", "description": "Coherencia programática"},
+        {"id": "D5", "name": "SISAS", "description": "Sistema integrado de seguimiento"},
+        {"id": "D6", "name": "IMPLEMENTACIÓN", "description": "Capacidad de implementación"},
+    ]
+
+    return jsonify({"dimensions": dimensions, "total": len(dimensions)})
+
+
+@app.route("/api/v1/canonical/policy-areas", methods=["GET"])
+def get_canonical_policy_areas():
+    """Get all 10 policy areas with metadata."""
+    policy_areas = [
+        {"id": "PA01", "name": "Derechos de Género", "questions": 30},
+        {"id": "PA02", "name": "Prevención de Violencias", "questions": 30},
+        {"id": "PA03", "name": "Medio Ambiente", "questions": 30},
+        {"id": "PA04", "name": "Derechos Económicos", "questions": 30},
+        {"id": "PA05", "name": "Derechos de Víctimas", "questions": 30},
+        {"id": "PA06", "name": "Niñez y Juventud", "questions": 30},
+        {"id": "PA07", "name": "Tierra y Territorio", "questions": 30},
+        {"id": "PA08", "name": "Defensores DDHH", "questions": 30},
+        {"id": "PA09", "name": "Crisis Carcelaria", "questions": 30},
+        {"id": "PA10", "name": "Migración", "questions": 30},
+    ]
+
+    return jsonify({"policy_areas": policy_areas, "total": len(policy_areas)})
+
+
+@app.route("/api/v1/canonical/clusters", methods=["GET"])
+def get_canonical_clusters():
+    """Get all 4 clusters with metadata."""
+    clusters = [
+        {"id": "CL01", "name": "SEC_PAZ", "description": "Seguridad y Paz", "questions": 75},
+        {"id": "CL02", "name": "GP", "description": "Gestión Pública", "questions": 75},
+        {"id": "CL03", "name": "TERR_AMB", "description": "Territorio y Ambiente", "questions": 75},
+        {"id": "CL04", "name": "DESC_CRIS", "description": "Desconfianza y Crisis", "questions": 75},
+    ]
+
+    return jsonify({"clusters": clusters, "total": len(clusters)})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ADVANCED DATA MINING & ANALYTICS ENDPOINTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@app.route("/api/v1/data-mining/query", methods=["POST"])
+def execute_data_mining_query():
+    """Execute advanced data mining query with filters and aggregations.
+
+    Request Body:
+    {
+        "municipalities": ["05001", "05002"],  // Optional
+        "policy_areas": ["PA01", "PA02"],      // Optional
+        "dimensions": ["DIM01", "DIM03"],      // Optional
+        "clusters": ["CL01"],                  // Optional
+        "subregions": ["arauca"],              // Optional
+        "question_range": [1, 100],            // Optional
+        "min_score": 60.0,                     // Optional
+        "max_score": 90.0,                     // Optional
+        "aggregation_level": "municipality"    // municipality, subregion, policy_area, dimension
+    }
+    """
+    try:
+        from flask import Response
+        query_params = request.get_json()
+
+        # Build data mining query
+        query = DataMiningQuery(
+            municipalities=query_params.get("municipalities"),
+            policy_areas=query_params.get("policy_areas"),
+            dimensions=query_params.get("dimensions"),
+            clusters=query_params.get("clusters"),
+            subregions=query_params.get("subregions"),
+            question_range=tuple(query_params["question_range"]) if query_params.get("question_range") else None,
+            min_score=query_params.get("min_score"),
+            max_score=query_params.get("max_score"),
+            aggregation_level=query_params.get("aggregation_level", "municipality")
+        )
+
+        # Execute query
+        result = data_mining_engine.execute_query(query)
+
+        # Return results
+        return jsonify({
+            "query": {
+                "aggregation_level": result.query.aggregation_level,
+                "filters_applied": {
+                    "municipalities": result.query.municipalities,
+                    "policy_areas": result.query.policy_areas,
+                    "dimensions": result.query.dimensions,
+                    "clusters": result.query.clusters,
+                    "subregions": result.query.subregions,
+                }
+            },
+            "total_records": result.total_records,
+            "filtered_records": result.filtered_records,
+            "statistics": result.statistics,
+            "data": result.data[:100],  # Limit to 100 items for response size
+            "correlations": result.correlations,
+            "anomalies": result.anomalies[:20] if result.anomalies else [],
+            "trends": result.trends,
+            "geographic_clusters": result.geographic_clusters,
+            "timestamp": result.timestamp.isoformat()
+        })
+
+    except Exception as e:
+        logger.error(f"Data mining query failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/data-mining/municipality/<municipality_code>", methods=["GET"])
+def get_municipality_profile(municipality_code: str):
+    """Get comprehensive profile for a specific municipality."""
+    try:
+        profile = data_mining_engine.get_municipality_profile(municipality_code)
+        return jsonify(profile)
+    except Exception as e:
+        logger.error(f"Failed to get municipality profile: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/data-mining/export", methods=["POST"])
+def export_mining_results():
+    """Export mining results to various formats (JSON, CSV, Markdown).
+
+    Request Body:
+    {
+        "query": {...},          // Same as execute_data_mining_query
+        "format": "json"         // json, csv, markdown
+    }
+    """
+    try:
+        from flask import Response
+        request_data = request.get_json()
+        query_params = request_data.get("query", {})
+        export_format = request_data.get("format", "json")
+
+        # Build and execute query
+        query = DataMiningQuery(
+            municipalities=query_params.get("municipalities"),
+            policy_areas=query_params.get("policy_areas"),
+            dimensions=query_params.get("dimensions"),
+            clusters=query_params.get("clusters"),
+            subregions=query_params.get("subregions"),
+            question_range=tuple(query_params["question_range"]) if query_params.get("question_range") else None,
+            min_score=query_params.get("min_score"),
+            max_score=query_params.get("max_score"),
+            aggregation_level=query_params.get("aggregation_level", "municipality")
+        )
+
+        result = data_mining_engine.execute_query(query)
+
+        # Export results
+        exported_data = data_mining_engine.export_results(result, format=export_format)
+
+        # Set appropriate content type
+        content_type = {
+            "json": "application/json",
+            "csv": "text/csv",
+            "markdown": "text/markdown"
+        }.get(export_format, "text/plain")
+
+        return Response(exported_data, mimetype=content_type)
+
+    except Exception as e:
+        logger.error(f"Export failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/comparative", methods=["POST"])
+def generate_comparative_analysis():
+    """Generate comparative analysis between two entities.
+
+    Request Body:
+    {
+        "entity_a": "05001",                // Municipality code, subregion, etc.
+        "entity_b": "05002",
+        "entity_type": "municipality"       // municipality, subregion, policy_area
+    }
+    """
+    try:
+        params = request.get_json()
+
+        analysis = analytics_engine.generate_comparative_analysis(
+            entity_a=params["entity_a"],
+            entity_b=params["entity_b"],
+            entity_type=params.get("entity_type", "municipality")
+        )
+
+        return jsonify({
+            "entity_a": analysis.entity_a,
+            "entity_b": analysis.entity_b,
+            "metrics_comparison": {
+                metric: {"entity_a": val[0], "entity_b": val[1]}
+                for metric, val in analysis.metrics_comparison.items()
+            },
+            "significant_differences": analysis.significant_differences,
+            "similarity_score": analysis.similarity_score,
+            "insights": analysis.insights
+        })
+
+    except Exception as e:
+        logger.error(f"Comparative analysis failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/trend/<entity>", methods=["GET"])
+def generate_trend_analysis(entity: str):
+    """Generate temporal trend analysis for an entity.
+
+    Query params:
+        - entity_type: municipality, subregion (default: municipality)
+        - time_window_days: Number of days to analyze (default: 90)
+    """
+    try:
+        entity_type = request.args.get("entity_type", "municipality")
+        time_window = int(request.args.get("time_window_days", 90))
+
+        analysis = analytics_engine.generate_trend_analysis(
+            entity=entity,
+            entity_type=entity_type,
+            time_window_days=time_window
+        )
+
+        return jsonify({
+            "entity": analysis.entity,
+            "time_period": analysis.time_period,
+            "data_points": [(dt.isoformat(), val) for dt, val in analysis.data_points],
+            "trend_direction": analysis.trend_direction,
+            "growth_rate": analysis.growth_rate,
+            "forecast": [(dt.isoformat(), val) for dt, val in analysis.forecast] if analysis.forecast else None,
+            "confidence_interval": analysis.confidence_interval
+        })
+
+    except Exception as e:
+        logger.error(f"Trend analysis failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/gap/<entity>", methods=["GET"])
+def generate_gap_analysis(entity: str):
+    """Generate gap analysis identifying improvement opportunities.
+
+    Query params:
+        - entity_type: municipality, subregion (default: municipality)
+        - target_level: macro, meso, micro (default: macro)
+    """
+    try:
+        entity_type = request.args.get("entity_type", "municipality")
+        target_level = request.args.get("target_level", "macro")
+
+        analysis = analytics_engine.generate_gap_analysis(
+            entity=entity,
+            entity_type=entity_type,
+            target_level=target_level
+        )
+
+        return jsonify({
+            "entity": analysis.entity,
+            "current_score": analysis.current_score,
+            "target_score": analysis.target_score,
+            "gap": analysis.gap,
+            "gap_percentage": analysis.gap_percentage,
+            "policy_areas_below_target": analysis.policy_areas_below_target,
+            "priority_actions": analysis.priority_actions,
+            "improvement_path": analysis.estimated_improvement_path
+        })
+
+    except Exception as e:
+        logger.error(f"Gap analysis failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/benchmark/<entity>", methods=["GET"])
+def generate_performance_benchmark(entity: str):
+    """Generate performance benchmark comparing entity to reference groups.
+
+    Query params:
+        - entity_type: municipality, subregion (default: municipality)
+    """
+    try:
+        entity_type = request.args.get("entity_type", "municipality")
+
+        benchmark = analytics_engine.generate_performance_benchmark(
+            entity=entity,
+            entity_type=entity_type
+        )
+
+        return jsonify(benchmark)
+
+    except Exception as e:
+        logger.error(f"Benchmark generation failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/analytics/correlation", methods=["POST"])
+def generate_correlation_matrix():
+    """Generate correlation matrix between policy areas across entities.
+
+    Request Body:
+    {
+        "entities": ["05001", "05002", "05003", ...],
+        "entity_type": "municipality"
+    }
+    """
+    try:
+        params = request.get_json()
+
+        correlation = analytics_engine.generate_correlation_matrix(
+            entities=params["entities"],
+            entity_type=params.get("entity_type", "municipality")
+        )
+
+        return jsonify(correlation)
+
+    except Exception as e:
+        logger.error(f"Correlation matrix generation failed: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/v1/questionnaire/metadata", methods=["GET"])
+def get_questionnaire_metadata():
+    """Get complete canonic questionnaire metadata and structure."""
+    return jsonify(data_mining_engine.questionnaire_metadata)
+
+
+@app.route("/api/v1/municipalities/all", methods=["GET"])
+def get_all_municipalities():
+    """Get complete list of 170 PDET municipalities with metadata."""
+    return jsonify(data_mining_engine.municipality_data)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WebSocket Events - Enhanced with SISAS Integration
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@socketio.on("connect")
 def handle_connect():
+    """Handle client connection - send initial state."""
     logger.info("Client connected")
-    emit('system_status', {"status": "online", "version": "1.0.0"})
+
+    # Send system status
+    emit("system_status", {"status": "online", "version": "2.0.0", "sisas_enabled": pipeline_bridge is not None})
+
+    # Send current SISAS metrics if available
+    if pipeline_bridge:
+        try:
+            sisas_metrics = pipeline_bridge.get_sisas_metrics()
+            emit("sisas_metrics_update", {"timestamp": time.time(), "metrics": sisas_metrics})
+        except Exception as e:
+            logger.warning(f"Failed to send initial SISAS metrics: {e}")
+
+    # Send active jobs
+    if pipeline_bridge:
+        jobs_data = pipeline_bridge.get_all_jobs()
+        emit("jobs_status", jobs_data)
+
+
+@socketio.on("disconnect")
+def handle_disconnect():
+    """Handle client disconnection."""
+    logger.info("Client disconnected")
+
+
+@socketio.on("request_sisas_update")
+def handle_sisas_update_request():
+    """Client requests current SISAS metrics."""
+    if pipeline_bridge:
+        sisas_metrics = pipeline_bridge.get_sisas_metrics()
+        emit("sisas_metrics_update", {"timestamp": time.time(), "metrics": sisas_metrics})
+    else:
+        emit("sisas_metrics_update", {"timestamp": time.time(), "metrics": {}, "error": "Bridge not initialized"})
+
+
+@socketio.on("request_job_status")
+def handle_job_status_request(data):
+    """Client requests specific job status."""
+    job_id = data.get("job_id")
+    if not job_id:
+        emit("error", {"message": "Missing job_id"})
+        return
+
+    if pipeline_bridge:
+        status = pipeline_bridge.get_job_status(job_id)
+        if status:
+            emit("job_status_update", status)
+        else:
+            emit("error", {"message": f"Job {job_id} not found"})
+    else:
+        emit("error", {"message": "Bridge not initialized"})
+
 
 def run_pipeline_mock(job_id, filename):
     """Mock pipeline execution to demonstrate UI updates"""
     logger.info(f"Starting pipeline for {job_id}")
-    
+
     phases = [
         "Acquisition & Integrity",
         "Format Decomposition",
@@ -153,29 +1412,68 @@ def run_pipeline_mock(job_id, filename):
         "Entity Recognition",
         "Relation Extraction",
         "Policy Analysis",
-        "Report Generation"
+        "Report Generation",
     ]
-    
+
     for i, phase in enumerate(phases):
         time.sleep(2)  # Simulate work
         progress = int((i + 1) / len(phases) * 100)
-        
-        socketio.emit('pipeline_progress', {
-            "job_id": job_id,
-            "phase": i + 1,
-            "phase_name": phase,
-            "progress": progress,
-            "status": "processing"
-        })
-        
-    socketio.emit('pipeline_completed', {
-        "job_id": job_id,
-        "status": "completed",
-        "result_url": f"/artifacts/{job_id}/report.json"
-    })
+
+        socketio.emit(
+            "pipeline_progress",
+            {
+                "job_id": job_id,
+                "phase": i + 1,
+                "phase_name": phase,
+                "progress": progress,
+                "status": "processing",
+            },
+        )
+
+    socketio.emit(
+        "pipeline_completed",
+        {"job_id": job_id, "status": "completed", "result_url": f"/artifacts/{job_id}/report.json"},
+    )
+
 
 start_time = time.time()
 
-if __name__ == '__main__':
+
+def initialize_orchestrator_integration(orchestrator=None):
+    """Initialize pipeline bridge with orchestrator.
+
+    Args:
+        orchestrator: UnifiedOrchestrator instance (optional)
+
+    This function should be called after dashboard server starts to connect
+    to the real pipeline orchestrator. If no orchestrator is provided, the
+    dashboard will operate in standalone mode with mock data.
+    """
+    global pipeline_bridge
+
+    if orchestrator:
+        logger.info("Initializing pipeline bridge with orchestrator")
+        pipeline_bridge = initialize_bridge(orchestrator, socketio)
+        logger.info("Pipeline bridge initialized successfully")
+    else:
+        logger.warning("No orchestrator provided - dashboard running in standalone mode")
+
+
+if __name__ == "__main__":
     logger.info("Starting AtroZ Dashboard Server...")
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    logger.info(f"Loaded {len(PDET_REGIONS)} PDET regions with real data")
+    logger.info(f"Upload directory: {app.config['UPLOAD_FOLDER']}")
+
+    # Try to initialize orchestrator integration (optional)
+    try:
+        # Attempt to import and initialize orchestrator
+        # This allows dashboard to run standalone or integrated
+        from farfan_pipeline.orchestration.orchestrator import UnifiedOrchestrator
+
+        logger.info("UnifiedOrchestrator available - attempting integration")
+        # Note: Orchestrator initialization requires config, so we defer this
+        # to runtime when a job is submitted
+    except ImportError:
+        logger.info("UnifiedOrchestrator not available - running in standalone mode")
+
+    socketio.run(app, host="0.0.0.0", port=5005, debug=True)

@@ -1,0 +1,5528 @@
+{
+  "summary": {
+    "total_files": 497,
+    "integrated": 2,
+    "partially_integrated": 0,
+    "needs_integration": 73,
+    "no_parameters": 422,
+    "errors": 0
+  },
+  "files_by_status": {
+    "NEEDS_INTEGRATION": [
+      {
+        "path": "src/farfan_pipeline/methods/embedding_policy.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/heterogeneous_treatment_effects.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+        "parameter_count": 4,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 4 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds.",
+          "Consider using N2InferentialCalibration for Bayesian parameters."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/teoria_cambio.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/derek_beach.py",
+        "parameter_count": 10,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 10 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "parameter_count": 4,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 4 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/methods/causal_structure_learning.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_10_00_phase_7_constants.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+        "parameter_count": 8,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 8 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds.",
+          "Consider using N2InferentialCalibration for Bayesian parameters."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+        "parameter_count": 5,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 5 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_choquet_aggregator.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/phase5_10_00_area_aggregation.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/phase5_20_00_area_validation.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/phase8_00_00_data_models.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/phase6_20_00_adaptive_meso_scoring.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/phase6_30_00_cluster_aggregator.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+        "parameter_count": 5,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 5 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_assembly.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+        "parameter_count": 5,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 5 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+        "parameter_count": 16,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 16 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_07_00_sp4_question_aware.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_06_benchmark_performance_optimizations.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+        "parameter_count": 30,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 30 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_85_00_evidence_nexus_sota_implementations.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_90_00_carver.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_02_precision_tracking.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds.",
+          "Consider using N2InferentialCalibration for Bayesian parameters."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_04_metrics_exporter.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/PHASE_3_CONSTANTS.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/phase3_26_00_normative_compliance_validator.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/contracts/phase7_10_01_mission_contract.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_aggregation_enhancements.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N2InferentialCalibration for Bayesian parameters."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_types.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_adaptive_meso_scoring.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+        "parameter_count": 5,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 5 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/primitives/phase5_00_00_statistical_primitives.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/primitives/phase5_00_00_types.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+        "parameter_count": 9,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 9 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_02_output_contract.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/docs/future/phase8_35_00_entity_targeted_recommendations.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/registries/questionnaire_signal_registry.py",
+        "parameter_count": 2,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 2 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_contract_assembler.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/interphase/phase3_05_00_nexus_interface_validator.py",
+        "parameter_count": 4,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 4 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/causal_verb_extractor.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/financial_chain_extractor.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/structural_marker_extractor.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/extractor_validator.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/normative_reference_extractor.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/__init__.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/quantitative_triplet_extractor.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/scorers/policy_area_scorer.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/audit_trail.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 1 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/financial_chain_extractor.py",
+        "parameter_count": 4,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 4 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+        "parameter_count": 23,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 23 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_validation_specs.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/metadata/signal_method_metadata.py",
+        "parameter_count": 3,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 3 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+        "parameter_count": 6,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 6 hardcoded parameters. Should import and use calibration system."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/contrast_signals_vehicle.py",
+        "parameter_count": 4,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 4 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds."
+        ]
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+        "parameter_count": 11,
+        "has_hardcoded": true,
+        "recommendations": [
+          "File has 11 hardcoded parameters. Should import and use calibration system.",
+          "Consider using N1EmpiricalCalibration for extraction thresholds.",
+          "Consider using N2InferentialCalibration for Bayesian parameters."
+        ]
+      }
+    ],
+    "NO_PARAMETERS": [
+      {
+        "path": "src/farfan_pipeline/methods/policy_processor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/methods/config_schemas.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/methods/analyzer_one.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/methods/embedding_cache_sota.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/methods/processor_config_schema.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/methods/causal_inference_dowhy.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/PHASE_7_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_32_00_exit_gate_validation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_31_00_performance_metrics.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_30_00_checkpoint_manager.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_10_00_macro_score.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/phase7_10_00_systemic_gap_detector.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_60_00_aggregation_validation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_uncertainty_quantification.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_provenance.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_settings.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/phase4_20_00_choquet_adapter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/PHASE_5_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/phase5_30_00_area_integration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/phase5_00_00_area_score.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/phase5_40_00_synthesis_engine.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/phase5_15_00_performance_boost.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/phase8_10_00_schema_validation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/phase8_26_00_dimensional_recommendation_engine.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/phase8_25_00_recommendation_bifurcator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/phase8_26_01_dimensional_bifurcator_adapter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/PHASE_8_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/phase6_10_00_phase_6_constants.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/phase6_10_00_cluster_score.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/phase6_10_01_scoring_config.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/PHASE_6_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/phase9_15_00_institutional_entity_annex.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/PHASE_9_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_phase_9_constants.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_signal_enriched_reporting.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_90_00_main.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_10_04_runtime_config_typed.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_10_01_runtime_config.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_50_01_exit_gates.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_50_00_boot_checks.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_40_00_input_validation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_20_02_determinism.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_protocols.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_00_01_domain_errors.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_30_00_resource_controller.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_90_03_wiring_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_10_00_paths.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/phase0_10_03_runtime_config_schema.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/PHASE_0_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_16_00_checkpoint_manager.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_09_00_circuit_breaker.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_05_00_thread_safe_results.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_12_00_structural.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_06_00_questionnaire_mapper.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_07_01_colombian_pdm_enhancer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_17_00_performance_metrics.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_03_00_models.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_01_00_cpp_models.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/phase1_12_01_pdm_integration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/PHASE_1_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/phase_4_7_aggregation_pipeline/adaptive_meso_scoring.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/phase_4_7_aggregation_pipeline/aggregation_enhancements.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/phase_4_7_aggregation_pipeline/aggregation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/phase_4_7_aggregation_pipeline/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_10_03_executor_config.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_01_metrics_persistence.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_30_00_resource_manager.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_50_00_task_executor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_02_arg_router.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_96_00_contract_migrator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_contract_hydrator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_30_04_circuit_breaker.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_40_01_executor_chunk_synchronizer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_chunk_processor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_10_02_methods_registry.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_03_signature_runtime_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_80_01_evidence_query_engine.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_20_00_method_signature_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_40_02_schema_validation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_10_00_phase_2_constants.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_10_00_factory.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_task_planner.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_10_01_class_registry.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_30_02_resource_alerts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_20_01_method_source_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_04_calibration_policy.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_40_00_synchronization.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/PHASE_2_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_executor_profiler.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_05_executor_instrumentation_mixin.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/phase3_20_00_score_extraction.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/phase3_15_00_empirical_thresholds_loader.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/phase3_22_00_validation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/contracts/phase7_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/contracts/phase7_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/contracts/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/interphase/phase6_to_phase7_bridge.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_07/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/contracts/phase4_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/contracts/phase4_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/contracts/phase4_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_uncertainty_metrics.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_aggregation_settings.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_quality_levels.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_choquet_primitives.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_04/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/examples/performance_demonstration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/contracts/phase5_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/contracts/phase5_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/contracts/phase5_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/primitives/phase5_00_00_comparative_analytics.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/interphase/phase5_10_00_entry_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/interphase/phase5_10_00_exit_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_05/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/interfaces/interface_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/interfaces/phase8_10_00_interface_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/interfaces/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/contracts/phase7_to_phase8_adapter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/PHASE_8_ENUMS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_00_00_phase_8_enums.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_20_03_template_compiler.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_00_00_phase_8_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_10_00_phase_8_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_10_00_phase_8_constants.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_10_00_phase_8_enums.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/phase8_00_00_phase_8_constants.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/PHASE_8_CONSTANTS.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/primitives/PHASE_8_TYPES.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/tests/phase8_10_00_generative_testing.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_08/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/contracts/phase6_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/contracts/phase6_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/contracts/phase6_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_06/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/contracts/phase9_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/contracts/phase9_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/contracts/phase9_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_09/contracts/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/contracts/phase0_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/contracts/phase0_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/contracts/phase0_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_40_01_schema_monitor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_40_02_signature_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_10_01_providers.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_00_02_runtime_error_fixes.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_40_03_coverage_gate.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_10_02_json_logger.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_30_01_performance_metrics.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_00_03_primitives.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/primitives/phase0_10_00_constants.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/interphase/wiring_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/tests/conftest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_00/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/contracts/phase1_10_03_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/contracts/phase1_10_02_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/contracts/phase1_10_01_constitutional_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/contracts/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/contracts/phase1_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/primitives/phase1_10_00_colombian_pdm_guards.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/primitives/phase1_10_00_truncation_audit.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/primitives/phase1_10_00_dependency_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/primitives/phase1_10_00_streaming_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/interphase/phase1_10_00_phase1_protocols.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/interphase/phase1_10_00_phase1_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/interphase/phase0_to_phase1_bridge.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/interphase/phase1_04_00_phase_protocol.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/interphase/phase1_08_00_adapter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/tests/phase1_10_00_conftest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/tests/conftest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_01/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/registries/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/contracts/phase2_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/contracts/phase2_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/contracts/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/contracts/phase2_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_contract_generator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/audit_v4_rigorous.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_json_emitter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_run.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_method_expander.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_epistemological_method_classifier.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_contract_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_chain_composer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_input_registry.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/interphase/phase2_phase3_adapter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/interphase/phase1_phase2_adapter.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/tests/phase2_10_00_run_adversarial_tests.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/tests/phase2_10_00_conftest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_02/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/contracts/phase3_10_01_mission_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/contracts/phase3_10_02_output_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/contracts/phase3_10_00_input_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_quality_levels.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_sota_primitives.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_mathematical_foundation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/primitives/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/phases/Phase_03/interphase/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/dependencies.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/windows_utils.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/versions.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/calibration/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/validators/normative_compliance_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/validators/verification_manifest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/validators/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/parametrization/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/signature_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/semantic_relationship_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/population_disaggregation_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/programmatic_hierarchy_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/empirical_extractor_base.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/temporal_consistency_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/audit_signal_irrigation.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/ports.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/visualization_generator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/questionnaire/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/questionnaire/modular_resolver.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/scorers/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/budget_monotonicity.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/contracts_runtime.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/audit_contracts_completeness.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/contract_update_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/enhanced_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/idempotency_dedup.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/context_immutability.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/runtime_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/risk_certificate.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/verify_all_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/permutation_invariance.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/deterministic_execution.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/phase_zero_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/determinism_helpers.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/audit_trail_examples.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/traceability.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/concurrency_determinism.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/alignment_stability.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/verify_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/total_ordering.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/core_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/governance.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/compute_contract_hashes.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/json_contract_loader.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/aggregation_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/refusal.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/failure_fallback.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/coverage_gate.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/domain_errors.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/monotone_compliance.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/wiring_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/snapshot_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/routing_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/retriever_contract.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/refusal_matrix.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/snapshot_guard.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/dag_runner_probe.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/evidence_store_probe.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/plan_diff.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/context_hash.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/audit_trail.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/fault_injector.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/pic_probe.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/label_explain.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/sort_sanity.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/retrieval_trace.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/rcc_report.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/rc_check.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/ot_digest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/tests/conftest.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/extractors/tests/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/base_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/institutional_ner_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/causal_verb_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_registry.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals_single.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/main.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_consumption.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/integration/signal_consumption_integration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/integration/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary/signal_vocabulary.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary/capability_vocabulary.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary/alignment_checker.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/_deprecated/signal_wiring_fixes.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/_deprecated/signal_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/_deprecated/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/wiring/wiring_config.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/wiring/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/validators/depuration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/validators/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_semantic_context.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_resolution.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/scripts/generate_contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/scripts/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/base_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/harmonization/harmonization_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/harmonization/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/metadata/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/schemas/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core/event.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core/bus.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core/signal.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core/contracts.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/core/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/signal_auditor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/questionnaire_access_audit.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/decision_auditor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/consumer_auditor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/consumption_proof.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/audit/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/irrigation_map.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/irrigation_executor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/irrigation_validator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/irrigation/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/cache.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/client.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/registry.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/orchestration/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_intelligence_layer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signals.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_registry.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_quality_metrics.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_context_scoper.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_enhancement_integrator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_evidence_extractor.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_loader.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/base_vehicle.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/signal_irrigator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/semantic/signal_semantic_expander.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/semantic/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals/types/structural.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals/types/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase4/phase4_aggregation_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase4/phase4_dimension_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase4/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase6/phase6_cluster_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase6/phase6_configuration_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase6/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_validation_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase2/phase2_evidence_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase2/phase2_factory_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase2/phase2_enrichment_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase2/phase2_executor_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase2/phase2_contract_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase2/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase0/phase0_assembly_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase0/wiring_types.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase0/phase0_90_02_bootstrap.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase0/providers.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase0/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase7/phase7_meso_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase7/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase9/phase9_report_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase9/phase9_reporting_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase9/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase5/phase5_uncertainty_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase5/phase5_policy_area_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase5/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase1/phase1_11_00_signal_enrichment.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase1/phase1_13_00_cpp_ingestion.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase1/phase1_extraction_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase1/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase8/phase8_macro_consumer.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase8/phase8_30_00_signal_enriched_recommendations.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase8/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/orchestration.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/contrast.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/integrity.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/operational.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/structural.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/consumption.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/epistemic.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_types/types/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/structural/schema_validator_vehicle.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/structural/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/calibration_core.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/pdm_calibrator.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/decorators.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/__init__.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/type_defaults.py",
+        "parameter_count": 0,
+        "has_hardcoded": false,
+        "recommendations": []
+      }
+    ],
+    "INTEGRATED": [
+      {
+        "path": "src/farfan_pipeline/calibration/epistemic_core.py",
+        "parameter_count": 11,
+        "has_hardcoded": true,
+        "recommendations": []
+      },
+      {
+        "path": "src/farfan_pipeline/calibration/registry.py",
+        "parameter_count": 1,
+        "has_hardcoded": true,
+        "recommendations": []
+      }
+    ]
+  },
+  "hardcoded_parameters": [
+    {
+      "file": "src/farfan_pipeline/methods/embedding_policy.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 1559,
+      "context": "overall_confidence = 0.6 * semantic_confidence + 0.4 * numerical_confidence"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 437,
+      "context": "confidence = 1.0 - (posterior_entropy / max_entropy)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 466,
+      "context": "weight = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+      "parameter": "thresholds",
+      "value": "0.8",
+      "line": 872,
+      "context": "chunk_size=512, chunk_overlap=100, similarity_threshold=0.8  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+      "parameter": "weights",
+      "value": ".4",
+      "line": 464,
+      "context": "f\"{update.evidence_weight:.4f}\","
+    },
+    {
+      "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+      "parameter": "thresholds",
+      "value": "0.05",
+      "line": 1703,
+      "context": "- p_value_threshold: 0.05"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 1838,
+      "context": "combined_confidence = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/heterogeneous_treatment_effects.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 544,
+      "context": "f\"expected value={expected_value:.4f}, confidence={confidence:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+      "parameter": "samples",
+      "value": "n_",
+      "line": 702,
+      "context": "clustering = DBSCAN(eps=0.3, min_samples=2, metric=\"cosine\").fit(embeddings)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+      "parameter": "thresholds",
+      "value": "0.85",
+      "line": 1158,
+      "context": "similarity_threshold = 0.85  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+      "parameter": "thresholds",
+      "value": "1",
+      "line": 1161,
+      "context": "distance_threshold=1 - similarity_threshold,"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 2857,
+      "context": "use_gpu=True, language=\"es\", confidence_threshold=0.7  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/teoria_cambio.py",
+      "parameter": "thresholds",
+      "value": ".4",
+      "line": 1306,
+      "context": "f\"    {icon} {name}: {value:.4f} {unit} (L\u00edmite: {threshold:.4f} {unit}) - {stat"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.5",
+      "line": 3831,
+      "context": "confidence = 0.5  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.85",
+      "line": 3972,
+      "context": "confidence=0.85,  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.5",
+      "line": 3994,
+      "context": "confidence = 0.5  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 7126,
+      "context": "self.logger.info(f\"  {source} \u2192 {target} (Bayesian confidence: {confidence:.3f})"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.8",
+      "line": 7457,
+      "context": "confidence = 0.8  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.9",
+      "line": 7460,
+      "context": "confidence = 0.9  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 7462,
+      "context": "confidence = 0.6  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 10018,
+      "context": "confidence=0.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 10073,
+      "context": "f\"{len(query_variables)} predictions, confidence={confidence:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter": "weights",
+      "value": ".4",
+      "line": 10410,
+      "context": "f\"{update.posterior:.4f}\", f\"{update.evidence_weight:.4f}\","
+    },
+    {
+      "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 730,
+      "context": "Implements Popperian falsification principle: ONE contradiction -> confidence = "
+    },
+    {
+      "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 765,
+      "context": "ONE contradiction -> confidence = 0.0 (non-negotiable)."
+    },
+    {
+      "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+      "parameter": "confidence",
+      "value": "0.5",
+      "line": 782,
+      "context": "original_confidence = 0.5"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 808,
+      "context": "\"contradiction(s) detected -> confidence = 0.0\""
+    },
+    {
+      "file": "src/farfan_pipeline/methods/causal_structure_learning.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 434,
+      "context": "confidence=0.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/causal_structure_learning.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 494,
+      "context": "f\"{len(query_variables)} predictions, confidence={confidence:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py",
+      "parameter": "weights",
+      "value": "0.15",
+      "line": 82,
+      "context": "IRRIGATION_HEALTH_WEIGHT = 0.15  # Weight of irrigation health in final score ad"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_07/phase7_20_00_macro_aggregator.py",
+      "parameter": "thresholds",
+      "value": "0.55",
+      "line": 461,
+      "context": "Normalized threshold: 0.55 * 3 = 1.65 on 0-3 scale."
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_07/phase7_10_00_phase_7_constants.py",
+      "parameter": "thresholds",
+      "value": "0.55",
+      "line": 63,
+      "context": "SYSTEMIC_GAP_THRESHOLD = 0.55  # Scores below this indicate gaps"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 105,
+      "context": "DEFAULT_DIMENSION_WEIGHT = 1.0  # Will be normalized to 1/n"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 106,
+      "context": "DEFAULT_MICRO_QUESTION_WEIGHT = 1.0  # Default weight for each micro-question"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "thresholds",
+      "value": "0.15",
+      "line": 133,
+      "context": "CV_CONVERGENCE_THRESHOLD = 0.15  # Low dispersion = convergence"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "thresholds",
+      "value": "0.40",
+      "line": 134,
+      "context": "CV_MODERATE_THRESHOLD = 0.40  # Moderate dispersion"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "thresholds",
+      "value": "0.60",
+      "line": 135,
+      "context": "CV_HIGH_THRESHOLD = 0.60  # High dispersion"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "samples",
+      "value": "N_",
+      "line": 173,
+      "context": "CONVERGENCE_MIN_SAMPLES = 1000"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "thresholds",
+      "value": "0.4",
+      "line": 209,
+      "context": "CRITICAL_SCORE_THRESHOLD = 0.4"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter": "thresholds",
+      "value": "15",
+      "line": 213,
+      "context": "HIGH_SIGNAL_PATTERN_THRESHOLD = 15"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.4",
+      "line": 51,
+      "context": "CRITICAL_SCORE_THRESHOLD = 0.4  # Scores below this are considered critical"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+      "parameter": "thresholds",
+      "value": "15",
+      "line": 53,
+      "context": "HIGH_SIGNAL_PATTERN_THRESHOLD = 15  # Pattern count threshold"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.15",
+      "line": 57,
+      "context": "CV_CONVERGENCE_THRESHOLD = 0.15  # Coefficient of variation for convergence"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.40",
+      "line": 58,
+      "context": "CV_MODERATE_THRESHOLD = 0.40  # CV threshold for moderate dispersion"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.60",
+      "line": 59,
+      "context": "CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_choquet_aggregator.py",
+      "parameter": "weights",
+      "value": ".4",
+      "line": 508,
+      "context": "f\"Layer {layer_id}:  weight={weight:.4f} \u00d7 score={score:.4f} = {contribution:.4f"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_choquet_aggregator.py",
+      "parameter": "weights",
+      "value": ".4",
+      "line": 554,
+      "context": "f\"weight={weight:.4f} \u00d7 min({score_i:.4f}, {score_j:.4f}) = {contribution:.4f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_choquet_aggregator.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 778,
+      "context": "uniform_weight = 1.0 / len(layer_ids)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 148,
+      "context": "equal_weight = 1.0 / len(area_ids)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 155,
+      "context": "equal_weight = 1.0 / len(cluster_ids)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 978,
+      "context": "expected_weight = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.85",
+      "line": 1126,
+      "context": "excellent_threshold = 0.85  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 1127,
+      "context": "good_threshold = 0.7  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter": "thresholds",
+      "value": "0.55",
+      "line": 1128,
+      "context": "acceptable_threshold = 0.55  # Refactored"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/phase5_10_00_area_aggregation.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 331,
+      "context": "total_weight = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/phase5_10_00_area_aggregation.py",
+      "parameter": "thresholds",
+      "value": "2.5",
+      "line": 533,
+      "context": "outliers_zscore = set(detect_outliers_zscore(scores, threshold=2.5))"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/phase5_20_00_area_validation.py",
+      "parameter": "thresholds",
+      "value": "2.5",
+      "line": 465,
+      "context": "outliers_zscore = identify_outlier_areas(scores_dict, method=\"zscore\", threshold"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/phase5_20_00_area_validation.py",
+      "parameter": "thresholds",
+      "value": "1.5",
+      "line": 466,
+      "context": "outliers_iqr = identify_outlier_areas(scores_dict, method=\"iqr\", threshold=1.5)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/phase8_00_00_data_models.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 132,
+      "context": "confidence = 0.6  # Minimum threshold"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_06/phase6_20_00_adaptive_meso_scoring.py",
+      "parameter": "weights",
+      "value": "0.3",
+      "line": 230,
+      "context": "This is the core improvement over the fixed PENALTY_WEIGHT=0.3 approach."
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_06/phase6_30_00_cluster_aggregator.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 234,
+      "context": "equal_weight = 1.0 / n_areas"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "parameter": "weights",
+      "value": "200",
+      "line": 763,
+      "context": "font-weight: 200;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 830,
+      "context": "font-weight: 700;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 903,
+      "context": "font-weight: 700;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 920,
+      "context": "font-weight: 700;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 1108,
+      "context": "{' '.join([f'<div class=\"rec-card\"><div class=\"rec-severity\">{html_escape(rec.se"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_assembly.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 1333,
+      "context": "threshold = 0.7"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 700,
+      "context": "<div style=\"font-size: 14px; font-weight: 700; margin-bottom: 10px;\">{rec_type}<"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+      "parameter": "weights",
+      "value": "200",
+      "line": 840,
+      "context": "font-weight: 200;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 907,
+      "context": "font-weight: 700;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 980,
+      "context": "font-weight: 700;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+      "parameter": "weights",
+      "value": "700",
+      "line": 997,
+      "context": "font-weight: 700;"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+      "parameter": "weights",
+      "value": "0.3",
+      "line": 34,
+      "context": "MAX_PATTERN_WEIGHT = 0.3"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+      "parameter": "weights",
+      "value": "0.25",
+      "line": 35,
+      "context": "MAX_INDICATOR_WEIGHT = 0.25"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+      "parameter": "weights",
+      "value": "0.15",
+      "line": 36,
+      "context": "MAX_ENTITY_WEIGHT = 0.15"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": "0.3",
+      "line": 308,
+      "context": "MIN_SIGNAL_SIMILARITY_THRESHOLD = 0.3"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": "0.5",
+      "line": 312,
+      "context": "MIN_SIGNAL_COVERAGE_THRESHOLD = 0.5"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": "0.6",
+      "line": 340,
+      "context": "analyzer = PDETMunicipalPlanAnalyzer(use_gpu=False, confidence_threshold=0.6)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 926,
+      "context": "CRITICAL WEIGHT: 10000"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": "10000",
+      "line": 959,
+      "context": "CRITICAL_THRESHOLD = 10000  # >= 10000: no recovery, immediate abort on failure"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": "980",
+      "line": 960,
+      "context": "HIGH_PRIORITY_THRESHOLD = 980  # >= 980: enhanced validation, detailed logging"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": "900",
+      "line": 961,
+      "context": "STANDARD_THRESHOLD = 900  # >= 900: standard validation and logging"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 1008,
+      "context": "WEIGHT: 10000 - NON-NEGOTIABLE GRID STRUCTURE"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 1045,
+      "context": "HARD VALIDATION - WEIGHT: 10000"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 1093,
+      "context": "SET-LEVEL VALIDATION - WEIGHT: 10000"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 1190,
+      "context": "CRITICAL EXECUTION CONTRACT - WEIGHT: 10000"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "1000",
+      "line": 1457,
+      "context": "self._validate_canonical_input(canonical_input)  # WEIGHT: 1000"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 2157,
+      "context": "weight=1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 2354,
+      "context": "semantic_confidence = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "thresholds",
+      "value": ".0",
+      "line": 3289,
+      "context": "f\"(minimum {MIN_SIGNAL_COVERAGE_THRESHOLD:.0%} required)\""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter": "weights",
+      "value": "0",
+      "line": 3542,
+      "context": "total_weight = 0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_01/phase1_07_00_sp4_question_aware.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 417,
+      "context": "semantic_confidence = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_06_benchmark_performance_optimizations.py",
+      "parameter": "thresholds",
+      "value": "0.3",
+      "line": 129,
+      "context": "similarity_threshold=0.3,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_06_benchmark_performance_optimizations.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 166,
+      "context": "similarity_threshold=0.7,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_06_benchmark_performance_optimizations.py",
+      "parameter": "confidence",
+      "value": ".1",
+      "line": 220,
+      "context": "print(f\"  Average confidence: {avg_confidence:.1%}\")"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py",
+      "parameter": "thresholds",
+      "value": "0.3",
+      "line": 481,
+      "context": "similarity_threshold=0.3,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.0",
+      "line": 2283,
+      "context": "new_confidence = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.5",
+      "line": 2330,
+      "context": "ConfidenceThresholdRule(min_confidence=0.5),"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 3179,
+      "context": "confidence=f\"{synthesized.overall_confidence:.2f}\","
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.7",
+      "line": 3626,
+      "context": "weight=0.7,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.7",
+      "line": 3627,
+      "context": "confidence=0.7,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.6",
+      "line": 3651,
+      "context": "weight=0.6,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.65",
+      "line": 3652,
+      "context": "confidence=0.65,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.8",
+      "line": 3680,
+      "context": "weight=0.8,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.75",
+      "line": 3681,
+      "context": "confidence=0.75,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.7",
+      "line": 3742,
+      "context": "weight=0.7,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.75",
+      "line": 3743,
+      "context": "confidence=0.75,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.5",
+      "line": 3774,
+      "context": "weight=0.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 3775,
+      "context": "confidence=0.6,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.6",
+      "line": 3800,
+      "context": "weight=0.6,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.65",
+      "line": 3801,
+      "context": "confidence=0.65,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.5",
+      "line": 3828,
+      "context": "weight=0.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.55",
+      "line": 3829,
+      "context": "confidence=0.55,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.1",
+      "line": 4069,
+      "context": "confidence=0.1,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.1",
+      "line": 4109,
+      "context": "confidence=0.1,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 4136,
+      "context": "confidence = 0.6"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 4184,
+      "context": "confidence=1.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.7",
+      "line": 4244,
+      "context": "confidence=0.7,  # Default for raw method output"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.7",
+      "line": 4275,
+      "context": "confidence = 0.7"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 4295,
+      "context": "confidence=0.6,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.8",
+      "line": 4337,
+      "context": "confidence=0.8,  # Aggregated confidence"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 4421,
+      "context": "confidence=1.0,  # Provenance is certain"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.9",
+      "line": 4450,
+      "context": "weight=0.9,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.95",
+      "line": 4451,
+      "context": "confidence=0.95,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "weights",
+      "value": "0.6",
+      "line": 4476,
+      "context": "weight=0.6,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter": "confidence",
+      "value": "0.7",
+      "line": 4477,
+      "context": "confidence=0.7,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter": "thresholds",
+      "value": "1.2",
+      "line": 417,
+      "context": "TIME_REGRESSION_THRESHOLD = 1.2  # 20% slower triggers regression"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter": "thresholds",
+      "value": "1.3",
+      "line": 418,
+      "context": "MEMORY_REGRESSION_THRESHOLD = 1.3  # 30% more memory triggers regression"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 538,
+      "context": "f\"quality={quality_score:.3f}, confidence={confidence:.3f}, \""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 599,
+      "context": "raw_weight = 1.0 / max(time_ms, 1.0)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter": "weights",
+      "value": "0.3",
+      "line": 603,
+      "context": "new_weight = 0.3 * raw_weight + 0.7 * old_weight"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 711,
+      "context": "f\"quality={result.quality_score:.3f}, confidence={result.confidence:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_30_03_resource_aware_executor.py",
+      "parameter": "thresholds",
+      "value": "4",
+      "line": 441,
+      "context": "INTERRUPT_THRESHOLD = 4  # CRITICAL level"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_85_00_evidence_nexus_sota_implementations.py",
+      "parameter": "confidence",
+      "value": "0.8",
+      "line": 781,
+      "context": "confidence=0.8,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_90_00_carver.py",
+      "parameter": "weights",
+      "value": "0.8",
+      "line": 436,
+      "context": "base_weight = 0.8 if required else 0.4"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+      "parameter": "thresholds",
+      "value": "35.0",
+      "line": 72,
+      "context": "TIER1_THRESHOLD = 35.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+      "parameter": "thresholds",
+      "value": "45.0",
+      "line": 73,
+      "context": "TIER1_PRODUCTION_THRESHOLD = 45.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+      "parameter": "thresholds",
+      "value": "80.0",
+      "line": 74,
+      "context": "TOTAL_PRODUCTION_THRESHOLD = 80.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_02_precision_tracking.py",
+      "parameter": "thresholds",
+      "value": "0.55",
+      "line": 64,
+      "context": "PRECISION_TARGET_THRESHOLD = 0.55"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_02_precision_tracking.py",
+      "parameter": "thresholds",
+      "value": ".1",
+      "line": 195,
+      "context": "target_threshold=f\"{PRECISION_TARGET_THRESHOLD:.1%}\","
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_02_precision_tracking.py",
+      "parameter": "thresholds",
+      "value": ".1",
+      "line": 202,
+      "context": "target_threshold=f\"{PRECISION_TARGET_THRESHOLD:.1%}\","
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+      "parameter": "confidence",
+      "value": "0.5",
+      "line": 414,
+      "context": "confidence = 0.5  # Low confidence"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+      "parameter": "samples",
+      "value": null,
+      "line": 416,
+      "context": "samples = 0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 560,
+      "context": "similarity_threshold=0.7,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/phase2_95_04_metrics_exporter.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 418,
+      "context": "f\"quality={event.quality_score:.3f} confidence={event.confidence:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter": "thresholds",
+      "value": "15",
+      "line": 130,
+      "context": "HIGH_PATTERN_THRESHOLD = 15"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter": "thresholds",
+      "value": "10",
+      "line": 131,
+      "context": "HIGH_INDICATOR_THRESHOLD = 10"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter": "thresholds",
+      "value": "0.8",
+      "line": 135,
+      "context": "HIGH_SCORE_THRESHOLD = 0.8"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter": "thresholds",
+      "value": "0.3",
+      "line": 136,
+      "context": "LOW_SCORE_THRESHOLD = 0.3"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 699,
+      "context": "f\"{base_threshold:.3f} \u2192 {adjusted:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 706,
+      "context": "f\"Using base threshold {base_threshold:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/PHASE_3_CONSTANTS.py",
+      "parameter": "thresholds",
+      "value": "0.5",
+      "line": 8,
+      "context": "DEFAULT_THRESHOLD = 0.5"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_26_00_normative_compliance_validator.py",
+      "parameter": "thresholds",
+      "value": "0.90",
+      "line": 363,
+      "context": "excelente_threshold = 0.90"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_26_00_normative_compliance_validator.py",
+      "parameter": "thresholds",
+      "value": "0.75",
+      "line": 364,
+      "context": "bueno_threshold = 0.75"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/phase3_26_00_normative_compliance_validator.py",
+      "parameter": "thresholds",
+      "value": "0.60",
+      "line": 365,
+      "context": "aceptable_threshold = 0.60"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_07/contracts/phase7_10_01_mission_contract.py",
+      "parameter": "thresholds",
+      "value": "1.65",
+      "line": 83,
+      "context": "GAP_THRESHOLD = 1.65  # 0.55 on normalized scale"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_aggregation_enhancements.py",
+      "parameter": "samples",
+      "value": null,
+      "line": 184,
+      "context": "bootstrap_samples=1000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_aggregation_enhancements.py",
+      "parameter": "samples",
+      "value": "n_",
+      "line": 191,
+      "context": "n_samples=1000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_aggregation_enhancements.py",
+      "parameter": "weights",
+      "value": "0.3",
+      "line": 417,
+      "context": "Enhancement from audit: Replaces fixed PENALTY_WEIGHT=0.3 with"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_types.py",
+      "parameter": "weights",
+      "value": "0.0",
+      "line": 107,
+      "context": "MIN_WEIGHT = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_types.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 108,
+      "context": "MAX_WEIGHT = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_adaptive_meso_scoring.py",
+      "parameter": "weights",
+      "value": "0.3",
+      "line": 226,
+      "context": "This is the core improvement over the fixed PENALTY_WEIGHT=0.3 approach."
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "parameter": "thresholds",
+      "value": "0.4",
+      "line": 38,
+      "context": "CRITICAL_SCORE_THRESHOLD = 0.4  # Scores below this are considered critical"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "parameter": "thresholds",
+      "value": "15",
+      "line": 40,
+      "context": "HIGH_SIGNAL_PATTERN_THRESHOLD = 15  # Pattern count threshold"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "parameter": "thresholds",
+      "value": "0.15",
+      "line": 44,
+      "context": "CV_CONVERGENCE_THRESHOLD = 0.15  # Coefficient of variation for convergence"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "parameter": "thresholds",
+      "value": "0.40",
+      "line": 45,
+      "context": "CV_MODERATE_THRESHOLD = 0.40  # CV threshold for moderate dispersion"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "parameter": "thresholds",
+      "value": "0.60",
+      "line": 46,
+      "context": "CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/primitives/phase5_00_00_statistical_primitives.py",
+      "parameter": "weights",
+      "value": "0.0",
+      "line": 257,
+      "context": "cumulative_weight = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/primitives/phase5_00_00_types.py",
+      "parameter": "weights",
+      "value": "0.0",
+      "line": 351,
+      "context": "MIN_WEIGHT = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_05/primitives/phase5_00_00_types.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 352,
+      "context": "MAX_WEIGHT = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 67,
+      "context": "weight=10000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "9000",
+      "line": 74,
+      "context": "weight=9000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "10000",
+      "line": 81,
+      "context": "weight=10000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "5000",
+      "line": 88,
+      "context": "weight=5000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "9000",
+      "line": 95,
+      "context": "weight=9000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "7000",
+      "line": 102,
+      "context": "weight=7000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "8000",
+      "line": 109,
+      "context": "weight=8000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "6000",
+      "line": 116,
+      "context": "weight=6000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter": "weights",
+      "value": "4000",
+      "line": 123,
+      "context": "weight=4000,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_02_output_contract.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 157,
+      "context": "min_confidence = 0.6"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_08/docs/future/phase8_35_00_entity_targeted_recommendations.py",
+      "parameter": "confidence",
+      "value": "0.80",
+      "line": 501,
+      "context": "confidence=0.80,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/registries/questionnaire_signal_registry.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 233,
+      "context": "weight=1.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/registries/questionnaire_signal_registry.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 281,
+      "context": "weight=1.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_02/primitives/phase2_10_00_contract_assembler.py",
+      "parameter": "confidence",
+      "value": "1",
+      "line": 881,
+      "context": "\"formula\": \"if same_fact detected by multiple methods \u2192 confidence = 1 - \u220f(1 - c"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter": "thresholds",
+      "value": "0.75",
+      "line": 632,
+      "context": "threshold=0.75,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter": "thresholds",
+      "value": "0.65",
+      "line": 640,
+      "context": "threshold=0.65,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter": "thresholds",
+      "value": "0.60",
+      "line": 648,
+      "context": "threshold=0.60,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter": "thresholds",
+      "value": "0.70",
+      "line": 656,
+      "context": "threshold=0.70,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter": "thresholds",
+      "value": "0.65",
+      "line": 664,
+      "context": "threshold=0.65,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter": "thresholds",
+      "value": "0.60",
+      "line": 672,
+      "context": "threshold=0.60,"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/interphase/phase3_05_00_nexus_interface_validator.py",
+      "parameter": "confidence",
+      "value": "0.3",
+      "line": 99,
+      "context": "MIN_CONFIDENCE = 0.3"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/interphase/phase3_05_00_nexus_interface_validator.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 156,
+      "context": "warnings.append(f\"Confidence {confidence:.3f} below minimum {cls.MIN_CONFIDENCE}"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/interphase/phase3_05_00_nexus_interface_validator.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 291,
+      "context": "f\"Confidence {confidence:.3f} below threshold {threshold:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_03/interphase/phase3_05_00_nexus_interface_validator.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 291,
+      "context": "f\"Confidence {confidence:.3f} below threshold {threshold:.3f}\""
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter": "thresholds",
+      "value": "0.75",
+      "line": 12,
+      "context": "- Confidence threshold: 0.75"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.70",
+      "line": 335,
+      "context": "base_confidence = 0.70"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.95",
+      "line": 339,
+      "context": "base_confidence = 0.95"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.90",
+      "line": 345,
+      "context": "base_confidence = 0.90"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.75",
+      "line": 347,
+      "context": "base_confidence = 0.75"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.80",
+      "line": 351,
+      "context": "base_confidence = 0.80"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/causal_verb_extractor.py",
+      "parameter": "thresholds",
+      "value": "0.65",
+      "line": 13,
+      "context": "- Confidence threshold: 0.65"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/financial_chain_extractor.py",
+      "parameter": "thresholds",
+      "value": "0.70",
+      "line": 11,
+      "context": "- Confidence threshold: 0.70"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/structural_marker_extractor.py",
+      "parameter": "thresholds",
+      "value": "0.95",
+      "line": 16,
+      "context": "- Confidence threshold: 0.95 for table detection, 0.90 for sections"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.75",
+      "line": 766,
+      "context": "confidence=0.75,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.70",
+      "line": 832,
+      "context": "base_confidence = 0.70"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.95",
+      "line": 835,
+      "context": "base_confidence = 0.95"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.90",
+      "line": 838,
+      "context": "base_confidence = 0.90"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.75",
+      "line": 840,
+      "context": "base_confidence = 0.75"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter": "confidence",
+      "value": "0.80",
+      "line": 842,
+      "context": "base_confidence = 0.80"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/extractor_validator.py",
+      "parameter": "confidence",
+      "value": ".3",
+      "line": 239,
+      "context": "f\"  Avg Confidence: {metrics.avg_confidence:.3f}\","
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/normative_reference_extractor.py",
+      "parameter": "thresholds",
+      "value": "0.85",
+      "line": 19,
+      "context": "- Confidence threshold: 0.85"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/__init__.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 29,
+      "context": "print(f\"Confidence: {result.confidence:.2f}\")"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/quantitative_triplet_extractor.py",
+      "parameter": "thresholds",
+      "value": "0.75",
+      "line": 21,
+      "context": "- Confidence threshold: 0.75"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/scorers/policy_area_scorer.py",
+      "parameter": "weights",
+      "value": "0.40",
+      "line": 72,
+      "context": "NORMATIVE_COMPLIANCE_WEIGHT = 0.40"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/scorers/policy_area_scorer.py",
+      "parameter": "weights",
+      "value": "0.30",
+      "line": 73,
+      "context": "SIGNAL_COVERAGE_WEIGHT = 0.30"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/scorers/policy_area_scorer.py",
+      "parameter": "weights",
+      "value": "0.30",
+      "line": 74,
+      "context": "QUALITY_WEIGHT = 0.30"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/audit_trail.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 192,
+      "context": "method_id=method_id, score=score, confidence=1.0, timestamp=timestamp"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/financial_chain_extractor.py",
+      "parameter": "confidence",
+      "value": "0.7",
+      "line": 181,
+      "context": "base_confidence = 0.7"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/financial_chain_extractor.py",
+      "parameter": "confidence",
+      "value": "0.9",
+      "line": 185,
+      "context": "base_confidence = 0.9"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/financial_chain_extractor.py",
+      "parameter": "confidence",
+      "value": "0.85",
+      "line": 187,
+      "context": "base_confidence = 0.85"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/financial_chain_extractor.py",
+      "parameter": "confidence",
+      "value": "0.6",
+      "line": 189,
+      "context": "base_confidence = 0.6"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.5",
+      "line": 102,
+      "context": "weight=1.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.3",
+      "line": 108,
+      "context": "weight=1.3,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.2",
+      "line": 114,
+      "context": "weight=1.2,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 120,
+      "context": "weight=1.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "0.9",
+      "line": 126,
+      "context": "weight=0.9,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "0.9",
+      "line": 132,
+      "context": "weight=0.9,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.2",
+      "line": 142,
+      "context": "weight=1.2,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 148,
+      "context": "weight=1.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "0.8",
+      "line": 154,
+      "context": "weight=0.8,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "0.9",
+      "line": 160,
+      "context": "weight=0.9,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.5",
+      "line": 170,
+      "context": "weight=1.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.3",
+      "line": 176,
+      "context": "weight=1.3,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.1",
+      "line": 182,
+      "context": "weight=1.1,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.2",
+      "line": 188,
+      "context": "weight=1.2,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.4",
+      "line": 194,
+      "context": "weight=1.4,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.4",
+      "line": 204,
+      "context": "weight=1.4,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.2",
+      "line": 210,
+      "context": "weight=1.2,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.3",
+      "line": 216,
+      "context": "weight=1.3,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.1",
+      "line": 222,
+      "context": "weight=1.1,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "1.0",
+      "line": 228,
+      "context": "weight=1.0,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "weights",
+      "value": "0.9",
+      "line": 232,
+      "context": "MetricType.PRECISION, r\"\\d+(?:\\.\\d+)?\\s*%\", weight=0.9, description=\"Percentage "
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "thresholds",
+      "value": "0.6",
+      "line": 660,
+      "context": "BOOST_THRESHOLD = 0.6  # Minimum aggregate quality for boosting"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter": "thresholds",
+      "value": "0.6",
+      "line": 767,
+      "context": "QUALITY_THRESHOLD = 0.6"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_validation_specs.py",
+      "parameter": "thresholds",
+      "value": "0.5",
+      "line": 272,
+      "context": "threshold = 0.5"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_validation_specs.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 294,
+      "context": "quality_threshold = 0.7  # Default 70% of validations must pass"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_validation_specs.py",
+      "parameter": "thresholds",
+      "value": "0.5",
+      "line": 318,
+      "context": "quality_threshold=0.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 48,
+      "context": "COMPLEXITY_ADJUSTMENT_THRESHOLD = 0.7  # Threshold for high document complexity"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter": "thresholds",
+      "value": "0.8",
+      "line": 50,
+      "context": "QUALITY_ADJUSTMENT_THRESHOLD = 0.8  # Threshold for high evidence quality"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter": "thresholds",
+      "value": "0.3",
+      "line": 52,
+      "context": "MIN_ADAPTIVE_THRESHOLD = 0.3  # Minimum allowed threshold"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter": "thresholds",
+      "value": "0.9",
+      "line": 53,
+      "context": "MAX_ADAPTIVE_THRESHOLD = 0.9  # Maximum allowed threshold"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter": "thresholds",
+      "value": "0.5",
+      "line": 337,
+      "context": "threshold=0.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter": "thresholds",
+      "value": "0.5",
+      "line": 350,
+      "context": "adaptive_threshold=0.5,"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/metadata/signal_method_metadata.py",
+      "parameter": "thresholds",
+      "value": "2",
+      "line": 47,
+      "context": "HIGH_PRIORITY_THRESHOLD = 2  # Methods with priority <= 2 always execute"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/metadata/signal_method_metadata.py",
+      "parameter": "thresholds",
+      "value": "0.7",
+      "line": 48,
+      "context": "VALIDATION_CONFIDENCE_THRESHOLD = 0.7  # Execute validation if confidence < this"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/metadata/signal_method_metadata.py",
+      "parameter": "thresholds",
+      "value": "0.6",
+      "line": 49,
+      "context": "ANALYSIS_COMPLEXITY_THRESHOLD = 0.6  # Execute analysis if complexity > this"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter": "weights",
+      "value": "0.25",
+      "line": 119,
+      "context": "weight = 0.25  # 25% del score total"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter": "weights",
+      "value": "0.20",
+      "line": 134,
+      "context": "weight = 0.20  # 20% del score total"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter": "weights",
+      "value": "0.30",
+      "line": 157,
+      "context": "weight = 0.30  # 30% del score total (muy importante)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter": "weights",
+      "value": "0.15",
+      "line": 183,
+      "context": "weight = 0.15  # 15% del score total"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter": "weights",
+      "value": "0.10",
+      "line": 199,
+      "context": "weight = 0.10  # 10% del score total"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter": "weights",
+      "value": "0.10",
+      "line": 212,
+      "context": "weight = 0.10  # 10% del score total (no tan cr\u00edtico)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/contrast_signals_vehicle.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 214,
+      "context": "previous_confidence = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/contrast_signals_vehicle.py",
+      "parameter": "confidence",
+      "value": "1.0",
+      "line": 215,
+      "context": "current_confidence = 1.0"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/contrast_signals_vehicle.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 245,
+      "context": "rationale=f\"Confidence drop: {drop_percentage:.1%} (from {previous_confidence:.2"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/contrast_signals_vehicle.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 245,
+      "context": "rationale=f\"Confidence drop: {drop_percentage:.1%} (from {previous_confidence:.2"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "thresholds",
+      "value": "0.927",
+      "line": 214,
+      "context": "- deduplication_threshold: 0.927"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "thresholds",
+      "value": "0.835",
+      "line": 219,
+      "context": "- pattern_fuzzy_threshold: 0.835"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "prior_strength",
+      "value": "2.7",
+      "line": 335,
+      "context": "- prior_strength: 2.7"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "samples",
+      "value": "mcmc_",
+      "line": 340,
+      "context": "- mcmc_samples: 12,500"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "weights",
+      "value": "0.92",
+      "line": 345,
+      "context": "- likelihood_weight: 0.92"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "significance",
+      "value": "0.032",
+      "line": 450,
+      "context": "- significance_level: 0.032"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 566,
+      "context": "\"rationale\": f\"Audit confidence {confidence:.2f} <= critical threshold \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 575,
+      "context": "\"rationale\": f\"Audit confidence {confidence:.2f} <= partial threshold \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "confidence",
+      "value": ".2",
+      "line": 584,
+      "context": "\"rationale\": f\"Audit confidence {confidence:.2f} above all veto thresholds\","
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "thresholds",
+      "value": "0.28",
+      "line": 626,
+      "context": "- failure_detection_threshold: 0.28"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/epistemic_core.py",
+      "parameter": "thresholds",
+      "value": "0.73",
+      "line": 631,
+      "context": "- synthesis_confidence_threshold: 0.73"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 159,
+      "context": "logger.info(f\"Optimal extraction threshold: {optimal_threshold:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 236,
+      "context": "logger.info(f\"Deduplication threshold: {threshold:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 321,
+      "context": "logger.info(f\"Pattern fuzzy threshold: {optimal_threshold:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "prior_strength",
+      "value": "1.0",
+      "line": 388,
+      "context": "prior_strength = 1.0  # Fallback to uninformative"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "prior_strength",
+      "value": ".2",
+      "line": 408,
+      "context": "logger.info(f\"Optimal prior strength (Empirical Bayes): {prior_strength:.2f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": "0.0",
+      "line": 545,
+      "context": "threshold = 0.0"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".4",
+      "line": 564,
+      "context": "logger.info(f\"Optimal significance level (FDR control): {threshold:.4f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 638,
+      "context": "logger.info(f\"Veto thresholds (SPC): Critical={critical_threshold:.3f}, \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 639,
+      "context": "f\"Warning={warning_threshold:.3f} (\u03bc={mean:.3f}, \u03c3={std:.3f}, Cpk={cpk:.2f})\")"
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 750,
+      "context": "logger.info(f\"Failure detection threshold: {optimal_threshold:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter": "thresholds",
+      "value": ".3",
+      "line": 811,
+      "context": "logger.info(f\"Synthesis confidence threshold: {optimal_threshold:.3f} \""
+    },
+    {
+      "file": "src/farfan_pipeline/calibration/registry.py",
+      "parameter": "prior_strength",
+      "value": "1",
+      "line": 445,
+      "context": "prior_strength = 1 - np.exp(-0.3 * n_years)  # Asymptotic to 1"
+    }
+  ],
+  "critical_files": [
+    {
+      "path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+      "parameter_count": 4,
+      "recommendations": [
+        "File has 4 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds.",
+        "Consider using N2InferentialCalibration for Bayesian parameters."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/methods/derek_beach.py",
+      "parameter_count": 10,
+      "recommendations": [
+        "File has 10 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+      "parameter_count": 4,
+      "recommendations": [
+        "File has 4 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_04/PHASE_4_CONSTANTS.py",
+      "parameter_count": 8,
+      "recommendations": [
+        "File has 8 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds.",
+        "Consider using N2InferentialCalibration for Bayesian parameters."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_signal_enriched_aggregation.py",
+      "parameter_count": 5,
+      "recommendations": [
+        "File has 5 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_choquet_aggregator.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_04/phase4_30_00_aggregation.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "parameter_count": 5,
+      "recommendations": [
+        "File has 5 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_09/report_generator.py",
+      "parameter_count": 5,
+      "recommendations": [
+        "File has 5 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_01/phase1_11_00_signal_enrichment.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_01/phase1_13_00_cpp_ingestion.py",
+      "parameter_count": 16,
+      "recommendations": [
+        "File has 16 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_06_benchmark_performance_optimizations.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "parameter_count": 30,
+      "recommendations": [
+        "File has 30 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_02_precision_tracking.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds.",
+        "Consider using N2InferentialCalibration for Bayesian parameters."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_03/phase3_24_00_signal_enriched_scoring.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_03/phase3_26_00_normative_compliance_validator.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_40_00_aggregation_enhancements.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N2InferentialCalibration for Bayesian parameters."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_04/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "parameter_count": 5,
+      "recommendations": [
+        "File has 5 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_08/contracts/phase8_10_01_mission_contract.py",
+      "parameter_count": 9,
+      "recommendations": [
+        "File has 9 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_03/primitives/phase3_00_00_scoring_modalities.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/phases/Phase_03/interphase/phase3_05_00_nexus_interface_validator.py",
+      "parameter_count": 4,
+      "recommendations": [
+        "File has 4 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/extractors/sota_transformer_ner_extractor.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/scorers/policy_area_scorer.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/extractors/financial_chain_extractor.py",
+      "parameter_count": 4,
+      "recommendations": [
+        "File has 4 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "parameter_count": 23,
+      "recommendations": [
+        "File has 23 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_validation_specs.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/utils/signal_scoring_context.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/metadata/signal_method_metadata.py",
+      "parameter_count": 3,
+      "recommendations": [
+        "File has 3 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/consumers/phase3/phase3_10_00_signal_enriched_scoring.py",
+      "parameter_count": 6,
+      "recommendations": [
+        "File has 6 hardcoded parameters. Should import and use calibration system."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vehicles/contrast/contrast_signals_vehicle.py",
+      "parameter_count": 4,
+      "recommendations": [
+        "File has 4 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds."
+      ]
+    },
+    {
+      "path": "src/farfan_pipeline/calibration/mathematical_calibration.py",
+      "parameter_count": 11,
+      "recommendations": [
+        "File has 11 hardcoded parameters. Should import and use calibration system.",
+        "Consider using N1EmpiricalCalibration for extraction thresholds.",
+        "Consider using N2InferentialCalibration for Bayesian parameters."
+      ]
+    }
+  ]
+}

@@ -152,9 +152,7 @@ class AdvancedGraphNode:
 
         if not isinstance(self.dependencies, set):
             self.dependencies = set(self.dependencies or set())
-        self.dependencies = {
-            str(dep).strip() for dep in self.dependencies if str(dep).strip()
-        }
+        self.dependencies = {str(dep).strip() for dep in self.dependencies if str(dep).strip()}
 
         self.metadata = self._normalize_metadata(self.metadata)
 
@@ -167,9 +165,7 @@ class AdvancedGraphNode:
             )
         self.role = normalized_role
 
-    def _normalize_metadata(
-        self, metadata: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    def _normalize_metadata(self, metadata: dict[str, Any] | None = None) -> dict[str, Any]:
         """Normaliza metadatos garantizando primitivos JSON y valores por defecto."""
 
         source_metadata = metadata if metadata is not None else self.metadata
@@ -210,8 +206,8 @@ class AdvancedGraphNode:
         if hasattr(value, "isoformat"):
             try:
                 return value.isoformat()
-            except Exception:  # pragma: no cover - fallback defensivo
-                pass
+            except Exception as e:  # pragma: no cover - fallback defensivo
+                logger.debug(f"Failed to get isoformat from value, using current time: {str(e)}")
         return datetime.now().isoformat()
 
     @staticmethod
@@ -221,11 +217,10 @@ class AdvancedGraphNode:
         if hasattr(value, "isoformat"):
             try:
                 return value.isoformat()
-            except Exception:  # pragma: no cover - fallback defensivo
-                pass
+            except Exception as e:  # pragma: no cover - fallback defensivo
+                logger.debug(f"Failed to get isoformat from value, using str(): {str(e)}")
         return str(value)
 
-    
     def to_serializable_dict(self) -> dict[str, Any]:
         """Convierte el nodo en un diccionario serializable compatible con JSON Schema."""
 
@@ -282,9 +277,7 @@ class TeoriaCambio:
 
     _MATRIZ_VALIDACION: dict[CategoriaCausal, frozenset[CategoriaCausal]] = {
         cat: (
-            frozenset({cat, CategoriaCausal(cat.value + 1)})
-            if cat.value < 5
-            else frozenset({cat})
+            frozenset({cat, CategoriaCausal(cat.value + 1)}) if cat.value < 5 else frozenset({cat})
         )
         for cat in CategoriaCausal
     }
@@ -301,7 +294,6 @@ class TeoriaCambio:
         return destino in TeoriaCambio._MATRIZ_VALIDACION.get(origen, frozenset())
 
     @lru_cache(maxsize=128)
-    
     def construir_grafo_causal(self) -> nx.DiGraph:
         """Construye y cachea el grafo causal canónico."""
         if self._grafo_cache is not None and self._cache_valido:
@@ -329,7 +321,6 @@ class TeoriaCambio:
         )
         return grafo
 
-    
     def construir_grafo_from_cpp(self, cpp) -> nx.DiGraph:
         """
         Construir grafo causal desde CanonPolicyPackage (Phase 1 output).
@@ -354,9 +345,7 @@ class TeoriaCambio:
             causal_graph = bridge.build_causal_graph_from_cpp(cpp)
 
             if causal_graph is None:
-                self.logger.warning(
-                    "Failed to build causal graph from CPP, using standard graph"
-                )
+                self.logger.warning("Failed to build causal graph from CPP, using standard graph")
                 return self.construir_grafo_causal()
 
             self.logger.info(
@@ -371,7 +360,6 @@ class TeoriaCambio:
             self.logger.error(f"Error building causal graph from CPP: {e}")
             return self.construir_grafo_causal()
 
-    
     def construir_grafo_from_spc(self, preprocessed_doc) -> nx.DiGraph:
         """
         Construir grafo causal desde estructura SPC (Smart Policy Chunks).
@@ -389,9 +377,7 @@ class TeoriaCambio:
         # Check if document is in chunked mode
         if getattr(preprocessed_doc, "processing_mode", "flat") != "chunked":
             # Fallback to text-based construction for flat mode
-            self.logger.warning(
-                "Document not in chunked mode, using standard causal graph"
-            )
+            self.logger.warning("Document not in chunked mode, using standard causal graph")
             return self.construir_grafo_causal()
 
         try:
@@ -402,17 +388,13 @@ class TeoriaCambio:
             chunk_graph = getattr(preprocessed_doc, "chunk_graph", {})
 
             if not chunk_graph:
-                self.logger.warning(
-                    "No chunk graph available, using standard causal graph"
-                )
+                self.logger.warning("No chunk graph available, using standard causal graph")
                 return self.construir_grafo_causal()
 
             base_graph = bridge.build_causal_graph_from_spc(chunk_graph)
 
             if base_graph is None:
-                self.logger.warning(
-                    "Failed to build SPC graph, using standard causal graph"
-                )
+                self.logger.warning("Failed to build SPC graph, using standard causal graph")
                 return self.construir_grafo_causal()
 
             # Enhance with content analysis from chunks
@@ -432,7 +414,6 @@ class TeoriaCambio:
             self.logger.error(f"SPCCausalBridge not available: {e}")
             return self.construir_grafo_causal()
 
-    
     def validacion_completa(self, grafo: nx.DiGraph) -> ValidacionResultado:
         """Ejecuta una validación estructural exhaustiva de la teoría de cambio."""
         resultado = ValidacionResultado()
@@ -451,11 +432,7 @@ class TeoriaCambio:
     @staticmethod
     def _extraer_categorias(grafo: nx.DiGraph) -> set[str]:
         """Extrae el conjunto de categorías presentes en el grafo."""
-        return {
-            data["categoria"].name
-            for _, data in grafo.nodes(data=True)
-            if "categoria" in data
-        }
+        return {data["categoria"].name for _, data in grafo.nodes(data=True) if "categoria" in data}
 
     @staticmethod
     def _validar_orden_causal(grafo: nx.DiGraph) -> list[tuple[str, str]]:
@@ -514,10 +491,7 @@ class TeoriaCambio:
             )
         return sugerencias
 
-    
-    def _execute_generar_sugerencias_internas(
-        self, validacion: "ValidacionResultado"
-    ) -> list[str]:
+    def _execute_generar_sugerencias_internas(self, validacion: "ValidacionResultado") -> list[str]:
         """
         Execute internal suggestion generation (wrapper method).
 
@@ -562,9 +536,7 @@ def _create_advanced_seed(plan_name: str, salt: str = "") -> int:
     seed = int.from_bytes(hash_obj.digest()[:8], "big", signed=False)
 
     # Log for audit trail
-    LOGGER.info(
-        f"[Audit 1.1] Deterministic seed: {seed} (plan={plan_name}, salt={salt})"
-    )
+    LOGGER.info(f"[Audit 1.1] Deterministic seed: {seed} (plan={plan_name}, salt={salt})")
 
     return seed
 
@@ -609,7 +581,6 @@ class AdvancedDAGValidator:
             name, dependencies or set(), metadata or {}, role
         )
 
-    
     def add_edge(self, from_node: str, to_node: str, weight: float = 1.0) -> None:
         """Agrega una arista dirigida con peso opcional."""
         if to_node not in self.graph_nodes:
@@ -619,7 +590,6 @@ class AdvancedDAGValidator:
         self.graph_nodes[to_node].dependencies.add(from_node)
         self.graph_nodes[to_node].metadata[f"edge_{from_node}->{to_node}"] = weight
 
-    
     def _initialize_rng(self, plan_name: str, salt: str = "") -> int:
         """
         Inicializa el generador de números aleatorios con una semilla determinista.
@@ -640,9 +610,7 @@ class AdvancedDAGValidator:
         np.random.seed(seed % (2**32))
 
         # Log initialization for reproducibility verification
-        LOGGER.info(
-            f"[Audit 1.1] RNG initialized with seed={seed} for plan={plan_name}"
-        )
+        LOGGER.info(f"[Audit 1.1] RNG initialized with seed={seed} for plan={plan_name}")
 
         return seed
 
@@ -670,7 +638,6 @@ class AdvancedDAGValidator:
                     queue.append(v)
         return count == len(nodes)
 
-    
     def _generate_subgraph(self) -> dict[str, AdvancedGraphNode]:
         """Genera un subgrafo aleatorio del grafo principal."""
         if not self.graph_nodes or self._rng is None:
@@ -699,19 +666,13 @@ class AdvancedDAGValidator:
         seed = self._initialize_rng(plan_name)
         if not self.graph_nodes:
             self._last_serialized_nodes = []
-            return self._create_empty_result(
-                plan_name, seed, datetime.now().isoformat()
-            )
+            return self._create_empty_result(plan_name, seed, datetime.now().isoformat())
 
         acyclic_count = sum(
             1 for _ in range(iterations) if self._is_acyclic(self._generate_subgraph())
         )
 
-        p_value = (
-            acyclic_count / iterations
-            if iterations > 0
-            else 1.0
-        )
+        p_value = acyclic_count / iterations if iterations > 0 else 1.0
         conf_level = self.config["confidence_level"]
         ci = self._calculate_confidence_interval(acyclic_count, iterations, conf_level)
         power = self._calculate_statistical_power(acyclic_count, iterations)
@@ -746,7 +707,6 @@ class AdvancedDAGValidator:
         )
 
     @property
-    
     def last_serialized_nodes(self) -> list[dict[str, Any]]:
         """Obtiene la instantánea más reciente de nodos serializados."""
 
@@ -793,9 +753,7 @@ class AdvancedDAGValidator:
         return serialized_nodes
 
     @classmethod
-    def _get_node_validator(
-        cls, schema_path: Path | None = None
-    ) -> Optional["Draft7Validator"]:
+    def _get_node_validator(cls, schema_path: Path | None = None) -> Optional["Draft7Validator"]:
         """Obtiene (y cachea) el validador JSON Schema para nodos avanzados."""
 
         if Draft7Validator is None:
@@ -840,9 +798,7 @@ class AdvancedDAGValidator:
             subgraphs.append(subgraph)
         # 2. Lista de todas las aristas
         edges = {
-            f"{dep}->{name}"
-            for name, node in self.graph_nodes.items()
-            for dep in node.dependencies
+            f"{dep}->{name}" for name, node in self.graph_nodes.items() for dep in node.dependencies
         }
         # 3. Para cada arista, calcula el p-value perturbado usando los mismos subgrafos
         for edge in edges:
@@ -852,9 +808,7 @@ class AdvancedDAGValidator:
                 # Perturba el subgrafo removiendo la arista
                 if to_node in subgraph and from_node in subgraph[to_node].dependencies:
                     subgraph_copy = {
-                        k: AdvancedGraphNode(
-                            v.name, set(v.dependencies), dict(v.metadata), v.role
-                        )
+                        k: AdvancedGraphNode(v.name, set(v.dependencies), dict(v.metadata), v.role)
                         for k, v in subgraph.items()
                     }
                     subgraph_copy[to_node].dependencies.discard(from_node)
@@ -871,9 +825,7 @@ class AdvancedDAGValidator:
         }
 
     @staticmethod
-    def _calculate_confidence_interval(
-        s: int, n: int, conf: float
-    ) -> tuple[float, float]:
+    def _calculate_confidence_interval(s: int, n: int, conf: float) -> tuple[float, float]:
         """Calcula el intervalo de confianza de Wilson."""
         if n == 0:
             return (
@@ -897,17 +849,8 @@ class AdvancedDAGValidator:
         if n == 0:
             return 0.0
         p = s / n
-        effect_size = 2 * (
-            np.arcsin(np.sqrt(p))
-            - np.arcsin(
-                np.sqrt(
-                    0.5
-                )
-            )
-        )
-        return stats.norm.sf(
-            stats.norm.ppf(1 - alpha) - abs(effect_size) * np.sqrt(n / 2)
-        )
+        effect_size = 2 * (np.arcsin(np.sqrt(p)) - np.arcsin(np.sqrt(0.5)))
+        return stats.norm.sf(stats.norm.ppf(1 - alpha) - abs(effect_size) * np.sqrt(n / 2))
 
     @staticmethod
     def _calculate_bayesian_posterior(
@@ -917,11 +860,8 @@ class AdvancedDAGValidator:
         """Calcula la probabilidad posterior Bayesiana simple."""
         if (likelihood * prior + (1 - likelihood) * (1 - prior)) == 0:
             return prior
-        return (likelihood * prior) / (
-            likelihood * prior + (1 - likelihood) * (1 - prior)
-        )
+        return (likelihood * prior) / (likelihood * prior + (1 - likelihood) * (1 - prior))
 
-    
     def _calculate_node_importance(self) -> dict[str, float]:
         """Calcula una métrica de importancia para cada nodo."""
         if not self.graph_nodes:
@@ -933,8 +873,7 @@ class AdvancedDAGValidator:
 
         max_centrality = (
             max(
-                len(node.dependencies) + out_degree[name]
-                for name, node in self.graph_nodes.items()
+                len(node.dependencies) + out_degree[name] for name, node in self.graph_nodes.items()
             )
             or 1
         )
@@ -943,7 +882,6 @@ class AdvancedDAGValidator:
             for name, node in self.graph_nodes.items()
         }
 
-    
     def get_graph_stats(self) -> dict[str, Any]:
         """Obtiene estadísticas estructurales del grafo."""
         nodes = len(self.graph_nodes)
@@ -987,6 +925,7 @@ class AdvancedDAGValidator:
 # PRIORITY 2: N3-AUD DAG CYCLE DETECTOR (TYPE_C Veto Gate)
 # ============================================================================
 
+
 class DAGCycleDetector:
     """
     N3-AUD cycle detection for TYPE_C causal contracts.
@@ -1016,11 +955,7 @@ class DAGCycleDetector:
     """
 
     # Veto configuration
-    VETO_CONDITIONS = {
-        "cycle_detected": "TOTAL_VETO",
-        "min_cycles": 1,
-        "confidence_on_veto": 0.0
-    }
+    VETO_CONDITIONS = {"cycle_detected": "TOTAL_VETO", "min_cycles": 1, "confidence_on_veto": 0.0}
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -1044,9 +979,7 @@ class DAGCycleDetector:
         if isinstance(graph, AdvancedDAGValidator):
             nodes = list(graph.graph_nodes.keys())
             edges = [
-                (dep, name)
-                for name, node in graph.graph_nodes.items()
-                for dep in node.dependencies
+                (dep, name) for name, node in graph.graph_nodes.items() for dep in node.dependencies
             ]
         else:
             nodes = graph.get("nodes", [])
@@ -1069,7 +1002,7 @@ class DAGCycleDetector:
             "is_acyclic": is_acyclic,
             "topological_order": topological_order,
             "node_count": len(nodes),
-            "edge_count": len(edges)
+            "edge_count": len(edges),
         }
 
     def veto_on_cycle(self, graph: dict | AdvancedDAGValidator) -> dict:
@@ -1088,9 +1021,7 @@ class DAGCycleDetector:
 
         if not detection_result["is_acyclic"]:
             cycles = detection_result["cycles_found"]
-            self.logger.warning(
-                f"CYCLE DETECTION VETO: {len(cycles)} cycle(s) found in causal DAG"
-            )
+            self.logger.warning(f"CYCLE DETECTION VETO: {len(cycles)} cycle(s) found in causal DAG")
 
             return {
                 "status": "INVALID",
@@ -1099,7 +1030,7 @@ class DAGCycleDetector:
                 "veto_reason": f"Graph-theoretic validation: {len(cycles)} cycle(s) detected",
                 "cycle_details": cycles,
                 "cycle_count": len(cycles),
-                "rationale": "Causal DAGs must be acyclic; cycles violate temporal/causal ordering"
+                "rationale": "Causal DAGs must be acyclic; cycles violate temporal/causal ordering",
             }
         else:
             # Calculate acyclicity confidence
@@ -1112,7 +1043,7 @@ class DAGCycleDetector:
                 "veto_reason": "No cycles detected - DAG structure valid",
                 "cycle_details": [],
                 "topological_order": detection_result.get("topological_order"),
-                "rationale": "Acyclic causal structure confirmed"
+                "rationale": "Acyclic causal structure confirmed",
             }
 
     def calculate_acyclicity_confidence(self, graph: dict | AdvancedDAGValidator) -> float:
@@ -1150,11 +1081,7 @@ class DAGCycleDetector:
 
         return density_score
 
-    def _build_adjacency_list(
-        self,
-        nodes: list,
-        edges: list[tuple]
-    ) -> dict[str, list[str]]:
+    def _build_adjacency_list(self, nodes: list, edges: list[tuple]) -> dict[str, list[str]]:
         """Build adjacency list from nodes and edges."""
         adjacency = {node: [] for node in nodes}
         for source, target in edges:
@@ -1162,11 +1089,7 @@ class DAGCycleDetector:
                 adjacency[source].append(target)
         return adjacency
 
-    def _find_all_cycles(
-        self,
-        adjacency: dict[str, list[str]],
-        nodes: list
-    ) -> list[list[str]]:
+    def _find_all_cycles(self, adjacency: dict[str, list[str]], nodes: list) -> list[list[str]]:
         """Find all cycles in the graph using DFS."""
         cycles = []
         visited = set()
@@ -1196,16 +1119,12 @@ class DAGCycleDetector:
 
         return cycles
 
-    def _topological_sort(
-        self,
-        adjacency: dict[str, list[str]],
-        nodes: list
-    ) -> list[str] | None:
+    def _topological_sort(self, adjacency: dict[str, list[str]], nodes: list) -> list[str] | None:
         """
         Perform topological sort using Kahn's algorithm.
         Returns None if graph has cycles (should not happen here).
         """
-        in_degree = {node: 0 for node in nodes}
+        in_degree = dict.fromkeys(nodes, 0)
         for node in nodes:
             for neighbor in adjacency.get(node, []):
                 if neighbor in in_degree:
@@ -1252,7 +1171,6 @@ class IndustrialGradeValidator:
             "full_validation": 0.3,
         }
 
-    
     def execute_suite(self) -> bool:
         """Ejecuta la suite completa de validación industrial."""
         self.logger.info("=" * 80)
@@ -1285,7 +1203,6 @@ class IndustrialGradeValidator:
         )
         return meets_standards
 
-    
     def validate_engine_readiness(self) -> bool:
         """Valida la disponibilidad y tiempo de instanciación de los motores de análisis."""
         self.logger.info("  [Capa 1] Validando disponibilidad de motores...")
@@ -1305,7 +1222,6 @@ class IndustrialGradeValidator:
             self.logger.error("    ❌ Error crítico al instanciar motores: %s", e)
             return False
 
-    
     def validate_causal_categories(self) -> bool:
         """Valida la completitud y el orden axiomático de las categorías causales."""
         self.logger.info("  [Capa 2] Validando axiomas de categorías causales...")
@@ -1323,7 +1239,6 @@ class IndustrialGradeValidator:
         self.logger.info("    ✅ Axiomas de categorías validados.")
         return True
 
-    
     def validate_connection_matrix(self) -> bool:
         """Valida la matriz de transiciones causales."""
         self.logger.info("  [Capa 3] Validando matriz de transiciones causales...")
@@ -1344,7 +1259,6 @@ class IndustrialGradeValidator:
         self.logger.info("    ✅ Matriz de transiciones validada.")
         return True
 
-    
     def run_performance_benchmarks(self) -> bool:
         """Ejecuta benchmarks de rendimiento para las operaciones críticas del motor."""
         self.logger.info("  [Capa 4] Ejecutando benchmarks de rendimiento...")
@@ -1369,9 +1283,7 @@ class IndustrialGradeValidator:
         )
 
         return all(
-            m.status == STATUS_PASSED
-            for m in self.metrics
-            if m.name in self.performance_benchmarks
+            m.status == STATUS_PASSED for m in self.metrics if m.name in self.performance_benchmarks
         )
 
     def _benchmark_operation(
@@ -1384,7 +1296,6 @@ class IndustrialGradeValidator:
         self._log_metric(operation_name, elapsed, "s", threshold)
         return result
 
-    
     def _log_metric(self, name: str, value: float, unit: str, threshold: float):
         """Registra y reporta una métrica de validación."""
         status = STATUS_PASSED if value <= threshold else "❌ FALLÓ"
@@ -1419,9 +1330,7 @@ def create_policy_theory_of_change_graph() -> AdvancedDAGValidator:
         dependencies={"mecanismos_de_adelanto"},
         role="producto",
     )
-    validator.add_node(
-        "reduccion_vbg", dependencies={"comisarias_funcionales"}, role="resultado"
-    )
+    validator.add_node("reduccion_vbg", dependencies={"comisarias_funcionales"}, role="resultado")
     validator.add_node(
         "aumento_participacion_politica",
         dependencies={"mecanismos_de_adelanto"},
@@ -1480,20 +1389,14 @@ def main() -> None:
         LOGGER.info("Iniciando validación estocástica para el plan: %s", args.plan_name)
         # Se podría cargar un grafo desde un archivo, pero para la demo usamos el constructor
         dag_validator = create_policy_theory_of_change_graph()
-        result = dag_validator.calculate_acyclicity_pvalue(
-            args.plan_name, args.iterations
-        )
+        result = dag_validator.calculate_acyclicity_pvalue(args.plan_name, args.iterations)
         serialized_nodes = dag_validator.last_serialized_nodes
 
         LOGGER.info("\n" + "=" * 80)
-        LOGGER.info(
-            f"RESULTADOS DE LA VALIDACIÓN ESTOCÁSTICA PARA '{result.plan_name}'"
-        )
+        LOGGER.info(f"RESULTADOS DE LA VALIDACIÓN ESTOCÁSTICA PARA '{result.plan_name}'")
         LOGGER.info("=" * 80)
         LOGGER.info(f"  - P-value (Aciclicidad): {result.p_value:.6f}")
-        LOGGER.info(
-            f"  - Posterior Bayesiano de Aciclicidad: {result.bayesian_posterior:.4f}"
-        )
+        LOGGER.info(f"  - Posterior Bayesiano de Aciclicidad: {result.bayesian_posterior:.4f}")
         LOGGER.info(
             f"  - Intervalo de Confianza (95%%): [{result.confidence_interval[0]:.4f}, {result.confidence_interval[1]:.4f}]"
         )

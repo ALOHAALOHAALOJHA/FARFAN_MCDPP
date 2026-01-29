@@ -1,0 +1,132 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
+  "criterion_id": "MC10",
+  "name": "Semantic Relationships",
+  "description_es": "Detecta relaciones semánticas entre conceptos usando embeddings",
+  "description_en": "Detects semantic relationships between concepts using embeddings",
+  "signal_type": "SEMANTIC_RELATIONSHIP",
+  "implementation_status": "PARTIAL",
+  "extractor_class": "SemanticRelationshipExtractor",
+  "detection": {
+    "primary_method": "EMBEDDING_SIMILARITY",
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/SEMANTIC_RELATIONSHIPS",
+    "embedding_config": {
+      "model": "paraphrase-multilingual-MiniLM-L12-v2",
+      "alternate_model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+      "dimension": 384,
+      "similarity_threshold": 0.75
+    },
+    "relationship_types": {
+      "QUESTION_CONTENT": {
+        "description": "Similitud entre pregunta y contenido del plan",
+        "threshold": 0.75,
+        "weight": 1.0
+      },
+      "KEYWORD_CONTENT": {
+        "description": "Similitud entre keywords de PA y contenido",
+        "threshold": 0.70,
+        "weight": 0.8
+      },
+      "PATTERN_CONTENT": {
+        "description": "Match de patterns en contenido",
+        "threshold": 0.80,
+        "weight": 0.9
+      }
+    },
+    "co_occurrence_patterns": {
+      "high_value_triplets": [
+        {
+          "terms": [
+            "indicador",
+            "meta",
+            "línea base"
+          ],
+          "frequency": "MUY_ALTA",
+          "context": "Tabla de indicadores",
+          "confidence": 0.95
+        },
+        {
+          "terms": [
+            "programa",
+            "presupuesto",
+            "responsable"
+          ],
+          "frequency": "ALTA",
+          "context": "PPI",
+          "confidence": 0.92
+        },
+        {
+          "terms": [
+            "problema",
+            "objetivo",
+            "estrategia"
+          ],
+          "frequency": "ALTA",
+          "context": "Marco lógico",
+          "confidence": 0.88
+        }
+      ]
+    },
+    "embedding_clusters": {
+      "method": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+      "threshold": 0.75,
+      "typical_clusters": [
+        "Educación → calidad → cobertura → matrícula",
+        "Salud → atención → hospital → médico",
+        "Infraestructura → vías → pavimentación → movilidad"
+      ]
+    },
+    "co_occurrence": {
+      "min_confidence": 0.70,
+      "conditions": "within_paragraph AND relevant_to_question"
+    }
+  },
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.05,
+      "DIM02": 0.05
+    },
+    "cross_cutting_boost": {}
+  },
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM02"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 58,
+    "coverage": 0.19,
+    "applies_to_slots": [
+      "ALL"
+    ],
+    "primary_questions": [
+      "ALL"
+    ],
+    "note": "Applied universally for semantic matching as fallback"
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_b_baseline": {
+        "weight": 0.05,
+        "note": "Semantic fallback when patterns fail"
+      }
+    },
+    "required_for": []
+  },
+  "required_capabilities": [
+    "SEMANTIC_PROCESSING",
+    "GRAPH_CONSTRUCTION"
+  ],
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc10_semantic.py",
+    "expected_precision": 0.80,
+    "expected_recall": 0.75
+  }
+}

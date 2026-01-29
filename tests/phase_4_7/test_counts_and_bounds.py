@@ -14,7 +14,6 @@ import pytest
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 
 class TestCountsAndBounds:
@@ -73,7 +72,7 @@ class TestPhaseValidation:
     
     def test_phase4_validation_function(self):
         """Test Phase 4 validation with mock data."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
             validate_phase4_output
         )
         
@@ -84,7 +83,7 @@ class TestPhaseValidation:
     
     def test_phase5_validation_function(self):
         """Test Phase 5 validation with mock data."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
             validate_phase5_output
         )
         
@@ -94,7 +93,7 @@ class TestPhaseValidation:
     
     def test_phase6_validation_function(self):
         """Test Phase 6 validation with mock data."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
             validate_phase6_output
         )
         
@@ -104,7 +103,7 @@ class TestPhaseValidation:
     
     def test_phase7_validation_function(self):
         """Test Phase 7 validation with mock data."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
             validate_phase7_output
         )
         
@@ -114,7 +113,7 @@ class TestPhaseValidation:
     
     def test_full_pipeline_validation(self):
         """Test full pipeline validation."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
             validate_full_aggregation_pipeline
         )
         
@@ -151,7 +150,7 @@ class TestHermeticityValidation:
     
     def test_hermeticity_diagnosis_available(self):
         """Verify hermeticity diagnosis is available."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.enhancements import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements import (
             HermeticityDiagnosis
         )
         
@@ -164,7 +163,7 @@ class TestCoherenceMetrics:
     
     def test_dispersion_metrics_available(self):
         """Verify DispersionMetrics is available."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.enhancements import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements import (
             DispersionMetrics
         )
         

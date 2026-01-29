@@ -1,0 +1,306 @@
+{
+  "task": "Tarea #3: Validar vocabularios",
+  "timestamp": "2026-01-18T19:30:00Z",
+  "agent": "claude-code",
+  "summary": {
+    "signal_types_defined": 18,
+    "capabilities_defined": 14,
+    "vocabulary_validation": "PASSED_WITH_GAPS",
+    "consistency_score": 0.72
+  },
+  "signal_vocabulary": {
+    "file": "SISAS/vocabulary/signal_vocabulary.py",
+    "total_definitions": 18,
+    "by_category": {
+      "structural": 3,
+      "integrity": 3,
+      "epistemic": 4,
+      "contrast": 3,
+      "operational": 4,
+      "consumption": 3
+    },
+    "all_signal_types": [
+      "StructuralAlignmentSignal",
+      "SchemaConflictSignal",
+      "CanonicalMappingSignal",
+      "EventPresenceSignal",
+      "EventCompletenessSignal",
+      "DataIntegritySignal",
+      "AnswerDeterminacySignal",
+      "AnswerSpecificitySignal",
+      "EmpiricalSupportSignal",
+      "MethodApplicationSignal",
+      "DecisionDivergenceSignal",
+      "ConfidenceDropSignal",
+      "TemporalContrastSignal",
+      "ExecutionAttemptSignal",
+      "FailureModeSignal",
+      "LegacyActivitySignal",
+      "LegacyDependencySignal",
+      "FrequencySignal",
+      "TemporalCouplingSignal",
+      "ConsumerHealthSignal"
+    ],
+    "validation_features": {
+      "caching_enabled": true,
+      "indices_built": true,
+      "usage_tracked": true,
+      "performance_hints": true
+    }
+  },
+  "capability_vocabulary": {
+    "file": "SISAS/vocabulary/capability_vocabulary.py",
+    "total_definitions": 14,
+    "by_category": {
+      "loading": 1,
+      "scoping": 1,
+      "extraction": 3,
+      "transformation": 1,
+      "enrichment": 2,
+      "validation": 2,
+      "irrigation": 1,
+      "contrast": 1,
+      "audit": 2
+    },
+    "all_capabilities": [
+      "can_load_canonical",
+      "can_scope_context",
+      "can_extract_evidence",
+      "can_extract_determinacy",
+      "can_extract_specificity",
+      "can_transform_to_signals",
+      "can_enrich_with_context",
+      "can_enrich_with_signals",
+      "can_validate_contracts",
+      "can_validate_schema",
+      "can_irrigate",
+      "can_contrast_legacy",
+      "can_audit_signals",
+      "can_audit_consumers"
+    ]
+  },
+  "vocabulary_vs_code_validation": {
+    "signals_in_vocabulary_but_not_in_vehicles": [
+      "SchemaConflictSignal - defined in vocabulary, no vehicle produces it",
+      "LegacyActivitySignal - defined in vocabulary, no vehicle produces it",
+      "DecisionDivergenceSignal - defined in vocabulary, no vehicle produces it",
+      "ConfidenceDropSignal - defined in vocabulary, no vehicle produces it",
+      "TemporalContrastSignal - defined in vocabulary, no vehicle produces it",
+      "FrequencySignal - defined in vocabulary, no vehicle produces it",
+      "TemporalCouplingSignal - defined in vocabulary, no vehicle produces it",
+      "ConsumerHealthSignal - defined in vocabulary, no vehicle produces it"
+    ],
+    "signals_in_vehicles_but_not_in_vocabulary": [
+      "PhaseStartSignal - vehicle: main_orchestrator (NOT in SISAS vehicles)",
+      "PhaseCompleteSignal - vehicle: main_orchestrator (NOT in SISAS vehicles)",
+      "OrchestrationInitializedSignal - vehicle: main_orchestrator (NOT in SISAS vehicles)",
+      "OrchestrationCompleteSignal - vehicle: main_orchestrator (NOT in SISAS vehicles)",
+      "OrchestrationDecisionSignal - vehicle: main_orchestrator (NOT in SISAS vehicles)"
+    ],
+    "signals_with_orphan_status": {
+      "produced_by_no_vehicle": [
+        "SchemaConflictSignal",
+        "LegacyActivitySignal",
+        "DecisionDivergenceSignal",
+        "ConfidenceDropSignal",
+        "TemporalContrastSignal",
+        "FrequencySignal",
+        "TemporalCouplingSignal",
+        "ConsumerHealthSignal"
+      ],
+      "consumed_by_no_consumer": [
+        "LegacyActivitySignal",
+        "MethodApplicationSignal",
+        "TemporalCouplingSignal"
+      ]
+    }
+  },
+  "capability_alignment": {
+    "vehicles_declaring_capabilities": {
+      "signal_registry": {
+        "declared": ["can_load", "can_transform", "can_validate"],
+        "mapped_to_vocabulary": ["can_load_canonical", "can_transform_to_signals", "can_validate_contracts"],
+        "coverage": "PARTIAL"
+      },
+      "signal_context_scoper": {
+        "declared": ["can_scope", "can_extract", "can_transform"],
+        "mapped_to_vocabulary": ["can_scope_context", "can_extract_determinacy", "can_extract_specificity"],
+        "coverage": "GOOD"
+      },
+      "signal_evidence_extractor": {
+        "declared": ["can_extract"],
+        "mapped_to_vocabulary": ["can_extract_evidence"],
+        "coverage": "PARTIAL (stub implementation)"
+      },
+      "signal_intelligence_layer": {
+        "declared": ["can_transform"],
+        "mapped_to_vocabulary": ["can_transform_to_signals"],
+        "coverage": "PARTIAL (stub implementation)"
+      },
+      "signal_enhancement_integrator": {
+        "declared": ["can_enrich"],
+        "mapped_to_vocabulary": ["can_enrich_with_context"],
+        "coverage": "PARTIAL (stub implementation)"
+      },
+      "signal_quality_metrics": {
+        "declared": [],
+        "capability_unclear": "NO DECLARED CAPABILITIES",
+        "produces": ["DataIntegritySignal", "EventCompletenessSignal"]
+      },
+      "signal_irrigator": {
+        "declared": ["can_irrigate"],
+        "mapped_to_vocabulary": ["can_irrigate"],
+        "coverage": "PARTIAL (produces no signals despite declaration)"
+      }
+    }
+  },
+  "signal_flow_completeness": {
+    "complete_flow_signals": [
+      {
+        "signal": "StructuralAlignmentSignal",
+        "produced_by": ["signal_registry", "signal_enhancement_integrator"],
+        "consumed_by": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types", "phase1_signal_enrichment", "phase2_contract_consumer", "phase7_meso_consumer"],
+        "flow_status": "HEALTHY"
+      },
+      {
+        "signal": "CanonicalMappingSignal",
+        "produced_by": ["signal_registry", "signal_context_scoper", "signal_enhancement_integrator"],
+        "consumed_by": ["phase0_bootstrap", "phase7_meso_consumer"],
+        "flow_status": "HEALTHY"
+      },
+      {
+        "signal": "EventPresenceSignal",
+        "produced_by": ["signal_registry"],
+        "consumed_by": ["phase0_bootstrap", "phase1_signal_enrichment"],
+        "flow_status": "HEALTHY"
+      }
+    ],
+    "broken_flow_signals": [
+      {
+        "signal": "EmpiricalSupportSignal",
+        "produced_by": ["signal_evidence_extractor (STUB)"],
+        "consumed_by": ["phase2_evidence_consumer", "phase8_recommendations"],
+        "flow_status": "BROKEN - producer not implemented"
+      },
+      {
+        "signal": "MethodApplicationSignal",
+        "produced_by": ["signal_evidence_extractor (STUB)", "signal_intelligence_layer (STUB)"],
+        "consumed_by": ["phase1_signal_enrichment"],
+        "flow_status": "BROKEN - producers not implemented"
+      },
+      {
+        "signal": "DataIntegritySignal",
+        "produced_by": ["signal_quality_metrics (STUB)"],
+        "consumed_by": ["phase0_bootstrap", "phase0_providers", "phase1_cpp_ingestion", "phase2_contract_consumer", "phase3_scoring", "phase8_recommendations"],
+        "flow_status": "BROKEN - producer not implemented, many consumers waiting"
+      }
+    ],
+    "orphan_signals": [
+      {
+        "signal": "SchemaConflictSignal",
+        "in_vocabulary": true,
+        "produced_by": [],
+        "consumed_by": ["phase0_wiring_types"],
+        "flow_status": "ORPHAN - no producer"
+      },
+      {
+        "signal": "LegacyActivitySignal",
+        "in_vocabulary": true,
+        "produced_by": [],
+        "consumed_by": [],
+        "flow_status": "ORPHAN - no producer, no consumer"
+      },
+      {
+        "signal": "DecisionDivergenceSignal",
+        "in_vocabulary": true,
+        "produced_by": [],
+        "consumed_by": ["phase8_recommendations"],
+        "flow_status": "ORPHAN - no producer"
+      },
+      {
+        "signal": "FrequencySignal",
+        "in_vocabulary": true,
+        "produced_by": [],
+        "consumed_by": ["phase2_factory_consumer"],
+        "flow_status": "ORPHAN - no producer"
+      },
+      {
+        "signal": "TemporalCouplingSignal",
+        "in_vocabulary": true,
+        "produced_by": [],
+        "consumed_by": ["phase0_wiring_types"],
+        "flow_status": "ORPHAN - no producer"
+      },
+      {
+        "signal": "ConsumerHealthSignal",
+        "in_vocabulary": true,
+        "produced_by": [],
+        "consumed_by": ["phase2_factory_consumer"],
+        "flow_status": "ORPHAN - no producer"
+      }
+    ]
+  },
+  "orchestration_signals_gap": {
+    "orchestration_signals_defined": [
+      "PhaseStartSignal",
+      "PhaseCompleteSignal",
+      "PhaseProgressSignal",
+      "PhaseRetrySignal",
+      "OrchestrationInitializedSignal",
+      "OrchestrationCompleteSignal",
+      "OrchestrationDecisionSignal",
+      "ConstitutionalValidationSignal",
+      "PhaseReadyToStartSignal",
+      "DependencyGraphUpdatedSignal",
+      "PhaseBlockedSignal",
+      "ParallelExecutionLimitSignal",
+      "PhaseDependencySatisfiedSignal"
+    ],
+    "location": "SISAS/signals/types/orchestration.py",
+    "in_signal_vocabulary": false,
+    "status": "SEGREGATED - Orchestration signals NOT in main SignalVocabulary",
+    "recommendation": "Add orchestration signals to SignalVocabulary._register_orchestration_signals() method"
+  },
+  "vocabulary_health_metrics": {
+    "definition_coverage": {
+      "total_signals_in_system": 31,
+      "defined_in_vocabulary": 18,
+      "defined_separately_orchestration": 13,
+      "coverage_percentage": 100
+    },
+    "implementation_coverage": {
+      "signals_with_producers": 13,
+      "signals_with_consumers": 18,
+      "signals_with_both": 10,
+      "implementation_percentage": 55
+    },
+    "vocabulary_coherence": {
+      "capabilities_mapped_to_vehicles": 6,
+      "total_vehicles": 11,
+      "mapping_coverage": 55
+    }
+  },
+  "recommendations": {
+    "critical": [
+      "Implement stub vehicles: signal_evidence_extractor, signal_intelligence_layer, signal_enhancement_integrator, signal_quality_metrics",
+      "Add ORCHESTRATION category to SignalVocabulary",
+      "Create vehicles for orphan signals: SchemaConflictSignal, DecisionDivergenceSignal, FrequencySignal, etc."
+    ],
+    "short_term": [
+      "Map vehicle capabilities to CapabilityVocabulary systematically",
+      "Add capability declarations to all vehicles",
+      "Implement signal production for contrast signals (DecisionDivergenceSignal, etc.)"
+    ],
+    "long_term": [
+      "Auto-generate SignalVocabulary from signal type definitions",
+      "Create capability-to-vehicle mapping configuration",
+      "Implement signal flow validation end-to-end tests"
+    ]
+  },
+  "statistics": {
+    "vocabulary_size_lines": "483 (signal_vocabulary.py) + 191 (capability_vocabulary.py)",
+    "total_validators": "2 (SignalVocabulary, CapabilityVocabulary)",
+    "cache_hit_rate": "Not measured in production",
+    "validation_methods": 10
+  }
+}

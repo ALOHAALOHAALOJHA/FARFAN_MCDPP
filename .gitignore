@@ -99,6 +99,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv312
 env/
 venv/
 ENV/
@@ -139,4 +140,27 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
+*.bak
 continue
+
+# Rule generation temporary files
+new_enhanced_rules.json
+*.backup.*
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+/.vscode/gemini-mcp
+# Temporary pip files with = prefix (from pip install --option=value)
+=*.txt
+=[0-9]*
+*.py.bak
+constraints.txt
+.vscode/gemini-mcp/
+.mcp-debug-tools/
+
+# Audit script log files
+pipeline_audit_*.log

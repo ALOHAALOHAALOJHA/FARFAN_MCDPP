@@ -1,0 +1,5406 @@
+{
+  "_category": "INDICADOR",
+  "_count": 108,
+  "patterns": {
+    "PAT-0117": {
+      "id": "PAT-0117",
+      "canonical_id": "PAT-0117",
+      "legacy_ids": [
+        "PAT-0117",
+        "PAT-Q001-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "brecha salarial|diferencia salarial|inequidad salarial",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q001"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.977828+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0119": {
+      "id": "PAT-0119",
+      "canonical_id": "PAT-0119",
+      "legacy_ids": [
+        "PAT-0119",
+        "PAT-Q001-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "autonomía económica|tasa de desempleo femenina",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q001"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.977851+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0122": {
+      "id": "PAT-0122",
+      "canonical_id": "PAT-0122",
+      "legacy_ids": [
+        "PAT-0122",
+        "PAT-Q001-011"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "\\d+(\\.\\d+)?\\s*%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q001"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.977873+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0126": {
+      "id": "PAT-0126",
+      "canonical_id": "PAT-0126",
+      "legacy_ids": [
+        "PAT-0126",
+        "PAT-Q002-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "subregistro de casos de VBG|cifra negra",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q002"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.977900+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0196": {
+      "id": "PAT-0196",
+      "canonical_id": "PAT-0196",
+      "legacy_ids": [
+        "PAT-0196",
+        "PAT-Q011-009"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Ficha de Indicador|Anexo de metas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q011"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978435+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0197": {
+      "id": "PAT-0197",
+      "canonical_id": "PAT-0197",
+      "legacy_ids": [
+        "PAT-0197",
+        "PAT-Q012-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "cobertura del|atenderá al \\d+% de la población objetivo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q012"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978457+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0198": {
+      "id": "PAT-0198",
+      "canonical_id": "PAT-0198",
+      "legacy_ids": [
+        "PAT-0198",
+        "PAT-Q012-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta representa un avance de X% sobre la brecha total de Y",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q012"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978462+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0216": {
+      "id": "PAT-0216",
+      "canonical_id": "PAT-0216",
+      "legacy_ids": [
+        "PAT-0216",
+        "PAT-Q016-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de violencia|tasa de feminicidios|brecha salarial",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q016"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978582+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0217": {
+      "id": "PAT-0217",
+      "canonical_id": "PAT-0217",
+      "legacy_ids": [
+        "PAT-0217",
+        "PAT-Q016-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de participación política|índice de autonomía económica",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q016"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978590+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0237": {
+      "id": "PAT-0237",
+      "canonical_id": "PAT-0237",
+      "legacy_ids": [
+        "PAT-0237",
+        "PAT-Q022-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la tasa de participación laboral femenina se usa como proxy de la autonomía económica",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q022"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979093+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0238": {
+      "id": "PAT-0238",
+      "canonical_id": "PAT-0238",
+      "legacy_ids": [
+        "PAT-0238",
+        "PAT-Q022-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura la esencia del cambio",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q022"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979099+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0242": {
+      "id": "PAT-0242",
+      "canonical_id": "PAT-0242",
+      "legacy_ids": [
+        "PAT-0242",
+        "PAT-Q023-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "una limitación de este indicador es que no captura|es sensible a",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q023"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979128+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0265": {
+      "id": "PAT-0265",
+      "canonical_id": "PAT-0265",
+      "legacy_ids": [
+        "PAT-0265",
+        "PAT-Q029-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "monitoreo de indicadores de proceso",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q029"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979323+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0266": {
+      "id": "PAT-0266",
+      "canonical_id": "PAT-0266",
+      "legacy_ids": [
+        "PAT-0266",
+        "PAT-Q029-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "alerta temprana|semáforo de indicadores",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q029"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979331+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0286": {
+      "id": "PAT-0286",
+      "canonical_id": "PAT-0286",
+      "legacy_ids": [
+        "PAT-0286",
+        "PAT-Q031-012"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "número de personas|hogares|porcentaje sobre la población total",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q271"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979482+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0352": {
+      "id": "PAT-0352",
+      "canonical_id": "PAT-0352",
+      "legacy_ids": [
+        "PAT-0352",
+        "PAT-Q042-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la cobertura de atención humanitaria cubre un X% del flujo en tránsito estimado",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q282"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980011+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0353": {
+      "id": "PAT-0353",
+      "canonical_id": "PAT-0353",
+      "legacy_ids": [
+        "PAT-0353",
+        "PAT-Q042-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se espera regularizar al \\d+% de la población con vocación de permanencia",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q282"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980017+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0373": {
+      "id": "PAT-0373",
+      "canonical_id": "PAT-0373",
+      "legacy_ids": [
+        "PAT-0373",
+        "PAT-Q046-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de la población migrante con estatus regular",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q286"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980177+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0374": {
+      "id": "PAT-0374",
+      "canonical_id": "PAT-0374",
+      "legacy_ids": [
+        "PAT-0374",
+        "PAT-Q046-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de ocupación de la población migrante",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q286"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980185+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0375": {
+      "id": "PAT-0375",
+      "canonical_id": "PAT-0375",
+      "legacy_ids": [
+        "PAT-0375",
+        "PAT-Q046-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de NNA migrantes que permanecen en el sistema educativo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q286"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980190+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0399": {
+      "id": "PAT-0399",
+      "canonical_id": "PAT-0399",
+      "legacy_ids": [
+        "PAT-0399",
+        "PAT-Q052-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "las tasas de matrimonios mixtos como proxy de integración cultural",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q292"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980362+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0401": {
+      "id": "PAT-0401",
+      "canonical_id": "PAT-0401",
+      "legacy_ids": [
+        "PAT-0401",
+        "PAT-Q052-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura las dinámicas de convivencia",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q292"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980376+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0446": {
+      "id": "PAT-0446",
+      "canonical_id": "PAT-0446",
+      "legacy_ids": [
+        "PAT-0446",
+        "PAT-Q061-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "homicidio|tasa de homicidios|muertes violentas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q031"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980736+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0457": {
+      "id": "PAT-0457",
+      "canonical_id": "PAT-0457",
+      "legacy_ids": [
+        "PAT-0457",
+        "PAT-Q062-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "subregistro de la violencia sexual|cifra negra de la extorsión",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q032"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980808+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0461": {
+      "id": "PAT-0461",
+      "canonical_id": "PAT-0461",
+      "legacy_ids": [
+        "PAT-0461",
+        "PAT-Q062-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se desconoce el número real de|se estima que la cifra podría ser mayor",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q032"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980836+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0513": {
+      "id": "PAT-0513",
+      "canonical_id": "PAT-0513",
+      "legacy_ids": [
+        "PAT-0513",
+        "PAT-Q072-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "cobertura del|atenderá al \\d+% de las alertas emitidas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q042"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981327+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0529": {
+      "id": "PAT-0529",
+      "canonical_id": "PAT-0529",
+      "legacy_ids": [
+        "PAT-0529",
+        "PAT-Q076-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de homicidios|tasa de desplazamiento|tasa de confinamiento",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q046"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981438+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0531": {
+      "id": "PAT-0531",
+      "canonical_id": "PAT-0531",
+      "legacy_ids": [
+        "PAT-0531",
+        "PAT-Q076-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir en un X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q046"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981453+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0542": {
+      "id": "PAT-0542",
+      "canonical_id": "PAT-0542",
+      "legacy_ids": [
+        "PAT-0542",
+        "PAT-Q079-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si se reduce la tasa",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q049"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981523+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0552": {
+      "id": "PAT-0552",
+      "canonical_id": "PAT-0552",
+      "legacy_ids": [
+        "PAT-0552",
+        "PAT-Q082-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "proxy|variable instrumental|indicador sustituto|medición referencial|estimación indirecta|subrogado|aproximación estadística|indicador aproximado|medida vicaria|variable intermediaria|métrica de referencia|indicador sucedáneo|medición sustitutiva|variable representativa|indicador derivado|medición alternativa|variable proxy|indicador de reemplazo|medida de aproximación|variable correlacionada|medición indiciaria",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q052"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981621+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0555": {
+      "id": "PAT-0555",
+      "canonical_id": "PAT-0555",
+      "legacy_ids": [
+        "PAT-0555",
+        "PAT-Q082-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura la percepción de estabilidad",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q052"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981647+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0579": {
+      "id": "PAT-0579",
+      "canonical_id": "PAT-0579",
+      "legacy_ids": [
+        "PAT-0579",
+        "PAT-Q089-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "alerta temprana|indicadores de alerta|semáforo de seguridad",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q059"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981813+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0593": {
+      "id": "PAT-0593",
+      "canonical_id": "PAT-0593",
+      "legacy_ids": [
+        "PAT-0593",
+        "PAT-Q091-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de deforestación|hectáreas deforestadas|Ha/año",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q061"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981937+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0667": {
+      "id": "PAT-0667",
+      "canonical_id": "PAT-0667",
+      "legacy_ids": [
+        "PAT-0667",
+        "PAT-Q102-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta de reforestación busca compensar un X% de la tasa de deforestación",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q072"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982794+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0668": {
+      "id": "PAT-0668",
+      "canonical_id": "PAT-0668",
+      "legacy_ids": [
+        "PAT-0668",
+        "PAT-Q102-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la cobertura de la obra protege al \\d+% de la población en riesgo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q072"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982803+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0682": {
+      "id": "PAT-0682",
+      "canonical_id": "PAT-0682",
+      "legacy_ids": [
+        "PAT-0682",
+        "PAT-Q105-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la construcción de la PTAR removerá X% de la carga contaminante, mejorando el IRCA",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q075"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982949+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0686": {
+      "id": "PAT-0686",
+      "canonical_id": "PAT-0686",
+      "legacy_ids": [
+        "PAT-0686",
+        "PAT-Q106-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Tasa de deforestación|Reducción de emisiones de GEI",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q076"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983111+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0687": {
+      "id": "PAT-0687",
+      "canonical_id": "PAT-0687",
+      "legacy_ids": [
+        "PAT-0687",
+        "PAT-Q106-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Porcentaje de población en riesgo mitigado",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q076"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983119+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0709": {
+      "id": "PAT-0709",
+      "canonical_id": "PAT-0709",
+      "legacy_ids": [
+        "PAT-0709",
+        "PAT-Q112-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura la capacidad adaptativa",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q082"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983295+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0711": {
+      "id": "PAT-0711",
+      "canonical_id": "PAT-0711",
+      "legacy_ids": [
+        "PAT-0711",
+        "PAT-Q113-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "el porcentaje de aprovechamiento de residuos como proxy de la conciencia",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q083"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983309+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0752": {
+      "id": "PAT-0752",
+      "canonical_id": "PAT-0752",
+      "legacy_ids": [
+        "PAT-0752",
+        "PAT-Q121-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "cobertura neta|cobertura bruta|tasa de deserción|analfabetismo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q091"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983598+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0753": {
+      "id": "PAT-0753",
+      "canonical_id": "PAT-0753",
+      "legacy_ids": [
+        "PAT-0753",
+        "PAT-Q121-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de mortalidad infantil|tasa de mortalidad materna|desnutrición crónica",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q091"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983606+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0757": {
+      "id": "PAT-0757",
+      "canonical_id": "PAT-0757",
+      "legacy_ids": [
+        "PAT-0757",
+        "PAT-Q121-013"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de hogares|tasa por 1.000 nacidos vivos|porcentaje",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q091"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983632+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0760": {
+      "id": "PAT-0760",
+      "canonical_id": "PAT-0760",
+      "legacy_ids": [
+        "PAT-0760",
+        "PAT-Q122-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la magnitud del problema de la desnutrición es de X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q092"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983655+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0824": {
+      "id": "PAT-0824",
+      "canonical_id": "PAT-0824",
+      "legacy_ids": [
+        "PAT-0824",
+        "PAT-Q132-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta de construcción de vivienda reduce en un 20% el déficit cuantitativo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q102"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984172+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0825": {
+      "id": "PAT-0825",
+      "canonical_id": "PAT-0825",
+      "legacy_ids": [
+        "PAT-0825",
+        "PAT-Q132-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se cubrirá al \\d+% de la población sin aseguramiento",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q102"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984179+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0842": {
+      "id": "PAT-0842",
+      "canonical_id": "PAT-0842",
+      "legacy_ids": [
+        "PAT-0842",
+        "PAT-Q136-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de cobertura neta|tasa de deserción escolar",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q106"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984293+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0843": {
+      "id": "PAT-0843",
+      "canonical_id": "PAT-0843",
+      "legacy_ids": [
+        "PAT-0843",
+        "PAT-Q136-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de mortalidad infantil|razón de mortalidad materna",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q106"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984303+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0844": {
+      "id": "PAT-0844",
+      "canonical_id": "PAT-0844",
+      "legacy_ids": [
+        "PAT-0844",
+        "PAT-Q136-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de hogares con déficit habitacional|IPM",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q106"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984310+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0856": {
+      "id": "PAT-0856",
+      "canonical_id": "PAT-0856",
+      "legacy_ids": [
+        "PAT-0856",
+        "PAT-Q139-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si la deserción baja de X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q109"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984402+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0867": {
+      "id": "PAT-0867",
+      "canonical_id": "PAT-0867",
+      "legacy_ids": [
+        "PAT-0867",
+        "PAT-Q142-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Coeficiente de Gini|indicador compuesto de calidad de vida",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q112"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984475+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0870": {
+      "id": "PAT-0870",
+      "canonical_id": "PAT-0870",
+      "legacy_ids": [
+        "PAT-0870",
+        "PAT-Q142-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque es un estándar internacional",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q112"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984495+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0921": {
+      "id": "PAT-0921",
+      "canonical_id": "PAT-0921",
+      "legacy_ids": [
+        "PAT-0921",
+        "PAT-Q152-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de víctimas sin acceso a la oferta",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q122"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984903+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0923": {
+      "id": "PAT-0923",
+      "canonical_id": "PAT-0923",
+      "legacy_ids": [
+        "PAT-0923",
+        "PAT-Q152-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "subregistro de hechos como la violencia sexual|cifra negra",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q122"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985070+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0981": {
+      "id": "PAT-0981",
+      "canonical_id": "PAT-0981",
+      "legacy_ids": [
+        "PAT-0981",
+        "PAT-Q162-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta de indemnización cubre un X% del universo por indemnizar",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q132"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985492+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0982": {
+      "id": "PAT-0982",
+      "canonical_id": "PAT-0982",
+      "legacy_ids": [
+        "PAT-0982",
+        "PAT-Q162-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se atenderá al \\d+% de las familias que solicitaron retorno",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q132"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985498+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0998": {
+      "id": "PAT-0998",
+      "canonical_id": "PAT-0998",
+      "legacy_ids": [
+        "PAT-0998",
+        "PAT-Q166-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de víctimas con su plan de reparación integral avanzado",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q136"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985621+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0999": {
+      "id": "PAT-0999",
+      "canonical_id": "PAT-0999",
+      "legacy_ids": [
+        "PAT-0999",
+        "PAT-Q166-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de retornos o reubicaciones con sostenibilidad",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q136"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985626+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1001": {
+      "id": "PAT-1001",
+      "canonical_id": "PAT-1001",
+      "legacy_ids": [
+        "PAT-1001",
+        "PAT-Q166-005"
+      ],
+      "pattern_spec": {
+        "type": "LITERAL",
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera avanzar a un X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q136"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985639+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1026": {
+      "id": "PAT-1026",
+      "canonical_id": "PAT-1026",
+      "legacy_ids": [
+        "PAT-1026",
+        "PAT-Q172-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura la percepción de paz",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q142"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985818+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1068": {
+      "id": "PAT-1068",
+      "canonical_id": "PAT-1068",
+      "legacy_ids": [
+        "PAT-1068",
+        "PAT-Q181-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de deserción escolar|cobertura neta|repitencia",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986181+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1069": {
+      "id": "PAT-1069",
+      "canonical_id": "PAT-1069",
+      "legacy_ids": [
+        "PAT-1069",
+        "PAT-Q181-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de fecundidad adolescente|embarazo en niñas de 10-14 años",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986189+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1070": {
+      "id": "PAT-1070",
+      "canonical_id": "PAT-1070",
+      "legacy_ids": [
+        "PAT-1070",
+        "PAT-Q181-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de trabajo infantil|peores formas de trabajo infantil",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986196+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1072": {
+      "id": "PAT-1072",
+      "canonical_id": "PAT-1072",
+      "legacy_ids": [
+        "PAT-1072",
+        "PAT-Q181-009"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de mortalidad en menores de 5 años|mortalidad infantil",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986210+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1075": {
+      "id": "PAT-1075",
+      "canonical_id": "PAT-1075",
+      "legacy_ids": [
+        "PAT-1075",
+        "PAT-Q181-013"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje|tasa por 1.000|número de casos",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986228+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1082": {
+      "id": "PAT-1082",
+      "canonical_id": "PAT-1082",
+      "legacy_ids": [
+        "PAT-1082",
+        "PAT-Q182-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "subregistro de casos de violencia sexual|cifra negra",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q152"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986279+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1143": {
+      "id": "PAT-1143",
+      "canonical_id": "PAT-1143",
+      "legacy_ids": [
+        "PAT-1143",
+        "PAT-Q192-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "cobertura universal del PAE|atenderá al \\d+% de los NNA",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q162"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987159+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1144": {
+      "id": "PAT-1144",
+      "canonical_id": "PAT-1144",
+      "legacy_ids": [
+        "PAT-1144",
+        "PAT-Q192-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta de cupos en CDI cubre el X% del déficit de atención",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q162"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987167+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1161": {
+      "id": "PAT-1161",
+      "canonical_id": "PAT-1161",
+      "legacy_ids": [
+        "PAT-1161",
+        "PAT-Q196-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de deserción escolar|tasa de fecundidad en adolescentes",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q166"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987280+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1162": {
+      "id": "PAT-1162",
+      "canonical_id": "PAT-1162",
+      "legacy_ids": [
+        "PAT-1162",
+        "PAT-Q196-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de trabajo infantil|prevalencia de desnutrición crónica",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q166"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987289+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1163": {
+      "id": "PAT-1163",
+      "canonical_id": "PAT-1163",
+      "legacy_ids": [
+        "PAT-1163",
+        "PAT-Q196-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de jóvenes NINI",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q166"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987295+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1173": {
+      "id": "PAT-1173",
+      "canonical_id": "PAT-1173",
+      "legacy_ids": [
+        "PAT-1173",
+        "PAT-Q199-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "para solucionar la alta tasa de embarazo adolescente",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q169"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987358+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1175": {
+      "id": "PAT-1175",
+      "canonical_id": "PAT-1175",
+      "legacy_ids": [
+        "PAT-1175",
+        "PAT-Q199-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si la tasa baja de X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q169"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987372+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1186": {
+      "id": "PAT-1186",
+      "canonical_id": "PAT-1186",
+      "legacy_ids": [
+        "PAT-1186",
+        "PAT-Q202-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Índice de Desarrollo Juvenil|indicador compuesto de bienestar",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q172"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987466+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1187": {
+      "id": "PAT-1187",
+      "canonical_id": "PAT-1187",
+      "legacy_ids": [
+        "PAT-1187",
+        "PAT-Q202-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la tasa de graduación de educación media como proxy de capital humano",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q172"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987473+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1188": {
+      "id": "PAT-1188",
+      "canonical_id": "PAT-1188",
+      "legacy_ids": [
+        "PAT-1188",
+        "PAT-Q202-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la tasa de homicidios juvenil como proxy inverso de cohesión social",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q172"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987481+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1189": {
+      "id": "PAT-1189",
+      "canonical_id": "PAT-1189",
+      "legacy_ids": [
+        "PAT-1189",
+        "PAT-Q202-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque es una medición estandarizada",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q172"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987486+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1191": {
+      "id": "PAT-1191",
+      "canonical_id": "PAT-1191",
+      "legacy_ids": [
+        "PAT-1191",
+        "PAT-Q203-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la tasa de participación en programas de voluntariado como proxy de ciudadanía activa",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q173"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987499+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1233": {
+      "id": "PAT-1233",
+      "canonical_id": "PAT-1233",
+      "legacy_ids": [
+        "PAT-1233",
+        "PAT-Q211-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de desactualización catastral|catastro multipropósito",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q181"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987807+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1237": {
+      "id": "PAT-1237",
+      "canonical_id": "PAT-1237",
+      "legacy_ids": [
+        "PAT-1237",
+        "PAT-Q211-013"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje|hectáreas|kilómetros|número de predios|familias",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q181"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987833+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1239": {
+      "id": "PAT-1239",
+      "canonical_id": "PAT-1239",
+      "legacy_ids": [
+        "PAT-1239",
+        "PAT-Q212-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "el X% de las vías terciarias se encuentra en mal estado",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q182"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987856+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1302": {
+      "id": "PAT-1302",
+      "canonical_id": "PAT-1302",
+      "legacy_ids": [
+        "PAT-1302",
+        "PAT-Q222-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta de formalización cubre un X% del total de predios informales",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q192"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988334+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1303": {
+      "id": "PAT-1303",
+      "canonical_id": "PAT-1303",
+      "legacy_ids": [
+        "PAT-1303",
+        "PAT-Q222-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se intervendrá el \\d+% de la red vial terciaria en mal estado",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q192"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988342+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1319": {
+      "id": "PAT-1319",
+      "canonical_id": "PAT-1319",
+      "legacy_ids": [
+        "PAT-1319",
+        "PAT-Q226-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de actualización del catastro con enfoque multipropósito",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q196"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988461+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1320": {
+      "id": "PAT-1320",
+      "canonical_id": "PAT-1320",
+      "legacy_ids": [
+        "PAT-1320",
+        "PAT-Q226-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de reducción de la informalidad en la tenencia de la tierra",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q196"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988467+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1335": {
+      "id": "PAT-1335",
+      "canonical_id": "PAT-1335",
+      "legacy_ids": [
+        "PAT-1335",
+        "PAT-Q229-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si la informalidad baja de X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q199"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988584+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1347": {
+      "id": "PAT-1347",
+      "canonical_id": "PAT-1347",
+      "legacy_ids": [
+        "PAT-1347",
+        "PAT-Q232-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la tasa de migración neta rural como proxy del arraigo territorial",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q202"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988865+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1348": {
+      "id": "PAT-1348",
+      "canonical_id": "PAT-1348",
+      "legacy_ids": [
+        "PAT-1348",
+        "PAT-Q232-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura las dinámicas de desarrollo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q202"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988873+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1399": {
+      "id": "PAT-1399",
+      "canonical_id": "PAT-1399",
+      "legacy_ids": [
+        "PAT-1399",
+        "PAT-Q241-012"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "número de casos|número de líderes|tasa por cada 100.000",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q211"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989329+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1403": {
+      "id": "PAT-1403",
+      "canonical_id": "PAT-1403",
+      "legacy_ids": [
+        "PAT-1403",
+        "PAT-Q242-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "subregistro por miedo a denunciar|cifra negra de amenazas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q212"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989355+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1465": {
+      "id": "PAT-1465",
+      "canonical_id": "PAT-1465",
+      "legacy_ids": [
+        "PAT-1465",
+        "PAT-Q252-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se cubrirá al 100% de los líderes con riesgo extraordinario",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q222"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989788+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1485": {
+      "id": "PAT-1485",
+      "canonical_id": "PAT-1485",
+      "legacy_ids": [
+        "PAT-1485",
+        "PAT-Q256-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de homicidios de líderes sociales",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q226"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989953+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1486": {
+      "id": "PAT-1486",
+      "canonical_id": "PAT-1486",
+      "legacy_ids": [
+        "PAT-1486",
+        "PAT-Q256-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de casos de amenaza que no se materializan",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q226"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989958+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1488": {
+      "id": "PAT-1488",
+      "canonical_id": "PAT-1488",
+      "legacy_ids": [
+        "PAT-1488",
+        "PAT-Q256-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir a cero|reducir en X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q226"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989974+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1514": {
+      "id": "PAT-1514",
+      "canonical_id": "PAT-1514",
+      "legacy_ids": [
+        "PAT-1514",
+        "PAT-Q262-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura la vitalidad de la sociedad civil",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q232"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990207+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1557": {
+      "id": "PAT-1557",
+      "canonical_id": "PAT-1557",
+      "legacy_ids": [
+        "PAT-1557",
+        "PAT-Q271-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de hacinamiento|sobrepoblación carcelaria|déficit de cupos",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q241"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990906+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1564": {
+      "id": "PAT-1564",
+      "canonical_id": "PAT-1564",
+      "legacy_ids": [
+        "PAT-1564",
+        "PAT-Q271-012"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje|tasa|número de PPL|número de cupos",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q241"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990951+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1565": {
+      "id": "PAT-1565",
+      "canonical_id": "PAT-1565",
+      "legacy_ids": [
+        "PAT-1565",
+        "PAT-Q272-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "déficit de X cupos|el hacinamiento supera el Y%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q242"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990959+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1631": {
+      "id": "PAT-1631",
+      "canonical_id": "PAT-1631",
+      "legacy_ids": [
+        "PAT-1631",
+        "PAT-Q282-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la meta de nuevos cupos reduce en un X% el hacinamiento de sindicados",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q252"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991476+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1632": {
+      "id": "PAT-1632",
+      "canonical_id": "PAT-1632",
+      "legacy_ids": [
+        "PAT-1632",
+        "PAT-Q282-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "se cubrirá al \\d+% de la población PPL con atención en salud",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q252"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991483+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1650": {
+      "id": "PAT-1650",
+      "canonical_id": "PAT-1650",
+      "legacy_ids": [
+        "PAT-1650",
+        "PAT-Q286-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de hacinamiento en centros de detención transitoria",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q256"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991603+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1651": {
+      "id": "PAT-1651",
+      "canonical_id": "PAT-1651",
+      "legacy_ids": [
+        "PAT-1651",
+        "PAT-Q286-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de PPL (sindicados) con acceso efectivo a salud",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q256"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991610+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1652": {
+      "id": "PAT-1652",
+      "canonical_id": "PAT-1652",
+      "legacy_ids": [
+        "PAT-1652",
+        "PAT-Q286-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "porcentaje de PPL participando en programas de resocialización",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q256"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991619+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1653": {
+      "id": "PAT-1653",
+      "canonical_id": "PAT-1653",
+      "legacy_ids": [
+        "PAT-1653",
+        "PAT-Q286-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de reincidencia (si se proyecta)",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q256"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991624+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1654": {
+      "id": "PAT-1654",
+      "canonical_id": "PAT-1654",
+      "legacy_ids": [
+        "PAT-1654",
+        "PAT-Q286-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir a|llegar a un X%",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q256"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991629+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1677": {
+      "id": "PAT-1677",
+      "canonical_id": "PAT-1677",
+      "legacy_ids": [
+        "PAT-1677",
+        "PAT-Q292-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tasa de reincidencia|Índice de Seguridad Ciudadana",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q262"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991801+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1678": {
+      "id": "PAT-1678",
+      "canonical_id": "PAT-1678",
+      "legacy_ids": [
+        "PAT-1678",
+        "PAT-Q292-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la tasa de empleo de la población pospenada como proxy de resocialización",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q262"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991809+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1680": {
+      "id": "PAT-1680",
+      "canonical_id": "PAT-1680",
+      "legacy_ids": [
+        "PAT-1680",
+        "PAT-Q292-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura los efectos a largo plazo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INDICADOR",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q262"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991823+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

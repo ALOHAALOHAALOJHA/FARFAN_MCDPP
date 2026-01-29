@@ -1,0 +1,313 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
+  "criterion_id": "MC03",
+  "name": "Normative References",
+  "description_es": "Detecta referencias normativas: Leyes, Decretos, CONPES, Artículos constitucionales",
+  "description_en": "Detects normative references: Laws, Decrees, CONPES, Constitutional articles",
+  "signal_type": "NORMATIVE_REFERENCE",
+  "implementation_status": "PARTIAL",
+  "extractor_class": "NormativeReferenceExtractor",
+  "detection": {
+    "primary_method": "COMPOUND_PATTERN",
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/NORMATIVE_REFERENCE",
+    "components": [
+      {
+        "component_id": "NR-LEY",
+        "name": "ley_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "Ley\\s+(\\d+)\\s+de\\s+(\\d{4})",
+          "examples": [
+            "Ley 2294 de 2023",
+            "Ley 152 de 1994",
+            "Ley 1448 de 2011"
+          ]
+        },
+        "confidence_base": 0.92,
+        "validation": "year >= 1991 AND year <= 2026"
+      },
+      {
+        "component_id": "NR-DECRETO",
+        "name": "decreto_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "Decreto\\s+(\\d+)\\s+de\\s+(\\d{4})",
+          "examples": [
+            "Decreto 893 de 2017",
+            "Decreto 1865 de 1994"
+          ]
+        },
+        "confidence_base": 0.90
+      },
+      {
+        "component_id": "NR-CONPES",
+        "name": "conpes_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "CONPES\\s+(\\d+)(?:\\s+de\\s+(\\d{4}))?",
+          "examples": [
+            "CONPES 3932 de 2018",
+            "CONPES 4080"
+          ]
+        },
+        "confidence_base": 0.93,
+        "validation": "number >= 3000"
+      },
+      {
+        "component_id": "NR-ARTICULO",
+        "name": "articulo_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "Art(?:ículo|\\.)?\\s+(\\d+)",
+          "examples": [
+            "Artículo 339",
+            "Art. 342"
+          ]
+        },
+        "confidence_base": 0.70,
+        "note": "Lower confidence for standalone articles without context"
+      }
+    ],
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "leyes_per_plan": {
+        "mean": 14,
+        "min": 2,
+        "max": 46,
+        "std": 11
+      },
+      "decretos_per_plan": {
+        "mean": 3,
+        "min": 1,
+        "max": 12,
+        "std": 3
+      },
+      "articulos_per_plan": {
+        "mean": 6,
+        "min": 0,
+        "max": 25,
+        "std": 7
+      },
+      "conpes_per_plan": {
+        "mean": 2,
+        "min": 0,
+        "max": 13,
+        "std": 3
+      }
+    },
+    "high_frequency_norms": [
+      {
+        "norm_id": "Ley 2294 de 2023",
+        "name": "Plan Nacional de Desarrollo 2022-2026",
+        "frequency": 13,
+        "mandatory_for": [
+          "ALL"
+        ],
+        "policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ]
+      },
+      {
+        "norm_id": "Ley 152 de 1994",
+        "name": "Ley Orgánica del Plan de Desarrollo",
+        "frequency": 11,
+        "mandatory_for": [
+          "ALL"
+        ],
+        "policy_areas": [
+          "ALL"
+        ]
+      },
+      {
+        "norm_id": "Ley 388 de 1997",
+        "name": "Ordenamiento Territorial",
+        "frequency": 8,
+        "mandatory_for": [
+          "PA07"
+        ],
+        "policy_areas": [
+          "PA07"
+        ]
+      },
+      {
+        "norm_id": "Ley 2056 de 2020",
+        "name": "Sistema General de Regalías",
+        "frequency": 8,
+        "mandatory_for": [],
+        "policy_areas": [
+          "PA04",
+          "PA07"
+        ]
+      },
+      {
+        "norm_id": "Ley 1448 de 2011",
+        "name": "Ley de Víctimas y Restitución de Tierras",
+        "frequency": 5,
+        "mandatory_for": [
+          "PA05"
+        ],
+        "policy_areas": [
+          "PA05"
+        ]
+      },
+      {
+        "norm_id": "Ley 1257 de 2008",
+        "name": "Violencia contra las Mujeres",
+        "frequency": 4,
+        "mandatory_for": [
+          "PA01"
+        ],
+        "policy_areas": [
+          "PA01",
+          "PA02"
+        ]
+      }
+    ],
+    "ner_enhancement": {
+      "entity_patterns": [
+        {
+          "label": "LEY",
+          "pattern": [
+            {
+              "LOWER": "ley"
+            },
+            {
+              "IS_DIGIT": true
+            }
+          ]
+        },
+        {
+          "label": "DECRETO",
+          "pattern": [
+            {
+              "LOWER": "decreto"
+            },
+            {
+              "IS_DIGIT": true
+            }
+          ]
+        },
+        {
+          "label": "CONPES",
+          "pattern": [
+            {
+              "UPPER": "CONPES"
+            },
+            {
+              "IS_DIGIT": true
+            }
+          ]
+        }
+      ],
+      "context_window": 50
+    }
+  },
+  "validation": {
+    "rules": [
+      {
+        "rule_id": "NR-VAL-001",
+        "name": "valid_year",
+        "condition": "year >= 1991 AND year <= 2026",
+        "severity": "ERROR"
+      },
+      {
+        "rule_id": "NR-VAL-002",
+        "name": "mandatory_norm_pnd",
+        "condition": "contains('Ley 2294 de 2023') OR contains('Plan Nacional de Desarrollo')",
+        "severity": "WARNING",
+        "message": "Plan should reference current PND (Ley 2294 de 2023)"
+      },
+      {
+        "rule_id": "NR-VAL-003",
+        "name": "mandatory_norm_orgánica",
+        "condition": "contains('Ley 152 de 1994') OR contains('Ley Orgánica')",
+        "severity": "WARNING",
+        "message": "Plan should reference Ley Orgánica del Plan de Desarrollo"
+      }
+    ]
+  },
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.10,
+      "DIM02": 0.15
+    },
+    "cross_cutting_boost": {
+      "CC_COHERENCIA_NORMATIVA": 0.30
+    }
+  },
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM02"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 62,
+    "coverage": 0.20,
+    "applies_to_slots": [
+      "D1-Q1",
+      "D1-Q5",
+      "D2-Q5"
+    ],
+    "primary_questions": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121",
+      "Q151",
+      "Q181",
+      "Q211",
+      "Q241",
+      "Q271",
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125",
+      "Q155",
+      "Q185",
+      "Q215",
+      "Q245",
+      "Q275"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_q_quality": {
+        "weight": 0.40
+      },
+      "layer_p_policy_area": {
+        "weight": 0.40
+      }
+    },
+    "required_for": [
+      "layer_q_quality"
+    ]
+  },
+  "required_capabilities": [
+    "NER_EXTRACTION"
+  ],
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc03_normative.py",
+    "expected_precision": 0.93,
+    "expected_recall": 0.85,
+    "gold_standard_plan": "Caldono",
+    "gold_standard_reason": "Highest normative references (46 leyes)"
+  }
+}

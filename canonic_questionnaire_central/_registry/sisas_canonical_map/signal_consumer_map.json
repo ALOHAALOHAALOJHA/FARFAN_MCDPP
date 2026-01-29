@@ -1,0 +1,595 @@
+{
+  "$schema": "sisas_canonical_map_v2",
+  "version": "2.0.0",
+  "generated": "2026-01-19T00:00:00Z",
+  "description": "Comprehensive canonical mapping of SISAS signals, consumers, buses, vehicles, and information items",
+
+  "signal_categories": {
+    "STRUCTURAL": {
+      "description": "Schema alignment, conflicts, canonical mapping",
+      "bus": "structural_bus",
+      "axioms": ["derived", "deterministic", "versioned", "contextual", "auditable", "non_imperative"]
+    },
+    "INTEGRITY": {
+      "description": "Event presence, completeness, data integrity",
+      "bus": "integrity_bus"
+    },
+    "EPISTEMIC": {
+      "description": "Answer determinacy, specificity, empirical support",
+      "bus": "epistemic_bus"
+    },
+    "CONTRAST": {
+      "description": "Decision divergence, confidence drops, temporal contrasts",
+      "bus": "contrast_bus"
+    },
+    "OPERATIONAL": {
+      "description": "Execution attempts, failure modes, legacy activities",
+      "bus": "operational_bus"
+    },
+    "CONSUMPTION": {
+      "description": "Frequency, temporal coupling, consumer health",
+      "bus": "consumption_bus"
+    },
+    "ORCHESTRATION": {
+      "description": "Cross-phase coordination signals",
+      "bus": "orchestration_bus"
+    }
+  },
+
+  "bus_registry": {
+    "buses": [
+      {"id": "structural_bus", "category": "STRUCTURAL", "type": "categorical"},
+      {"id": "integrity_bus", "category": "INTEGRITY", "type": "categorical"},
+      {"id": "epistemic_bus", "category": "EPISTEMIC", "type": "categorical"},
+      {"id": "contrast_bus", "category": "CONTRAST", "type": "categorical"},
+      {"id": "operational_bus", "category": "OPERATIONAL", "type": "categorical"},
+      {"id": "consumption_bus", "category": "CONSUMPTION", "type": "categorical"},
+      {"id": "orchestration_bus", "category": "ORCHESTRATION", "type": "categorical"},
+      {"id": "universal_bus", "category": "UNIVERSAL", "type": "catch_all"}
+    ]
+  },
+
+  "signal_types": {
+    "MC01": {
+      "signal_type": "STRUCTURAL_MARKER",
+      "category": "STRUCTURAL",
+      "bus": "structural_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "STRUCTURAL_PARSING"],
+      "empirical_availability": 0.92,
+      "target_dimensions": ["DIM01", "DIM02", "DIM03"],
+      "boost_values": {"DIM01": 0.05, "DIM02": 0.05, "DIM03": 0.10},
+      "questions_mapped": 87,
+      "coverage": 0.29,
+      "slot_patterns": ["D1-Q3", "D1-Q5", "D2-Q1", "D3-Q3"],
+      "primary_questions": [
+        "Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273",
+        "Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"
+      ]
+    },
+    "MC02": {
+      "signal_type": "QUANTITATIVE_TRIPLET",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "TRIPLET_EXTRACTION", "NUMERIC_PARSING"],
+      "empirical_availability": 0.78,
+      "target_dimensions": ["DIM01", "DIM03", "DIM04"],
+      "boost_values": {"DIM01": 0.15, "DIM03": 0.15, "DIM04": 0.20},
+      "questions_mapped": 94,
+      "coverage": 0.31,
+      "slot_patterns": ["D1-Q1", "D1-Q2", "D3-Q1", "D3-Q2", "D4-Q1"],
+      "primary_questions": [
+        "Q001", "Q031", "Q061", "Q091", "Q121", "Q151", "Q181", "Q211", "Q241", "Q271",
+        "Q002", "Q032", "Q062", "Q092", "Q122", "Q152", "Q182", "Q212", "Q242", "Q272",
+        "Q011", "Q041", "Q071", "Q101", "Q131", "Q161", "Q191", "Q221", "Q251", "Q281"
+      ]
+    },
+    "MC03": {
+      "signal_type": "NORMATIVE_REFERENCE",
+      "category": "STRUCTURAL",
+      "bus": "structural_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "NORMATIVE_LOOKUP", "CITATION_PARSING"],
+      "empirical_availability": 0.85,
+      "target_dimensions": ["DIM01", "DIM02"],
+      "boost_values": {"DIM01": 0.10, "DIM02": 0.15},
+      "questions_mapped": 62,
+      "coverage": 0.20,
+      "slot_patterns": ["D1-Q1", "D1-Q5", "D2-Q5"],
+      "primary_questions": [
+        "Q001", "Q031", "Q061", "Q091", "Q121", "Q151", "Q181", "Q211", "Q241", "Q271",
+        "Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"
+      ]
+    },
+    "MC04": {
+      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "category": "STRUCTURAL",
+      "bus": "structural_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "HIERARCHY_PARSING", "TREE_CONSTRUCTION"],
+      "empirical_availability": 0.71,
+      "target_dimensions": ["DIM02", "DIM03", "DIM06"],
+      "boost_values": {"DIM02": 0.15, "DIM03": 0.10, "DIM06": 0.15},
+      "questions_mapped": 78,
+      "coverage": 0.26,
+      "slot_patterns": ["D2-Q1", "D2-Q2", "D3-Q1"],
+      "primary_questions": [
+        "Q006", "Q036", "Q066", "Q096", "Q126", "Q156", "Q186", "Q216", "Q246", "Q276",
+        "Q007", "Q037", "Q067", "Q097", "Q127", "Q157", "Q187", "Q217", "Q247", "Q277"
+      ]
+    },
+    "MC05": {
+      "signal_type": "FINANCIAL_CHAIN",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "FINANCIAL_ANALYSIS", "NUMERIC_PARSING"],
+      "empirical_availability": 0.85,
+      "target_dimensions": ["DIM01", "DIM02", "DIM03"],
+      "boost_values": {"DIM01": 0.10, "DIM02": 0.15, "DIM03": 0.20},
+      "questions_mapped": 52,
+      "coverage": 0.17,
+      "slot_patterns": ["D1-Q3", "D3-Q3"],
+      "primary_questions": [
+        "Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273",
+        "Q013", "Q043", "Q073", "Q103", "Q133", "Q163", "Q193", "Q223", "Q253", "Q283"
+      ]
+    },
+    "MC06": {
+      "signal_type": "POPULATION_DISAGGREGATION",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS"],
+      "empirical_availability": 0.65,
+      "target_dimensions": ["DIM01", "DIM02"],
+      "boost_values": {"DIM01": 0.10, "DIM02": 0.05},
+      "questions_mapped": 45,
+      "coverage": 0.15,
+      "slot_patterns": ["D1-Q1", "D1-Q2"],
+      "primary_questions": [
+        "Q001", "Q002", "Q031", "Q032", "Q061", "Q062",
+        "Q091", "Q092", "Q121", "Q122", "Q151", "Q152"
+      ]
+    },
+    "MC07": {
+      "signal_type": "TEMPORAL_MARKER",
+      "category": "STRUCTURAL",
+      "bus": "structural_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "TEMPORAL_PARSING", "DATE_NORMALIZATION"],
+      "empirical_availability": 0.88,
+      "target_dimensions": ["DIM01", "DIM03", "DIM04"],
+      "boost_values": {"DIM01": 0.05, "DIM03": 0.05, "DIM04": 0.10},
+      "questions_mapped": 41,
+      "coverage": 0.14,
+      "slot_patterns": ["D1-Q1", "D3-Q1", "D4-Q1"],
+      "primary_questions": [
+        "Q001", "Q031", "Q061", "Q091", "Q121", "Q151",
+        "Q011", "Q041", "Q071", "Q101", "Q131", "Q161"
+      ]
+    },
+    "MC08": {
+      "signal_type": "CAUSAL_LINK",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "CAUSAL_ANALYSIS", "VERB_EXTRACTION"],
+      "empirical_availability": 0.72,
+      "target_dimensions": ["DIM04", "DIM05", "DIM06"],
+      "boost_values": {"DIM04": 0.15, "DIM05": 0.20, "DIM06": 0.25},
+      "questions_mapped": 68,
+      "coverage": 0.23,
+      "slot_patterns": ["D2-Q3", "D3-Q5", "D4-Q3", "D6-Q1", "D6-Q2"],
+      "primary_questions": [
+        "Q008", "Q038", "Q068", "Q098", "Q128", "Q158", "Q188", "Q218", "Q248", "Q278",
+        "Q015", "Q045", "Q075", "Q105", "Q135", "Q165", "Q195", "Q225", "Q255", "Q285"
+      ]
+    },
+    "MC09": {
+      "signal_type": "INSTITUTIONAL_ENTITY",
+      "category": "STRUCTURAL",
+      "bus": "structural_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "NER", "INSTITUTIONAL_RECOGNITION"],
+      "empirical_availability": 0.68,
+      "target_dimensions": ["DIM02", "DIM03"],
+      "boost_values": {"DIM02": 0.10, "DIM03": 0.05},
+      "questions_mapped": 39,
+      "coverage": 0.13,
+      "slot_patterns": ["D1-Q4", "D2-Q2"],
+      "primary_questions": [
+        "Q004", "Q034", "Q064", "Q094", "Q124", "Q154", "Q184", "Q214", "Q244", "Q274"
+      ]
+    },
+    "MC10": {
+      "signal_type": "SEMANTIC_RELATIONSHIP",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_1",
+      "consumer_id": "phase_01_extraction_consumer",
+      "capabilities_required": ["EXTRACTION", "SEMANTIC_ANALYSIS", "RELATIONSHIP_EXTRACTION"],
+      "empirical_availability": 0.62,
+      "target_dimensions": ["DIM01", "DIM02"],
+      "boost_values": {"DIM01": 0.05, "DIM02": 0.05},
+      "questions_mapped": 58,
+      "coverage": 0.19,
+      "slot_patterns": ["ALL"],
+      "primary_questions": ["ALL"],
+      "note": "Applied universally for semantic matching"
+    },
+    "PATTERN_ENRICHMENT": {
+      "signal_type": "PATTERN_ENRICHMENT",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_2",
+      "consumer_id": "phase_02_enrichment_consumer",
+      "capabilities_required": ["ENRICHMENT", "PATTERN_MATCHING"],
+      "empirical_availability": 0.90,
+      "target_dimensions": ["ALL"],
+      "source_files": ["_registry/patterns/MASTER_INDEX.json"],
+      "pattern_count": 1747
+    },
+    "KEYWORD_ENRICHMENT": {
+      "signal_type": "KEYWORD_ENRICHMENT",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_2",
+      "consumer_id": "phase_02_enrichment_consumer",
+      "capabilities_required": ["ENRICHMENT", "KEYWORD_EXTRACTION"],
+      "empirical_availability": 0.95,
+      "target_dimensions": ["ALL"],
+      "source_files": ["_registry/keywords/index.json"]
+    },
+    "ENTITY_ENRICHMENT": {
+      "signal_type": "ENTITY_ENRICHMENT",
+      "category": "STRUCTURAL",
+      "bus": "structural_bus",
+      "phase": "phase_2",
+      "consumer_id": "phase_02_enrichment_consumer",
+      "capabilities_required": ["ENRICHMENT", "ENTITY_RECOGNITION"],
+      "empirical_availability": 0.88,
+      "target_dimensions": ["ALL"],
+      "source_files": ["_registry/entities/"]
+    },
+    "MICRO_SCORE": {
+      "signal_type": "MICRO_SCORE",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_4",
+      "consumer_id": "phase_04_micro_consumer",
+      "capabilities_required": ["SCORING", "MICRO_LEVEL", "CHOQUET_INTEGRAL"],
+      "empirical_availability": 1.0,
+      "target_dimensions": ["ALL"]
+    },
+    "MESO_SCORE": {
+      "signal_type": "MESO_SCORE",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_5",
+      "consumer_id": "phase_05_meso_consumer",
+      "capabilities_required": ["SCORING", "MESO_LEVEL", "DIMENSION_AGGREGATION"],
+      "empirical_availability": 1.0,
+      "target_dimensions": ["ALL"]
+    },
+    "MACRO_SCORE": {
+      "signal_type": "MACRO_SCORE",
+      "category": "EPISTEMIC",
+      "bus": "epistemic_bus",
+      "phase": "phase_6",
+      "consumer_id": "phase_06_macro_consumer",
+      "capabilities_required": ["SCORING", "MACRO_LEVEL", "POLICY_AREA_AGGREGATION"],
+      "empirical_availability": 1.0
+    },
+    "MESO_AGGREGATION": {
+      "signal_type": "MESO_AGGREGATION",
+      "category": "ORCHESTRATION",
+      "bus": "orchestration_bus",
+      "phase": "phase_7",
+      "consumer_id": "phase_07_aggregation_consumer",
+      "capabilities_required": ["AGGREGATION", "CLUSTER_LEVEL"],
+      "empirical_availability": 1.0,
+      "target_clusters": ["CL01", "CL02", "CL03", "CL04"]
+    },
+    "MACRO_AGGREGATION": {
+      "signal_type": "MACRO_AGGREGATION",
+      "category": "ORCHESTRATION",
+      "bus": "orchestration_bus",
+      "phase": "phase_8",
+      "consumer_id": "phase_08_integration_consumer",
+      "capabilities_required": ["AGGREGATION", "HOLISTIC_LEVEL"],
+      "empirical_availability": 1.0
+    },
+    "REPORT_ASSEMBLY": {
+      "signal_type": "REPORT_ASSEMBLY",
+      "category": "OPERATIONAL",
+      "bus": "operational_bus",
+      "phase": "phase_9",
+      "consumer_id": "phase_09_report_consumer",
+      "capabilities_required": ["REPORT_GENERATION", "ASSEMBLY", "EXPORT"],
+      "empirical_availability": 1.0
+    }
+  },
+
+  "dimension_coverage": {
+    "DIM01": {
+      "name": "Cuantificación (Insumos)",
+      "slot_prefix": "D1",
+      "mc_signals": ["MC01", "MC02", "MC03", "MC05", "MC06", "MC07", "MC10"],
+      "question_count": 50,
+      "question_range": "Q001-Q030, Q031-Q060, Q061-Q090, Q091-Q120, Q121-Q150, Q151-Q180, Q181-Q210, Q211-Q240, Q241-Q270, Q271-Q300"
+    },
+    "DIM02": {
+      "name": "Poblacional (Actividades)",
+      "slot_prefix": "D2",
+      "mc_signals": ["MC01", "MC03", "MC04", "MC05", "MC06", "MC09", "MC10"],
+      "question_count": 50,
+      "question_range": "Q006-Q010, Q036-Q040, Q066-Q070, Q096-Q100, Q126-Q130, Q156-Q160, Q186-Q190, Q216-Q220, Q246-Q250, Q276-Q280"
+    },
+    "DIM03": {
+      "name": "Estructural (Productos)",
+      "slot_prefix": "D3",
+      "mc_signals": ["MC01", "MC02", "MC04", "MC05", "MC07", "MC09"],
+      "question_count": 50,
+      "question_range": "Q011-Q015, Q041-Q045, Q071-Q075, Q101-Q105, Q131-Q135, Q161-Q165, Q191-Q195, Q221-Q225, Q251-Q255, Q281-Q285"
+    },
+    "DIM04": {
+      "name": "Programática (Resultados)",
+      "slot_prefix": "D4",
+      "mc_signals": ["MC02", "MC07", "MC08"],
+      "question_count": 50,
+      "question_range": "Q016-Q020, Q046-Q050, Q076-Q080, Q106-Q110, Q136-Q140, Q166-Q170, Q196-Q200, Q226-Q230, Q256-Q260, Q286-Q290"
+    },
+    "DIM05": {
+      "name": "Normativa (Impactos)",
+      "slot_prefix": "D5",
+      "mc_signals": ["MC08"],
+      "question_count": 50,
+      "question_range": "Q021-Q025, Q051-Q055, Q081-Q085, Q111-Q115, Q141-Q145, Q171-Q175, Q201-Q205, Q231-Q235, Q261-Q265, Q291-Q295"
+    },
+    "DIM06": {
+      "name": "Temporal/Causal (Causalidad)",
+      "slot_prefix": "D6",
+      "mc_signals": ["MC04", "MC08"],
+      "question_count": 50,
+      "question_range": "Q026-Q030, Q056-Q060, Q086-Q090, Q116-Q120, Q146-Q150, Q176-Q180, Q206-Q210, Q236-Q240, Q266-Q270, Q296-Q300"
+    }
+  },
+
+  "vehicles": {
+    "signal_loader": {
+      "description": "Loads canonical JSON files",
+      "phase": "phase_0",
+      "consumers": ["phase_00_assembly_consumer"],
+      "connected_count": 9
+    },
+    "signal_context_scoper": {
+      "description": "Handles scoping and context",
+      "phase": "phase_0",
+      "consumers": 7
+    },
+    "signal_quality_metrics": {
+      "description": "Evaluates signal quality",
+      "phase": "phase_3",
+      "consumers": 5
+    },
+    "signal_registry": {
+      "description": "Manages signal type registry",
+      "phase": "phase_0",
+      "consumers": 17,
+      "note": "Most connected vehicle"
+    },
+    "signal_enhancement_integrator": {
+      "description": "Enriches signals",
+      "phase": "phase_2",
+      "consumers": 8
+    },
+    "signal_irrigator": {
+      "description": "Orchestrates irrigation flow",
+      "phase": "phase_1",
+      "consumers": 12
+    },
+    "signal_evidence_extractor": {
+      "description": "Extracts evidence",
+      "phase": "phase_1",
+      "consumers": 10
+    },
+    "signal_intelligence_layer": {
+      "description": "Intelligence processing",
+      "phase": "phase_3",
+      "consumers": 6
+    }
+  },
+
+  "consumers": {
+    "phase_00_assembly_consumer": {
+      "phase": "phase_0",
+      "signal_types": ["STATIC_LOAD"],
+      "capabilities": ["STATIC_LOAD", "SIGNAL_PACK", "PHASE_MONITORING"],
+      "buses": ["structural_bus", "operational_bus"],
+      "vehicles": ["signal_loader", "signal_registry"],
+      "item_coverage": {"questions": 0, "policy_areas": 0, "dimensions": 0}
+    },
+    "phase_01_extraction_consumer": {
+      "phase": "phase_1",
+      "signal_types": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"],
+      "capabilities": ["EXTRACTION", "STRUCTURAL_PARSING", "TRIPLET_EXTRACTION", "NUMERIC_PARSING",
+                      "NORMATIVE_LOOKUP", "CITATION_PARSING", "HIERARCHY_PARSING", "TREE_CONSTRUCTION",
+                      "FINANCIAL_ANALYSIS", "POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS",
+                      "TEMPORAL_PARSING", "DATE_NORMALIZATION", "CAUSAL_ANALYSIS", "VERB_EXTRACTION",
+                      "NER", "INSTITUTIONAL_RECOGNITION", "SEMANTIC_ANALYSIS", "RELATIONSHIP_EXTRACTION",
+                      "PHASE_MONITORING"],
+      "buses": ["structural_bus", "epistemic_bus", "universal_bus"],
+      "vehicles": ["signal_irrigator", "signal_evidence_extractor"],
+      "item_coverage": {"questions": 300, "policy_areas": 10, "dimensions": 6}
+    },
+    "phase_02_enrichment_consumer": {
+      "phase": "phase_2",
+      "signal_types": ["PATTERN_ENRICHMENT", "KEYWORD_ENRICHMENT", "ENTITY_ENRICHMENT"],
+      "capabilities": ["ENRICHMENT", "PATTERN_MATCHING", "KEYWORD_EXTRACTION", "ENTITY_RECOGNITION", "PHASE_MONITORING"],
+      "buses": ["epistemic_bus", "structural_bus"],
+      "vehicles": ["signal_enhancement_integrator"],
+      "item_coverage": {"questions": 300, "policy_areas": 10, "dimensions": 6}
+    },
+    "phase_03_validation_consumer": {
+      "phase": "phase_3",
+      "signal_types": ["NORMATIVE_VALIDATION", "ENTITY_VALIDATION", "COHERENCE_VALIDATION"],
+      "capabilities": ["VALIDATION", "NORMATIVE_CHECK", "ENTITY_CHECK", "COHERENCE_CHECK", "PHASE_MONITORING"],
+      "buses": ["integrity_bus", "structural_bus"],
+      "vehicles": ["signal_quality_metrics", "signal_intelligence_layer"],
+      "item_coverage": {"questions": 300, "policy_areas": 10, "dimensions": 6}
+    },
+    "phase_04_micro_consumer": {
+      "phase": "phase_4",
+      "signal_types": ["MICRO_SCORE"],
+      "capabilities": ["SCORING", "MICRO_LEVEL", "CHOQUET_INTEGRAL", "PHASE_MONITORING"],
+      "buses": ["epistemic_bus"],
+      "item_coverage": {"questions": 300, "policy_areas": 10, "dimensions": 6}
+    },
+    "phase_05_meso_consumer": {
+      "phase": "phase_5",
+      "signal_types": ["MESO_SCORE"],
+      "capabilities": ["SCORING", "MESO_LEVEL", "DIMENSION_AGGREGATION", "PHASE_MONITORING"],
+      "buses": ["epistemic_bus", "orchestration_bus"],
+      "item_coverage": {"questions": 0, "policy_areas": 10, "dimensions": 6, "output_cells": 60}
+    },
+    "phase_06_macro_consumer": {
+      "phase": "phase_6",
+      "signal_types": ["MACRO_SCORE"],
+      "capabilities": ["SCORING", "MACRO_LEVEL", "POLICY_AREA_AGGREGATION", "PHASE_MONITORING"],
+      "buses": ["epistemic_bus", "orchestration_bus"],
+      "item_coverage": {"policy_areas": 10, "output_cells": 10}
+    },
+    "phase_07_aggregation_consumer": {
+      "phase": "phase_7",
+      "signal_types": ["MESO_AGGREGATION"],
+      "capabilities": ["AGGREGATION", "CLUSTER_LEVEL", "PHASE_MONITORING"],
+      "buses": ["orchestration_bus"],
+      "item_coverage": {"clusters": 4, "output_cells": 4}
+    },
+    "phase_08_integration_consumer": {
+      "phase": "phase_8",
+      "signal_types": ["MACRO_AGGREGATION"],
+      "capabilities": ["AGGREGATION", "HOLISTIC_LEVEL", "RECOMMENDATION_ENGINE", "PHASE_MONITORING"],
+      "buses": ["orchestration_bus"],
+      "item_coverage": {"output_cells": 1}
+    },
+    "phase_09_report_consumer": {
+      "phase": "phase_9",
+      "signal_types": ["REPORT_ASSEMBLY"],
+      "capabilities": ["REPORT_GENERATION", "ASSEMBLY", "EXPORT", "PHASE_MONITORING"],
+      "buses": ["operational_bus"],
+      "item_coverage": {"output_cells": 1}
+    }
+  },
+
+  "information_items": {
+    "questions": {
+      "total_count": 300,
+      "id_pattern": "Q001-Q300",
+      "distribution_by_policy_area": {
+        "PA01": 30, "PA02": 30, "PA03": 30, "PA04": 30, "PA05": 30,
+        "PA06": 30, "PA07": 30, "PA08": 30, "PA09": 30, "PA10": 30
+      },
+      "distribution_by_dimension": {
+        "DIM01": 50, "DIM02": 50, "DIM03": 50, "DIM04": 50, "DIM05": 50, "DIM06": 50
+      },
+      "micro_to_meso_aggregation": "300 questions → 60 dimension-PA cells → 4 MESO questions",
+      "meso_to_macro_aggregation": "4 MESO questions → 1 MACRO question"
+    },
+    "policy_areas": {
+      "total_count": 10,
+      "items": [
+        {"id": "PA01", "name": "Mujeres y Género", "cluster": "CL04"},
+        {"id": "PA02", "name": "Violencia y Conflicto", "cluster": "CL04"},
+        {"id": "PA03", "name": "Ambiente y Cambio Climático", "cluster": "CL03"},
+        {"id": "PA04", "name": "Derechos Económicos, Sociales y Culturales", "cluster": "CL02"},
+        {"id": "PA05", "name": "Víctimas y Paz", "cluster": "CL04"},
+        {"id": "PA06", "name": "Niñez, Adolescencia y Juventud", "cluster": "CL02"},
+        {"id": "PA07", "name": "Sistema Progresivo de Derecho a la Alimentación", "cluster": "CL03"},
+        {"id": "PA08", "name": "Líderes y Defensores", "cluster": "CL04"},
+        {"id": "PA09", "name": "Crisis PPL", "cluster": "CL04"},
+        {"id": "PA10", "name": "Migración", "cluster": "CL02"}
+      ]
+    },
+    "dimensions": {
+      "total_count": 6,
+      "items": [
+        {"id": "DIM01", "name": "Insumos (Cuantificación)", "slot_prefix": "D1"},
+        {"id": "DIM02", "name": "Actividades (Poblacional)", "slot_prefix": "D2"},
+        {"id": "DIM03", "name": "Productos (Estructural)", "slot_prefix": "D3"},
+        {"id": "DIM04", "name": "Resultados (Programática)", "slot_prefix": "D4"},
+        {"id": "DIM05", "name": "Impactos (Normativa)", "slot_prefix": "D5"},
+        {"id": "DIM06", "name": "Causalidad (Temporal/Causal)", "slot_prefix": "D6"}
+      ]
+    },
+    "clusters": {
+      "total_count": 4,
+      "items": [
+        {"id": "CL02", "name": "Grupos Poblacionales", "policy_areas": ["PA04", "PA06", "PA10"]},
+        {"id": "CL03", "name": "Territorio y Ambiente", "policy_areas": ["PA03", "PA07"]},
+        {"id": "CL04", "name": "Seguridad y Paz", "policy_areas": ["PA01", "PA02", "PA05", "PA08", "PA09"]}
+      ]
+    }
+  },
+
+  "irrigation_summary": {
+    "total_signals_per_execution": {
+      "phase_0": 2,
+      "phase_1": 10,
+      "phase_2": 3,
+      "phase_3": 3,
+      "phase_4": 1,
+      "phase_5": 1,
+      "phase_6": 1,
+      "phase_7": 1,
+      "phase_8": 1,
+      "phase_9": 1,
+      "total": 24
+    },
+    "total_items_irrigated": {
+      "questions": 300,
+      "policy_areas": 10,
+      "dimensions": 6,
+      "clusters": 4,
+      "grand_total": 320
+    },
+    "consumers_by_phase": 10,
+    "signal_types_total": 17,
+    "bus_types": 8,
+    "vehicle_count": 8,
+    "mc_coverage_summary": {
+      "total_mc": 10,
+      "total_questions": 300,
+      "avg_coverage": 0.21,
+      "highest_coverage": {"mc": "MC02", "value": 0.31},
+      "lowest_coverage": {"mc": "MC09", "value": 0.13}
+    }
+  },
+
+  "signal_axioms": {
+    "derived": "Signals are never primary, always derived from events",
+    "deterministic": "Same input always produces the same signal",
+    "versioned": "Signals are never overwritten, only accumulated",
+    "contextual": "Signals are anchored to node, phase, and consumer",
+    "auditable": "Signals explain why they exist",
+    "non_imperative": "Signals do not order or decide"
+  },
+
+  "confidence_levels": {
+    "HIGH": 4,
+    "MEDIUM": 3,
+    "LOW": 2,
+    "INDETERMINATE": 1
+  }
+}

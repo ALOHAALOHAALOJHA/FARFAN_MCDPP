@@ -1,0 +1,203 @@
+{
+  "$schema": "../../schemas/phase_manifest_schema.json",
+  "manifest_version": "2.1.0",
+  "phase": {
+    "number": 7,
+    "name": "Macro Evaluation",
+    "codename": "MACRO",
+    "label": "Phase 7",
+    "version": "2.1.0",
+    "status": "ACTIVE",
+    "criticality": "CRITICAL"
+  },
+  "metadata": {
+    "created": "2025-01-09T00:00:00Z",
+    "modified": "2026-01-22",
+    "authors": [
+      "F.A.R.F.A.N Core Team"
+    ],
+    "owners": [
+      "phase7_team"
+    ],
+    "repository": "FARFAN_MPP"
+  },
+  "description": "Phase 7 evaluates 4 cluster scores and produces a holistic MacroScore with cross-cutting coherence analysis, systemic gap detection, and strategic alignment metrics. Features constitutional orchestration with interphase bridge, checkpoint recovery, performance metrics, and exit gate validation.",
+  "stages": [
+    {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
+    },
+    {
+      "code": 5,
+      "name": "Interphase Bridge",
+      "description": "Phase 6 → Phase 7 handoff validation",
+      "execution_order": 2,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "interphase/__init__",
+          "type": "BRIDGE",
+          "criticality": "HIGH",
+          "purpose": "Interphase bridge package exports"
+        },
+        {
+          "order": 1,
+          "canonical_name": "interphase/phase6_to_phase7_bridge",
+          "type": "BRIDGE",
+          "criticality": "HIGH",
+          "purpose": "Phase 6 → Phase 7 interphase bridge contract"
+        }
+      ]
+    },
+    {
+      "code": 10,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 3,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase7_10_00_phase_7_constants",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 7 Constants"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase7_10_00_macro_score",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Macro Score Data Model"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase7_10_00_systemic_gap_detector",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Systemic Gap Detector"
+        }
+      ]
+    },
+    {
+      "code": 20,
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase7_20_00_macro_aggregator",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Macro Aggregator"
+        }
+      ]
+    },
+    {
+      "code": 30,
+      "name": "Operations",
+      "description": "Checkpoint, metrics, and validation",
+      "execution_order": 5,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase7_30_00_checkpoint_manager",
+          "type": "OPS",
+          "criticality": "HIGH",
+          "purpose": "Checkpoint Manager"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase7_31_00_performance_metrics",
+          "type": "OPS",
+          "criticality": "HIGH",
+          "purpose": "Performance Metrics Collector"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase7_32_00_exit_gate_validation",
+          "type": "OPS",
+          "criticality": "HIGH",
+          "purpose": "Exit Gate Validation"
+        }
+      ]
+    }
+  ],
+  "contracts": {
+    "input": "4 ClusterScore objects (validated via interphase bridge)",
+    "output": "1 MacroScore object (validated via exit gate)",
+    "invariants": [
+      "INV-7.1: Cluster weights sum to 1.0",
+      "INV-7.2: Quality thresholds are immutable",
+      "INV-7.3: Score domain is [0.0, 3.0]",
+      "INV-7.4: Coherence weights sum to 1.0",
+      "INV-7.5: Aggregation is deterministic"
+    ]
+  },
+  "quality_metrics": {
+    "coverage": 0.95,
+    "complexity": "CRITICAL"
+  },
+  "performance_characteristics": {
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)",
+    "expected_duration_ms": "< 10ms",
+    "expected_memory_mb": "< 5MB"
+  },
+  "validation": {
+    "compliant": true,
+    "last_check": "2026-01-22T00:00:00Z",
+    "constitutional_orchestration": true
+  },
+  "statistics": {
+    "total_modules": 11,
+    "stages": 5
+  },
+  "orchestration_features": {
+    "interphase_bridge": {
+      "enabled": true,
+      "module": "interphase/phase6_to_phase7_bridge.py",
+      "purpose": "Phase 6 → Phase 7 handoff validation"
+    },
+    "checkpoint_recovery": {
+      "enabled": true,
+      "module": "phase7_30_00_checkpoint_manager.py",
+      "purpose": "Mid-execution recovery support"
+    },
+    "performance_metrics": {
+      "enabled": true,
+      "module": "phase7_31_00_performance_metrics.py",
+      "purpose": "Timing, memory, and resource tracking"
+    },
+    "exit_gate_validation": {
+      "enabled": true,
+      "module": "phase7_32_00_exit_gate_validation.py",
+      "purpose": "Phase 8 compatibility validation"
+    },
+    "constitutional_invariants": {
+      "enabled": true,
+      "module": "contracts/phase7_10_01_mission_contract.py",
+      "purpose": "Constitutional invariant enforcement"
+    },
+    "sisas_signals": {
+      "enabled": true,
+      "purpose": "Phase start/complete/failed signal emission"
+    }
+  }
+}

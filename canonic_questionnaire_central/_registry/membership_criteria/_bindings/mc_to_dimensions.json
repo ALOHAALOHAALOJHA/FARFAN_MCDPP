@@ -1,0 +1,114 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T16:49:00Z",
+  "_description": "Mapping from Membership Criteria to Dimensions",
+  
+  "mc_to_dimensions": {
+    "MC01": {
+      "criterion_id": "MC01",
+      "signal_type": "STRUCTURAL_MARKER",
+      "primary_dimensions": ["DIM01", "DIM02", "DIM03"],
+      "boost_values": {
+        "DIM01": 0.05,
+        "DIM02": 0.05,
+        "DIM03": 0.10
+      }
+    },
+    "MC02": {
+      "criterion_id": "MC02",
+      "signal_type": "QUANTITATIVE_TRIPLET",
+      "primary_dimensions": ["DIM01", "DIM03", "DIM04"],
+      "boost_values": {
+        "DIM01": 0.15,
+        "DIM03": 0.15,
+        "DIM04": 0.20
+      }
+    },
+    "MC03": {
+      "criterion_id": "MC03",
+      "signal_type": "NORMATIVE_REFERENCE",
+      "primary_dimensions": ["DIM01", "DIM02"],
+      "boost_values": {
+        "DIM01": 0.10,
+        "DIM02": 0.15
+      }
+    },
+    "MC04": {
+      "criterion_id": "MC04",
+      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "primary_dimensions": ["DIM02", "DIM03", "DIM06"],
+      "boost_values": {
+        "DIM02": 0.15,
+        "DIM03": 0.10,
+        "DIM06": 0.15
+      }
+    },
+    "MC05": {
+      "criterion_id": "MC05",
+      "signal_type": "FINANCIAL_CHAIN",
+      "primary_dimensions": ["DIM01", "DIM02", "DIM03"],
+      "boost_values": {
+        "DIM01": 0.10,
+        "DIM02": 0.15,
+        "DIM03": 0.20
+      }
+    },
+    "MC06": {
+      "criterion_id": "MC06",
+      "signal_type": "POPULATION_DISAGGREGATION",
+      "primary_dimensions": ["DIM01", "DIM02"],
+      "boost_values": {
+        "DIM01": 0.10,
+        "DIM02": 0.05
+      }
+    },
+    "MC07": {
+      "criterion_id": "MC07",
+      "signal_type": "TEMPORAL_MARKER",
+      "primary_dimensions": ["DIM01", "DIM03", "DIM04"],
+      "boost_values": {
+        "DIM01": 0.05,
+        "DIM03": 0.05,
+        "DIM04": 0.10
+      }
+    },
+    "MC08": {
+      "criterion_id": "MC08",
+      "signal_type": "CAUSAL_LINK",
+      "primary_dimensions": ["DIM04", "DIM05", "DIM06"],
+      "boost_values": {
+        "DIM04": 0.15,
+        "DIM05": 0.20,
+        "DIM06": 0.25
+      }
+    },
+    "MC09": {
+      "criterion_id": "MC09",
+      "signal_type": "INSTITUTIONAL_ENTITY",
+      "primary_dimensions": ["DIM02", "DIM03"],
+      "boost_values": {
+        "DIM02": 0.10,
+        "DIM03": 0.05
+      }
+    },
+    "MC10": {
+      "criterion_id": "MC10",
+      "signal_type": "SEMANTIC_RELATIONSHIP",
+      "primary_dimensions": ["DIM01", "DIM02"],
+      "boost_values": {
+        "DIM01": 0.05,
+        "DIM02": 0.05
+      }
+    }
+  },
+  
+  "dimension_coverage": {
+    "DIM01": ["MC01", "MC02", "MC03", "MC05", "MC06", "MC07", "MC10"],
+    "DIM02": ["MC01", "MC03", "MC04", "MC05", "MC06", "MC09", "MC10"],
+    "DIM03": ["MC01", "MC02", "MC04", "MC05", "MC07", "MC09"],
+    "DIM04": ["MC02", "MC07", "MC08"],
+    "DIM05": ["MC08"],
+    "DIM06": ["MC04", "MC08"]
+  }
+}

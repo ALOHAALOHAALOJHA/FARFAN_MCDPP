@@ -1,0 +1,289 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q073",
+  "dimension_id": "DIM03",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "identifiers": {
+    "base_slot": "D3-Q3",
+    "legacy_id": "Q073",
+    "canonical_notation": "DIM03.PA03.Q073"
+  },
+  "text": {
+    "es": "¿Los productos ambientales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Ambiente' o entidad responsable)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "trazabilidad_organizacional"
+    },
+    {
+      "required": true,
+      "type": "trazabilidad_presupuestal"
+    },
+    {
+      "type": "producto_definicion",
+      "required": true,
+      "dnp_criteria": "bien_o_servicio_tangible",
+      "validation_pattern": "must_be_deliverable_not_process",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+        "criteria": "DNP Core Product Definition"
+      }
+    },
+    {
+      "type": "descripcion_tecnica",
+      "required": true,
+      "dnp_criteria": "caracteristicas_especificaciones",
+      "validation_pattern": "must_describe_technical_scope",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+        "criteria": "DNP Technical Description Standard"
+      }
+    },
+    {
+      "type": "unidad_medida",
+      "required": true,
+      "dnp_criteria": "unidad_medida_cuantificable",
+      "validation_pattern": "must_have_measurement_unit",
+      "provenance": {
+        "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+        "criteria": "DNP Measurement Unit Standard"
+      }
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0673",
+      "PAT-0674",
+      "PAT-0675",
+      "PAT-0676",
+      "PAT-0677",
+      "PAT-Q001-001",
+      "PAT-Q011-DNP-001",
+      "PAT-Q011-DNP-002",
+      "PAT-Q011-DNP-003"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC05"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q073.v4.json",
+    "methods": [
+      {
+        "class": "FinancialAuditor",
+        "function": "_match_program_to_node",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "FinancialAuditor._match_program_to_node"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_match_goal_to_budget",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "FinancialAuditor._match_goal_to_budget"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_from_responsibility_tables",
+        "method_type": "extraction",
+        "priority": 3,
+        "description": "PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_consolidate_entities",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._consolidate_entities"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "identify_responsible_entities",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer.identify_responsible_entities"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_responsibility_clarity",
+        "method_type": "scoring",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._score_responsibility_clarity"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "process_document",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "PolicyAnalysisEmbedder.process_document"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_generate_query_from_pdq",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "PolicyAnalysisEmbedder._generate_query_from_pdq"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "semantic_search",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "PolicyAnalysisEmbedder.semantic_search"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_apply_mmr",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "PolicyAnalysisEmbedder._apply_mmr"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_empty_semantic_cube",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "SemanticAnalyzer._empty_semantic_cube"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_classify_policy_domain",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "SemanticAnalyzer._classify_policy_domain"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_classify_cross_cutting_themes",
+        "method_type": "analysis",
+        "priority": 13,
+        "description": "SemanticAnalyzer._classify_cross_cutting_themes"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_classify_value_chain_link",
+        "method_type": "analysis",
+        "priority": 14,
+        "description": "SemanticAnalyzer._classify_value_chain_link"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_vectorize_segments",
+        "method_type": "analysis",
+        "priority": 15,
+        "description": "SemanticAnalyzer._vectorize_segments"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_process_segment",
+        "method_type": "analysis",
+        "priority": 16,
+        "description": "SemanticAnalyzer._process_segment"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "_calculate_semantic_complexity",
+        "method_type": "scoring",
+        "priority": 17,
+        "description": "SemanticAnalyzer._calculate_semantic_complexity"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_compute_evidence_confidence",
+        "method_type": "analysis",
+        "priority": 18,
+        "description": "IndustrialPolicyProcessor._compute_evidence_confidence"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_entity_to_dict",
+        "method_type": "analysis",
+        "priority": 19,
+        "description": "PDETMunicipalPlanAnalyzer._entity_to_dict"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "generate_traceability_record",
+        "method_type": "analysis",
+        "priority": 20,
+        "description": "AdaptivePriorCalculator.generate_traceability_record"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "generate_pdq_report",
+        "method_type": "analysis",
+        "priority": 21,
+        "description": "PolicyAnalysisEmbedder.generate_pdq_report"
+      },
+      {
+        "class": "ReportingEngine",
+        "function": "generate_accountability_matrix",
+        "method_type": "analysis",
+        "priority": 22,
+        "description": "ReportingEngine.generate_accountability_matrix"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q103-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "PRODUCTOS",
+      "METAS",
+      "PLAN_INDICATIVO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.802131+00:00",
+    "updated_at": "2026-01-06T17:38:07.802133+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

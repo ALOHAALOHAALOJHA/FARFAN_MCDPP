@@ -1,0 +1,52 @@
+{
+  "level": "N2-INF",
+  "epistemology": "Bayesianismo subjetivista",
+  "description": "Transformación de hechos en conocimiento probabilístico. Opera bajo inferencia bayesiana para actualizar creencias basadas en evidencia.",
+  "output_type": "PARAMETER",
+  "fusion_behavior": "multiplicative",
+  "fusion_symbol": "⊗",
+  "calibration_parameters": {
+    "prior_strength": 0.5,
+    "mcmc_samples": 5000,
+    "likelihood_weight": 1.0,
+    "use_data_driven_priors": false,
+    "enable_hierarchical_models": false
+  },
+  "validation_schema": {
+    "prior_strength": {"type": "float", "range": [0.0, 1.0]},
+    "mcmc_samples": {"type": "int", "range": [1, null]},
+    "likelihood_weight": {"type": "float", "range": [0.0, null]},
+    "use_data_driven_priors": {"type": "bool"},
+    "enable_hierarchical_models": {"type": "bool"}
+  },
+  "pdm_sensitivity": {
+    "active": true,
+    "rules": ["data_driven_priors", "hierarchical_models"],
+    "rule_descriptions": {
+      "data_driven_priors": "Usa baselines históricos para priors si se detectan estructuras temporales",
+      "hierarchical_models": "Habilita modelos jerárquicos para documentos con estructuras anidadas"
+    }
+  },
+  "constraints": [
+    "requires_N1_input",
+    "output_is_derived",
+    "confidence_is_probabilistic",
+    "level_is_immutable"
+  ],
+  "typical_methods": [
+    "BayesianNumericalAnalyzer.evaluate_policy_metric",
+    "AdaptivePriorCalculator.calculate_likelihood_adaptativo",
+    "HierarchicalGenerativeModel.verify_conditional_independence",
+    "BayesianMechanismInference.aggregate_confidence",
+    "SemanticAnalyzer._compute_unit_of_analysis_natural_blocks"
+  ],
+  "epistemic_regime": "Bayesian/Constructivist",
+  "meta_level": false,
+  "asymmetry_principle": {
+    "can_veto": false,
+    "can_be_vetoed_by": ["N3-AUD"],
+    "description": "N2 puede ser vetado por N3, pero N2 no puede vetar a ningún nivel superior"
+  },
+  "dependency_rule": "N2 reads N1 facts and computes parameters FROM N1 observations",
+  "modulation_effect": "N2 modifies N1 confidence through edge weight adjustment"
+}

@@ -1,0 +1,54 @@
+rules:
+  - id: fix-phase-zero-import
+    pattern-regex: "from farfan_pipeline\\.phases\\.Phase_zero\\.(\\w+) import"
+    fix-regex:
+      regex: "from farfan_pipeline\\.phases\\.Phase_zero\\.(\\w+) import"
+      replacement: "from farfan_pipeline.phases.Phase_00.\\1 import"
+    languages: [python]
+    message: "Fix Phase_zero to Phase_00"
+    severity: WARNING
+
+  - id: fix-phase-one-import
+    pattern-regex: "from farfan_pipeline\\.phases\\.Phase_one\\.(\\w+) import"
+    fix-regex:
+      regex: "from farfan_pipeline\\.phases\\.Phase_one\\.(\\w+) import"
+      replacement: "from farfan_pipeline.phases.Phase_01.\\1 import"
+    languages: [python]
+    message: "Fix Phase_one to Phase_01"
+    severity: WARNING
+
+  - id: fix-phase-two-import
+    pattern-regex: "from farfan_pipeline\\.phases\\.Phase_two\\.(\\w+) import"
+    fix-regex:
+      regex: "from farfan_pipeline\\.phases\\.Phase_two\\.(\\w+) import"
+      replacement: "from farfan_pipeline.phases.Phase_02.\\1 import"
+    languages: [python]
+    message: "Fix Phase_two to Phase_02"
+    severity: WARNING
+
+  - id: fix-phase-three-import
+    pattern-regex: "from farfan_pipeline\\.phases\\.Phase_three\\.(\\w+) import"
+    fix-regex:
+      regex: "from farfan_pipeline\\.phases\\.Phase_three\\.(\\w+) import"
+      replacement: "from farfan_pipeline.phases.Phase_03.\\1 import"
+    languages: [python]
+    message: "Fix Phase_three to Phase_03"
+    severity: WARNING
+
+  - id: fix-phase-four-import
+    pattern-regex: "from farfan_pipeline\\.phases\\.Phase_four_five_six_seven\\.(\\w+) import"
+    fix-regex:
+      regex: "from farfan_pipeline\\.phases\\.Phase_four_five_six_seven\\.(\\w+) import"
+      replacement: "from farfan_pipeline.phases.Phase_04.\\1 import"
+    languages: [python]
+    message: "Fix Phase_four to Phase_04"
+    severity: WARNING
+
+  - id: fix-phase-nine-import
+    pattern-regex: "from farfan_pipeline\\.phases\\.Phase_nine\\.(\\w+) import"
+    fix-regex:
+      regex: "from farfan_pipeline\\.phases\\.Phase_nine\\.(\\w+) import"
+      replacement: "from farfan_pipeline.phases.Phase_09.\\1 import"
+    languages: [python]
+    message: "Fix Phase_nine to Phase_09"
+    severity: WARNING

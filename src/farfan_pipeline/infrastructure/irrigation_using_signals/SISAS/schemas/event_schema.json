@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SISAS Event Schema",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "timestamp",
+    "source_component"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_component": {
+      "type": "string"
+    },
+    "source_file": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "data": { "type": "object" },
+        "schema_version": { "type": "string" }
+      }
+    },
+    "phase": { "type": "string" },
+    "consumer_scope": { "type": "string" },
+    "correlation_id": { "type": "string" },
+    "causation_id": { "type": "string" }
+  }
+}

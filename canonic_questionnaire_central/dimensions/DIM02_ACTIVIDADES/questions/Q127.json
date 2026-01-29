@@ -1,0 +1,184 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q127",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D2-Q2",
+    "legacy_id": "Q127",
+    "canonical_notation": "DIM02.PA05.Q127"
+  },
+  "text": {
+    "es": "¿La descripción de las actividades para víctimas detalla el instrumento ('mediante indemnización administrativa', 'a través de proyectos productivos'), la población objetivo ('víctimas de desplazamiento forzado', 'sujetos de reparación colectiva') y la lógica causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "instrumento_especificado"
+    },
+    {
+      "required": true,
+      "type": "logica_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "poblacion_objetivo_definida"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0951",
+      "PAT-0952",
+      "PAT-0953",
+      "PAT-0954",
+      "PAT-0955",
+      "PAT-0956",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC04",
+      "MC05",
+      "MC06"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_COHERENCIA_NORMATIVA"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q127.v4.json",
+    "methods": [
+      {
+        "class": "BayesianMechanismInference",
+        "function": "infer_mechanisms",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "BayesianMechanismInference.infer_mechanisms"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_infer_single_mechanism",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "BayesianMechanismInference._infer_single_mechanism"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_infer_chain_capacity_vector",
+        "method_type": "primary",
+        "priority": 3
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_sufficiency",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "BayesianMechanismInference._test_sufficiency"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_necessity",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "BayesianMechanismInference._test_necessity"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "extract_causal_hierarchy",
+        "method_type": "extraction",
+        "priority": 6,
+        "description": "CausalExtractor.extract_causal_hierarchy"
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "construir_grafo_causal",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "TeoriaCambio.construir_grafo_causal"
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "_es_conexion_valida",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "TeoriaCambio._es_conexion_valida"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "construct_causal_dag",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "PDETMunicipalPlanAnalyzer.construct_causal_dag"
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "function": "classify_test",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "BeachEvidentialTest.classify_test"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_analyze_causal_dimensions",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "IndustrialPolicyProcessor._analyze_causal_dimensions"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q157-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "ESTRATEGICO",
+      "PROGRAMAS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.835576+00:00",
+    "updated_at": "2026-01-06T17:38:07.835578+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

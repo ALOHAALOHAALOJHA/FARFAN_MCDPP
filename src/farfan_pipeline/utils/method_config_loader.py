@@ -4,12 +4,12 @@ Method Configuration Loader for Canonical JSON Specification.
 Provides unified access to method parameters from the canonical
 parameterization specification.
 """
+
 import ast
 import json
-from pathlib import Path
 from collections.abc import Callable
+from pathlib import Path
 from typing import Any, ParamSpec, TypeVar
-from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 P = ParamSpec("P")
 R = TypeVar("R")
@@ -49,10 +49,7 @@ class MethodConfigLoader:
         self.validate_spec_schema()
 
         # Build index for fast lookup
-        self._method_index = {
-            method["canonical_id"]: method
-            for method in self.spec["methods"]
-        }
+        self._method_index = {method["canonical_id"]: method for method in self.spec["methods"]}
 
     @calibrated_method("legacy.noop.method_config_loader.validate_spec_schema")
     def validate_spec_schema(self) -> None:
@@ -68,12 +65,7 @@ class MethodConfigLoader:
             missing = required_keys - set(self.spec.keys())
             raise ValueError(f"Spec missing required keys: {missing}")
 
-    def get_method_parameter(
-        self,
-        canonical_id: str,
-        param_name: str,
-        override: Any = None
-    ) -> Any:
+    def get_method_parameter(self, canonical_id: str, param_name: str, override: Any = None) -> Any:
         """
         Get parameter value for a method.
 
@@ -113,12 +105,7 @@ class MethodConfigLoader:
                 return param
         raise KeyError(f"Parameter {param_name} not found")
 
-    def validate_parameter_value(
-        self,
-        canonical_id: str,
-        param_name: str,
-        value: Any
-    ) -> bool:
+    def validate_parameter_value(self, canonical_id: str, param_name: str, value: Any) -> bool:
         """
         Validate parameter value against allowed_values specification.
 

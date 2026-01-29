@@ -1,0 +1,54 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 9,
+  "phase_name": "Phase_09",
+  "generated_at": "2026-01-10T20:22:39.610482",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module": "phase9_10_00_signal_enriched_reporting",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase9/test_phase9_10_00_signal_enriched_reporting.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase9_10_00_report_generator",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase9/test_phase9_10_00_report_generator.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase9_10_00_report_assembly",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase9/test_phase9_10_00_report_assembly.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase9_10_00_phase_9_constants",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase9/test_phase9_10_00_phase_9_constants.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    }
+  ],
+  "stages": {
+    "total": 1,
+    "stage_counts": {
+      "10": 4
+    }
+  },
+  "integration_tests": [],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  }
+}

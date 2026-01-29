@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-01-23T13:44:06.350884",
+  "total_bridges_checked": 2,
+  "total_adapters_checked": 2,
+  "total_validators_checked": 1,
+  "issues": [
+    {
+      "severity": "critical",
+      "category": "import_error",
+      "source_phase": "Phase_00",
+      "target_phase": "Phase_01",
+      "source_function": "bridge_phase0_to_phase1",
+      "target_function": null,
+      "description": "Cannot import bridge module: No module named 'structlog'",
+      "recommendation": "Fix import errors in phase0_to_phase1_bridge.py"
+    },
+    {
+      "severity": "critical",
+      "category": "import_error",
+      "source_phase": "Phase_01",
+      "target_phase": "Phase_02",
+      "source_function": "adapt_phase1_to_phase2",
+      "target_function": null,
+      "description": "Cannot import adapter module: No module named 'structlog'",
+      "recommendation": "Fix import errors in phase1_phase2_adapter.py"
+    }
+  ],
+  "signatures_analyzed": [],
+  "summary": {
+    "critical": 2,
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "total": 2
+  }
+}

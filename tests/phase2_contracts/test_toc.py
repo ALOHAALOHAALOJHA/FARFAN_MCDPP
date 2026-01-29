@@ -3,14 +3,12 @@ Test TOC - Total Ordering Contract
 Verifies: Complete ordering with deterministic tie-breaking
 Complete ordering guarantee
 """
+
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-
-from cross_cutting_infrastructure.contractual.dura_lex.total_ordering import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.total_ordering import (
     TotalOrderingContract,
 )
 
@@ -49,17 +47,11 @@ class TestTotalOrderingContract:
             },
         ]
 
-    def test_toc_001_stable_sort(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_001_stable_sort(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-001: Sort is stable across multiple runs."""
-        assert TotalOrderingContract.verify_order(
-            phase2_results, key=lambda x: -x["score"]
-        )
+        assert TotalOrderingContract.verify_order(phase2_results, key=lambda x: -x["score"])
 
-    def test_toc_002_descending_score_order(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_002_descending_score_order(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-002: Results sorted by descending score."""
         sorted_results = TotalOrderingContract.stable_sort(
             phase2_results, key=lambda x: -x["score"]
@@ -69,9 +61,7 @@ class TestTotalOrderingContract:
         for i in range(len(scores) - 1):
             assert scores[i] >= scores[i + 1]
 
-    def test_toc_003_tie_breaker_deterministic(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_003_tie_breaker_deterministic(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-003: Ties are broken deterministically by content_hash."""
         sorted_results = TotalOrderingContract.stable_sort(
             phase2_results, key=lambda x: -x["score"]
@@ -84,9 +74,7 @@ class TestTotalOrderingContract:
         hashes = [r["content_hash"] for r in tie_items]
         assert hashes == sorted(hashes)
 
-    def test_toc_004_total_order_property(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_004_total_order_property(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-004: Every pair of elements is comparable (total order)."""
         sorted_results = TotalOrderingContract.stable_sort(
             phase2_results, key=lambda x: (-x["score"], x["content_hash"])
@@ -102,9 +90,7 @@ class TestTotalOrderingContract:
                     or item_i["content_hash"] != item_j["content_hash"]
                 )
 
-    def test_toc_005_antisymmetry(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_005_antisymmetry(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-005: If a ≤ b and b ≤ a, then a = b (antisymmetry)."""
         sorted_results = TotalOrderingContract.stable_sort(
             phase2_results, key=lambda x: (-x["score"], x["content_hash"])
@@ -113,9 +99,7 @@ class TestTotalOrderingContract:
         question_ids = [r["question_id"] for r in sorted_results]
         assert len(question_ids) == len(set(question_ids))
 
-    def test_toc_006_transitivity(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_006_transitivity(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-006: If a ≤ b and b ≤ c, then a ≤ c (transitivity)."""
         sorted_results = TotalOrderingContract.stable_sort(
             phase2_results, key=lambda x: -x["score"]
@@ -150,14 +134,10 @@ class TestTotalOrderingContract:
             for i in range(1, 301)
         ]
 
-        sorted_results = TotalOrderingContract.stable_sort(
-            questions, key=lambda x: -x["score"]
-        )
+        sorted_results = TotalOrderingContract.stable_sort(questions, key=lambda x: -x["score"])
 
         assert len(sorted_results) == 300
-        assert TotalOrderingContract.verify_order(
-            questions, key=lambda x: -x["score"]
-        )
+        assert TotalOrderingContract.verify_order(questions, key=lambda x: -x["score"])
 
 
 if __name__ == "__main__":

@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 import unicodedata
 
-
 _NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
 
 
@@ -15,4 +14,3 @@ def slugify(value: str) -> str:
     lowered = ascii_value.lower()
     slug = _NON_ALNUM_RE.sub("-", lowered).strip("-")
     return slug
-

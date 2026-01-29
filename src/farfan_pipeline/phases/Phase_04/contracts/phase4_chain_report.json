@@ -1,0 +1,141 @@
+{
+  "phase_id": 4,
+  "phase_dir": "src/farfan_pipeline/phases/Phase_04",
+  "total_files": 44,
+  "files_in_chain": 34,
+  "orphan_files": [],
+  "topological_order": [
+    "enhancements/phase4_95_00_adaptive_meso_scoring.py",
+    "enhancements/phase4_95_00_signal_enriched_aggregation.py",
+    "primitives/phase4_00_00_uncertainty_metrics.py",
+    "primitives/phase4_00_00_signal_enriched_primitives.py",
+    "primitives/phase4_10_00_choquet_primitives.py",
+    "primitives/__init__.py",
+    "contracts/phase4_mission_contract.py",
+    "choquet_adapter.py",
+    "contracts/phase4_output_contract.py",
+    "primitives/phase4_00_00_types.py",
+    "validation/__init__.py",
+    "aggregation_provenance.py",
+    "uncertainty_quantification.py",
+    "primitives/phase4_00_00_quality_levels.py",
+    "enhancements/enhanced_aggregators.py",
+    "primitives/phase4_10_00_quality_levels.py",
+    "contracts/phase4_input_contract.py",
+    "interphase/__init__.py",
+    "phase4_10_00_aggregation_validation.py",
+    "interface/__init__.py",
+    "primitives/phase4_10_00_signal_enriched_primitives.py",
+    "aggregation_validation.py",
+    "phase4_10_00_aggregation_integration.py",
+    "enhancements/phase4_95_00_enhanced_aggregators.py",
+    "primitives/phase4_00_00_choquet_primitives.py",
+    "enhancements/phase4_10_00_adaptive_meso_scoring.py",
+    "enhancements/adaptive_meso_scoring.py",
+    "phase4_10_00_adaptive_meso_scoring.py",
+    "phase4_10_00_aggregation_enhancements.py",
+    "enhancements/phase4_10_00_signal_enriched_aggregation.py",
+    "enhancements/phase4_10_00_enhanced_aggregators.py",
+    "enhancements/signal_enriched_aggregation.py",
+    "__init__.py",
+    "primitives/phase4_10_00_uncertainty_metrics.py"
+  ],
+  "circular_dependencies": [],
+  "label_position_mismatches": [
+    {
+      "file": "phase4_10_00_aggregation_validation.py",
+      "label": "10_0",
+      "actual_position": 18,
+      "note": "Appears at position 18 in topological order"
+    },
+    {
+      "file": "phase4_10_00_aggregation_integration.py",
+      "label": "10_0",
+      "actual_position": 22,
+      "note": "Appears at position 22 in topological order"
+    },
+    {
+      "file": "phase4_10_00_adaptive_meso_scoring.py",
+      "label": "10_0",
+      "actual_position": 27,
+      "note": "Appears at position 27 in topological order"
+    },
+    {
+      "file": "phase4_10_00_aggregation_enhancements.py",
+      "label": "10_0",
+      "actual_position": 28,
+      "note": "Appears at position 28 in topological order"
+    }
+  ],
+  "validation_status": "PASS",
+  "dependency_graph": {
+    "phase4_10_00_choquet_adapter.py": [
+      "phase4_10_00_aggregation_settings.py",
+      "phase4_10_00_uncertainty_quantification.py"
+    ],
+    "choquet_adapter.py": [
+      "phase4_10_00_aggregation_settings.py",
+      "phase4_10_00_uncertainty_quantification.py"
+    ],
+    "phase4_10_00_aggregation_settings.py": [
+      "primitives/phase4_00_00_aggregation_settings.py"
+    ],
+    "phase4_10_00_aggregation_integration.py": [
+      "phase4_10_00_aggregation.py"
+    ],
+    "phase4_10_00_aggregation.py": [
+      "phase4_10_00_aggregation_settings.py",
+      "phase4_10_00_choquet_adapter.py",
+      "phase4_10_00_uncertainty_quantification.py",
+      "phase4_10_00_aggregation_provenance.py"
+    ],
+    "__init__.py": [
+      "enhancements/__init__.py",
+      "phase4_10_00_choquet_adapter.py",
+      "PHASE_4_CONSTANTS.py",
+      "phase4_10_00_signal_enriched_aggregation.py",
+      "phase4_10_00_aggregation.py",
+      "phase4_10_00_aggregation_provenance.py",
+      "phase4_10_00_uncertainty_quantification.py",
+      "phase4_10_00_choquet_aggregator.py"
+    ],
+    "phase4_10_00_choquet_aggregator.py": [],
+    "primitives/phase4_00_00_aggregation_settings.py": [],
+    "phase4_10_00_uncertainty_quantification.py": [],
+    "phase4_10_00_signal_enriched_aggregation.py": [],
+    "aggregation_validation.py": [],
+    "uncertainty_quantification.py": [],
+    "phase4_10_00_aggregation_provenance.py": [],
+    "phase4_10_00_adaptive_meso_scoring.py": [],
+    "PHASE_4_CONSTANTS.py": [],
+    "aggregation_provenance.py": [],
+    "phase4_10_00_aggregation_validation.py": [],
+    "enhancements/__init__.py": [],
+    "phase4_10_00_aggregation_enhancements.py": [],
+    "enhancements/phase4_95_00_adaptive_meso_scoring.py": [],
+    "enhancements/phase4_10_00_signal_enriched_aggregation.py": [],
+    "enhancements/adaptive_meso_scoring.py": [],
+    "enhancements/phase4_95_00_signal_enriched_aggregation.py": [],
+    "enhancements/signal_enriched_aggregation.py": [],
+    "enhancements/phase4_10_00_enhanced_aggregators.py": [],
+    "enhancements/phase4_10_00_adaptive_meso_scoring.py": [],
+    "enhancements/enhanced_aggregators.py": [],
+    "enhancements/phase4_95_00_enhanced_aggregators.py": [],
+    "contracts/phase4_output_contract.py": [],
+    "contracts/phase4_input_contract.py": [],
+    "contracts/phase4_mission_contract.py": [],
+    "interface/__init__.py": [],
+    "primitives/phase4_00_00_types.py": [],
+    "primitives/phase4_00_00_uncertainty_metrics.py": [],
+    "primitives/phase4_00_00_quality_levels.py": [],
+    "primitives/phase4_10_00_quality_levels.py": [],
+    "primitives/phase4_10_00_uncertainty_metrics.py": [],
+    "primitives/phase4_00_00_signal_enriched_primitives.py": [],
+    "primitives/phase4_00_00_choquet_primitives.py": [],
+    "primitives/phase4_10_00_choquet_primitives.py": [],
+    "primitives/__init__.py": [],
+    "primitives/phase4_10_00_signal_enriched_primitives.py": [],
+    "interphase/__init__.py": [],
+    "validation/__init__.py": []
+  }
+}

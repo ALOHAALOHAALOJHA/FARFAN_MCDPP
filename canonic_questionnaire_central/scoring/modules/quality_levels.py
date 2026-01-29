@@ -33,6 +33,7 @@ from typing import Final
 # QUALITY LEVEL ENUMERATION
 # =============================================================================
 
+
 class QualityLevel(Enum):
     """Canonical quality assessment levels (Spanish).
 
@@ -44,12 +45,13 @@ class QualityLevel(Enum):
 
     The Spanish forms are canonical for questionnaire central.
     """
-    EXCELENTE = "EXCELENTE"      # >= 0.85
-    BUENO = "BUENO"              # >= 0.70
-    ACEPTABLE = "ACEPTABLE"      # >= 0.55
+
+    EXCELENTE = "EXCELENTE"  # >= 0.85
+    BUENO = "BUENO"  # >= 0.70
+    ACEPTABLE = "ACEPTABLE"  # >= 0.55
     INSUFICIENTE = "INSUFICIENTE"  # < 0.55
     NO_APLICABLE = "NO_APLICABLE"  # Not applicable
-    ERROR = "ERROR"              # Scoring error occurred
+    ERROR = "ERROR"  # Scoring error occurred
 
 
 # =============================================================================
@@ -63,14 +65,13 @@ THRESHOLD_ACEPTABLE: Final[float] = 0.55
 THRESHOLD_INSUFICIENTE: Final[float] = 0.0
 
 # Valid quality levels for validation
-VALID_QUALITY_LEVELS: Final[tuple[str, ...]] = tuple(
-    level.value for level in QualityLevel
-)
+VALID_QUALITY_LEVELS: Final[tuple[str, ...]] = tuple(level.value for level in QualityLevel)
 
 
 # =============================================================================
 # QUALITY LEVEL DETERMINATION
 # =============================================================================
+
 
 def determine_quality_level(score: float) -> str:
     """Determine quality level from normalized score.
@@ -85,9 +86,7 @@ def determine_quality_level(score: float) -> str:
         ValueError: If score is not in [0.0, 1.0]
     """
     if not 0.0 <= score <= 1.0:
-        raise ValueError(
-            f"Score must be in [0.0, 1.0], got {score}"
-        )
+        raise ValueError(f"Score must be in [0.0, 1.0], got {score}")
 
     if score >= THRESHOLD_EXCELENTE:
         return QualityLevel.EXCELENTE.value
@@ -99,9 +98,7 @@ def determine_quality_level(score: float) -> str:
         return QualityLevel.INSUFICIENTE.value
 
 
-def determine_quality_level_from_completeness(
-    completeness: str | None
-) -> str:
+def determine_quality_level_from_completeness(completeness: str | None) -> str:
     """Map EvidenceNexus completeness to quality level.
 
     Aligned with Phase Three phase3_score_extraction.py:

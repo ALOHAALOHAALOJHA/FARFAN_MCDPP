@@ -1,0 +1,491 @@
+{
+  "$schema": "phase_manifest_schema.json",
+  "manifest_version": "1.0.0",
+  "phase": {
+    "number": 2,
+    "name": "Executor Contract Factory",
+    "codename": "FACTORY",
+    "label": "Phase 2",
+    "description": "Contract factory layer that generates and manages 300 executor contracts mapping questions to analytical methods"
+  },
+  "metadata": {
+    "created": "2025-12-30",
+    "modified": "2026-01-18",
+    "version": "1.0.0",
+    "author": "F.A.R.F.A.N Core Architecture Team",
+    "status": "ACTIVE"
+  },
+  "statistics": {
+    "total_modules": 42,
+    "stages": 13
+  },
+  "stages": [
+    {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
+    },
+    {
+      "code": 10,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 5,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_10_00_factory",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Factory"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_10_00_phase_2_constants",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Phase 2 Constants"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase2_10_01_class_registry",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Class Registry"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase2_10_02_methods_registry",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Methods Registry"
+        },
+        {
+          "order": 4,
+          "canonical_name": "phase2_10_03_executor_config",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Executor Config"
+        }
+      ]
+    },
+    {
+      "code": 20,
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 3,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_20_00_method_signature_validator",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Method Signature Validator"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_20_01_method_source_validator",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Method Source Validator"
+        }
+      ]
+    },
+    {
+      "code": 30,
+      "name": "Resource Management",
+      "description": "Resource control and limits",
+      "execution_order": 4,
+      "module_count": 6,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_30_00_resource_manager",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Resource Manager"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_30_01_resource_integration",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Resource Integration"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase2_30_02_resource_alerts",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Resource Alerts"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase2_30_03_resource_aware_executor",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Resource Aware Executor"
+        },
+        {
+          "order": 4,
+          "canonical_name": "phase2_30_04_circuit_breaker",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Circuit Breaker"
+        },
+        {
+          "order": 5,
+          "canonical_name": "phase2_30_05_distributed_cache",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Distributed Cache"
+        }
+      ]
+    },
+    {
+      "code": 40,
+      "name": "Validation",
+      "description": "Input validation",
+      "execution_order": 5,
+      "module_count": 4,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_40_00_synchronization",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Synchronization"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_40_01_executor_chunk_synchronizer",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Executor Chunk Synchronizer"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase2_40_02_schema_validation",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Schema Validation"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase2_40_03_irrigation_synchronizer",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Irrigation Synchronizer"
+        }
+      ]
+    },
+    {
+      "code": 50,
+      "name": "Execution",
+      "description": "Core execution logic",
+      "execution_order": 6,
+      "module_count": 4,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_50_00_task_executor",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Task Executor"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_50_01_chunk_processor",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Chunk Processor"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase2_50_01_task_planner",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Task Planner"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase2_50_02_batch_optimizer",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Batch Optimizer"
+        }
+      ]
+    },
+    {
+      "code": 60,
+      "name": "Integration",
+      "description": "Integration components",
+      "execution_order": 7,
+      "module_count": 6,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_60_00_base_executor_with_contract",
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Base Executor With Contract"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_60_01_contract_validator_cqvr",
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Contract Validator Cqvr"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase2_60_02_arg_router",
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Arg Router"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase2_60_03_signature_runtime_validator",
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Signature Runtime Validator"
+        },
+        {
+          "order": 4,
+          "canonical_name": "phase2_60_04_calibration_policy",
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Calibration Policy"
+        },
+        {
+          "order": 5,
+          "canonical_name": "phase2_60_05_executor_instrumentation_mixin",
+          "type": "PROC",
+          "criticality": "MEDIUM",
+          "purpose": "Executor Instrumentation Mixin"
+        }
+      ]
+    },
+    {
+      "code": 80,
+      "name": "Evidence",
+      "description": "Evidence management",
+      "execution_order": 8,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_80_00_evidence_nexus",
+          "type": "ORCH",
+          "criticality": "MEDIUM",
+          "purpose": "Evidence Nexus"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_80_01_evidence_query_engine",
+          "type": "ORCH",
+          "criticality": "MEDIUM",
+          "purpose": "Evidence Query Engine"
+        }
+      ]
+    },
+    {
+      "code": 85,
+      "name": "Stage 85",
+      "description": "Stage 85 modules",
+      "execution_order": 9,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_85_00_evidence_nexus_sota_implementations",
+          "type": "ORCH",
+          "criticality": "LOW",
+          "purpose": "Evidence Nexus Sota Implementations"
+        }
+      ]
+    },
+    {
+      "code": 90,
+      "name": "Orchestration",
+      "description": "Orchestration and coordination",
+      "execution_order": 10,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_90_00_carver",
+          "type": "UTIL",
+          "criticality": "CRITICAL",
+          "purpose": "Carver"
+        }
+      ]
+    },
+    {
+      "code": 95,
+      "name": "Profiling",
+      "description": "Profiling and metrics",
+      "execution_order": 11,
+      "module_count": 8,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_95_00_contract_hydrator",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Contract Hydrator"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase2_95_00_executor_profiler",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Executor Profiler"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase2_95_01_metrics_persistence",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Metrics Persistence"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase2_95_02_precision_tracking",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Precision Tracking"
+        },
+        {
+          "order": 4,
+          "canonical_name": "phase2_95_03_executor_calibration_integration",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Executor Calibration Integration"
+        },
+        {
+          "order": 5,
+          "canonical_name": "phase2_95_04_metrics_exporter",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Metrics Exporter"
+        },
+        {
+          "order": 6,
+          "canonical_name": "phase2_95_05_execution_predictor",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Execution Predictor"
+        },
+        {
+          "order": 7,
+          "canonical_name": "phase2_95_06_benchmark_performance_optimizations",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Benchmark Performance Optimizations"
+        }
+      ]
+    },
+    {
+      "code": 96,
+      "name": "Stage 96",
+      "description": "Stage 96 modules",
+      "execution_order": 12,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase2_96_00_contract_migrator",
+          "type": "UTIL",
+          "criticality": "LOW",
+          "purpose": "Contract Migrator"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 13,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_2_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 2 Constants"
+        }
+      ]
+    }
+  ],
+  "contracts": {
+    "inputs": [
+      {
+        "name": "questionnaire_monolith",
+        "type": "dict",
+        "required": true
+      },
+      {
+        "name": "policy_area_context",
+        "type": "PolicyAreaContext",
+        "required": true
+      },
+      {
+        "name": "method_registry",
+        "type": "MethodRegistry",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "name": "executor_contracts",
+        "type": "list[ExecutorContract]"
+      },
+      {
+        "name": "execution_manifest",
+        "type": "ExecutionManifest"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "INV-P2-1",
+        "name": "Contract Count",
+        "formula": "len(contracts) == 300"
+      },
+      {
+        "id": "INV-P2-2",
+        "name": "Method Binding",
+        "formula": "\u2200 contract: len(methods) >= 1"
+      },
+      {
+        "id": "INV-P2-3",
+        "name": "Question Coverage",
+        "formula": "\u2200 Q001-Q300: has_contract(q)"
+      }
+    ]
+  },
+  "determinism": {
+    "base_seed": 42,
+    "strategy": "FIXED",
+    "hash_algorithm": "blake3"
+  },
+  "documentation": {
+    "readme": "README.md",
+    "constants": "phase2_10_00_phase_2_constants.py",
+    "manifest": "PHASE_2_MANIFEST.json"
+  }
+}

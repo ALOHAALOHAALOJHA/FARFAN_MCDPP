@@ -1,0 +1,69 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-16T23:32:10.347092+00:00",
+  "matrix": {
+    "CC_COHERENCIA_NORMATIVA": {
+      "theme_id": "CC_COHERENCIA_NORMATIVA",
+      "name": "Coherencia Normativa",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_PARTICIPACION_CIUDADANA": {
+      "theme_id": "CC_PARTICIPACION_CIUDADANA",
+      "name": "Participación Ciudadana",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_ENTORNO_TERRITORIAL": {
+      "theme_id": "CC_ENTORNO_TERRITORIAL",
+      "name": "Entorno Territorial",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_ENFOQUE_DIFERENCIAL": {
+      "theme_id": "CC_ENFOQUE_DIFERENCIAL",
+      "name": "Enfoque Diferencial",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_PERSPECTIVA_GENERO": {
+      "theme_id": "CC_PERSPECTIVA_GENERO",
+      "name": "Perspectiva de Género",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_SOSTENIBILIDAD_PRESUPUESTAL": {
+      "theme_id": "CC_SOSTENIBILIDAD_PRESUPUESTAL",
+      "name": "Sostenibilidad Presupuestal",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_CONTEXTO_PDET": {
+      "theme_id": "CC_CONTEXTO_PDET",
+      "name": "Contexto PDET",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_INTEROPERABILIDAD": {
+      "theme_id": "CC_INTEROPERABILIDAD",
+      "name": "Interoperabilidad Institucional",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_MECANISMOS_SEGUIMIENTO": {
+      "theme_id": "CC_MECANISMOS_SEGUIMIENTO",
+      "name": "Mecanismos de Seguimiento y Evaluación",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    }
+  }
+}

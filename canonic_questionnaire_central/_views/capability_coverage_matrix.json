@@ -1,0 +1,372 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-16T23:32:10.347644+00:00",
+  "capabilities": {
+    "NUMERIC_PARSING": {
+      "capability_id": "NUMERIC_PARSING",
+      "name": "Numeric Parsing",
+      "description": "Capacidad de parsear, validar y normalizar valores numéricos incluyendo montos, porcentajes y tasas",
+      "required_for": [
+        "QUANTITATIVE_TRIPLET",
+        "FINANCIAL_CHAIN"
+      ],
+      "implementation_hints": [
+        "Regex para formatos numéricos colombianos (1.234,56)",
+        "Normalización de moneda (millones, miles de millones, COP)",
+        "Validación de rangos razonables",
+        "Detección de unidades (%, tasa por mil, etc.)"
+      ]
+    },
+    "SEMANTIC_PROCESSING": {
+      "capability_id": "SEMANTIC_PROCESSING",
+      "name": "Semantic Processing",
+      "description": "Procesamiento semántico con embeddings para similaridad y clustering de contenido",
+      "required_for": [
+        "SEMANTIC_RELATIONSHIP",
+        "POPULATION_DISAGGREGATION"
+      ],
+      "dependencies": [
+        "sentence-transformers",
+        "numpy",
+        "scikit-learn"
+      ],
+      "implementation_hints": [
+        "Embeddings de oraciones con modelo paraphrase-multilingual",
+        "Cosine similarity computation",
+        "Clustering semántico con K-means o HDBSCAN",
+        "Threshold de similaridad >= 0.75"
+      ]
+    },
+    "GRAPH_CONSTRUCTION": {
+      "capability_id": "GRAPH_CONSTRUCTION",
+      "name": "Graph Construction",
+      "description": "Construcción y análisis de grafos de dependencias, jerarquías y relaciones causales",
+      "required_for": [
+        "CAUSAL_LINK",
+        "SEMANTIC_RELATIONSHIP",
+        "PROGRAMMATIC_HIERARCHY"
+      ],
+      "dependencies": [
+        "networkx"
+      ],
+      "implementation_hints": [
+        "Nodos y aristas tipados",
+        "Traversal algorithms (BFS, DFS)",
+        "Cycle detection para validación",
+        "Topological sort para cadenas causales"
+      ]
+    },
+    "TABLE_PARSING": {
+      "capability_id": "TABLE_PARSING",
+      "name": "Table Parsing",
+      "description": "Extracción estructurada de datos desde tablas en PDF y documentos",
+      "required_for": [
+        "STRUCTURAL_MARKER"
+      ],
+      "dependencies": [
+        "pdfplumber",
+        "pandas",
+        "tabula-py"
+      ],
+      "implementation_hints": [
+        "Header detection con heurísticas",
+        "Row extraction con alineación de celdas",
+        "Cell type inference (numérico, texto, fecha)",
+        "Merge detection para celdas combinadas"
+      ]
+    },
+    "TEMPORAL_REASONING": {
+      "capability_id": "TEMPORAL_REASONING",
+      "name": "Temporal Reasoning",
+      "description": "Razonamiento sobre períodos, vigencias, fechas y secuencias temporales",
+      "required_for": [
+        "TEMPORAL_MARKER"
+      ],
+      "implementation_hints": [
+        "Date parsing con múltiples formatos",
+        "Period validation (inicio < fin)",
+        "Temporal ordering y secuenciamiento",
+        "Detección de vigencias (2024-2027)"
+      ]
+    },
+    "CAUSAL_INFERENCE": {
+      "capability_id": "CAUSAL_INFERENCE",
+      "name": "Causal Inference",
+      "description": "Inferencia de relaciones causales a partir de verbos de acción y conectores",
+      "required_for": [
+        "CAUSAL_LINK"
+      ],
+      "implementation_hints": [
+        "Verb detection (contribuir, generar, producir, etc.)",
+        "Argument extraction (sujeto, objeto)",
+        "Causal chain construction",
+        "Validación de coherencia lógica"
+      ]
+    },
+    "FINANCIAL_ANALYSIS": {
+      "capability_id": "FINANCIAL_ANALYSIS",
+      "name": "Financial Analysis",
+      "description": "Análisis de cadenas presupuestales y validación de coherencia financiera",
+      "required_for": [
+        "FINANCIAL_CHAIN"
+      ],
+      "implementation_hints": [
+        "Currency normalization (COP, millones, etc.)",
+        "Source categorization (SGP, SGR, propios, crédito)",
+        "PPI validation (suma de fuentes = total)",
+        "Detección de vigencias presupuestales"
+      ]
+    },
+    "NER_EXTRACTION": {
+      "capability_id": "NER_EXTRACTION",
+      "name": "Named Entity Recognition",
+      "description": "Extracción de entidades nombradas específicas del contexto colombiano",
+      "required_for": [
+        "NORMATIVE_REFERENCE",
+        "INSTITUTIONAL_ENTITY"
+      ],
+      "dependencies": [
+        "spacy"
+      ],
+      "implementation_hints": [
+        "Colombian legal entities (Ley, Decreto, CONPES)",
+        "Institution patterns (DNP, DANE, Ministerio)",
+        "Normative reference parsing",
+        "Validation de años (1991-2026)"
+      ]
+    },
+    "INTERDEPENDENCY_VALIDATION": {
+      "capability_id": "INTERDEPENDENCY_VALIDATION",
+      "name": "Interdependency Validation",
+      "description": "Validación de dependencias inter-dimensionales y detección de razonamiento circular en cadenas causales",
+      "required_for": [
+        "INTERDEPENDENCY_CONTEXT"
+      ],
+      "implementation_hints": [
+        "Dimension dependency graph traversal (DIM01→DIM06)",
+        "Circular reasoning pattern matching (regex)",
+        "Causal chain completeness validation",
+        "Temporal coherence checking across dimensions"
+      ]
+    }
+  },
+  "signal_requirements": {
+    "STRUCTURAL_MARKER": {
+      "required": [
+        "TABLE_PARSING"
+      ],
+      "optional": [],
+      "description": "Extracción de secciones, tablas y estructura documental"
+    },
+    "QUANTITATIVE_TRIPLET": {
+      "required": [
+        "NUMERIC_PARSING"
+      ],
+      "optional": [
+        "TABLE_PARSING"
+      ],
+      "description": "Triplets de Línea Base + Meta + Año"
+    },
+    "NORMATIVE_REFERENCE": {
+      "required": [
+        "NER_EXTRACTION"
+      ],
+      "optional": [],
+      "description": "Referencias a leyes, decretos, CONPES, artículos"
+    },
+    "PROGRAMMATIC_HIERARCHY": {
+      "required": [],
+      "optional": [
+        "GRAPH_CONSTRUCTION"
+      ],
+      "description": "Jerarquía Eje → Programa → Subprograma → Meta"
+    },
+    "FINANCIAL_CHAIN": {
+      "required": [
+        "NUMERIC_PARSING",
+        "FINANCIAL_ANALYSIS"
+      ],
+      "optional": [
+        "TABLE_PARSING"
+      ],
+      "description": "Cadenas presupuestales Monto → Fuente → Programa"
+    },
+    "POPULATION_DISAGGREGATION": {
+      "required": [],
+      "optional": [
+        "NER_EXTRACTION",
+        "SEMANTIC_PROCESSING"
+      ],
+      "description": "Desagregación por poblaciones específicas"
+    },
+    "TEMPORAL_MARKER": {
+      "required": [
+        "TEMPORAL_REASONING"
+      ],
+      "optional": [],
+      "description": "Marcadores temporales, vigencias, períodos"
+    },
+    "CAUSAL_LINK": {
+      "required": [
+        "CAUSAL_INFERENCE",
+        "GRAPH_CONSTRUCTION"
+      ],
+      "optional": [
+        "SEMANTIC_PROCESSING"
+      ],
+      "description": "Enlaces causales producto → resultado → impacto"
+    },
+    "INSTITUTIONAL_ENTITY": {
+      "required": [
+        "NER_EXTRACTION"
+      ],
+      "optional": [],
+      "description": "Entidades institucionales colombianas"
+    },
+    "SEMANTIC_RELATIONSHIP": {
+      "required": [
+        "SEMANTIC_PROCESSING",
+        "GRAPH_CONSTRUCTION"
+      ],
+      "optional": [],
+      "description": "Relaciones semánticas entre conceptos"
+    },
+    "CROSS_CUTTING_THEME": {
+      "required": [],
+      "optional": [
+        "SEMANTIC_PROCESSING"
+      ],
+      "description": "Detección de temas transversales"
+    },
+    "COHERENCE_SIGNAL": {
+      "required": [],
+      "optional": [],
+      "description": "Señales de coherencia entre componentes (agregación)"
+    },
+    "INTERDEPENDENCY_CONTEXT": {
+      "required": [
+        "INTERDEPENDENCY_VALIDATION"
+      ],
+      "optional": [
+        "CAUSAL_INFERENCE"
+      ],
+      "description": "Contexto de interdependencia dimensional para validación de cadenas causales (R-W3)"
+    }
+  },
+  "coverage_analysis": {
+    "STRUCTURAL_MARKER": {
+      "required": [
+        "TABLE_PARSING"
+      ],
+      "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "QUANTITATIVE_TRIPLET": {
+      "required": [
+        "NUMERIC_PARSING"
+      ],
+      "optional": [
+        "TABLE_PARSING"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "NORMATIVE_REFERENCE": {
+      "required": [
+        "NER_EXTRACTION"
+      ],
+      "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "PROGRAMMATIC_HIERARCHY": {
+      "required": [],
+      "optional": [
+        "GRAPH_CONSTRUCTION"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "FINANCIAL_CHAIN": {
+      "required": [
+        "FINANCIAL_ANALYSIS",
+        "NUMERIC_PARSING"
+      ],
+      "optional": [
+        "TABLE_PARSING"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "POPULATION_DISAGGREGATION": {
+      "required": [],
+      "optional": [
+        "NER_EXTRACTION",
+        "SEMANTIC_PROCESSING"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "TEMPORAL_MARKER": {
+      "required": [
+        "TEMPORAL_REASONING"
+      ],
+      "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "CAUSAL_LINK": {
+      "required": [
+        "GRAPH_CONSTRUCTION",
+        "CAUSAL_INFERENCE"
+      ],
+      "optional": [
+        "SEMANTIC_PROCESSING"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "INSTITUTIONAL_ENTITY": {
+      "required": [
+        "NER_EXTRACTION"
+      ],
+      "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "SEMANTIC_RELATIONSHIP": {
+      "required": [
+        "SEMANTIC_PROCESSING",
+        "GRAPH_CONSTRUCTION"
+      ],
+      "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "CROSS_CUTTING_THEME": {
+      "required": [],
+      "optional": [
+        "SEMANTIC_PROCESSING"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "COHERENCE_SIGNAL": {
+      "required": [],
+      "optional": [],
+      "all_required_defined": true,
+      "missing_caps": []
+    },
+    "INTERDEPENDENCY_CONTEXT": {
+      "required": [
+        "INTERDEPENDENCY_VALIDATION"
+      ],
+      "optional": [
+        "CAUSAL_INFERENCE"
+      ],
+      "all_required_defined": true,
+      "missing_caps": []
+    }
+  }
+}

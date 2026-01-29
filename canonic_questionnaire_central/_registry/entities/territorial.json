@@ -1,0 +1,579 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.1.0",
+  "_generated_at": "2026-01-11T22:59:00Z",
+  "_update_notes": "Enriched with common municipal and departmental secretariats and local entities",
+  "entities": {
+    "ENT-TERR-001": {
+      "entity_id": "ENT-TERR-001",
+      "canonical_name": "Municipio",
+      "category": "territorial",
+      "type": "administrative_unit",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "municipio",
+        "municipios",
+        "nivel municipal"
+      ],
+      "description": "Entidad fundamental de la división político-administrativa del Estado"
+    },
+    "ENT-TERR-002": {
+      "entity_id": "ENT-TERR-002",
+      "canonical_name": "Departamento",
+      "category": "territorial",
+      "type": "administrative_unit",
+      "level": "DEPARTAMENTAL",
+      "aliases": [
+        "departamento",
+        "departamentos",
+        "nivel departamental"
+      ],
+      "description": "Entidad territorial de nivel intermedio con autonomía administrativa"
+    },
+    "ENT-TERR-003": {
+      "entity_id": "ENT-TERR-003",
+      "canonical_name": "Zona Rural",
+      "category": "territorial",
+      "type": "geographic_classification",
+      "aliases": [
+        "rural",
+        "zona rural",
+        "área rural",
+        "ruralidad"
+      ],
+      "description": "Clasificación geográfica de áreas no urbanas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.15,
+          "PA07": 0.20
+        }
+      }
+    },
+    "ENT-TERR-004": {
+      "entity_id": "ENT-TERR-004",
+      "canonical_name": "Zona Urbana",
+      "category": "territorial",
+      "type": "geographic_classification",
+      "aliases": [
+        "urbano",
+        "zona urbana",
+        "área urbana",
+        "cabecera municipal"
+      ],
+      "description": "Clasificación geográfica de áreas urbanas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.10,
+          "PA09": 0.15
+        }
+      }
+    },
+    "ENT-TERR-005": {
+      "entity_id": "ENT-TERR-005",
+      "canonical_name": "Gobernación Departamental",
+      "category": "territorial",
+      "type": "executive_authority",
+      "level": "DEPARTAMENTAL",
+      "aliases": [
+        "Gobernación",
+        "gobierno departamental",
+        "administración departamental"
+      ],
+      "description": "Sede del gobierno departamental encabezada por el gobernador",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.15,
+          "DIM02": 0.10
+        }
+      }
+    },
+    "ENT-TERR-006": {
+      "entity_id": "ENT-TERR-006",
+      "canonical_name": "Alcaldía Municipal",
+      "category": "territorial",
+      "type": "executive_authority",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Alcaldía",
+        "gobierno municipal",
+        "administración municipal"
+      ],
+      "description": "Sede del gobierno municipal encabezada por el alcalde",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.20,
+          "DIM02": 0.15
+        }
+      }
+    },
+    "ENT-TERR-007": {
+      "entity_id": "ENT-TERR-007",
+      "canonical_name": "Secretaría de Educación Departamental",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "DEPARTAMENTAL",
+      "aliases": [
+        "Secretaría de Educación Dep",
+        "SED"
+      ],
+      "description": "Secretaría departamental encargada de la administración del servicio educativo",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20,
+          "PA06": 0.10
+        }
+      }
+    },
+    "ENT-TERR-008": {
+      "entity_id": "ENT-TERR-008",
+      "canonical_name": "Secretaría de Educación Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Educación Mun",
+        "SEM"
+      ],
+      "description": "Secretaría municipal encargada de la administración del servicio educativo",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20,
+          "PA06": 0.10
+        }
+      }
+    },
+    "ENT-TERR-009": {
+      "entity_id": "ENT-TERR-009",
+      "canonical_name": "Secretaría de Salud Departamental",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "DEPARTAMENTAL",
+      "aliases": [
+        "Secretaría de Salud Dep",
+        "Salud Departamental"
+      ],
+      "description": "Secretaría departamental encargada de la dirección del sistema de salud territorial",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.25
+        }
+      }
+    },
+    "ENT-TERR-010": {
+      "entity_id": "ENT-TERR-010",
+      "canonical_name": "Secretaría de Salud Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Salud Mun",
+        "Salud Municipal"
+      ],
+      "description": "Secretaría municipal encargada de la gestión del sistema de salud local",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.25
+        }
+      }
+    },
+    "ENT-TERR-011": {
+      "entity_id": "ENT-TERR-011",
+      "canonical_name": "Secretaría de Gobierno Departamental",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "DEPARTAMENTAL",
+      "aliases": [
+        "Secretaría de Gobierno Dep",
+        "Gobierno Departamental"
+      ],
+      "description": "Secretaría departamental encargada de orden público, convivencia y asuntos políticos",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.15,
+          "PA08": 0.10
+        }
+      }
+    },
+    "ENT-TERR-012": {
+      "entity_id": "ENT-TERR-012",
+      "canonical_name": "Secretaría de Gobierno Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Gobierno Mun",
+        "Gobierno Municipal"
+      ],
+      "description": "Secretaría municipal encargada de orden público, convivencia y asuntos comunitarios",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.15,
+          "PA08": 0.10
+        }
+      }
+    },
+    "ENT-TERR-013": {
+      "entity_id": "ENT-TERR-013",
+      "canonical_name": "Secretaría de Planeación Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Planeación",
+        "Planeación Municipal"
+      ],
+      "description": "Secretaría municipal encargada de la planificación del desarrollo territorial",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.25,
+          "DIM02": 0.20
+        }
+      }
+    },
+    "ENT-TERR-014": {
+      "entity_id": "ENT-TERR-014",
+      "canonical_name": "Secretaría de Hacienda Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Hacienda",
+        "Hacienda Municipal",
+        "Finanzas Municipales"
+      ],
+      "description": "Secretaría municipal encargada de la gestión fiscal y financiera",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.15
+        }
+      }
+    },
+    "ENT-TERR-015": {
+      "entity_id": "ENT-TERR-015",
+      "canonical_name": "Secretaría de la Mujer y Equidad de Género",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de la Mujer",
+        "Equidad de Género Municipal"
+      ],
+      "description": "Secretaría municipal encargada de políticas de equidad de género y derechos de las mujeres",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.35
+        }
+      }
+    },
+    "ENT-TERR-016": {
+      "entity_id": "ENT-TERR-016",
+      "canonical_name": "Secretaría de Desarrollo Social",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría Social",
+        "Desarrollo Social Municipal"
+      ],
+      "description": "Secretaría municipal encargada de programas sociales y asistencia a población vulnerable",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20,
+          "PA06": 0.15
+        }
+      }
+    },
+    "ENT-TERR-017": {
+      "entity_id": "ENT-TERR-017",
+      "canonical_name": "Secretaría de Ambiente Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Ambiente",
+        "Ambiente Municipal",
+        "Medio Ambiente Municipal"
+      ],
+      "description": "Secretaría municipal encargada de la gestión ambiental y recursos naturales locales",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.25
+        }
+      }
+    },
+    "ENT-TERR-018": {
+      "entity_id": "ENT-TERR-018",
+      "canonical_name": "Secretaría de Agricultura Departamental",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "DEPARTAMENTAL",
+      "aliases": [
+        "Secretaría de Agricultura",
+        "Agricultura Departamental"
+      ],
+      "description": "Secretaría departamental encargada del fomento y desarrollo agropecuario",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.25,
+          "PA04": 0.10
+        }
+      }
+    },
+    "ENT-TERR-019": {
+      "entity_id": "ENT-TERR-019",
+      "canonical_name": "Secretaría de Infraestructura Municipal",
+      "category": "territorial",
+      "type": "secretariat",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Secretaría de Infraestructura",
+        "Obras Públicas",
+        "Infraestructura Municipal"
+      ],
+      "description": "Secretaría municipal encargada de obras públicas e infraestructura",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20
+        }
+      }
+    },
+    "ENT-TERR-020": {
+      "entity_id": "ENT-TERR-020",
+      "canonical_name": "Unidad Municipal de Asistencia Técnica Agropecuaria",
+      "acronym": "UMATA",
+      "category": "territorial",
+      "type": "technical_unit",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "UMATA",
+        "Asistencia Técnica Agropecuaria",
+        "EPSAGRO"
+      ],
+      "description": "Unidad municipal de asistencia técnica directa rural para productores agropecuarios",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.30,
+          "PA04": 0.10
+        }
+      }
+    },
+    "ENT-TERR-021": {
+      "entity_id": "ENT-TERR-021",
+      "canonical_name": "Comisaría de Familia",
+      "category": "territorial",
+      "type": "family_welfare",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Comisaría",
+        "Comisarías de Familia"
+      ],
+      "description": "Entidad municipal para prevención, protección y restablecimiento de derechos en contexto familiar",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.30,
+          "PA06": 0.25
+        }
+      }
+    },
+    "ENT-TERR-022": {
+      "entity_id": "ENT-TERR-022",
+      "canonical_name": "Personería Municipal",
+      "category": "territorial",
+      "type": "oversight",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Personería",
+        "Personero Municipal"
+      ],
+      "description": "Entidad municipal del Ministerio Público para vigilancia administrativa y promoción de DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.30,
+          "PA09": 0.15
+        }
+      }
+    },
+    "ENT-TERR-023": {
+      "entity_id": "ENT-TERR-023",
+      "canonical_name": "Oficina de Catastro Municipal",
+      "category": "territorial",
+      "type": "cadastre",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Catastro Municipal",
+        "Oficina de Catastro"
+      ],
+      "description": "Oficina municipal encargada de la gestión catastral y valorización predial",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.25
+        }
+      }
+    },
+    "ENT-TERR-024": {
+      "entity_id": "ENT-TERR-024",
+      "canonical_name": "Consejo Municipal de Gestión del Riesgo de Desastres",
+      "acronym": "CMGRD",
+      "category": "territorial",
+      "type": "risk_management",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "CMGRD",
+        "Consejo de Riesgo",
+        "Gestión del Riesgo Municipal"
+      ],
+      "description": "Instancia municipal de coordinación, asesoría y planificación para la gestión del riesgo",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.30
+        }
+      }
+    },
+    "ENT-TERR-025": {
+      "entity_id": "ENT-TERR-025",
+      "canonical_name": "Empresa de Servicios Públicos Municipal",
+      "acronym": "ESP",
+      "category": "territorial",
+      "type": "public_utility",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "ESP",
+        "Servicios Públicos",
+        "Empresa de Acueducto",
+        "Empresa de Aseo"
+      ],
+      "description": "Empresa municipal prestadora de servicios públicos domiciliarios",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20,
+          "PA03": 0.10
+        }
+      }
+    },
+    "ENT-TERR-026": {
+      "entity_id": "ENT-TERR-026",
+      "canonical_name": "Inspección de Policía",
+      "category": "territorial",
+      "type": "administrative_authority",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Inspección",
+        "Inspector de Policía"
+      ],
+      "description": "Autoridad administrativa municipal para asuntos de policía, convivencia y contravenciones",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.15
+        }
+      }
+    },
+    "ENT-TERR-027": {
+      "entity_id": "ENT-TERR-027",
+      "canonical_name": "Enlace Municipal de Víctimas",
+      "category": "territorial",
+      "type": "liaison_office",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Enlace de Víctimas",
+        "Oficina de Víctimas"
+      ],
+      "description": "Oficina municipal de enlace para atención y acompañamiento a víctimas del conflicto",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35,
+          "PA08": 0.10
+        }
+      }
+    },
+    "ENT-TERR-028": {
+      "entity_id": "ENT-TERR-028",
+      "canonical_name": "Mesa de Participación de Víctimas",
+      "acronym": "MPV",
+      "category": "territorial",
+      "type": "participative_body",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Mesa de Víctimas",
+        "MPV"
+      ],
+      "description": "Instancia municipal de participación de víctimas en diseño y seguimiento de políticas públicas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.30
+        }
+      }
+    },
+    "ENT-TERR-029": {
+      "entity_id": "ENT-TERR-029",
+      "canonical_name": "Comité Municipal de Justicia Transicional",
+      "acronym": "CMJT",
+      "category": "territorial",
+      "type": "coordination_body",
+      "level": "MUNICIPAL",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "Comité de Justicia Transicional",
+        "CMJT"
+      ],
+      "description": "Comité municipal para coordinación de política pública de atención a víctimas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35
+        }
+      }
+    },
+    "ENT-TERR-030": {
+      "entity_id": "ENT-TERR-030",
+      "canonical_name": "Comité de Garantías para Líderes Sociales",
+      "category": "territorial",
+      "type": "coordination_body",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Comité de Garantías",
+        "Mesa de Protección"
+      ],
+      "description": "Instancia municipal de coordinación para la protección de líderes sociales y defensores de DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.40
+        }
+      }
+    },
+    "ENT-TERR-031": {
+      "entity_id": "ENT-TERR-031",
+      "canonical_name": "Plataforma de Juventud",
+      "category": "territorial",
+      "type": "participative_body",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "Plataforma Juvenil",
+        "Consejo de Juventud"
+      ],
+      "description": "Instancia municipal de participación de jóvenes en políticas públicas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA06": 0.30
+        }
+      }
+    },
+    "ENT-TERR-032": {
+      "entity_id": "ENT-TERR-032",
+      "canonical_name": "Consejo Territorial de Planeación",
+      "acronym": "CTP",
+      "category": "territorial",
+      "type": "participative_body",
+      "level": "MUNICIPAL",
+      "aliases": [
+        "CTP",
+        "Consejo de Planeación"
+      ],
+      "description": "Instancia consultiva del sistema de planeación territorial",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.15,
+          "DIM02": 0.10
+        }
+      }
+    }
+  }
+}

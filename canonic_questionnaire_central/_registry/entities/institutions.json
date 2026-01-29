@@ -1,0 +1,1166 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.1.0",
+  "_generated_at": "2026-01-11T22:59:00Z",
+  "_update_notes": "Enriched with PDET agencies, national entities by policy area PA01-PA10, and post-conflict institutions",
+  "entities": {
+    "ENT-INST-001": {
+      "entity_id": "ENT-INST-001",
+      "canonical_name": "Departamento Nacional de Planeación",
+      "acronym": "DNP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "planning",
+      "aliases": [
+        "DNP",
+        "Planeación Nacional",
+        "Departamento de Planeación"
+      ],
+      "description": "Entidad técnica del Gobierno que impulsa la implementación de una visión estratégica del país",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.10,
+          "DIM02": 0.15
+        },
+        "boost_policy_areas": {
+          "PA04": 0.10
+        }
+      }
+    },
+    "ENT-INST-002": {
+      "entity_id": "ENT-INST-002",
+      "canonical_name": "Departamento Administrativo Nacional de Estadística",
+      "acronym": "DANE",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "statistics",
+      "aliases": [
+        "DANE",
+        "Estadística Nacional"
+      ],
+      "description": "Entidad responsable de la planeación, levantamiento, procesamiento, análisis y difusión de las estadísticas oficiales",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.20,
+          "DIM03": 0.10,
+          "DIM04": 0.15
+        }
+      }
+    },
+    "ENT-INST-003": {
+      "entity_id": "ENT-INST-003",
+      "canonical_name": "Instituto Colombiano de Bienestar Familiar",
+      "acronym": "ICBF",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "social_protection",
+      "aliases": [
+        "ICBF",
+        "Bienestar Familiar"
+      ],
+      "description": "Entidad encargada de la protección integral de la primera infancia, niñez y adolescencia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA06": 0.25,
+          "PA01": 0.10
+        }
+      }
+    },
+    "ENT-INST-004": {
+      "entity_id": "ENT-INST-004",
+      "canonical_name": "Unidad para las Víctimas",
+      "acronym": "UARIV",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "transitional_justice",
+      "aliases": [
+        "UARIV",
+        "Unidad de Víctimas",
+        "Unidad para la Atención y Reparación Integral a las Víctimas"
+      ],
+      "description": "Entidad encargada de coordinar el Sistema Nacional de Atención y Reparación Integral a las Víctimas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.30,
+          "PA02": 0.15
+        }
+      }
+    },
+    "ENT-INST-005": {
+      "entity_id": "ENT-INST-005",
+      "canonical_name": "Agencia Nacional de Tierras",
+      "acronym": "ANT",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "land_management",
+      "aliases": [
+        "ANT",
+        "Agencia de Tierras"
+      ],
+      "description": "Entidad ejecutora de la política de ordenamiento social de la propiedad rural",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.30,
+          "PA03": 0.10
+        }
+      }
+    },
+    "ENT-INST-006": {
+      "entity_id": "ENT-INST-006",
+      "canonical_name": "Ministerio del Interior",
+      "acronym": "MinInterior",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "Ministerio del Interior",
+        "MinInterior"
+      ],
+      "description": "Ministerio responsable de la formulación de políticas de seguridad, convivencia y DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.15,
+          "PA08": 0.20
+        }
+      }
+    },
+    "ENT-INST-007": {
+      "entity_id": "ENT-INST-007",
+      "canonical_name": "Migración Colombia",
+      "acronym": "MigraCol",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "migration",
+      "aliases": [
+        "Migración Colombia",
+        "MigraCol"
+      ],
+      "description": "Entidad encargada del control migratorio",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA10": 0.30
+        }
+      }
+    },
+    "ENT-INST-008": {
+      "entity_id": "ENT-INST-008",
+      "canonical_name": "Instituto Nacional Penitenciario y Carcelario",
+      "acronym": "INPEC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "penitentiary",
+      "aliases": [
+        "INPEC",
+        "Instituto Penitenciario"
+      ],
+      "description": "Entidad encargada del sistema penitenciario y carcelario",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA09": 0.30
+        }
+      }
+    },
+    "ENT-INST-009": {
+      "entity_id": "ENT-INST-009",
+      "canonical_name": "Ministerio de Ambiente y Desarrollo Sostenible",
+      "acronym": "MinAmbiente",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "Ministerio de Ambiente",
+        "MinAmbiente",
+        "MADS"
+      ],
+      "description": "Ministerio encargado de la gestión ambiental y recursos naturales",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.30
+        }
+      }
+    },
+    "ENT-INST-010": {
+      "entity_id": "ENT-INST-010",
+      "canonical_name": "Defensoría del Pueblo",
+      "acronym": "Defensoría",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ombudsman",
+      "aliases": [
+        "Defensoría del Pueblo",
+        "Defensoría"
+      ],
+      "description": "Entidad del Ministerio Público para la promoción y defensa de los DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.25,
+          "PA01": 0.15
+        }
+      }
+    },
+    "ENT-INST-011": {
+      "entity_id": "ENT-INST-011",
+      "canonical_name": "Agencia de Renovación del Territorio",
+      "acronym": "ART",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "territorial_renovation",
+      "context": "PDET",
+      "aliases": [
+        "ART",
+        "Agencia de Renovación",
+        "Renovación del Territorio"
+      ],
+      "description": "Entidad líder para la implementación de Programas de Desarrollo con Enfoque Territorial (PDET) en 170 municipios priorizados por 15 años",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.25,
+          "PA05": 0.30,
+          "PA07": 0.25
+        },
+        "pdet_specific": true,
+        "pdet_weight": 0.40
+      }
+    },
+    "ENT-INST-012": {
+      "entity_id": "ENT-INST-012",
+      "canonical_name": "Agencia para la Reincorporación y la Normalización",
+      "acronym": "ARN",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "reintegration",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "ARN",
+        "Agencia de Reincorporación"
+      ],
+      "description": "Entidad encargada de la reincorporación y normalización de excombatientes",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35,
+          "PA04": 0.15
+        }
+      }
+    },
+    "ENT-INST-013": {
+      "entity_id": "ENT-INST-013",
+      "canonical_name": "OCAD Paz",
+      "acronym": "OCAD Paz",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "financing",
+      "context": "PDET",
+      "aliases": [
+        "OCAD Paz",
+        "Órgano Colegiado de Administración y Decisión Paz",
+        "Asignación Paz"
+      ],
+      "description": "Instancia del Sistema General de Regalías para financiación de proyectos en territorios PDET",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.20,
+          "PA04": 0.20
+        },
+        "pdet_specific": true,
+        "pdet_weight": 0.35
+      }
+    },
+    "ENT-INST-014": {
+      "entity_id": "ENT-INST-014",
+      "canonical_name": "Jurisdicción Especial para la Paz",
+      "acronym": "JEP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "transitional_justice",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "JEP",
+        "Jurisdicción Especial",
+        "Jurisdicción de Paz"
+      ],
+      "description": "Componente de justicia del Sistema Integral de Verdad, Justicia, Reparación y No Repetición",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.40,
+          "PA02": 0.20
+        }
+      }
+    },
+    "ENT-INST-015": {
+      "entity_id": "ENT-INST-015",
+      "canonical_name": "Comisión para el Esclarecimiento de la Verdad",
+      "acronym": "CEV",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "transitional_justice",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "CEV",
+        "Comisión de la Verdad"
+      ],
+      "description": "Entidad del Sistema Integral para el esclarecimiento de la verdad sobre el conflicto armado",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35,
+          "PA08": 0.15
+        }
+      }
+    },
+    "ENT-INST-016": {
+      "entity_id": "ENT-INST-016",
+      "canonical_name": "Unidad de Búsqueda de Personas Dadas por Desaparecidas",
+      "acronym": "UBPD",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "transitional_justice",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "UBPD",
+        "Unidad de Búsqueda"
+      ],
+      "description": "Entidad humanitaria y extrajudicial del Sistema Integral para la búsqueda de personas desaparecidas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35,
+          "PA08": 0.20
+        }
+      }
+    },
+    "ENT-INST-017": {
+      "entity_id": "ENT-INST-017",
+      "canonical_name": "Consejería Presidencial para la Equidad de la Mujer",
+      "acronym": "CPEM",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "presidential_advisory",
+      "aliases": [
+        "CPEM",
+        "Consejería de la Mujer",
+        "Alta Consejería para la Mujer"
+      ],
+      "description": "Consejería presidencial para diseño de políticas públicas de equidad de género",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.40
+        }
+      }
+    },
+    "ENT-INST-018": {
+      "entity_id": "ENT-INST-018",
+      "canonical_name": "Fiscalía General de la Nación",
+      "acronym": "FGN",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "justice",
+      "aliases": [
+        "FGN",
+        "Fiscalía",
+        "Fiscalía General"
+      ],
+      "description": "Entidad de la rama judicial responsable de la investigación penal y acusación",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.15,
+          "PA02": 0.25,
+          "PA08": 0.20
+        }
+      }
+    },
+    "ENT-INST-019": {
+      "entity_id": "ENT-INST-019",
+      "canonical_name": "Ministerio de Defensa Nacional",
+      "acronym": "MinDefensa",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "Ministerio de Defensa",
+        "MinDefensa"
+      ],
+      "description": "Ministerio encargado de la defensa nacional y la seguridad del territorio",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.30
+        }
+      }
+    },
+    "ENT-INST-020": {
+      "entity_id": "ENT-INST-020",
+      "canonical_name": "Policía Nacional de Colombia",
+      "acronym": "PONAL",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "security_force",
+      "aliases": [
+        "Policía Nacional",
+        "PONAL",
+        "Policía"
+      ],
+      "description": "Cuerpo de seguridad civil encargado del orden público y la convivencia ciudadana",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.25,
+          "PA01": 0.10
+        }
+      }
+    },
+    "ENT-INST-021": {
+      "entity_id": "ENT-INST-021",
+      "canonical_name": "Unidad Nacional de Protección",
+      "acronym": "UNP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "protection",
+      "aliases": [
+        "UNP",
+        "Unidad de Protección"
+      ],
+      "description": "Entidad especializada en protección de personas en situación de riesgo por violencia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.40,
+          "PA01": 0.15,
+          "PA02": 0.15
+        }
+      }
+    },
+    "ENT-INST-022": {
+      "entity_id": "ENT-INST-022",
+      "canonical_name": "Instituto de Hidrología, Meteorología y Estudios Ambientales",
+      "acronym": "IDEAM",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "environmental_research",
+      "aliases": [
+        "IDEAM",
+        "Instituto de Hidrología"
+      ],
+      "description": "Entidad de apoyo técnico y científico al Sistema Nacional Ambiental",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.25
+        }
+      }
+    },
+    "ENT-INST-023": {
+      "entity_id": "ENT-INST-023",
+      "canonical_name": "Parques Nacionales Naturales de Colombia",
+      "acronym": "PNNC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "environmental_conservation",
+      "aliases": [
+        "Parques Nacionales",
+        "PNNC",
+        "PNN"
+      ],
+      "description": "Entidad encargada de la administración y manejo del Sistema de Parques Nacionales Naturales",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.30,
+          "PA07": 0.10
+        }
+      }
+    },
+    "ENT-INST-024": {
+      "entity_id": "ENT-INST-024",
+      "canonical_name": "Autoridad Nacional de Licencias Ambientales",
+      "acronym": "ANLA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "environmental_licensing",
+      "aliases": [
+        "ANLA",
+        "Licencias Ambientales"
+      ],
+      "description": "Entidad encargada de otorgar licencias, permisos y trámites ambientales",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.20
+        }
+      }
+    },
+    "ENT-INST-025": {
+      "entity_id": "ENT-INST-025",
+      "canonical_name": "Unidad Nacional para la Gestión del Riesgo de Desastres",
+      "acronym": "UNGRD",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "disaster_management",
+      "aliases": [
+        "UNGRD",
+        "Unidad de Gestión de Riesgo",
+        "Gestión del Riesgo"
+      ],
+      "description": "Entidad coordinadora del Sistema Nacional de Gestión del Riesgo de Desastres",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.35
+        }
+      }
+    },
+    "ENT-INST-026": {
+      "entity_id": "ENT-INST-026",
+      "canonical_name": "Corporaciones Autónomas Regionales",
+      "acronym": "CAR",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "environmental_authority",
+      "aliases": [
+        "CAR",
+        "Corporación Autónoma Regional",
+        "Corporaciones Ambientales"
+      ],
+      "description": "Entidades regionales encargadas de administrar el medio ambiente y los recursos naturales renovables",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.30,
+          "PA07": 0.10
+        }
+      }
+    },
+    "ENT-INST-027": {
+      "entity_id": "ENT-INST-027",
+      "canonical_name": "Ministerio de Educación Nacional",
+      "acronym": "MinEducación",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "MinEducación",
+        "Ministerio de Educación",
+        "MEN"
+      ],
+      "description": "Ministerio responsable de la política educativa y la calidad de la educación",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.30,
+          "PA06": 0.15
+        }
+      }
+    },
+    "ENT-INST-028": {
+      "entity_id": "ENT-INST-028",
+      "canonical_name": "Ministerio de Salud y Protección Social",
+      "acronym": "MinSalud",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "MinSalud",
+        "Ministerio de Salud",
+        "MSPS"
+      ],
+      "description": "Ministerio encargado de la dirección del sistema de salud y protección social",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.35,
+          "PA01": 0.10
+        }
+      }
+    },
+    "ENT-INST-029": {
+      "entity_id": "ENT-INST-029",
+      "canonical_name": "Ministerio de Cultura",
+      "acronym": "MinCultura",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "MinCultura",
+        "Ministerio de Cultura"
+      ],
+      "description": "Ministerio responsable de formular, coordinar y ejecutar la política cultural",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20
+        }
+      }
+    },
+    "ENT-INST-030": {
+      "entity_id": "ENT-INST-030",
+      "canonical_name": "Ministerio de Vivienda, Ciudad y Territorio",
+      "acronym": "MinVivienda",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "MinVivienda",
+        "Ministerio de Vivienda",
+        "MVCT"
+      ],
+      "description": "Ministerio encargado de la política de vivienda, desarrollo urbano y agua potable",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.25
+        }
+      }
+    },
+    "ENT-INST-031": {
+      "entity_id": "ENT-INST-031",
+      "canonical_name": "Servicio Nacional de Aprendizaje",
+      "acronym": "SENA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "vocational_training",
+      "aliases": [
+        "SENA",
+        "Servicio de Aprendizaje"
+      ],
+      "description": "Establecimiento público de formación profesional integral para el trabajo",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.25,
+          "PA06": 0.15
+        }
+      }
+    },
+    "ENT-INST-032": {
+      "entity_id": "ENT-INST-032",
+      "canonical_name": "Instituto Nacional de Salud",
+      "acronym": "INS",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "public_health",
+      "aliases": [
+        "INS",
+        "Instituto de Salud"
+      ],
+      "description": "Instituto científico y técnico de referencia nacional en salud pública",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20
+        }
+      }
+    },
+    "ENT-INST-033": {
+      "entity_id": "ENT-INST-033",
+      "canonical_name": "Superintendencia Nacional de Salud",
+      "acronym": "Supersalud",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": [
+        "Supersalud",
+        "Superintendencia de Salud"
+      ],
+      "description": "Entidad de inspección, vigilancia y control del sistema de salud",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.15
+        }
+      }
+    },
+    "ENT-INST-034": {
+      "entity_id": "ENT-INST-034",
+      "canonical_name": "Centro Nacional de Memoria Histórica",
+      "acronym": "CNMH",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "memory_preservation",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "CNMH",
+        "Centro de Memoria",
+        "Memoria Histórica"
+      ],
+      "description": "Establecimiento público que recoge y recupera documentos y testimonios del conflicto armado",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.30
+        }
+      }
+    },
+    "ENT-INST-035": {
+      "entity_id": "ENT-INST-035",
+      "canonical_name": "Consejería Presidencial para la Niñez y Adolescencia",
+      "acronym": "CPNA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "presidential_advisory",
+      "aliases": [
+        "CPNA",
+        "Consejería de Niñez"
+      ],
+      "description": "Consejería presidencial para el diseño de políticas públicas de niñez y adolescencia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA06": 0.35
+        }
+      }
+    },
+    "ENT-INST-036": {
+      "entity_id": "ENT-INST-036",
+      "canonical_name": "Colombia Joven",
+      "acronym": "Colombia Joven",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "youth_policy",
+      "aliases": [
+        "Colombia Joven",
+        "Sistema Nacional de Juventud"
+      ],
+      "description": "Programa presidencial para la coordinación del Sistema Nacional de Juventud",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA06": 0.30
+        }
+      }
+    },
+    "ENT-INST-037": {
+      "entity_id": "ENT-INST-037",
+      "canonical_name": "Instituto Nacional de Medicina Legal y Ciencias Forenses",
+      "acronym": "INML",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "forensic_science",
+      "aliases": [
+        "Medicina Legal",
+        "INML",
+        "Instituto de Medicina Legal"
+      ],
+      "description": "Instituto científico forense encargado de peritajes médicos y científicos",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.15,
+          "PA06": 0.15,
+          "PA02": 0.10
+        }
+      }
+    },
+    "ENT-INST-038": {
+      "entity_id": "ENT-INST-038",
+      "canonical_name": "Unidad de Planificación Rural Agropecuaria",
+      "acronym": "UPRA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "rural_planning",
+      "aliases": [
+        "UPRA",
+        "Planificación Rural"
+      ],
+      "description": "Entidad técnica para la planificación del uso del suelo rural agropecuario",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.30,
+          "PA03": 0.10
+        }
+      }
+    },
+    "ENT-INST-039": {
+      "entity_id": "ENT-INST-039",
+      "canonical_name": "Ministerio de Agricultura y Desarrollo Rural",
+      "acronym": "MinAgricultura",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "MinAgricultura",
+        "Ministerio de Agricultura",
+        "MADR"
+      ],
+      "description": "Ministerio encargado de la política agropecuaria y desarrollo rural",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.35,
+          "PA04": 0.10
+        }
+      }
+    },
+    "ENT-INST-040": {
+      "entity_id": "ENT-INST-040",
+      "canonical_name": "Instituto Geográfico Agustín Codazzi",
+      "acronym": "IGAC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "cadastre",
+      "aliases": [
+        "IGAC",
+        "Agustín Codazzi",
+        "Instituto Geográfico"
+      ],
+      "description": "Entidad encargada de producir el mapa oficial, gestión catastral y agrología",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.25
+        }
+      }
+    },
+    "ENT-INST-041": {
+      "entity_id": "ENT-INST-041",
+      "canonical_name": "Superintendencia de Notariado y Registro",
+      "acronym": "SNR",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": [
+        "SNR",
+        "Superintendencia de Registro"
+      ],
+      "description": "Entidad de inspección, vigilancia y control del sistema notarial y registral",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.20
+        }
+      }
+    },
+    "ENT-INST-042": {
+      "entity_id": "ENT-INST-042",
+      "canonical_name": "Autoridad Nacional de Consulta Previa",
+      "acronym": "ANCP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "indigenous_rights",
+      "aliases": [
+        "ANCP",
+        "Consulta Previa"
+      ],
+      "description": "Entidad responsable de coordinar los procesos de consulta previa con pueblos étnicos",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.25,
+          "PA08": 0.15
+        }
+      }
+    },
+    "ENT-INST-043": {
+      "entity_id": "ENT-INST-043",
+      "canonical_name": "Sistema de Alertas Tempranas",
+      "acronym": "SAT",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "early_warning",
+      "aliases": [
+        "SAT",
+        "Alertas Tempranas"
+      ],
+      "description": "Sistema de la Defensoría del Pueblo para prevención de violaciones de DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.35,
+          "PA02": 0.15
+        }
+      }
+    },
+    "ENT-INST-044": {
+      "entity_id": "ENT-INST-044",
+      "canonical_name": "Oficina del Alto Comisionado para los Derechos Humanos",
+      "acronym": "OACDH",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "human_rights",
+      "aliases": [
+        "OACDH",
+        "Alto Comisionado DDHH"
+      ],
+      "description": "Oficina de Naciones Unidas para promoción y protección de derechos humanos en Colombia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.30,
+          "PA05": 0.10
+        }
+      }
+    },
+    "ENT-INST-045": {
+      "entity_id": "ENT-INST-045",
+      "canonical_name": "Ministerio de Justicia y del Derecho",
+      "acronym": "MinJusticia",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "MinJusticia",
+        "Ministerio de Justicia",
+        "MJD"
+      ],
+      "description": "Ministerio encargado de formular, adoptar y evaluar la política de justicia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA09": 0.25,
+          "PA05": 0.10
+        }
+      }
+    },
+    "ENT-INST-046": {
+      "entity_id": "ENT-INST-046",
+      "canonical_name": "Ministerio de Relaciones Exteriores",
+      "acronym": "Cancillería",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": [
+        "Cancillería",
+        "Relaciones Exteriores",
+        "MinRelaciones"
+      ],
+      "description": "Ministerio encargado de formular, planear y ejecutar la política exterior",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA10": 0.25
+        }
+      }
+    },
+    "ENT-INST-047": {
+      "entity_id": "ENT-INST-047",
+      "canonical_name": "Gerencia de Fronteras",
+      "acronym": "GF",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "border_management",
+      "aliases": [
+        "Gerencia de Fronteras",
+        "Programa Fronteras"
+      ],
+      "description": "Programa presidencial para el desarrollo integral de las zonas de frontera",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA10": 0.30
+        }
+      }
+    },
+    "ENT-INST-048": {
+      "entity_id": "ENT-INST-048",
+      "canonical_name": "Alto Comisionado para la Paz",
+      "acronym": "ACP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "peace_building",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "Alto Comisionado",
+        "Comisionado de Paz"
+      ],
+      "description": "Oficina presidencial para asesorar al gobierno en procesos de paz",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35,
+          "PA02": 0.20
+        }
+      }
+    },
+    "ENT-INST-049": {
+      "entity_id": "ENT-INST-049",
+      "canonical_name": "Fondo Colombia en Paz",
+      "acronym": "FCP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "financing",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "Fondo Colombia en Paz",
+        "FCP"
+      ],
+      "description": "Fondo fiduciario para financiar inversiones en construcción de paz",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.30
+        }
+      }
+    },
+    "ENT-INST-050": {
+      "entity_id": "ENT-INST-050",
+      "canonical_name": "Consejo Nacional de Paz, Reconciliación y Convivencia",
+      "acronym": "CNPRC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "peace_building",
+      "context": "POST_CONFLICT",
+      "aliases": [
+        "Consejo de Paz",
+        "CNPRC"
+      ],
+      "description": "Instancia de la sociedad civil para la construcción de paz",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.25
+        }
+      }
+    },
+    "ENT-INST-051": {
+      "entity_id": "ENT-INST-051",
+      "canonical_name": "Fondo de Adaptación",
+      "acronym": "FA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "disaster_recovery",
+      "aliases": [
+        "Fondo de Adaptación",
+        "FA"
+      ],
+      "description": "Fondo para la recuperación, construcción y reconstrucción ante desastres naturales",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.25
+        }
+      }
+    },
+    "ENT-INST-052": {
+      "entity_id": "ENT-INST-052",
+      "canonical_name": "Instituto Colombiano del Deporte",
+      "acronym": "Coldeportes",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "sports",
+      "aliases": [
+        "Coldeportes",
+        "Instituto del Deporte"
+      ],
+      "description": "Instituto encargado de dirigir, orientar y coordinar el deporte y la recreación",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.15,
+          "PA06": 0.10
+        }
+      }
+    },
+    "ENT-INST-053": {
+      "entity_id": "ENT-INST-053",
+      "canonical_name": "Empresas Sociales del Estado",
+      "acronym": "ESE",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "health_provider",
+      "aliases": [
+        "ESE",
+        "Empresas Sociales",
+        "Hospital Público"
+      ],
+      "description": "Entidades públicas descentralizadas prestadoras de servicios de salud",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.20
+        }
+      }
+    },
+    "ENT-INST-054": {
+      "entity_id": "ENT-INST-054",
+      "canonical_name": "Fondo Nacional del Ahorro",
+      "acronym": "FNA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "housing_finance",
+      "aliases": [
+        "FNA",
+        "Fondo del Ahorro"
+      ],
+      "description": "Establecimiento de crédito con régimen legal propio especializado en vivienda",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.15
+        }
+      }
+    },
+    "ENT-INST-055": {
+      "entity_id": "ENT-INST-055",
+      "canonical_name": "Ejército Nacional de Colombia",
+      "acronym": "EJC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "security_force",
+      "aliases": [
+        "Ejército Nacional",
+        "EJC",
+        "Ejército"
+      ],
+      "description": "Fuerza militar terrestre de Colombia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.20
+        }
+      }
+    },
+    "ENT-INST-056": {
+      "entity_id": "ENT-INST-056",
+      "canonical_name": "Superintendencia de Vigilancia Penitenciaria",
+      "acronym": "INPEC-SV",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": [
+        "Superintendencia Penitenciaria",
+        "Vigilancia Penitenciaria"
+      ],
+      "description": "Entidad de inspección y vigilancia del sistema penitenciario y carcelario",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA09": 0.20
+        }
+      }
+    },
+    "ENT-INST-057": {
+      "entity_id": "ENT-INST-057",
+      "canonical_name": "Personería General de la Nación",
+      "acronym": "PGN",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ombudsman",
+      "aliases": [
+        "Personería General",
+        "PGN"
+      ],
+      "description": "Entidad del Ministerio Público para la vigilancia de la conducta oficial",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.20,
+          "PA09": 0.15
+        }
+      }
+    },
+    "ENT-INST-058": {
+      "entity_id": "ENT-INST-058",
+      "canonical_name": "Comisión Legal para la Equidad de la Mujer del Congreso",
+      "acronym": "CLEM",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "legislative",
+      "aliases": [
+        "Comisión de la Mujer",
+        "CLEM"
+      ],
+      "description": "Comisión legal del Congreso para temas de equidad de género",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.25
+        }
+      }
+    },
+    "ENT-INST-059": {
+      "entity_id": "ENT-INST-059",
+      "canonical_name": "Procuraduría General de la Nación",
+      "acronym": "PGN-Proc",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": [
+        "Procuraduría",
+        "Procuraduría General"
+      ],
+      "description": "Entidad del Ministerio Público encargada del control disciplinario de servidores públicos",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.15,
+          "PA01": 0.10
+        }
+      }
+    },
+    "ENT-INST-060": {
+      "entity_id": "ENT-INST-060",
+      "canonical_name": "Contraloría General de la República",
+      "acronym": "CGR",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "fiscal_oversight",
+      "aliases": [
+        "Contraloría",
+        "CGR",
+        "Contraloría General"
+      ],
+      "description": "Entidad de control fiscal encargada de vigilar la gestión fiscal de la administración",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA04": 0.10
+        }
+      }
+    }
+  }
+}

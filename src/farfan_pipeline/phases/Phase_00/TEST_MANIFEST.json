@@ -1,0 +1,244 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 0,
+  "phase_name": "Phase_00",
+  "generated_at": "2026-01-10T20:22:39.548689",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module": "phase0_90_03_wiring_validator",
+      "stage": 90,
+      "order": 3,
+      "test_file": "tests/phases/phase0/test_phase0_90_03_wiring_validator.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_30_01_performance_metrics",
+      "stage": 30,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_primitives/performance_metrics.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase0_00_02_runtime_error_fixes",
+      "stage": 0,
+      "order": 2,
+      "test_file": "tests/phases/phase0/test_primitives/runtime_error_fixes.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_40_03_coverage_gate",
+      "stage": 40,
+      "order": 3,
+      "test_file": "tests/phases/phase0/test_primitives/coverage_gate.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase0_90_00_main",
+      "stage": 90,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_phase0_90_00_main.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_20_01_hash_utils",
+      "stage": 20,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_phase0_20_01_hash_utils.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase0_20_03_determinism_helpers",
+      "stage": 20,
+      "order": 3,
+      "test_file": "tests/phases/phase0/test_phase0_20_03_determinism_helpers.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase0_10_01_runtime_config",
+      "stage": 10,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_phase0_10_01_runtime_config.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_00_03_protocols",
+      "stage": 0,
+      "order": 3,
+      "test_file": "tests/phases/phase0/test_phase0_00_03_protocols.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_50_00_boot_checks",
+      "stage": 50,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_phase0_50_00_boot_checks.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_50_01_exit_gates",
+      "stage": 50,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_phase0_50_01_exit_gates.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_10_04_runtime_config_typed",
+      "stage": 10,
+      "order": 4,
+      "test_file": "tests/phases/phase0/test_phase0_10_04_runtime_config_typed.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_00_01_domain_errors",
+      "stage": 0,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_phase0_00_01_domain_errors.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_20_04_deterministic_execution",
+      "stage": 20,
+      "order": 4,
+      "test_file": "tests/phases/phase0/test_phase0_20_04_deterministic_execution.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase0_10_00_phase_0_constants",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_primitives/constants.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_40_00_input_validation",
+      "stage": 40,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_phase0_40_00_input_validation.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase0_40_01_schema_monitor",
+      "stage": 40,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_primitives/schema_monitor.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase0_20_02_determinism",
+      "stage": 20,
+      "order": 2,
+      "test_file": "tests/phases/phase0/test_phase0_20_02_determinism.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase0_00_03_primitives",
+      "stage": 0,
+      "order": 3,
+      "test_file": "tests/phases/phase0/test_phase0_00_03_primitives.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_40_02_signature_validator",
+      "stage": 40,
+      "order": 2,
+      "test_file": "tests/phases/phase0/test_primitives/signature_validator.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase0_10_00_paths",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_phase0_10_00_paths.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_90_02_bootstrap",
+      "stage": 90,
+      "order": 2,
+      "test_file": "tests/phases/phase0/test_phase0_90_02_bootstrap.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_90_01_verified_pipeline_runner",
+      "stage": 90,
+      "order": 1,
+      "test_file": "tests/phases/phase0/test_phase0_90_01_verified_pipeline_runner.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase0_30_00_resource_controller",
+      "stage": 30,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_phase0_30_00_resource_controller.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase0_10_02_json_logger",
+      "stage": 10,
+      "order": 2,
+      "test_file": "tests/phases/phase0/test_primitives/json_logger.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_10_03_runtime_config_schema",
+      "stage": 10,
+      "order": 3,
+      "test_file": "tests/phases/phase0/test_phase0_10_03_runtime_config_schema.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase0_20_00_seed_factory",
+      "stage": 20,
+      "order": 0,
+      "test_file": "tests/phases/phase0/test_phase0_20_00_seed_factory.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    }
+  ],
+  "stages": {
+    "total": 7,
+    "stage_counts": {
+      "90": 4,
+      "30": 2,
+      "0": 4,
+      "40": 4,
+      "20": 5,
+      "10": 6,
+      "50": 2
+    }
+  },
+  "integration_tests": [],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  }
+}

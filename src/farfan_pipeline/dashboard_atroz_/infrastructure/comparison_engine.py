@@ -2,13 +2,15 @@
 Comparison Engine
 Logic for calculating deltas and aggregating stats across regions.
 """
-from typing import List, Dict, Any
+
+from typing import Any
+
 
 class ComparisonEngine:
     def __init__(self, db_session=None):
         self.db = db_session
 
-    def compare_regions(self, region_ids: List[str]) -> Dict[str, Any]:
+    def compare_regions(self, region_ids: list[str]) -> dict[str, Any]:
         """
         Compare a list of regions.
         Returns a dictionary with 'matrix' and 'deltas'.
@@ -19,24 +21,17 @@ class ComparisonEngine:
         # Mock scores for functionality
         scores = {rid: 50.0 + (i * 5.5) for i, rid in enumerate(region_ids)}
 
-        matrix = {rid: {"overall_score": s, "rank": i+1} for rid, s in scores.items()}
+        matrix = {rid: {"overall_score": s, "rank": i + 1} for rid, s in scores.items()}
 
         deltas = {}
         if len(region_ids) >= 2:
             r1, r2 = region_ids[0], region_ids[1]
             diff = scores[r1] - scores[r2]
-            deltas[f"{r1}_vs_{r2}"] = {
-                "diff": round(diff, 2),
-                "leader": r1 if diff > 0 else r2
-            }
+            deltas[f"{r1}_vs_{r2}"] = {"diff": round(diff, 2), "leader": r1 if diff > 0 else r2}
 
-        return {
-            "matrix": matrix,
-            "deltas": deltas,
-            "metadata": {"count": len(region_ids)}
-        }
+        return {"matrix": matrix, "deltas": deltas, "metadata": {"count": len(region_ids)}}
 
-    def compute_pdet_average(self, subregion_id: str) -> Dict[str, float]:
+    def compute_pdet_average(self, subregion_id: str) -> dict[str, float]:
         """
         Compute average scores for a PDET subregion.
         Should use cached aggregates if available.

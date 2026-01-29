@@ -26,7 +26,6 @@ from unittest.mock import Mock, MagicMock, patch
 from dataclasses import dataclass
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Phase 0 imports
 from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode

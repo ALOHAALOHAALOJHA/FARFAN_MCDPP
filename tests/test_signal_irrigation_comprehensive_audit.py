@@ -20,28 +20,30 @@ from pathlib import Path
 
 import pytest
 
-from orchestration.factory import load_questionnaire, create_signal_registry
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire, create_signal_registry
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-    SignalConsumptionProof,
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     AccessLevel,
     get_access_audit,
     reset_access_audit,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
+    SignalConsumptionProof,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
     ConsumptionTracker,
     create_consumption_tracker,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
     extract_structured_evidence,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
     filter_patterns_by_context,
     create_document_context,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.comprehensive_signal_audit import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.comprehensive_signal_audit import (
     ComprehensiveSignalAuditor,
 )
 
@@ -49,7 +51,7 @@ from cross_cutting_infrastructure.irrigation_using_signals.comprehensive_signal_
 @pytest.fixture
 def questionnaire_and_registry():
     """Fixture providing questionnaire and signal registry."""
-    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
     
     questionnaire_path = (
         PROJECT_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
@@ -184,9 +186,9 @@ class TestScopeCoherence:
     
     def test_access_level_hierarchy(self):
         """Test that AccessLevel hierarchy is properly defined."""
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-            AccessLevel,
-        )
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
+    AccessLevel,
+)
         
         assert AccessLevel.FACTORY == AccessLevel(1)
         assert AccessLevel.ORCHESTRATOR == AccessLevel(2)
@@ -415,13 +417,13 @@ class TestProductionReadiness:
     
     def test_all_required_imports_available(self):
         """Test that all required modules can be imported."""
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
             QuestionnaireSignalRegistry,
         )
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-            SignalConsumptionProof,
-        )
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
+    SignalConsumptionProof,
+)
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
             extract_structured_evidence,
         )
         

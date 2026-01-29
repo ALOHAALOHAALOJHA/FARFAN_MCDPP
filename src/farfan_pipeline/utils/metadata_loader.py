@@ -6,14 +6,14 @@ Implements fail-fast validation with version pinning, checksum verification, and
 import hashlib
 import json
 import logging
-from pathlib import Path
 from collections.abc import Callable
+from datetime import UTC
+from pathlib import Path
 from typing import Any, ParamSpec, TypeVar
 
 import yaml
 
 from farfan_pipeline.utils.paths import proj_root
-from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 P = ParamSpec("P")
 R = TypeVar("R")
@@ -27,8 +27,10 @@ def calibrated_method(_tag: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
 
     return _decorator
 
+
 try:
     import jsonschema
+
     JSONSCHEMA_AVAILABLE = True
 except ImportError:
     JSONSCHEMA_AVAILABLE = False
@@ -36,23 +38,32 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+
 class MetadataError(Exception):
     """Base exception for metadata errors"""
+
     pass
+
 
 class MetadataVersionError(MetadataError):
     """Version mismatch error"""
+
     def __init__(self, expected: str, actual: str, file_path: str) -> None:
         self.expected = expected
         self.actual = actual
         self.file_path = file_path
-        super().__init__(
-            f"Version mismatch in {file_path}: expected {expected}, got {actual}"
-        )
+        super().__init__(f"Version mismatch in {file_path}: expected {expected}, got {actual}")
+
 
 class MetadataIntegrityError(MetadataError):
     """Checksum/integrity violation error"""
-    def __init__(self, file_path: str, expected_checksum: str | None = None, actual_checksum: str | None = None) -> None:
+
+    def __init__(
+        self,
+        file_path: str,
+        expected_checksum: str | None = None,
+        actual_checksum: str | None = None,
+    ) -> None:
         self.file_path = file_path
         self.expected_checksum = expected_checksum
         self.actual_checksum = actual_checksum
@@ -61,18 +72,20 @@ class MetadataIntegrityError(MetadataError):
             msg += f": expected checksum {expected_checksum}, got {actual_checksum}"
         super().__init__(msg)
 
+
 class MetadataSchemaError(MetadataError):
     """Schema validation error"""
+
     def __init__(self, file_path: str, validation_errors: list) -> None:
         self.file_path = file_path
         self.validation_errors = validation_errors
-        error_msgs = '\n'.join(f"  - {err}" for err in validation_errors)
-        super().__init__(
-            f"Schema validation failed for {file_path}:\n{error_msgs}"
-        )
+        error_msgs = "\n".join(f"  - {err}" for err in validation_errors)
+        super().__init__(f"Schema validation failed for {file_path}:\n{error_msgs}")
+
 
 class MetadataMissingKeyError(MetadataError):
     """Required key missing in metadata"""
+
     def __init__(self, file_path: str, missing_key: str, context: str = "") -> None:
         self.file_path = file_path
         self.missing_key = missing_key
@@ -81,6 +94,7 @@ class MetadataMissingKeyError(MetadataError):
         if context:
             msg += f" ({context})"
         super().__init__(msg)
+
 
 class MetadataLoader:
     """
@@ -107,7 +121,7 @@ class MetadataLoader:
         schema_ref: str | None = None,
         required_version: str | None = None,
         expected_checksum: str | None = None,
-        checksum_algorithm: str = "sha256"
+        checksum_algorithm: str = "sha256",
     ) -> dict[str, Any]:
         """
         Load and validate metadata file with all safeguards
@@ -143,7 +157,7 @@ class MetadataLoader:
                     rule_id="VERSION_MISMATCH",
                     file_path=str(path),
                     expected=required_version,
-                    actual=actual_version
+                    actual=actual_version,
                 )
                 raise MetadataVersionError(required_version, actual_version, str(path))
 
@@ -158,7 +172,7 @@ class MetadataLoader:
                     rule_id="CHECKSUM_MISMATCH",
                     file_path=str(path),
                     expected=expected_checksum,
-                    actual=actual_checksum
+                    actual=actual_checksum,
                 )
                 raise MetadataIntegrityError(str(path), expected_checksum, actual_checksum)
 
@@ -171,9 +185,7 @@ class MetadataLoader:
 
             if errors:
                 self._log_error(
-                    rule_id="SCHEMA_VALIDATION_FAILED",
-                    file_path=str(path),
-                    errors=errors
+                    rule_id="SCHEMA_VALIDATION_FAILED", file_path=str(path), errors=errors
                 )
                 raise MetadataSchemaError(str(path), errors)
 
@@ -188,12 +200,12 @@ class MetadataLoader:
             raise FileNotFoundError(f"Metadata file not found: {path}")
 
         try:
-            with open(path, encoding='utf-8') as f:
+            with open(path, encoding="utf-8") as f:
                 content = f.read()
 
-            if path.suffix in ['.json']:
+            if path.suffix in [".json"]:
                 return json.loads(content)
-            elif path.suffix in ['.yaml', '.yml']:
+            elif path.suffix in [".yaml", ".yml"]:
                 return yaml.safe_load(content)
             else:
                 raise ValueError(f"Unsupported file type: {path.suffix}")
@@ -211,12 +223,12 @@ class MetadataLoader:
         - UTF-8 encoding
         - No whitespace variations
         """
-        normalized = json.dumps(metadata, sort_keys=True, separators=(',', ':'))
+        normalized = json.dumps(metadata, sort_keys=True, separators=(",", ":"))
 
         if algorithm == "sha256":
-            return hashlib.sha256(normalized.encode('utf-8')).hexdigest()
+            return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
         elif algorithm == "md5":
-            return hashlib.md5(normalized.encode('utf-8')).hexdigest()
+            return hashlib.md5(normalized.encode("utf-8")).hexdigest()
         else:
             raise ValueError(f"Unsupported algorithm: {algorithm}")
 
@@ -231,7 +243,7 @@ class MetadataLoader:
         if not schema_path.exists():
             raise FileNotFoundError(f"Schema not found: {schema_path}")
 
-        with open(schema_path, encoding='utf-8') as f:
+        with open(schema_path, encoding="utf-8") as f:
             schema = json.load(f)
 
         self._schema_cache[schema_ref] = schema
@@ -246,11 +258,12 @@ class MetadataLoader:
 
         # Import check for type checker
         import jsonschema as js
+
         validator = js.Draft7Validator(schema)
         errors = []
 
         for error in validator.iter_errors(metadata):
-            error_path = '.'.join(str(p) for p in error.path) if error.path else 'root'
+            error_path = ".".join(str(p) for p in error.path) if error.path else "root"
             errors.append(f"{error_path}: {error.message}")
 
         return errors
@@ -258,26 +271,27 @@ class MetadataLoader:
     @calibrated_method("farfan_core.utils.metadata_loader.MetadataLoader._log_error")
     def _log_error(self, rule_id: str, file_path: str, **kwargs) -> None:
         """Structured error logging"""
-        from datetime import datetime, timezone
+        from datetime import datetime
 
         log_entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "level": "ERROR",
             "rule_id": rule_id,
             "file_path": file_path,
-            **kwargs
+            **kwargs,
         }
 
         logger.error(json.dumps(log_entry, indent=2))
+
 
 # REMOVED: load_cuestionario() - LEGACY FUNCTION
 # Questionnaire monolith must ONLY be loaded via factory.load_questionnaire_monolith()
 # This enforces architectural requirement: Single I/O boundary in factory.py
 # See: src/farfan_core/core/orchestrator/factory.py::load_questionnaire_monolith()
 
+
 def load_execution_mapping(
-    path: Path | None = None,
-    required_version: str = "2.0"
+    path: Path | None = None, required_version: str = "2.0"
 ) -> dict[str, Any]:
     """
     Load and validate execution_mapping.yaml
@@ -294,15 +308,11 @@ def load_execution_mapping(
 
     loader = MetadataLoader()
     return loader.load_and_validate_metadata(
-        path=path,
-        schema_ref="execution_mapping.schema.json",
-        required_version=required_version
+        path=path, schema_ref="execution_mapping.schema.json", required_version=required_version
     )
 
-def load_rubric_scoring(
-    path: Path | None = None,
-    required_version: str = "2.0"
-) -> dict[str, Any]:
+
+def load_rubric_scoring(path: Path | None = None, required_version: str = "2.0") -> dict[str, Any]:
     """
     Load and validate rubric_scoring.json
 
@@ -318,7 +328,5 @@ def load_rubric_scoring(
 
     loader = MetadataLoader()
     return loader.load_and_validate_metadata(
-        path=path,
-        schema_ref="rubric.schema.json",
-        required_version=required_version
+        path=path, schema_ref="rubric.schema.json", required_version=required_version
     )

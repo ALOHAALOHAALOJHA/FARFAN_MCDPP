@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pytest
 
-from cross_cutting_infrastructure.irrigation_using_signals.audit_signal_irrigation import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irrigation import (
     AuditResults,
     SignalIrrigationAuditor,
     ScopeCoherenceAuditor,
@@ -28,28 +28,30 @@ from cross_cutting_infrastructure.irrigation_using_signals.audit_signal_irrigati
     UtilityAuditor,
     WiringAuditor,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
     AccessLevel,
-    SignalConsumptionProof,
     QuestionnaireAccessAudit,
     reset_access_audit,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.consumption_proof import (
+    SignalConsumptionProof,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.integration.signal_consumption_integration import (
     ConsumptionTracker,
     create_consumption_tracker,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_wiring_fixes import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_wiring_fixes import (
     validate_access_level,
     validate_injection_timing,
     verify_pattern_scope_before_application,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.visualization_generator import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.visualization_generator import (
     HeatmapGenerator,
     SankeyDiagramGenerator,
     StateMachineGenerator,
     generate_visualizations,
 )
-from orchestration.factory import load_questionnaire, create_signal_registry
+from farfan_pipeline.phases.Phase_02.phase2_10_00_factory import load_questionnaire, create_signal_registry
 
 
 @pytest.fixture
@@ -73,12 +75,12 @@ def temp_output_dir():
 
 class TestWiringAuditor:
     """Test wiring verification."""
-    
+
     def test_wiring_audit_identifies_gaps(self, sample_questionnaire, sample_registry):
         """Test that wiring audit identifies gaps."""
         auditor = WiringAuditor(sample_questionnaire, sample_registry)
         gaps = auditor.audit_wiring()
-        
+
         # Should find some gaps (actual gaps depend on implementation)
         assert isinstance(gaps, list)
         # All gaps should have required fields
@@ -92,12 +94,12 @@ class TestWiringAuditor:
 
 class TestScopeCoherenceAuditor:
     """Test scope coherence verification."""
-    
+
     def test_scope_audit_detects_violations(self, sample_questionnaire, sample_registry):
         """Test that scope audit detects violations."""
         auditor = ScopeCoherenceAuditor(sample_questionnaire, sample_registry)
         violations = auditor.audit_scope_coherence()
-        
+
         # Should return list of violations
         assert isinstance(violations, list)
         # All violations should have required fields
@@ -110,11 +112,11 @@ class TestScopeCoherenceAuditor:
 
 class TestSynchronizationAuditor:
     """Test synchronization verification."""
-    
+
     def test_sync_audit_detects_issues(self):
         """Test that sync audit detects timing issues."""
         auditor = SynchronizationAuditor()
-        
+
         # Sample execution log with timing issue
         log_entry = {
             "phase_id": 2,
@@ -124,9 +126,9 @@ class TestSynchronizationAuditor:
             "pattern_matches": [],
             "phase_state": "EXECUTING",
         }
-        
+
         issues = auditor.audit_synchronization([log_entry])
-        
+
         # Should detect timing mismatch
         assert isinstance(issues, list)
         timing_issues = [i for i in issues if i.issue_type == "TIMING_MISMATCH"]
@@ -135,11 +137,11 @@ class TestSynchronizationAuditor:
 
 class TestUtilityAuditor:
     """Test utility measurement."""
-    
+
     def test_utility_audit_calculates_metrics(self, sample_registry):
         """Test that utility audit calculates metrics correctly."""
         auditor = UtilityAuditor(sample_registry)
-        
+
         # Sample execution traces
         traces = [
             {
@@ -153,9 +155,9 @@ class TestUtilityAuditor:
                 "consumption_time": 1001.0,
             },
         ]
-        
+
         metrics = auditor.audit_utility(traces)
-        
+
         # Should have calculated metrics
         assert metrics.patterns_consumed >= 0
         assert metrics.waste_ratio >= 0.0
@@ -165,20 +167,20 @@ class TestUtilityAuditor:
 
 class TestConsumptionTracking:
     """Test consumption tracking."""
-    
+
     def test_consumption_tracker_records_matches(self):
         """Test that consumption tracker records pattern matches."""
         tracker = create_consumption_tracker("D1-Q1", "Q001", "PA01")
-        
+
         # Record some matches
         tracker.record_pattern_match("pattern1", "text1", produced_evidence=True)
         tracker.record_pattern_match("pattern2", "text2", produced_evidence=False)
-        
+
         # Verify tracking
         assert tracker.match_count == 2
         assert tracker.evidence_count == 1
         assert len(tracker.proof.proof_chain) == 2
-        
+
         # Get summary
         summary = tracker.get_consumption_summary()
         assert summary["match_count"] == 2
@@ -187,7 +189,7 @@ class TestConsumptionTracking:
 
 class TestSignalConsumptionProof:
     """Test signal consumption proof."""
-    
+
     def test_proof_records_pattern_match(self):
         """Test that proof records pattern matches correctly."""
         proof = SignalConsumptionProof(
@@ -195,15 +197,15 @@ class TestSignalConsumptionProof:
             question_id="Q001",
             policy_area="PA01",
         )
-        
+
         # Record matches
         proof.record_pattern_match("pattern1", "text1")
         proof.record_pattern_match("pattern2", "text2")
-        
+
         # Verify chain
         assert len(proof.proof_chain) == 2
         assert len(proof.consumed_patterns) == 2
-        
+
         # Verify chain links
         proof_data = proof.get_consumption_proof()
         assert proof_data["patterns_consumed"] == 2
@@ -212,22 +214,22 @@ class TestSignalConsumptionProof:
 
 class TestWiringFixes:
     """Test wiring fixes."""
-    
+
     def test_validate_access_level(self):
         """Test access level validation."""
         # Valid access: Factory accessing at FACTORY level
         is_valid = validate_access_level(
-            "orchestration.factory",
+            "farfan_pipeline.phases.Phase_02.phase2_10_00_factory",
             "AnalysisPipelineFactory",
             "_load_canonical_questionnaire",
             AccessLevel.FACTORY,
             "blocks",
         )
         assert is_valid
-        
+
         # Invalid access: Consumer trying to access at FACTORY level
         is_valid = validate_access_level(
-            "canonic_phases.Phase_two",
+            "canonic_phases.Phase_02",
             "BaseExecutor",
             "execute",
             AccessLevel.FACTORY,
@@ -235,13 +237,13 @@ class TestWiringFixes:
         )
         # Should be False (violation recorded)
         assert not is_valid
-    
+
     def test_validate_injection_timing(self):
         """Test injection timing validation."""
         import time
-        
+
         phase_start = time.time()
-        
+
         # Valid: injection after phase start
         is_valid, msg = validate_injection_timing(
             phase_start + 0.1,
@@ -250,7 +252,7 @@ class TestWiringFixes:
         )
         assert is_valid
         assert msg is None
-        
+
         # Invalid: injection before phase start
         is_valid, msg = validate_injection_timing(
             phase_start - 0.1,
@@ -259,7 +261,7 @@ class TestWiringFixes:
         )
         assert not is_valid
         assert msg is not None
-        
+
         # Invalid: injection in wrong state
         is_valid, msg = validate_injection_timing(
             phase_start + 0.1,
@@ -268,7 +270,7 @@ class TestWiringFixes:
         )
         assert not is_valid
         assert msg is not None
-    
+
     def test_verify_pattern_scope(self):
         """Test pattern scope verification."""
         pattern = {
@@ -276,7 +278,7 @@ class TestWiringFixes:
             "context_requirement": {"section": "budget"},
             "context_scope": "section",
         }
-        
+
         # Valid: context matches requirement
         context = {"section": "budget", "chapter": 3}
         is_valid, msg = verify_pattern_scope_before_application(
@@ -287,7 +289,7 @@ class TestWiringFixes:
         )
         assert is_valid
         assert msg is None
-        
+
         # Invalid: context doesn't match requirement
         context = {"section": "introduction", "chapter": 1}
         is_valid, msg = verify_pattern_scope_before_application(
@@ -302,20 +304,20 @@ class TestWiringFixes:
 
 class TestVisualizations:
     """Test visualization generation."""
-    
+
     def test_sankey_diagram_generation(self, temp_output_dir):
         """Test Sankey diagram generation."""
         generator = SankeyDiagramGenerator()
-        
+
         # Add nodes and links
         generator.add_node("source", "Source", 1000)
         generator.add_node("target", "Target", 0)
         generator.add_link("source", "target", 800)
-        
+
         # Generate JSON
         output_path = temp_output_dir / "sankey.json"
         generator.to_json(output_path)
-        
+
         # Verify file exists and is valid JSON
         assert output_path.exists()
         data = json.loads(output_path.read_text())
@@ -323,37 +325,37 @@ class TestVisualizations:
         assert "links" in data
         assert len(data["nodes"]) == 2
         assert len(data["links"]) == 1
-    
+
     def test_state_machine_generation(self, temp_output_dir):
         """Test state machine generation."""
         generator = StateMachineGenerator()
-        
+
         # Add states and transitions
         generator.add_state("idle", "Idle", "initial")
         generator.add_state("running", "Running", "normal")
         generator.add_transition("idle", "running", "Start")
-        
+
         # Generate JSON
         output_path = temp_output_dir / "state_machine.json"
         generator.to_json(output_path)
-        
+
         # Verify file exists
         assert output_path.exists()
         data = json.loads(output_path.read_text())
         assert "elements" in data
-    
+
     def test_heatmap_generation(self, temp_output_dir):
         """Test heatmap generation."""
         generator = HeatmapGenerator()
-        
+
         # Add data points
         generator.add_data_point("Phase1", "PA01", 0.8)
         generator.add_data_point("Phase2", "PA01", 0.75)
-        
+
         # Generate JSON
         output_path = temp_output_dir / "heatmap.json"
         generator.to_json(output_path)
-        
+
         # Verify file exists
         assert output_path.exists()
         data = json.loads(output_path.read_text())
@@ -364,33 +366,33 @@ class TestVisualizations:
 
 class TestFullAudit:
     """Test full audit execution."""
-    
+
     def test_full_audit_execution(self, temp_output_dir):
         """Test that full audit executes and generates report."""
         auditor = SignalIrrigationAuditor()
-        
+
         # Run audit (may take time)
         try:
             results = auditor.run_audit()
-            
+
             # Verify results structure
             assert isinstance(results, AuditResults)
             assert isinstance(results.wiring_gaps, list)
             assert isinstance(results.scope_violations, list)
             assert isinstance(results.synchronization_issues, list)
             assert isinstance(results.utilization_metrics, type(results.utilization_metrics))
-            
+
             # Generate report
             report_path = temp_output_dir / "audit_report.json"
             auditor.generate_report(report_path)
-            
+
             # Verify report exists
             assert report_path.exists()
             report_data = json.loads(report_path.read_text())
             assert "audit_timestamp" in report_data
             assert "wiring_gaps" in report_data
             assert "utilization_metrics" in report_data
-            
+
         except Exception as e:
             # If audit fails due to missing dependencies, that's okay for testing
             pytest.skip(f"Audit execution failed: {e}")
@@ -398,40 +400,40 @@ class TestFullAudit:
 
 class TestAccessAudit:
     """Test access audit functionality."""
-    
+
     def test_access_audit_tracking(self):
         """Test that access audit tracks accesses correctly."""
         # Reset audit for clean test
         reset_access_audit()
-        
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-            get_access_audit,
-        )
-        
+
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.audit.questionnaire_access_audit import (
+    get_access_audit,
+)
+
         audit = get_access_audit()
-        
+
         # Record some accesses
         audit.record_access(
             AccessLevel.FACTORY,
-            "orchestration.factory",
+            "farfan_pipeline.phases.Phase_02.phase2_10_00_factory",
             "AnalysisPipelineFactory",
             "load_questionnaire",
             "blocks",
             ["micro_questions"],
         )
-        
+
         audit.record_access(
             AccessLevel.CONSUMER,
-            "canonic_phases.Phase_two",
+            "canonic_phases.Phase_02",
             "BaseExecutor",
             "execute",
             "patterns",
             ["PAT-001"],
         )
-        
+
         # Get utilization report
         report = audit.get_utilization_report()
-        
+
         # Verify report structure
         assert "micro_questions" in report
         assert "patterns_accessed" in report
@@ -440,4 +442,3 @@ class TestAccessAudit:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
-

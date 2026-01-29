@@ -1,0 +1,352 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 2,
+  "phase_name": "Phase_02",
+  "generated_at": "2026-01-10T20:22:39.562298",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module": "phase2_30_04_circuit_breaker",
+      "stage": 30,
+      "order": 4,
+      "test_file": "tests/phases/phase2/test_phase2_30_04_circuit_breaker.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_10_01_class_registry",
+      "stage": 10,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_10_01_class_registry.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_40_00_synchronization",
+      "stage": 40,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_40_00_synchronization.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase2_50_01_chunk_processor",
+      "stage": 50,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_50_01_chunk_processor.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_95_02_precision_tracking",
+      "stage": 95,
+      "order": 2,
+      "test_file": "tests/phases/phase2/test_phase2_95_02_precision_tracking.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_95_03_executor_calibration_integration",
+      "stage": 95,
+      "order": 3,
+      "test_file": "tests/phases/phase2/test_phase2_95_03_executor_calibration_integration.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_95_01_metrics_persistence",
+      "stage": 95,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_95_01_metrics_persistence.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_80_01_evidence_query_engine",
+      "stage": 80,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_80_01_evidence_query_engine.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_20_01_method_source_validator",
+      "stage": 20,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_20_01_method_source_validator.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_50_02_batch_optimizer",
+      "stage": 50,
+      "order": 2,
+      "test_file": "tests/phases/phase2/test_phase2_50_02_batch_optimizer.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_95_04_metrics_exporter",
+      "stage": 95,
+      "order": 4,
+      "test_file": "tests/phases/phase2/test_phase2_95_04_metrics_exporter.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_30_03_resource_aware_executor",
+      "stage": 30,
+      "order": 3,
+      "test_file": "tests/phases/phase2/test_phase2_30_03_resource_aware_executor.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_50_01_task_planner",
+      "stage": 50,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_50_01_task_planner.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_95_06_benchmark_performance_optimizations",
+      "stage": 95,
+      "order": 6,
+      "test_file": "tests/phases/phase2/test_phase2_95_06_benchmark_performance_optimizations.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_10_02_methods_registry",
+      "stage": 10,
+      "order": 2,
+      "test_file": "tests/phases/phase2/test_phase2_10_02_methods_registry.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_40_02_schema_validation",
+      "stage": 40,
+      "order": 2,
+      "test_file": "tests/phases/phase2/test_phase2_40_02_schema_validation.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase2_60_02_arg_router",
+      "stage": 60,
+      "order": 2,
+      "test_file": "tests/phases/phase2/test_phase2_60_02_arg_router.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_80_00_evidence_nexus",
+      "stage": 80,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_80_00_evidence_nexus.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_60_01_contract_validator_cqvr",
+      "stage": 60,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_60_01_contract_validator_cqvr.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_10_00_factory",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_10_00_factory.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_60_04_calibration_policy",
+      "stage": 60,
+      "order": 4,
+      "test_file": "tests/phases/phase2/test_phase2_60_04_calibration_policy.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_40_01_executor_chunk_synchronizer",
+      "stage": 40,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_40_01_executor_chunk_synchronizer.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase2_30_00_resource_manager",
+      "stage": 30,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_30_00_resource_manager.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_90_00_carver",
+      "stage": 90,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_90_00_carver.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase2_85_00_evidence_nexus_sota_implementations",
+      "stage": 85,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_85_00_evidence_nexus_sota_implementations.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_60_05_executor_instrumentation_mixin",
+      "stage": 60,
+      "order": 5,
+      "test_file": "tests/phases/phase2/test_phase2_60_05_executor_instrumentation_mixin.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_10_00_phase_2_constants",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_10_00_phase_2_constants.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_95_00_executor_profiler",
+      "stage": 95,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_95_00_executor_profiler.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_30_05_distributed_cache",
+      "stage": 30,
+      "order": 5,
+      "test_file": "tests/phases/phase2/test_phase2_30_05_distributed_cache.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_95_00_contract_hydrator",
+      "stage": 95,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_95_00_contract_hydrator.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_30_02_resource_alerts",
+      "stage": 30,
+      "order": 2,
+      "test_file": "tests/phases/phase2/test_phase2_30_02_resource_alerts.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_60_00_base_executor_with_contract",
+      "stage": 60,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_60_00_base_executor_with_contract.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_50_00_task_executor",
+      "stage": 50,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_50_00_task_executor.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_20_00_method_signature_validator",
+      "stage": 20,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_20_00_method_signature_validator.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_30_01_resource_integration",
+      "stage": 30,
+      "order": 1,
+      "test_file": "tests/phases/phase2/test_phase2_30_01_resource_integration.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_10_03_executor_config",
+      "stage": 10,
+      "order": 3,
+      "test_file": "tests/phases/phase2/test_phase2_10_03_executor_config.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase2_60_03_signature_runtime_validator",
+      "stage": 60,
+      "order": 3,
+      "test_file": "tests/phases/phase2/test_phase2_60_03_signature_runtime_validator.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_95_05_execution_predictor",
+      "stage": 95,
+      "order": 5,
+      "test_file": "tests/phases/phase2/test_phase2_95_05_execution_predictor.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_96_00_contract_migrator",
+      "stage": 96,
+      "order": 0,
+      "test_file": "tests/phases/phase2/test_phase2_96_00_contract_migrator.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase2_40_03_irrigation_synchronizer",
+      "stage": 40,
+      "order": 3,
+      "test_file": "tests/phases/phase2/test_phase2_40_03_irrigation_synchronizer.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    }
+  ],
+  "stages": {
+    "total": 11,
+    "stage_counts": {
+      "30": 6,
+      "10": 5,
+      "40": 4,
+      "50": 4,
+      "95": 8,
+      "80": 2,
+      "20": 2,
+      "60": 6,
+      "90": 1,
+      "85": 1,
+      "96": 1
+    }
+  },
+  "integration_tests": [],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  }
+}

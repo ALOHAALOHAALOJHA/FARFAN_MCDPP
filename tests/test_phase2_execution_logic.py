@@ -28,7 +28,6 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from farfan_pipeline.orchestration.orchestrator import (
     Evidence,
@@ -388,7 +387,7 @@ class TestPhase2EvidenceValidation:
         document = Mock()
         config = {}
         
-        with patch("farfan_pipeline.orchestration.orchestrator.logger") as mock_logger:
+        with patch("farfan_pipeline.orchestration.core_orchestrator.logger") as mock_logger:
             results = await orchestrator._execute_micro_questions_async(document, config)
             
             mock_logger.warning.assert_any_call(

@@ -18,7 +18,7 @@ from typing import Any
 from unittest.mock import Mock, MagicMock, patch
 import pytest
 
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     SignalExtractionError,
     QuestionNotFoundError,
@@ -44,11 +44,11 @@ class TestSignalRegistryHealthCheckBasics:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=3)
-        
+
         # Check structure
         assert "valid" in result
         assert "total_questions" in result
@@ -60,7 +60,7 @@ class TestSignalRegistryHealthCheckBasics:
         assert "stale_signals" in result
         assert "timestamp" in result
         assert "elapsed_seconds" in result
-        
+
         assert isinstance(result["valid"], bool)
         assert isinstance(result["total_questions"], int)
         assert isinstance(result["missing_questions"], list)
@@ -78,22 +78,18 @@ class TestSignalRegistryHealthCheckBasics:
             "scoring_modality": "binary_presence",
             "validation_rules": [{"rule": "test"}],
         }
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.version = "1.0.0"
         mock_questionnaire.sha256 = "a" * 64
-        mock_questionnaire.data = {
-            "blocks": {
-                "micro_questions": [question_data]
-            }
-        }
+        mock_questionnaire.data = {"blocks": {"micro_questions": [question_data]}}
         # Add micro_questions as a property for _get_question method
         mock_questionnaire.micro_questions = [question_data]
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         # Validation runs and returns proper structure
         assert result["total_questions"] == 1
         assert isinstance(result["valid"], bool)
@@ -115,11 +111,11 @@ class TestSignalRegistryHealthCheckBasics:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=2)
-        
+
         assert result["valid"] is False
         assert len(result["malformed_signals"]) > 0
         assert "Q001" in result["malformed_signals"]
@@ -136,11 +132,11 @@ class TestSignalRegistryHealthCheckBasics:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=300)
-        
+
         assert result["valid"] is False
         assert result["total_questions"] == 1
         assert result["expected_questions"] == 300
@@ -167,18 +163,17 @@ class TestSignalRegistryModalityValidation:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(
-            expected_question_count=1,
-            check_modalities=["micro_answering", "validation", "scoring"]
+            expected_question_count=1, check_modalities=["micro_answering", "validation", "scoring"]
         )
-        
+
         assert "micro_answering" in result["signal_coverage"]
         assert "validation" in result["signal_coverage"]
         assert "scoring" in result["signal_coverage"]
-        
+
         # All should be successful
         assert result["signal_coverage"]["micro_answering"]["success"] == 1
         assert result["signal_coverage"]["validation"]["success"] == 1
@@ -200,11 +195,11 @@ class TestSignalRegistryModalityValidation:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         # Some modalities should fail
         assert result["valid"] is False
         assert result["signal_coverage"]["validation"]["failed"] > 0
@@ -225,14 +220,14 @@ class TestSignalRegistryStaleDetection:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         # Open the circuit breaker
         registry._circuit_breaker.state = CircuitState.OPEN
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         assert "circuit_breaker_open" in result["stale_signals"]
 
     def test_validate_signals_detects_error_accumulation(self):
@@ -247,14 +242,14 @@ class TestSignalRegistryStaleDetection:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         # Simulate error accumulation
         registry._metrics.errors = 5
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         assert any("errors" in s for s in result["stale_signals"])
 
 
@@ -280,11 +275,11 @@ class TestSignalRegistryCoverageCalculation:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=10)
-        
+
         assert result["coverage_percentages"]["micro_answering"] == 100.0
         assert result["coverage_percentages"]["validation"] == 100.0
         assert result["coverage_percentages"]["scoring"] == 100.0
@@ -312,11 +307,11 @@ class TestSignalRegistryCoverageCalculation:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=2)
-        
+
         # Should have ~50% coverage
         assert 40.0 <= result["coverage_percentages"]["micro_answering"] <= 60.0
 
@@ -331,11 +326,11 @@ class TestSignalRegistryIntegrationWithBrokenRegistry:
         mock_questionnaire.version = "1.0.0"
         mock_questionnaire.sha256 = "a" * 64
         mock_questionnaire.data = {"blocks": {"micro_questions": []}}
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=300)
-        
+
         assert result["valid"] is False
         assert result["total_questions"] == 0
         assert result["expected_questions"] == 300
@@ -346,11 +341,11 @@ class TestSignalRegistryIntegrationWithBrokenRegistry:
         mock_questionnaire.version = "1.0.0"
         mock_questionnaire.sha256 = "a" * 64
         mock_questionnaire.data = {}  # Missing blocks
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=300)
-        
+
         # Should not crash, but report invalid
         assert result["valid"] is False
         assert result["total_questions"] == 0
@@ -369,11 +364,11 @@ class TestSignalRegistryIntegrationWithBrokenRegistry:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=3)
-        
+
         assert result["valid"] is False
         assert len(result["malformed_signals"]) >= 2  # Q001 and Q003 at minimum
 
@@ -394,11 +389,11 @@ class TestSignalRegistryRegressionTests:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         # Must report the issue, not silently succeed
         assert result["valid"] is False
         assert "Q999" in result["malformed_signals"] or "Q999" in str(result)
@@ -419,11 +414,11 @@ class TestSignalRegistryRegressionTests:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         # Empty patterns should be caught
         assert result["valid"] is False
         assert "Q001" in result["malformed_signals"]
@@ -446,15 +441,19 @@ class TestSignalRegistryRegressionTests:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         with caplog.at_level("DEBUG"):
             result = registry.validate_signals_for_questionnaire(expected_question_count=1)
-        
+
         # Check that signal lookups were logged
-        log_records = [r for r in caplog.records if "signal_lookup" in r.message or "signal_lookup" in str(r.__dict__)]
-        
+        log_records = [
+            r
+            for r in caplog.records
+            if "signal_lookup" in r.message or "signal_lookup" in str(r.__dict__)
+        ]
+
         # We expect at least some logging about signal operations
         assert len(caplog.records) > 0
 
@@ -482,13 +481,13 @@ class TestSignalRegistryPerformance:
                 ]
             }
         }
-        
+
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         start_time = time.time()
         result = registry.validate_signals_for_questionnaire(expected_question_count=300)
         elapsed = time.time() - start_time
-        
+
         # Should complete in reasonable time
         assert elapsed < 30.0
         assert result["elapsed_seconds"] < 30.0

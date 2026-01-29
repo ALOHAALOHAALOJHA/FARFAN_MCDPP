@@ -25,15 +25,16 @@ import hashlib
 import json
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
+from farfan_pipeline.calibration.parameters import ParameterLoaderV2
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 # ============================================================================
 # DOMAIN-SPECIFIC EXCEPTIONS
 # ============================================================================
+
 
 class ContractValidationError(Exception):
     """Raised when contract validation fails."""
@@ -47,7 +48,13 @@ class ContractValidationError(Exception):
 class DataIntegrityError(Exception):
     """Raised when data integrity checks fail (e.g., hash mismatch)."""
 
-    def __init__(self, message: str, expected: str | None = None, got: str | None = None, event_id: str | None = None) -> None:
+    def __init__(
+        self,
+        message: str,
+        expected: str | None = None,
+        got: str | None = None,
+        event_id: str | None = None,
+    ) -> None:
         self.expected = expected
         self.got = got
         self.event_id = event_id or str(uuid.uuid4())
@@ -57,7 +64,9 @@ class DataIntegrityError(Exception):
 class SystemConfigError(Exception):
     """Raised when system configuration is invalid."""
 
-    def __init__(self, message: str, config_key: str | None = None, event_id: str | None = None) -> None:
+    def __init__(
+        self, message: str, config_key: str | None = None, event_id: str | None = None
+    ) -> None:
         self.config_key = config_key
         self.event_id = event_id or str(uuid.uuid4())
         super().__init__(f"[{self.event_id}] {message}")
@@ -66,7 +75,13 @@ class SystemConfigError(Exception):
 class FlowCompatibilityError(Exception):
     """Raised when data flow between components is incompatible."""
 
-    def __init__(self, message: str, producer: str | None = None, consumer: str | None = None, event_id: str | None = None) -> None:
+    def __init__(
+        self,
+        message: str,
+        producer: str | None = None,
+        consumer: str | None = None,
+        event_id: str | None = None,
+    ) -> None:
         self.producer = producer
         self.consumer = consumer
         self.event_id = event_id or str(uuid.uuid4())
@@ -76,6 +91,7 @@ class FlowCompatibilityError(Exception):
 # ============================================================================
 # UTILITY FUNCTIONS FOR DETERMINISM AND VALIDATION
 # ============================================================================
+
 
 def compute_content_digest(content: str | bytes | dict[str, Any]) -> str:
     """
@@ -97,15 +113,14 @@ def compute_content_digest(content: str | bytes | dict[str, Any]) -> str:
     if isinstance(content, dict):
         # Sort keys for deterministic JSON
         content_str = json.dumps(content, sort_keys=True, ensure_ascii=True)
-        content_bytes = content_str.encode('utf-8')
+        content_bytes = content_str.encode("utf-8")
     elif isinstance(content, str):
-        content_bytes = content.encode('utf-8')
+        content_bytes = content.encode("utf-8")
     elif isinstance(content, bytes):
         content_bytes = content
     else:
         raise ContractValidationError(
-            f"Cannot compute digest for type {type(content).__name__}",
-            field="content"
+            f"Cannot compute digest for type {type(content).__name__}", field="content"
         )
 
     return hashlib.sha256(content_bytes).hexdigest()
@@ -123,12 +138,13 @@ def utc_now_iso() -> str:
         >>> 'T' in ts and 'Z' in ts
         True
     """
-    return datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 # ============================================================================
 # BASE CONTRACT MODEL
 # ============================================================================
+
 
 class BaseContract(BaseModel):
     """
@@ -142,7 +158,7 @@ class BaseContract(BaseModel):
 
     model_config = ConfigDict(
         frozen=True,  # Immutable for safety
-        extra='forbid',  # Reject unknown fields
+        extra="forbid",  # Reject unknown fields
         validate_assignment=True,
         str_strip_whitespace=True,
     )
@@ -150,39 +166,38 @@ class BaseContract(BaseModel):
     schema_version: str = Field(
         default="2.0.0",
         description="Contract schema version (semantic versioning)",
-        pattern=r"^\d+\.\d+\.\d+$"
+        pattern=r"^\d+\.\d+\.\d+$",
     )
 
     timestamp_utc: str = Field(
-        default_factory=utc_now_iso,
-        description="UTC timestamp in ISO-8601 format"
+        default_factory=utc_now_iso, description="UTC timestamp in ISO-8601 format"
     )
 
     correlation_id: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
-        description="UUID for request correlation and tracing"
+        description="UUID for request correlation and tracing",
     )
 
-    @field_validator('timestamp_utc')
+    @field_validator("timestamp_utc")
     @classmethod
     def validate_timestamp(cls, v: str) -> str:
         """Validate timestamp is ISO-8601 format and UTC."""
         try:
-            dt = datetime.fromisoformat(v.replace('Z', '+00:00'))
+            dt = datetime.fromisoformat(v.replace("Z", "+00:00"))
             # Ensure UTC
-            if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(None):
+            if dt.tzinfo is None or dt.utcoffset() != UTC.utcoffset(None):
                 raise ValueError("Timestamp must be UTC")
             return v
         except (ValueError, AttributeError) as e:
             raise ContractValidationError(
-                f"Invalid ISO-8601 timestamp: {v}",
-                field="timestamp_utc"
+                f"Invalid ISO-8601 timestamp: {v}", field="timestamp_utc"
             ) from e
 
 
 # ============================================================================
 # DOCUMENT CONTRACTS - V2
 # ============================================================================
+
 
 class DocumentMetadataV2(BaseContract):
     """
@@ -202,7 +217,9 @@ class DocumentMetadataV2(BaseContract):
     file_name: str = Field(..., description="Document filename", min_length=1)
     num_pages: int = Field(..., description="Number of pages", ge=1)
     file_size_bytes: int = Field(..., description="File size in bytes", ge=0)
-    content_digest: str = Field(..., description="SHA-256 hash of content", pattern=r"^[a-f0-9]{64}$")
+    content_digest: str = Field(
+        ..., description="SHA-256 hash of content", pattern=r"^[a-f0-9]{64}$"
+    )
     policy_unit_id: str = Field(..., description="Unique policy unit identifier")
     encoding: str = Field(default="utf-8", description="Character encoding")
 
@@ -231,16 +248,26 @@ class ProcessedTextV2(BaseContract):
     normalized_text: str = Field(..., description="Normalized/cleaned text", min_length=1)
     language: str = Field(..., description="ISO 639-1 language code", pattern=r"^[a-z]{2}$")
     input_digest: str = Field(..., description="SHA-256 of raw_text", pattern=r"^[a-f0-9]{64}$")
-    output_digest: str = Field(..., description="SHA-256 of normalized_text", pattern=r"^[a-f0-9]{64}$")
+    output_digest: str = Field(
+        ..., description="SHA-256 of normalized_text", pattern=r"^[a-f0-9]{64}$"
+    )
     policy_unit_id: str = Field(..., description="Policy unit identifier")
-    processing_latency_ms: float = Field(..., description="Processing latency in ms", ge=ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__", "auto_param_L236_89", 0.0))
+    processing_latency_ms: float = Field(
+        ...,
+        description="Processing latency in ms",
+        ge=ParameterLoaderV2.get(
+            "farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__",
+            "auto_param_L236_89",
+            0.0,
+        ),
+    )
 
     # Optional fields
     sentences: list[str] | None = Field(default=None, description="Sentence segmentation")
     sections: list[dict[str, Any]] | None = Field(default=None, description="Document sections")
     payload_size_bytes: int | None = Field(default=None, description="Payload size", ge=0)
 
-    @field_validator('input_digest')
+    @field_validator("input_digest")
     @classmethod
     def validate_input_digest(cls, v: str, info) -> str:
         """Verify input digest matches raw_text if available."""
@@ -251,6 +278,7 @@ class ProcessedTextV2(BaseContract):
 # ============================================================================
 # ANALYSIS CONTRACTS - V2
 # ============================================================================
+
 
 class AnalysisInputV2(BaseContract):
     """
@@ -268,9 +296,7 @@ class AnalysisInputV2(BaseContract):
     document_id: str = Field(..., description="Unique document identifier")
     policy_unit_id: str = Field(..., description="Policy unit identifier")
     input_digest: str = Field(
-        ...,
-        description="SHA-256 hash of input text",
-        pattern=r"^[a-f0-9]{64}$"
+        ..., description="SHA-256 hash of input text", pattern=r"^[a-f0-9]{64}$"
     )
     payload_size_bytes: int = Field(..., description="Payload size in bytes", ge=0)
 
@@ -281,11 +307,7 @@ class AnalysisInputV2(BaseContract):
 
     @classmethod
     def create_from_text(
-        cls,
-        text: str,
-        document_id: str,
-        policy_unit_id: str,
-        **kwargs: Any
+        cls, text: str, document_id: str, policy_unit_id: str, **kwargs: Any
     ) -> AnalysisInputV2:
         """
         Factory method to create AnalysisInputV2 with auto-computed digest.
@@ -300,7 +322,7 @@ class AnalysisInputV2(BaseContract):
             Validated AnalysisInputV2 instance
         """
         input_digest = compute_content_digest(text)
-        payload_size_bytes = len(text.encode('utf-8'))
+        payload_size_bytes = len(text.encode("utf-8"))
 
         return cls(
             text=text,
@@ -308,7 +330,7 @@ class AnalysisInputV2(BaseContract):
             policy_unit_id=policy_unit_id,
             input_digest=input_digest,
             payload_size_bytes=payload_size_bytes,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -328,11 +350,32 @@ class AnalysisOutputV2(BaseContract):
 
     dimension: str = Field(..., description="Analysis dimension", min_length=1)
     category: str = Field(..., description="Result category", min_length=1)
-    confidence: float = Field(..., description="Confidence score", ge=ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__", "auto_param_L331_70", 0.0), le=ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__", "auto_param_L331_78", 1.0))
+    confidence: float = Field(
+        ...,
+        description="Confidence score",
+        ge=ParameterLoaderV2.get(
+            "farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__",
+            "auto_param_L331_70",
+            0.0,
+        ),
+        le=ParameterLoaderV2.get(
+            "farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__",
+            "auto_param_L331_78",
+            1.0,
+        ),
+    )
     matches: list[str] = Field(..., description="Evidence matches")
     output_digest: str = Field(..., description="SHA-256 of output", pattern=r"^[a-f0-9]{64}$")
     policy_unit_id: str = Field(..., description="Policy unit identifier")
-    processing_latency_ms: float = Field(..., description="Processing latency in ms", ge=ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__", "auto_param_L335_89", 0.0))
+    processing_latency_ms: float = Field(
+        ...,
+        description="Processing latency in ms",
+        ge=ParameterLoaderV2.get(
+            "farfan_core.utils.enhanced_contracts.FlowCompatibilityError.__init__",
+            "auto_param_L335_89",
+            0.0,
+        ),
+    )
 
     # Optional fields
     positions: list[int] | None = Field(default=None, description="Match positions")
@@ -340,14 +383,13 @@ class AnalysisOutputV2(BaseContract):
     warnings: list[str] | None = Field(default=None, description="Validation warnings")
     payload_size_bytes: int | None = Field(default=None, description="Output payload size", ge=0)
 
-    @field_validator('confidence')
+    @field_validator("confidence")
     @classmethod
     def validate_confidence_numerical_stability(cls, v: float) -> float:
         """Ensure confidence is numerically stable and within bounds."""
         if not (0.0 <= v <= 1.0):
             raise ContractValidationError(
-                f"Confidence must be in [0.0, 1.0], got {v}",
-                field="confidence"
+                f"Confidence must be in [0.0, 1.0], got {v}", field="confidence"
             )
         # Round to avoid floating point precision issues
         return round(v, 6)
@@ -356,6 +398,7 @@ class AnalysisOutputV2(BaseContract):
 # ============================================================================
 # EXECUTION CONTRACTS - V2
 # ============================================================================
+
 
 class ExecutionContextV2(BaseContract):
     """
@@ -375,12 +418,10 @@ class ExecutionContextV2(BaseContract):
     document_id: str = Field(..., description="Document identifier")
     policy_unit_id: str = Field(..., description="Policy unit identifier")
     execution_id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()),
-        description="Unique execution identifier"
+        default_factory=lambda: str(uuid.uuid4()), description="Unique execution identifier"
     )
     parent_correlation_id: str | None = Field(
-        default=None,
-        description="Parent correlation ID for nested calls"
+        default=None, description="Parent correlation ID for nested calls"
     )
 
     # Optional context
@@ -394,6 +435,7 @@ class ExecutionContextV2(BaseContract):
 # ============================================================================
 # STRUCTURED LOGGING HELPER
 # ============================================================================
+
 
 class StructuredLogger:
     """
@@ -420,7 +462,7 @@ class StructuredLogger:
         latency_ms: float,
         payload_size_bytes: int = 0,
         content_digest: str | None = None,
-        error: str | None = None
+        error: str | None = None,
     ) -> None:
         """Log contract validation event."""
         log_entry = {
@@ -442,12 +484,7 @@ class StructuredLogger:
         self.logger.info(json.dumps(log_entry, sort_keys=True))
 
     def log_execution(
-        self,
-        operation: str,
-        correlation_id: str,
-        success: bool,
-        latency_ms: float,
-        **kwargs: Any
+        self, operation: str, correlation_id: str, success: bool, latency_ms: float, **kwargs: Any
     ) -> None:
         """Log execution event with additional context."""
         log_entry = {
@@ -475,9 +512,9 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
 
     # Contract validation examples
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Contract Validation Examples")
-    print("="*60)
+    print("=" * 60)
 
     # Example 1: Document metadata
     print("\n1. DocumentMetadataV2 validation:")
@@ -487,16 +524,14 @@ if __name__ == "__main__":
         num_pages=10,
         file_size_bytes=1024000,
         content_digest="a" * 64,  # Valid SHA-256 hex
-        policy_unit_id="PDM-001"
+        policy_unit_id="PDM-001",
     )
     print(f"   ✓ Valid: correlation_id={doc_meta.correlation_id[:8]}...")
 
     # Example 2: Analysis input with auto-digest
     print("\n2. AnalysisInputV2 with auto-computed digest:")
     analysis_input = AnalysisInputV2.create_from_text(
-        text="Sample policy text for analysis",
-        document_id="DOC-123",
-        policy_unit_id="PDM-001"
+        text="Sample policy text for analysis", document_id="DOC-123", policy_unit_id="PDM-001"
     )
     print(f"   ✓ Valid: input_digest={analysis_input.input_digest[:16]}...")
     print(f"   ✓ Payload size: {analysis_input.payload_size_bytes} bytes")
@@ -506,11 +541,15 @@ if __name__ == "__main__":
     analysis_output = AnalysisOutputV2(
         dimension="Dimension1",
         category="CategoryA",
-        confidence=ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.StructuredLogger.__init__", "auto_param_L509_19", 0.85),  # Must be in [ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.StructuredLogger.__init__", "auto_param_L509_40", 0.0), ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.StructuredLogger.__init__", "auto_param_L509_45", 1.0)]
+        confidence=ParameterLoaderV2.get(
+            "farfan_core.utils.enhanced_contracts.StructuredLogger.__init__",
+            "auto_param_L509_19",
+            0.85,
+        ),  # Must be in [ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.StructuredLogger.__init__", "auto_param_L509_40", 0.0), ParameterLoaderV2.get("farfan_core.utils.enhanced_contracts.StructuredLogger.__init__", "auto_param_L509_45", 1.0)]
         matches=["evidence1", "evidence2"],
         output_digest="b" * 64,
         policy_unit_id="PDM-001",
-        processing_latency_ms=123.456
+        processing_latency_ms=123.456,
     )
     print(f"   ✓ Valid: confidence={analysis_output.confidence}")
 
@@ -523,7 +562,7 @@ if __name__ == "__main__":
         success=True,
         latency_ms=5.2,
         payload_size_bytes=analysis_input.payload_size_bytes,
-        content_digest=analysis_input.input_digest
+        content_digest=analysis_input.input_digest,
     )
     print("   ✓ JSON log emitted to logger")
 
@@ -535,6 +574,6 @@ if __name__ == "__main__":
         print(f"   ✓ ContractValidationError: {e}")
         print(f"   ✓ Event ID: {e.event_id}")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("All validation examples passed!")
-    print("="*60)
+    print("=" * 60)

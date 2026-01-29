@@ -1,0 +1,218 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T00:00:00Z",
+  "_author": "CQC Technical Excellence Framework v2.0.0",
+
+  "theme_id": "CC_PARTICIPACION_CIUDADANA",
+  "name": "Participación Ciudadana",
+  "description": "Mecanismos de participación, incidencia y control social en la gestión pública",
+
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    "confidence_threshold": 0.55,
+
+    "signals": [
+      {
+        "signal_id": "SIG-PC-001",
+        "name": "participatory_spaces",
+        "type": "KEYWORD_MATCH",
+        "description": "Espacios de participación ciudadana",
+        "keywords": [
+          "participación ciudadana",
+          "participación comunitaria",
+          "espacios de participación",
+          "mesas de participación",
+          "consejos comunitarios",
+          "veedurías ciudadanas",
+          "cabildos abiertos",
+          "consultas populares"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 10
+        }
+      },
+      {
+        "signal_id": "SIG-PC-002",
+        "name": "accountability_mechanisms",
+        "type": "PATTERN_MATCH",
+        "description": "Mecanismos de rendición de cuentas",
+        "patterns": [
+          "(?i)rendición\\s+de\\s+cuentas",
+          "(?i)transparencia\\s+(?:en\\s+la\\s+gestión|pública)",
+          "(?i)audiencias?\\s+públicas?",
+          "(?i)informes?\\s+de\\s+gestión",
+          "(?i)divulgación\\s+de\\s+(?:resultados|información)"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-003",
+        "name": "social_control",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Control social y veedurías",
+        "patterns": [
+          "(?i)control\\s+social",
+          "(?i)veedurías?\\s+ciudadanas?",
+          "(?i)contraloría\\s+social",
+          "(?i)vigilancia\\s+ciudadana",
+          "(?i)seguimiento\\s+(?:ciudadano|comunitario)"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-004",
+        "name": "citizen_feedback",
+        "type": "PATTERN_MATCH",
+        "description": "Retroalimentación ciudadana",
+        "patterns": [
+          "(?i)retroalimentación\\s+ciudadana",
+          "(?i)consulta[s]?\\s+(?:ciudadanas?|comunitarias?|populares?)",
+          "(?i)encuestas?\\s+de\\s+satisfacción",
+          "(?i)peticiones?,\\s+quejas\\s+y\\s+reclamos",
+          "(?i)PQRS",
+          "(?i)buzones?\\s+de\\s+(?:sugerencias|quejas)"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-005",
+        "name": "decision_influence",
+        "type": "CAUSAL_PATTERN",
+        "description": "Incidencia en toma de decisiones",
+        "patterns": [
+          "(?i)incidencia\\s+(?:ciudadana|comunitaria|en\\s+(?:las\\s+)?decisiones)",
+          "(?i)(?:participación|voz)\\s+en\\s+(?:la\\s+)?toma\\s+de\\s+decisiones",
+          "(?i)cogestión",
+          "(?i)gobernanza\\s+participativa",
+          "(?i)presupuesto[s]?\\s+participativo[s]?"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-006",
+        "name": "pdet_participatory_planning",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Planificación participativa PDET - PATR",
+        "patterns": [
+          "(?i)PATR\\s+participativo",
+          "(?i)iniciativas?\\s+priorizadas?\\s+(?:en\\s+)?(?:el\\s+)?pacto\\s+municipal",
+          "(?i)diálogos?\\s+territoriales?\\s+PDET",
+          "(?i)asambleas?\\s+comunitarias?\\s+(?:del\\s+)?PATR",
+          "(?i)participación\\s+en\\s+(?:la\\s+)?formulación\\s+(?:del\\s+)?PATR",
+          "(?i)(?:32[.,]?808|treinta\\s+y\\s+dos\\s+mil)\\s+iniciativas?\\s+priorizadas?",
+          "(?i)pacto[s]?\\s+municipal(?:es)?\\s+de\\s+transformación"
+        ],
+        "weight": 0.12,
+        "minimum_matches": 1,
+        "applies_when": "municipality_in_pdet_list",
+        "context_validation": {
+          "boost_if_explicit_patr": 0.15
+        }
+      }
+    ],
+
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.55,
+      "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
+      "minimum_signals_required": 2,
+      "bonus_for_multiple_mechanisms": 0.10,
+      "bonus_for_patr_participation": 0.15
+    }
+  },
+
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": [
+        "Q181", "Q182", "Q183", "Q184", "Q185",
+        "Q186", "Q187", "Q188",
+        "Q271", "Q272", "Q273"
+      ],
+      "boost_amount": 0.12,
+      "boost_type": "ADDITIVE",
+      "cap_at_max_score": true,
+      "cascade_to_dimensions": ["DIM02", "DIM03", "DIM04", "DIM06"]
+    },
+    "when_missing": {
+      "penalty_questions": ["Q181", "Q271"],
+      "penalty_amount": 0.08,
+      "penalty_type": "MULTIPLICATIVE",
+      "penalty_conditions": {
+        "only_if_dimension_in": ["DIM06"]
+      }
+    },
+    "confidence_modifiers": {
+      "accountability_mechanisms_bonus": 0.15,
+      "social_control_bonus": 0.10,
+      "citizen_influence_bonus": 0.10
+    }
+  },
+
+  "validation": {
+    "required_in_dimensions": ["DIM02", "DIM06"],
+    "recommended_in_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+    "validation_rules": [
+      {
+        "rule_id": "INTERDEP-PC-001",
+        "description": "DIM06 (Institucionalidad) debe incluir participación ciudadana",
+        "condition": "dimension == 'DIM06' AND signal_PC_001.matches == 0",
+        "severity": "WARNING",
+        "message": "DIM06 debe incluir mecanismos de participación ciudadana"
+      },
+      {
+        "rule_id": "INTERDEP-PC-002",
+        "description": "Rendición de cuentas altamente recomendada",
+        "condition": "signal_PC_002.matches == 0",
+        "severity": "INFO",
+        "message": "Se recomienda incluir mecanismos de rendición de cuentas"
+      }
+    ]
+  },
+
+  "required_capabilities": ["SEMANTIC_PROCESSING"],
+  "empirical_calibration": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "baseline_frequency": {
+      "participacion_mentions_per_plan": {"mean": 78, "range": [34, 145]},
+      "rendicion_cuentas_mentions": {"mean": 12, "range": [3, 28]},
+      "control_social_mentions": {"mean": 8, "range": [0, 22]},
+      "consulta_ciudadana_mentions": {"mean": 15, "range": [4, 34]}
+    }
+  },
+
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_participacion_ciudadana.py",
+    "golden_examples": [
+      {
+        "input": "Se crearán mesas de participación ciudadana para la toma de decisiones sobre proyectos prioritarios, con rendición de cuentas trimestral",
+        "expected_detected": true,
+        "expected_confidence_min": 0.80,
+        "expected_signals": ["SIG-PC-001", "SIG-PC-002", "SIG-PC-005"]
+      },
+      {
+        "input": "Fortalecimiento de veedurías ciudadanas y control social sobre la ejecución presupuestal",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70,
+        "expected_signals": ["SIG-PC-003"]
+      },
+      {
+        "input": "Sistema de PQRS para retroalimentación ciudadana sobre servicios públicos",
+        "expected_detected": true,
+        "expected_confidence_min": 0.60,
+        "expected_signals": ["SIG-PC-004"]
+      },
+      {
+        "input": "Construcción de infraestructura vial según cronograma establecido",
+        "expected_detected": false
+      }
+    ]
+  }
+}

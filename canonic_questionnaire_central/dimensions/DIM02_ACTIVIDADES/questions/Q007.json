@@ -1,0 +1,393 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q007",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D2-Q2",
+    "legacy_id": "Q007",
+    "canonical_notation": "DIM02.PA01.Q007"
+  },
+  "text": {
+    "es": "¿La descripción de actividades especifica el instrumento ('mediante Casas de la Mujer', 'a través de la Patrulla Púrpura', 'con capital semilla'), la población objetivo (mujeres rurales, víctimas de violencia, jefas de hogar) y explica cómo la actividad contribuye a la equidad ('para romper ciclos de dependencia', 'porque previene la feminización de la pobreza', 'con el fin de garantizar una vida libre de violencias')?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "instrumento_especificado",
+      "description": "Specific policy instrument clearly stated (workshops, seed capital, training programs)",
+      "sources": [
+        "bayesianmechanisminference.infer_mechanisms",
+        "causalextractor.extract_causal_hierarchy"
+      ]
+    },
+    {
+      "required": true,
+      "type": "logica_causal_explicita",
+      "description": "Explicit causal logic connecting intervention to outcome (para generar, porque reduce)",
+      "sources": [
+        "bayesianmechanisminference._test_sufficiency",
+        "bayesianmechanisminference._test_necessity",
+        "teoriacambio.construir_grafo_causal"
+      ]
+    },
+    {
+      "required": true,
+      "type": "poblacion_objetivo_definida",
+      "description": "Target population clearly defined with demographic specificity",
+      "sources": [
+        "industrialpolicyprocessor._analyze_causal_dimensions",
+        "causalextractor.extract_causal_hierarchy"
+      ]
+    },
+    {
+      "required": false,
+      "type": "mecanismo_causal_completo",
+      "description": "Complete causal mechanism from instrument to outcome via intermediates",
+      "sources": [
+        "bayesianmechanisminference.infer_mechanisms",
+        "pdetmunicipalplananalyzer.construct_causal_dag"
+      ]
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0162",
+      "PAT-0163",
+      "PAT-0164",
+      "PAT-0165",
+      "PAT-0166",
+      "PAT-0167",
+      "PAT-0168",
+      "PAT-0169",
+      "PAT-0170",
+      "PAT-0171"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC04",
+      "MC05",
+      "MC06"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_PERSPECTIVA_GENERO",
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_ENTORNO_TERRITORIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q007.v4.json",
+    "methods": [
+      {
+        "class": "BayesianMechanismInference",
+        "function": "infer_mechanisms",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "BayesianMechanismInference.infer_mechanisms",
+        "produces_elements": [
+          "instrumento_especificado",
+          "mecanismo_causal_completo"
+        ],
+        "technical_approach": {
+          "paradigm": "Bayesian causal inference",
+          "steps": [
+            "Extract intervention descriptions using pattern matching (PAT-Q007-000 to PAT-Q007-002)",
+            "Identify causal connectors (mediante, a través de, por medio de)",
+            "Infer mechanism type (direct, mediated, multi-path) using Bayesian prior from domain knowledge",
+            "Calculate posterior probability of mechanism validity given text evidence",
+            "Test sufficiency and necessity conditions for causal relationship"
+          ],
+          "complexity": "O(n*m) where n=number of sentences, m=number of patterns; Bayesian inference O(k) iterations",
+          "assumptions": [
+            "Causal language reflects intended causal structure",
+            "Policy text contains explicit mechanism descriptions",
+            "Bayesian priors derived from Q002 gap analysis methods"
+          ]
+        }
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_infer_single_mechanism",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "BayesianMechanismInference._infer_single_mechanism",
+        "produces_elements": [
+          "mecanismo_causal_completo"
+        ],
+        "technical_approach": {
+          "paradigm": "Single mechanism Bayesian extraction",
+          "steps": [
+            "Parse sentence for intervention-outcome pair",
+            "Extract intermediary variables from causal chain text",
+            "Apply Bayesian network structure learning to infer edges",
+            "Score mechanism completeness based on presence of all causal nodes"
+          ],
+          "complexity": "O(n) per sentence with Bayesian network construction O(k^2) for k nodes",
+          "assumptions": [
+            "Single mechanism can be isolated from surrounding text",
+            "Causal chains are explicitly stated rather than implicit"
+          ]
+        }
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_infer_chain_capacity_vector",
+        "method_type": "primary",
+        "priority": 3
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_sufficiency",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "BayesianMechanismInference._test_sufficiency",
+        "produces_elements": [
+          "logica_causal_explicita"
+        ],
+        "technical_approach": {
+          "paradigm": "Bayesian sufficiency testing via causal calculus",
+          "steps": [
+            "Test if intervention X is sufficient for outcome Y: P(Y|do(X)) > threshold",
+            "Extract counterfactual statements or necessity language from text",
+            "Calculate Bayesian credible interval for causal effect",
+            "Compare to reference distribution from Q002 gap analysis"
+          ],
+          "complexity": "O(1) per causal pair with Bayesian inference",
+          "assumptions": [
+            "Text provides explicit or implicit sufficiency claims",
+            "Reference priors available from historical policy analysis"
+          ]
+        }
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_necessity",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "BayesianMechanismInference._test_necessity",
+        "produces_elements": [
+          "logica_causal_explicita"
+        ],
+        "technical_approach": {
+          "paradigm": "Bayesian necessity testing via causal calculus",
+          "steps": [
+            "Test if intervention X is necessary for outcome Y: P(Y|not do(X)) < threshold",
+            "Identify necessity markers (requiere de, condición habilitante)",
+            "Apply Bayesian hypothesis test for necessity",
+            "Cross-validate with causal DAG constraints from construct_causal_dag"
+          ],
+          "complexity": "O(1) per causal pair",
+          "assumptions": [
+            "Necessity claims are stated or can be inferred from context",
+            "Absence of intervention implies measurable outcome change"
+          ]
+        }
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "extract_causal_hierarchy",
+        "method_type": "extraction",
+        "priority": 6,
+        "description": "CausalExtractor.extract_causal_hierarchy",
+        "produces_elements": [
+          "instrumento_especificado",
+          "poblacion_objetivo_definida",
+          "logica_causal_explicita"
+        ],
+        "technical_approach": {
+          "paradigm": "Hierarchical causal structure extraction",
+          "steps": [
+            "Parse text into causal layers: inputs, activities, outputs, outcomes, impacts",
+            "Match patterns to identify causal hierarchy levels",
+            "Extract population mentions (PAT-Q007-003 to PAT-Q007-005) and link to interventions",
+            "Build hierarchical graph connecting all levels with confidence scores"
+          ],
+          "complexity": "O(n*d) where n=sentences, d=hierarchy depth (typically 3-5)",
+          "assumptions": [
+            "Policy text follows Theory of Change structure implicitly",
+            "Causal hierarchy can be reconstructed from linear text"
+          ]
+        }
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "construir_grafo_causal",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "TeoriaCambio.construir_grafo_causal",
+        "produces_elements": [
+          "logica_causal_explicita",
+          "mecanismo_causal_completo"
+        ],
+        "technical_approach": {
+          "paradigm": "Directed Acyclic Graph (DAG) construction for Theory of Change",
+          "steps": [
+            "Extract nodes (interventions, intermediates, outcomes) from text",
+            "Identify edges using causal connectors (mediante, a través de, porque)",
+            "Validate DAG acyclicity constraint",
+            "Score edge weights using pattern confidence and Bayesian posterior",
+            "Apply d-separation tests to verify causal independence assumptions"
+          ],
+          "complexity": "O(n^2) for n nodes in worst case; typically O(n*log(n)) for sparse graphs",
+          "assumptions": [
+            "Causal structure is acyclic (no feedback loops in policy logic)",
+            "Text provides sufficient information to reconstruct edges"
+          ]
+        }
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "_es_conexion_valida",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "TeoriaCambio._es_conexion_valida",
+        "produces_elements": [
+          "logica_causal_explicita"
+        ],
+        "technical_approach": {
+          "paradigm": "Edge validation via causal consistency checks",
+          "steps": [
+            "Check if proposed edge violates temporal ordering",
+            "Validate semantic compatibility of connected nodes",
+            "Test against domain knowledge constraints (e.g., workshops cannot directly cause policy change)",
+            "Apply Bayesian consistency scoring"
+          ],
+          "complexity": "O(1) per edge",
+          "assumptions": [
+            "Invalid connections can be identified through rule-based validation",
+            "Domain knowledge base is complete for policy area PA01"
+          ]
+        }
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "construct_causal_dag",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "PDETMunicipalPlanAnalyzer.construct_causal_dag",
+        "produces_elements": [
+          "mecanismo_causal_completo"
+        ],
+        "technical_approach": {
+          "paradigm": "Municipal plan-specific DAG construction with territorial context",
+          "steps": [
+            "Extract municipal-level constraints (budget, capacity, jurisdiction)",
+            "Build DAG incorporating territorial specificity",
+            "Identify municipal-national policy alignment gaps",
+            "Score DAG feasibility given municipal context"
+          ],
+          "complexity": "O(n^2) for n nodes with territorial constraint checks",
+          "assumptions": [
+            "Municipal plans reference national frameworks explicitly",
+            "Territorial constraints are stated or inferable"
+          ]
+        }
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "function": "classify_test",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "BeachEvidentialTest.classify_test",
+        "produces_elements": [
+          "logica_causal_explicita"
+        ],
+        "technical_approach": {
+          "paradigm": "Process tracing via Beach & Pedersen evidential classification",
+          "steps": [
+            "Classify evidence as: straw-in-the-wind, hoop, smoking-gun, or doubly-decisive",
+            "Test causal claims against evidence strength thresholds",
+            "Calculate evidential weight for mechanism confirmation",
+            "Apply Bayesian updating based on evidence class"
+          ],
+          "complexity": "O(e) for e pieces of evidence",
+          "assumptions": [
+            "Evidence can be classified into Beach & Pedersen taxonomy",
+            "Multiple evidence pieces can be combined via Bayesian updating"
+          ]
+        }
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_analyze_causal_dimensions",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "IndustrialPolicyProcessor._analyze_causal_dimensions",
+        "produces_elements": [
+          "poblacion_objetivo_definida",
+          "mecanismo_causal_completo"
+        ],
+        "technical_approach": {
+          "paradigm": "Multi-dimensional causal analysis across policy dimensions",
+          "steps": [
+            "Map intervention to canonical dimensions (D1-D6)",
+            "Analyze cross-dimensional causal flows",
+            "Identify population segmentation across dimensions",
+            "Score dimensional coherence of causal logic"
+          ],
+          "complexity": "O(d*n) where d=6 dimensions, n=causal statements",
+          "assumptions": [
+            "Policy interventions can be mapped to dimensional framework",
+            "Cross-dimensional effects are explicitly stated or inferable"
+          ]
+        }
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text",
+      "causal_logic_insufficient"
+    ],
+    "emit_code": "ABORT-Q007-REQ",
+    "fallback_strategy": "partial_analysis_with_warning"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "ESTRATEGICO",
+      "PROGRAMAS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.759859+00:00",
+    "updated_at": "2026-01-06T17:38:07.759862+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

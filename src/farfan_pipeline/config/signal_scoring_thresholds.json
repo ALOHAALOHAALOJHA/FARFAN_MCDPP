@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Signal Scoring Thresholds Configuration",
+  "description": "Centralized configuration for all signal-based scoring thresholds and adjustments. These values control signal-enriched scoring behavior in Phase 3.",
+  "version": "1.0.0",
+  "last_updated": "2026-01-12",
+
+  "pattern_complexity": {
+    "description": "Thresholds for pattern-based complexity detection",
+    "high_pattern_threshold": {
+      "value": 15,
+      "unit": "pattern_count",
+      "description": "Minimum pattern count to consider a question 'complex'. Questions with >= 15 patterns get threshold reduction.",
+      "rationale": "Complex questions with many patterns are harder to score perfectly. Small threshold reduction accounts for increased difficulty."
+    },
+    "pattern_complexity_adjustment": {
+      "value": -0.05,
+      "unit": "threshold_delta",
+      "description": "Threshold adjustment (negative = lower threshold) for high-complexity questions",
+      "rationale": "Reduces threshold by 0.05 to make scoring slightly more lenient for complex questions",
+      "validation": "Must be negative (threshold reduction). Absolute value must be <= 0.10 to prevent over-adjustment."
+    }
+  },
+
+  "indicator_specificity": {
+    "description": "Thresholds for indicator-based specificity detection",
+    "high_indicator_threshold": {
+      "value": 10,
+      "unit": "indicator_count",
+      "description": "Minimum indicator count to consider a question 'specific'. Questions with >= 10 indicators get threshold increase.",
+      "rationale": "Many indicators suggest high specificity - we can demand higher quality scores."
+    },
+    "indicator_specificity_adjustment": {
+      "value": 0.03,
+      "unit": "threshold_delta",
+      "description": "Threshold adjustment (positive = higher threshold) for highly specific questions",
+      "rationale": "Increases threshold by 0.03 to demand higher quality for specific questions with many indicators",
+      "validation": "Must be positive (threshold increase). Value must be <= 0.10 to prevent over-adjustment."
+    }
+  },
+
+  "evidence_completeness": {
+    "description": "Bonuses for complete evidence",
+    "complete_evidence_adjustment": {
+      "value": 0.02,
+      "unit": "threshold_delta",
+      "description": "Small bonus for questions with 'complete' evidence",
+      "rationale": "Complete evidence deserves slight threshold boost to recognize thoroughness",
+      "validation": "Must be positive. Value must be <= 0.05 to prevent excessive bonuses."
+    }
+  },
+
+  "score_validation": {
+    "description": "Thresholds for score-quality consistency validation",
+    "high_score_threshold": {
+      "value": 0.8,
+      "unit": "score_fraction",
+      "description": "Scores >= 0.8 are considered 'high' and should not have low quality levels",
+      "rationale": "High scores (0.8+) indicate strong evidence and should map to EXCELENTE or ACEPTABLE quality",
+      "validation": "Must be in range [0.7, 0.9]"
+    },
+    "low_score_threshold": {
+      "value": 0.3,
+      "unit": "score_fraction",
+      "description": "Scores < 0.3 are considered 'low' and should not have high quality levels",
+      "rationale": "Low scores indicate weak evidence and should not be marked as EXCELENTE",
+      "validation": "Must be in range [0.2, 0.4]"
+    }
+  },
+
+  "signal_adjustments": {
+    "description": "Signal presence/absence scoring adjustments",
+    "signal_presence_bonus": {
+      "value": 0.05,
+      "unit": "score_delta",
+      "description": "Bonus per primary signal present (capped at max_signal_bonus)",
+      "rationale": "Each expected signal found adds 0.05 to the score",
+      "validation": "Must be positive. Value must be <= 0.10 per signal."
+    },
+    "signal_absence_penalty": {
+      "value": 0.10,
+      "unit": "score_delta",
+      "description": "Penalty per missing primary signal (no floor)",
+      "rationale": "Missing expected signals are penalized more heavily than presence is rewarded",
+      "validation": "Must be positive. Typically 2x the presence bonus."
+    },
+    "max_signal_bonus": {
+      "value": 0.15,
+      "unit": "score_delta",
+      "description": "Maximum cumulative bonus from signal presence",
+      "rationale": "Cap total bonus to prevent runaway score inflation from many signals",
+      "validation": "Must be >= signal_presence_bonus and <= 0.20"
+    }
+  },
+
+  "adjustment_constraints": {
+    "description": "Global constraints on adjustment magnitudes",
+    "max_threshold_adjustment": {
+      "value": 0.10,
+      "unit": "threshold_delta",
+      "description": "Maximum absolute threshold adjustment from any single factor",
+      "rationale": "Prevents any single adjustment from dominating the threshold calculation"
+    },
+    "max_cumulative_adjustment": {
+      "value": 0.15,
+      "unit": "threshold_delta",
+      "description": "Maximum cumulative threshold adjustment from all factors",
+      "rationale": "Prevents excessive threshold changes from combining multiple adjustments"
+    },
+    "threshold_floor": {
+      "value": 0.3,
+      "unit": "threshold_value",
+      "description": "Minimum allowed threshold after adjustments",
+      "rationale": "Even with maximum downward adjustments, threshold should not go below 0.3"
+    },
+    "threshold_ceiling": {
+      "value": 0.9,
+      "unit": "threshold_value",
+      "description": "Maximum allowed threshold after adjustments",
+      "rationale": "Even with maximum upward adjustments, threshold should not exceed 0.9"
+    }
+  },
+
+  "validation_rules": {
+    "description": "Rules for validating threshold configuration consistency",
+    "rules": [
+      "pattern_complexity_adjustment must be negative",
+      "indicator_specificity_adjustment must be positive",
+      "complete_evidence_adjustment must be positive",
+      "high_score_threshold must be > low_score_threshold",
+      "All adjustments must sum to <= max_cumulative_adjustment",
+      "signal_absence_penalty should be >= signal_presence_bonus (missing signals penalized more)",
+      "max_signal_bonus should be >= 2 * signal_presence_bonus (allow at least 2 signals)"
+    ]
+  },
+
+  "override_mechanism": {
+    "description": "Environment variable overrides for threshold values",
+    "enabled": true,
+    "format": "FARFAN_THRESHOLD_<KEY_PATH>",
+    "examples": [
+      "FARFAN_THRESHOLD_PATTERN_COMPLEXITY_HIGH_PATTERN_THRESHOLD=20",
+      "FARFAN_THRESHOLD_SCORE_VALIDATION_HIGH_SCORE_THRESHOLD=0.85",
+      "FARFAN_THRESHOLD_SIGNAL_ADJUSTMENTS_SIGNAL_PRESENCE_BONUS=0.07"
+    ],
+    "note": "Environment variables override config file values. Use uppercase with underscores."
+  },
+
+  "empirical_corpus_integration": {
+    "description": "Integration with empirical corpus thresholds",
+    "enabled": true,
+    "priority": "empirical_weights.json > environment_vars > signal_scoring_thresholds.json",
+    "note": "If empirical_weights.json exists with phase3_scoring_weights, those values take precedence"
+  }
+}

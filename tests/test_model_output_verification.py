@@ -20,16 +20,17 @@ import pytest
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import List, Dict
+import tempfile
 
 # Phase 0 Models
-from canonic_phases.Phase_one.phase0_input_validation import (
+from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
     Phase0Input,
     CanonicalInput,
     Phase0ValidationContract,
 )
 
 # Phase 1 Models
-from canonic_phases.Phase_one.phase1_models import (
+from farfan_pipeline.phases.Phase_01.phase1_03_00_models import (
     LanguageData,
     PreprocessedDoc,
     StructureData,
@@ -49,7 +50,7 @@ from canonic_phases.Phase_one.phase1_models import (
 )
 
 # CPP Models
-from canonic_phases.Phase_one.cpp_models import (
+from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
     CanonPolicyPackage,
     ChunkGraph,
     QualityMetrics,
@@ -71,12 +72,12 @@ class TestPhase0Models:
     def test_phase0_input_instantiation(self):
         """Test Phase0Input can be instantiated with required fields."""
         input_data = Phase0Input(
-            pdf_path=Path("/tmp/test.pdf"),
+            pdf_path=Path(tempfile.gettempdir()) / "test.pdf",
             run_id="test_run_001",
             questionnaire_path=None
         )
         
-        assert input_data.pdf_path == Path("/tmp/test.pdf")
+        assert input_data.pdf_path == Path(tempfile.gettempdir()) / "test.pdf"
         assert input_data.run_id == "test_run_001"
         assert input_data.questionnaire_path is None
     
@@ -85,11 +86,11 @@ class TestPhase0Models:
         output = CanonicalInput(
             document_id="test_doc",
             run_id="test_run_001",
-            pdf_path=Path("/tmp/test.pdf"),
+            pdf_path=Path(tempfile.gettempdir()) / "test.pdf",
             pdf_sha256="a" * 64,
             pdf_size_bytes=1000,
             pdf_page_count=10,
-            questionnaire_path=Path("/tmp/q.json"),
+            questionnaire_path=Path(tempfile.gettempdir()) / "q.json",
             questionnaire_sha256="b" * 64,
             created_at=datetime.now(timezone.utc),
             phase0_version="1.0.0",
@@ -112,11 +113,11 @@ class TestPhase0Models:
         output = CanonicalInput(
             document_id="test",
             run_id="run",
-            pdf_path=Path("/tmp/test.pdf"),
+            pdf_path=Path(tempfile.gettempdir()) / "test.pdf",
             pdf_sha256="a" * 64,
             pdf_size_bytes=100,
             pdf_page_count=1,
-            questionnaire_path=Path("/tmp/q.json"),
+            questionnaire_path=Path(tempfile.gettempdir()) / "q.json",
             questionnaire_sha256="b" * 64,
             created_at=datetime.now(timezone.utc),
             phase0_version="1.0.0",

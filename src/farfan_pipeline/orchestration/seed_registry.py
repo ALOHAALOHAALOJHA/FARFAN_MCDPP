@@ -20,6 +20,15 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "REG"  # Registry
+__criticality__ = "CRITICAL"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Singleton"
+__purpose__ = "Deterministic seed generation for reproducibility"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 # Current seed derivation algorithm version
 SEED_VERSION = "sha256_v1"
 
@@ -27,6 +36,7 @@ SEED_VERSION = "sha256_v1"
 @dataclass
 class SeedRecord:
     """Record of a generated seed for audit purposes."""
+
     policy_unit_id: str
     correlation_id: str
     component: str
@@ -59,12 +69,7 @@ class SeedRegistry:
         self._seed_cache: dict[tuple[str, str, str], int] = {}
         logger.info(f"SeedRegistry initialized with version {SEED_VERSION}")
 
-    def get_seed(
-        self,
-        policy_unit_id: str,
-        correlation_id: str,
-        component: str
-    ) -> int:
+    def get_seed(self, policy_unit_id: str, correlation_id: str, component: str) -> int:
         """
         Get deterministic seed for a specific component.
 
@@ -93,12 +98,14 @@ class SeedRegistry:
 
         # Cache and audit
         self._seed_cache[cache_key] = seed
-        self._audit_log.append(SeedRecord(
-            policy_unit_id=policy_unit_id,
-            correlation_id=correlation_id,
-            component=component,
-            seed=seed
-        ))
+        self._audit_log.append(
+            SeedRecord(
+                policy_unit_id=policy_unit_id,
+                correlation_id=correlation_id,
+                component=component,
+                seed=seed,
+            )
+        )
 
         logger.debug(
             f"Generated seed {seed} for component={component}, "
@@ -143,11 +150,7 @@ class SeedRegistry:
         self._seed_cache.clear()
         logger.debug("Seed cache cleared")
 
-    def get_seeds_for_context(
-        self,
-        policy_unit_id: str,
-        correlation_id: str
-    ) -> dict[str, int]:
+    def get_seeds_for_context(self, policy_unit_id: str, correlation_id: str) -> dict[str, int]:
         """
         Get all standard seeds for an execution context.
 
@@ -172,9 +175,7 @@ class SeedRegistry:
         }
 
     def get_manifest_entry(
-        self,
-        policy_unit_id: str | None = None,
-        correlation_id: str | None = None
+        self, policy_unit_id: str | None = None, correlation_id: str | None = None
     ) -> dict:
         """
         Get manifest entry for verification manifest.
@@ -189,7 +190,8 @@ class SeedRegistry:
         # Filter audit log if criteria provided
         if policy_unit_id or correlation_id:
             filtered_log = [
-                record for record in self._audit_log
+                record
+                for record in self._audit_log
                 if (not policy_unit_id or record.policy_unit_id == policy_unit_id)
                 and (not correlation_id or record.correlation_id == correlation_id)
             ]
@@ -210,8 +212,7 @@ class SeedRegistry:
 
             # Include seed breakdown by component
             manifest["seeds_by_component"] = {
-                record.component: record.seed
-                for record in filtered_log
+                record.component: record.seed for record in filtered_log
             }
 
         return manifest

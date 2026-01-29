@@ -1,0 +1,169 @@
+"""
+Module: phase2_20_01_method_source_validator
+PHASE_LABEL: Phase 2
+Sequence: AA
+
+DEPRECATED: This module was designed for the older 30-executor architecture (D1-Q1 through D6-Q5).
+
+The current architecture uses 300 contracts (Q001-Q030 × PA01-PA10) where method bindings
+are embedded directly in each contract JSON file under method_binding.execution_phases.
+
+For method validation in the 300-contract architecture:
+- Each contract contains its own method binding specification
+- Use src/farfan_pipeline/phases/Phase_02/contract_generator/ for contract validation
+- Contracts are validated at generation time in phase2_10_00_contract_assembler.py
+
+Legacy: This validator checks if methods declared in executors_methods.json actually
+exist in the source code (preventing "phantom" method calls).
+"""
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 20
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "Per-Task"
+
+
+
+import ast
+import json
+import os
+from typing import Any
+
+
+class MethodSourceValidator:
+    def __init__(self, base_path: str = "src/farfan_pipeline"):
+        self.base_path = base_path
+        self.source_map = self._build_source_map()
+
+    def _build_source_map(self) -> dict[str, dict[str, Any]]:
+        class_map = {}
+        for root, _, files in os.walk(self.base_path):
+            for file in files:
+                if file.endswith(".py"):
+                    file_path = os.path.join(root, file)
+                    with open(file_path, encoding="utf-8") as f:
+                        try:
+                            tree = ast.parse(f.read(), filename=file_path)
+                            for node in ast.walk(tree):
+                                if isinstance(node, ast.ClassDef):
+                                    class_name = node.name
+                                    methods = []
+                                    for item in node.body:
+                                        if isinstance(item, ast.FunctionDef):
+                                            methods.append(item.name)
+
+                                    if class_name in class_map:
+                                        # In case of duplicate class names, we might need a more robust way
+                                        # to handle this, but for now we'll just overwrite.
+                                        # A better approach could be to store a list of locations.
+                                        pass
+
+                                    class_map[class_name] = {
+                                        "file_path": file_path,
+                                        "methods": methods,
+                                    }
+                        except Exception as e:
+                            print(f"Error parsing {file_path}: {e}")
+        return class_map
+
+    def validate_executor_methods(
+        self,
+        executor_methods_path: str = "src/farfan_pipeline/core/orchestrator/executors_methods.json",
+    ) -> dict[str, list[str]]:
+        with open(executor_methods_path) as f:
+            executor_data = json.load(f)
+
+        declared_methods = set()
+        for executor_info in executor_data:
+            for method_info in executor_info.get("methods", []):
+                class_name = method_info.get("class")
+                method_name = method_info.get("method")
+                if class_name and method_name:
+                    declared_methods.add(f"{class_name}.{method_name}")
+
+        valid = []
+        missing = []
+
+        for method_fqn in declared_methods:
+            if "." not in method_fqn:
+                # Assuming methods are always Class.method
+                continue
+
+            class_name, method_name = method_fqn.split(".", 1)
+
+            if class_name not in self.source_map:
+                missing.append(method_fqn)
+                continue
+
+            class_info = self.source_map[class_name]
+            if method_name not in class_info["methods"]:
+                missing.append(method_fqn)
+            else:
+                valid.append(method_fqn)
+
+        # Phantom methods would be those in source but not declared.
+        # The user's request seems to focus on missing/valid from declaration.
+        # "phantom" is defined by user as "executors call fantasy methods"
+        # which is covered by "missing"
+        return {"valid": valid, "missing": missing, "phantom": []}
+
+    def generate_source_truth_map(self) -> dict[str, dict[str, Any]]:
+        source_truth = {}
+        for class_name, info in self.source_map.items():
+            file_path = info["file_path"]
+            with open(file_path, encoding="utf-8") as f:
+                tree = ast.parse(f.read(), filename=file_path)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ClassDef) and node.name == class_name:
+                        for item in node.body:
+                            if isinstance(item, ast.FunctionDef):
+                                method_name = item.name
+                                fqn = f"{class_name}.{method_name}"
+
+                                # Basic signature extraction
+                                args = [arg.arg for arg in item.args.args]
+                                signature = f"({', '.join(args)})"
+                                # A more advanced version would parse type hints if they exist
+
+                                source_truth[fqn] = {
+                                    "exists": True,
+                                    "file": file_path,
+                                    "line": item.lineno,
+                                    "signature": signature,
+                                }
+        return source_truth
+
+
+if __name__ == "__main__":
+    validator = MethodSourceValidator()
+
+    # 1. Generate the ground-truth map
+    source_truth_map = validator.generate_source_truth_map()
+    output_path = "method_source_truth.json"
+    with open(output_path, "w") as f:
+        json.dump(source_truth_map, f, indent=4)
+    print(f"Generated source truth map at {output_path}")
+
+    # 2. Validate executor methods
+    validation_report = validator.validate_executor_methods()
+    report_path = "executor_validation_report.json"
+    with open(report_path, "w") as f:
+        json.dump(validation_report, f, indent=4)
+    print(f"Validation report generated at {report_path}")
+
+    print("\nValidation Summary:")
+    print(f"  - Valid methods: {len(validation_report['valid'])}")
+    print(f"  - Missing methods: {len(validation_report['missing'])}")
+    if validation_report["missing"]:
+        print("\nMissing methods:")
+        for method in validation_report["missing"]:
+            print(f"  - {method}")

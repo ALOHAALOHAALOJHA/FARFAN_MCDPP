@@ -1,0 +1,118 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 7,
+  "phase_name": "Phase_07",
+  "generated_at": "2026-01-18T11:14:00.000000",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module_name": "phase7_10_00_phase_7_constants",
+      "stage": 10,
+      "order": 0,
+      "type": "CFG",
+      "test_file": "tests/phase_07/test_phase7_constants.py",
+      "test_exists": false,
+      "required_tests": [
+        "test_cluster_weights_sum_to_one",
+        "test_quality_thresholds_valid",
+        "test_coherence_weights_sum_to_one",
+        "test_invariants_immutable"
+      ]
+    },
+    {
+      "module_name": "phase7_10_00_macro_score",
+      "stage": 10,
+      "order": 1,
+      "type": "CFG",
+      "test_file": "tests/phase_07/test_macro_score.py",
+      "test_exists": false,
+      "required_tests": [
+        "test_macro_score_creation",
+        "test_macro_score_validation",
+        "test_macro_score_bounds"
+      ]
+    },
+    {
+      "module_name": "phase7_10_00_systemic_gap_detector",
+      "stage": 10,
+      "order": 2,
+      "type": "CFG",
+      "test_file": "tests/phase_07/test_systemic_gap_detector.py",
+      "test_exists": false,
+      "required_tests": [
+        "test_gap_detection_threshold",
+        "test_gap_severity_classification",
+        "test_cross_cluster_patterns"
+      ]
+    },
+    {
+      "module_name": "phase7_20_00_macro_aggregator",
+      "stage": 20,
+      "order": 0,
+      "type": "ENF",
+      "test_file": "tests/phase_07/test_macro_aggregator.py",
+      "test_exists": false,
+      "required_tests": [
+        "test_aggregate_four_clusters",
+        "test_input_contract_validation",
+        "test_output_contract_validation",
+        "test_weighted_averaging",
+        "test_coherence_analysis",
+        "test_gap_detection_integration",
+        "test_alignment_scoring",
+        "test_quality_classification"
+      ]
+    },
+    {
+      "module_name": "contracts",
+      "stage": 0,
+      "order": 0,
+      "type": "CONTRACT",
+      "test_file": "tests/phase_07/test_contracts.py",
+      "test_exists": false,
+      "required_tests": [
+        "test_input_contract_preconditions",
+        "test_output_contract_postconditions",
+        "test_mission_contract_invariants"
+      ]
+    }
+  ],
+  "stages": {
+    "total": 3,
+    "stage_counts": {
+      "0": 1,
+      "10": 3,
+      "20": 1
+    }
+  },
+  "integration_tests": [
+    {
+      "name": "test_phase6_to_phase7_flow",
+      "description": "Test integration between Phase 6 output and Phase 7 input",
+      "test_exists": false
+    },
+    {
+      "name": "test_deterministic_flow",
+      "description": "Verify that same inputs produce identical outputs",
+      "test_exists": false
+    },
+    {
+      "name": "test_contract_enforcement",
+      "description": "Verify contracts are enforced by default",
+      "test_exists": false
+    }
+  ],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  },
+  "notes": [
+    "All files participate in the flow by default through imports in __init__.py",
+    "Contracts are enforced automatically when MacroAggregator.aggregate() is called",
+    "Sequential flow is guaranteed by topological import order",
+    "No duplicate Phase_07 folders exist - only canonical path",
+    "Manifest updated to reflect correct execution order (constants first)"
+  ]
+}

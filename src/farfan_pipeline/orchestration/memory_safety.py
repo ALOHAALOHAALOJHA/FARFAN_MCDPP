@@ -14,10 +14,27 @@ from __future__ import annotations
 import json
 import logging
 import sys
+
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "MGR"  # Manager
+__criticality__ = "HIGH"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Per-Task"
+__owner__ = "Orchestration"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, TypeVar
 
+# GRACEFUL_DEGRADATION(irreducible): psutil availability depends on:
+# 1. Operating system compatibility (not available on all platforms)
+# 2. Installation environment (CI/minimal environments may exclude it)
+# 3. Security policies (some environments prohibit system introspection)
+# Cannot be resolved statically - platform capabilities vary at deployment time.
+# Severity: HIGH - Memory guards still function, just skip resource pressure detection.
+# See also: lines 277-292 where resource checks are skipped with warning logged.
 try:
     import psutil
 
@@ -186,9 +203,7 @@ class FallbackStrategy:
     """Fallback strategies for handling objects exceeding size limits."""
 
     @staticmethod
-    def sample_list(
-        items: list[T], max_elements: int, *, preserve_order: bool = True
-    ) -> list[T]:
+    def sample_list(items: list[T], max_elements: int, *, preserve_order: bool = True) -> list[T]:
         """Sample list to max_elements using systematic sampling.
 
         Args:
@@ -295,6 +310,8 @@ class MemorySafetyGuard:
     def __init__(self, config: MemorySafetyConfig | None = None):
         self.config = config or MemorySafetyConfig()
         self.metrics: list[MemoryMetrics] = []
+        self._size_history: list[tuple[float, int]] = []  # (timestamp, size)
+        self._prediction_window = 100  # Number of samples for prediction
 
     def check_and_process(
         self, obj: Any, executor_type: ExecutorType, label: str = "object"
@@ -323,9 +340,26 @@ class MemorySafetyGuard:
         elements_before = self._count_elements(obj)
 
         under_pressure = (
-            pressure_pct is not None
-            and pressure_pct >= self.config.memory_pressure_threshold_pct
+            pressure_pct is not None and pressure_pct >= self.config.memory_pressure_threshold_pct
         )
+
+        # Update size history
+        import time
+        self._size_history.append((time.time(), obj_size))
+        if len(self._size_history) > self._prediction_window:
+            self._size_history.pop(0)
+
+        # Predictive alert
+        predicted_pressure = self._predict_memory_pressure()
+        if predicted_pressure > self.config.memory_pressure_threshold_pct and not under_pressure:
+            logger.warning(
+                f"Predictive memory alert: {predicted_pressure:.1f}% pressure expected based on trend",
+                label=label,
+                executor_type=executor_type.value,
+            )
+            # If we predict pressure, we might want to proactively sample/truncate
+            if self.config.enable_auto_truncation and predicted_pressure > 95.0:
+                 under_pressure = True  # Force remediation
 
         if obj_size > limit_bytes or json_size > limit_bytes or under_pressure:
             reason = []
@@ -347,9 +381,7 @@ class MemorySafetyGuard:
             )
 
             if self.config.enable_auto_truncation:
-                obj, was_truncated = FallbackStrategy.apply_recursive_truncation(
-                    obj, self.config
-                )
+                obj, was_truncated = FallbackStrategy.apply_recursive_truncation(obj, self.config)
                 fallback_strategy = "truncation"
 
                 obj_size = ObjectSizeEstimator.estimate_object_size(obj)
@@ -407,14 +439,75 @@ class MemorySafetyGuard:
             "avg_json_size_mb": sum(m.json_size_bytes for m in self.metrics)
             / len(self.metrics)
             / (1024 * 1024),
-            "max_object_size_mb": max(m.object_size_bytes for m in self.metrics)
-            / (1024 * 1024),
-            "max_json_size_mb": max(m.json_size_bytes for m in self.metrics)
-            / (1024 * 1024),
+            "max_object_size_mb": max(m.object_size_bytes for m in self.metrics) / (1024 * 1024),
+            "max_json_size_mb": max(m.json_size_bytes for m in self.metrics) / (1024 * 1024),
             "pressure_samples": [
                 m.pressure_pct for m in self.metrics if m.pressure_pct is not None
             ],
         }
+
+
+    def _predict_memory_pressure(self) -> float:
+        """Predict memory pressure based on trend."""
+        if len(self._size_history) < 10:
+            return 0.0
+
+        # Calculate trend using linear regression on recent samples
+        # Use last 20 samples for instant trend
+        samples = self._size_history[-20:]
+        sizes = [size for _, size in samples]
+        x = list(range(len(sizes)))
+
+        # Simple linear regression: y = mx + c
+        n = len(sizes)
+        sum_x = sum(x)
+        sum_y = sum(sizes)
+        sum_xy = sum(xi * yi for xi, yi in zip(x, sizes))
+        sum_x2 = sum(xi * xi for xi in x)
+
+        denominator = (n * sum_x2 - sum_x * sum_x)
+        if denominator == 0:
+            return 0.0
+            
+        slope = (n * sum_xy - sum_x * sum_y) / denominator
+
+        # Predict next size
+        predicted_size = sizes[-1] + slope
+
+        # Convert to pressure percentage
+        # Estimate based on current pressure vs current size if psutil available
+        current_pressure = MemoryPressureDetector.get_memory_pressure_pct()
+        if current_pressure is None:
+            return 0.0
+            
+        # Very rough estimation: if current size corresponds to X% of CURRENT usage,
+        # and size is increasing, pressure will increase.
+        # Without total system memory info easily accessible without psutil details,
+        # we assume proportional increase if this process is the main consumer.
+        
+        if sizes[-1] > 0:
+            growth_ratio = predicted_size / sizes[-1]
+            return current_pressure * growth_ratio
+            
+        return current_pressure
+
+    def get_memory_trend(self) -> dict[str, Any]:
+        """Get memory trend analysis."""
+        if len(self._size_history) < 2:
+            return {"trend": "unknown", "data_points": len(self._size_history)}
+
+        import statistics
+        sizes = [size for _, size in self._size_history]
+        recent = sizes[-10:]
+
+        return {
+            "trend": "increasing" if recent[-1] > recent[0] else "decreasing",
+            "avg_size_mb": statistics.mean(sizes) / (1024 * 1024),
+            "max_size_mb": max(sizes) / (1024 * 1024),
+            "std_dev_mb": statistics.stdev(sizes) / (1024 * 1024) if len(sizes) > 1 else 0,
+            "data_points": len(sizes),
+        }
+
 
 
 def create_default_guard() -> MemorySafetyGuard:
@@ -424,11 +517,11 @@ def create_default_guard() -> MemorySafetyGuard:
 
 __all__ = [
     "ExecutorType",
-    "MemorySafetyConfig",
+    "FallbackStrategy",
     "MemoryMetrics",
     "MemoryPressureDetector",
-    "ObjectSizeEstimator",
-    "FallbackStrategy",
+    "MemorySafetyConfig",
     "MemorySafetyGuard",
+    "ObjectSizeEstimator",
     "create_default_guard",
 ]

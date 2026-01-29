@@ -1,0 +1,306 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap"
+  },
+  "inventory_date": "2026-01-12",
+  "root_path": "src/farfan_pipeline/phases/Phase_00",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 0 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "interfaces",
+      "purpose": "Phase boundary contracts with previous and next phases",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 0 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase0_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 78,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase0_00_01_domain_errors.py",
+      "canonical_name": "phase0_00_01_domain_errors",
+      "type": "INFRA",
+      "criticality": "HIGH",
+      "lines_of_code": 137,
+      "purpose": "Domain-specific exception hierarchy for contract violations"
+    },
+    {
+      "filename": "primitives/runtime_error_fixes.py",
+      "canonical_name": "phase0_00_02_runtime_error_fixes",
+      "type": "INFRA",
+      "criticality": "MEDIUM",
+      "lines_of_code": 135,
+      "purpose": "Utility functions for runtime error handling and type coercion"
+    },
+    {
+      "filename": "phase0_00_03_primitives.py",
+      "canonical_name": "phase0_00_03_primitives",
+      "type": "INFRA",
+      "criticality": "MEDIUM",
+      "lines_of_code": 120,
+      "purpose": "Core primitive types and utility functions"
+    },
+    {
+      "filename": "phase0_00_03_protocols.py",
+      "canonical_name": "phase0_00_03_protocols",
+      "type": "INFRA",
+      "criticality": "CRITICAL",
+      "lines_of_code": 350,
+      "purpose": "Constitutional constraint framework for inter-phase communication"
+    },
+    {
+      "filename": "phase0_10_00_paths.py",
+      "canonical_name": "phase0_10_00_paths",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 480,
+      "purpose": "Central path resolution for all F.A.R.F.A.N directories"
+    },
+    {
+      "filename": "primitives/constants.py",
+      "canonical_name": "phase0_10_00_phase_0_constants",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "lines_of_code": 380,
+      "purpose": "Phase 0 specific constants and configuration values"
+    },
+    {
+      "filename": "phase0_10_01_runtime_config.py",
+      "canonical_name": "phase0_10_01_runtime_config",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 584,
+      "purpose": "Parse and validate runtime configuration from environment variables"
+    },
+    {
+      "filename": "phase0_10_01_runtime_config_typed.py",
+      "canonical_name": "phase0_10_01_runtime_config_typed",
+      "type": "CFG",
+      "criticality": "MEDIUM",
+      "lines_of_code": 450,
+      "purpose": "Typed alternative runtime configuration (consider for consolidation)"
+    },
+    {
+      "filename": "primitives/json_logger.py",
+      "canonical_name": "phase0_10_02_json_logger",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "lines_of_code": 259,
+      "purpose": "Initialize structured JSON logging with correlation IDs"
+    },
+    {
+      "filename": "phase0_10_03_runtime_config_schema.py",
+      "canonical_name": "phase0_10_03_runtime_config_schema",
+      "type": "CFG",
+      "criticality": "MEDIUM",
+      "lines_of_code": 140,
+      "purpose": "JSON schema for runtime configuration validation"
+    },
+    {
+      "filename": "phase0_20_00_seed_factory.py",
+      "canonical_name": "phase0_20_00_seed_factory",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 198,
+      "purpose": "Centralized seed management for deterministic operations"
+    },
+    {
+      "filename": "phase0_20_01_hash_utils.py",
+      "canonical_name": "phase0_20_01_hash_utils",
+      "type": "UTIL",
+      "criticality": "HIGH",
+      "lines_of_code": 41,
+      "purpose": "Hash computation utilities using BLAKE3"
+    },
+    {
+      "filename": "phase0_20_02_determinism.py",
+      "canonical_name": "phase0_20_02_determinism",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 359,
+      "purpose": "Core determinism enforcement including seed configuration"
+    },
+    {
+      "filename": "phase0_20_03_determinism_helpers.py",
+      "canonical_name": "phase0_20_03_determinism_helpers",
+      "type": "UTIL",
+      "criticality": "HIGH",
+      "lines_of_code": 192,
+      "purpose": "Helper functions for deterministic operations"
+    },
+    {
+      "filename": "phase0_20_04_deterministic_execution.py",
+      "canonical_name": "phase0_20_04_deterministic_execution",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 445,
+      "purpose": "High-level deterministic execution context manager"
+    },
+    {
+      "filename": "phase0_30_00_resource_controller.py",
+      "canonical_name": "phase0_30_00_resource_controller",
+      "type": "ENF",
+      "criticality": "CRITICAL",
+      "lines_of_code": 529,
+      "purpose": "Kernel-level resource enforcement using setrlimit()"
+    },
+    {
+      "filename": "primitives/performance_metrics.py",
+      "canonical_name": "phase0_30_01_performance_metrics",
+      "type": "UTIL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 47,
+      "purpose": "Lightweight performance instrumentation for Phase 0"
+    },
+    {
+      "filename": "phase0_40_00_input_validation.py",
+      "canonical_name": "phase0_40_00_input_validation",
+      "type": "VAL",
+      "criticality": "CRITICAL",
+      "lines_of_code": 580,
+      "purpose": "Validate input documents, questionnaire, and configuration"
+    },
+    {
+      "filename": "primitives/schema_monitor.py",
+      "canonical_name": "phase0_40_01_schema_monitor",
+      "type": "VAL",
+      "criticality": "HIGH",
+      "lines_of_code": 412,
+      "purpose": "Monitor schema shape evolution and detect drift"
+    },
+    {
+      "filename": "primitives/signature_validator.py",
+      "canonical_name": "phase0_40_02_signature_validator",
+      "type": "VAL",
+      "criticality": "HIGH",
+      "lines_of_code": 498,
+      "purpose": "Validate method signatures against contract specifications"
+    },
+    {
+      "filename": "primitives/coverage_gate.py",
+      "canonical_name": "phase0_40_03_coverage_gate",
+      "type": "VAL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 274,
+      "purpose": "Verify test coverage meets minimum thresholds"
+    },
+    {
+      "filename": "phase0_50_00_boot_checks.py",
+      "canonical_name": "phase0_50_00_boot_checks",
+      "type": "ORCH",
+      "criticality": "CRITICAL",
+      "lines_of_code": 315,
+      "purpose": "Execute comprehensive boot-time environment checks"
+    },
+    {
+      "filename": "phase0_50_01_exit_gates.py",
+      "canonical_name": "phase0_50_01_exit_gates",
+      "type": "ORCH",
+      "criticality": "HIGH",
+      "lines_of_code": 712,
+      "purpose": "Define and verify final exit conditions before handoff to Phase 1"
+    },
+    {
+      "filename": "phase0_90_00_main.py",
+      "canonical_name": "phase0_90_00_main",
+      "type": "ENTRY",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1855,
+      "purpose": "Main entry point for Phase 0 execution"
+    },
+    {
+      "filename": "phase0_90_01_verified_pipeline_runner.py",
+      "canonical_name": "phase0_90_01_verified_pipeline_runner",
+      "type": "ORCH",
+      "criticality": "CRITICAL",
+      "lines_of_code": 542,
+      "purpose": "Verified execution wrapper providing all Phase 0 guarantees"
+    },
+    {
+      "filename": "phase0_90_02_bootstrap.py",
+      "canonical_name": "phase0_90_02_bootstrap",
+      "type": "ORCH",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1210,
+      "purpose": "Secure wiring initialization and validated component assembly"
+    },
+    {
+      "filename": "phase0_90_03_wiring_validator.py",
+      "canonical_name": "phase0_90_03_wiring_validator",
+      "type": "VAL",
+      "criticality": "CRITICAL",
+      "lines_of_code": 645,
+      "purpose": "Multi-tier structural integrity gate for Phase 0 components"
+    },
+    {
+      "filename": "PHASE_0_CONSTANTS.py",
+      "canonical_name": "phase0_constants_duplicate",
+      "type": "CFG",
+      "criticality": "LOW",
+      "lines_of_code": 380,
+      "purpose": "DUPLICATE - consider removal, same as primitives/constants.py"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_0_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 0"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 0"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "backup_files_to_remove": [
+    "runtime_contracts.py.bak",
+    "verify_contracts.py.bak"
+  ],
+  "duplicates_to_consolidate": [
+    {
+      "primary": "primitives/constants.py",
+      "duplicate": "PHASE_0_CONSTANTS.py",
+      "recommendation": "Remove PHASE_0_CONSTANTS.py, update all imports"
+    },
+    {
+      "primary": "phase0_10_01_runtime_config.py",
+      "duplicate": "phase0_10_01_runtime_config_typed.py",
+      "recommendation": "Evaluate if typed version is needed, consolidate or remove"
+    }
+  ],
+  "total_python_modules": 29,
+  "total_lines_of_code": 10864,
+  "criticality_summary": {
+    "CRITICAL": 12,
+    "HIGH": 8,
+    "MEDIUM": 7,
+    "LOW": 2
+  }
+}

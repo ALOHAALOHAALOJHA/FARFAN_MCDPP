@@ -105,7 +105,7 @@ class TestMacroQuestionStructure:
     
     def test_macro_question_defined_in_questionnaire(self):
         """Test that macro question is defined in questionnaire_monolith.json."""
-        questionnaire_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+        questionnaire_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
         
         if not questionnaire_path.exists():
             pytest.skip("questionnaire_monolith.json not found")
@@ -125,7 +125,7 @@ class TestMacroQuestionStructure:
     
     def test_macro_question_aggregation_method(self):
         """Test that macro question uses holistic_assessment aggregation."""
-        questionnaire_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+        questionnaire_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
         
         if not questionnaire_path.exists():
             pytest.skip("questionnaire_monolith.json not found")
@@ -145,13 +145,13 @@ class TestCarverCapabilities:
     
     def test_carver_file_exists(self):
         """Test that carver.py exists."""
-        carver_path = Path(__file__).parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "carver.py"
+        carver_path = Path(__file__).resolve().parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_02" / "carver.py"
         assert carver_path.exists(), "carver.py should exist"
     
     def test_carver_dimension_support(self):
         """Test that Carver supports 6 dimensions."""
         try:
-            from canonic_phases.Phase_two.carver import Dimension
+            from farfan_pipeline.phases.Phase_02.carver import Dimension
             
             dimensions = list(Dimension)
             assert len(dimensions) == 6, "Carver should support 6 dimensions"
@@ -169,7 +169,7 @@ class TestCarverCapabilities:
     def test_carver_gap_analyzer_exists(self):
         """Test that GapAnalyzer class exists in Carver."""
         try:
-            from canonic_phases.Phase_two.carver import GapAnalyzer
+            from farfan_pipeline.phases.Phase_02.carver import GapAnalyzer
             
             # Check it has identify_gaps method
             assert hasattr(GapAnalyzer, 'identify_gaps'), \
@@ -181,7 +181,7 @@ class TestCarverCapabilities:
     def test_carver_evidence_analyzer_exists(self):
         """Test that EvidenceAnalyzer class exists in Carver."""
         try:
-            from canonic_phases.Phase_two.carver import EvidenceAnalyzer
+            from farfan_pipeline.phases.Phase_02.carver import EvidenceAnalyzer
             
             # Check key methods
             methods = ['extract_items', 'count_by_type', 'find_corroborations', 
@@ -196,7 +196,7 @@ class TestCarverCapabilities:
     def test_carver_bayesian_confidence_exists(self):
         """Test that BayesianConfidenceEngine exists in Carver."""
         try:
-            from canonic_phases.Phase_two.carver import BayesianConfidenceEngine
+            from farfan_pipeline.phases.Phase_02.carver import BayesianConfidenceEngine
             
             # Check compute method
             assert hasattr(BayesianConfidenceEngine, 'compute'), \
@@ -211,12 +211,12 @@ class TestOrchestratorMacroCapability:
     
     def test_orchestrator_file_exists(self):
         """Test that orchestrator.py exists."""
-        orchestrator_path = Path(__file__).parent.parent / "src" / "orchestration" / "orchestrator.py"
+        orchestrator_path = Path(__file__).resolve().parent.parent / "src" / "orchestration" / "orchestrator.py"
         assert orchestrator_path.exists(), "orchestrator.py should exist"
     
     def test_orchestrator_has_macro_eval_method(self):
         """Test that Orchestrator has _evaluate_macro method."""
-        orchestrator_path = Path(__file__).parent.parent / "src" / "orchestration" / "orchestrator.py"
+        orchestrator_path = Path(__file__).resolve().parent.parent / "src" / "orchestration" / "orchestrator.py"
         
         if not orchestrator_path.exists():
             pytest.skip("orchestrator.py not found")
@@ -227,7 +227,7 @@ class TestOrchestratorMacroCapability:
     
     def test_orchestrator_pa_dim_awareness(self):
         """Test that Orchestrator is aware of PA×DIM structure."""
-        orchestrator_path = Path(__file__).parent.parent / "src" / "orchestration" / "orchestrator.py"
+        orchestrator_path = Path(__file__).resolve().parent.parent / "src" / "orchestration" / "orchestrator.py"
         
         if not orchestrator_path.exists():
             pytest.skip("orchestrator.py not found")
@@ -249,7 +249,7 @@ class TestGapSeverityClassification:
     def test_gap_severity_enum_exists(self):
         """Test that GapSeverity enum exists."""
         try:
-            from canonic_phases.Phase_two.carver import GapSeverity
+            from farfan_pipeline.phases.Phase_02.carver import GapSeverity
             
             # Check all severity levels exist
             expected = ["CRITICAL", "MAJOR", "MINOR", "COSMETIC"]
@@ -263,7 +263,7 @@ class TestGapSeverityClassification:
     def test_evidence_strength_enum_exists(self):
         """Test that EvidenceStrength enum exists."""
         try:
-            from canonic_phases.Phase_two.carver import EvidenceStrength
+            from farfan_pipeline.phases.Phase_02.carver import EvidenceStrength
             
             # Check all strength levels exist
             expected = ["DEFINITIVE", "STRONG", "MODERATE", "WEAK", "ABSENT"]
@@ -375,15 +375,12 @@ class TestMacroAuditTool:
     
     def test_audit_tool_exists(self):
         """Test that audit_macro_level_divergence.py exists."""
-        audit_path = Path(__file__).parent.parent / "audit_macro_level_divergence.py"
+        audit_path = Path(__file__).resolve().parent.parent / "audit_macro_level_divergence.py"
         assert audit_path.exists(), "audit_macro_level_divergence.py should exist"
     
     def test_audit_tool_executable(self):
         """Test that audit tool can be imported and run."""
         try:
-            import sys
-            sys.path.insert(0, str(Path(__file__).parent.parent))
-            
             from audit_macro_level_divergence import MacroLevelAuditor, MacroLevelAuditReport
             
             # Check classes exist
@@ -395,7 +392,7 @@ class TestMacroAuditTool:
     
     def test_audit_report_generated(self):
         """Test that audit report JSON was generated."""
-        report_path = Path(__file__).parent.parent / "audit_macro_level_divergence_report.json"
+        report_path = Path(__file__).resolve().parent.parent / "audit_macro_level_divergence_report.json"
         
         if not report_path.exists():
             pytest.skip("Audit report not yet generated - run audit_macro_level_divergence.py first")

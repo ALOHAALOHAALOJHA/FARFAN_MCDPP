@@ -1,0 +1,422 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan-pipeline/schemas/executor_contract.v4.schema.json",
+  "title": "Executor Contract v4.0 - Epistemological Pipeline",
+  "description": "Schema for FARFAN v4 executor contracts with constitutional validation of epistemic invariants",
+  "type": "object",
+  "required": [
+    "identity",
+    "executor_binding",
+    "method_binding",
+    "evidence_assembly"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+    "identity": {
+      "type": "object",
+      "description": "Contract identity and classification",
+      "required": [
+        "question_id",
+        "base_slot",
+        "contract_type",
+        "contract_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^Q[0-9]{3}$",
+          "description": "Question identifier (Q001-Q030)"
+        },
+        "base_slot": {
+          "type": "string",
+          "pattern": "^D[1-6]-Q[1-5]$",
+          "description": "Base dimension-question slot (e.g., D1-Q1)"
+        },
+        "dimension_id": {
+          "type": "string",
+          "pattern": "^D[1-6]$",
+          "description": "Dimension identifier (D1-D6)"
+        },
+        "policy_area_id": {
+          "type": "string",
+          "pattern": "^PA[0-9]{2}$",
+          "description": "Policy area identifier (PA01-PA10)"
+        },
+        "contract_type": {
+          "type": "string",
+          "enum": ["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E"],
+          "description": "Contract type classification"
+        },
+        "contract_version": {
+          "type": "string",
+          "const": "4.0.0-epistemological",
+          "description": "Contract schema version (CONSTITUTIONAL: must be 4.0.0-epistemological)"
+        }
+      }
+    },
+
+    "executor_binding": {
+      "type": "object",
+      "description": "Executor class binding (CONSTITUTIONAL CI-02: Must use DynamicContractExecutor)",
+      "required": [
+        "executor_class",
+        "executor_module"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "executor_class": {
+          "type": "string",
+          "const": "DynamicContractExecutor",
+          "description": "CONSTITUTIONAL: Only DynamicContractExecutor is allowed (no legacy executors)"
+        },
+        "executor_module": {
+          "type": "string",
+          "pattern": "^phase2_60_00_base_executor_with_contract$",
+          "description": "Module containing DynamicContractExecutor"
+        },
+        "legacy_executor_class": {
+          "type": "string",
+          "description": "Optional: Legacy executor reference for traceability"
+        }
+      }
+    },
+
+    "method_binding": {
+      "type": "object",
+      "description": "Epistemological pipeline method binding",
+      "required": [
+        "orchestration_mode",
+        "execution_phases"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "orchestration_mode": {
+          "type": "string",
+          "const": "epistemological_pipeline",
+          "description": "Pipeline orchestration mode"
+        },
+        "contract_type": {
+          "type": "string",
+          "enum": ["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E"]
+        },
+        "method_count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total number of methods in all phases"
+        },
+        "execution_phases": {
+          "type": "object",
+          "description": "Three-phase epistemological pipeline",
+          "required": [
+            "phase_A_construction",
+            "phase_B_computation",
+            "phase_C_litigation"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "phase_A_construction": {
+              "$ref": "#/definitions/phase_spec",
+              "description": "Empirical Layer (N1): Extract observable facts"
+            },
+            "phase_B_computation": {
+              "$ref": "#/definitions/phase_spec",
+              "description": "Inferential Layer (N2): Transform to probabilistic knowledge"
+            },
+            "phase_C_litigation": {
+              "$ref": "#/definitions/phase_spec",
+              "description": "Audit Layer (N3): Validate with veto power (CONSTITUTIONAL CI-04)"
+            }
+          }
+        }
+      }
+    },
+
+    "evidence_assembly": {
+      "type": "object",
+      "description": "Evidence nexus configuration for assembling outputs",
+      "required": [
+        "engine",
+        "type_system"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "engine": {
+          "type": "string",
+          "const": "EVIDENCE_NEXUS",
+          "description": "Evidence assembly engine"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^.*evidence_nexus$"
+        },
+        "class_name": {
+          "type": "string",
+          "const": "EvidenceNexus"
+        },
+        "type_system": {
+          "type": "object",
+          "description": "Output type system with epistemic origins",
+          "required": ["FACT", "PARAMETER", "CONSTRAINT"],
+          "properties": {
+            "FACT": {
+              "type": "object",
+              "required": ["origin_level"],
+              "properties": {
+                "origin_level": {"const": "N1"},
+                "fusion_operation": {"type": "string"},
+                "merge_behavior": {"const": "additive"},
+                "symbol": {"const": "⊕"}
+              }
+            },
+            "PARAMETER": {
+              "type": "object",
+              "required": ["origin_level"],
+              "properties": {
+                "origin_level": {"const": "N2"},
+                "fusion_operation": {"type": "string"},
+                "merge_behavior": {"const": "multiplicative"},
+                "symbol": {"const": "⊗"}
+              }
+            },
+            "CONSTRAINT": {
+              "type": "object",
+              "required": ["origin_level"],
+              "properties": {
+                "origin_level": {"const": "N3"},
+                "fusion_operation": {"type": "string"},
+                "merge_behavior": {"const": "gate"},
+                "symbol": {"const": "⊘"}
+              }
+            }
+          }
+        },
+        "assembly_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule_id", "rule_type", "target", "merge_strategy"],
+            "properties": {
+              "rule_id": {"type": "string"},
+              "rule_type": {"type": "string"},
+              "target": {"type": "string"},
+              "merge_strategy": {
+                "enum": [
+                  "semantic_corroboration",
+                  "dempster_shafer",
+                  "veto_gate",
+                  "carver_doctoral_synthesis",
+                  "concat",
+                  "bayesian_update"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "fusion_specification": {
+      "type": "object",
+      "description": "Fusion strategy specification",
+      "properties": {
+        "contract_type": {
+          "enum": ["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E"]
+        },
+        "primary_strategy": {"type": "string"},
+        "level_strategies": {
+          "type": "object",
+          "properties": {
+            "N1_fact_fusion": {
+              "type": "object",
+              "properties": {
+                "strategy": {"type": "string"},
+                "behavior": {"const": "additive"}
+              }
+            },
+            "N2_parameter_fusion": {
+              "type": "object",
+              "properties": {
+                "strategy": {"type": "string"},
+                "behavior": {"const": "multiplicative"}
+              }
+            },
+            "N3_constraint_fusion": {
+              "type": "object",
+              "properties": {
+                "strategy": {"type": "string"},
+                "behavior": {"const": "gate"},
+                "asymmetry_principle": {"const": "audit_dominates"}
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "cross_layer_fusion": {
+      "type": "object",
+      "description": "Cross-layer interaction rules (CONSTITUTIONAL CI-04: Asymmetry)",
+      "properties": {
+        "N3_to_N1": {
+          "type": "object",
+          "description": "CONSTITUTIONAL: N3 can BLOCK N1 facts",
+          "required": ["relationship", "effect", "asymmetry"],
+          "properties": {
+            "relationship": {"type": "string"},
+            "effect": {"type": "string"},
+            "asymmetry": {
+              "type": "string",
+              "const": "N1 CANNOT invalidate N3",
+              "description": "CONSTITUTIONAL CI-04: Asymmetric veto authority"
+            }
+          }
+        },
+        "N3_to_N2": {
+          "type": "object",
+          "description": "CONSTITUTIONAL: N3 can INVALIDATE N2 parameters",
+          "required": ["relationship", "effect", "asymmetry"],
+          "properties": {
+            "relationship": {"type": "string"},
+            "effect": {"type": "string"},
+            "asymmetry": {
+              "type": "string",
+              "const": "N2 CANNOT invalidate N3",
+              "description": "CONSTITUTIONAL CI-04: Asymmetric veto authority"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "phase_spec": {
+      "type": "object",
+      "description": "Specification for a pipeline phase",
+      "required": [
+        "description",
+        "level",
+        "epistemology",
+        "methods"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human-readable phase description"
+        },
+        "level": {
+          "type": "string",
+          "enum": ["N1", "N2", "N3"],
+          "description": "Epistemic level (CONSTITUTIONAL CI-03: Immutable)"
+        },
+        "level_name": {
+          "type": "string"
+        },
+        "epistemology": {
+          "type": "string",
+          "enum": [
+            "Empirismo positivista",
+            "Bayesianismo subjetivista",
+            "Falsacionismo popperiano"
+          ],
+          "description": "Epistemological framework"
+        },
+        "methods": {
+          "type": "array",
+          "description": "Methods in this phase",
+          "items": {
+            "$ref": "#/definitions/method_spec"
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Input dependencies from previous phases"
+        },
+        "output_target": {
+          "type": "string",
+          "description": "Target output identifier"
+        },
+        "asymmetry_principle": {
+          "type": "string",
+          "description": "Only for N3: Declaration of asymmetric veto authority (CI-04)"
+        }
+      }
+    },
+
+    "method_spec": {
+      "type": "object",
+      "description": "Method specification with epistemic classification",
+      "required": [
+        "class_name",
+        "method_name",
+        "level",
+        "output_type",
+        "fusion_behavior"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "class_name": {
+          "type": "string",
+          "description": "Name of the class containing the method"
+        },
+        "method_name": {
+          "type": "string",
+          "description": "Name of the method"
+        },
+        "method_id": {
+          "type": "string",
+          "description": "Fully-qualified method identifier"
+        },
+        "level": {
+          "type": "string",
+          "enum": ["N0-INFRA", "N1-EMP", "N2-INF", "N3-AUD", "N4-META"],
+          "description": "CONSTITUTIONAL CI-03: Epistemic level (Immutable)"
+        },
+        "output_type": {
+          "type": "string",
+          "enum": ["INFRASTRUCTURE", "FACT", "PARAMETER", "CONSTRAINT", "NARRATIVE", "META_ANALYSIS"],
+          "description": "Output type (must match level)"
+        },
+        "fusion_behavior": {
+          "type": "string",
+          "enum": ["none", "additive", "multiplicative", "gate", "terminal"],
+          "description": "Fusion behavior (must match level)"
+        },
+        "fusion_symbol": {
+          "type": "string",
+          "enum": ["∅", "⊕", "⊗", "⊘", "⊙"],
+          "description": "Symbol for fusion behavior"
+        },
+        "veto_conditions": {
+          "type": "object",
+          "description": "Veto conditions for N3-AUD methods (CI-04: Asymmetric veto)",
+          "properties": {
+            "critical_failure_veto": {
+              "type": "object",
+              "properties": {
+                "trigger": {"type": "string"},
+                "action": {"enum": ["invalidate_graph", "suppress_fact", "block_branch"]},
+                "scope": {"type": "string"},
+                "confidence_multiplier": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+              }
+            }
+          }
+        },
+        "requires": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Required inputs from previous phases"
+        },
+        "modulates": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Outputs this method can modify (N3 only)"
+        }
+      }
+    }
+  }
+}

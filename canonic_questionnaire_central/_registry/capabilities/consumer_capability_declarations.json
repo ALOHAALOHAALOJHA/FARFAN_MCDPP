@@ -1,0 +1,262 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T12:00:00Z",
+  "_purpose": "Declaration of capabilities for all signal consumers in FARFAN Pipeline",
+  "consumers": {
+    "EvidenceNexus": {
+      "consumer_id": "EvidenceNexus",
+      "description": "Central evidence graph construction node",
+      "phase": 2,
+      "declared_capabilities": [
+        "NUMERIC_PARSING",
+        "SEMANTIC_PROCESSING",
+        "GRAPH_CONSTRUCTION",
+        "TABLE_PARSING",
+        "CAUSAL_INFERENCE",
+        "FINANCIAL_ANALYSIS",
+        "NER_EXTRACTION",
+        "TEMPORAL_REASONING"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "STRUCTURAL_MARKER",
+          "QUANTITATIVE_TRIPLET",
+          "NORMATIVE_REFERENCE",
+          "PROGRAMMATIC_HIERARCHY",
+          "FINANCIAL_CHAIN",
+          "TEMPORAL_MARKER",
+          "CAUSAL_LINK",
+          "INSTITUTIONAL_ENTITY",
+          "SEMANTIC_RELATIONSHIP"
+        ],
+        "min_confidence": 0.50,
+        "max_signals_per_query": 200
+      },
+      "notes": "Full capabilities - can process all signal types"
+    },
+    "IrrigationSynchronizer": {
+      "consumer_id": "IrrigationSynchronizer",
+      "description": "Routes chunks to questions based on structure",
+      "phase": 2,
+      "declared_capabilities": [
+        "TABLE_PARSING",
+        "GRAPH_CONSTRUCTION"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "STRUCTURAL_MARKER",
+          "PROGRAMMATIC_HIERARCHY"
+        ],
+        "min_confidence": 0.70,
+        "max_signals_per_query": 50
+      }
+    },
+    "BaselineScorer": {
+      "consumer_id": "BaselineScorer",
+      "description": "@b layer - validates baseline quality",
+      "phase": 3,
+      "declared_capabilities": [
+        "NUMERIC_PARSING"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "QUANTITATIVE_TRIPLET"
+        ],
+        "min_confidence": 0.70,
+        "max_signals_per_query": 50
+      }
+    },
+    "PolicyAreaScorer": {
+      "consumer_id": "PolicyAreaScorer",
+      "description": "@p layer - normative compliance",
+      "phase": 3,
+      "declared_capabilities": [
+        "NER_EXTRACTION",
+        "FINANCIAL_ANALYSIS",
+        "NUMERIC_PARSING"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "NORMATIVE_REFERENCE",
+          "FINANCIAL_CHAIN"
+        ],
+        "min_confidence": 0.65,
+        "max_signals_per_query": 75
+      }
+    },
+    "QualityScorer": {
+      "consumer_id": "QualityScorer",
+      "description": "@q layer - indicator quality",
+      "phase": 3,
+      "declared_capabilities": [
+        "NUMERIC_PARSING",
+        "FINANCIAL_ANALYSIS"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "QUANTITATIVE_TRIPLET",
+          "FINANCIAL_CHAIN"
+        ],
+        "min_confidence": 0.65,
+        "max_signals_per_query": 75
+      }
+    },
+    "DimensionScorer": {
+      "consumer_id": "DimensionScorer",
+      "description": "@d layer - dimensional coverage",
+      "phase": 3,
+      "declared_capabilities": [
+        "GRAPH_CONSTRUCTION"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "PROGRAMMATIC_HIERARCHY"
+        ],
+        "min_confidence": 0.60,
+        "max_signals_per_query": 50
+      }
+    },
+    "StructuralScorer": {
+      "consumer_id": "StructuralScorer",
+      "description": "@u layer - SMIP completeness",
+      "phase": 3,
+      "declared_capabilities": [
+        "TABLE_PARSING"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "STRUCTURAL_MARKER"
+        ],
+        "min_confidence": 0.70,
+        "max_signals_per_query": 50
+      }
+    },
+    "CausalScorer": {
+      "consumer_id": "CausalScorer",
+      "description": "@chain layer - causal chain validation",
+      "phase": 3,
+      "declared_capabilities": [
+        "CAUSAL_INFERENCE",
+        "GRAPH_CONSTRUCTION",
+        "FINANCIAL_ANALYSIS",
+        "NUMERIC_PARSING"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "CAUSAL_LINK",
+          "FINANCIAL_CHAIN",
+          "PROGRAMMATIC_HIERARCHY"
+        ],
+        "min_confidence": 0.60,
+        "max_signals_per_query": 100
+      }
+    },
+    "CrossCuttingScorer": {
+      "consumer_id": "CrossCuttingScorer",
+      "description": "Cross-cutting theme detection and scoring",
+      "phase": 3,
+      "declared_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "NER_EXTRACTION"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "CROSS_CUTTING_THEME",
+          "POPULATION_DISAGGREGATION",
+          "INSTITUTIONAL_ENTITY"
+        ],
+        "min_confidence": 0.55,
+        "max_signals_per_query": 50
+      }
+    },
+    "SignalEnhancementIntegrator": {
+      "consumer_id": "SignalEnhancementIntegrator",
+      "description": "Enriches signal packs with 6 strategic enhancements including interdependency context (R-W3) and cross-cutting themes (R-W2)",
+      "phase": 2,
+      "declared_capabilities": [
+        "CAUSAL_INFERENCE",
+        "INTERDEPENDENCY_VALIDATION"
+      ],
+      "scope": {
+        "allowed_signal_types": [
+          "CAUSAL_LINK",
+          "INTERDEPENDENCY_CONTEXT"
+        ],
+        "allowed_data_sources": [
+          "validations/interdependency_mapping.json",
+          "cross_cutting/cross_cutting_themes.json"
+        ],
+        "min_confidence": 0.0,
+        "max_signals_per_query": null
+      },
+      "notes": "Strategic irrigation layer - read-only consumption of canonical validation data"
+    },
+    "DimensionAggregator": {
+      "consumer_id": "DimensionAggregator",
+      "description": "Aggregates micro scores to dimension level",
+      "phase": 4,
+      "declared_capabilities": [],
+      "scope": {
+        "allowed_signal_types": [],
+        "min_confidence": 0.80,
+        "max_signals_per_query": 20
+      },
+      "notes": "Consumes pre-aggregated scores, not raw signals"
+    },
+    "PolicyAreaAggregator": {
+      "consumer_id": "PolicyAreaAggregator",
+      "description": "Aggregates dimension scores to PA level",
+      "phase": 5,
+      "declared_capabilities": [],
+      "scope": {
+        "allowed_signal_types": [],
+        "min_confidence": 0.80,
+        "max_signals_per_query": 20
+      }
+    },
+    "ClusterAggregator": {
+      "consumer_id": "ClusterAggregator",
+      "description": "MESO aggregation with coherence bonus",
+      "phase": 6,
+      "declared_capabilities": [],
+      "scope": {
+        "allowed_signal_types": [
+          "COHERENCE_SIGNAL"
+        ],
+        "min_confidence": 0.80,
+        "max_signals_per_query": 20
+      }
+    },
+    "MacroAggregator": {
+      "consumer_id": "MacroAggregator",
+      "description": "Final global score computation",
+      "phase": 7,
+      "declared_capabilities": [],
+      "scope": {
+        "allowed_signal_types": [],
+        "min_confidence": 0.80,
+        "max_signals_per_query": 10
+      }
+    }
+  },
+  "statistics": {
+    "total_consumers": 13,
+    "by_phase": {
+      "phase_02": 2,
+      "phase_03": 6,
+      "phase_04": 1,
+      "phase_05": 1,
+      "phase_06": 1,
+      "phase_07": 1
+    },
+    "full_capability_consumers": [
+      "EvidenceNexus"
+    ],
+    "limited_capability_consumers": [
+      "BaselineScorer",
+      "StructuralScorer",
+      "DimensionScorer"
+    ]
+  }
+}

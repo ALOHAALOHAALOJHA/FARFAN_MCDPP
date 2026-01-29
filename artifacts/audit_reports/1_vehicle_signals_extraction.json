@@ -1,0 +1,260 @@
+{
+  "task": "Tarea #1: Extraer señales desde vehicles (AST parsing)",
+  "timestamp": "2026-01-18T19:00:00Z",
+  "agent": "claude-code",
+  "summary": {
+    "total_vehicles_analyzed": 11,
+    "vehicles_with_implementation": 3,
+    "vehicles_stub_only": 8,
+    "unique_signal_types_found": 12,
+    "signals_declared_but_not_implemented": 9
+  },
+  "vehicles": {
+    "signal_registry": {
+      "file": "SISAS/vehicles/signal_registry.py",
+      "status": "IMPLEMENTED",
+      "capabilities": {
+        "can_load": true,
+        "can_scope": false,
+        "can_extract": false,
+        "can_transform": true,
+        "can_enrich": false,
+        "can_validate": true,
+        "can_irrigate": false
+      },
+      "signal_types_produced": [
+        "StructuralAlignmentSignal",
+        "CanonicalMappingSignal",
+        "EventPresenceSignal",
+        "EventCompletenessSignal"
+      ],
+      "implementation_status": "FULL",
+      "methods": [
+        "_generate_alignment_signal() -> StructuralAlignmentSignal",
+        "_generate_presence_signal() -> EventPresenceSignal",
+        "_generate_completeness_signal() -> EventCompletenessSignal",
+        "_generate_mapping_signal() -> CanonicalMappingSignal"
+      ]
+    },
+    "signal_context_scoper": {
+      "file": "SISAS/vehicles/signal_context_scoper.py",
+      "status": "IMPLEMENTED",
+      "capabilities": {
+        "can_load": false,
+        "can_scope": true,
+        "can_extract": true,
+        "can_transform": true,
+        "can_enrich": false,
+        "can_validate": false,
+        "can_irrigate": false
+      },
+      "signal_types_produced": [
+        "CanonicalMappingSignal",
+        "AnswerDeterminacySignal",
+        "AnswerSpecificitySignal"
+      ],
+      "implementation_status": "FULL",
+      "methods": [
+        "_analyze_determinacy() -> AnswerDeterminacySignal",
+        "_analyze_specificity() -> AnswerSpecificitySignal",
+        "_generate_context_mapping() -> CanonicalMappingSignal"
+      ]
+    },
+    "signal_evidence_extractor": {
+      "file": "SISAS/vehicles/signal_evidence_extractor.py",
+      "status": "STUB",
+      "capabilities": {
+        "can_load": false,
+        "can_scope": false,
+        "can_extract": true,
+        "can_transform": false,
+        "can_enrich": false,
+        "can_validate": false,
+        "can_irrigate": false
+      },
+      "signal_types_produced": [
+        "EmpiricalSupportSignal",
+        "MethodApplicationSignal"
+      ],
+      "implementation_status": "STUB_ONLY",
+      "methods": [
+        "process() -> [] (EMPTY IMPLEMENTATION)"
+      ]
+    },
+    "signal_intelligence_layer": {
+      "file": "SISAS/vehicles/signal_intelligence_layer.py",
+      "status": "STUB",
+      "capabilities": {
+        "can_load": false,
+        "can_scope": false,
+        "can_extract": false,
+        "can_transform": true,
+        "can_enrich": false,
+        "can_validate": false,
+        "can_irrigate": false
+      },
+      "signal_types_produced": [
+        "MethodApplicationSignal",
+        "AnswerDeterminacySignal",
+        "AnswerSpecificitySignal"
+      ],
+      "implementation_status": "STUB_ONLY",
+      "methods": [
+        "process() -> [] (EMPTY IMPLEMENTATION)"
+      ]
+    },
+    "signal_enhancement_integrator": {
+      "file": "SISAS/vehicles/signal_enhancement_integrator.py",
+      "status": "STUB",
+      "capabilities": {
+        "can_load": false,
+        "can_scope": false,
+        "can_extract": false,
+        "can_transform": false,
+        "can_enrich": true,
+        "can_validate": false,
+        "can_irrigate": false
+      },
+      "signal_types_produced": [
+        "StructuralAlignmentSignal",
+        "CanonicalMappingSignal"
+      ],
+      "implementation_status": "STUB_ONLY",
+      "methods": [
+        "process() -> [] (EMPTY IMPLEMENTATION)"
+      ]
+    },
+    "signal_quality_metrics": {
+      "file": "SISAS/vehicles/signal_quality_metrics.py",
+      "status": "STUB",
+      "signal_types_produced": [
+        "DataIntegritySignal",
+        "EventCompletenessSignal"
+      ],
+      "implementation_status": "STUB_ONLY"
+    },
+    "signal_irrigator": {
+      "file": "SISAS/vehicles/signal_irrigator.py",
+      "status": "STUB",
+      "capabilities": {
+        "can_load": false,
+        "can_scope": false,
+        "can_extract": false,
+        "can_transform": false,
+        "can_enrich": false,
+        "can_validate": false,
+        "can_irrigate": true
+      },
+      "signal_types_produced": [],
+      "implementation_status": "STUB_ONLY"
+    },
+    "signal_loader": {
+      "file": "SISAS/vehicles/signal_loader.py",
+      "status": "STUB",
+      "signal_types_produced": [],
+      "implementation_status": "STUB_ONLY"
+    },
+    "signals": {
+      "file": "SISAS/vehicles/signals.py",
+      "status": "STUB",
+      "signal_types_produced": [],
+      "implementation_status": "STUB_ONLY"
+    },
+    "base_vehicle": {
+      "file": "SISAS/vehicles/base_vehicle.py",
+      "status": "BASE_CLASS",
+      "signal_types_produced": [],
+      "implementation_status": "ABSTRACT_BASE"
+    },
+    "__init__": {
+      "file": "SISAS/vehicles/__init__.py",
+      "status": "MODULE_EXPORT",
+      "signal_types_produced": [],
+      "implementation_status": "EXPORT_ONLY"
+    }
+  },
+  "unique_signals_by_category": {
+    "STRUCTURAL": {
+      "StructuralAlignmentSignal": {
+        "produced_by": ["signal_registry", "signal_enhancement_integrator"],
+        "implemented_in": ["signal_registry"],
+        "stub_in": ["signal_enhancement_integrator"]
+      },
+      "CanonicalMappingSignal": {
+        "produced_by": ["signal_registry", "signal_context_scoper", "signal_enhancement_integrator"],
+        "implemented_in": ["signal_registry", "signal_context_scoper"],
+        "stub_in": ["signal_enhancement_integrator"]
+      }
+    },
+    "INTEGRITY": {
+      "EventPresenceSignal": {
+        "produced_by": ["signal_registry"],
+        "implemented_in": ["signal_registry"],
+        "stub_in": []
+      },
+      "EventCompletenessSignal": {
+        "produced_by": ["signal_registry", "signal_quality_metrics"],
+        "implemented_in": ["signal_registry"],
+        "stub_in": ["signal_quality_metrics"]
+      },
+      "DataIntegritySignal": {
+        "produced_by": ["signal_quality_metrics"],
+        "implemented_in": [],
+        "stub_in": ["signal_quality_metrics"]
+      }
+    },
+    "EPISTEMIC": {
+      "AnswerDeterminacySignal": {
+        "produced_by": ["signal_context_scoper", "signal_intelligence_layer"],
+        "implemented_in": ["signal_context_scoper"],
+        "stub_in": ["signal_intelligence_layer"]
+      },
+      "AnswerSpecificitySignal": {
+        "produced_by": ["signal_context_scoper", "signal_intelligence_layer"],
+        "implemented_in": ["signal_context_scoper"],
+        "stub_in": ["signal_intelligence_layer"]
+      },
+      "EmpiricalSupportSignal": {
+        "produced_by": ["signal_evidence_extractor"],
+        "implemented_in": [],
+        "stub_in": ["signal_evidence_extractor"]
+      },
+      "MethodApplicationSignal": {
+        "produced_by": ["signal_evidence_extractor", "signal_intelligence_layer"],
+        "implemented_in": [],
+        "stub_in": ["signal_evidence_extractor", "signal_intelligence_layer"]
+      }
+    }
+  },
+  "implementation_gaps": {
+    "critical": [
+      "signal_evidence_extractor: Declares EmpiricalSupportSignal, MethodApplicationSignal but process() returns []",
+      "signal_intelligence_layer: Declares 3 signal types but process() returns []",
+      "signal_enhancement_integrator: Declares 2 signal types but process() returns []",
+      "signal_quality_metrics: Declares DataIntegritySignal, EventCompletenessSignal but process() returns []"
+    ],
+    "warnings": [
+      "signal_irrigator: can_irrigate=true but produces no signals",
+      "signal_loader: can_load capability but process() not implemented",
+      "signals: Aggregator vehicle but no signal types produced"
+    ]
+  },
+  "recommendations": {
+    "immediate": [
+      "Implement signal_evidence_extractor.process() to generate EmpiricalSupportSignal and MethodApplicationSignal",
+      "Implement signal_intelligence_layer.process() to generate epistemic signals",
+      "Implement signal_enhancement_integrator.process() to generate enhancement signals",
+      "Implement signal_quality_metrics.process() to generate quality/integrity signals"
+    ],
+    "short_term": [
+      "Define signal_types_produced for signal_irrigator and signal_loader",
+      "Add implementation logic for signals aggregator vehicle",
+      "Create unit tests for each vehicle's signal generation"
+    ]
+  },
+  "statistics": {
+    "total_lines_of_code": 924,
+    "implementation_coverage": "27% (3/11 vehicles with full implementation)",
+    "signal_type_coverage": "75% (9/12 signal types have at least stub declaration)"
+  }
+}

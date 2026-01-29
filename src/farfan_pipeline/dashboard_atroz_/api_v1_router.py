@@ -5,12 +5,21 @@ from __future__ import annotations
 import asyncio
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
 import structlog
-from fastapi import APIRouter, Body, Depends, Query, Request, Response, WebSocket, WebSocketDisconnect
+from fastapi import (
+    APIRouter,
+    Body,
+    Depends,
+    Query,
+    Request,
+    Response,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
 
@@ -76,7 +85,7 @@ class SSEHub:
             except TimeoutError:
                 yield {
                     "event": "heartbeat",
-                    "data": json.dumps({"timestamp": datetime.now(timezone.utc).isoformat()}),
+                    "data": json.dumps({"timestamp": datetime.now(UTC).isoformat()}),
                 }
 
 
@@ -87,8 +96,12 @@ SSE_HUB = SSEHub()
 router = APIRouter(prefix="/api/v1", tags=["atroz-dashboard"])
 
 
-def _api_error(status: int, code: str, message: str, details: dict[str, Any] | None = None) -> JSONResponse:
-    payload = APIError(status=status, code=code, message=message, details=details).model_dump(mode="json")
+def _api_error(
+    status: int, code: str, message: str, details: dict[str, Any] | None = None
+) -> JSONResponse:
+    payload = APIError(status=status, code=code, message=message, details=details).model_dump(
+        mode="json"
+    )
     return JSONResponse(status_code=status, content=payload)
 
 
@@ -106,12 +119,16 @@ def _require_headers(request: Request) -> None:
     try:
         UUID(request_id)
     except ValueError as exc:
-        raise AtrozAPIException(status=400, code="BAD_REQUEST", message="Invalid X-Request-ID") from exc
+        raise AtrozAPIException(
+            status=400, code="BAD_REQUEST", message="Invalid X-Request-ID"
+        ) from exc
 
     if os.getenv("ATROZ_AUTH_REQUIRED", "false").lower() == "true":
         auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer ") or len(auth) < 16:
-            raise AtrozAPIException(status=401, code="UNAUTHORIZED", message="Missing/invalid Authorization")
+            raise AtrozAPIException(
+                status=401, code="UNAUTHORIZED", message="Missing/invalid Authorization"
+            )
 
 
 async def require_atroz_headers(request: Request) -> None:
@@ -146,7 +163,7 @@ async def ingest_data(
                     "type": "region",
                     "id": region_id,
                     "data": region.model_dump(mode="json"),
-                    "timestamp": payload.timestamp.astimezone(timezone.utc).isoformat(),
+                    "timestamp": payload.timestamp.astimezone(UTC).isoformat(),
                 }
             )
 
@@ -169,7 +186,7 @@ async def ingest_data(
                 "municipalityId": municipality_id,
                 "regionId": region_id,
                 "runId": payload.run_id,
-                "timestamp": payload.timestamp.astimezone(timezone.utc).isoformat(),
+                "timestamp": payload.timestamp.astimezone(UTC).isoformat(),
             },
         )
 
@@ -177,13 +194,17 @@ async def ingest_data(
 
 
 @router.get("/pdet/regions", response_model=list[PDETRegion])
-async def list_regions(response: Response, _: None = Depends(require_atroz_headers)) -> list[PDETRegion]:
+async def list_regions(
+    response: Response, _: None = Depends(require_atroz_headers)
+) -> list[PDETRegion]:
     response.headers["Cache-Control"] = "max-age=300"
     return await STORE.list_regions()
 
 
 @router.get("/pdet/regions/{region_id}", response_model=PDETRegion)
-async def get_region(region_id: str, response: Response, _: None = Depends(require_atroz_headers)) -> Response:
+async def get_region(
+    region_id: str, response: Response, _: None = Depends(require_atroz_headers)
+) -> Response:
     region = await STORE.get_region(region_id)
     if region is None:
         return _api_error(404, "NOT_FOUND", f"Region '{region_id}' not found")
@@ -238,14 +259,18 @@ async def get_questions(
 
 
 @router.get("/visualization/constellation", response_model=ConstellationData)
-async def get_constellation(response: Response, _: None = Depends(require_atroz_headers)) -> ConstellationData:
+async def get_constellation(
+    response: Response, _: None = Depends(require_atroz_headers)
+) -> ConstellationData:
     response.headers["Cache-Control"] = "max-age=1800"
     data = await STORE.build_constellation()
     return data
 
 
 @router.get("/visualization/radar/{municipality_id}", response_model=dict[str, float])
-async def get_radar(municipality_id: str, response: Response, _: None = Depends(require_atroz_headers)) -> Response:
+async def get_radar(
+    municipality_id: str, response: Response, _: None = Depends(require_atroz_headers)
+) -> Response:
     analysis = await STORE.get_municipality_analysis(municipality_id)
     if analysis is None:
         return _api_error(404, "NOT_FOUND", f"Municipality '{municipality_id}' not found")
@@ -255,21 +280,32 @@ async def get_radar(municipality_id: str, response: Response, _: None = Depends(
 
 @router.get("/visualization/phylogram/{region_id}")
 async def get_phylogram(region_id: str, _: None = Depends(require_atroz_headers)) -> dict[str, Any]:
-    return {"regionId": region_id, "type": "phylogram", "data": []}
+    """Phase 4 Dimension DAG - Micro-question → Dimension aggregation provenance."""
+    from .api_v1_visualizations import PhylogramBuilder
+    builder = PhylogramBuilder(region_id)
+    return await builder.build()
 
 
 @router.get("/visualization/mesh/{region_id}")
 async def get_mesh(region_id: str, _: None = Depends(require_atroz_headers)) -> dict[str, Any]:
-    return {"regionId": region_id, "type": "mesh", "data": []}
+    """Phase 5 Policy Area Clustering - MESO-level cluster topology."""
+    from .api_v1_visualizations import MeshBuilder
+    builder = MeshBuilder(region_id)
+    return await builder.build()
 
 
 @router.get("/visualization/helix/{region_id}")
 async def get_helix(region_id: str, _: None = Depends(require_atroz_headers)) -> dict[str, Any]:
-    return {"regionId": region_id, "type": "helix", "data": []}
+    """Phase 7 Coherence Metrics - Triple helix (strategic/operational/institutional)."""
+    from .api_v1_visualizations import HelixBuilder
+    builder = HelixBuilder(region_id)
+    return await builder.build()
 
 
 @router.get("/timeline/regions/{region_id}", response_model=list[TimelinePoint])
-async def get_timeline(region_id: str, _: None = Depends(require_atroz_headers)) -> list[TimelinePoint]:
+async def get_timeline(
+    region_id: str, _: None = Depends(require_atroz_headers)
+) -> list[TimelinePoint]:
     return await STORE.get_timeline(region_id)
 
 
@@ -292,7 +328,9 @@ async def compare_matrix(
 
 
 @router.get("/evidence/stream")
-async def evidence_stream(request: Request, _: None = Depends(require_atroz_headers)) -> EventSourceResponse:
+async def evidence_stream(
+    request: Request, _: None = Depends(require_atroz_headers)
+) -> EventSourceResponse:
     return EventSourceResponse(SSE_HUB.events(request))
 
 
@@ -319,17 +357,23 @@ async def export_dashboard(
 
 
 @router.post("/export/region")
-async def export_region(payload: ExportRequest, _: None = Depends(require_atroz_headers)) -> Response:
+async def export_region(
+    payload: ExportRequest, _: None = Depends(require_atroz_headers)
+) -> Response:
     return _export_bytes("region", payload)
 
 
 @router.post("/export/comparison")
-async def export_comparison(payload: ExportRequest, _: None = Depends(require_atroz_headers)) -> Response:
+async def export_comparison(
+    payload: ExportRequest, _: None = Depends(require_atroz_headers)
+) -> Response:
     return _export_bytes("comparison", payload)
 
 
 @router.post("/export/reports")
-async def export_reports(payload: ExportRequest, _: None = Depends(require_atroz_headers)) -> Response:
+async def export_reports(
+    payload: ExportRequest, _: None = Depends(require_atroz_headers)
+) -> Response:
     return _export_bytes("reports", payload)
 
 
@@ -338,6 +382,163 @@ async def export_municipality(
     payload: ExportRequest, _: None = Depends(require_atroz_headers)
 ) -> Response:
     return _export_bytes("municipality", payload)
+
+
+# ============================================================================
+# SISAS Signal Metrics & Pattern Mining Endpoints
+# ============================================================================
+
+@router.get("/signals/metrics")
+async def get_sisas_metrics(_: None = Depends(require_atroz_headers)) -> dict[str, Any]:
+    """Get SISAS signal system observability metrics."""
+    from .api_v1_sisas_mining import SISASMetricsProvider
+    provider = SISASMetricsProvider()
+    return await provider.get_metrics()
+
+
+@router.get("/signals/extraction/{region_id}")
+async def get_signal_extraction(
+    region_id: str, _: None = Depends(require_atroz_headers)
+) -> dict[str, Any]:
+    """Get signal extraction/pattern mining results for a region."""
+    from .api_v1_sisas_mining import SISASMetricsProvider
+    provider = SISASMetricsProvider()
+    return await provider.get_extraction_results(region_id)
+
+
+# ============================================================================
+# Entity Registry Endpoints
+# ============================================================================
+
+@router.get("/entities/registry")
+async def get_entity_registry(
+    category: str | None = Query(default=None, description="Filter by category"),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Get canonical entity registry from CQC."""
+    from .api_v1_sisas_mining import EntityRegistryProvider
+    provider = EntityRegistryProvider()
+    return await provider.get_registry(category)
+
+
+@router.get("/entities/search")
+async def search_entities(
+    q: str = Query(..., description="Search query"),
+    category: str | None = Query(default=None, description="Filter by category"),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Search entities in the canonical registry."""
+    from .api_v1_sisas_mining import EntityRegistryProvider
+    provider = EntityRegistryProvider()
+    return await provider.search_entities(q, category)
+
+
+# ============================================================================
+# Reporting Automation Endpoints
+# ============================================================================
+
+@router.get("/reports/schedules")
+async def get_report_schedules(_: None = Depends(require_atroz_headers)) -> dict[str, Any]:
+    """Get all report schedules."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.get_schedules()
+
+
+@router.post("/reports/schedules")
+async def create_report_schedule(
+    schedule: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Create new report schedule."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.create_schedule(schedule)
+
+
+@router.put("/reports/schedules/{schedule_id}")
+async def update_report_schedule(
+    schedule_id: str,
+    updates: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Update existing report schedule."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.update_schedule(schedule_id, updates)
+
+
+@router.delete("/reports/schedules/{schedule_id}")
+async def delete_report_schedule(
+    schedule_id: str, _: None = Depends(require_atroz_headers)
+) -> dict[str, Any]:
+    """Delete report schedule."""
+    from .api_v1_reports import ReportScheduler
+    scheduler = ReportScheduler()
+    return await scheduler.delete_schedule(schedule_id)
+
+
+@router.post("/reports/generate")
+async def generate_report(
+    request: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Generate report immediately."""
+    from .api_v1_reports import ReportGenerator
+    generator = ReportGenerator()
+    return await generator.generate_report(request)
+
+
+@router.get("/reports/{report_id}/status")
+async def get_report_status(
+    report_id: str, _: None = Depends(require_atroz_headers)
+) -> dict[str, Any]:
+    """Get report generation status."""
+    from .api_v1_reports import ReportGenerator
+    generator = ReportGenerator()
+    return await generator.get_report_status(report_id)
+
+
+@router.get("/reports/notify/config")
+async def get_notification_config(_: None = Depends(require_atroz_headers)) -> dict[str, Any]:
+    """Get notification configuration."""
+    from .api_v1_reports import NotificationManager
+    manager = NotificationManager()
+    return await manager.get_config()
+
+
+@router.put("/reports/notify/config")
+async def update_notification_config(
+    config: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Update notification configuration."""
+    from .api_v1_reports import NotificationManager
+    manager = NotificationManager()
+    return await manager.update_config(config)
+
+
+@router.post("/reports/notify/trigger")
+async def trigger_notification(
+    event: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Trigger notification based on event."""
+    from .api_v1_reports import NotificationManager
+    manager = NotificationManager()
+    return await manager.trigger_notification(event)
+
+
+@router.post("/reports/trigger-on-completion/{run_id}")
+async def register_completion_hook(
+    run_id: str,
+    hook_config: dict[str, Any] = Body(...),
+    _: None = Depends(require_atroz_headers),
+) -> dict[str, Any]:
+    """Register completion hook for a pipeline run."""
+    from .api_v1_reports import CompletionHooks
+    hooks = CompletionHooks()
+    return await hooks.register_hook(run_id, hook_config)
 
 
 @router.websocket("/realtime")
@@ -356,27 +557,27 @@ def _export_bytes(scope: str, payload: ExportRequest) -> Response:
         return Response(
             content=data,
             media_type="image/png",
-            headers={"Content-Disposition": f"attachment; filename=\"{scope}.png\""},
+            headers={"Content-Disposition": f'attachment; filename="{scope}.png"'},
         )
     if payload.format == "svg":
-        svg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1\" height=\"1\"></svg>"
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>'
         return Response(
             content=svg.encode("utf-8"),
             media_type="image/svg+xml",
-            headers={"Content-Disposition": f"attachment; filename=\"{scope}.svg\""},
+            headers={"Content-Disposition": f'attachment; filename="{scope}.svg"'},
         )
     if payload.format == "pdf":
         pdf = _minimal_pdf()
         return Response(
             content=pdf,
             media_type="application/pdf",
-            headers={"Content-Disposition": f"attachment; filename=\"{scope}.pdf\""},
+            headers={"Content-Disposition": f'attachment; filename="{scope}.pdf"'},
         )
     html = "<!doctype html><html><body><pre>Export placeholder</pre></body></html>"
     return Response(
         content=html.encode("utf-8"),
         media_type="text/html",
-        headers={"Content-Disposition": f"attachment; filename=\"{scope}.html\""},
+        headers={"Content-Disposition": f'attachment; filename="{scope}.html"'},
     )
 
 

@@ -12,14 +12,16 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from orchestration.orchestrator import (
-    AbortRequested,
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.orchestration.orchestrator import (
     Orchestrator,
+)
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import (
     ResourceLimits,
 )
+# AbortRequested - check domain_errors if needed (not found in core_orchestrator)
+from farfan_pipeline.phases.Phase_00.phase0_00_01_domain_errors import AbortRequested
 
 
 @pytest.mark.regression
@@ -236,15 +238,6 @@ class TestResourceLimitsBypassPrevention:
             orchestrator.executors,
             {"D1-Q1": MockExecutor}
         ):
-            from orchestration.orchestrator import PhaseInstrumentation
-            instrumentation = PhaseInstrumentation(
-                phase_id=2,
-                name="FASE 2",
-                items_total=25,
-                resource_limits=resource_limits,
-            )
-            orchestrator._phase_instrumentation[2] = instrumentation
-            
             check_count = 0
             original_check = orchestrator._check_and_enforce_resource_limits
             

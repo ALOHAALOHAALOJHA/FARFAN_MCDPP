@@ -1,0 +1,97 @@
+rules:
+  # Fix test imports from .aggregation to .phase4_10_00_aggregation
+  - id: fix-test-aggregation-import
+    pattern: from farfan_pipeline.phases.Phase_04.aggregation import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation import $...IMPORTS
+    message: Fix aggregation import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  # Fix .aggregation_provenance imports
+  - id: fix-test-provenance-import  
+    pattern: from farfan_pipeline.phases.Phase_04.aggregation_provenance import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import $...IMPORTS
+    message: Fix aggregation_provenance import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  # Fix .choquet_aggregator imports
+  - id: fix-test-choquet-import
+    pattern: from farfan_pipeline.phases.Phase_04.choquet_aggregator import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.phase4_10_00_choquet_aggregator import $...IMPORTS
+    message: Fix choquet_aggregator import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  # Fix .uncertainty_quantification imports
+  - id: fix-test-uncertainty-import
+    pattern: from farfan_pipeline.phases.Phase_04.uncertainty_quantification import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import $...IMPORTS
+    message: Fix uncertainty_quantification import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  # Fix enhancements imports  
+  - id: fix-test-adaptive-meso-import
+    pattern: from farfan_pipeline.phases.Phase_04.enhancements.adaptive_meso_scoring import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_adaptive_meso_scoring import $...IMPORTS
+    message: Fix adaptive_meso_scoring import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  - id: fix-test-signal-aggregation-import
+    pattern: from farfan_pipeline.phases.Phase_04.enhancements.signal_enriched_aggregation import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_signal_enriched_aggregation import $...IMPORTS
+    message: Fix signal_enriched_aggregation import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  - id: fix-test-enhanced-aggregators-import
+    pattern: from farfan_pipeline.phases.Phase_04.enhancements.enhanced_aggregators import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.enhancements.phase4_10_00_enhanced_aggregators import $...IMPORTS
+    message: Fix enhanced_aggregators import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  # Fix validation imports
+  - id: fix-test-validation-import
+    pattern: from farfan_pipeline.phases.Phase_04.validation.phase4_7_validation import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.validation.phase4_10_00_phase4_7_validation import $...IMPORTS
+    message: Fix validation import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/
+
+  # Fix primitives imports
+  - id: fix-test-quality-levels-import
+    pattern: from farfan_pipeline.phases.Phase_04.primitives.quality_levels import $...IMPORTS
+    fix: from farfan_pipeline.phases.Phase_04.primitives.phase4_10_00_quality_levels import $...IMPORTS
+    message: Fix quality_levels import path in tests
+    languages: [python]
+    severity: WARNING
+    paths:
+      include:
+        - tests/

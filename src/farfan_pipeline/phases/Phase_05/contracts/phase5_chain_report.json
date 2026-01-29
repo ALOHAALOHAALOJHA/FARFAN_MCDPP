@@ -1,0 +1,55 @@
+{
+  "phase_id": 5,
+  "phase_dir": "src/farfan_pipeline/phases/Phase_05",
+  "total_files": 9,
+  "files_in_chain": 6,
+  "orphan_files": [],
+  "topological_order": [
+    "phase5_10_00_area_integration.py",
+    "__init__.py",
+    "contracts/phase5_input_contract.py",
+    "phase5_10_00_area_score.py",
+    "contracts/phase5_mission_contract.py",
+    "contracts/phase5_output_contract.py"
+  ],
+  "circular_dependencies": [],
+  "label_position_mismatches": [
+    {
+      "file": "phase5_10_00_area_integration.py",
+      "label": "10_0",
+      "actual_position": 0,
+      "note": "Appears at position 0 in topological order"
+    },
+    {
+      "file": "phase5_10_00_area_score.py",
+      "label": "10_0",
+      "actual_position": 3,
+      "note": "Appears at position 3 in topological order"
+    }
+  ],
+  "validation_status": "PASS",
+  "dependency_graph": {
+    "phase5_10_00_area_aggregation.py": [
+      "PHASE_5_CONSTANTS.py"
+    ],
+    "phase5_10_00_area_validation.py": [
+      "phase5_10_00_area_aggregation.py",
+      "PHASE_5_CONSTANTS.py"
+    ],
+    "phase5_10_00_area_integration.py": [
+      "phase5_10_00_area_aggregation.py",
+      "phase5_10_00_area_validation.py"
+    ],
+    "contracts/phase5_output_contract.py": [
+      "phase5_10_00_area_aggregation.py",
+      "PHASE_5_CONSTANTS.py"
+    ],
+    "contracts/phase5_input_contract.py": [
+      "PHASE_5_CONSTANTS.py"
+    ],
+    "PHASE_5_CONSTANTS.py": [],
+    "phase5_10_00_area_score.py": [],
+    "__init__.py": [],
+    "contracts/phase5_mission_contract.py": []
+  }
+}

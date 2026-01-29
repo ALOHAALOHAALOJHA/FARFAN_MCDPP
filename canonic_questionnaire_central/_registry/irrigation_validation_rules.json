@@ -1,0 +1,205 @@
+{
+  "$schema": "irrigation_validation_rules_v1",
+  "version": "1.0.0",
+  "generated": "2026-01-21T00:00:00Z",
+  "description": "Reglas de validación para irrigación de señales",
+
+  "gate_rules": {
+    "gate_1_scope_alignment": {
+      "description": "Validación de alineación de scope",
+      "rules": [
+        {
+          "rule_id": "SCOPE-001",
+          "name": "Valid Phase",
+          "condition": "signal.scope.phase IN ['phase_00', 'phase_01', 'phase_02', 'phase_03', 'phase_04', 'phase_05', 'phase_06', 'phase_07', 'phase_08', 'phase_09']",
+          "severity": "CRITICAL",
+          "error_code": "INVALID_PHASE"
+        },
+        {
+          "rule_id": "SCOPE-002",
+          "name": "Valid Policy Area",
+          "condition": "signal.scope.policy_area IN ['PA01', 'PA02', 'PA03', 'PA04', 'PA05', 'PA06', 'PA07', 'PA08', 'PA09', 'PA10', 'ALL', 'CROSS_CUTTING']",
+          "severity": "CRITICAL",
+          "error_code": "INVALID_POLICY_AREA"
+        },
+        {
+          "rule_id": "SCOPE-003",
+          "name": "Signal Type Phase Alignment",
+          "condition": "signal.signal_type allowed in signal.scope.phase",
+          "severity": "CRITICAL",
+          "error_code": "SIGNAL_TYPE_PHASE_MISMATCH"
+        }
+      ]
+    },
+
+    "gate_2_value_add": {
+      "description": "Validación de valor agregado",
+      "rules": [
+        {
+          "rule_id": "VALUE-001",
+          "name": "Empirical Availability Threshold",
+          "condition": "signal.empirical_availability >= 0.30 OR signal.is_enrichment == true",
+          "severity": "WARNING",
+          "error_code": "LOW_EMPIRICAL_AVAILABILITY",
+          "threshold": 0.30
+        },
+        {
+          "rule_id": "VALUE-002",
+          "name": "Valid Range",
+          "condition": "0.0 <= signal.empirical_availability <= 1.0",
+          "severity": "CRITICAL",
+          "error_code": "INVALID_AVAILABILITY_RANGE"
+        }
+      ]
+    },
+
+    "gate_3_capability": {
+      "description": "Validación de capacidades",
+      "rules": [
+        {
+          "rule_id": "CAP-001",
+          "name": "Consumer Has Required Capabilities",
+          "condition": "consumer.capabilities SUPERSET OF signal.capabilities_required",
+          "severity": "CRITICAL",
+          "error_code": "CAPABILITY_MISMATCH"
+        },
+        {
+          "rule_id": "CAP-002",
+          "name": "At Least One Eligible Consumer",
+          "condition": "EXISTS consumer WHERE consumer matches signal",
+          "severity": "WARNING",
+          "error_code": "NO_ELIGIBLE_CONSUMER"
+        }
+      ]
+    },
+
+    "gate_4_irrigation_channel": {
+      "description": "Validación post-dispatch",
+      "rules": [
+        {
+          "rule_id": "CHANNEL-001",
+          "name": "Signal Was Routed",
+          "condition": "signal._routed == true",
+          "severity": "WARNING",
+          "error_code": "SIGNAL_NOT_ROUTED"
+        },
+        {
+          "rule_id": "CHANNEL-002",
+          "name": "At Least One Consumer Received",
+          "condition": "len(signal._consumers) >= 1",
+          "severity": "WARNING",
+          "error_code": "NO_CONSUMER_RECEIVED"
+        },
+        {
+          "rule_id": "CHANNEL-003",
+          "name": "Audit Entry Created",
+          "condition": "EXISTS audit_entry WHERE audit_entry.signal_id == signal.signal_id",
+          "severity": "CRITICAL",
+          "error_code": "NO_AUDIT_ENTRY"
+        }
+      ]
+    }
+  },
+
+  "phase_signal_alignment": {
+    "phase_0": ["SIGNAL_PACK", "STATIC_LOAD"],
+    "phase_1": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"],
+    "phase_2": ["PATTERN_ENRICHMENT", "KEYWORD_ENRICHMENT", "ENTITY_ENRICHMENT"],
+    "phase_3": ["NORMATIVE_VALIDATION", "ENTITY_VALIDATION", "COHERENCE_VALIDATION"],
+    "phase_4": ["MICRO_SCORE"],
+    "phase_5": ["MESO_SCORE"],
+    "phase_6": ["MACRO_SCORE"],
+    "phase_7": ["MESO_AGGREGATION"],
+    "phase_8": ["MACRO_AGGREGATION"],
+    "phase_9": ["REPORT_ASSEMBLY"]
+  },
+
+  "capability_requirements": {
+    "MC01": ["TABLE_PARSING", "STRUCTURAL_PARSING", "SECTION_DETECTION"],
+    "MC02": ["NUMERIC_PARSING", "TRIPLET_EXTRACTION"],
+    "MC03": ["NER_EXTRACTION", "NORMATIVE_LOOKUP", "CITATION_PARSING"],
+    "MC04": ["GRAPH_CONSTRUCTION", "HIERARCHY_PARSING", "TREE_CONSTRUCTION"],
+    "MC05": ["NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CURRENCY_NORMALIZATION"],
+    "MC06": ["NER_EXTRACTION", "SEMANTIC_PROCESSING", "POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS"],
+    "MC07": ["TEMPORAL_REASONING", "TEMPORAL_PARSING", "DATE_NORMALIZATION"],
+    "MC08": ["CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION", "VERB_ANALYSIS"],
+    "MC09": ["NER_EXTRACTION", "ENTITY_RESOLUTION", "COREFERENCE"],
+    "MC10": ["SEMANTIC_PROCESSING", "GRAPH_CONSTRUCTION", "SEMANTIC_SIMILARITY", "EMBEDDING_LOOKUP"],
+    "PATTERN_ENRICHMENT": ["SEMANTIC_PROCESSING", "PATTERN_MATCHING", "REGEX_ENGINE"],
+    "KEYWORD_ENRICHMENT": ["SEMANTIC_PROCESSING", "KEYWORD_MATCHING", "TF_IDF"],
+    "ENTITY_ENRICHMENT": ["NER_EXTRACTION", "ENTITY_LINKING"],
+    "NORMATIVE_VALIDATION": ["NER_EXTRACTION", "NORMATIVE_LOOKUP", "COMPLIANCE_CHECK"],
+    "ENTITY_VALIDATION": ["NER_EXTRACTION", "ENTITY_RESOLUTION", "EXISTENCE_CHECK"],
+    "COHERENCE_VALIDATION": ["INTERDEPENDENCY_VALIDATION", "SEMANTIC_SIMILARITY", "CONSISTENCY_CHECK"],
+    "MICRO_SCORE": ["CHOQUET_INTEGRAL", "SCORING_ENGINE", "WEIGHT_APPLICATION"],
+    "MESO_SCORE": ["DIMENSION_AGGREGATION", "AGGREGATION_ENGINE", "CLUSTER_SCORING"],
+    "MACRO_SCORE": ["POLICY_AREA_AGGREGATION", "AGGREGATION_ENGINE", "HOLISTIC_SCORING"],
+    "MESO_AGGREGATION": ["CLUSTER_AGGREGATION", "AGGREGATION_ENGINE", "CLUSTER_ROUTING"],
+    "MACRO_AGGREGATION": ["CLUSTER_AGGREGATION", "AGGREGATION_ENGINE", "FINAL_ASSEMBLY"],
+    "REPORT_ASSEMBLY": ["TEMPLATE_ENGINE", "MARKDOWN_GENERATION"]
+  },
+
+  "routing_rules": {
+    "deduplication": {
+      "enabled": true,
+      "window_seconds": 300,
+      "hash_fields": ["signal_type", "scope.phase", "scope.policy_area", "scope.slot"]
+    },
+    "dead_letter": {
+      "enabled": true,
+      "max_retries": 3,
+      "path": "_registry/dead_letter/",
+      "retention_days": 30,
+      "max_entries": 10000,
+      "reasons": ["NO_CONSUMER", "LOW_VALUE", "CAPABILITY_MISMATCH", "INVALID_SCOPE", "VALIDATION_FAILED"]
+    },
+    "priority": {
+      "CRITICAL": 100,
+      "HIGH": 75,
+      "MEDIUM": 50,
+      "LOW": 25
+    }
+  },
+
+  "thresholds": {
+    "empirical_availability_min": 0.30,
+    "dead_letter_rate_warning": 0.05,
+    "dead_letter_rate_critical": 0.10,
+    "error_rate_warning": 0.01,
+    "error_rate_critical": 0.05
+  },
+
+  "empirical_availability_by_type": {
+    "_description": "Pre-calibrated empirical availability from membership criteria analysis",
+    "MC01": 0.92,
+    "MC02": 0.78,
+    "MC03": 0.85,
+    "MC04": 0.71,
+    "MC05": 0.85,
+    "MC06": 0.65,
+    "MC07": 0.88,
+    "MC08": 0.72,
+    "MC09": 0.68,
+    "MC10": 0.55
+  },
+
+  "slot_routing": {
+    "_description": "Maps signal types to canonical question slots",
+    "MC05": ["D1-Q1", "D1-Q2", "D1-Q3"],
+    "MC08": ["D6-Q1", "D6-Q2", "D6-Q3", "D6-Q4", "D6-Q5"],
+    "MC09": ["D2-Q1", "D2-Q2", "D2-Q3", "D2-Q4", "D2-Q5"]
+  },
+
+  "value_gates": {
+    "_description": "Additional value gates beyond empirical availability",
+    "require_enrichment_for_low_availability": true,
+    "minimum_payload_fields": 2,
+    "require_provenance": true
+  },
+
+  "consumer_defaults": {
+    "max_retries": 3,
+    "timeout_seconds": 30,
+    "circuit_breaker_threshold": 5
+  }
+}

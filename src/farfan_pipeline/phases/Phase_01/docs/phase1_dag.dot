@@ -1,0 +1,73 @@
+digraph Phase1_Dependency_Graph {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    
+    // Layer 0: Root modules
+    PHASE_1_CONSTANTS [label="PHASE_1_CONSTANTS", fillcolor=lightgray, style="filled,rounded"];
+    phase1_02_00_phase_1_constants [label="phase1_02_00_phase_1_constants", fillcolor=lightgray, style="filled,rounded"];
+    phase1_05_00_thread_safe_results [label="phase1_05_00_thread_safe_results", fillcolor=lightgray, style="filled,rounded"];
+    phase1_06_00_questionnaire_mapper [label="phase1_06_00_questionnaire_mapper", fillcolor=lightgray, style="filled,rounded"];
+    phase1_09_00_circuit_breaker [label="phase1_09_00_circuit_breaker", fillcolor=lightgray, style="filled,rounded"];
+    phase1_11_00_signal_enrichment [label="phase1_11_00_signal_enrichment", fillcolor=lightgray, style="filled,rounded"];
+    phase1_12_00_structural [label="phase1_12_00_structural", fillcolor=lightgray, style="filled,rounded"];
+    
+    // Layer 1: Dependent modules
+    phase1_03_00_models [label="phase1_03_00_models", fillcolor=lightblue, style="filled,rounded"];
+    
+    // Layer 2: Higher level modules
+    phase1_07_00_sp4_question_aware [label="phase1_07_00_sp4_question_aware", fillcolor=lightgreen, style="filled,rounded"];
+    
+    // Layer 3: Main executor
+    phase1_13_00_cpp_ingestion [label="phase1_13_00_cpp_ingestion", fillcolor=orange, style="filled,rounded"];
+    
+    // Layer 4: Public API
+    __init__ [label="__init__.py", fillcolor=gold, style="filled,rounded"];
+    
+    // Edges
+    phase1_03_00_models -> phase1_02_00_phase_1_constants;
+    phase1_07_00_sp4_question_aware -> phase1_02_00_phase_1_constants;
+    phase1_07_00_sp4_question_aware -> phase1_03_00_models;
+    phase1_07_00_sp4_question_aware -> phase1_06_00_questionnaire_mapper;
+    phase1_13_00_cpp_ingestion -> PHASE_1_CONSTANTS;
+    phase1_13_00_cpp_ingestion -> phase1_03_00_models;
+    phase1_13_00_cpp_ingestion -> phase1_09_00_circuit_breaker;
+    phase1_13_00_cpp_ingestion -> phase1_11_00_signal_enrichment;
+    phase1_13_00_cpp_ingestion -> phase1_12_00_structural;
+    __init__ -> phase1_02_00_phase_1_constants;
+    __init__ -> phase1_03_00_models;
+    __init__ -> phase1_05_00_thread_safe_results;
+    __init__ -> phase1_06_00_questionnaire_mapper;
+    __init__ -> phase1_07_00_sp4_question_aware;
+    __init__ -> phase1_13_00_cpp_ingestion;
+    
+    // Subgraphs for layers
+    subgraph cluster_layer0 {
+        label = "Layer 0: Root Modules (no internal deps)";
+        style = dashed;
+        PHASE_1_CONSTANTS;
+        phase1_02_00_phase_1_constants;
+        phase1_05_00_thread_safe_results;
+        phase1_06_00_questionnaire_mapper;
+        phase1_09_00_circuit_breaker;
+        phase1_11_00_signal_enrichment;
+        phase1_12_00_structural;
+    }
+    
+    subgraph cluster_layer1 {
+        label = "Layer 1";
+        style = dashed;
+        phase1_03_00_models;
+    }
+    
+    subgraph cluster_layer2 {
+        label = "Layer 2";
+        style = dashed;
+        phase1_07_00_sp4_question_aware;
+    }
+    
+    subgraph cluster_layer3 {
+        label = "Layer 3: Main Executor";
+        style = dashed;
+        phase1_13_00_cpp_ingestion;
+    }
+}

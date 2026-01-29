@@ -1,0 +1,69 @@
+{
+  "phase_id": "8",
+  "phase_dir": "/Users/recovered/Downloads/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_08",
+  "total_files": 20,
+  "files_in_chain": 8,
+  "orphan_files": [],
+  "allowed_orphans": [
+    "contracts/phase8_mission_contract.py",
+    "contracts/phase8_output_contract.py",
+    "docs/future/phase8_35_00_entity_targeted_recommendations.py",
+    "docs/legacy/phase8_20_04_recommendation_engine_orchestrator.py",
+    "interphase/phase8_10_00_interface_validator.py",
+    "primitives/phase8_00_00_phase_8_constants.py",
+    "primitives/phase8_00_00_phase_8_enums.py",
+    "primitives/phase8_00_00_phase_8_types.py",
+    "primitives/phase8_10_00_phase_8_constants.py",
+    "primitives/phase8_10_00_phase_8_enums.py",
+    "primitives/phase8_10_00_phase_8_types.py",
+    "primitives/phase8_20_03_template_compiler.py"
+  ],
+  "circular_dependencies": [],
+  "dependency_graph": {
+    "__init__.py": [
+      "phase8_20_00_recommendation_engine.py",
+      "phase8_20_01_recommendation_engine_adapter.py",
+      "phase8_30_00_signal_enriched_recommendations.py",
+      "interfaces/__init__.py"
+    ],
+    "interphase/__init__.py": [
+      "interphase/interface_validator.py"
+    ],
+    "phase8_10_00_schema_validation.py": [
+      "phase8_00_00_data_models.py"
+    ],
+    "phase8_20_00_recommendation_engine.py": [
+      "phase8_30_00_signal_enriched_recommendations.py"
+    ],
+    "phase8_20_02_generic_rule_engine.py": [
+      "phase8_00_00_data_models.py"
+    ],
+    "primitives/__init__.py": [
+      "primitives/PHASE_8_CONSTANTS.py",
+      "primitives/PHASE_8_ENUMS.py",
+      "primitives/PHASE_8_TYPES.py"
+    ],
+    "tests/__init__.py": [
+      "tests/phase8_10_00_generative_testing.py"
+    ],
+    "tests/test_phase7_to_phase8_adapter.py": [
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase7_to_phase8_adapter.py",
+      "contracts/phase8_input_contract.py"
+    ]
+  },
+  "validation_status": "PASS"
+}

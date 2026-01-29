@@ -1,0 +1,179 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T16:49:00Z",
+  "_description": "Mapping from Membership Criteria to Scoring Weights",
+  "_source": "corpus_thresholds_weights.json phase3_scoring_weights",
+  
+  "mc_to_scoring": {
+    "MC01": {
+      "criterion_id": "MC01",
+      "signal_type": "STRUCTURAL_MARKER",
+      "scoring_layers": {
+        "layer_u_smip": {
+          "weight": 0.60,
+          "sub_weights": {
+            "sections": 0.60,
+            "tables": 0.25,
+            "hierarchy_depth": 0.15
+          }
+        }
+      },
+      "required_for": ["layer_u_smip"]
+    },
+    "MC02": {
+      "criterion_id": "MC02",
+      "signal_type": "QUANTITATIVE_TRIPLET",
+      "scoring_layers": {
+        "layer_b_baseline": {
+          "weight": 0.70,
+          "sub_weights": {
+            "present": 0.70,
+            "complete": 0.20,
+            "recent": 0.10
+          }
+        },
+        "layer_q_quality": {
+          "weight": 0.30
+        },
+        "layer_d_dimension": {
+          "weight": 0.30
+        }
+      },
+      "required_for": ["layer_b_baseline", "layer_q_quality"]
+    },
+    "MC03": {
+      "criterion_id": "MC03",
+      "signal_type": "NORMATIVE_REFERENCE",
+      "scoring_layers": {
+        "layer_q_quality": {
+          "weight": 0.40
+        },
+        "layer_p_policy_area": {
+          "weight": 0.40
+        }
+      },
+      "required_for": ["layer_q_quality"]
+    },
+    "MC04": {
+      "criterion_id": "MC04",
+      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "scoring_layers": {
+        "layer_u_smip": {
+          "weight": 0.15
+        },
+        "layer_d_dimension": {
+          "weight": 0.50
+        },
+        "layer_chain_causal": {
+          "weight": 0.30
+        }
+      },
+      "required_for": ["layer_u_smip", "layer_d_dimension"]
+    },
+    "MC05": {
+      "criterion_id": "MC05",
+      "signal_type": "FINANCIAL_CHAIN",
+      "scoring_layers": {
+        "layer_q_quality": {
+          "weight": 0.30
+        },
+        "layer_chain_causal": {
+          "weight": 0.20
+        },
+        "layer_C_crosscutting": {
+          "weight": 0.25
+        }
+      },
+      "required_for": ["layer_chain_causal"]
+    },
+    "MC06": {
+      "criterion_id": "MC06",
+      "signal_type": "POPULATION_DISAGGREGATION",
+      "scoring_layers": {
+        "layer_p_policy_area": {
+          "weight": 0.20
+        },
+        "layer_C_crosscutting": {
+          "weight": 0.35
+        }
+      },
+      "required_for": ["layer_C_crosscutting"]
+    },
+    "MC07": {
+      "criterion_id": "MC07",
+      "signal_type": "TEMPORAL_MARKER",
+      "scoring_layers": {
+        "layer_q_quality": {
+          "weight": 0.20
+        }
+      },
+      "required_for": []
+    },
+    "MC08": {
+      "criterion_id": "MC08",
+      "signal_type": "CAUSAL_LINK",
+      "scoring_layers": {
+        "layer_chain_causal": {
+          "weight": 0.50
+        }
+      },
+      "required_for": ["layer_chain_causal"]
+    },
+    "MC09": {
+      "criterion_id": "MC09",
+      "signal_type": "INSTITUTIONAL_ENTITY",
+      "scoring_layers": {
+        "layer_p_policy_area": {
+          "weight": 0.10
+        },
+        "layer_C_crosscutting": {
+          "weight": 0.10
+        }
+      },
+      "required_for": []
+    },
+    "MC10": {
+      "criterion_id": "MC10",
+      "signal_type": "SEMANTIC_RELATIONSHIP",
+      "scoring_layers": {
+        "layer_b_baseline": {
+          "weight": 0.05,
+          "note": "Semantic fallback when patterns fail"
+        }
+      },
+      "required_for": []
+    }
+  },
+  
+  "layer_requirements": {
+    "layer_b_baseline": {
+      "required_mc": ["MC02"],
+      "optional_mc": ["MC10"]
+    },
+    "layer_u_smip": {
+      "required_mc": ["MC01", "MC04"],
+      "optional_mc": []
+    },
+    "layer_q_quality": {
+      "required_mc": ["MC02", "MC03"],
+      "optional_mc": ["MC05", "MC07"]
+    },
+    "layer_d_dimension": {
+      "required_mc": ["MC02", "MC04"],
+      "optional_mc": []
+    },
+    "layer_p_policy_area": {
+      "required_mc": ["MC03"],
+      "optional_mc": ["MC06", "MC09"]
+    },
+    "layer_C_crosscutting": {
+      "required_mc": ["MC06"],
+      "optional_mc": ["MC05", "MC09"]
+    },
+    "layer_chain_causal": {
+      "required_mc": ["MC08", "MC05"],
+      "optional_mc": ["MC04"]
+    }
+  }
+}

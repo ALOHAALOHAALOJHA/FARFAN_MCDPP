@@ -1,0 +1,233 @@
+{
+  "$schema": "phase_manifest_schema.json",
+  "manifest_version": "2.0.2",
+  "phase": {
+    "number": 8,
+    "name": "Recommendation Engine",
+    "codename": "RECOMMENDER",
+    "label": "Phase 8",
+    "description": "Unified recommendation engine (Bifurcator) that synthesizes analysis results into actionable policy recommendations with exponential amplification."
+  },
+  "metadata": {
+    "created": "2025-12-30",
+    "modified": "2026-01-22",
+    "version": "3.0.0",
+    "author": "F.A.R.F.A.N Core Architecture Team",
+    "status": "ACTIVE",
+    "gnea_compliant": true,
+    "labels": [
+      "PHASE_8",
+      "RECOMMENDER",
+      "GNEA_COMPLIANT",
+      "BIFURCATOR"
+    ]
+  },
+  "statistics": {
+    "total_modules": 3,
+    "stages": 3
+  },
+  "directory_structure": {
+    "root_modules": [
+      "phase8_00_00_data_models.py",
+      "phase8_10_00_schema_validation.py",
+      "phase8_25_00_recommendation_bifurcator.py"
+    ],
+    "subfolders": {
+      "interfaces": {
+        "purpose": "Interface contracts and validation",
+        "modules": [
+          "interface_validator.py",
+          "phase8_10_00_interface_validator.py"
+        ],
+        "documentation": [
+          "README.md",
+          "INTERFACE_MANIFEST.json"
+        ]
+      },
+      "primitives": {
+        "purpose": "Constants, types, and enums",
+        "modules": [
+          "PHASE_8_CONSTANTS.py",
+          "PHASE_8_TYPES.py",
+          "PHASE_8_ENUMS.py"
+        ],
+        "documentation": [
+          "README.md"
+        ]
+      },
+      "json_phase_eight": {
+        "purpose": "Rule definitions",
+        "files": [
+          "recommendation_rules_enhanced.json"
+        ]
+      },
+      "rules": {
+        "purpose": "Rule schema definitions",
+        "files": [
+          "recommendation_rules.schema.json"
+        ]
+      }
+    }
+  },
+  "stages": [
+    {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 1,
+          "canonical_name": "phase8_00_00_data_models",
+          "type": "INFRA",
+          "criticality": "CRITICAL",
+          "purpose": "Data Models"
+        }
+      ]
+    },
+    {
+      "code": 10,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase8_10_00_schema_validation",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Schema Validation"
+        }
+      ]
+    },
+    {
+      "code": 25,
+      "name": "Unified Engine",
+      "description": "Unified generation and bifurcation",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase8_25_00_recommendation_bifurcator",
+          "type": "ENG",
+          "criticality": "CRITICAL",
+          "purpose": "Unified Recommendation Engine"
+        }
+      ]
+    }
+  ],
+  "contracts": {
+    "inputs": [
+      {
+        "id": "P8-IN-001",
+        "name": "analysis_results",
+        "type": "AnalysisResultsInput",
+        "source": "Phase 7",
+        "required": true,
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-001"
+      },
+      {
+        "id": "P8-IN-002",
+        "name": "policy_context",
+        "type": "PolicyContextInput",
+        "source": "Orchestrator",
+        "required": true,
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-002"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "P8-OUT-001",
+        "name": "recommendations",
+        "type": "list[RecommendationOutput]",
+        "destination": [
+          "Phase 9",
+          "Orchestrator"
+        ],
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/outputs/P8-OUT-001"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "INV-P8-001",
+        "name": "Confidence Threshold",
+        "formula": "∀ rec: confidence >= 0.6"
+      },
+      {
+        "id": "INV-P8-002",
+        "name": "Area Coverage",
+        "formula": "∀ area ∈ PA01..PA10: has_recommendations(area)"
+      },
+      {
+        "id": "INV-P8-003",
+        "name": "Level Hierarchy",
+        "formula": "MICRO ⊆ MESO ⊆ MACRO"
+      }
+    ]
+  },
+  "enhanced_features": {
+    "version": "3.0",
+    "features": [
+      "template_parameterization",
+      "execution_logic",
+      "measurable_indicators",
+      "unambiguous_time_horizons",
+      "testable_verification",
+      "cost_tracking",
+      "authority_mapping",
+      "dimensional_resonance",
+      "cross_pollination",
+      "temporal_cascades",
+      "synergy_matrix"
+    ]
+  },
+  "determinism": {
+    "base_seed": 42,
+    "strategy": "FIXED",
+    "note": "All random operations use fixed seed for reproducibility"
+  },
+  "documentation": {
+    "constants": "primitives/PHASE_8_CONSTANTS.py",
+    "types": "primitives/PHASE_8_TYPES.py",
+    "enums": "primitives/PHASE_8_ENUMS.py",
+    "interfaces": "interfaces/README.md",
+    "interface_spec": "interfaces/INTERFACE_MANIFEST.json",
+    "primitives": "primitives/README.md",
+    "manifest": "PHASE_8_MANIFEST.json",
+    "rules_schema": "rules/recommendation_rules.schema.json",
+    "dag": "PHASE_8_DAG.md"
+  },
+  "cross_references": {
+    "upstream": {
+      "Phase 7": "Provides AnalysisResultsInput with micro_scores, cluster_data, macro_data"
+    },
+    "downstream": {
+      "Phase 9": "Consumes recommendations for report generation"
+    }
+  },
+  "orchestration": {
+    "aligned_with_orchestrator": true,
+    "last_alignment_audit": "2026-01-22",
+    "execution_stages": 3,
+    "stage_mapping": [
+      {
+        "stage": "S00",
+        "name": "Foundation",
+        "module": "phase8_00_00_data_models.py"
+      },
+      {
+        "stage": "S10",
+        "name": "Validation",
+        "module": "phase8_10_00_schema_validation.py"
+      },
+      {
+        "stage": "S25",
+        "name": "Unified Bifurcation",
+        "module": "phase8_25_00_recommendation_bifurcator.py"
+      }
+    ]
+  }
+}

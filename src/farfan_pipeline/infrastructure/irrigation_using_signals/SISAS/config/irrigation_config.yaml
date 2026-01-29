@@ -1,0 +1,129 @@
+# src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config/irrigation_config.yaml
+
+irrigation:
+  base_path: "src/farfan_pipeline/data"
+
+  phases:
+    phase_00:
+      description: "Bootstrap y carga inicial"
+      priority: 1
+      parallel_routes:  10
+
+    phase_01:
+      description: "Signal enrichment e ingestion"
+      priority: 2
+      parallel_routes: 5
+      depends_on: [phase_00]
+
+    phase_02:
+      description:  "Factory, execution, synchronization"
+      priority: 3
+      parallel_routes: 7
+      depends_on: [phase_01]
+
+    phase_03:
+      description: "Signal enriched scoring"
+      priority: 4
+      parallel_routes: 3
+      depends_on: [phase_02]
+
+    phase_04:
+      description: "Signal-enriched aggregation and Choquet"
+      priority: 5
+      parallel_routes: 3
+      depends_on: [phase_03]
+
+    phase_05:
+      description: "Uncertainty quantification"
+      priority: 6
+      parallel_routes: 2
+      depends_on: [phase_04]
+
+    phase_06:
+      description: "Configuration validation"
+      priority: 7
+      parallel_routes: 2
+      depends_on: [phase_05]
+
+    phase_07:
+      description: "Meso questions processing"
+      priority: 8
+      parallel_routes: 2
+      depends_on: [phase_03]
+
+    phase_08:
+      description: "Signal enriched recommendations"
+      priority: 9
+      parallel_routes: 1
+      depends_on: [phase_07]
+
+    phase_09:
+      description: "Signal-enriched reporting"
+      priority: 10
+      parallel_routes: 1
+      depends_on: [phase_08]
+
+  vehicles:
+    # Core vehicles
+    signal_registry:
+      enabled: true
+      priority: 1
+
+    signal_context_scoper:
+      enabled: true
+      priority: 2
+
+    signal_loader:
+      enabled: true
+      priority: 1
+
+    # SISAS 5.0 Vehicles
+    signal_evidence_extractor:
+      enabled:  true
+      priority: 3
+
+    signal_intelligence_layer:
+      enabled: true
+      priority: 4
+
+    signal_quality_metrics:
+      enabled: true
+      priority: 5
+
+    signal_enhancement_integrator:
+      enabled: true
+      priority: 6
+
+    signal_irrigator:
+      enabled: true
+      priority: 7
+
+    # Aggregator vehicle
+    signals:
+      enabled: true
+      priority: 8
+
+    # New SISAS 5.0 vehicles for orphan signals
+    contrast_signals_vehicle:
+      enabled: true
+      priority: 9
+
+    schema_validator_vehicle:
+      enabled: true
+      priority: 10
+
+  execution:
+    max_concurrent_routes: 20
+    route_timeout_seconds: 300
+    retry_failed_routes: true
+    max_route_retries: 3
+
+  logging:
+    level: INFO
+    file: "_logs/irrigation.log"
+    rotation: daily
+
+  audit:
+    enabled: true
+    store_all_signals: true
+    store_path: "_audit/irrigation/"

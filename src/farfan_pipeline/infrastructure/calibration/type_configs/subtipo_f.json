@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/subtipo_f.json",
+  "contract_type": "SUBTIPO_F",
+  "name": "Hybrid/Fallback Contracts",
+  "version": "2.0.0-epistemic",
+  "description": "Hybrid contracts providing balanced defaults for composite, mixed-mode, or unclassified contracts that don't fit cleanly into TYPE_A-E categories.",
+
+  "epistemology": {
+    "regime": "Pragmatic Hybrid",
+    "primary_paradigm": "Multi-Modal Aggregation",
+    "justification_mode": "Weighted Evidence Synthesis",
+    "evaluation_criteria": "Balanced precision-recall tradeoff, graceful degradation"
+  },
+
+  "epistemic_ratios": {
+    "description": "Distribution of computational effort across epistemic layers",
+    "n1_empirical": { "lower": 0.2, "upper": 0.4, "default": 0.3, "justification": "Balanced extraction across multiple evidence types" },
+    "n2_inferential": { "lower": 0.3, "upper": 0.5, "default": 0.4, "justification": "Balanced inferential processing for mixed-mode reasoning" },
+    "n3_audit": { "lower": 0.2, "upper": 0.4, "default": 0.3, "justification": "Standard validation without extreme strictness" }
+  },
+
+  "thresholds": {
+    "veto_threshold": { "lower": 0.03, "upper": 0.07, "default": 0.05, "description": "Probability threshold for N3 veto gate activation", "strictness_level": "STANDARD" },
+    "aggregation_weight": { "lower": 0.0, "upper": 1.0, "default": 0.5, "description": "Default weight for evidence aggregation" },
+    "fallback_threshold": { "lower": 0.6, "upper": 0.8, "default": 0.7, "description": "Minimum confidence before falling back to alternative methods" }
+  },
+
+  "operations": {
+    "permitted": [
+      { "name": "concat", "description": "Safe concatenation for evidence assembly", "layer": "N1", "implementation": "SafeConcatenation" },
+      { "name": "weighted_mean", "description": "Weighted mean for balanced aggregation", "layer": "N2", "implementation": "WeightedMeanAggregation" },
+      { "name": "veto_gate", "description": "Standard veto gate without extreme strictness", "layer": "N3", "implementation": "StandardVetoGate" }
+    ],
+    "prohibited": [],
+    "note": "SUBTIPO_F is a fallback: allow broad operations with conservative thresholds"
+  },
+
+  "fusion_strategies": {
+    "description": "Canonical fusion strategy per epistemic layer",
+    "N1": { "strategy": "concat", "symbol": "⊕", "behavior": "additive", "implementation": "ConcatenationStrategy" },
+    "N2": { "strategy": "weighted_mean", "symbol": "⊗", "behavior": "multiplicative", "implementation": "WeightedMeanStrategy" },
+    "N3": { "strategy": "veto_gate", "symbol": "⊘", "behavior": "gate", "implementation": "VetoGateStrategy" }
+  },
+
+  "sample_questions": {
+    "description": "SUBTIPO_F has no dedicated base questions",
+    "questions": [],
+    "note": "Fallback for unclassified or hybrid contracts"
+  },
+
+  "calibration_adjustments": {
+    "description": "Parameter overrides for fallback/hybrid mode",
+    "fallback_mode": { "value": true, "description": "Enable graceful fallback to alternative methods" },
+    "conservative_thresholds": { "value": true, "description": "Use conservative thresholds to minimize false positives" },
+    "graceful_degradation": { "value": true, "description": "Enable graceful degradation when primary methods fail" },
+    "adaptive_weighting": { "value": true, "description": "Enable adaptive weighting based on evidence quality" }
+  },
+
+  "quality_metrics": {
+    "precision_target": 0.75,
+    "recall_target": 0.75,
+    "f1_target": 0.75
+  },
+
+  "validation_rules": [
+    { "rule": "fallback_available_check", "description": "Validate fallback methods are available", "severity": "WARNING" },
+    { "rule": "aggregation_validity_check", "description": "Validate aggregation weights are valid", "severity": "ERROR" },
+    { "rule": "graceful_degradation_check", "description": "Validate degradation strategy is available", "severity": "WARNING" }
+  ],
+
+  "fallback_schema": {
+    "primary_methods": ["weighted_mean", "concat", "veto_gate"],
+    "fallback_methods": ["simple_average", "concat", "pass_through"],
+    "degradation_strategy": "conservative_with_warning",
+    "error_handling": "log_and_continue"
+  },
+
+  "metadata": {
+    "created": "2026-01-21",
+    "last_modified": "2026-01-21",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "aligns_with": "episteme_rules.md Part I.1.1"
+  }
+}

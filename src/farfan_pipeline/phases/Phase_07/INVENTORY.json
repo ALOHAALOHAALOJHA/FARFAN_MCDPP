@@ -1,0 +1,236 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "2.0.0",
+  "phase": {
+    "number": 7,
+    "name": "Macro Evaluation",
+    "codename": "MACRO"
+  },
+  "inventory_date": "2026-01-22",
+  "root_path": "src/farfan_pipeline/phases/Phase_07",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 7 modules"
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "interphase",
+      "purpose": "Interphase bridge contracts (Phase 6 → Phase 7)"
+    },
+    {
+      "path": "docs",
+      "purpose": "Phase 7 documentation and specifications"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 7 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase7_init",
+      "type": "INFRA",
+      "stage": 0,
+      "criticality": "LOW",
+      "lines_of_code": 80,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "PHASE_7_CONSTANTS.py",
+      "canonical_name": "phase7_constants",
+      "type": "CFG",
+      "stage": 10,
+      "criticality": "CRITICAL",
+      "lines_of_code": 50,
+      "purpose": "Phase 7 constants and configuration values"
+    },
+    {
+      "filename": "phase7_10_00_phase_7_constants.py",
+      "canonical_name": "phase7_10_00_phase_7_constants",
+      "type": "CFG",
+      "stage": 10,
+      "criticality": "CRITICAL",
+      "lines_of_code": 115,
+      "purpose": "Phase 7 constants and configuration values"
+    },
+    {
+      "filename": "phase7_10_00_macro_score.py",
+      "canonical_name": "phase7_10_00_macro_score",
+      "type": "CFG",
+      "stage": 10,
+      "criticality": "CRITICAL",
+      "lines_of_code": 200,
+      "purpose": "MacroScore dataclass definition"
+    },
+    {
+      "filename": "phase7_10_00_systemic_gap_detector.py",
+      "canonical_name": "phase7_10_00_systemic_gap_detector",
+      "type": "CFG",
+      "stage": 10,
+      "criticality": "CRITICAL",
+      "lines_of_code": 370,
+      "purpose": "Systemic gap detection and analysis"
+    },
+    {
+      "filename": "phase7_20_00_macro_aggregator.py",
+      "canonical_name": "phase7_20_00_macro_aggregator",
+      "type": "ENF",
+      "stage": 20,
+      "criticality": "CRITICAL",
+      "lines_of_code": 430,
+      "purpose": "Main macro aggregation orchestrator"
+    },
+    {
+      "filename": "interphase/__init__.py",
+      "canonical_name": "phase7_interphase_init",
+      "type": "BRIDGE",
+      "stage": 5,
+      "criticality": "HIGH",
+      "lines_of_code": 30,
+      "purpose": "Interphase bridge package exports"
+    },
+    {
+      "filename": "interphase/phase6_to_phase7_bridge.py",
+      "canonical_name": "phase7_interphase_bridge",
+      "type": "BRIDGE",
+      "stage": 5,
+      "criticality": "HIGH",
+      "lines_of_code": 250,
+      "purpose": "Phase 6 → Phase 7 interphase bridge contract"
+    },
+    {
+      "filename": "phase7_30_00_checkpoint_manager.py",
+      "canonical_name": "phase7_30_00_checkpoint_manager",
+      "type": "OPS",
+      "stage": 30,
+      "criticality": "HIGH",
+      "lines_of_code": 200,
+      "purpose": "Checkpoint and recovery manager for Phase 7"
+    },
+    {
+      "filename": "phase7_31_00_performance_metrics.py",
+      "canonical_name": "phase7_31_00_performance_metrics",
+      "type": "OPS",
+      "stage": 31,
+      "criticality": "HIGH",
+      "lines_of_code": 250,
+      "purpose": "Performance metrics collector for Phase 7"
+    },
+    {
+      "filename": "phase7_32_00_exit_gate_validation.py",
+      "canonical_name": "phase7_32_00_exit_gate_validation",
+      "type": "OPS",
+      "stage": 32,
+      "criticality": "HIGH",
+      "lines_of_code": 220,
+      "purpose": "Exit gate validation for Phase 8 compatibility"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_7_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 7"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 7"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    },
+    {
+      "filename": "AUDIT_REPORT_ORCHESTRATION_2026-01-22.md",
+      "purpose": "Orchestration audit report with findings and improvements"
+    },
+    {
+      "filename": "docs/phase7_import_dag.md",
+      "purpose": "Import dependency graph documentation"
+    },
+    {
+      "filename": "docs/phase7_execution_flow.md",
+      "purpose": "Execution flow specification"
+    },
+    {
+      "filename": "docs/phase7_audit_checklist.md",
+      "purpose": "Audit checklist for Phase 7 validation"
+    },
+    {
+      "filename": "docs/phase7_anomalies.md",
+      "purpose": "Anomaly detection and resolution documentation"
+    }
+  ],
+  "contract_files": [
+    {
+      "filename": "contracts/__init__.py",
+      "purpose": "Contract package exports"
+    },
+    {
+      "filename": "contracts/phase7_10_00_input_contract.py",
+      "purpose": "Input contract validation"
+    },
+    {
+      "filename": "contracts/phase7_10_01_mission_contract.py",
+      "purpose": "Mission contract and invariants"
+    },
+    {
+      "filename": "contracts/phase7_10_02_output_contract.py",
+      "purpose": "Output contract validation"
+    }
+  ],
+  "stages": {
+    "stage_0": {
+      "name": "Infrastructure",
+      "modules": ["__init__.py"]
+    },
+    "stage_5": {
+      "name": "Interphase Bridge",
+      "modules": ["interphase/__init__.py", "interphase/phase6_to_phase7_bridge.py"]
+    },
+    "stage_10": {
+      "name": "Configuration",
+      "modules": [
+        "phase7_10_00_phase_7_constants.py",
+        "phase7_10_00_macro_score.py",
+        "phase7_10_00_systemic_gap_detector.py"
+      ]
+    },
+    "stage_20": {
+      "name": "Enforcement",
+      "modules": ["phase7_20_00_macro_aggregator.py"]
+    },
+    "stage_30": {
+      "name": "Operations",
+      "modules": [
+        "phase7_30_00_checkpoint_manager.py",
+        "phase7_31_00_performance_metrics.py",
+        "phase7_32_00_exit_gate_validation.py"
+      ]
+    }
+  },
+  "total_python_modules": 11,
+  "total_lines_of_code": 2595,
+  "criticality_summary": {
+    "CRITICAL": 4,
+    "HIGH": 4,
+    "MEDIUM": 0,
+    "LOW": 3
+  },
+  "orchestration_features": {
+    "interphase_bridge": true,
+    "checkpoint_recovery": true,
+    "performance_metrics": true,
+    "exit_gate_validation": true,
+    "constitutional_invariants": true,
+    "sisas_signals": true
+  }
+}

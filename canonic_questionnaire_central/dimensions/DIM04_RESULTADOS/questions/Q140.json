@@ -1,0 +1,147 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q140",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D4-Q5",
+    "legacy_id": "Q140",
+    "canonical_notation": "DIM04.PA05.Q140"
+  },
+  "text": {
+    "es": "¿El plan declara la alineación de sus resultados de paz y víctimas con marcos superiores como el PND, los Acuerdos de Paz o los ODS?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_acuerdo_paz"
+    },
+    {
+      "required": true,
+      "type": "alineacion_ods"
+    },
+    {
+      "required": true,
+      "type": "alineacion_pnd"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1015",
+      "PAT-1016",
+      "PAT-1017",
+      "PAT-1018",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC07"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_COHERENCIA_NORMATIVA"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q140.v4.json",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_pdet_alignment",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "PDETMunicipalPlanAnalyzer._score_pdet_alignment"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_causal_coherence",
+        "method_type": "scoring",
+        "priority": 2,
+        "description": "PDETMunicipalPlanAnalyzer._score_causal_coherence"
+      },
+      {
+        "class": "CDAFFramework",
+        "function": "_validate_dnp_compliance",
+        "method_type": "validation",
+        "priority": 3,
+        "description": "CDAFFramework._validate_dnp_compliance"
+      },
+      {
+        "class": "CDAFFramework",
+        "function": "_generate_dnp_report",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "CDAFFramework._generate_dnp_report"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_analyze_causal_dimensions",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "IndustrialPolicyProcessor._analyze_causal_dimensions"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "validate_quality_criteria",
+        "method_type": "validation",
+        "priority": 6,
+        "description": "AdaptivePriorCalculator.validate_quality_criteria"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q170-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "RESULTADOS",
+      "INDICADORES"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.843745+00:00",
+    "updated_at": "2026-01-06T17:38:07.843747+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

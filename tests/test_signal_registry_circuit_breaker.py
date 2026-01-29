@@ -17,7 +17,7 @@ from unittest.mock import Mock, MagicMock, patch
 import pytest
 
 # Import circuit breaker components
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     CircuitBreaker,
     CircuitState,
     CircuitBreakerConfig,
@@ -53,11 +53,11 @@ class TestCircuitBreakerBasics:
         """Circuit opens after reaching failure threshold."""
         config = CircuitBreakerConfig(failure_threshold=3)
         breaker = CircuitBreaker(config=config)
-        
+
         # Record failures up to threshold
         for i in range(3):
             breaker.record_failure()
-        
+
         assert breaker.state == CircuitState.OPEN
         assert breaker.is_available() is False
 
@@ -65,11 +65,11 @@ class TestCircuitBreakerBasics:
         """Circuit remains closed below failure threshold."""
         config = CircuitBreakerConfig(failure_threshold=5)
         breaker = CircuitBreaker(config=config)
-        
+
         # Record failures below threshold
         breaker.record_failure()
         breaker.record_failure()
-        
+
         assert breaker.state == CircuitState.CLOSED
         assert breaker.is_available() is True
 
@@ -77,11 +77,11 @@ class TestCircuitBreakerBasics:
         """Success in CLOSED state resets failure count."""
         config = CircuitBreakerConfig(failure_threshold=3)
         breaker = CircuitBreaker(config=config)
-        
+
         breaker.record_failure()
         breaker.record_failure()
         assert breaker.failure_count == 2
-        
+
         breaker.record_success()
         assert breaker.failure_count == 0
 
@@ -96,15 +96,15 @@ class TestCircuitBreakerRecovery:
             recovery_timeout=0.1,  # 100ms
         )
         breaker = CircuitBreaker(config=config)
-        
+
         # Open the circuit
         breaker.record_failure()
         breaker.record_failure()
         assert breaker.state == CircuitState.OPEN
-        
+
         # Wait for recovery timeout
         time.sleep(0.15)
-        
+
         # Check availability (should transition to HALF_OPEN)
         assert breaker.is_available() is True
         assert breaker.state == CircuitState.HALF_OPEN
@@ -117,21 +117,21 @@ class TestCircuitBreakerRecovery:
             success_threshold=2,
         )
         breaker = CircuitBreaker(config=config)
-        
+
         # Open circuit
         breaker.record_failure()
         breaker.record_failure()
         assert breaker.state == CircuitState.OPEN
-        
+
         # Wait and transition to HALF_OPEN
         time.sleep(0.15)
         breaker.is_available()
         assert breaker.state == CircuitState.HALF_OPEN
-        
+
         # Record successes
         breaker.record_success()
         breaker.record_success()
-        
+
         assert breaker.state == CircuitState.CLOSED
 
     def test_circuit_reopens_on_failure_during_recovery(self):
@@ -141,19 +141,19 @@ class TestCircuitBreakerRecovery:
             recovery_timeout=0.1,
         )
         breaker = CircuitBreaker(config=config)
-        
+
         # Open circuit
         breaker.record_failure()
         breaker.record_failure()
-        
+
         # Wait and transition to HALF_OPEN
         time.sleep(0.15)
         breaker.is_available()
         assert breaker.state == CircuitState.HALF_OPEN
-        
+
         # Failure during recovery
         breaker.record_failure()
-        
+
         assert breaker.state == CircuitState.OPEN
 
 
@@ -164,7 +164,7 @@ class TestCircuitBreakerStatus:
         """get_status returns comprehensive status information."""
         breaker = CircuitBreaker()
         status = breaker.get_status()
-        
+
         assert "state" in status
         assert "failure_count" in status
         assert "success_count" in status
@@ -175,11 +175,11 @@ class TestCircuitBreakerStatus:
         """Status accurately reflects current circuit state."""
         config = CircuitBreakerConfig(failure_threshold=2)
         breaker = CircuitBreaker(config=config)
-        
+
         # Initial state
         status = breaker.get_status()
         assert status["state"] == CircuitState.CLOSED
-        
+
         # Open state
         breaker.record_failure()
         breaker.record_failure()
@@ -218,7 +218,7 @@ class TestSignalRegistryIntegration:
         """Health check reports healthy when circuit is closed."""
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
         health = registry.health_check()
-        
+
         assert health["healthy"] is True
         assert health["status"] == "healthy"
         assert "circuit_breaker" in health
@@ -228,12 +228,12 @@ class TestSignalRegistryIntegration:
     def test_registry_health_check_reports_degraded_when_open(self, mock_questionnaire):
         """Health check reports degraded when circuit is open."""
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         # Force circuit to open
         config = CircuitBreakerConfig(failure_threshold=1)
         registry._circuit_breaker.config = config
         registry._circuit_breaker.record_failure()
-        
+
         health = registry.health_check()
         assert health["healthy"] is False
         assert health["status"] == "degraded"
@@ -242,20 +242,20 @@ class TestSignalRegistryIntegration:
         """get_metrics includes circuit breaker status."""
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
         metrics = registry.get_metrics()
-        
+
         assert "circuit_breaker" in metrics
         assert metrics["circuit_breaker"]["state"] == CircuitState.CLOSED
 
     def test_registry_manual_reset_closes_circuit(self, mock_questionnaire):
         """Manual reset closes open circuit."""
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         # Open circuit
         config = CircuitBreakerConfig(failure_threshold=1)
         registry._circuit_breaker.config = config
         registry._circuit_breaker.record_failure()
         assert registry._circuit_breaker.state == CircuitState.OPEN
-        
+
         # Manual reset
         registry.reset_circuit_breaker()
         assert registry._circuit_breaker.state == CircuitState.CLOSED
@@ -288,16 +288,16 @@ class TestGracefulDegradation:
     def test_registry_rejects_requests_when_circuit_open(self, mock_questionnaire):
         """Registry rejects requests when circuit is open."""
         registry = QuestionnaireSignalRegistry(mock_questionnaire)
-        
+
         # Force circuit to open
         config = CircuitBreakerConfig(failure_threshold=1)
         registry._circuit_breaker.config = config
         registry._circuit_breaker.record_failure()
-        
+
         # Attempt to get signals should raise error
         with pytest.raises(SignalExtractionError) as exc_info:
             registry.get_assembly_signals("meso")
-        
+
         assert "Circuit breaker" in str(exc_info.value)
         assert "open" in str(exc_info.value).lower()
 

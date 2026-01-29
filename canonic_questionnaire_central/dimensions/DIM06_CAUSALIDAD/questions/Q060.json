@@ -1,0 +1,169 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q060",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "identifiers": {
+    "base_slot": "D6-Q5",
+    "legacy_id": "Q060",
+    "canonical_notation": "DIM06.PA02.Q060"
+  },
+  "text": {
+    "es": "¿La lógica causal para la prevención de la violencia considera el contexto, reconociendo 'grupos afectados' (ej. jóvenes, firmantes de paz) y 'restricciones' territoriales o de acceso?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_contextual"
+    },
+    {
+      "required": true,
+      "type": "enfoque_diferencial"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0582",
+      "PAT-0583",
+      "PAT-0584",
+      "PAT-0585",
+      "PAT-0586",
+      "PAT-0587",
+      "PAT-Q063-002",
+      "PAT-Q026-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC08",
+      "MC10",
+      "MC06"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_COHERENCIA_NORMATIVA",
+      "CC_ENTORNO_TERRITORIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q060.v4.json",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_language_specificity",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "CausalExtractor._calculate_language_specificity"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_assess_temporal_coherence",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "CausalExtractor._assess_temporal_coherence"
+      },
+      {
+        "class": "TextMiningEngine",
+        "function": "diagnose_critical_links",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "TextMiningEngine.diagnose_critical_links"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "function": "identify_failure_points",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "CausalInferenceSetup.identify_failure_points"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "function": "_get_dynamics_pattern",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "CausalInferenceSetup._get_dynamics_pattern"
+      },
+      {
+        "class": "SemanticProcessor",
+        "function": "chunk_text",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "SemanticProcessor.chunk_text"
+      },
+      {
+        "class": "SemanticProcessor",
+        "function": "_detect_pdm_structure",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "SemanticProcessor._detect_pdm_structure"
+      },
+      {
+        "class": "SemanticProcessor",
+        "function": "_detect_table",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "SemanticProcessor._detect_table"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "generate_traceability_record",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "AdaptivePriorCalculator.generate_traceability_record"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q090-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "CAUSALIDAD",
+      "TEORIA_CAMBIO",
+      "ESTRATEGICO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.794382+00:00",
+    "updated_at": "2026-01-06T17:38:07.794385+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

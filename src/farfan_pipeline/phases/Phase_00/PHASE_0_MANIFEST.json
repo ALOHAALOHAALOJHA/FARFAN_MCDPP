@@ -1,0 +1,456 @@
+{
+  "$schema": "phase_manifest_schema.json",
+  "manifest_version": "1.1.0",
+  "phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap",
+    "codename": "FOUNDATION",
+    "label": "Phase 0",
+    "description": "Pre-analytical foundation layer establishing validation, resource enforcement, and bootstrap for the F.A.R.F.A.N pipeline"
+  },
+  "metadata": {
+    "created": "2025-12-29",
+    "modified": "2026-01-18",
+    "version": "1.4.0",
+    "author": "F.A.R.F.A.N Core Architecture Team",
+    "status": "ACTIVE",
+    "test_status": "115 passed, 0 failed (2026-01-07)",
+    "audit_status": "Phase 0 Audit Complete (2026-01-13)",
+    "audit_changes": [
+      "Created contracts/ folder with 3 contract files",
+      "Created docs/ folder with audit documentation",
+      "Created primitives/ folder and moved phase0_00_03_primitives.py",
+      "Removed 3 .bak files",
+      "Updated imports for primitives relocation"
+    ]
+  },
+  "statistics": {
+    "total_modules": 17,
+    "stages": 8
+  },
+  "stages": [
+    {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_00_01_domain_errors",
+          "type": "INFRA",
+          "criticality": "CRITICAL",
+          "purpose": "Domain Errors"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_00_03_protocols",
+          "type": "INFRA",
+          "criticality": "CRITICAL",
+          "purpose": "Protocols"
+        }
+      ]
+    },
+    {
+      "code": 10,
+      "name": "Configuration",
+      "description": "Configuration and setup",
+      "execution_order": 2,
+      "module_count": 4,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_10_00_paths",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Paths"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_10_01_runtime_config",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Runtime Config"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_10_03_runtime_config_schema",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Runtime Config Schema"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase0_10_04_runtime_config_typed",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "purpose": "Runtime Config Typed"
+        }
+      ]
+    },
+    {
+      "code": 20,
+      "name": "Enforcement",
+      "description": "Determinism and enforcement",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_20_02_determinism",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Determinism"
+        }
+      ]
+    },
+    {
+      "code": 30,
+      "name": "Resource Management",
+      "description": "Resource control and limits",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_30_00_resource_controller",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "purpose": "Resource Controller"
+        }
+      ]
+    },
+    {
+      "code": 40,
+      "name": "Validation",
+      "description": "Input validation",
+      "execution_order": 5,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_40_00_input_validation",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Input Validation"
+        }
+      ]
+    },
+    {
+      "code": 50,
+      "name": "Execution",
+      "description": "Core execution logic",
+      "execution_order": 6,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_50_00_boot_checks",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Boot Checks"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_50_01_exit_gates",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "purpose": "Exit Gates"
+        }
+      ]
+    },
+    {
+      "code": 90,
+      "name": "Orchestration",
+      "description": "Orchestration and coordination",
+      "execution_order": 7,
+      "module_count": 4,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_90_00_main",
+          "type": "UTIL",
+          "criticality": "CRITICAL",
+          "purpose": "Main"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_90_01_verified_pipeline_runner",
+          "type": "UTIL",
+          "criticality": "CRITICAL",
+          "purpose": "Verified Pipeline Runner"
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_90_02_bootstrap",
+          "type": "UTIL",
+          "criticality": "CRITICAL",
+          "purpose": "Bootstrap"
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase0_90_03_wiring_validator",
+          "type": "UTIL",
+          "criticality": "CRITICAL",
+          "purpose": "Wiring Validator"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 8,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_0_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 0 Constants"
+        }
+      ]
+    }
+  ],
+  "execution_flow": {
+    "sequence": [
+      {
+        "stage": 0,
+        "description": "Load infrastructure: errors, types, init"
+      },
+      {
+        "stage": 10,
+        "description": "Configure environment: paths, config, logging"
+      },
+      {
+        "stage": 20,
+        "description": "Enforce determinism: seeds, hashing, context"
+      },
+      {
+        "stage": 30,
+        "description": "Control resources: limits, watchdog, enforcement"
+      },
+      {
+        "stage": 40,
+        "description": "Validate inputs: documents, schemas, signatures"
+      },
+      {
+        "stage": 50,
+        "description": "Execute boot: checks, gates, verification"
+      },
+      {
+        "stage": 90,
+        "description": "Integrate: main, runner, bootstrap, handoff to Phase 1"
+      }
+    ],
+    "critical_path": [
+      "phase0_10_00_paths",
+      "phase0_10_01_runtime_config",
+      "phase0_20_02_determinism",
+      "phase0_30_00_resource_controller",
+      "phase0_40_00_input_validation",
+      "phase0_50_00_boot_checks",
+      "phase0_90_02_bootstrap"
+    ],
+    "parallelization_opportunities": [
+      {
+        "modules": [
+          "phase0_40_00_input_validation",
+          "phase0_40_01_schema_monitor",
+          "phase0_40_02_signature_validator"
+        ],
+        "stage": 40
+      },
+      {
+        "modules": [
+          "phase0_20_00_seed_factory",
+          "phase0_20_01_hash_utils"
+        ],
+        "stage": 20
+      }
+    ]
+  },
+  "contracts": {
+    "inputs": [
+      {
+        "name": "questionnaire_path",
+        "type": "Path",
+        "required": true,
+        "description": "Path to questionnaire monolith JSON"
+      },
+      {
+        "name": "questionnaire_hash",
+        "type": "str",
+        "required": true,
+        "description": "Expected SHA-256 hash"
+      },
+      {
+        "name": "executor_config_path",
+        "type": "Path",
+        "required": true,
+        "description": "Path to executor configuration"
+      },
+      {
+        "name": "calibration_profile",
+        "type": "str",
+        "required": true,
+        "description": "Calibration profile name"
+      },
+      {
+        "name": "abort_on_insufficient",
+        "type": "bool",
+        "required": true,
+        "description": "Abort on insufficient data"
+      },
+      {
+        "name": "resource_limits",
+        "type": "dict",
+        "required": false,
+        "description": "Resource limit overrides"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "WiringComponents",
+        "type": "dataclass",
+        "description": "Container with all initialized components"
+      },
+      {
+        "name": "init_hashes",
+        "type": "dict[str, str]",
+        "description": "Hashes of initialized components"
+      },
+      {
+        "name": "enforcement_metrics",
+        "type": "EnforcementMetrics",
+        "description": "Resource usage during init"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "INV-1",
+        "name": "Determinism",
+        "formula": "\u2200 identical_inputs: hash(phase0_output) = constant"
+      },
+      {
+        "id": "INV-2",
+        "name": "Resource Bounds",
+        "formula": "\u2200 execution: (memory \u2264 RLIMIT_AS) \u2227 (cpu \u2264 RLIMIT_CPU)"
+      },
+      {
+        "id": "INV-3",
+        "name": "Config Immutability",
+        "formula": "\u2200 t > phase0_complete: RuntimeConfig.is_frozen() = True"
+      },
+      {
+        "id": "INV-4",
+        "name": "Validation Completeness",
+        "formula": "\u2200 input: validated(input) \u2228 execution_blocked"
+      }
+    ]
+  },
+  "resource_enforcement": {
+    "kernel_limits": [
+      {
+        "limit": "RLIMIT_AS",
+        "default_mb": 2048,
+        "description": "Address space (memory)"
+      },
+      {
+        "limit": "RLIMIT_CPU",
+        "default_seconds": 300,
+        "description": "CPU time"
+      },
+      {
+        "limit": "RLIMIT_NOFILE",
+        "default_count": 1024,
+        "description": "File descriptors"
+      }
+    ],
+    "watchdog": {
+      "threshold_percent": 90,
+      "check_interval_seconds": 1.0
+    },
+    "preflight_checks": [
+      {
+        "check": "memory_available",
+        "threshold": "50% of limit"
+      },
+      {
+        "check": "disk_available",
+        "threshold": "100% of limit"
+      },
+      {
+        "check": "file_descriptors",
+        "threshold": "current < limit"
+      }
+    ]
+  },
+  "determinism": {
+    "base_seed": 42,
+    "strategy": "FIXED",
+    "hash_algorithm": "blake3",
+    "seed_derivation": "hierarchical"
+  },
+  "documentation": {
+    "readme": "README.md",
+    "constants": "primitives/constants.py",
+    "manifest": "PHASE_0_MANIFEST.json",
+    "contracts": {
+      "input_contract": "contracts/phase0_input_contract.py",
+      "mission_contract": "contracts/phase0_mission_contract.py",
+      "output_contract": "contracts/phase0_output_contract.py"
+    },
+    "audit_docs": {
+      "audit_checklist": "docs/AUDIT_CHECKLIST.md",
+      "dependency_graph": "docs/MODULE_DEPENDENCY_GRAPH.md"
+    }
+  },
+  "folder_structure": {
+    "contracts/": {
+      "purpose": "Contract definitions for input, mission, and output",
+      "files": [
+        "phase0_input_contract.py",
+        "phase0_mission_contract.py",
+        "phase0_output_contract.py"
+      ]
+    },
+    "docs/": {
+      "purpose": "Audit documentation and dependency analysis",
+      "files": [
+        "AUDIT_CHECKLIST.md",
+        "MODULE_DEPENDENCY_GRAPH.md"
+      ]
+    },
+    "primitives/": {
+      "purpose": "Fundamental type definitions and primitives",
+      "files": [
+        "phase0_00_03_primitives.py"
+      ]
+    },
+    "tests/": {
+      "purpose": "Test suite for Phase 0 modules",
+      "note": "Tests located in repository root tests/ directory"
+    }
+  },
+  "validation": {
+    "naming_pattern": "^phase0_\\d{2}_\\d{2}_[a-z][a-z0-9_]+\\.py$",
+    "required_header_fields": [
+      "PHASE_LABEL",
+      "Module",
+      "Purpose",
+      "Type",
+      "Criticality"
+    ],
+    "minimum_coverage_percent": 80
+  }
+}

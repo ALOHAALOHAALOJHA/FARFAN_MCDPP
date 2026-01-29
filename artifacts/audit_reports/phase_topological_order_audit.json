@@ -1,0 +1,266 @@
+{
+  "audit_type": "phase_topological_order",
+  "phases_directory": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases",
+  "canonical_order": [
+    "P00",
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06",
+    "P07",
+    "P08",
+    "P09"
+  ],
+  "total_phases": 10,
+  "phases_audited": 10,
+  "phase_results": {
+    "P00": {
+      "phase_id": "P00",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": []
+    },
+    "P01": {
+      "phase_id": "P01",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P00"
+      ],
+      "downstream_phases": [
+        "P01"
+      ],
+      "topological_order_correct": false,
+      "issues": [
+        "Downstream phase P01 comes before P01 in canonical order"
+      ]
+    },
+    "P02": {
+      "phase_id": "P02",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P01"
+      ],
+      "downstream_phases": [
+        "P03"
+      ],
+      "topological_order_correct": true,
+      "issues": []
+    },
+    "P03": {
+      "phase_id": "P03",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P02"
+      ],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": []
+    },
+    "P04": {
+      "phase_id": "P04",
+      "readme_found": true,
+      "dependencies_extracted": false,
+      "upstream_phases": [],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": [
+        "Expected upstream phase P03 not explicitly documented in README"
+      ]
+    },
+    "P05": {
+      "phase_id": "P05",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P04"
+      ],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": []
+    },
+    "P06": {
+      "phase_id": "P06",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P05"
+      ],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": []
+    },
+    "P07": {
+      "phase_id": "P07",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P06"
+      ],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": []
+    },
+    "P08": {
+      "phase_id": "P08",
+      "readme_found": true,
+      "dependencies_extracted": false,
+      "upstream_phases": [],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": [
+        "Expected upstream phase P07 not explicitly documented in README"
+      ]
+    },
+    "P09": {
+      "phase_id": "P09",
+      "readme_found": true,
+      "dependencies_extracted": true,
+      "upstream_phases": [
+        "P08",
+        "P07",
+        "P06",
+        "P05"
+      ],
+      "downstream_phases": [],
+      "topological_order_correct": true,
+      "issues": []
+    }
+  },
+  "phase_metadata": {
+    "P00": {
+      "phase_name": "A Constitutional Framework for Deterministic Policy Analysis Pipelines: Design, Verification, and Resource Safety Guarantees",
+      "position": "",
+      "input_from": [],
+      "output_to": [],
+      "constitutional_invariants": [
+        "10 items"
+      ]
+    },
+    "P01": {
+      "phase_name": "A Constitutional Framework for Deterministic Policy Document Transformation: Semantic Chunking, Colombian Municipal Development Plan Enhancement, and Question-Aware Architecture",
+      "position": "",
+      "input_from": [
+        "P00"
+      ],
+      "output_to": [
+        "P01"
+      ],
+      "constitutional_invariants": [
+        "10 items",
+        "300 items",
+        "6 items",
+        "4 items"
+      ]
+    },
+    "P02": {
+      "phase_name": "Phase 2: 300-Contract Deterministic Executor Orchestration",
+      "position": "",
+      "input_from": [
+        "P01"
+      ],
+      "output_to": [
+        "P03"
+      ],
+      "constitutional_invariants": [
+        "4 items",
+        "10 items",
+        "300 items",
+        "60 items"
+      ]
+    },
+    "P03": {
+      "phase_name": "Phase 3: Deterministic Scoring Transformation with Adversarial Validation",
+      "position": "",
+      "input_from": [
+        "P02"
+      ],
+      "output_to": [],
+      "constitutional_invariants": []
+    },
+    "P04": {
+      "phase_name": "Phase 4: Dimension Aggregation",
+      "position": "",
+      "input_from": [],
+      "output_to": [],
+      "constitutional_invariants": [
+        "10 items",
+        "300 items",
+        "60 items",
+        "6 items"
+      ]
+    },
+    "P05": {
+      "phase_name": "Phase 5: Policy Area Aggregation",
+      "position": "",
+      "input_from": [
+        "P04"
+      ],
+      "output_to": [],
+      "constitutional_invariants": [
+        "10 items",
+        "6 items",
+        "60 items",
+        "4 items"
+      ]
+    },
+    "P06": {
+      "phase_name": "Phase 6: Cluster Aggregation \u2014 MESO-Level Synthesis",
+      "position": "",
+      "input_from": [
+        "P05"
+      ],
+      "output_to": [],
+      "constitutional_invariants": [
+        "10 items",
+        "6 items",
+        "60 items",
+        "4 items"
+      ]
+    },
+    "P07": {
+      "phase_name": "Phase 7: Macro Evaluation \u2014 Holistic Policy Assessment Synthesis",
+      "position": "",
+      "input_from": [
+        "P06"
+      ],
+      "output_to": [],
+      "constitutional_invariants": [
+        "10 items",
+        "60 items",
+        "4 items"
+      ]
+    },
+    "P08": {
+      "phase_name": "Phase 8: Recommendation Engine (EXPONENTIALLY ENHANCED v3.0)",
+      "position": "",
+      "input_from": [],
+      "output_to": [],
+      "constitutional_invariants": []
+    },
+    "P09": {
+      "phase_name": "Phase 9: Report Generation",
+      "position": "",
+      "input_from": [
+        "P08",
+        "P07",
+        "P06",
+        "P05"
+      ],
+      "output_to": [],
+      "constitutional_invariants": []
+    }
+  },
+  "summary": {
+    "readmes_found": 10,
+    "dependencies_extracted": 8,
+    "topological_order_correct": 9
+  }
+}

@@ -1,0 +1,506 @@
+{
+  "_category": "INSTRUMENTO",
+  "_count": 10,
+  "patterns": {
+    "PAT-0163": {
+      "id": "PAT-0163",
+      "canonical_id": "PAT-0163",
+      "legacy_ids": [
+        "PAT-0163",
+        "PAT-Q007-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "talleres de|capacitaciones en|jornadas de|mesas de trabajo|formación en",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978173+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0164": {
+      "id": "PAT-0164",
+      "canonical_id": "PAT-0164",
+      "legacy_ids": [
+        "PAT-0164",
+        "PAT-Q007-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "capital semilla|incentivos económicos|apoyo a emprendimientos|subsidios|transferencias",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978184+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "POLICY-INST-001": {
+      "id": "POLICY-INST-001",
+      "canonical_id": "POLICY-INST-001",
+      "legacy_ids": [
+        "POLICY-INST-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850445+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-002": {
+      "id": "POLICY-INST-002",
+      "canonical_id": "POLICY-INST-002",
+      "legacy_ids": [
+        "POLICY-INST-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850451+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-003": {
+      "id": "POLICY-INST-003",
+      "canonical_id": "POLICY-INST-003",
+      "legacy_ids": [
+        "POLICY-INST-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850455+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-004": {
+      "id": "POLICY-INST-004",
+      "canonical_id": "POLICY-INST-004",
+      "legacy_ids": [
+        "POLICY-INST-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850462+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-005": {
+      "id": "POLICY-INST-005",
+      "canonical_id": "POLICY-INST-005",
+      "legacy_ids": [
+        "POLICY-INST-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850466+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-006": {
+      "id": "POLICY-INST-006",
+      "canonical_id": "POLICY-INST-006",
+      "legacy_ids": [
+        "POLICY-INST-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850470+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-007": {
+      "id": "POLICY-INST-007",
+      "canonical_id": "POLICY-INST-007",
+      "legacy_ids": [
+        "POLICY-INST-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850474+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "POLICY-INST-008": {
+      "id": "POLICY-INST-008",
+      "canonical_id": "POLICY-INST-008",
+      "legacy_ids": [
+        "POLICY-INST-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTRUMENTO",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/policy_instrument_patterns.json",
+        "created_at": "2026-01-14T00:01:50.850482+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    }
+  }
+}

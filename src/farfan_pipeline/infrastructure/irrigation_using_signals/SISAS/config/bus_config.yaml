@@ -1,0 +1,95 @@
+# src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config/bus_config.yaml
+
+buses:
+  structural_bus:
+    type: structural
+    max_queue_size: 10000
+    persistence:
+      enabled: true
+      path: "_data/buses/structural/"
+    subscribers:
+      max_per_bus: 50
+
+  integrity_bus:
+    type: integrity
+    max_queue_size:  10000
+    persistence:
+      enabled: true
+      path:  "_data/buses/integrity/"
+
+  epistemic_bus:
+    type:  epistemic
+    max_queue_size: 50000  # Mayor capacidad para señales epistémicas
+    persistence:
+      enabled: true
+      path: "_data/buses/epistemic/"
+
+  contrast_bus:
+    type: contrast
+    max_queue_size:  5000
+    persistence:
+      enabled: true
+      path: "_data/buses/contrast/"
+
+  operational_bus:
+    type: operational
+    max_queue_size:  20000
+    persistence:
+      enabled: true
+      path: "_data/buses/operational/"
+
+  consumption_bus:
+    type: consumption
+    max_queue_size:  10000
+    persistence:
+      enabled: true
+      path:  "_data/buses/consumption/"
+
+  universal_bus:
+    type: universal
+    max_queue_size:  100000
+    persistence:
+      enabled: true
+      path:  "_data/buses/universal/"
+
+  # New buses for SISAS 5.0
+  orchestration_bus:
+    type: orchestration
+    max_queue_size: 5000
+    persistence:
+      enabled: true
+      path: "_data/buses/orchestration/"
+
+  evidence_bus:
+    type: evidence
+    max_queue_size: 10000
+    persistence:
+      enabled: true
+      path: "_data/buses/evidence/"
+
+  intelligence_bus:
+    type: intelligence
+    max_queue_size: 10000
+    persistence:
+      enabled: true
+      path: "_data/buses/intelligence/"
+
+  enhancement_bus:
+    type: enhancement
+    max_queue_size: 10000
+    persistence:
+      enabled: true
+      path: "_data/buses/enhancement/"
+
+  quality_bus:
+    type: quality
+    max_queue_size: 10000
+    persistence:
+      enabled: true
+      path: "_data/buses/quality/"
+
+defaults:
+  message_ttl_seconds: 86400  # 24 horas
+  max_retries: 3
+  retry_delay_ms: 1000
+  acknowledgement_timeout_ms: 5000

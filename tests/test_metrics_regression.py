@@ -186,14 +186,14 @@ def test_metrics_files_have_required_content() -> None:
             phase_data = json.load(f)
         
         assert "0" in phase_data, "REGRESSION: phase_metrics.json missing phase data"
-        phase_0 = phase_data["0"]
+        phase_00 = phase_data["0"]
         
         required_fields = [
             "phase_id", "name", "duration_ms", "items_processed",
             "items_total", "throughput", "latency_histogram"
         ]
         for field in required_fields:
-            assert field in phase_0, \
+            assert field in phase_00, \
                 f"REGRESSION: phase_metrics.json missing required field: {field}"
         
         # Check latency_histograms.json has percentiles
@@ -287,10 +287,11 @@ def test_missing_metrics_files_detectable() -> None:
     If metrics persistence fails, CI should be able to detect the absence
     of expected files.
     """
+    import tempfile
     from pathlib import Path
-    
+
     # Simulate a failed run where metrics weren't persisted
-    fake_artifacts_dir = Path("/tmp/fake_artifacts_dir_that_does_not_exist")
+    fake_artifacts_dir = Path(tempfile.gettempdir()) / "fake_artifacts_dir_that_does_not_exist"
     
     expected_files = [
         fake_artifacts_dir / "phase_metrics.json",

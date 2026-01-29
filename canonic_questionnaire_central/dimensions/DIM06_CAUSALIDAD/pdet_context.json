@@ -1,0 +1,244 @@
+{
+  "_schema_version": "1.0.0",
+  "_dimension_id": "DIM06",
+  "_dimension_name": "CAUSALIDAD (Teoría del Cambio)",
+  "_generated_at": "2026-01-08T13:30:00Z",
+  "_description": "PDET context enrichment for DIM06 focusing on theory of change, causal pathways, logical frameworks, and assumptions in PDET municipalities",
+  
+  "validation_gates_alignment": {
+    "gate_1_scope": {
+      "required_scope": "pdet_context",
+      "allowed_signal_types": ["ENRICHMENT_DATA", "CAUSAL_DATA"],
+      "scope_level": "STRATEGIC_PLANNING",
+      "justification": "DIM06 requires access to PDET theories of change, PATR causal frameworks, and pillar-specific intervention logics"
+    },
+    "gate_2_value_add": {
+      "estimated_value_add": 0.30,
+      "value_components": {
+        "causal_framework_standards": 0.12,
+        "pdet_theory_alignment": 0.08,
+        "assumption_testing_criteria": 0.06,
+        "logical_coherence_validation": 0.04
+      },
+      "justification": "Provides causal logic frameworks and assumption validation criteria critical for PDET intervention design"
+    },
+    "gate_3_capability": {
+      "required_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "CAUSAL_INFERENCE",
+        "LOGICAL_REASONING"
+      ],
+      "recommended_capabilities": [
+        "GRAPH_CONSTRUCTION",
+        "ASSUMPTION_EXTRACTION"
+      ],
+      "justification": "Methods must extract causal claims, construct logic models, and identify implicit assumptions"
+    },
+    "gate_4_channel": {
+      "flow_id": "DIM06_PDET_ENRICHMENT",
+      "flow_type": "ENRICHMENT_FLOW",
+      "source": "pdet_municipalities.json",
+      "destination": "DIM06_questions_evaluation",
+      "data_schema": "PDETContextDIM06",
+      "governance_policy": "CCP-PDET-2024",
+      "documentation_path": "canonic_questionnaire_central/dimensions/DIM06_CAUSALIDAD/README_PDET_ENRICHMENT.md",
+      "is_explicit": true,
+      "is_documented": true,
+      "is_traceable": true,
+      "is_governed": true
+    }
+  },
+  
+  "pdet_pillar_mapping": {
+    "all_pillars": {
+      "relevance": "CRITICAL",
+      "relevance_score": 0.95,
+      "justification": "Theory of change is required for all PDET pillars; causal logic must connect pillar-specific interventions to outcomes and impacts",
+      "common_causal_pathways": [
+        {
+          "pathway": "Infrastructure → Market Access → Economic Development",
+          "pillars": ["pillar_2", "pillar_6"],
+          "key_assumptions": [
+            "Farmers have products to sell",
+            "Markets exist and are accessible",
+            "Price volatility does not discourage production"
+          ]
+        },
+        {
+          "pathway": "Land Formalization → Tenure Security → Investment",
+          "pillars": ["pillar_1", "pillar_6"],
+          "key_assumptions": [
+            "Legal system enforces property rights",
+            "No violent actors contest land claims",
+            "Credit markets function"
+          ]
+        },
+        {
+          "pathway": "Reconciliation → Social Cohesion → Reduced Violence",
+          "pillars": ["pillar_8"],
+          "key_assumptions": [
+            "Communities willing to engage",
+            "Perpetrators participate in good faith",
+            "Security conditions allow dialogue"
+          ]
+        },
+        {
+          "pathway": "Education → Skills → Employment → Poverty Reduction",
+          "pillars": ["pillar_4", "pillar_6"],
+          "key_assumptions": [
+            "Job market exists for skilled labor",
+            "Education quality is adequate",
+            "No discrimination in hiring"
+          ]
+        }
+      ]
+    }
+  },
+  
+  "pdet_specific_criteria": {
+    "explicit_theory_of_change": {
+      "required": true,
+      "components": [
+        "inputs_resources_specified",
+        "activities_processes_defined",
+        "outputs_deliverables_stated",
+        "outcomes_changes_articulated",
+        "impacts_transformations_envisioned",
+        "causal_links_explicit"
+      ],
+      "formats": [
+        "narrative_if_then_logic",
+        "logical_framework_matrix",
+        "theory_of_change_diagram",
+        "results_chain"
+      ],
+      "justification": "PDET addresses complex structural problems requiring explicit causal reasoning; implicit theories lead to implementation failures"
+    },
+    "assumption_identification": {
+      "required": true,
+      "types": [
+        "contextual_assumptions",
+        "causal_assumptions",
+        "implementation_assumptions",
+        "external_factor_assumptions"
+      ],
+      "requirements": [
+        "assumptions_explicitly_stated",
+        "assumptions_testable_where_possible",
+        "risk_assessment_for_false_assumptions",
+        "mitigation_strategies_for_critical_assumptions"
+      ],
+      "common_pdet_assumptions": [
+        "Security conditions allow implementation",
+        "Institutions have minimum implementation capacity",
+        "Communities trust government interventions",
+        "Illicit economies can be substituted",
+        "Land conflicts can be resolved legally",
+        "National government maintains commitment"
+      ],
+      "justification": "PDET operates in high-risk environments; false assumptions lead to failure; explicit assumption testing is critical"
+    },
+    "causal_mechanism_specification": {
+      "required": true,
+      "definition": "The specific process or pathway through which intervention causes change",
+      "examples": [
+        "Land titling → perceived tenure security → willingness to invest → increased productivity",
+        "Peace pedagogy → changed attitudes → conflict resolution skills → reduced interpersonal violence"
+      ],
+      "requirements": [
+        "mechanism_explicitly_described",
+        "intermediate_steps_identified",
+        "behavioral_or_cognitive_changes_specified",
+        "context_factors_enabling_mechanism"
+      ],
+      "justification": "Understanding mechanisms enables adaptation when interventions fail; 'black box' theories prevent learning"
+    },
+    "evidence_base_for_causal_claims": {
+      "required": true,
+      "sources": [
+        "rigorous_evaluations_from_similar_contexts",
+        "academic_literature",
+        "expert_consultation",
+        "pilot_programs_lessons"
+      ],
+      "insufficient": [
+        "anecdotal_evidence",
+        "political_promises",
+        "donor_preferences",
+        "unvalidated_best_practices"
+      ],
+      "justification": "PDET municipalities cannot afford failed interventions based on untested theories; evidence requirement is fiduciary responsibility"
+    },
+    "context_specificity": {
+      "required": true,
+      "considerations": [
+        "conflict_dynamics_in_territory",
+        "ethnic_composition_and_governance",
+        "illicit_economy_presence",
+        "institutional_capacity_level",
+        "historical_state_citizen_relations",
+        "geographic_isolation"
+      ],
+      "justification": "Theories that work elsewhere may fail in conflict-affected, institutionally weak, ethnically diverse PDET contexts"
+    },
+    "plausibility_check": {
+      "required": true,
+      "red_flags": [
+        "claims_short_causal_chain_for_complex_change",
+        "ignores_perverse_incentives",
+        "assumes_cooperation_despite_conflict_history",
+        "requires_institutional_capacity_beyond_reality",
+        "ignores_power_dynamics"
+      ],
+      "validation_approaches": [
+        "expert_review",
+        "community_validation",
+        "comparison_with_evidence_base",
+        "implementation_feasibility_assessment"
+      ],
+      "justification": "Implausible theories waste resources and undermine credibility; skeptical review is essential"
+    }
+  },
+  
+  "common_causal_gaps": {
+    "gap_1_missing_theory": {
+      "description": "PDT lists activities, outcomes, impacts without explaining how activities cause outcomes",
+      "prevalence": "very_high",
+      "impact": "Implementation becomes ritual; no learning; failures not understood",
+      "remediation": "Require explicit if-then logic connecting each level of results chain"
+    },
+    "gap_2_implicit_assumptions": {
+      "description": "Causal logic rests on unstated assumptions (e.g., security, capacity, cooperation)",
+      "prevalence": "very_high",
+      "impact": "Interventions fail when assumptions prove false; no contingency planning",
+      "remediation": "Mandate assumption mapping with risk assessment"
+    },
+    "gap_3_linear_thinking": {
+      "description": "Theory assumes linear, predictable change ignoring feedback loops and complexity",
+      "prevalence": "high",
+      "impact": "Interventions create unintended consequences; adaptation too slow",
+      "remediation": "Require systems thinking; identify key feedback loops and tipping points"
+    },
+    "gap_4_borrowed_theories": {
+      "description": "Theories imported from other contexts without adaptation to PDET realities",
+      "prevalence": "medium",
+      "impact": "Context mismatch leads to failure; 'best practices' fail in conflict settings",
+      "remediation": "Demand explicit context analysis and theory adaptation justification"
+    },
+    "gap_5_wishful_thinking": {
+      "description": "Theory requires heroic assumptions (e.g., armed actors will cooperate, institutions will transform rapidly)",
+      "prevalence": "medium",
+      "impact": "Plans become aspirational; implementation faces reality shock",
+      "remediation": "Apply plausibility test; require evidence for optimistic assumptions"
+    }
+  },
+  
+  "metadata": {
+    "created_at": "2026-01-08T13:30:00Z",
+    "version": "1.0.0",
+    "author": "PDET Enrichment System",
+    "validated": true,
+    "validation_date": "2026-01-08T13:30:00Z",
+    "last_updated": "2026-01-08T13:30:00Z"
+  }
+}

@@ -1,0 +1,1514 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-16T23:32:10.334546+00:00",
+  "_generator": "build_cqc_views.py",
+  "matrix": {},
+  "inverse_index": {
+    "Q026": {
+      "question_id": "Q026",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q027": {
+      "question_id": "Q027",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q028": {
+      "question_id": "Q028",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q029": {
+      "question_id": "Q029",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q030": {
+      "question_id": "Q030",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q056": {
+      "question_id": "Q056",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q057": {
+      "question_id": "Q057",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q058": {
+      "question_id": "Q058",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q059": {
+      "question_id": "Q059",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q060": {
+      "question_id": "Q060",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q086": {
+      "question_id": "Q086",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q087": {
+      "question_id": "Q087",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q088": {
+      "question_id": "Q088",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q089": {
+      "question_id": "Q089",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q090": {
+      "question_id": "Q090",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q116": {
+      "question_id": "Q116",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q117": {
+      "question_id": "Q117",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q118": {
+      "question_id": "Q118",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q119": {
+      "question_id": "Q119",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q120": {
+      "question_id": "Q120",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q146": {
+      "question_id": "Q146",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q147": {
+      "question_id": "Q147",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q148": {
+      "question_id": "Q148",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q149": {
+      "question_id": "Q149",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q150": {
+      "question_id": "Q150",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q176": {
+      "question_id": "Q176",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q177": {
+      "question_id": "Q177",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q178": {
+      "question_id": "Q178",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q179": {
+      "question_id": "Q179",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q180": {
+      "question_id": "Q180",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q206": {
+      "question_id": "Q206",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q207": {
+      "question_id": "Q207",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q208": {
+      "question_id": "Q208",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q209": {
+      "question_id": "Q209",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q210": {
+      "question_id": "Q210",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q236": {
+      "question_id": "Q236",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q237": {
+      "question_id": "Q237",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q238": {
+      "question_id": "Q238",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q239": {
+      "question_id": "Q239",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q240": {
+      "question_id": "Q240",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q266": {
+      "question_id": "Q266",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q267": {
+      "question_id": "Q267",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q268": {
+      "question_id": "Q268",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q269": {
+      "question_id": "Q269",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q270": {
+      "question_id": "Q270",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q296": {
+      "question_id": "Q296",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q297": {
+      "question_id": "Q297",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q298": {
+      "question_id": "Q298",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q299": {
+      "question_id": "Q299",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q300": {
+      "question_id": "Q300",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q016": {
+      "question_id": "Q016",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q017": {
+      "question_id": "Q017",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q018": {
+      "question_id": "Q018",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q019": {
+      "question_id": "Q019",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q020": {
+      "question_id": "Q020",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q046": {
+      "question_id": "Q046",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q047": {
+      "question_id": "Q047",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q048": {
+      "question_id": "Q048",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q049": {
+      "question_id": "Q049",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q050": {
+      "question_id": "Q050",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q076": {
+      "question_id": "Q076",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q077": {
+      "question_id": "Q077",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q078": {
+      "question_id": "Q078",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q079": {
+      "question_id": "Q079",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q080": {
+      "question_id": "Q080",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q106": {
+      "question_id": "Q106",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q107": {
+      "question_id": "Q107",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q108": {
+      "question_id": "Q108",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q109": {
+      "question_id": "Q109",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q110": {
+      "question_id": "Q110",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q136": {
+      "question_id": "Q136",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q137": {
+      "question_id": "Q137",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q138": {
+      "question_id": "Q138",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q139": {
+      "question_id": "Q139",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q140": {
+      "question_id": "Q140",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q166": {
+      "question_id": "Q166",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q167": {
+      "question_id": "Q167",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q168": {
+      "question_id": "Q168",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q169": {
+      "question_id": "Q169",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q170": {
+      "question_id": "Q170",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q196": {
+      "question_id": "Q196",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q197": {
+      "question_id": "Q197",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q198": {
+      "question_id": "Q198",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q199": {
+      "question_id": "Q199",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q200": {
+      "question_id": "Q200",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q226": {
+      "question_id": "Q226",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q227": {
+      "question_id": "Q227",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q228": {
+      "question_id": "Q228",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q229": {
+      "question_id": "Q229",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q230": {
+      "question_id": "Q230",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q256": {
+      "question_id": "Q256",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q257": {
+      "question_id": "Q257",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q258": {
+      "question_id": "Q258",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q259": {
+      "question_id": "Q259",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q260": {
+      "question_id": "Q260",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q286": {
+      "question_id": "Q286",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q287": {
+      "question_id": "Q287",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q288": {
+      "question_id": "Q288",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q289": {
+      "question_id": "Q289",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q290": {
+      "question_id": "Q290",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q011": {
+      "question_id": "Q011",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q012": {
+      "question_id": "Q012",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q013": {
+      "question_id": "Q013",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q014": {
+      "question_id": "Q014",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q015": {
+      "question_id": "Q015",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q041": {
+      "question_id": "Q041",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q042": {
+      "question_id": "Q042",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q043": {
+      "question_id": "Q043",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q044": {
+      "question_id": "Q044",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q045": {
+      "question_id": "Q045",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q071": {
+      "question_id": "Q071",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q072": {
+      "question_id": "Q072",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q073": {
+      "question_id": "Q073",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q074": {
+      "question_id": "Q074",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q075": {
+      "question_id": "Q075",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q101": {
+      "question_id": "Q101",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q102": {
+      "question_id": "Q102",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q103": {
+      "question_id": "Q103",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q104": {
+      "question_id": "Q104",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q105": {
+      "question_id": "Q105",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q131": {
+      "question_id": "Q131",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q132": {
+      "question_id": "Q132",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q133": {
+      "question_id": "Q133",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q134": {
+      "question_id": "Q134",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q135": {
+      "question_id": "Q135",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q161": {
+      "question_id": "Q161",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q162": {
+      "question_id": "Q162",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q163": {
+      "question_id": "Q163",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q164": {
+      "question_id": "Q164",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q165": {
+      "question_id": "Q165",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q191": {
+      "question_id": "Q191",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q192": {
+      "question_id": "Q192",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q193": {
+      "question_id": "Q193",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q194": {
+      "question_id": "Q194",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q195": {
+      "question_id": "Q195",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q221": {
+      "question_id": "Q221",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q222": {
+      "question_id": "Q222",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q223": {
+      "question_id": "Q223",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q224": {
+      "question_id": "Q224",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q225": {
+      "question_id": "Q225",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q251": {
+      "question_id": "Q251",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q252": {
+      "question_id": "Q252",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q253": {
+      "question_id": "Q253",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q254": {
+      "question_id": "Q254",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q255": {
+      "question_id": "Q255",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q281": {
+      "question_id": "Q281",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q282": {
+      "question_id": "Q282",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q283": {
+      "question_id": "Q283",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q284": {
+      "question_id": "Q284",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q285": {
+      "question_id": "Q285",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q021": {
+      "question_id": "Q021",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q022": {
+      "question_id": "Q022",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q023": {
+      "question_id": "Q023",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q024": {
+      "question_id": "Q024",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q025": {
+      "question_id": "Q025",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q051": {
+      "question_id": "Q051",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q052": {
+      "question_id": "Q052",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q053": {
+      "question_id": "Q053",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q054": {
+      "question_id": "Q054",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q055": {
+      "question_id": "Q055",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q081": {
+      "question_id": "Q081",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q082": {
+      "question_id": "Q082",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q083": {
+      "question_id": "Q083",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q084": {
+      "question_id": "Q084",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q085": {
+      "question_id": "Q085",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q111": {
+      "question_id": "Q111",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q112": {
+      "question_id": "Q112",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q113": {
+      "question_id": "Q113",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q114": {
+      "question_id": "Q114",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q115": {
+      "question_id": "Q115",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q141": {
+      "question_id": "Q141",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q142": {
+      "question_id": "Q142",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q143": {
+      "question_id": "Q143",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q144": {
+      "question_id": "Q144",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q145": {
+      "question_id": "Q145",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q171": {
+      "question_id": "Q171",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q172": {
+      "question_id": "Q172",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q173": {
+      "question_id": "Q173",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q174": {
+      "question_id": "Q174",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q175": {
+      "question_id": "Q175",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q201": {
+      "question_id": "Q201",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q202": {
+      "question_id": "Q202",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q203": {
+      "question_id": "Q203",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q204": {
+      "question_id": "Q204",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q205": {
+      "question_id": "Q205",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q231": {
+      "question_id": "Q231",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q232": {
+      "question_id": "Q232",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q233": {
+      "question_id": "Q233",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q234": {
+      "question_id": "Q234",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q235": {
+      "question_id": "Q235",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q261": {
+      "question_id": "Q261",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q262": {
+      "question_id": "Q262",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q263": {
+      "question_id": "Q263",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q264": {
+      "question_id": "Q264",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q265": {
+      "question_id": "Q265",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q291": {
+      "question_id": "Q291",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q292": {
+      "question_id": "Q292",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q293": {
+      "question_id": "Q293",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q294": {
+      "question_id": "Q294",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q295": {
+      "question_id": "Q295",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q006": {
+      "question_id": "Q006",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q007": {
+      "question_id": "Q007",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q008": {
+      "question_id": "Q008",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q009": {
+      "question_id": "Q009",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q010": {
+      "question_id": "Q010",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q036": {
+      "question_id": "Q036",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q037": {
+      "question_id": "Q037",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q038": {
+      "question_id": "Q038",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q039": {
+      "question_id": "Q039",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q040": {
+      "question_id": "Q040",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q066": {
+      "question_id": "Q066",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q067": {
+      "question_id": "Q067",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q068": {
+      "question_id": "Q068",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q069": {
+      "question_id": "Q069",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q070": {
+      "question_id": "Q070",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q096": {
+      "question_id": "Q096",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q097": {
+      "question_id": "Q097",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q098": {
+      "question_id": "Q098",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q099": {
+      "question_id": "Q099",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q100": {
+      "question_id": "Q100",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q126": {
+      "question_id": "Q126",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q127": {
+      "question_id": "Q127",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q128": {
+      "question_id": "Q128",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q129": {
+      "question_id": "Q129",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q130": {
+      "question_id": "Q130",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q156": {
+      "question_id": "Q156",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q157": {
+      "question_id": "Q157",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q158": {
+      "question_id": "Q158",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q159": {
+      "question_id": "Q159",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q160": {
+      "question_id": "Q160",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q186": {
+      "question_id": "Q186",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q187": {
+      "question_id": "Q187",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q188": {
+      "question_id": "Q188",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q189": {
+      "question_id": "Q189",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q190": {
+      "question_id": "Q190",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q216": {
+      "question_id": "Q216",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q217": {
+      "question_id": "Q217",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q218": {
+      "question_id": "Q218",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q219": {
+      "question_id": "Q219",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q220": {
+      "question_id": "Q220",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q246": {
+      "question_id": "Q246",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q247": {
+      "question_id": "Q247",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q248": {
+      "question_id": "Q248",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q249": {
+      "question_id": "Q249",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q250": {
+      "question_id": "Q250",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q276": {
+      "question_id": "Q276",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q277": {
+      "question_id": "Q277",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q278": {
+      "question_id": "Q278",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q279": {
+      "question_id": "Q279",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q280": {
+      "question_id": "Q280",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q001": {
+      "question_id": "Q001",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q002": {
+      "question_id": "Q002",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q003": {
+      "question_id": "Q003",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q004": {
+      "question_id": "Q004",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q005": {
+      "question_id": "Q005",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q031": {
+      "question_id": "Q031",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q032": {
+      "question_id": "Q032",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q033": {
+      "question_id": "Q033",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q034": {
+      "question_id": "Q034",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q035": {
+      "question_id": "Q035",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q061": {
+      "question_id": "Q061",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q062": {
+      "question_id": "Q062",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q063": {
+      "question_id": "Q063",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q064": {
+      "question_id": "Q064",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q065": {
+      "question_id": "Q065",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q091": {
+      "question_id": "Q091",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q092": {
+      "question_id": "Q092",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q093": {
+      "question_id": "Q093",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q094": {
+      "question_id": "Q094",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q095": {
+      "question_id": "Q095",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q121": {
+      "question_id": "Q121",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q122": {
+      "question_id": "Q122",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q123": {
+      "question_id": "Q123",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q124": {
+      "question_id": "Q124",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q125": {
+      "question_id": "Q125",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q151": {
+      "question_id": "Q151",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q152": {
+      "question_id": "Q152",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q153": {
+      "question_id": "Q153",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q154": {
+      "question_id": "Q154",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q155": {
+      "question_id": "Q155",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q181": {
+      "question_id": "Q181",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q182": {
+      "question_id": "Q182",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q183": {
+      "question_id": "Q183",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q184": {
+      "question_id": "Q184",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q185": {
+      "question_id": "Q185",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q211": {
+      "question_id": "Q211",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q212": {
+      "question_id": "Q212",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q213": {
+      "question_id": "Q213",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q214": {
+      "question_id": "Q214",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q215": {
+      "question_id": "Q215",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q241": {
+      "question_id": "Q241",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q242": {
+      "question_id": "Q242",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q243": {
+      "question_id": "Q243",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q244": {
+      "question_id": "Q244",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q245": {
+      "question_id": "Q245",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q271": {
+      "question_id": "Q271",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q272": {
+      "question_id": "Q272",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q273": {
+      "question_id": "Q273",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q274": {
+      "question_id": "Q274",
+      "patterns": [],
+      "pattern_count": 0
+    },
+    "Q275": {
+      "question_id": "Q275",
+      "patterns": [],
+      "pattern_count": 0
+    }
+  },
+  "statistics": {
+    "total_patterns": 0,
+    "total_questions": 300,
+    "patterns_with_bindings": 0,
+    "questions_with_patterns": 0
+  }
+}

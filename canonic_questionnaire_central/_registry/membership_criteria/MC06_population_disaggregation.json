@@ -1,0 +1,338 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
+  "criterion_id": "MC06",
+  "name": "Population Disaggregation",
+  "description_es": "Detecta menciones de poblaciones específicas y análisis interseccional",
+  "description_en": "Detects mentions of specific populations and intersectional analysis",
+  "signal_type": "POPULATION_DISAGGREGATION",
+  "implementation_status": "PARTIAL",
+  "extractor_class": "PopulationDisaggregationExtractor",
+  "detection": {
+    "primary_method": "KEYWORD_SET",
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/POPULATION_DISAGGREGATION",
+    "population_categories": {
+      "NINEZ": {
+        "keywords": [
+          "niñez",
+          "niños",
+          "niñas",
+          "primera infancia",
+          "infancia",
+          "menores"
+        ],
+        "frequency": {
+          "mean": 67,
+          "range": [
+            29,
+            134
+          ]
+        }
+      },
+      "JUVENTUD": {
+        "keywords": [
+          "juventud",
+          "jóvenes",
+          "adolescentes",
+          "adolescencia"
+        ],
+        "frequency": {
+          "mean": 42,
+          "range": [
+            15,
+            78
+          ]
+        }
+      },
+      "ADULTO_MAYOR": {
+        "keywords": [
+          "adulto mayor",
+          "adultos mayores",
+          "vejez",
+          "tercera edad",
+          "envejecimiento"
+        ],
+        "frequency": {
+          "mean": 48,
+          "range": [
+            22,
+            91
+          ]
+        }
+      },
+      "MUJERES": {
+        "keywords": [
+          "mujeres",
+          "mujer",
+          "femenino",
+          "equidad de género",
+          "mujeres cabeza de familia",
+          "mujeres rurales"
+        ],
+        "_policy_area_relevance": "PA01"
+      },
+      "INDIGENAS": {
+        "keywords": [
+          "indígena",
+          "indígenas",
+          "resguardo",
+          "cabildo",
+          "pueblos originarios",
+          "pueblos indígenas"
+        ],
+        "frequency": {
+          "mean": 38,
+          "range": [
+            0,
+            96
+          ],
+          "note": "11/14 planes"
+        }
+      },
+      "AFRO": {
+        "keywords": [
+          "afrodescendiente",
+          "afro",
+          "afrocolombiano",
+          "comunidades negras",
+          "afrocolombianos",
+          "raizales",
+          "palenqueros"
+        ],
+        "frequency": {
+          "mean": 24,
+          "range": [
+            0,
+            68
+          ],
+          "note": "8/14 planes"
+        }
+      },
+      "VICTIMAS": {
+        "keywords": [
+          "víctimas",
+          "víctima",
+          "conflicto armado",
+          "desplazados",
+          "restitución",
+          "desplazamiento"
+        ],
+        "frequency": {
+          "mean": 52,
+          "range": [
+            16,
+            94
+          ]
+        },
+        "_policy_area_relevance": "PA05"
+      },
+      "DISCAPACIDAD": {
+        "keywords": [
+          "discapacidad",
+          "discapacitados",
+          "inclusión",
+          "accesibilidad",
+          "personas con discapacidad"
+        ],
+        "frequency": {
+          "mean": 31,
+          "range": [
+            12,
+            67
+          ]
+        }
+      },
+      "LGBTI": {
+        "keywords": [
+          "LGBTI",
+          "LGBT",
+          "diversidad sexual",
+          "orientación sexual"
+        ],
+        "frequency": {
+          "mean": 18,
+          "range": [
+            3,
+            44
+          ]
+        }
+      },
+      "CAMPESINOS": {
+        "keywords": [
+          "campesino",
+          "campesinos",
+          "rural",
+          "ruralidad",
+          "agropecuario"
+        ],
+        "_policy_area_relevance": "PA07"
+      },
+      "ROM": {
+        "keywords": [
+          "rom",
+          "gitanos"
+        ]
+      },
+      "MIGRANTES": {
+        "keywords": [
+          "migrantes",
+          "migración",
+          "venezolanos",
+          "población migrante"
+        ],
+        "_policy_area_relevance": "PA10"
+      }
+    },
+    "territorial_segmentation": {
+      "keywords": [
+        "rural",
+        "urbano",
+        "veredas",
+        "corregimientos",
+        "zona rural",
+        "zona urbana",
+        "cabecera municipal"
+      ]
+    },
+    "intersectional_detection": {
+      "term_pairs": [
+        [
+          "mujeres",
+          "indígenas"
+        ],
+        [
+          "jóvenes",
+          "rurales"
+        ],
+        [
+          "víctimas",
+          "discapacidad"
+        ],
+        [
+          "niños",
+          "afrodescendientes"
+        ],
+        [
+          "adultos mayores",
+          "mujeres"
+        ],
+        [
+          "migrantes",
+          "mujeres"
+        ]
+      ],
+      "window_size": 50,
+      "co_occurrence_boost": 1.30
+    },
+    "context_validation": {
+      "window_size": 100,
+      "co_occurrence_boost": 1.3,
+      "negation_penalty": 0.5
+    },
+    "disaggregation_indicators": {
+      "by_sex": {
+        "keywords": [
+          "desagregado por sexo",
+          "hombres y mujeres",
+          "mujeres/hombres"
+        ],
+        "frequency": "HIGH",
+        "plans_with": 12
+      },
+      "by_age": {
+        "keywords": [
+          "grupos etarios",
+          "primera infancia",
+          "juventud",
+          "adulto mayor"
+        ],
+        "frequency": "UNIVERSAL",
+        "plans_with": 14
+      },
+      "by_ethnicity": {
+        "keywords": [
+          "grupo étnico",
+          "indígenas",
+          "afrodescendientes"
+        ],
+        "frequency": "HIGH",
+        "plans_with": 11
+      }
+    },
+    "enfoque_diferencial_validation": {
+      "required_elements": {
+        "dedicated_chapter": "12/14 plans",
+        "disaggregated_indicators": ">20% indicators",
+        "specific_targets": "5+ per group"
+      }
+    }
+  },
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.10,
+      "DIM02": 0.05
+    },
+    "cross_cutting_boost": {
+      "CC_ENFOQUE_DIFERENCIAL": 0.25,
+      "CC_PERSPECTIVA_GENERO": 0.20
+    }
+  },
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM02"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 45,
+    "coverage": 0.15,
+    "applies_to_slots": [
+      "D1-Q1",
+      "D1-Q2"
+    ],
+    "primary_questions": [
+      "Q001",
+      "Q002",
+      "Q031",
+      "Q032",
+      "Q061",
+      "Q062",
+      "Q091",
+      "Q092",
+      "Q121",
+      "Q122",
+      "Q151",
+      "Q152"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_p_policy_area": {
+        "weight": 0.20
+      },
+      "layer_C_crosscutting": {
+        "weight": 0.35
+      }
+    },
+    "required_for": [
+      "layer_C_crosscutting"
+    ]
+  },
+  "required_capabilities": [],
+  "optional_capabilities": [
+    "NER_EXTRACTION",
+    "SEMANTIC_PROCESSING"
+  ],
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc06_population.py",
+    "expected_precision": 0.85,
+    "expected_recall": 0.80,
+    "gold_standard_plan": "Quibdó",
+    "gold_standard_reason": "Highest ethnic focus (indígenas, afro)"
+  }
+}

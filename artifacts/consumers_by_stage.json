@@ -1,0 +1,502 @@
+{
+  "inputs": {
+    "matrix": "canonic_questionnaire_central/_registry/CQC_AUDIT_MATRIX.csv",
+    "declarations": "canonic_questionnaire_central/_registry/capabilities/consumer_capability_declarations.json",
+    "rules": "canonic_questionnaire_central/_registry/irrigation_validation_rules.json",
+    "resolver": "canonic_questionnaire_central/resolver.py"
+  },
+  "notes": {
+    "scope_normalization": "Matrix uses Phase_N while rules use phase_N; normalized for join.",
+    "consumer_id_mismatch": "Matrix consumer strings are code refs; capability declarations use consumer_id. This report lists both and highlights per-stage coverage."
+  },
+  "stages": {
+    "phase_00": {
+      "expected_signal_types": [
+        "SIGNAL_PACK",
+        "STATIC_LOAD"
+      ],
+      "required_capabilities_from_rules": [],
+      "current_consumers_declared": [],
+      "current_consumers_registered": [
+        "phase_0_assembly"
+      ],
+      "matrix_consumers": [
+        "CanonicalQuestionnaireResolver._assemble",
+        "CanonicalQuestionnaireResolver._load_clusters",
+        "CanonicalQuestionnaireResolver._load_cross_cutting",
+        "CanonicalQuestionnaireResolver._load_dimensions",
+        "CanonicalQuestionnaireResolver._load_governance",
+        "CanonicalQuestionnaireResolver._load_policy_areas",
+        "CanonicalQuestionnaireResolver._load_scoring",
+        "CanonicalQuestionnaireResolver._load_semantic"
+      ],
+      "summary": {
+        "matrix_consumers_count": 8,
+        "declared_consumers_count": 0,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 2
+      }
+    },
+    "phase_01": {
+      "expected_signal_types": [
+        "MC01",
+        "MC02",
+        "MC03",
+        "MC04",
+        "MC05",
+        "MC06",
+        "MC07",
+        "MC08",
+        "MC09",
+        "MC10"
+      ],
+      "required_capabilities_from_rules": [
+        "CAUSAL_INFERENCE",
+        "CITATION_PARSING",
+        "COREFERENCE",
+        "CURRENCY_NORMALIZATION",
+        "DATE_NORMALIZATION",
+        "DEMOGRAPHIC_ANALYSIS",
+        "EMBEDDING_LOOKUP",
+        "ENTITY_RESOLUTION",
+        "FINANCIAL_ANALYSIS",
+        "GRAPH_CONSTRUCTION",
+        "HIERARCHY_PARSING",
+        "NER_EXTRACTION",
+        "NORMATIVE_LOOKUP",
+        "NUMERIC_PARSING",
+        "POPULATION_PARSING",
+        "SECTION_DETECTION",
+        "SEMANTIC_SIMILARITY",
+        "STRUCTURAL_PARSING",
+        "TEMPORAL_PARSING",
+        "TREE_CONSTRUCTION",
+        "TRIPLET_EXTRACTION",
+        "VERB_ANALYSIS"
+      ],
+      "current_consumers_declared": [],
+      "current_consumers_registered": [
+        "phase_1_extraction"
+      ],
+      "matrix_consumers": [
+        "EmpiricalExtractor.corpus_lookup",
+        "EmpiricalExtractorBase._load_membership_criteria"
+      ],
+      "summary": {
+        "matrix_consumers_count": 2,
+        "declared_consumers_count": 0,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 10
+      }
+    },
+    "phase_02": {
+      "expected_signal_types": [
+        "PATTERN_ENRICHMENT",
+        "KEYWORD_ENRICHMENT",
+        "ENTITY_ENRICHMENT"
+      ],
+      "required_capabilities_from_rules": [
+        "ENTITY_LINKING",
+        "KEYWORD_MATCHING",
+        "NER_EXTRACTION",
+        "PATTERN_MATCHING",
+        "REGEX_ENGINE",
+        "TF_IDF"
+      ],
+      "current_consumers_declared": [
+        {
+          "consumer_id": "EvidenceNexus",
+          "phase": 2,
+          "declared_capabilities": [
+            "NUMERIC_PARSING",
+            "SEMANTIC_PROCESSING",
+            "GRAPH_CONSTRUCTION",
+            "TABLE_PARSING",
+            "CAUSAL_INFERENCE",
+            "FINANCIAL_ANALYSIS",
+            "NER_EXTRACTION",
+            "TEMPORAL_REASONING"
+          ],
+          "allowed_signal_types": [
+            "STRUCTURAL_MARKER",
+            "QUANTITATIVE_TRIPLET",
+            "NORMATIVE_REFERENCE",
+            "PROGRAMMATIC_HIERARCHY",
+            "FINANCIAL_CHAIN",
+            "TEMPORAL_MARKER",
+            "CAUSAL_LINK",
+            "INSTITUTIONAL_ENTITY",
+            "SEMANTIC_RELATIONSHIP"
+          ],
+          "min_confidence": 0.5,
+          "max_signals_per_query": 200
+        },
+        {
+          "consumer_id": "IrrigationSynchronizer",
+          "phase": 2,
+          "declared_capabilities": [
+            "TABLE_PARSING",
+            "GRAPH_CONSTRUCTION"
+          ],
+          "allowed_signal_types": [
+            "STRUCTURAL_MARKER",
+            "PROGRAMMATIC_HIERARCHY"
+          ],
+          "min_confidence": 0.7,
+          "max_signals_per_query": 50
+        },
+        {
+          "consumer_id": "SignalEnhancementIntegrator",
+          "phase": 2,
+          "declared_capabilities": [
+            "CAUSAL_INFERENCE",
+            "INTERDEPENDENCY_VALIDATION"
+          ],
+          "allowed_signal_types": [
+            "CAUSAL_LINK",
+            "INTERDEPENDENCY_CONTEXT"
+          ],
+          "min_confidence": 0.0,
+          "max_signals_per_query": null
+        }
+      ],
+      "current_consumers_registered": [
+        "phase_2_enrichment"
+      ],
+      "matrix_consumers": [
+        "IndustrialPolicyProcessor._detect_policy_areas",
+        "QuestionnaireSignalRegistry.get_context_patterns",
+        "QuestionnaireSignalRegistry.get_patterns_by_category",
+        "QuestionnaireSignalRegistry.get_patterns_by_dimension",
+        "QuestionnaireSignalRegistry.get_patterns_by_pa"
+      ],
+      "summary": {
+        "matrix_consumers_count": 5,
+        "declared_consumers_count": 3,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 3
+      }
+    },
+    "phase_03": {
+      "expected_signal_types": [
+        "NORMATIVE_VALIDATION",
+        "ENTITY_VALIDATION",
+        "COHERENCE_VALIDATION"
+      ],
+      "required_capabilities_from_rules": [
+        "COMPLIANCE_CHECK",
+        "CONSISTENCY_CHECK",
+        "ENTITY_RESOLUTION",
+        "EXISTENCE_CHECK",
+        "NORMATIVE_LOOKUP",
+        "SEMANTIC_SIMILARITY"
+      ],
+      "current_consumers_declared": [
+        {
+          "consumer_id": "BaselineScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "NUMERIC_PARSING"
+          ],
+          "allowed_signal_types": [
+            "QUANTITATIVE_TRIPLET"
+          ],
+          "min_confidence": 0.7,
+          "max_signals_per_query": 50
+        },
+        {
+          "consumer_id": "CausalScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "CAUSAL_INFERENCE",
+            "GRAPH_CONSTRUCTION",
+            "FINANCIAL_ANALYSIS",
+            "NUMERIC_PARSING"
+          ],
+          "allowed_signal_types": [
+            "CAUSAL_LINK",
+            "FINANCIAL_CHAIN",
+            "PROGRAMMATIC_HIERARCHY"
+          ],
+          "min_confidence": 0.6,
+          "max_signals_per_query": 100
+        },
+        {
+          "consumer_id": "CrossCuttingScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "SEMANTIC_PROCESSING",
+            "NER_EXTRACTION"
+          ],
+          "allowed_signal_types": [
+            "CROSS_CUTTING_THEME",
+            "POPULATION_DISAGGREGATION",
+            "INSTITUTIONAL_ENTITY"
+          ],
+          "min_confidence": 0.55,
+          "max_signals_per_query": 50
+        },
+        {
+          "consumer_id": "DimensionScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "GRAPH_CONSTRUCTION"
+          ],
+          "allowed_signal_types": [
+            "PROGRAMMATIC_HIERARCHY"
+          ],
+          "min_confidence": 0.6,
+          "max_signals_per_query": 50
+        },
+        {
+          "consumer_id": "PolicyAreaScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "NER_EXTRACTION",
+            "FINANCIAL_ANALYSIS",
+            "NUMERIC_PARSING"
+          ],
+          "allowed_signal_types": [
+            "NORMATIVE_REFERENCE",
+            "FINANCIAL_CHAIN"
+          ],
+          "min_confidence": 0.65,
+          "max_signals_per_query": 75
+        },
+        {
+          "consumer_id": "QualityScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "NUMERIC_PARSING",
+            "FINANCIAL_ANALYSIS"
+          ],
+          "allowed_signal_types": [
+            "QUANTITATIVE_TRIPLET",
+            "FINANCIAL_CHAIN"
+          ],
+          "min_confidence": 0.65,
+          "max_signals_per_query": 75
+        },
+        {
+          "consumer_id": "StructuralScorer",
+          "phase": 3,
+          "declared_capabilities": [
+            "TABLE_PARSING"
+          ],
+          "allowed_signal_types": [
+            "STRUCTURAL_MARKER"
+          ],
+          "min_confidence": 0.7,
+          "max_signals_per_query": 50
+        }
+      ],
+      "current_consumers_registered": [
+        "phase_3_validation"
+      ],
+      "matrix_consumers": [
+        "Phase_03.NormativeComplianceValidator",
+        "Phase_03.PDETContextProvider"
+      ],
+      "summary": {
+        "matrix_consumers_count": 2,
+        "declared_consumers_count": 7,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 3
+      }
+    },
+    "phase_04": {
+      "expected_signal_types": [
+        "MICRO_SCORE"
+      ],
+      "required_capabilities_from_rules": [
+        "SCORING_ENGINE",
+        "WEIGHT_APPLICATION"
+      ],
+      "current_consumers_declared": [
+        {
+          "consumer_id": "DimensionAggregator",
+          "phase": 4,
+          "declared_capabilities": [],
+          "allowed_signal_types": [],
+          "min_confidence": 0.8,
+          "max_signals_per_query": 20
+        }
+      ],
+      "current_consumers_registered": [],
+      "matrix_consumers": [],
+      "summary": {
+        "matrix_consumers_count": 0,
+        "declared_consumers_count": 1,
+        "registered_consumers_count": 0,
+        "expected_signal_types_count": 1
+      }
+    },
+    "phase_05": {
+      "expected_signal_types": [
+        "MICRO_SCORE"
+      ],
+      "required_capabilities_from_rules": [
+        "SCORING_ENGINE",
+        "WEIGHT_APPLICATION"
+      ],
+      "current_consumers_declared": [
+        {
+          "consumer_id": "PolicyAreaAggregator",
+          "phase": 5,
+          "declared_capabilities": [],
+          "allowed_signal_types": [],
+          "min_confidence": 0.8,
+          "max_signals_per_query": 20
+        }
+      ],
+      "current_consumers_registered": [],
+      "matrix_consumers": [],
+      "summary": {
+        "matrix_consumers_count": 0,
+        "declared_consumers_count": 1,
+        "registered_consumers_count": 0,
+        "expected_signal_types_count": 1
+      }
+    },
+    "phase_06": {
+      "expected_signal_types": [
+        "MICRO_SCORE"
+      ],
+      "required_capabilities_from_rules": [
+        "SCORING_ENGINE",
+        "WEIGHT_APPLICATION"
+      ],
+      "current_consumers_declared": [
+        {
+          "consumer_id": "ClusterAggregator",
+          "phase": 6,
+          "declared_capabilities": [],
+          "allowed_signal_types": [
+            "COHERENCE_SIGNAL"
+          ],
+          "min_confidence": 0.8,
+          "max_signals_per_query": 20
+        }
+      ],
+      "current_consumers_registered": [],
+      "matrix_consumers": [],
+      "summary": {
+        "matrix_consumers_count": 0,
+        "declared_consumers_count": 1,
+        "registered_consumers_count": 0,
+        "expected_signal_types_count": 1
+      }
+    },
+    "phase_07": {
+      "expected_signal_types": [
+        "MESO_SCORE",
+        "MESO_AGGREGATION"
+      ],
+      "required_capabilities_from_rules": [
+        "AGGREGATION_ENGINE",
+        "CLUSTER_ROUTING",
+        "CLUSTER_SCORING"
+      ],
+      "current_consumers_declared": [
+        {
+          "consumer_id": "MacroAggregator",
+          "phase": 7,
+          "declared_capabilities": [],
+          "allowed_signal_types": [],
+          "min_confidence": 0.8,
+          "max_signals_per_query": 10
+        }
+      ],
+      "current_consumers_registered": [
+        "phase_7_meso"
+      ],
+      "matrix_consumers": [
+        "Phase_07.MesoAggregator"
+      ],
+      "summary": {
+        "matrix_consumers_count": 1,
+        "declared_consumers_count": 1,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 2
+      }
+    },
+    "phase_08": {
+      "expected_signal_types": [
+        "MACRO_SCORE",
+        "MACRO_AGGREGATION"
+      ],
+      "required_capabilities_from_rules": [
+        "AGGREGATION_ENGINE",
+        "FINAL_ASSEMBLY",
+        "HOLISTIC_SCORING"
+      ],
+      "current_consumers_declared": [],
+      "current_consumers_registered": [
+        "phase_8_macro"
+      ],
+      "matrix_consumers": [
+        "Phase_08.MacroAggregator"
+      ],
+      "summary": {
+        "matrix_consumers_count": 1,
+        "declared_consumers_count": 0,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 2
+      }
+    },
+    "phase_09": {
+      "expected_signal_types": [
+        "REPORT_ASSEMBLY"
+      ],
+      "required_capabilities_from_rules": [
+        "MARKDOWN_GENERATION",
+        "TEMPLATE_ENGINE"
+      ],
+      "current_consumers_declared": [],
+      "current_consumers_registered": [
+        "phase_9_report"
+      ],
+      "matrix_consumers": [],
+      "summary": {
+        "matrix_consumers_count": 0,
+        "declared_consumers_count": 0,
+        "registered_consumers_count": 1,
+        "expected_signal_types_count": 1
+      }
+    },
+    "Cross-Phase": {
+      "expected_signal_types": [],
+      "required_capabilities_from_rules": [],
+      "current_consumers_declared": [],
+      "current_consumers_registered": [],
+      "matrix_consumers": [
+        "CQCLoader.get_view",
+        "CQCLoader.route_signal",
+        "QuestionnaireSignalRegistry._extract_patterns_for_question",
+        "RuntimeValidators"
+      ],
+      "summary": {
+        "matrix_consumers_count": 4,
+        "declared_consumers_count": 0,
+        "registered_consumers_count": 0,
+        "expected_signal_types_count": 0
+      }
+    },
+    "External": {
+      "expected_signal_types": [],
+      "required_capabilities_from_rules": [],
+      "current_consumers_declared": [],
+      "current_consumers_registered": [],
+      "matrix_consumers": [
+        "BuildSystem.generate_artifacts",
+        "Documentation.SISAS"
+      ],
+      "summary": {
+        "matrix_consumers_count": 2,
+        "declared_consumers_count": 0,
+        "registered_consumers_count": 0,
+        "expected_signal_types_count": 0
+      }
+    }
+  }
+}

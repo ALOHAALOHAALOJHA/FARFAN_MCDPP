@@ -1,0 +1,388 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 2,
+    "name": "Evidence Extraction & Task Execution"
+  },
+  "inventory_date": "2026-01-12",
+  "root_path": "src/farfan_pipeline/phases/Phase_02",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 2 modules",
+      "contains_subdirs": true
+    },
+    {
+      "path": "interfaces",
+      "purpose": "Phase boundary contracts with Phase 1 (receives) and Phase 3 (delivers)"
+    },
+    {
+      "path": "contracts_internal",
+      "purpose": "Internal phase contracts (renamed from contracts/)"
+    },
+    {
+      "path": "contract_generator",
+      "purpose": "Contract generation utilities"
+    },
+    {
+      "path": "generated_contracts",
+      "purpose": "Auto-generated contract files (305 contracts for 305 questions)"
+    },
+    {
+      "path": "epistemological_assets",
+      "purpose": "Epistemological framework assets"
+    },
+    {
+      "path": "registries",
+      "purpose": "Internal registries"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 2 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase2_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "purpose": "Package initialization"
+    },
+    {
+      "filename": "phase2_10_00_factory.py",
+      "canonical_name": "phase2_10_00_factory",
+      "type": "CORE",
+      "criticality": "CRITICAL",
+      "purpose": "CanonicalQuestionnaire factory - loads and initializes questionnaire"
+    },
+    {
+      "filename": "phase2_10_00_phase_2_constants.py",
+      "canonical_name": "phase2_10_00_phase_2_constants",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "purpose": "Phase 2 specific constants"
+    },
+    {
+      "filename": "PHASE_2_CONSTANTS.py",
+      "canonical_name": "phase2_constants_duplicate",
+      "type": "CFG",
+      "criticality": "LOW",
+      "purpose": "DUPLICATE - remove, same as phase2_10_00_phase_2_constants.py"
+    },
+    {
+      "filename": "phase2_10_01_class_registry.py",
+      "canonical_name": "phase2_10_01_class_registry",
+      "type": "DATA",
+      "criticality": "HIGH",
+      "purpose": "Class registry for executor classes"
+    },
+    {
+      "filename": "phase2_10_02_methods_registry.py",
+      "canonical_name": "phase2_10_02_methods_registry",
+      "type": "DATA",
+      "criticality": "HIGH",
+      "purpose": "Methods registry for 416 executor methods"
+    },
+    {
+      "filename": "phase2_10_03_executor_config.py",
+      "canonical_name": "phase2_10_03_executor_config",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "purpose": "Executor configuration profiles"
+    },
+    {
+      "filename": "phase2_20_00_method_signature_validator.py",
+      "canonical_name": "phase2_20_00_method_signature_validator",
+      "type": "VAL",
+      "criticality": "HIGH",
+      "purpose": "Validate method signatures against contracts"
+    },
+    {
+      "filename": "phase2_20_01_method_source_validator.py",
+      "canonical_name": "phase2_20_01_method_source_validator",
+      "type": "VAL",
+      "criticality": "MEDIUM",
+      "purpose": "Validate method source code integrity"
+    },
+    {
+      "filename": "phase2_30_00_resource_manager.py",
+      "canonical_name": "phase2_30_00_resource_manager",
+      "type": "ENF",
+      "criticality": "MEDIUM",
+      "purpose": "Resource management for execution"
+    },
+    {
+      "filename": "phase2_30_01_resource_integration.py",
+      "canonical_name": "phase2_30_01_resource_integration",
+      "type": "ENF",
+      "criticality": "MEDIUM",
+      "purpose": "Integration with resource controller"
+    },
+    {
+      "filename": "phase2_30_02_resource_alerts.py",
+      "canonical_name": "phase2_30_02_resource_alerts",
+      "type": "ENF",
+      "criticality": "MEDIUM",
+      "purpose": "Resource alerting and monitoring"
+    },
+    {
+      "filename": "phase2_30_03_resource_aware_executor.py",
+      "canonical_name": "phase2_30_03_resource_aware_executor",
+      "type": "ENF",
+      "criticality": "MEDIUM",
+      "purpose": "Resource-aware executor wrapper"
+    },
+    {
+      "filename": "phase2_30_04_circuit_breaker.py",
+      "canonical_name": "phase2_30_04_circuit_breaker",
+      "type": "ENF",
+      "criticality": "MEDIUM",
+      "purpose": "Circuit breaker for fault tolerance"
+    },
+    {
+      "filename": "phase2_30_05_distributed_cache.py",
+      "canonical_name": "phase2_30_05_distributed_cache",
+      "type": "ENF",
+      "criticality": "LOW",
+      "purpose": "Distributed caching layer"
+    },
+    {
+      "filename": "phase2_40_00_synchronization.py",
+      "canonical_name": "phase2_40_00_synchronization",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Synchronization primitives"
+    },
+    {
+      "filename": "phase2_40_01_executor_chunk_synchronizer.py",
+      "canonical_name": "phase2_40_01_executor_chunk_synchronizer",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Chunk-level synchronization"
+    },
+    {
+      "filename": "phase2_40_02_schema_validation.py",
+      "canonical_name": "phase2_40_02_schema_validation",
+      "type": "VAL",
+      "criticality": "HIGH",
+      "purpose": "Schema validation"
+    },
+    {
+      "filename": "phase2_40_03_irrigation_synchronizer.py",
+      "canonical_name": "phase2_40_03_irrigation_synchronizer",
+      "type": "CORE",
+      "criticality": "CRITICAL",
+      "purpose": "Main irrigation synchronizer - routes chunks to questions and coordinates execution"
+    },
+    {
+      "filename": "phase2_50_00_task_executor.py",
+      "canonical_name": "phase2_50_00_task_executor",
+      "type": "CORE",
+      "criticality": "CRITICAL",
+      "purpose": "Task execution engine"
+    },
+    {
+      "filename": "phase2_50_01_chunk_processor.py",
+      "canonical_name": "phase2_50_01_chunk_processor",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Chunk processing"
+    },
+    {
+      "filename": "phase2_50_01_task_planner.py",
+      "canonical_name": "phase2_50_01_task_planner",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Task planning and scheduling"
+    },
+    {
+      "filename": "phase2_50_02_batch_optimizer.py",
+      "canonical_name": "phase2_50_02_batch_optimizer",
+      "type": "PROC",
+      "criticality": "MEDIUM",
+      "purpose": "Batch optimization"
+    },
+    {
+      "filename": "phase2_60_00_base_executor_with_contract.py",
+      "canonical_name": "phase2_60_00_base_executor_with_contract",
+      "type": "CORE",
+      "criticality": "CRITICAL",
+      "purpose": "Base executor with contract enforcement"
+    },
+    {
+      "filename": "phase2_60_01_contract_validator_cqvr.py",
+      "canonical_name": "phase2_60_01_contract_validator_cqvr",
+      "type": "VAL",
+      "criticality": "HIGH",
+      "purpose": "Contract validator (CQVR)"
+    },
+    {
+      "filename": "phase2_60_02_arg_router.py",
+      "canonical_name": "phase2_60_02_arg_router",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Argument routing for executors"
+    },
+    {
+      "filename": "phase2_60_03_signature_runtime_validator.py",
+      "canonical_name": "phase2_60_03_signature_runtime_validator",
+      "type": "VAL",
+      "criticality": "HIGH",
+      "purpose": "Runtime signature validation"
+    },
+    {
+      "filename": "phase2_60_04_calibration_policy.py",
+      "canonical_name": "phase2_60_04_calibration_policy",
+      "type": "CFG",
+      "criticality": "MEDIUM",
+      "purpose": "Calibration policy configuration"
+    },
+    {
+      "filename": "phase2_60_05_executor_instrumentation_mixin.py",
+      "canonical_name": "phase2_60_05_executor_instrumentation_mixin",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Executor instrumentation mixin"
+    },
+    {
+      "filename": "phase2_80_00_evidence_nexus.py",
+      "canonical_name": "phase2_80_00_evidence_nexus",
+      "type": "CORE",
+      "criticality": "CRITICAL",
+      "purpose": "Evidence nexus - core evidence management"
+    },
+    {
+      "filename": "phase2_80_01_evidence_query_engine.py",
+      "canonical_name": "phase2_80_01_evidence_query_engine",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Evidence query engine"
+    },
+    {
+      "filename": "phase2_85_00_evidence_nexus_sota_implementations.py",
+      "canonical_name": "phase2_85_00_evidence_nexus_sota_implementations",
+      "type": "PROC",
+      "criticality": "MEDIUM",
+      "purpose": "SOTA evidence implementations"
+    },
+    {
+      "filename": "phase2_90_00_carver.py",
+      "canonical_name": "phase2_90_00_carver",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "purpose": "Carver - answer carving from evidence"
+    },
+    {
+      "filename": "phase2_95_00_contract_hydrator.py",
+      "canonical_name": "phase2_95_00_contract_hydrator",
+      "type": "UTIL",
+      "criticality": "MEDIUM",
+      "purpose": "Contract hydration utilities"
+    },
+    {
+      "filename": "phase2_95_00_executor_profiler.py",
+      "canonical_name": "phase2_95_00_executor_profiler",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Executor profiling"
+    },
+    {
+      "filename": "phase2_95_01_metrics_persistence.py",
+      "canonical_name": "phase2_95_01_metrics_persistence",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Metrics persistence"
+    },
+    {
+      "filename": "phase2_95_02_precision_tracking.py",
+      "canonical_name": "phase2_95_02_precision_tracking",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Precision tracking"
+    },
+    {
+      "filename": "phase2_95_03_executor_calibration_integration.py",
+      "canonical_name": "phase2_95_03_executor_calibration_integration",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Calibration integration"
+    },
+    {
+      "filename": "phase2_95_04_metrics_exporter.py",
+      "canonical_name": "phase2_95_04_metrics_exporter",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Metrics export"
+    },
+    {
+      "filename": "phase2_95_05_execution_predictor.py",
+      "canonical_name": "phase2_95_05_execution_predictor",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Execution prediction"
+    },
+    {
+      "filename": "phase2_95_06_benchmark_performance_optimizations.py",
+      "canonical_name": "phase2_95_06_benchmark_performance_optimizations",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Benchmark optimizations"
+    },
+    {
+      "filename": "phase2_96_00_contract_migrator.py",
+      "canonical_name": "phase2_96_00_contract_migrator",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Contract migration utilities"
+    },
+    {
+      "filename": "benchmark_performance_optimizations.py",
+      "canonical_name": "benchmark_standalone",
+      "type": "UTIL",
+      "criticality": "LOW",
+      "purpose": "Standalone benchmark script - consider moving to tests/"
+    }
+  ],
+  "metadata_files": [
+    {"filename": "PHASE_2_MANIFEST.json", "purpose": "Canonical manifest"},
+    {"filename": "INVENTORY.json", "purpose": "Complete inventory"},
+    {"filename": "README.md", "purpose": "Documentation"},
+    {"filename": "README_ACADEMIC.md", "purpose": "Academic documentation"},
+    {"filename": "TEST_MANIFEST.json", "purpose": "Test manifest"}
+  ],
+  "backup_files_to_remove": [
+    "phase2_10_00_factory.py.bak",
+    "phase2_40_03_irrigation_synchronizer.py.bak",
+    "phase2_50_01_task_planner.py.bak",
+    "phase2_60_00_base_executor_with_contract.py.bak"
+  ],
+  "duplicates_to_consolidate": [
+    {
+      "primary": "phase2_10_00_phase_2_constants.py",
+      "duplicate": "PHASE_2_CONSTANTS.py",
+      "recommendation": "Remove PHASE_2_CONSTANTS.py"
+    },
+    {
+      "primary": "phase2_95_06_benchmark_performance_optimizations.py",
+      "duplicate": "benchmark_performance_optimizations.py",
+      "recommendation": "Remove standalone or move to tests/"
+    }
+  ],
+  "directories_to_audit": [
+    {
+      "path": "generated_contracts",
+      "reason": "305 auto-generated contracts - verify all are needed",
+      "action": "Audit usage, ensure all 305 questions have contracts"
+    }
+  ],
+  "total_python_modules": 47,
+  "total_lines_of_code": "~25000",
+  "criticality_summary": {
+    "CRITICAL": 7,
+    "HIGH": 15,
+    "MEDIUM": 16,
+    "LOW": 9
+  }
+}

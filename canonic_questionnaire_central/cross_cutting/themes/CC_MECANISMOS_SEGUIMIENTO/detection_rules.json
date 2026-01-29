@@ -1,0 +1,217 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T00:00:00Z",
+  "_author": "CQC Technical Excellence Framework v2.0.0",
+
+  "theme_id": "CC_MECANISMOS_SEGUIMIENTO",
+  "name": "Mecanismos de Seguimiento y Evaluación",
+  "description": "Sistemas de medición, monitoreo y evaluación de resultados del plan",
+
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    "confidence_threshold": 0.60,
+
+    "signals": [
+      {
+        "signal_id": "SIG-MSE-001",
+        "name": "monitoring_systems",
+        "type": "KEYWORD_MATCH",
+        "description": "Sistemas de monitoreo y seguimiento",
+        "keywords": [
+          "sistema de monitoreo",
+          "sistema de seguimiento",
+          "seguimiento y evaluación",
+          "sistema de información para el seguimiento",
+          "plataforma de seguimiento",
+          "tablero de control",
+          "sistema de alertas tempranas"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 10
+        }
+      },
+      {
+        "signal_id": "SIG-MSE-002",
+        "name": "performance_indicators",
+        "type": "QUANTITATIVE_REFERENCE",
+        "description": "Indicadores de desempeño definidos",
+        "mc_reference": "MC02",
+        "patterns": [
+          "(?i)indicador[es]?\\s+(?:de\\s+)?(?:resultado|producto|impacto|gestión|desempeño)",
+          "(?i)línea\\s+base",
+          "(?i)meta[s]?\\s+(?:2027|cuatrienio)",
+          "(?i)batería\\s+de\\s+indicadores",
+          "(?i)ficha[s]?\\s+(?:de|del)\\s+indicador[es]?"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 2
+      },
+      {
+        "signal_id": "SIG-MSE-003",
+        "name": "measurement_frequency",
+        "type": "TEMPORAL_PATTERN",
+        "description": "Frecuencia de medición establecida",
+        "mc_reference": "MC07",
+        "patterns": [
+          "(?i)medición\\s+(?:anual|semestral|trimestral|mensual)",
+          "(?i)seguimiento\\s+(?:anual|semestral|trimestral)",
+          "(?i)reporte[s]?\\s+(?:anuales|semestrales|trimestrales)",
+          "(?i)frecuencia\\s+de\\s+(?:medición|seguimiento|reporte)",
+          "(?i)cada\\s+(?:año|semestre|trimestre|mes)"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-MSE-004",
+        "name": "external_evaluations",
+        "type": "PATTERN_MATCH",
+        "description": "Evaluaciones externas programadas",
+        "patterns": [
+          "(?i)evaluación\\s+(?:externa|independiente)",
+          "(?i)auditoría\\s+(?:externa|de\\s+desempeño)",
+          "(?i)evaluación\\s+de\\s+(?:impacto|resultados|medio\\s+término)",
+          "(?i)contraloría",
+          "(?i)evaluación\\s+ex\\s*[-]?post"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-MSE-005",
+        "name": "data_based_adjustments",
+        "type": "CAUSAL_PATTERN",
+        "description": "Ajustes basados en datos",
+        "patterns": [
+          "(?i)ajuste[s]?\\s+(?:basado[s]?\\s+en|según)\\s+(?:resultados|datos|evidencia)",
+          "(?i)gestión\\s+adaptativa",
+          "(?i)corrección\\s+de\\s+rumbo",
+          "(?i)decisiones\\s+basadas\\s+en\\s+(?:evidencia|datos)",
+          "(?i)retroalimentación\\s+para\\s+(?:ajustes|mejoras)"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      }
+    ],
+
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.60,
+      "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
+      "minimum_signals_required": 2,
+      "bonus_for_complete_system": 0.15
+    }
+  },
+
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": [
+        "Q121", "Q122", "Q123", "Q124", "Q125",
+        "Q151", "Q152", "Q153", "Q154", "Q155",
+        "Q181", "Q182",
+        "Q271", "Q272", "Q273"
+      ],
+      "boost_amount": 0.15,
+      "boost_type": "ADDITIVE",
+      "cap_at_max_score": true,
+      "cascade_to_dimensions": ["DIM03", "DIM04", "DIM05"]
+    },
+    "when_missing": {
+      "penalty_questions": ["Q121", "Q151", "Q271"],
+      "penalty_amount": 0.15,
+      "penalty_type": "MULTIPLICATIVE",
+      "penalty_conditions": {
+        "severity": "HIGH",
+        "applies_to_all_policy_areas": true
+      }
+    },
+    "confidence_modifiers": {
+      "system_defined_bonus": 0.20,
+      "indicators_with_baselines_bonus": 0.15,
+      "frequency_established_bonus": 0.10,
+      "external_evaluation_bonus": 0.10
+    }
+  },
+
+  "validation": {
+    "required_in_dimensions": ["DIM03", "DIM04", "DIM05"],
+    "required_in_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+    "validation_rules": [
+      {
+        "rule_id": "INTERDEP-MSE-001",
+        "description": "Sistema de seguimiento obligatorio para todos los planes",
+        "condition": "signal_MSE_001.matches == 0",
+        "severity": "ERROR",
+        "message": "Todo plan debe definir un sistema de monitoreo y seguimiento"
+      },
+      {
+        "rule_id": "INTERDEP-MSE-002",
+        "description": "Indicadores de resultado deben tener línea base y meta",
+        "condition": "signal_MSE_002.matches > 0 AND (baseline_missing OR target_missing)",
+        "severity": "WARNING",
+        "message": "Indicadores deben incluir línea base y meta 2027"
+      },
+      {
+        "rule_id": "INTERDEP-MSE-003",
+        "description": "Frecuencia de medición debe estar definida",
+        "condition": "signal_MSE_001.matches > 0 AND signal_MSE_003.matches == 0",
+        "severity": "WARNING",
+        "message": "Sistema de seguimiento debe especificar frecuencia de medición"
+      }
+    ]
+  },
+
+  "required_capabilities": ["SEMANTIC_PROCESSING", "QUANTITATIVE_ANALYSIS", "TEMPORAL_ANALYSIS"],
+  "empirical_calibration": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "baseline_frequency": {
+      "seguimiento_mentions_per_plan": {"mean": 67, "range": [28, 124]},
+      "evaluacion_mentions_per_plan": {"mean": 42, "range": [18, 78]},
+      "indicadores_per_plan": {"mean": 145, "range": [100, 352]},
+      "system_references_per_plan": {"mean": 8, "range": [2, 18]}
+    },
+    "required_elements": {
+      "minimum_indicators_with_baseline": 20,
+      "minimum_indicators_with_target": 20,
+      "measurement_frequency_definition": "mandatory"
+    }
+  },
+
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_mecanismos_seguimiento.py",
+    "golden_examples": [
+      {
+        "input": "El plan establece un sistema de monitoreo con indicadores de resultado que incluyen línea base 2023 y meta 2027, con medición semestral y evaluación externa de medio término",
+        "expected_detected": true,
+        "expected_confidence_min": 0.90,
+        "expected_signals": ["SIG-MSE-001", "SIG-MSE-002", "SIG-MSE-003", "SIG-MSE-004"]
+      },
+      {
+        "input": "Batería de 145 indicadores con fichas técnicas que especifican línea base, meta cuatrienio y frecuencia de medición trimestral",
+        "expected_detected": true,
+        "expected_confidence_min": 0.80,
+        "expected_signals": ["SIG-MSE-002", "SIG-MSE-003"]
+      },
+      {
+        "input": "Sistema de información para el seguimiento del plan con tablero de control y alertas tempranas",
+        "expected_detected": true,
+        "expected_confidence_min": 0.75,
+        "expected_signals": ["SIG-MSE-001"]
+      },
+      {
+        "input": "Gestión adaptativa con ajustes basados en evidencia y retroalimentación de resultados",
+        "expected_detected": true,
+        "expected_confidence_min": 0.65,
+        "expected_signals": ["SIG-MSE-005"]
+      },
+      {
+        "input": "Construcción de infraestructura educativa en zonas rurales",
+        "expected_detected": false
+      }
+    ]
+  }
+}

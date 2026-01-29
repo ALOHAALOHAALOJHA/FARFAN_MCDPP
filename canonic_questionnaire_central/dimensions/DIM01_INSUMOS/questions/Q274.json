@@ -1,0 +1,195 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q274",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D1-Q4",
+    "legacy_id": "Q274",
+    "canonical_notation": "DIM01.PA10.Q274"
+  },
+  "text": {
+    "es": "¿El PDM describe las capacidades para la gestión migratoria, mencionando entidades (Secretaría de Gobierno, enlace de migrantes) y sus necesidades? Se debe buscar términos como 'centros de atención al migrante', 'rutas de integración' y si se identifican 'limitaciones' en la articulación.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuellos_botella"
+    },
+    {
+      "required": true,
+      "type": "gobernanza"
+    },
+    {
+      "required": true,
+      "type": "infraestructura_fisica"
+    },
+    {
+      "required": true,
+      "type": "procesos"
+    },
+    {
+      "required": true,
+      "type": "talento_humano"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0302",
+      "PAT-0303",
+      "PAT-0304",
+      "PAT-0305",
+      "PAT-0306",
+      "PAT-0307",
+      "PAT-0308",
+      "PAT-0309",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02",
+      "MC03"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_INTEROPERABILIDAD"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q274.v4.json",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "identify_responsible_entities",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "PDETMunicipalPlanAnalyzer.identify_responsible_entities"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_entities_ner",
+        "method_type": "extraction",
+        "priority": 2,
+        "description": "PDETMunicipalPlanAnalyzer._extract_entities_ner"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_entities_syntax",
+        "method_type": "extraction",
+        "priority": 3,
+        "description": "PDETMunicipalPlanAnalyzer._extract_entities_syntax"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_classify_entity_type",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._classify_entity_type"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_entity_specificity",
+        "method_type": "scoring",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._score_entity_specificity"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_consolidate_entities",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._consolidate_entities"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "function": "extract_entity_activity",
+        "method_type": "extraction",
+        "priority": 7,
+        "description": "MechanismPartExtractor.extract_entity_activity"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "function": "_normalize_entity",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "MechanismPartExtractor._normalize_entity"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "function": "_validate_entity_activity",
+        "method_type": "validation",
+        "priority": 9,
+        "description": "MechanismPartExtractor._validate_entity_activity"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "function": "_calculate_ea_confidence",
+        "method_type": "scoring",
+        "priority": 10,
+        "description": "MechanismPartExtractor._calculate_ea_confidence"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "audit_evidence_traceability",
+        "method_type": "validation",
+        "priority": 11,
+        "description": "OperationalizationAuditor.audit_evidence_traceability"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q034-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "DIAGNOSTICO",
+      "LINEA_BASE"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.926192+00:00",
+    "updated_at": "2026-01-06T17:38:07.926195+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

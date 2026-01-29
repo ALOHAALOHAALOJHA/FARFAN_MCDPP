@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SISAS Irrigation Spec Schema",
+  "type": "object",
+  "required": ["source", "targets"],
+  "properties": {
+    "source": {
+      "type": "object",
+      "required": ["path", "phase"],
+      "properties": {
+        "path": { "type": "string" },
+        "phase": { "type": "string" },
+        "stage": { "type": "string" }
+      }
+    },
+    "vehicles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["consumer_id"],
+        "properties": {
+          "consumer_id": { "type": "string" },
+          "required_signals": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "signals": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

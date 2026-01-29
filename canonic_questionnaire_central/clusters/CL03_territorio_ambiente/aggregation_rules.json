@@ -1,0 +1,47 @@
+{
+  "$schema": "../aggregation_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "cluster_id": "CL03",
+  "cluster_name": "Territorio y Ambiente",
+  "cluster_description": "Agrupa políticas de desarrollo territorial, económico y ambiental",
+  
+  "composition": {
+    "policy_areas": ["PA04", "PA08"],
+    "policy_area_names": {
+      "PA04": "Derechos Económicos, Sociales y Culturales",
+      "PA08": "Líderes Sociales y Defensores DDHH"
+    }
+  },
+  
+  "aggregation": {
+    "method": "WEIGHTED_AVERAGE_WITH_COHERENCE_BONUS",
+    
+    "policy_area_weights": {
+      "PA04": 0.60,
+      "PA08": 0.40
+    },
+    
+    "coherence_bonus": {
+      "enabled": true,
+      "max_bonus": 0.12
+    },
+    
+    "final_formula": "MESO_SCORE = (PA04_score * 0.60 + PA08_score * 0.40) + coherence_bonus"
+  },
+  
+  "meso_question": {
+    "question_id": "MESO-CL03",
+    "text": {
+      "es": "¿El plan integra coherentemente el desarrollo económico-social con la protección de líderes y defensores?",
+      "en": "Does the plan coherently integrate socio-economic development with the protection of leaders and defenders?"
+    }
+  },
+  
+  "thresholds": {
+    "EXCELENTE": {"min": 0.85},
+    "BUENO": {"min": 0.70},
+    "ACEPTABLE": {"min": 0.55},
+    "INSUFICIENTE": {"min": 0.0}
+  }
+}

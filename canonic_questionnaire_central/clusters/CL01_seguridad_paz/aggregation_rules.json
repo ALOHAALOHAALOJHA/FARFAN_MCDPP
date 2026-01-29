@@ -1,0 +1,101 @@
+{
+  "$schema": "../aggregation_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "cluster_id": "CL01",
+  "cluster_name": "Seguridad y Paz",
+  "cluster_description": "Agrupa políticas de seguridad, conflicto y construcción de paz",
+  
+  "composition": {
+    "policy_areas": ["PA02", "PA03", "PA07"],
+    "policy_area_names": {
+      "PA02": "Violencia y Conflicto",
+      "PA03": "Ambiente y Cambio Climático",
+      "PA07": "Tierras y Territorios"
+    }
+  },
+  
+  "aggregation": {
+    "method": "WEIGHTED_AVERAGE_WITH_COHERENCE_BONUS",
+    "_source": "corpus_thresholds_weights.json phase6_cluster_aggregation",
+    
+    "policy_area_weights": {
+      "PA02": 0.40,
+      "PA03": 0.30,
+      "PA07": 0.30
+    },
+    
+    "weight_rationale": {
+      "PA02": "Mayor peso por transversalidad de conflicto",
+      "PA03": "Peso medio por conexión territorio-ambiente",
+      "PA07": "Peso menor por especificidad territorial"
+    },
+    
+    "coherence_bonus": {
+      "enabled": true,
+      "max_bonus": 0.15,
+      
+      "criteria": {
+        "cross_references": {
+          "minimum": 2,
+          "description": "Referencias cruzadas entre PAs del cluster",
+          "detection": {
+            "type": "CO_OCCURRENCE_ACROSS_PA",
+            "window": "section",
+            "keywords": ["seguridad", "territorio", "conflicto", "paz", "ambiente"]
+          },
+          "weight": 0.40
+        },
+        
+        "shared_indicators": {
+          "minimum": 1,
+          "description": "Indicadores compartidos entre PAs",
+          "indicator_types": ["seguridad", "conflicto", "territorio"],
+          "weight": 0.30
+        },
+        
+        "normative_alignment": {
+          "description": "Cita normas comunes",
+          "required_norms": ["Ley 1448 de 2011", "Decreto 893 de 2017"],
+          "weight": 0.30
+        }
+      },
+      
+      "formula": "coherence_bonus = max_bonus * sum(criterion.weight * criterion.score)"
+    },
+    
+    "final_formula": "MESO_SCORE = (PA02_score * 0.40 + PA03_score * 0.30 + PA07_score * 0.30) + coherence_bonus"
+  },
+  
+  "meso_question": {
+    "question_id": "MESO-CL01",
+    "text": {
+      "es": "¿El plan articula coherentemente las estrategias de seguridad, protección ambiental y ordenamiento territorial?",
+      "en": "Does the plan coherently articulate security strategies, environmental protection, and territorial planning?"
+    },
+    "evaluation_criteria": [
+      "Referencias cruzadas entre PA02, PA03 y PA07",
+      "Indicadores compartidos",
+      "Narrativa de integración territorial-seguridad-ambiente",
+      "Articulación con Acuerdo Final"
+    ]
+  },
+  
+  "thresholds": {
+    "EXCELENTE": {"min": 0.85, "color": "#22c55e", "label": "Excelente"},
+    "BUENO": {"min": 0.70, "color": "#3b82f6", "label": "Bueno"},
+    "ACEPTABLE": {"min": 0.55, "color": "#eab308", "label": "Aceptable"},
+    "INSUFICIENTE": {"min": 0.0, "color": "#ef4444", "label": "Insuficiente"}
+  },
+  
+  "signal_preservation": {
+    "preserve_top_signals": 5,
+    "preserve_types": ["NORMATIVE_REFERENCE", "QUANTITATIVE_TRIPLET", "CAUSAL_LINK"],
+    "aggregation_summary": true
+  },
+  
+  "interdependencies": {
+    "related_clusters": ["CL03"],
+    "coherence_checks": ["territorial_consistency", "population_overlap"]
+  }
+}

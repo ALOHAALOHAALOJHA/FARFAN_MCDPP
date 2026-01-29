@@ -1,0 +1,33 @@
+{
+  "dead_letter_id": "72c566ca-5ce1-424e-9892-6cd7d52f431b",
+  "signal": {
+    "signal_id": "e9a9e390-e3b0-4ef8-8cac-b5ca76eff5c3",
+    "signal_type": "MC05",
+    "scope": {
+      "phase": "phase_01",
+      "policy_area": "PA01",
+      "slot": "D1-Q1"
+    },
+    "payload": {
+      "amount": 1000000
+    },
+    "provenance": {
+      "extractor": "Test",
+      "source_file": "test.txt",
+      "source_location": null,
+      "extraction_pattern": null,
+      "parent_signal_id": null,
+      "created_at": "2026-01-14T01:44:47.551675+00:00"
+    },
+    "capabilities_required": [
+      "NUMERIC_PARSING"
+    ],
+    "empirical_availability": 0.85,
+    "enrichment": true,
+    "timestamp": "2026-01-14T01:44:47.551688+00:00",
+    "content_hash": "acdb507c08851bfa7bfc034b03578dd1781c10fc35f785e5133978349cd0eae0"
+  },
+  "reason": "NO_CONSUMER",
+  "detail": "No consumer for scope={'phase': 'phase_01', 'policy_area': 'PA01', 'slot': 'D1-Q1'}",
+  "timestamp": "2026-01-14T01:44:47.551887+00:00"
+}

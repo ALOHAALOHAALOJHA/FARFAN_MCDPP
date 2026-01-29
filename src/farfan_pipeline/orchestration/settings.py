@@ -10,13 +10,23 @@ from typing import Final
 
 from dotenv import load_dotenv
 
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "CFG"  # Configuration
+__criticality__ = "HIGH"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Singleton"
+__owner__ = "Orchestration"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 # Load environment variables from .env file
 # Look for .env in the repository root
-REPO_ROOT: Final[Path] = Path(__file__).parent.parent
+REPO_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
 ENV_FILE: Final[Path] = REPO_ROOT / ".env"
 
 if ENV_FILE.exists():
     load_dotenv(ENV_FILE)
+
 
 def _get_int(key: str, default: int) -> int:
     """Safely get an integer from environment variables."""
@@ -28,9 +38,11 @@ def _get_int(key: str, default: int) -> int:
     except (ValueError, TypeError):
         return default
 
+
 def _get_bool(key: str, default: str) -> bool:
     """Safely get a boolean from environment variables."""
     return os.getenv(key, default).lower() == "true"
+
 
 class Settings:
     """Application settings loaded from environment variables."""
@@ -75,6 +87,7 @@ class Settings:
     ENABLE_CACHING: bool = _get_bool("ENABLE_CACHING", "true")
     ENABLE_MONITORING: bool = _get_bool("ENABLE_MONITORING", "false")
     ENABLE_RATE_LIMITING: bool = _get_bool("ENABLE_RATE_LIMITING", "true")
+
 
 # Global settings instance
 settings = Settings()

@@ -9,40 +9,31 @@ from __future__ import annotations
 
 import logging
 
-from flask import Blueprint, jsonify, request
-from pydantic import BaseModel, Field, ValidationError
-
 from farfan_pipeline.analysis.cross_document_comparative import (
     AggregationMethod,
     ComparisonDimension,
     ComparisonOperator,
     CrossDocumentAnalyzer,
 )
+from flask import Blueprint, jsonify, request
+from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger(__name__)
 
-cross_document_bp = Blueprint(
-    "cross_document", __name__, url_prefix="/api/v1/cross-document"
-)
+cross_document_bp = Blueprint("cross_document", __name__, url_prefix="/api/v1/cross-document")
 
 
 class ComparisonRequest(BaseModel):
     dimension: str = Field(..., description="Comparison dimension to use")
     aggregation_method: str = Field(default="mean", description="Aggregation method")
-    policy_area_filter: list[str] | None = Field(
-        default=None, description="Filter by policy areas"
-    )
-    dimension_filter: list[str] | None = Field(
-        default=None, description="Filter by dimensions"
-    )
+    policy_area_filter: list[str] | None = Field(default=None, description="Filter by policy areas")
+    dimension_filter: list[str] | None = Field(default=None, description="Filter by dimensions")
     top_n: int | None = Field(default=None, description="Return only top N results")
 
 
 class ThresholdQueryRequest(BaseModel):
     dimension: str = Field(..., description="Comparison dimension")
-    operator: str = Field(
-        ..., description="Comparison operator (gt, gte, lt, lte, eq, neq)"
-    )
+    operator: str = Field(..., description="Comparison operator (gt, gte, lt, lte, eq, neq)")
     threshold: float = Field(..., description="Threshold value")
     aggregation_method: str = Field(default="mean", description="Aggregation method")
 
@@ -67,9 +58,7 @@ def initialize_analyzer(analyzer: CrossDocumentAnalyzer) -> None:
 
 def get_analyzer() -> CrossDocumentAnalyzer:
     if _analyzer is None:
-        raise RuntimeError(
-            "CrossDocumentAnalyzer not initialized. Call initialize_analyzer first."
-        )
+        raise RuntimeError("CrossDocumentAnalyzer not initialized. Call initialize_analyzer first.")
     return _analyzer
 
 

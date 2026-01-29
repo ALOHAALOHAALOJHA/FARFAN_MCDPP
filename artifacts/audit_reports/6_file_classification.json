@@ -1,0 +1,272 @@
+{
+  "task": "Tarea #6: Clasificar 475 archivos",
+  "timestamp": "2026-01-18T20:15:00Z",
+  "agent": "claude-code",
+  "summary": {
+    "total_json_files": 489,
+    "files_classified": 489,
+    "spec_mismatch": "+14 files (475 vs 489)"
+  },
+  "file_classification": {
+    "CORE_DATA": {
+      "count": 5,
+      "files": [
+        "config/canonical_notation.json",
+        "_registry/questions/macro_question.json",
+        "_registry/questions/meso_questions.json",
+        "config/modular_manifest.json",
+        "_registry/questionnaire_index.json"
+      ],
+      "irrigation_pattern": "Via resolver.py → QuestionnairePort",
+      "sisas_integration": "NEEDS MAPPING - Resolver not SISAS-aware"
+    },
+    "REGISTRY_DATA": {
+      "patterns": {
+        "count": 1,
+        "file": "_registry/patterns/MASTER_INDEX.json",
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "entities": {
+        "count": 8,
+        "files": ["_registry/entities/*.json"],
+        "irrigation_pattern": "Direct load by consumers",
+        "sisas_integration": "PARTIAL - Direct load, not via SISAS"
+      },
+      "membership_criteria": {
+        "count": 17,
+        "files": ["_registry/membership_criteria/MC*.json", "_bindings/*.json", "_calibration/*.json"],
+        "irrigation_pattern": "Direct load by extractors",
+        "sisas_integration": "NONE - Raw JSON access"
+      },
+      "keywords": {
+        "count": 11,
+        "files": ["_registry/keywords/by_policy_area/*.json", "index.json"],
+        "irrigation_pattern": "Embedded in canonical_notation via resolver",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "capabilities": {
+        "count": 1,
+        "file": "_registry/capabilities/signal_capability_map.json",
+        "irrigation_pattern": "CQCLoader routing optimization",
+        "sisas_integration": "NONE - Separate routing system"
+      },
+      "questions": {
+        "count": 4,
+        "files": ["_registry/questions/integration_map.json", "atomized/*.json"],
+        "irrigation_pattern": "CQCLoader lazy loading",
+        "sisas_integration": "NONE - Separate loading system"
+      }
+    },
+    "DOMAIN_DATA": {
+      "dimensions": {
+        "count": 6,
+        "subdir": "dimensions/DIM01-DIM06/",
+        "files_per_dimension": [
+          "metadata.json",
+          "questions.json",
+          "pdet_context.json"
+        ],
+        "total_files": 18,
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "policy_areas": {
+        "count": 10,
+        "subdir": "policy_areas/PA01-PA10/",
+        "files_per_pa": [
+          "metadata.json",
+          "questions.json",
+          "keywords.json"
+        ],
+        "total_files": 30,
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "clusters": {
+        "count": 4,
+        "subdir": "clusters/CL01-CL04/",
+        "files_per_cluster": [
+          "metadata.json",
+          "questions.json",
+          "aggregation_rules.json",
+          "contextual_enrichment.json"
+        ],
+        "total_files": 16,
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      }
+    },
+    "OPERATIONAL_DATA": {
+      "scoring": {
+        "count": 1,
+        "files": [
+          "scoring_system.json",
+          "calibration/empirical_weights.json",
+          "validators/"
+        ],
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "validations": {
+        "count": 1,
+        "files": [
+          "validation_templates.json",
+          "referential_integrity.json",
+          "runtime_validators/*.py"
+        ],
+        "irrigation_pattern": "Direct load by validators",
+        "sisas_integration": "NONE - Separate validation system"
+      },
+      "cross_cutting": {
+        "count": 1,
+        "files": [
+          "cross_cutting_themes.json",
+          "theme_integration_framework.json",
+          "themes/CC_*/detection_rules.json"
+        ],
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "config": {
+        "count": 1,
+        "files": ["questionnaire_schema.json"],
+        "irrigation_pattern": "Direct load by schema validators",
+        "sisas_integration": "NONE - JSON Schema validation"
+      },
+      "governance": {
+        "count": 1,
+        "files": [
+          "governance.json",
+          "versioning.json"
+        ],
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "semantic": {
+        "count": 1,
+        "files": [
+          "semantic_config.json",
+          "pdet_semantic_enrichment.json"
+        ],
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING"
+      },
+      "colombia_context": {
+        "count": 1,
+        "files": [
+          "colombia_context.json",
+          "pdet_municipalities.json",
+          "municipal_governance.json"
+        ],
+        "irrigation_pattern": "Direct load by Phase2 validators",
+        "sisas_integration": "NONE - Direct access, not via SISAS"
+      }
+    },
+    "QUESTION_FILES": {
+      "micro_questions": {
+        "total_count": 300,
+        "distribution": "30 questions × 10 policy_areas",
+        "file_pattern": "dimensions/DIM*/questions/Q*.json",
+        "irrigation_pattern": "resolver → QuestionnairePort",
+        "sisas_integration": "NEEDS MAPPING - Each question should generate signals"
+      },
+      "atomized_questions": {
+        "total_count": 300,
+        "file_pattern": "_registry/questions/atomized/*.json",
+        "irrigation_pattern": "CQCLoader lazy loading",
+        "sisas_integration": "NONE - Separate lazy loading system"
+      }
+    }
+  },
+  "sisas_irrigation_status": {
+    "fully_integrated": 0,
+    "partially_integrated": 0,
+    "not_integrated": 489,
+    "integration_percentage": 0
+  },
+  "integration_gaps": {
+    "resolver_not_sisas_aware": {
+      "gap": "CanonicalQuestionnaireResolver does not use SISAS vehicles",
+      "impact": "ALL 489 files loaded via resolver bypass SISAS",
+      "severity": "CRITICAL",
+      "affected_files": "ALL canonical JSON files"
+    },
+    "cqcloader_separate_system": {
+      "gap": "CQCLoader loads questions directly, bypassing SISAS",
+      "impact": "300 question files loaded without SISAS signals",
+      "severity": "HIGH",
+      "affected_files": "_registry/questions/atomized/*.json"
+    },
+    "direct_load_bypass": {
+      "gap": "Components load JSON directly without SISAS",
+      "impact": "No signals generated for loaded data",
+      "severity": "HIGH",
+      "affected_components": [
+        "NormativeComplianceValidator",
+        "InstitutionalNERExtractor",
+        "Phase2 validators",
+        "PDETContextProvider"
+      ]
+    }
+  },
+  "irrigation_flow_analysis": {
+    "current_flow": [
+      "File (JSON) → CanonicalQuestionnaireResolver → QuestionnairePort → Phase Executors"
+    ],
+    "expected_sisas_flow": [
+      "File (JSON) → Vehicle (SISAS) → Event → Signal → Bus → Consumer → Processing"
+    ],
+    "gap": "Resolver bypasses entire SISAS infrastructure"
+  },
+  "file_role_classification": {
+    "configuration_files": {
+      "count": 9,
+      "role": "Define structure, schemas, governance",
+      "sisas_vehicle": "signal_registry",
+      "signals_generated": ["StructuralAlignmentSignal", "CanonicalMappingSignal", "EventPresenceSignal"]
+    },
+    "data_files": {
+      "count": 459,
+      "role": "Canonical questionnaire data",
+      "sisas_vehicle": "NOT ASSIGNED - Resolver loads directly",
+      "signals_generated": "NONE - Gap in integration"
+    },
+    "metadata_files": {
+      "count": 21,
+      "role": "Structural metadata for dimensions, PAs, clusters",
+      "sisas_vehicle": "signal_registry",
+      "signals_generated": ["StructuralAlignmentSignal", "CanonicalMappingSignal"]
+    }
+  },
+  "mapping_to_sisas_spec": {
+    "spec_units": 21,
+    "spec_groups": 4,
+    "actual_files": 489,
+    "spec_to_file_ratio": "1 spec unit = ~23 files"
+  },
+  "recommendations": {
+    "critical": [
+      "Integrate SISAS vehicles into CanonicalQuestionnaireResolver",
+      "Make resolver emit signals instead of direct QuestionnairePort population",
+      "Map each of 489 files to appropriate SISAS vehicle"
+    ],
+    "short_term": [
+      "Create vehicle for canonical_notation.json that emits StructuralAlignmentSignal",
+      "Create vehicle for question files that emits epistemic signals",
+      "Create vehicle for metadata files that emits CanonicalMappingSignal"
+    ],
+    "long_term": [
+      "Refactor CQCLoader to use SISAS vehicles",
+      "Replace direct JSON loads with vehicle-based loading",
+      "Create irrigation contracts for all 489 files"
+    ]
+  },
+  "statistics": {
+    "total_groups": 4,
+    "total_units": 21,
+    "files_per_unit_average": 23,
+    "largest_unit": "DOMAIN_DATA (64 files)",
+    "smallest_unit": "CORE_DATA (5 files)"
+  }
+}

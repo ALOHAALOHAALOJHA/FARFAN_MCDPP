@@ -1,0 +1,18 @@
+digraph "packages_Phase4" {
+rankdir=BT
+charset="utf-8"
+"Phase_04" [color="black", label=<Phase_04>, shape="box", style="solid"];
+"Phase_04.PHASE_4_CONSTANTS" [color="black", label=<Phase_04.PHASE_4_CONSTANTS>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_adaptive_meso_scoring" [color="black", label=<Phase_04.phase4_10_00_adaptive_meso_scoring>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_aggregation" [color="black", label=<Phase_04.phase4_10_00_aggregation>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_aggregation_enhancements" [color="black", label=<Phase_04.phase4_10_00_aggregation_enhancements>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_aggregation_integration" [color="black", label=<Phase_04.phase4_10_00_aggregation_integration>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_aggregation_provenance" [color="black", label=<Phase_04.phase4_10_00_aggregation_provenance>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_aggregation_settings" [color="black", label=<Phase_04.phase4_10_00_aggregation_settings>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_aggregation_validation" [color="black", label=<Phase_04.phase4_10_00_aggregation_validation>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_choquet_adapter" [color="black", label=<Phase_04.phase4_10_00_choquet_adapter>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_choquet_aggregator" [color="black", label=<Phase_04.phase4_10_00_choquet_aggregator>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_signal_enriched_aggregation" [color="black", label=<Phase_04.phase4_10_00_signal_enriched_aggregation>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_uncertainty_quantification" [color="black", label=<Phase_04.phase4_10_00_uncertainty_quantification>, shape="box", style="solid"];
+"Phase_04.phase4_10_00_uncertainty_quantification" -> "Phase_04.phase4_10_00_uncertainty_quantification" [arrowhead="open", arrowtail="none"];
+}

@@ -1,0 +1,252 @@
+{
+  "_metadata": {
+    "name": "Equipment Congregation Configuration",
+    "version": "1.0.0",
+    "framework": "Wu, Ramesh & Howlett (2015)",
+    "description": "Synergy coefficients and configuration for equipment congregation effects",
+    "last_updated": "2026-01-26",
+    "theoretical_basis": "Equipment congregation represents synergistic skill combinations that produce multiplicative capacity gains"
+  },
+
+  "mathematical_model": {
+    "formula": "M_equip = 1 + δ × ln(1 + n_skills) × (ρ - 1)",
+    "parameters": {
+      "delta": {
+        "symbol": "δ",
+        "name": "Congregation sensitivity parameter",
+        "default_value": 0.3,
+        "valid_range": [0.1, 1.0],
+        "description": "Controls the strength of synergy effects"
+      },
+      "rho": {
+        "symbol": "ρ",
+        "name": "Synergy coefficient",
+        "valid_range": [1.0, 2.0],
+        "description": "Base multiplier for specific skill combinations"
+      },
+      "n_skills": {
+        "symbol": "n",
+        "name": "Number of distinct skills",
+        "valid_values": [1, 2, 3],
+        "description": "Count of different policy skills congregated"
+      }
+    },
+    "example_calculation": {
+      "skills": ["Analytical", "Operational"],
+      "n_skills": 2,
+      "rho": 1.35,
+      "delta": 0.3,
+      "calculation": "M = 1 + 0.3 × ln(1 + 2) × (1.35 - 1) = 1 + 0.3 × 1.099 × 0.35 = 1.115",
+      "result": 1.115,
+      "interpretation": "+11.5% capacity boost from Evidence-Action Nexus"
+    }
+  },
+
+  "congregation_types": {
+    "evidence_action_nexus": {
+      "name": "Evidence-Action Nexus",
+      "id": "EAN",
+      "skills": ["Analytical", "Operational"],
+      "synergy_coefficient": 1.35,
+      "description": "Synergy between analytical rigor and operational implementation",
+      "theoretical_basis": "Evidence-based policy requires both robust analysis AND execution capacity",
+      "exemplars": [
+        "Policy evaluation units with implementation authority",
+        "Research-to-practice translation programs",
+        "Data-driven operational decision systems"
+      ],
+      "indicators": {
+        "presence_signals": [
+          "Methods that analyze AND prescribe actions",
+          "Evaluation methods with implementation recommendations",
+          "Analytical methods with operational constraints"
+        ],
+        "strength_indicators": [
+          "Integration of analysis outputs into operational workflows",
+          "Feedback loops from implementation to analysis",
+          "Joint analytical-operational method chains"
+        ]
+      }
+    },
+    "strategic_intelligence": {
+      "name": "Strategic Intelligence",
+      "id": "SI",
+      "skills": ["Analytical", "Political"],
+      "synergy_coefficient": 1.42,
+      "description": "Synergy between evidence-based analysis and political feasibility",
+      "theoretical_basis": "Effective policy requires both technical soundness AND political viability",
+      "exemplars": [
+        "Strategic policy advisory units",
+        "Political economy analysis capabilities",
+        "Stakeholder-informed research processes"
+      ],
+      "indicators": {
+        "presence_signals": [
+          "Methods that assess political feasibility of analytical findings",
+          "Stakeholder analysis combined with evidence synthesis",
+          "Political risk assessment integrated with data analysis"
+        ],
+        "strength_indicators": [
+          "Policy recommendations account for political constraints",
+          "Analytical outputs framed for political audiences",
+          "Political intelligence informs research priorities"
+        ]
+      }
+    },
+    "adaptive_governance": {
+      "name": "Adaptive Governance",
+      "id": "AG",
+      "skills": ["Operational", "Political"],
+      "synergy_coefficient": 1.28,
+      "description": "Synergy between execution capacity and political legitimacy",
+      "theoretical_basis": "Implementation success requires both operational capacity AND stakeholder support",
+      "exemplars": [
+        "Participatory implementation mechanisms",
+        "Stakeholder-engaged delivery systems",
+        "Legitimacy-conscious operational processes"
+      ],
+      "indicators": {
+        "presence_signals": [
+          "Implementation methods with stakeholder engagement",
+          "Operational planning with political risk assessment",
+          "Delivery mechanisms with legitimacy considerations"
+        ],
+        "strength_indicators": [
+          "Operations maintain public trust and legitimacy",
+          "Implementation adapts to political feedback",
+          "Stakeholders participate in operational decisions"
+        ]
+      }
+    },
+    "integrated_capacity": {
+      "name": "Integrated Capacity",
+      "id": "IC",
+      "skills": ["Analytical", "Operational", "Political"],
+      "synergy_coefficient": 1.75,
+      "description": "Full trinity: evidence, execution, and legitimacy combined",
+      "theoretical_basis": "Maximum policy capacity requires ALL three skills working synergistically",
+      "exemplars": [
+        "Comprehensive policy capacity institutions",
+        "Full-spectrum policy development units",
+        "Integrated government capacity centers"
+      ],
+      "indicators": {
+        "presence_signals": [
+          "Methods spanning all three skill dimensions",
+          "Complete policy cycle coverage",
+          "Integrated analytical-operational-political processes"
+        ],
+        "strength_indicators": [
+          "Seamless flow from analysis to implementation to legitimation",
+          "All three skills reinforce each other",
+          "Holistic policy capacity assessment possible"
+        ]
+      }
+    }
+  },
+
+  "synergy_coefficients": {
+    "_description": "Complete synergy coefficient matrix for all skill combinations",
+    "single_skill": {
+      "coefficient": 1.00,
+      "skills_count": 1,
+      "boost_percentage": 0,
+      "description": "No synergy - baseline capacity"
+    },
+    "analytical_operational": {
+      "coefficient": 1.35,
+      "congregation": "evidence_action_nexus",
+      "skills_count": 2,
+      "boost_percentage": 35,
+      "description": "Evidence-Action synergy"
+    },
+    "analytical_political": {
+      "coefficient": 1.42,
+      "congregation": "strategic_intelligence",
+      "skills_count": 2,
+      "boost_percentage": 42,
+      "description": "Strategic Intelligence synergy"
+    },
+    "operational_political": {
+      "coefficient": 1.28,
+      "congregation": "adaptive_governance",
+      "skills_count": 2,
+      "boost_percentage": 28,
+      "description": "Adaptive Governance synergy"
+    },
+    "all_three": {
+      "coefficient": 1.75,
+      "congregation": "integrated_capacity",
+      "skills_count": 3,
+      "boost_percentage": 75,
+      "description": "Full Integration synergy"
+    }
+  },
+
+  "configuration_profiles": {
+    "default": {
+      "name": "Default Configuration",
+      "delta": 0.3,
+      "description": "Standard synergy effects as theoretically derived"
+    },
+    "high_synergy": {
+      "name": "High Synergy Configuration",
+      "delta": 0.5,
+      "coefficient_multiplier": 1.1,
+      "description": "Enhanced synergy for highly integrated environments"
+    },
+    "conservative": {
+      "name": "Conservative Configuration",
+      "delta": 0.2,
+      "coefficient_multiplier": 0.9,
+      "description": "Modest synergy effects for uncertain contexts"
+    },
+    "empirical_calibration": {
+      "name": "Empirically Calibrated",
+      "delta": "calibrated",
+      "description": "Coefficients calibrated against empirical policy capacity data",
+      "calibration_status": "pending"
+    }
+  },
+
+  "application_rules": {
+    "by_level": {
+      "description": "Apply congregation separately for each policy level",
+      "rationale": "Synergies manifest differently at Individual/Organizational/Systemic levels",
+      "default": true
+    },
+    "threshold_for_skill_presence": {
+      "value": 0.0,
+      "description": "Minimum score for a skill to be considered present in congregation",
+      "rationale": "Even minimal capacity in a skill contributes to synergy"
+    },
+    "congregation_stacking": {
+      "enabled": false,
+      "description": "Whether multiple congregation effects can stack",
+      "rationale": "Avoid multiplicative explosion; use highest applicable congregation"
+    },
+    "partial_congregation": {
+      "enabled": true,
+      "description": "Allow partial synergy when not all skills reach full strength",
+      "partial_coefficient_formula": "ρ_partial = 1 + (ρ - 1) × min(skill_scores) / avg(skill_scores)"
+    }
+  },
+
+  "diagnostic_thresholds": {
+    "congregation_active": {
+      "description": "When to consider a congregation as actively providing synergy",
+      "skill_minimum_score": 0.5,
+      "skill_count_minimum": 2
+    },
+    "synergy_significant": {
+      "description": "When synergy effect is considered significant",
+      "multiplier_threshold": 1.10,
+      "interpretation": "10% or greater capacity boost"
+    },
+    "optimal_congregation": {
+      "description": "Target for maximum synergy utilization",
+      "target_congregation": "integrated_capacity",
+      "target_multiplier_range": [1.50, 1.75]
+    }
+  }
+}

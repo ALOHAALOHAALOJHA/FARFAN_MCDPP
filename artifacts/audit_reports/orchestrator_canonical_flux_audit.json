@@ -1,0 +1,205 @@
+{
+  "audit_type": "orchestrator_canonical_phase_flux",
+  "orchestrator_path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/orchestration/orchestrator.py",
+  "total_phases": 10,
+  "phases_audited": 10,
+  "phases_passed": 10,
+  "phases_failed": 0,
+  "phase_results": {
+    "P00": {
+      "phase_id": "P00",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": false,
+      "output_generation_found": true,
+      "invariant_checks": {},
+      "exit_gate_checks": {
+        "GATE_1": true,
+        "GATE_2": true,
+        "GATE_3": true,
+        "GATE_4": true,
+        "GATE_5": true,
+        "GATE_6": true,
+        "GATE_7": true
+      },
+      "dependency_checks": {},
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P01": {
+      "phase_id": "P01",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "chunk_count == 60": true,
+        "policy_areas == 10": true,
+        "dimensions == 6": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P00": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P02": {
+      "phase_id": "P02",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "contract_count == 300": true,
+        "executors == 30": false
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P01": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P03": {
+      "phase_id": "P03",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "score_range == (0, 3)": true,
+        "scores_count == 300": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P02": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P04": {
+      "phase_id": "P04",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "dimension_scores == 60": true,
+        "method == 'Choquet Integral'": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P03": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P05": {
+      "phase_id": "P05",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "policy_area_scores == 10": false
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P04": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P06": {
+      "phase_id": "P06",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "cluster_count == 4": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P05": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P07": {
+      "phase_id": "P07",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "components == ['CCCA', 'SGD', 'SAS']": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P06": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P08": {
+      "phase_id": "P08",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "version == '3.0.0'": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P07": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    },
+    "P09": {
+      "phase_id": "P09",
+      "is_complete": true,
+      "phase_found": true,
+      "execute_method_found": true,
+      "dispatch_entry_found": true,
+      "input_validation_found": true,
+      "output_generation_found": true,
+      "invariant_checks": {
+        "status == 'complete'": true
+      },
+      "exit_gate_checks": {},
+      "dependency_checks": {
+        "P08": true
+      },
+      "signal_emission_found": false,
+      "issues": []
+    }
+  },
+  "summary": {
+    "all_phases_found": true,
+    "all_execute_methods_found": true,
+    "all_dispatch_entries_found": true,
+    "total_issues": 0
+  }
+}

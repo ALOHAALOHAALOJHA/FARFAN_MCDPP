@@ -1,0 +1,267 @@
+{
+  "task": "Tarea #4: Mapear phase→files",
+  "timestamp": "2026-01-18T19:45:00Z",
+  "agent": "claude-code",
+  "summary": {
+    "total_phases": 10,
+    "total_phase_files": 339,
+    "phases_with_files": 10,
+    "phases_without_files": 0
+  },
+  "phase_file_mapping": {
+    "Phase_00": {
+      "file_count": 31,
+      "main_components": [
+        "phase0_90_03_wiring_validator.py",
+        "phase0_90_00_main.py",
+        "phase0_90_02_bootstrap.py",
+        "interphase/wiring_types.py",
+        "contracts/",
+        "primitives/",
+        "tests/"
+      ],
+      "responsibility": "Bootstrap, wiring validation, runtime config",
+      "sisas_consumer": "phase0_bootstrap, phase0_providers, phase0_wiring_types"
+    },
+    "Phase_01": {
+      "file_count": 28,
+      "main_components": [
+        "phase1_11_00_signal_enrichment.py",
+        "phase1_13_00_cpp_ingestion.py",
+        "primitives/streaming_extractor.py"
+      ],
+      "responsibility": "Signal enrichment, CPP ingestion",
+      "sisas_consumer": "phase1_signal_enrichment, phase1_cpp_ingestion"
+    },
+    "Phase_02": {
+      "file_count": 72,
+      "main_components": [
+        "phase2_10_00_factory.py",
+        "phase2_40_00_synchronization.py",
+        "phase2_40_01_executor_chunk_synchronizer.py",
+        "phase2_40_03_irrigation_synchronizer.py",
+        "phase2_50_00_task_executor.py",
+        "phase2_50_01_chunk_processor.py",
+        "contract_generator/",
+        "interphase/",
+        "registries/questionnaire_signal_registry.py"
+      ],
+      "responsibility": "Factory pattern, synchronization, task execution, irrigation",
+      "sisas_consumer": "phase2_factory_consumer, phase2_evidence_consumer, phase2_contract_consumer, phase2_executor_consumer"
+    },
+    "Phase_03": {
+      "file_count": 16,
+      "main_components": [
+        "phase3_24_00_signal_enriched_scoring.py"
+      ],
+      "responsibility": "Signal-enriched scoring",
+      "sisas_consumer": "phase3_scoring"
+    },
+    "Phase_04": {
+      "file_count": 37,
+      "main_components": [
+        "phase4_30_00_signal_enriched_aggregation.py",
+        "phase4_30_00_choquet_aggregator.py",
+        "phase4_10_00_uncertainty_quantification.py",
+        "primitives/",
+        "enhancements/",
+        "contracts/"
+      ],
+      "responsibility": "Signal-enriched aggregation, Choquet, uncertainty",
+      "sisas_consumer": "NONE"
+    },
+    "Phase_05": {
+      "file_count": 19,
+      "main_components": [],
+      "responsibility": "UNKNOWN - minimal files",
+      "sisas_consumer": "NONE"
+    },
+    "Phase_06": {
+      "file_count": 12,
+      "main_components": [],
+      "responsibility": "UNKNOWN - minimal files",
+      "sisas_consumer": "NONE"
+    },
+    "Phase_07": {
+      "file_count": 9,
+      "main_components": [
+        "phase7_meso_consumer.py"
+      ],
+      "responsibility": "MESO level aggregation",
+      "sisas_consumer": "phase7_meso_consumer"
+    },
+    "Phase_08": {
+      "file_count": 28,
+      "main_components": [
+        "phase8_30_00_signal_enriched_recommendations.py"
+      ],
+      "responsibility": "Signal-enriched recommendations",
+      "sisas_consumer": "phase8_recommendations"
+    },
+    "Phase_09": {
+      "file_count": 8,
+      "main_components": [
+        "phase9_10_00_signal_enriched_reporting.py",
+        "phase9_10_00_report_generator.py",
+        "phase9_10_00_report_assembly.py"
+      ],
+      "responsibility": "Signal-enriched reporting",
+      "sisas_consumer": "NONE"
+    }
+  },
+  "phase_to_consumer_mapping": {
+    "fully_connected": {
+      "Phase_00": {
+        "has_sisas_consumer": true,
+        "consumers": ["phase0_bootstrap", "phase0_providers", "phase0_wiring_types"],
+        "signal_coverage": "StructuralAlignmentSignal, CanonicalMappingSignal, EventPresenceSignal, EventCompletenessSignal, DataIntegritySignal, SchemaConflictSignal, TemporalCouplingSignal, LegacyDependencySignal"
+      },
+      "Phase_01": {
+        "has_sisas_consumer": true,
+        "consumers": ["phase1_signal_enrichment", "phase1_cpp_ingestion"],
+        "signal_coverage": "StructuralAlignmentSignal, EventPresenceSignal, MethodApplicationSignal, AnswerSpecificitySignal, EventCompletenessSignal, DataIntegritySignal, ExecutionAttemptSignal, FailureModeSignal"
+      },
+      "Phase_02": {
+        "has_sisas_consumer": true,
+        "consumers": ["phase2_factory_consumer", "phase2_evidence_consumer", "phase2_contract_consumer", "phase2_executor_consumer"],
+        "signal_coverage": "ExecutionAttemptSignal, FailureModeSignal, FrequencySignal, ConsumerHealthSignal, EmpiricalSupportSignal, AnswerDeterminacySignal, AnswerSpecificitySignal, StructuralAlignmentSignal, DataIntegritySignal"
+      },
+      "Phase_03": {
+        "has_sisas_consumer": true,
+        "consumers": ["phase3_scoring"],
+        "signal_coverage": "DataIntegritySignal, EventCompletenessSignal"
+      }
+    },
+    "partially_connected": {
+      "Phase_07": {
+        "has_sisas_consumer": true,
+        "consumers": ["phase7_meso_consumer"],
+        "signal_coverage": "CanonicalMappingSignal, StructuralAlignmentSignal",
+        "note": "Only 1 consumer for phase with 9 files"
+      },
+      "Phase_08": {
+        "has_sisas_consumer": true,
+        "consumers": ["phase8_recommendations"],
+        "signal_coverage": "DecisionDivergenceSignal, ConfidenceDropSignal, TemporalContrastSignal, AnswerDeterminacySignal, AnswerSpecificitySignal, EmpiricalSupportSignal, DataIntegritySignal",
+        "note": "Consumes 7 signal types but many signals have no producers"
+      }
+    },
+    "not_connected": {
+      "Phase_04": {
+        "has_sisas_consumer": false,
+        "file_count": 37,
+        "note": "Major phase with 37 files, NO SISAS consumer"
+      },
+      "Phase_05": {
+        "has_sisas_consumer": false,
+        "file_count": 19,
+        "note": "Minimal files, NO SISAS consumer"
+      },
+      "Phase_06": {
+        "has_sisas_consumer": false,
+        "file_count": 12,
+        "note": "Minimal files, NO SISAS consumer"
+      },
+      "Phase_09": {
+        "has_sisas_consumer": false,
+        "file_count": 8,
+        "note": "Reporting phase, NO SISAS consumer"
+      }
+    }
+  },
+  "critical_gaps": {
+    "phases_without_consumers": [
+      {
+        "phase": "Phase_04",
+        "file_count": 37,
+        "impact": "HIGH - Major aggregation phase with no signal consumption",
+        "recommendation": "Create phase4_aggregation_consumer"
+      },
+      {
+        "phase": "Phase_09",
+        "file_count": 8,
+        "impact": "MEDIUM - Reporting phase should consume signals",
+        "recommendation": "Create phase9_reporting_consumer"
+      },
+      {
+        "phase": "Phase_05",
+        "file_count": 19,
+        "impact": "UNKNOWN - Need to investigate purpose"
+      },
+      {
+        "phase": "Phase_06",
+        "file_count": 12,
+        "impact": "UNKNOWN - Need to investigate purpose"
+      }
+    ],
+    "orphan_consumers": [
+      {
+        "consumer": "phase7_meso_consumer",
+        "consumes": "CanonicalMappingSignal, StructuralAlignmentSignal",
+        "produced_by": "signal_registry, signal_context_scoper, signal_enhancement_integrator",
+        "gap": "Phase 7 has 9 files but only 1 consumer, may be under-served"
+      }
+    ]
+  },
+  "file_organization_analysis": {
+    "well_organized_phases": [
+      "Phase_00 - Clear structure with contracts, primitives, tests",
+      "Phase_02 - Factory, synchronizer, executor, contract_generator subdirs",
+      "Phase_04 - Primitives, enhancements, contracts well organized"
+    ],
+    "needs_organization": [
+      "Phase_01 - Flat structure with some primitives",
+      "Phase_03 - Minimal files",
+      "Phases 05-09 - Variable organization"
+    ]
+  },
+  "s irrigation_coverage": {
+    "phases_with_sisas_consumers": 6,
+    "phases_without_sisas_consumers": 4,
+    "coverage_percentage": 60,
+    "gaps": [
+      "Phase_04 (37 files) - NO CONSUMER",
+      "Phase_09 (8 files) - NO CONSUMER",
+      "Phase_05 (19 files) - NO CONSUMER",
+      "Phase_06 (12 files) - NO CONSUMER"
+    ]
+  },
+  "signal_flow_bottlenecks": [
+    {
+      "bottleneck": "Phase_04 has no consumer but produces aggregation outputs",
+      "impact": "Phase 8 recommendations may lack Phase 4 aggregation signals",
+      "severity": "HIGH"
+    },
+    {
+      "bottleneck": "Phase_02 produces many signals but downstream phases don't consume them",
+      "impact": "Signal flow breaks between Phase 2 and Phase 3",
+      "severity": "MEDIUM"
+    }
+  ],
+  "recommendations": {
+    "immediate": [
+      "Create SISAS consumer for Phase_04 (37 files need signal integration)",
+      "Create SISAS consumer for Phase_09 (reporting should be signal-aware)",
+      "Investigate Phase_05 and Phase_06 purpose and create consumers if needed"
+    ],
+    "short_term": [
+      "Map Phase_02 outputs to Phase_03 inputs via signals",
+      "Create phase adapters for inter-phase communication",
+      "Document which phase files produce which signals"
+    ],
+    "long_term": [
+      "Standardize phase directory structure (contracts, primitives, enhancements)",
+      "Auto-generate phase-to-consumer mapping from file structure",
+      "Create phase orchestration graph showing signal dependencies"
+    ]
+  },
+  "statistics": {
+    "total_phase_directories": 21,
+    "active_phases_with_files": 10,
+    "total_python_files": 339,
+    "average_files_per_phase": 34,
+    "median_files_per_phase": 23,
+    "largest_phase": "Phase_02 (72 files)",
+    "smallest_phase": "Phase_09 (8 files)"
+  }
+}

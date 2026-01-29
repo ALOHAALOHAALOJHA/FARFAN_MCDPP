@@ -1,0 +1,82 @@
+{
+  "level": "N3-AUD",
+  "epistemology": "Falsacionismo popperiano",
+  "description": "Auditoría crítica con poder de veto asimétrico. Intenta refutar los hallazgos de las fases anteriores; si falla la refutación, el hallazgo es robusto.",
+  "output_type": "CONSTRAINT",
+  "fusion_behavior": "gate",
+  "fusion_symbol": "⊘",
+  "calibration_parameters": {
+    "significance_level": 0.05,
+    "veto_threshold_critical": 0.0,
+    "veto_threshold_partial": 0.5,
+    "financial_strictness": 1.0,
+    "temporal_logic_required": false
+  },
+  "validation_schema": {
+    "significance_level": {"type": "float", "range": [0.0, 1.0]},
+    "veto_threshold_critical": {"type": "float", "range": [0.0, 1.0]},
+    "veto_threshold_partial": {"type": "float", "range": [0.0, 1.0]},
+    "financial_strictness": {"type": "float", "range": [0.0, null]},
+    "temporal_logic_required": {"type": "bool"}
+  },
+  "pdm_sensitivity": {
+    "active": true,
+    "rules": ["financial_strictness", "temporal_logic"],
+    "rule_descriptions": {
+      "financial_strictness": "Aumenta strictness de validación para documentos con datos financieros",
+      "temporal_logic": "Habilita validación de consistencia temporal si el documento requiere ordenamiento temporal"
+    }
+  },
+  "constraints": [
+    "requires_N1_and_N2_input",
+    "can_veto_lower_levels",
+    "asymmetric_authority",
+    "veto_is_unidirectional",
+    "level_is_immutable"
+  ],
+  "typical_methods": [
+    "PolicyContradictionDetector._detect_logical_incompatibilities",
+    "PolicyContradictionDetector._calculate_coherence_metrics",
+    "FinancialAuditor._detect_allocation_gaps",
+    "IndustrialGradeValidator.execute_suite",
+    "AdvancedDAGValidator._is_acyclic",
+    "OperationalizationAuditor.audit_sequence_logic",
+    "TemporalLogicVerifier.verify_temporal_consistency"
+  ],
+  "epistemic_regime": "Popperian Falsificationism",
+  "meta_level": false,
+  "asymmetry_principle": {
+    "enforcement": "CONSTITUTIONAL",
+    "description": "N3 puede invalidar N1/N2. N1/N2 NO pueden invalidar N3.",
+    "verification_hooks": [
+      "check_no_n1_veto_n3",
+      "check_no_n2_override_n3",
+      "check_veto_is_unidirectional"
+    ],
+    "veto_actions": {
+      "CRITICAL_VETO": {
+        "trigger": "confidence <= veto_threshold_critical",
+        "multiplier": 0.0,
+        "action": "suppress",
+        "scope": "entire_output"
+      },
+      "PARTIAL_VETO": {
+        "trigger": "confidence <= veto_threshold_partial",
+        "multiplier": 0.5,
+        "action": "reduce_confidence",
+        "scope": "affected_branches"
+      },
+      "APPROVED": {
+        "trigger": "confidence > veto_threshold_partial",
+        "multiplier": 1.0,
+        "action": "validate",
+        "scope": "all_outputs"
+      }
+    }
+  },
+  "constitutional_invariants": [
+    "CI-04_ASYMMETRY: N3 can veto N1/N2. N1/N2 CANNOT veto N3.",
+    "CI-03_IMMUTABILITY: Level cannot be changed post-initialization.",
+    "CI-05_PDM_SEPARATION: PDM adjusts strictness, NEVER changes level."
+  ]
+}

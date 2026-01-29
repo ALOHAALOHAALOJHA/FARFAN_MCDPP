@@ -1,55 +1,55 @@
 {
   "PolicyDomain": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 59,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "AnalyticalDimension": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 79,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PDQIdentifier": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 94,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PosteriorSampleRecord": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 103,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "SemanticChunk": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 108,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PosteriorSample": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 119,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "BayesianEvaluation": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 124,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "EmbeddingProtocol": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 134,
     "class_level": "PROTOCOL",
     "class_epistemology": "NONE",
@@ -113,14 +113,14 @@
     }
   },
   "ChunkingConfig": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 169,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "AdvancedSemanticChunker": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 180,
     "class_level": "N1-EMP",
     "class_epistemology": "POSITIVIST_EMPIRICAL",
@@ -666,7 +666,7 @@
     }
   },
   "BayesianNumericalAnalyzer": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 492,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -1099,7 +1099,7 @@
     }
   },
   "PolicyCrossEncoderReranker": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 781,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -1216,14 +1216,14 @@
     }
   },
   "PolicyEmbeddingConfig": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 885,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PolicyAnalysisEmbedder": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 908,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -1908,7 +1908,7 @@
     }
   },
   "EmbeddingPolicyProducer": {
-    "file_path": "src/methods_dispensary/embedding_policy.py",
+    "file_path": "src/farfan_pipeline/methods/embedding_policy.py",
     "line_number": 1622,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -3333,77 +3333,77 @@
     }
   },
   "ColombianMunicipalContext": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 72,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CausalNode": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 170,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CausalEdge": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 180,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CausalDAG": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 191,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CausalEffect": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 199,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CounterfactualScenario": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 213,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ExtractedTable": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 221,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "FinancialIndicator": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 231,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ResponsibleEntity": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 243,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "QualityScore": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 253,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PDETMunicipalPlanAnalyzer": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 268,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -6473,21 +6473,21 @@
     }
   },
   "PDETAnalysisException": {
-    "file_path": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "file_path": "src/farfan_pipeline/methods/financiero_viabilidad_tablas copy.py",
     "line_number": 2425,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ValueChainLink": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 811,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "MunicipalOntology": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 823,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
@@ -6529,7 +6529,7 @@
     }
   },
   "SemanticAnalyzer": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 1041,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -6962,7 +6962,7 @@
     }
   },
   "PerformanceAnalyzer": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 1429,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -7246,7 +7246,7 @@
     }
   },
   "TextMiningEngine": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 1609,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -7537,7 +7537,7 @@
     }
   },
   "MunicipalAnalyzer": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 1795,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -7722,21 +7722,21 @@
     }
   },
   "CanonicalQuestionContract": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2041,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "EvidenceSegment": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2061,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CanonicalQuestionSegmenter": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2069,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -7889,7 +7889,7 @@
     }
   },
   "DocumentProcessor": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2263,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -8240,7 +8240,7 @@
     }
   },
   "ResultsExporter": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2574,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
@@ -8377,7 +8377,7 @@
     }
   },
   "ConfigurationManager": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2736,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -8499,7 +8499,7 @@
     }
   },
   "BatchProcessor": {
-    "file_path": "src/methods_dispensary/analyzer_one.py",
+    "file_path": "src/farfan_pipeline/methods/analyzer_one.py",
     "line_number": 2792,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -8682,7 +8682,7 @@
     }
   },
   "BeachEvidentialTest": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 97,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -8797,7 +8797,7 @@
     }
   },
   "CDAFException": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 196,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -8933,42 +8933,42 @@
     }
   },
   "CDAFValidationError": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 229,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CDAFProcessingError": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 233,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CDAFBayesianError": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 237,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CDAFConfigError": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 241,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "BayesianThresholdsConfig": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 249,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "MechanismTypeConfig": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 278,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
@@ -9017,63 +9017,63 @@
     }
   },
   "PerformanceConfig": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 295,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "SelfReflectionConfig": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 315,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CDAFConfigSchema": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 337,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "GoalClassification": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 371,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "EntityActivity": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 378,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "CausalLink": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 393,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "AuditResult": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 405,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "MetaNode": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 413,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ConfigLoader": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 433,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -9570,7 +9570,7 @@
     }
   },
   "PDFProcessor": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 848,
     "class_level": "N1-EMP",
     "class_epistemology": "POSITIVIST_EMPIRICAL",
@@ -9774,7 +9774,7 @@
     }
   },
   "CausalExtractor": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 967,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -10705,7 +10705,7 @@
     }
   },
   "MechanismPartExtractor": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 1751,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -11047,7 +11047,7 @@
     }
   },
   "FinancialAuditor": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 1908,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -11473,7 +11473,7 @@
     }
   },
   "OperationalizationAuditor": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 2285,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -12068,7 +12068,7 @@
     }
   },
   "BayesianMechanismInference": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 2935,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -12891,7 +12891,7 @@
     }
   },
   "CausalInferenceSetup": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 3594,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -13117,7 +13117,7 @@
     }
   },
   "ReportingEngine": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 3794,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -13443,7 +13443,7 @@
     }
   },
   "CDAFFramework": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 4102,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -13879,7 +13879,7 @@
     }
   },
   "BayesFactorTable": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 4766,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -13972,7 +13972,7 @@
     }
   },
   "AdaptivePriorCalculator": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 4788,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -14373,7 +14373,7 @@
     }
   },
   "HierarchicalGenerativeModel": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 5203,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -14966,7 +14966,7 @@
     }
   },
   "BayesianCounterfactualAuditor": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 5734,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -15442,7 +15442,7 @@
     }
   },
   "DerekBeachProducer": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 6340,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -17417,49 +17417,49 @@
     }
   },
   "Config": {
-    "file_path": "src/methods_dispensary/derek_beach.py",
+    "file_path": "src/farfan_pipeline/methods/derek_beach.py",
     "line_number": 368,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ValidatorType": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 50,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ProbativeTestType": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 57,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PenaltyCategory": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 64,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ValidationRule": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 77,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ValidationResult": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 88,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ReconciliationValidator": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 97,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -17793,7 +17793,7 @@
     }
   },
   "ProbativeTest": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 229,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -17846,14 +17846,14 @@
     }
   },
   "BayesianUpdate": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 258,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "BayesianUpdater": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 267,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -18085,14 +18085,14 @@
     }
   },
   "MicroLevelAnalysis": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 382,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "DispersionEngine": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 397,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -18325,21 +18325,21 @@
     }
   },
   "PeerContext": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 492,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PeerComparison": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 500,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PeerCalibrator": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 510,
     "class_level": "N4-SYN",
     "class_epistemology": "CRITICAL_REFLEXIVE",
@@ -18502,14 +18502,14 @@
     }
   },
   "MesoLevelAnalysis": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 620,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "BayesianRollUp": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 634,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -18654,14 +18654,14 @@
     }
   },
   "ContradictionDetection": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 723,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ContradictionScanner": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 733,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -18847,14 +18847,14 @@
     }
   },
   "MacroLevelAnalysis": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 825,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "BayesianPortfolioComposer": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 840,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -19106,7 +19106,7 @@
     }
   },
   "MultiLevelBayesianOrchestrator": {
-    "file_path": "src/methods_dispensary/bayesian_multilevel_system.py",
+    "file_path": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
     "line_number": 1048,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -19370,7 +19370,7 @@
     }
   },
   "_FallbackBayesianCalculator": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 70,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -19466,7 +19466,7 @@
     }
   },
   "_FallbackTemporalVerifier": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 85,
     "class_level": "N3-AUD",
     "class_epistemology": "POPPERIAN_FALSIFICATIONIST",
@@ -19528,7 +19528,7 @@
     }
   },
   "_FallbackContradictionDetector": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 93,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -19635,14 +19635,14 @@
     }
   },
   "CausalDimension": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 89,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ProcessorConfig": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 290,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -19729,7 +19729,7 @@
     }
   },
   "BayesianEvidenceScorer": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 385,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -19976,7 +19976,7 @@
     }
   },
   "PolicyTextProcessor": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 562,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -20208,7 +20208,7 @@
     }
   },
   "EvidenceBundle": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 641,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -20256,7 +20256,7 @@
     }
   },
   "IndustrialPolicyProcessor": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 662,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -21021,7 +21021,7 @@
     }
   },
   "AdvancedTextSanitizer": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 1352,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -21206,7 +21206,7 @@
     }
   },
   "ResilientFileHandler": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 1450,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -21302,7 +21302,7 @@
     }
   },
   "PolicyAnalysisPipeline": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 1492,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -21451,42 +21451,42 @@
     }
   },
   "ContradictionPolicyDimension": {
-    "file_path": "src/methods_dispensary/policy_processor.py",
+    "file_path": "src/farfan_pipeline/methods/policy_processor.py",
     "line_number": 61,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ContradictionType": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 51,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PolicyDimension": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 62,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "PolicyStatement": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 72,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ContradictionEvidence": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 86,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "BayesianConfidenceCalculator": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 102,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -21582,7 +21582,7 @@
     }
   },
   "TemporalLogicVerifier": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 150,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -22046,7 +22046,7 @@
     }
   },
   "PolicyContradictionDetector": {
-    "file_path": "src/methods_dispensary/contradiction_deteccion.py",
+    "file_path": "src/farfan_pipeline/methods/contradiction_deteccion.py",
     "line_number": 328,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -23999,21 +23999,21 @@
     }
   },
   "PDMSection": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 98,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "SemanticConfig": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 112,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "SemanticProcessor": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 129,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -24387,7 +24387,7 @@
     }
   },
   "BayesianEvidenceIntegrator": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 298,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -24670,7 +24670,7 @@
     }
   },
   "PolicyDocumentAnalyzer": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 455,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -24850,7 +24850,7 @@
     }
   },
   "SemanticChunkingProducer": {
-    "file_path": "src/methods_dispensary/semantic_chunking_policy.py",
+    "file_path": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
     "line_number": 584,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -25959,28 +25959,28 @@
     }
   },
   "GraphType": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 97,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ValidacionResultado": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 107,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "ValidationMetric": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 118,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "AdvancedGraphNode": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 130,
     "class_level": "N2-INF",
     "class_epistemology": "DETERMINISTIC_LOGICAL",
@@ -26221,14 +26221,14 @@
     }
   },
   "MonteCarloAdvancedResult": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 242,
     "class_level": "INFRASTRUCTURE",
     "class_epistemology": "NONE",
     "methods": {}
   },
   "TeoriaCambio": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 276,
     "class_level": "N2-INF",
     "class_epistemology": "CAUSAL_MECHANISTIC",
@@ -26717,7 +26717,7 @@
     }
   },
   "AdvancedDAGValidator": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 572,
     "class_level": "N2-INF",
     "class_epistemology": "BAYESIAN_PROBABILISTIC",
@@ -27532,7 +27532,7 @@
     }
   },
   "IndustrialGradeValidator": {
-    "file_path": "src/methods_dispensary/teoria_cambio.py",
+    "file_path": "src/farfan_pipeline/methods/teoria_cambio.py",
     "line_number": 991,
     "class_level": "N3-AUD",
     "class_epistemology": "POPPERIAN_FALSIFICATIONIST",

@@ -1,0 +1,740 @@
+{
+  "timestamp": "2026-01-11T02:10:22.631885+00:00",
+  "status": "SUCCESS",
+  "files_corrected": 73,
+  "violations_remaining": 0,
+  "syntax_errors": 0,
+  "idempotent": true,
+  "corrections": [
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_primitives.py",
+      "action": "relocate",
+      "old_line_number": 44,
+      "new_line_number": 27,
+      "justification": "after multi-line docstring",
+      "hash_before": "3bff15eefc29cfc9",
+      "hash_after": "3c51d4eb0218ea06",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_protocols.py",
+      "action": "relocate",
+      "old_line_number": 59,
+      "new_line_number": 42,
+      "justification": "after multi-line docstring",
+      "hash_before": "ed6cfb076246fc63",
+      "hash_after": "0514a11538f41921",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_00_paths.py",
+      "action": "relocate",
+      "old_line_number": 33,
+      "new_line_number": 16,
+      "justification": "after multi-line docstring",
+      "hash_before": "fb8878b45742b664",
+      "hash_after": "8b77d537e993e34b",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_01_runtime_config_typed.py",
+      "action": "relocate",
+      "old_line_number": 60,
+      "new_line_number": 43,
+      "justification": "after multi-line docstring",
+      "hash_before": "514b23c2b5dcc270",
+      "hash_after": "f6f00d09a5da1f81",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_02_json_logger.py",
+      "action": "relocate",
+      "old_line_number": 32,
+      "new_line_number": 15,
+      "justification": "after multi-line docstring",
+      "hash_before": "4fb92255bace2a13",
+      "hash_after": "46577dc508816430",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_03_runtime_config_schema.py",
+      "action": "relocate",
+      "old_line_number": 19,
+      "new_line_number": 2,
+      "justification": "after single-line docstring",
+      "hash_before": "3966f62a669ea50c",
+      "hash_after": "78e8cb48f10cae39",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_20_02_determinism.py",
+      "action": "relocate",
+      "old_line_number": 36,
+      "new_line_number": 19,
+      "justification": "after multi-line docstring",
+      "hash_before": "60e615a474aae4b6",
+      "hash_after": "824e77ac558e73ec",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_20_03_determinism_helpers.py",
+      "action": "relocate",
+      "old_line_number": 31,
+      "new_line_number": 14,
+      "justification": "after multi-line docstring",
+      "hash_before": "850e590cde2207f0",
+      "hash_after": "4b4b8965ae925180",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_30_00_resource_controller.py",
+      "action": "relocate",
+      "old_line_number": 59,
+      "new_line_number": 42,
+      "justification": "after multi-line docstring",
+      "hash_before": "7ff254bda91557fe",
+      "hash_after": "d6172c968ee92159",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_40_00_input_validation.py",
+      "action": "relocate",
+      "old_line_number": 69,
+      "new_line_number": 52,
+      "justification": "after multi-line docstring",
+      "hash_before": "32487c722f9b5d5c",
+      "hash_after": "01e785bf35f99b1a",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_40_01_schema_monitor.py",
+      "action": "relocate",
+      "old_line_number": 28,
+      "new_line_number": 11,
+      "justification": "after multi-line docstring",
+      "hash_before": "0d9a7833cadad654",
+      "hash_after": "2d954334fb016714",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_50_01_exit_gates.py",
+      "action": "relocate",
+      "old_line_number": 40,
+      "new_line_number": 23,
+      "justification": "after multi-line docstring",
+      "hash_before": "4984b4290729064b",
+      "hash_after": "e9c27f93a575a124",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_00_main.py",
+      "action": "relocate",
+      "old_line_number": 43,
+      "new_line_number": 26,
+      "justification": "after multi-line docstring",
+      "hash_before": "c7078bc567920a5e",
+      "hash_after": "65e56f97dc081171",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py",
+      "action": "relocate",
+      "old_line_number": 58,
+      "new_line_number": 41,
+      "justification": "after multi-line docstring",
+      "hash_before": "597f73a7a5a5d6c2",
+      "hash_after": "5d6937e2e4a26c45",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py",
+      "action": "relocate",
+      "old_line_number": 33,
+      "new_line_number": 16,
+      "justification": "after multi-line docstring",
+      "hash_before": "9f0bdbd7e7364d1d",
+      "hash_after": "f8856b3b66f23846",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_03_wiring_validator.py",
+      "action": "relocate",
+      "old_line_number": 39,
+      "new_line_number": 22,
+      "justification": "after multi-line docstring",
+      "hash_before": "dbeddb8fd5e9b842",
+      "hash_after": "bb228f07c97760f8",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_cpp_models.py",
+      "action": "relocate",
+      "old_line_number": 33,
+      "new_line_number": 16,
+      "justification": "after multi-line docstring",
+      "hash_before": "3f48699552a3e21d",
+      "hash_after": "b248db2ade05cfcf",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_models.py",
+      "action": "relocate",
+      "old_line_number": 25,
+      "new_line_number": 8,
+      "justification": "after multi-line docstring",
+      "hash_before": "5fc7c9af2d403d5b",
+      "hash_after": "62ea6eb0a01e7974",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_phase_protocol.py",
+      "action": "relocate",
+      "old_line_number": 59,
+      "new_line_number": 42,
+      "justification": "after multi-line docstring",
+      "hash_before": "ccd530a1b52222a4",
+      "hash_after": "33300821954485f5",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_15_00_questionnaire_mapper.py",
+      "action": "relocate",
+      "old_line_number": 33,
+      "new_line_number": 16,
+      "justification": "after multi-line docstring",
+      "hash_before": "fa0f0f20e97021ee",
+      "hash_after": "9fd7909880fc6097",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_20_00_cpp_ingestion.py",
+      "action": "relocate",
+      "old_line_number": 71,
+      "new_line_number": 54,
+      "justification": "after multi-line docstring",
+      "hash_before": "b446821db6eef028",
+      "hash_after": "bf126a8dd4c19881",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_25_00_sp4_question_aware.py",
+      "action": "relocate",
+      "old_line_number": 41,
+      "new_line_number": 24,
+      "justification": "after multi-line docstring",
+      "hash_before": "36de3952beaec7d1",
+      "hash_after": "1da164de608ebd96",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_30_00_adapter.py",
+      "action": "relocate",
+      "old_line_number": 40,
+      "new_line_number": 23,
+      "justification": "after multi-line docstring",
+      "hash_before": "190032150c94e93c",
+      "hash_after": "da17238039091b4c",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_40_00_circuit_breaker.py",
+      "action": "relocate",
+      "old_line_number": 44,
+      "new_line_number": 27,
+      "justification": "after multi-line docstring",
+      "hash_before": "3901caefecb14f56",
+      "hash_after": "e59c53ae4813b9cc",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_60_00_signal_enrichment.py",
+      "action": "relocate",
+      "old_line_number": 37,
+      "new_line_number": 20,
+      "justification": "after multi-line docstring",
+      "hash_before": "f7247bb0908051fb",
+      "hash_after": "0e8038dec9c99fba",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_01_class_registry.py",
+      "action": "relocate",
+      "old_line_number": 24,
+      "new_line_number": 7,
+      "justification": "after multi-line docstring",
+      "hash_before": "dfa6ced8ed33e829",
+      "hash_after": "4f675708d646b3af",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_02_methods_registry.py",
+      "action": "relocate",
+      "old_line_number": 32,
+      "new_line_number": 15,
+      "justification": "after multi-line docstring",
+      "hash_before": "c6f2c0a410738d30",
+      "hash_after": "c011bda7e9feb4de",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_03_executor_config.py",
+      "action": "relocate",
+      "old_line_number": 39,
+      "new_line_number": 22,
+      "justification": "after multi-line docstring",
+      "hash_before": "40456e0b667ddc38",
+      "hash_after": "b0f09ff3ff67ba13",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py",
+      "action": "relocate",
+      "old_line_number": 28,
+      "new_line_number": 11,
+      "justification": "after multi-line docstring",
+      "hash_before": "ebb268635250d480",
+      "hash_after": "23021b5bd55d3339",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_02_resource_alerts.py",
+      "action": "relocate",
+      "old_line_number": 31,
+      "new_line_number": 14,
+      "justification": "after multi-line docstring",
+      "hash_before": "f89f0bd608c9f825",
+      "hash_after": "87249af685cd93cb",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_04_circuit_breaker.py",
+      "action": "relocate",
+      "old_line_number": 37,
+      "new_line_number": 20,
+      "justification": "after multi-line docstring",
+      "hash_before": "c87fd74840c91ed4",
+      "hash_after": "f7dfe964b5b059c2",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_05_distributed_cache.py",
+      "action": "relocate",
+      "old_line_number": 41,
+      "new_line_number": 24,
+      "justification": "after multi-line docstring",
+      "hash_before": "35c6b4fed572d845",
+      "hash_after": "5c718a5beab083d2",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_00_synchronization.py",
+      "action": "relocate",
+      "old_line_number": 32,
+      "new_line_number": 15,
+      "justification": "after multi-line docstring",
+      "hash_before": "71ce21d92fa3e54a",
+      "hash_after": "a5f886b898e34310",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_01_executor_chunk_synchronizer.py",
+      "action": "relocate",
+      "old_line_number": 32,
+      "new_line_number": 15,
+      "justification": "after multi-line docstring",
+      "hash_before": "4e0132926b862420",
+      "hash_after": "ce9904b8bcff1682",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_02_schema_validation.py",
+      "action": "relocate",
+      "old_line_number": 64,
+      "new_line_number": 47,
+      "justification": "after multi-line docstring",
+      "hash_before": "ade2bd1346bd36b6",
+      "hash_after": "a0044f8e9b16da77",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py",
+      "action": "relocate",
+      "old_line_number": 38,
+      "new_line_number": 21,
+      "justification": "after multi-line docstring",
+      "hash_before": "23b7a947980e70f7",
+      "hash_after": "4501937a14c7efd3",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_00_task_executor.py",
+      "action": "relocate",
+      "old_line_number": 69,
+      "new_line_number": 52,
+      "justification": "after multi-line docstring",
+      "hash_before": "e816a020d6abc8cd",
+      "hash_after": "bface69e096efd25",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_chunk_processor.py",
+      "action": "relocate",
+      "old_line_number": 27,
+      "new_line_number": 10,
+      "justification": "after multi-line docstring",
+      "hash_before": "058681e8a09981f2",
+      "hash_after": "b860a5b03ff14cd7",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_task_planner.py",
+      "action": "relocate",
+      "old_line_number": 24,
+      "new_line_number": 7,
+      "justification": "after multi-line docstring",
+      "hash_before": "9800104a439de3ea",
+      "hash_after": "cc55b3b91bcb14ef",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py",
+      "action": "relocate",
+      "old_line_number": 48,
+      "new_line_number": 31,
+      "justification": "after multi-line docstring",
+      "hash_before": "cb69847c4e635c34",
+      "hash_after": "25cb320f90ed9203",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
+      "action": "relocate",
+      "old_line_number": 24,
+      "new_line_number": 7,
+      "justification": "after multi-line docstring",
+      "hash_before": "df3deba93e69faf9",
+      "hash_after": "04056daff9b08124",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+      "action": "relocate",
+      "old_line_number": 24,
+      "new_line_number": 7,
+      "justification": "after multi-line docstring",
+      "hash_before": "1e46e46cde9ee222",
+      "hash_after": "856553d772cb654f",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_02_arg_router.py",
+      "action": "relocate",
+      "old_line_number": 38,
+      "new_line_number": 21,
+      "justification": "after multi-line docstring",
+      "hash_before": "0ff5fb2d9d26c44b",
+      "hash_after": "c7e3bf78551c5e7f",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_04_calibration_policy.py",
+      "action": "relocate",
+      "old_line_number": 47,
+      "new_line_number": 30,
+      "justification": "after multi-line docstring",
+      "hash_before": "f9c997c14b75a904",
+      "hash_after": "110246bc45ec6aac",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_05_executor_instrumentation_mixin.py",
+      "action": "relocate",
+      "old_line_number": 35,
+      "new_line_number": 18,
+      "justification": "after multi-line docstring",
+      "hash_before": "9cfd4ea2dc5c0958",
+      "hash_after": "b61a93e25724318b",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "action": "relocate",
+      "old_line_number": 54,
+      "new_line_number": 37,
+      "justification": "after multi-line docstring",
+      "hash_before": "7a1b26dfcf22dbca",
+      "hash_after": "13a3b78887088ad4",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_01_evidence_query_engine.py",
+      "action": "relocate",
+      "old_line_number": 60,
+      "new_line_number": 43,
+      "justification": "after multi-line docstring",
+      "hash_before": "51a729a5bf27fd01",
+      "hash_after": "f00e3cb495b3eaf3",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_85_00_evidence_nexus_sota_implementations.py",
+      "action": "relocate",
+      "old_line_number": 44,
+      "new_line_number": 27,
+      "justification": "after multi-line docstring",
+      "hash_before": "29012bccc9bcd468",
+      "hash_after": "8bb5e4c2c5ebe427",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_90_00_carver.py",
+      "action": "relocate",
+      "old_line_number": 187,
+      "new_line_number": 170,
+      "justification": "after multi-line docstring",
+      "hash_before": "e70e158709d22f3b",
+      "hash_after": "06d2361ac9e14abb",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_contract_hydrator.py",
+      "action": "relocate",
+      "old_line_number": 55,
+      "new_line_number": 38,
+      "justification": "after multi-line docstring",
+      "hash_before": "72e7bb0b10ca8aae",
+      "hash_after": "2d185da290093e7e",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_executor_profiler.py",
+      "action": "relocate",
+      "old_line_number": 64,
+      "new_line_number": 47,
+      "justification": "after multi-line docstring",
+      "hash_before": "456ffb2bed82bd0f",
+      "hash_after": "fdf73911e31d2512",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_01_metrics_persistence.py",
+      "action": "relocate",
+      "old_line_number": 28,
+      "new_line_number": 11,
+      "justification": "after multi-line docstring",
+      "hash_before": "0ffc9693f775e788",
+      "hash_after": "55ae48912abfe6b5",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "action": "relocate",
+      "old_line_number": 44,
+      "new_line_number": 27,
+      "justification": "after multi-line docstring",
+      "hash_before": "75662d039a196869",
+      "hash_after": "005a3ceb2201a25a",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_04_metrics_exporter.py",
+      "action": "relocate",
+      "old_line_number": 45,
+      "new_line_number": 28,
+      "justification": "after multi-line docstring",
+      "hash_before": "36203726ad1e0e35",
+      "hash_after": "ad127d69cee50cc9",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+      "action": "relocate",
+      "old_line_number": 48,
+      "new_line_number": 31,
+      "justification": "after multi-line docstring",
+      "hash_before": "efad95158d6cb849",
+      "hash_after": "866be0f38397449e",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_96_00_contract_migrator.py",
+      "action": "relocate",
+      "old_line_number": 45,
+      "new_line_number": 28,
+      "justification": "after multi-line docstring",
+      "hash_before": "4de2db993f9ba96a",
+      "hash_after": "94defb4db0e12c4d",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_score_extraction.py",
+      "action": "relocate",
+      "old_line_number": 34,
+      "new_line_number": 17,
+      "justification": "after multi-line docstring",
+      "hash_before": "85bb248030c6ee74",
+      "hash_after": "692e0e90a4096411",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py",
+      "action": "relocate",
+      "old_line_number": 36,
+      "new_line_number": 19,
+      "justification": "after multi-line docstring",
+      "hash_before": "9b96cecf3bda3c13",
+      "hash_after": "9e3939233aefca24",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_validation.py",
+      "action": "relocate",
+      "old_line_number": 27,
+      "new_line_number": 10,
+      "justification": "after multi-line docstring",
+      "hash_before": "049e55433904bf9d",
+      "hash_after": "3f933a2711da941d",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_adaptive_meso_scoring.py",
+      "action": "relocate",
+      "old_line_number": 48,
+      "new_line_number": 31,
+      "justification": "after multi-line docstring",
+      "hash_before": "0667c0a59978099e",
+      "hash_after": "0ae079bd2356cb5e",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation.py",
+      "action": "relocate",
+      "old_line_number": 40,
+      "new_line_number": 23,
+      "justification": "after multi-line docstring",
+      "hash_before": "3cd6be6efaa27556",
+      "hash_after": "70142e46a8786c7e",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_enhancements.py",
+      "action": "relocate",
+      "old_line_number": 35,
+      "new_line_number": 18,
+      "justification": "after multi-line docstring",
+      "hash_before": "39b44582bba2a6da",
+      "hash_after": "cdb5d35f2f65cea1",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_integration.py",
+      "action": "relocate",
+      "old_line_number": 29,
+      "new_line_number": 12,
+      "justification": "after multi-line docstring",
+      "hash_before": "499f739ec5b767bf",
+      "hash_after": "b9a34a2f1b221993",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_provenance.py",
+      "action": "relocate",
+      "old_line_number": 38,
+      "new_line_number": 21,
+      "justification": "after multi-line docstring",
+      "hash_before": "a8fdbe95ccf36a66",
+      "hash_after": "7987a812aaab0711",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_validation.py",
+      "action": "relocate",
+      "old_line_number": 29,
+      "new_line_number": 12,
+      "justification": "after multi-line docstring",
+      "hash_before": "88a183c766387843",
+      "hash_after": "0db1c98e87b9fc79",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_aggregator.py",
+      "action": "relocate",
+      "old_line_number": 45,
+      "new_line_number": 28,
+      "justification": "after multi-line docstring",
+      "hash_before": "bbc6f0f5b3704bdc",
+      "hash_after": "249a3425761dd0f8",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_phase_4_7_constants.py",
+      "action": "relocate",
+      "old_line_number": 36,
+      "new_line_number": 19,
+      "justification": "after multi-line docstring",
+      "hash_before": "d1564fb2d772c4fc",
+      "hash_after": "7bbc2d2f9bafb4cb",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_signal_enriched_aggregation.py",
+      "action": "relocate",
+      "old_line_number": 37,
+      "new_line_number": 20,
+      "justification": "after multi-line docstring",
+      "hash_before": "6c082278282f8eff",
+      "hash_after": "82eff95a05eae150",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_uncertainty_quantification.py",
+      "action": "relocate",
+      "old_line_number": 42,
+      "new_line_number": 25,
+      "justification": "after multi-line docstring",
+      "hash_before": "029c2f0bf5deb522",
+      "hash_after": "38e31328eb2fbd30",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_08/phase8_30_00_signal_enriched_recommendations.py",
+      "action": "relocate",
+      "old_line_number": 44,
+      "new_line_number": 27,
+      "justification": "after multi-line docstring",
+      "hash_before": "91a13957d1b4fda7",
+      "hash_after": "ff94eeef8d4069d9",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_assembly.py",
+      "action": "relocate",
+      "old_line_number": 42,
+      "new_line_number": 25,
+      "justification": "after multi-line docstring",
+      "hash_before": "8e15dcf1122d2f83",
+      "hash_after": "6f4e7b9a0f5e0fca",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "action": "relocate",
+      "old_line_number": 36,
+      "new_line_number": 19,
+      "justification": "after multi-line docstring",
+      "hash_before": "14e6a2e62abcace6",
+      "hash_after": "cacbd764ab5bfe74",
+      "lines_changed": 17
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_signal_enriched_reporting.py",
+      "action": "relocate",
+      "old_line_number": 36,
+      "new_line_number": 19,
+      "justification": "after multi-line docstring",
+      "hash_before": "76f3903d0a1357b4",
+      "hash_after": "9a22c15f560c6132",
+      "lines_changed": 17
+    }
+  ]
+}

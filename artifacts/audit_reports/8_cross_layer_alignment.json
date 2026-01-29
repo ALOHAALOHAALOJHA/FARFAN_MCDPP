@@ -1,0 +1,158 @@
+{
+  "task": "Tarea #8: Validar cross-layer alignment",
+  "timestamp": "2026-01-18T20:45:00Z",
+  "agent": "claude-code",
+  "summary": {
+    "layers_validated": 4,
+    "alignment_score": 0.42,
+    "critical_misalignments": 8
+  },
+  "cross_layer_validation": {
+    "layer_1_code": {
+      "components": ["vehicles", "consumers", "vocabularies", "buses"],
+      "status": "MOSTLY_ALIGNED",
+      "gaps": [
+        "Vehicles: 73% stub implementations",
+        "No publication contracts in use",
+        "Orchestration signals segregated from main vocabulary"
+      ]
+    },
+    "layer_2_metadata": {
+      "components": ["SISAS_IRRIGATION_SPEC.json", "signal_capability_map.json", "schemas"],
+      "status": "DEPRECATED",
+      "gaps": [
+        "SISAS_IRRIGATION_SPEC defines 21 units but doesn't match actual file count (489)",
+        "Metadata not synchronized with code changes"
+      ]
+    },
+    "layer_3_data": {
+      "components": ["489 canonical JSON files"],
+      "status": "NOT_ALIGNED",
+      "gaps": [
+        "ALL files loaded via resolver bypassing SISAS",
+        "No vehicle-to-file mapping exists",
+        "No irrigation contracts for any file"
+      ]
+    },
+    "layer_4_configuration": {
+      "components": ["bus_config.yaml", "irrigation_config.yaml"],
+      "status": "PARTIALLY_ALIGNED",
+      "gaps": [
+        "bus_config.yaml missing ORCHESTRATION bus (added in code but not in config)",
+        "irrigation_config.yaml references phases with no consumers (Phase 4-6, 9)"
+      ]
+    }
+  },
+  "alignment_gaps": {
+    "code_to_config": [
+      {
+        "gap": "BusType.ORCHESTRATION in bus.py but not in bus_config.yaml",
+        "severity": "MEDIUM",
+        "fix": "Add orchestration_bus to bus_config.yaml"
+      },
+      {
+        "gap": "irrigation_config.yaml lists 8 vehicles but code has 11",
+        "severity": "LOW",
+        "fix": "Update config to include all vehicles"
+      }
+    ],
+    "code_to_metadata": [
+      {
+        "gap": "SISAS_IRRIGATION_SPEC claims 21 units but 489 files exist",
+        "severity": "HIGH",
+        "fix": "Regenerate SISAS_IRRIGATION_SPEC from actual file structure"
+      },
+      {
+        "gap": "signal_capability_map.json not aligned with VehicleCapabilities",
+        "severity": "HIGH",
+        "fix": "Auto-generate capability map from VehicleCapabilities declarations"
+      }
+    ],
+    "code_to_data": [
+      {
+        "gap": "CanonicalQuestionnaireResolver bypasses SISAS entirely",
+        "severity": "CRITICAL",
+        "fix": "Integrate vehicles into resolver or replace resolver with vehicle-based loading"
+      },
+      {
+        "gap": "No vehicle-file mapping for 489 canonical files",
+        "severity": "CRITICAL",
+        "fix": "Create file pattern → vehicle mapping in configuration"
+      }
+    ],
+    "metadata_to_data": [
+      {
+        "gap": "SISAS_IRRIGATION_SPEC irrigation_paths don't match actual code flow",
+        "severity": "HIGH",
+        "fix": "Update spec to reflect resolver-based architecture"
+      }
+    ]
+  },
+  "bus_configuration_validation": {
+    "buses_in_code": 8,
+    "buses_in_config": 7,
+    "missing_in_config": ["orchestration_bus"],
+    "misalignment": "Orchestration bus added to code but not to config file"
+  },
+  "phase_configuration_validation": {
+    "phases_in_config": 6,
+    "phases_with_code": 10,
+    "phases_with_sisas_consumers": 6,
+    "orphaned_phases_in_config": [],
+    "missing_phases_in_config": ["phase_04", "phase_05", "phase_06", "phase_09"],
+    "gap": "Config doesn't list phases 4-6, 9 even though they have code"
+  },
+  "vehicle_configuration_validation": {
+    "vehicles_in_code": 11,
+    "vehicles_in_config": 8,
+    "missing_in_config": ["base_vehicle", "signal_enhancement_integrator", "signal_intelligence_layer"],
+    "gap": "Config missing 3 vehicles that exist in code"
+  },
+  "irrigation_path_validation": {
+    "expected_path": "File → Vehicle → Event → Signal → Bus → Consumer",
+    "actual_path": "File → CanonicalQuestionnaireResolver → QuestionnairePort → Phase Executors",
+    "gap": "Resolver bypasses entire SISAS infrastructure",
+    "severity": "CRITICAL"
+  },
+  "synchronization_status": {
+    "vocabularies_to_code": {
+      "SignalVocabulary": "ALIGNED - 18 signal types defined",
+      "CapabilityVocabulary": "PARTIAL - 14 capabilities, but vehicle declarations don't match",
+      "OrchestrationSignalTypes": "SEGREGATED - Not in main vocabulary"
+    },
+    "consumers_to_vocabulary": {
+      "status": "ALIGNED",
+      "all_consumers_use_vocabulary": true
+    },
+    "vehicles_to_vocabulary": {
+      "status": "NOT_ALIGNED",
+      "vehicles_declare_capabilities": true,
+      "but_capability_vocabulary_not_used": true
+    }
+  },
+  "recommendations": {
+    "critical": [
+      "Add orchestration_bus to bus_config.yaml",
+      "Integrate SISAS vehicles into CanonicalQuestionnaireResolver",
+      "Regenerate SISAS_IRRIGATION_SPEC.json from actual file structure (489 files)",
+      "Create vehicle-file mapping configuration for all canonical files"
+    ],
+    "short_term": [
+      "Update irrigation_config.yaml to include all phases and vehicles",
+      "Implement stub vehicles (8 vehicles with process() returning [])",
+      "Synchronize capability_vocabulary with VehicleCapabilities declarations"
+    ],
+    "long_term": [
+      "Create automated layer synchronization tools",
+      "Implement contract-driven file loading (replacing resolver)",
+      "Add cross-layer validation at system startup"
+    ]
+  },
+  "alignment_score": {
+    "code_to_config": 0.75,
+    "code_to_metadata": 0.5,
+    "code_to_data": 0.0,
+    "metadata_to_data": 0.3,
+    "overall": 0.42
+  }
+}

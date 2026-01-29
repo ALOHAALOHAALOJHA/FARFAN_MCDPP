@@ -1,0 +1,1501 @@
+{
+  "timestamp": "2026-01-11T02:07:47.736487+00:00",
+  "mode": "DRY_RUN",
+  "total_violations": 74,
+  "action": "RELOCATE",
+  "files": [
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_primitives.py",
+      "future_line_number": 44,
+      "correct_line_number": 27,
+      "preceding_statements": [
+        "L28: # ==========================================================",
+        "L29: # METADATA",
+        "L30: # ==========================================================",
+        "L32: __version__ = \"1.0.0\"",
+        "L33: __phase__ = 0",
+        "L34: __stage__ = 0",
+        "L35: __order__ = 3",
+        "L36: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L37: __created__ = \"2026-01-10\"",
+        "L38: __modified__ = \"2026-01-10\"",
+        "L39: __criticality__ = \"LOW\"",
+        "L40: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "3bff15eefc29cfc9"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_00_03_protocols.py",
+      "future_line_number": 59,
+      "correct_line_number": 42,
+      "preceding_statements": [
+        "L43: # ==========================================================",
+        "L44: # METADATA",
+        "L45: # ==========================================================",
+        "L47: __version__ = \"1.0.0\"",
+        "L48: __phase__ = 0",
+        "L49: __stage__ = 0",
+        "L50: __order__ = 3",
+        "L51: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L52: __created__ = \"2026-01-10\"",
+        "L53: __modified__ = \"2026-01-10\"",
+        "L54: __criticality__ = \"LOW\"",
+        "L55: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "ed6cfb076246fc63"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_00_paths.py",
+      "future_line_number": 33,
+      "correct_line_number": 16,
+      "preceding_statements": [
+        "L17: # ==========================================================",
+        "L18: # METADATA",
+        "L19: # ==========================================================",
+        "L21: __version__ = \"1.0.0\"",
+        "L22: __phase__ = 0",
+        "L23: __stage__ = 10",
+        "L24: __order__ = 0",
+        "L25: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L26: __created__ = \"2026-01-10\"",
+        "L27: __modified__ = \"2026-01-10\"",
+        "L28: __criticality__ = \"CRITICAL\"",
+        "L29: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "fb8878b45742b664"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_01_runtime_config_typed.py",
+      "future_line_number": 60,
+      "correct_line_number": 43,
+      "preceding_statements": [
+        "L44: # ==========================================================",
+        "L45: # METADATA",
+        "L46: # ==========================================================",
+        "L48: __version__ = \"1.0.0\"",
+        "L49: __phase__ = 0",
+        "L50: __stage__ = 10",
+        "L51: __order__ = 1",
+        "L52: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L53: __created__ = \"2026-01-10\"",
+        "L54: __modified__ = \"2026-01-10\"",
+        "L55: __criticality__ = \"CRITICAL\"",
+        "L56: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "514b23c2b5dcc270"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_02_json_logger.py",
+      "future_line_number": 32,
+      "correct_line_number": 15,
+      "preceding_statements": [
+        "L16: # ==========================================================",
+        "L17: # METADATA",
+        "L18: # ==========================================================",
+        "L20: __version__ = \"1.0.0\"",
+        "L21: __phase__ = 0",
+        "L22: __stage__ = 10",
+        "L23: __order__ = 2",
+        "L24: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L25: __created__ = \"2026-01-10\"",
+        "L26: __modified__ = \"2026-01-10\"",
+        "L27: __criticality__ = \"CRITICAL\"",
+        "L28: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "4fb92255bace2a13"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_10_03_runtime_config_schema.py",
+      "future_line_number": 19,
+      "correct_line_number": 2,
+      "preceding_statements": [
+        "L3: # ==========================================================",
+        "L4: # METADATA",
+        "L5: # ==========================================================",
+        "L7: __version__ = \"1.0.0\"",
+        "L8: __phase__ = 0",
+        "L9: __stage__ = 10",
+        "L10: __order__ = 3",
+        "L11: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L12: __created__ = \"2026-01-10\"",
+        "L13: __modified__ = \"2026-01-10\"",
+        "L14: __criticality__ = \"CRITICAL\"",
+        "L15: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "3966f62a669ea50c"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_20_02_determinism.py",
+      "future_line_number": 36,
+      "correct_line_number": 19,
+      "preceding_statements": [
+        "L20: # ==========================================================",
+        "L21: # METADATA",
+        "L22: # ==========================================================",
+        "L24: __version__ = \"1.0.0\"",
+        "L25: __phase__ = 0",
+        "L26: __stage__ = 20",
+        "L27: __order__ = 2",
+        "L28: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L29: __created__ = \"2026-01-10\"",
+        "L30: __modified__ = \"2026-01-10\"",
+        "L31: __criticality__ = \"MEDIUM\"",
+        "L32: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "60e615a474aae4b6"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_20_03_determinism_helpers.py",
+      "future_line_number": 31,
+      "correct_line_number": 14,
+      "preceding_statements": [
+        "L15: # ==========================================================",
+        "L16: # METADATA",
+        "L17: # ==========================================================",
+        "L19: __version__ = \"1.0.0\"",
+        "L20: __phase__ = 0",
+        "L21: __stage__ = 20",
+        "L22: __order__ = 3",
+        "L23: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L24: __created__ = \"2026-01-10\"",
+        "L25: __modified__ = \"2026-01-10\"",
+        "L26: __criticality__ = \"MEDIUM\"",
+        "L27: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "850e590cde2207f0"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_30_00_resource_controller.py",
+      "future_line_number": 59,
+      "correct_line_number": 42,
+      "preceding_statements": [
+        "L43: # ==========================================================",
+        "L44: # METADATA",
+        "L45: # ==========================================================",
+        "L47: __version__ = \"1.0.0\"",
+        "L48: __phase__ = 0",
+        "L49: __stage__ = 30",
+        "L50: __order__ = 0",
+        "L51: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L52: __created__ = \"2026-01-10\"",
+        "L53: __modified__ = \"2026-01-10\"",
+        "L54: __criticality__ = \"MEDIUM\"",
+        "L55: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "7ff254bda91557fe"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_40_00_input_validation.py",
+      "future_line_number": 69,
+      "correct_line_number": 52,
+      "preceding_statements": [
+        "L53: # ==========================================================",
+        "L54: # METADATA",
+        "L55: # ==========================================================",
+        "L57: __version__ = \"1.0.0\"",
+        "L58: __phase__ = 0",
+        "L59: __stage__ = 40",
+        "L60: __order__ = 0",
+        "L61: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L62: __created__ = \"2026-01-10\"",
+        "L63: __modified__ = \"2026-01-10\"",
+        "L64: __criticality__ = \"HIGH\"",
+        "L65: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "32487c722f9b5d5c"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_40_01_schema_monitor.py",
+      "future_line_number": 28,
+      "correct_line_number": 11,
+      "preceding_statements": [
+        "L12: # ==========================================================",
+        "L13: # METADATA",
+        "L14: # ==========================================================",
+        "L16: __version__ = \"1.0.0\"",
+        "L17: __phase__ = 0",
+        "L18: __stage__ = 40",
+        "L19: __order__ = 1",
+        "L20: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L21: __created__ = \"2026-01-10\"",
+        "L22: __modified__ = \"2026-01-10\"",
+        "L23: __criticality__ = \"HIGH\"",
+        "L24: __execution_pattern__ = \"Continuous\""
+      ],
+      "content_hash": "0d9a7833cadad654"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_50_01_exit_gates.py",
+      "future_line_number": 40,
+      "correct_line_number": 23,
+      "preceding_statements": [
+        "L24: # ==========================================================",
+        "L25: # METADATA",
+        "L26: # ==========================================================",
+        "L28: __version__ = \"1.0.0\"",
+        "L29: __phase__ = 0",
+        "L30: __stage__ = 50",
+        "L31: __order__ = 1",
+        "L32: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L33: __created__ = \"2026-01-10\"",
+        "L34: __modified__ = \"2026-01-10\"",
+        "L35: __criticality__ = \"CRITICAL\"",
+        "L36: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "4984b4290729064b"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_00_main.py",
+      "future_line_number": 43,
+      "correct_line_number": 26,
+      "preceding_statements": [
+        "L27: # ==========================================================",
+        "L28: # METADATA",
+        "L29: # ==========================================================",
+        "L31: __version__ = \"1.0.0\"",
+        "L32: __phase__ = 0",
+        "L33: __stage__ = 90",
+        "L34: __order__ = 0",
+        "L35: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L36: __created__ = \"2026-01-10\"",
+        "L37: __modified__ = \"2026-01-10\"",
+        "L38: __criticality__ = \"LOW\"",
+        "L39: __execution_pattern__ = \"Singleton\""
+      ],
+      "content_hash": "c7078bc567920a5e"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_01_verified_pipeline_runner.py",
+      "future_line_number": 58,
+      "correct_line_number": 41,
+      "preceding_statements": [
+        "L42: # ==========================================================",
+        "L43: # METADATA",
+        "L44: # ==========================================================",
+        "L46: __version__ = \"1.0.0\"",
+        "L47: __phase__ = 0",
+        "L48: __stage__ = 90",
+        "L49: __order__ = 1",
+        "L50: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L51: __created__ = \"2026-01-10\"",
+        "L52: __modified__ = \"2026-01-10\"",
+        "L53: __criticality__ = \"LOW\"",
+        "L54: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "597f73a7a5a5d6c2"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_02_bootstrap.py",
+      "future_line_number": 33,
+      "correct_line_number": 16,
+      "preceding_statements": [
+        "L17: # ==========================================================",
+        "L18: # METADATA",
+        "L19: # ==========================================================",
+        "L21: __version__ = \"1.0.0\"",
+        "L22: __phase__ = 0",
+        "L23: __stage__ = 90",
+        "L24: __order__ = 2",
+        "L25: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L26: __created__ = \"2026-01-10\"",
+        "L27: __modified__ = \"2026-01-10\"",
+        "L28: __criticality__ = \"LOW\"",
+        "L29: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "9f0bdbd7e7364d1d"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_00/phase0_90_03_wiring_validator.py",
+      "future_line_number": 39,
+      "correct_line_number": 22,
+      "preceding_statements": [
+        "L23: # ==========================================================",
+        "L24: # METADATA",
+        "L25: # ==========================================================",
+        "L27: __version__ = \"1.0.0\"",
+        "L28: __phase__ = 0",
+        "L29: __stage__ = 90",
+        "L30: __order__ = 3",
+        "L31: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L32: __created__ = \"2026-01-10\"",
+        "L33: __modified__ = \"2026-01-10\"",
+        "L34: __criticality__ = \"LOW\"",
+        "L35: __execution_pattern__ = \"Per-Task\""
+      ],
+      "content_hash": "dbeddb8fd5e9b842"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_cpp_models.py",
+      "future_line_number": 33,
+      "correct_line_number": 16,
+      "preceding_statements": [
+        "L17: # ==========================================================",
+        "L18: # METADATA",
+        "L19: # ==========================================================",
+        "L21: __version__ = \"1.0.0\"",
+        "L22: __phase__ = 1",
+        "L23: __stage__ = 10",
+        "L24: __order__ = 0",
+        "L25: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L26: __created__ = \"2026-01-10\"",
+        "L27: __modified__ = \"2026-01-10\"",
+        "L28: __criticality__ = \"CRITICAL\"",
+        "L29: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "3f48699552a3e21d"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_models.py",
+      "future_line_number": 25,
+      "correct_line_number": 8,
+      "preceding_statements": [
+        "L9: # ==========================================================",
+        "L10: # METADATA",
+        "L11: # ==========================================================",
+        "L13: __version__ = \"1.0.0\"",
+        "L14: __phase__ = 1",
+        "L15: __stage__ = 10",
+        "L16: __order__ = 0",
+        "L17: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L18: __created__ = \"2026-01-10\"",
+        "L19: __modified__ = \"2026-01-10\"",
+        "L20: __criticality__ = \"CRITICAL\"",
+        "L21: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "5fc7c9af2d403d5b"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_10_00_phase_protocol.py",
+      "future_line_number": 59,
+      "correct_line_number": 42,
+      "preceding_statements": [
+        "L43: # ==========================================================",
+        "L44: # METADATA",
+        "L45: # ==========================================================",
+        "L47: __version__ = \"1.0.0\"",
+        "L48: __phase__ = 1",
+        "L49: __stage__ = 10",
+        "L50: __order__ = 0",
+        "L51: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L52: __created__ = \"2026-01-10\"",
+        "L53: __modified__ = \"2026-01-10\"",
+        "L54: __criticality__ = \"CRITICAL\"",
+        "L55: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "ccd530a1b52222a4"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_15_00_questionnaire_mapper.py",
+      "future_line_number": 33,
+      "correct_line_number": 16,
+      "preceding_statements": [
+        "L17: # ==========================================================",
+        "L18: # METADATA",
+        "L19: # ==========================================================",
+        "L21: __version__ = \"1.0.0\"",
+        "L22: __phase__ = 1",
+        "L23: __stage__ = 15",
+        "L24: __order__ = 0",
+        "L25: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L26: __created__ = \"2026-01-10\"",
+        "L27: __modified__ = \"2026-01-10\"",
+        "L28: __criticality__ = \"MEDIUM\"",
+        "L29: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "fa0f0f20e97021ee"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_20_00_cpp_ingestion.py",
+      "future_line_number": 71,
+      "correct_line_number": 54,
+      "preceding_statements": [
+        "L55: # ==========================================================",
+        "L56: # METADATA",
+        "L57: # ==========================================================",
+        "L59: __version__ = \"1.0.0\"",
+        "L60: __phase__ = 1",
+        "L61: __stage__ = 20",
+        "L62: __order__ = 0",
+        "L63: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L64: __created__ = \"2026-01-10\"",
+        "L65: __modified__ = \"2026-01-10\"",
+        "L66: __criticality__ = \"MEDIUM\"",
+        "L67: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "b446821db6eef028"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_25_00_sp4_question_aware.py",
+      "future_line_number": 41,
+      "correct_line_number": 24,
+      "preceding_statements": [
+        "L25: # ==========================================================",
+        "L26: # METADATA",
+        "L27: # ==========================================================",
+        "L29: __version__ = \"1.0.0\"",
+        "L30: __phase__ = 1",
+        "L31: __stage__ = 25",
+        "L32: __order__ = 0",
+        "L33: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L34: __created__ = \"2026-01-10\"",
+        "L35: __modified__ = \"2026-01-10\"",
+        "L36: __criticality__ = \"MEDIUM\"",
+        "L37: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "36de3952beaec7d1"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_30_00_adapter.py",
+      "future_line_number": 40,
+      "correct_line_number": 23,
+      "preceding_statements": [
+        "L24: # ==========================================================",
+        "L25: # METADATA",
+        "L26: # ==========================================================",
+        "L28: __version__ = \"1.0.0\"",
+        "L29: __phase__ = 1",
+        "L30: __stage__ = 30",
+        "L31: __order__ = 0",
+        "L32: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L33: __created__ = \"2026-01-10\"",
+        "L34: __modified__ = \"2026-01-10\"",
+        "L35: __criticality__ = \"MEDIUM\"",
+        "L36: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "190032150c94e93c"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_40_00_circuit_breaker.py",
+      "future_line_number": 44,
+      "correct_line_number": 27,
+      "preceding_statements": [
+        "L28: # ==========================================================",
+        "L29: # METADATA",
+        "L30: # ==========================================================",
+        "L32: __version__ = \"1.0.0\"",
+        "L33: __phase__ = 1",
+        "L34: __stage__ = 40",
+        "L35: __order__ = 0",
+        "L36: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L37: __created__ = \"2026-01-10\"",
+        "L38: __modified__ = \"2026-01-10\"",
+        "L39: __criticality__ = \"HIGH\"",
+        "L40: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "3901caefecb14f56"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_01/phase1_60_00_signal_enrichment.py",
+      "future_line_number": 37,
+      "correct_line_number": 20,
+      "preceding_statements": [
+        "L21: # ==========================================================",
+        "L22: # METADATA",
+        "L23: # ==========================================================",
+        "L25: __version__ = \"1.0.0\"",
+        "L26: __phase__ = 1",
+        "L27: __stage__ = 60",
+        "L28: __order__ = 0",
+        "L29: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L30: __created__ = \"2026-01-10\"",
+        "L31: __modified__ = \"2026-01-10\"",
+        "L32: __criticality__ = \"MEDIUM\"",
+        "L33: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "f7247bb0908051fb"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_01_class_registry.py",
+      "future_line_number": 24,
+      "correct_line_number": 7,
+      "preceding_statements": [
+        "L8: # ==========================================================",
+        "L9: # METADATA",
+        "L10: # ==========================================================",
+        "L12: __version__ = \"1.0.0\"",
+        "L13: __phase__ = 2",
+        "L14: __stage__ = 10",
+        "L15: __order__ = 1",
+        "L16: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L17: __created__ = \"2026-01-10\"",
+        "L18: __modified__ = \"2026-01-10\"",
+        "L19: __criticality__ = \"CRITICAL\"",
+        "L20: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "dfa6ced8ed33e829"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_02_methods_registry.py",
+      "future_line_number": 32,
+      "correct_line_number": 15,
+      "preceding_statements": [
+        "L16: # ==========================================================",
+        "L17: # METADATA",
+        "L18: # ==========================================================",
+        "L20: __version__ = \"1.0.0\"",
+        "L21: __phase__ = 2",
+        "L22: __stage__ = 10",
+        "L23: __order__ = 2",
+        "L24: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L25: __created__ = \"2026-01-10\"",
+        "L26: __modified__ = \"2026-01-10\"",
+        "L27: __criticality__ = \"CRITICAL\"",
+        "L28: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "c6f2c0a410738d30"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_10_03_executor_config.py",
+      "future_line_number": 39,
+      "correct_line_number": 22,
+      "preceding_statements": [
+        "L23: # ==========================================================",
+        "L24: # METADATA",
+        "L25: # ==========================================================",
+        "L27: __version__ = \"1.0.0\"",
+        "L28: __phase__ = 2",
+        "L29: __stage__ = 10",
+        "L30: __order__ = 3",
+        "L31: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L32: __created__ = \"2026-01-10\"",
+        "L33: __modified__ = \"2026-01-10\"",
+        "L34: __criticality__ = \"CRITICAL\"",
+        "L35: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "40456e0b667ddc38"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_01_resource_integration.py",
+      "future_line_number": 28,
+      "correct_line_number": 11,
+      "preceding_statements": [
+        "L12: # ==========================================================",
+        "L13: # METADATA",
+        "L14: # ==========================================================",
+        "L16: __version__ = \"1.0.0\"",
+        "L17: __phase__ = 2",
+        "L18: __stage__ = 30",
+        "L19: __order__ = 1",
+        "L20: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L21: __created__ = \"2026-01-10\"",
+        "L22: __modified__ = \"2026-01-10\"",
+        "L23: __criticality__ = \"MEDIUM\"",
+        "L24: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "ebb268635250d480"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_02_resource_alerts.py",
+      "future_line_number": 31,
+      "correct_line_number": 14,
+      "preceding_statements": [
+        "L15: # ==========================================================",
+        "L16: # METADATA",
+        "L17: # ==========================================================",
+        "L19: __version__ = \"1.0.0\"",
+        "L20: __phase__ = 2",
+        "L21: __stage__ = 30",
+        "L22: __order__ = 2",
+        "L23: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L24: __created__ = \"2026-01-10\"",
+        "L25: __modified__ = \"2026-01-10\"",
+        "L26: __criticality__ = \"MEDIUM\"",
+        "L27: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "f89f0bd608c9f825"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_04_circuit_breaker.py",
+      "future_line_number": 37,
+      "correct_line_number": 20,
+      "preceding_statements": [
+        "L21: # ==========================================================",
+        "L22: # METADATA",
+        "L23: # ==========================================================",
+        "L25: __version__ = \"1.0.0\"",
+        "L26: __phase__ = 2",
+        "L27: __stage__ = 30",
+        "L28: __order__ = 4",
+        "L29: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L30: __created__ = \"2026-01-10\"",
+        "L31: __modified__ = \"2026-01-10\"",
+        "L32: __criticality__ = \"MEDIUM\"",
+        "L33: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "c87fd74840c91ed4"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_30_05_distributed_cache.py",
+      "future_line_number": 41,
+      "correct_line_number": 24,
+      "preceding_statements": [
+        "L25: # ==========================================================",
+        "L26: # METADATA",
+        "L27: # ==========================================================",
+        "L29: __version__ = \"1.0.0\"",
+        "L30: __phase__ = 2",
+        "L31: __stage__ = 30",
+        "L32: __order__ = 5",
+        "L33: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L34: __created__ = \"2026-01-10\"",
+        "L35: __modified__ = \"2026-01-10\"",
+        "L36: __criticality__ = \"MEDIUM\"",
+        "L37: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "35c6b4fed572d845"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_00_synchronization.py",
+      "future_line_number": 32,
+      "correct_line_number": 15,
+      "preceding_statements": [
+        "L16: # ==========================================================",
+        "L17: # METADATA",
+        "L18: # ==========================================================",
+        "L20: __version__ = \"1.0.0\"",
+        "L21: __phase__ = 2",
+        "L22: __stage__ = 40",
+        "L23: __order__ = 0",
+        "L24: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L25: __created__ = \"2026-01-10\"",
+        "L26: __modified__ = \"2026-01-10\"",
+        "L27: __criticality__ = \"HIGH\"",
+        "L28: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "71ce21d92fa3e54a"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_01_executor_chunk_synchronizer.py",
+      "future_line_number": 32,
+      "correct_line_number": 15,
+      "preceding_statements": [
+        "L16: # ==========================================================",
+        "L17: # METADATA",
+        "L18: # ==========================================================",
+        "L20: __version__ = \"1.0.0\"",
+        "L21: __phase__ = 2",
+        "L22: __stage__ = 40",
+        "L23: __order__ = 1",
+        "L24: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L25: __created__ = \"2026-01-10\"",
+        "L26: __modified__ = \"2026-01-10\"",
+        "L27: __criticality__ = \"HIGH\"",
+        "L28: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "4e0132926b862420"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_02_schema_validation.py",
+      "future_line_number": 64,
+      "correct_line_number": 47,
+      "preceding_statements": [
+        "L48: # ==========================================================",
+        "L49: # METADATA",
+        "L50: # ==========================================================",
+        "L52: __version__ = \"1.0.0\"",
+        "L53: __phase__ = 2",
+        "L54: __stage__ = 40",
+        "L55: __order__ = 2",
+        "L56: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L57: __created__ = \"2026-01-10\"",
+        "L58: __modified__ = \"2026-01-10\"",
+        "L59: __criticality__ = \"HIGH\"",
+        "L60: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "ade2bd1346bd36b6"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_40_03_irrigation_synchronizer.py",
+      "future_line_number": 38,
+      "correct_line_number": 21,
+      "preceding_statements": [
+        "L22: # ==========================================================",
+        "L23: # METADATA",
+        "L24: # ==========================================================",
+        "L26: __version__ = \"1.0.0\"",
+        "L27: __phase__ = 2",
+        "L28: __stage__ = 40",
+        "L29: __order__ = 3",
+        "L30: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L31: __created__ = \"2026-01-10\"",
+        "L32: __modified__ = \"2026-01-10\"",
+        "L33: __criticality__ = \"HIGH\"",
+        "L34: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "23b7a947980e70f7"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_00_task_executor.py",
+      "future_line_number": 69,
+      "correct_line_number": 52,
+      "preceding_statements": [
+        "L53: # ==========================================================",
+        "L54: # METADATA",
+        "L55: # ==========================================================",
+        "L57: __version__ = \"1.0.0\"",
+        "L58: __phase__ = 2",
+        "L59: __stage__ = 50",
+        "L60: __order__ = 0",
+        "L61: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L62: __created__ = \"2026-01-10\"",
+        "L63: __modified__ = \"2026-01-10\"",
+        "L64: __criticality__ = \"CRITICAL\"",
+        "L65: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "e816a020d6abc8cd"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_chunk_processor.py",
+      "future_line_number": 27,
+      "correct_line_number": 10,
+      "preceding_statements": [
+        "L11: # ==========================================================",
+        "L12: # METADATA",
+        "L13: # ==========================================================",
+        "L15: __version__ = \"1.0.0\"",
+        "L16: __phase__ = 2",
+        "L17: __stage__ = 50",
+        "L18: __order__ = 1",
+        "L19: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L20: __created__ = \"2026-01-10\"",
+        "L21: __modified__ = \"2026-01-10\"",
+        "L22: __criticality__ = \"CRITICAL\"",
+        "L23: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "058681e8a09981f2"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_01_task_planner.py",
+      "future_line_number": 24,
+      "correct_line_number": 7,
+      "preceding_statements": [
+        "L8: # ==========================================================",
+        "L9: # METADATA",
+        "L10: # ==========================================================",
+        "L12: __version__ = \"1.0.0\"",
+        "L13: __phase__ = 2",
+        "L14: __stage__ = 50",
+        "L15: __order__ = 1",
+        "L16: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L17: __created__ = \"2026-01-10\"",
+        "L18: __modified__ = \"2026-01-10\"",
+        "L19: __criticality__ = \"CRITICAL\"",
+        "L20: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "9800104a439de3ea"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_50_02_batch_optimizer.py",
+      "future_line_number": 48,
+      "correct_line_number": 31,
+      "preceding_statements": [
+        "L32: # ==========================================================",
+        "L33: # METADATA",
+        "L34: # ==========================================================",
+        "L36: __version__ = \"1.0.0\"",
+        "L37: __phase__ = 2",
+        "L38: __stage__ = 50",
+        "L39: __order__ = 2",
+        "L40: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L41: __created__ = \"2026-01-10\"",
+        "L42: __modified__ = \"2026-01-10\"",
+        "L43: __criticality__ = \"CRITICAL\"",
+        "L44: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "cb69847c4e635c34"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_00_base_executor_with_contract.py",
+      "future_line_number": 24,
+      "correct_line_number": 7,
+      "preceding_statements": [
+        "L8: # ==========================================================",
+        "L9: # METADATA",
+        "L10: # ==========================================================",
+        "L12: __version__ = \"1.0.0\"",
+        "L13: __phase__ = 2",
+        "L14: __stage__ = 60",
+        "L15: __order__ = 0",
+        "L16: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L17: __created__ = \"2026-01-10\"",
+        "L18: __modified__ = \"2026-01-10\"",
+        "L19: __criticality__ = \"HIGH\"",
+        "L20: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "df3deba93e69faf9"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_01_contract_validator_cqvr.py",
+      "future_line_number": 24,
+      "correct_line_number": 7,
+      "preceding_statements": [
+        "L8: # ==========================================================",
+        "L9: # METADATA",
+        "L10: # ==========================================================",
+        "L12: __version__ = \"1.0.0\"",
+        "L13: __phase__ = 2",
+        "L14: __stage__ = 60",
+        "L15: __order__ = 1",
+        "L16: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L17: __created__ = \"2026-01-10\"",
+        "L18: __modified__ = \"2026-01-10\"",
+        "L19: __criticality__ = \"HIGH\"",
+        "L20: __execution_pattern__ = \"Per-Task\""
+      ],
+      "content_hash": "1e46e46cde9ee222"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_02_arg_router.py",
+      "future_line_number": 38,
+      "correct_line_number": 21,
+      "preceding_statements": [
+        "L22: # ==========================================================",
+        "L23: # METADATA",
+        "L24: # ==========================================================",
+        "L26: __version__ = \"1.0.0\"",
+        "L27: __phase__ = 2",
+        "L28: __stage__ = 60",
+        "L29: __order__ = 2",
+        "L30: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L31: __created__ = \"2026-01-10\"",
+        "L32: __modified__ = \"2026-01-10\"",
+        "L33: __criticality__ = \"MEDIUM\"",
+        "L34: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "0ff5fb2d9d26c44b"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_04_calibration_policy.py",
+      "future_line_number": 47,
+      "correct_line_number": 30,
+      "preceding_statements": [
+        "L31: # ==========================================================",
+        "L32: # METADATA",
+        "L33: # ==========================================================",
+        "L35: __version__ = \"1.0.0\"",
+        "L36: __phase__ = 2",
+        "L37: __stage__ = 60",
+        "L38: __order__ = 4",
+        "L39: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L40: __created__ = \"2026-01-10\"",
+        "L41: __modified__ = \"2026-01-10\"",
+        "L42: __criticality__ = \"MEDIUM\"",
+        "L43: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "f9c997c14b75a904"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_60_05_executor_instrumentation_mixin.py",
+      "future_line_number": 35,
+      "correct_line_number": 18,
+      "preceding_statements": [
+        "L19: # ==========================================================",
+        "L20: # METADATA",
+        "L21: # ==========================================================",
+        "L23: __version__ = \"1.0.0\"",
+        "L24: __phase__ = 2",
+        "L25: __stage__ = 60",
+        "L26: __order__ = 5",
+        "L27: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L28: __created__ = \"2026-01-10\"",
+        "L29: __modified__ = \"2026-01-10\"",
+        "L30: __criticality__ = \"MEDIUM\"",
+        "L31: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "9cfd4ea2dc5c0958"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_00_evidence_nexus.py",
+      "future_line_number": 54,
+      "correct_line_number": 37,
+      "preceding_statements": [
+        "L38: # ==========================================================",
+        "L39: # METADATA",
+        "L40: # ==========================================================",
+        "L42: __version__ = \"1.0.0\"",
+        "L43: __phase__ = 2",
+        "L44: __stage__ = 80",
+        "L45: __order__ = 0",
+        "L46: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L47: __created__ = \"2026-01-10\"",
+        "L48: __modified__ = \"2026-01-10\"",
+        "L49: __criticality__ = \"MEDIUM\"",
+        "L50: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "7a1b26dfcf22dbca"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_80_01_evidence_query_engine.py",
+      "future_line_number": 60,
+      "correct_line_number": 43,
+      "preceding_statements": [
+        "L44: # ==========================================================",
+        "L45: # METADATA",
+        "L46: # ==========================================================",
+        "L48: __version__ = \"1.0.0\"",
+        "L49: __phase__ = 2",
+        "L50: __stage__ = 80",
+        "L51: __order__ = 1",
+        "L52: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L53: __created__ = \"2026-01-10\"",
+        "L54: __modified__ = \"2026-01-10\"",
+        "L55: __criticality__ = \"MEDIUM\"",
+        "L56: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "51a729a5bf27fd01"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_85_00_evidence_nexus_sota_implementations.py",
+      "future_line_number": 44,
+      "correct_line_number": 27,
+      "preceding_statements": [
+        "L28: # ==========================================================",
+        "L29: # METADATA",
+        "L30: # ==========================================================",
+        "L32: __version__ = \"1.0.0\"",
+        "L33: __phase__ = 2",
+        "L34: __stage__ = 85",
+        "L35: __order__ = 0",
+        "L36: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L37: __created__ = \"2026-01-10\"",
+        "L38: __modified__ = \"2026-01-10\"",
+        "L39: __criticality__ = \"MEDIUM\"",
+        "L40: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "29012bccc9bcd468"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_90_00_carver.py",
+      "future_line_number": 187,
+      "correct_line_number": 170,
+      "preceding_statements": [
+        "L171: # ==========================================================",
+        "L172: # METADATA",
+        "L173: # ==========================================================",
+        "L175: __version__ = \"1.0.0\"",
+        "L176: __phase__ = 2",
+        "L177: __stage__ = 90",
+        "L178: __order__ = 0",
+        "L179: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L180: __created__ = \"2026-01-10\"",
+        "L181: __modified__ = \"2026-01-10\"",
+        "L182: __criticality__ = \"LOW\"",
+        "L183: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "e70e158709d22f3b"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_contract_hydrator.py",
+      "future_line_number": 55,
+      "correct_line_number": 38,
+      "preceding_statements": [
+        "L39: # ==========================================================",
+        "L40: # METADATA",
+        "L41: # ==========================================================",
+        "L43: __version__ = \"1.0.0\"",
+        "L44: __phase__ = 2",
+        "L45: __stage__ = 95",
+        "L46: __order__ = 0",
+        "L47: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L48: __created__ = \"2026-01-10\"",
+        "L49: __modified__ = \"2026-01-10\"",
+        "L50: __criticality__ = \"HIGH\"",
+        "L51: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "72e7bb0b10ca8aae"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_00_executor_profiler.py",
+      "future_line_number": 64,
+      "correct_line_number": 47,
+      "preceding_statements": [
+        "L48: # ==========================================================",
+        "L49: # METADATA",
+        "L50: # ==========================================================",
+        "L52: __version__ = \"1.0.0\"",
+        "L53: __phase__ = 2",
+        "L54: __stage__ = 95",
+        "L55: __order__ = 0",
+        "L56: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L57: __created__ = \"2026-01-10\"",
+        "L58: __modified__ = \"2026-01-10\"",
+        "L59: __criticality__ = \"MEDIUM\"",
+        "L60: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "456ffb2bed82bd0f"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_01_metrics_persistence.py",
+      "future_line_number": 28,
+      "correct_line_number": 11,
+      "preceding_statements": [
+        "L12: # ==========================================================",
+        "L13: # METADATA",
+        "L14: # ==========================================================",
+        "L16: __version__ = \"1.0.0\"",
+        "L17: __phase__ = 2",
+        "L18: __stage__ = 95",
+        "L19: __order__ = 1",
+        "L20: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L21: __created__ = \"2026-01-10\"",
+        "L22: __modified__ = \"2026-01-10\"",
+        "L23: __criticality__ = \"MEDIUM\"",
+        "L24: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "0ffc9693f775e788"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_03_executor_calibration_integration.py",
+      "future_line_number": 44,
+      "correct_line_number": 27,
+      "preceding_statements": [
+        "L28: # ==========================================================",
+        "L29: # METADATA",
+        "L30: # ==========================================================",
+        "L32: __version__ = \"1.0.0\"",
+        "L33: __phase__ = 2",
+        "L34: __stage__ = 95",
+        "L35: __order__ = 3",
+        "L36: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L37: __created__ = \"2026-01-10\"",
+        "L38: __modified__ = \"2026-01-10\"",
+        "L39: __criticality__ = \"MEDIUM\"",
+        "L40: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "75662d039a196869"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_04_metrics_exporter.py",
+      "future_line_number": 45,
+      "correct_line_number": 28,
+      "preceding_statements": [
+        "L29: # ==========================================================",
+        "L30: # METADATA",
+        "L31: # ==========================================================",
+        "L33: __version__ = \"1.0.0\"",
+        "L34: __phase__ = 2",
+        "L35: __stage__ = 95",
+        "L36: __order__ = 4",
+        "L37: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L38: __created__ = \"2026-01-10\"",
+        "L39: __modified__ = \"2026-01-10\"",
+        "L40: __criticality__ = \"MEDIUM\"",
+        "L41: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "36203726ad1e0e35"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_95_05_execution_predictor.py",
+      "future_line_number": 48,
+      "correct_line_number": 31,
+      "preceding_statements": [
+        "L32: # ==========================================================",
+        "L33: # METADATA",
+        "L34: # ==========================================================",
+        "L36: __version__ = \"1.0.0\"",
+        "L37: __phase__ = 2",
+        "L38: __stage__ = 95",
+        "L39: __order__ = 5",
+        "L40: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L41: __created__ = \"2026-01-10\"",
+        "L42: __modified__ = \"2026-01-10\"",
+        "L43: __criticality__ = \"MEDIUM\"",
+        "L44: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "efad95158d6cb849"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_02/phase2_96_00_contract_migrator.py",
+      "future_line_number": 45,
+      "correct_line_number": 28,
+      "preceding_statements": [
+        "L29: # ==========================================================",
+        "L30: # METADATA",
+        "L31: # ==========================================================",
+        "L33: __version__ = \"1.0.0\"",
+        "L34: __phase__ = 2",
+        "L35: __stage__ = 96",
+        "L36: __order__ = 0",
+        "L37: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L38: __created__ = \"2026-01-10\"",
+        "L39: __modified__ = \"2026-01-10\"",
+        "L40: __criticality__ = \"HIGH\"",
+        "L41: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "4de2db993f9ba96a"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_score_extraction.py",
+      "future_line_number": 34,
+      "correct_line_number": 17,
+      "preceding_statements": [
+        "L18: # ==========================================================",
+        "L19: # METADATA",
+        "L20: # ==========================================================",
+        "L22: __version__ = \"1.0.0\"",
+        "L23: __phase__ = 3",
+        "L24: __stage__ = 10",
+        "L25: __order__ = 0",
+        "L26: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L27: __created__ = \"2026-01-10\"",
+        "L28: __modified__ = \"2026-01-10\"",
+        "L29: __criticality__ = \"CRITICAL\"",
+        "L30: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "85bb248030c6ee74"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_signal_enriched_scoring.py",
+      "future_line_number": 36,
+      "correct_line_number": 19,
+      "preceding_statements": [
+        "L20: # ==========================================================",
+        "L21: # METADATA",
+        "L22: # ==========================================================",
+        "L24: __version__ = \"1.0.0\"",
+        "L25: __phase__ = 3",
+        "L26: __stage__ = 10",
+        "L27: __order__ = 0",
+        "L28: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L29: __created__ = \"2026-01-10\"",
+        "L30: __modified__ = \"2026-01-10\"",
+        "L31: __criticality__ = \"CRITICAL\"",
+        "L32: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "9b96cecf3bda3c13"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_03/phase3_10_00_phase3_validation.py",
+      "future_line_number": 27,
+      "correct_line_number": 10,
+      "preceding_statements": [
+        "L11: # ==========================================================",
+        "L12: # METADATA",
+        "L13: # ==========================================================",
+        "L15: __version__ = \"1.0.0\"",
+        "L16: __phase__ = 3",
+        "L17: __stage__ = 10",
+        "L18: __order__ = 0",
+        "L19: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L20: __created__ = \"2026-01-10\"",
+        "L21: __modified__ = \"2026-01-10\"",
+        "L22: __criticality__ = \"CRITICAL\"",
+        "L23: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "049e55433904bf9d"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_adaptive_meso_scoring.py",
+      "future_line_number": 48,
+      "correct_line_number": 31,
+      "preceding_statements": [
+        "L32: # ==========================================================",
+        "L33: # METADATA",
+        "L34: # ==========================================================",
+        "L36: __version__ = \"1.0.0\"",
+        "L37: __phase__ = 4",
+        "L38: __stage__ = 10",
+        "L39: __order__ = 0",
+        "L40: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L41: __created__ = \"2026-01-10\"",
+        "L42: __modified__ = \"2026-01-10\"",
+        "L43: __criticality__ = \"CRITICAL\"",
+        "L44: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "0667c0a59978099e"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation.py",
+      "future_line_number": 40,
+      "correct_line_number": 23,
+      "preceding_statements": [
+        "L24: # ==========================================================",
+        "L25: # METADATA",
+        "L26: # ==========================================================",
+        "L28: __version__ = \"1.0.0\"",
+        "L29: __phase__ = 4",
+        "L30: __stage__ = 10",
+        "L31: __order__ = 0",
+        "L32: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L33: __created__ = \"2026-01-10\"",
+        "L34: __modified__ = \"2026-01-10\"",
+        "L35: __criticality__ = \"CRITICAL\"",
+        "L36: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "3cd6be6efaa27556"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_enhancements.py",
+      "future_line_number": 35,
+      "correct_line_number": 18,
+      "preceding_statements": [
+        "L19: # ==========================================================",
+        "L20: # METADATA",
+        "L21: # ==========================================================",
+        "L23: __version__ = \"1.0.0\"",
+        "L24: __phase__ = 4",
+        "L25: __stage__ = 10",
+        "L26: __order__ = 0",
+        "L27: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L28: __created__ = \"2026-01-10\"",
+        "L29: __modified__ = \"2026-01-10\"",
+        "L30: __criticality__ = \"CRITICAL\"",
+        "L31: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "39b44582bba2a6da"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_integration.py",
+      "future_line_number": 29,
+      "correct_line_number": 12,
+      "preceding_statements": [
+        "L13: # ==========================================================",
+        "L14: # METADATA",
+        "L15: # ==========================================================",
+        "L17: __version__ = \"1.0.0\"",
+        "L18: __phase__ = 4",
+        "L19: __stage__ = 10",
+        "L20: __order__ = 0",
+        "L21: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L22: __created__ = \"2026-01-10\"",
+        "L23: __modified__ = \"2026-01-10\"",
+        "L24: __criticality__ = \"CRITICAL\"",
+        "L25: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "499f739ec5b767bf"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_provenance.py",
+      "future_line_number": 38,
+      "correct_line_number": 21,
+      "preceding_statements": [
+        "L22: # ==========================================================",
+        "L23: # METADATA",
+        "L24: # ==========================================================",
+        "L26: __version__ = \"1.0.0\"",
+        "L27: __phase__ = 4",
+        "L28: __stage__ = 10",
+        "L29: __order__ = 0",
+        "L30: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L31: __created__ = \"2026-01-10\"",
+        "L32: __modified__ = \"2026-01-10\"",
+        "L33: __criticality__ = \"CRITICAL\"",
+        "L34: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "a8fdbe95ccf36a66"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_validation.py",
+      "future_line_number": 29,
+      "correct_line_number": 12,
+      "preceding_statements": [
+        "L13: # ==========================================================",
+        "L14: # METADATA",
+        "L15: # ==========================================================",
+        "L17: __version__ = \"1.0.0\"",
+        "L18: __phase__ = 4",
+        "L19: __stage__ = 10",
+        "L20: __order__ = 0",
+        "L21: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L22: __created__ = \"2026-01-10\"",
+        "L23: __modified__ = \"2026-01-10\"",
+        "L24: __criticality__ = \"CRITICAL\"",
+        "L25: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "88a183c766387843"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_adapter.py",
+      "future_line_number": 34,
+      "correct_line_number": 1,
+      "preceding_statements": [
+        "L1: r\"\"\"",
+        "L2: Choquet Adapter - Production Integration Layer for Non-Linea",
+        "L3: State-of-the-Art Mathematical Framework",
+        "L5: This module provides the rigorous structural bridge between ",
+        "L6: aggregation pipeline and advanced Choquet integral calculus.",
+        "L7: fuzzy measure theory framework with automatic capacity ident",
+        "L8: discovery, and constitutional constraint enforcement.",
+        "L10: Mathematical Foundation:",
+        "L11: Let N = {1,...,n} be the set of criteria (clusters/areas). A",
+        "L12: v: 2^N \u2192 [0,1] satisfies:",
+        "L13: - v(\u2205) = 0",
+        "L14: - v(N) = 1",
+        "L15: - A \u2286 B \u21d2 v(A) \u2264 v(B) (monotonicity)",
+        "L17: The Choquet integral of x \u2208 \u211d^n with respect to v is:",
+        "L18: C_v(x) = \u03a3_{i=1}^n (x_{(i)} - x_{(i-1)}) * v(A_i)",
+        "L19: where (i) denotes order statistics and A_i = {(i),...,(n)}.",
+        "L21: The M\u00f6bius transform m(A) captures pure n-way interactions:",
+        "L22: m(A) = \u03a3_{B\u2286A} (-1)^{|A\\B|} v(B)",
+        "L24: Key Innovations:",
+        "L25: 1. **K-additive Optimization**: Automatic order selection ba",
+        "L26: 2. **Constrained Maximum Likelihood**: Capacity learning wit",
+        "L27: 3. **Shapley-Proportional Initialization**: Game-theoretic w",
+        "L28: 4. **Interaction Mining**: Statistical detection of synergis",
+        "L29: 5. **Uncertainty Propagation**: Monte Carlo integration for ",
+        "L31: Author: F.A.R.F.A.N. Statistical Compliance & Integration Te"
+      ],
+      "content_hash": "e85f5998ecf7cd14"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_choquet_aggregator.py",
+      "future_line_number": 45,
+      "correct_line_number": 28,
+      "preceding_statements": [
+        "L29: # ==========================================================",
+        "L30: # METADATA",
+        "L31: # ==========================================================",
+        "L33: __version__ = \"1.0.0\"",
+        "L34: __phase__ = 4",
+        "L35: __stage__ = 10",
+        "L36: __order__ = 0",
+        "L37: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L38: __created__ = \"2026-01-10\"",
+        "L39: __modified__ = \"2026-01-10\"",
+        "L40: __criticality__ = \"CRITICAL\"",
+        "L41: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "bbc6f0f5b3704bdc"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_phase_4_7_constants.py",
+      "future_line_number": 36,
+      "correct_line_number": 19,
+      "preceding_statements": [
+        "L20: # ==========================================================",
+        "L21: # METADATA",
+        "L22: # ==========================================================",
+        "L24: __version__ = \"1.0.0\"",
+        "L25: __phase__ = 4",
+        "L26: __stage__ = 10",
+        "L27: __order__ = 0",
+        "L28: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L29: __created__ = \"2026-01-10\"",
+        "L30: __modified__ = \"2026-01-10\"",
+        "L31: __criticality__ = \"CRITICAL\"",
+        "L32: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "d1564fb2d772c4fc"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_signal_enriched_aggregation.py",
+      "future_line_number": 37,
+      "correct_line_number": 20,
+      "preceding_statements": [
+        "L21: # ==========================================================",
+        "L22: # METADATA",
+        "L23: # ==========================================================",
+        "L25: __version__ = \"1.0.0\"",
+        "L26: __phase__ = 4",
+        "L27: __stage__ = 10",
+        "L28: __order__ = 0",
+        "L29: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L30: __created__ = \"2026-01-10\"",
+        "L31: __modified__ = \"2026-01-10\"",
+        "L32: __criticality__ = \"CRITICAL\"",
+        "L33: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "6c082278282f8eff"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_04/phase4_10_00_uncertainty_quantification.py",
+      "future_line_number": 42,
+      "correct_line_number": 25,
+      "preceding_statements": [
+        "L26: # ==========================================================",
+        "L27: # METADATA",
+        "L28: # ==========================================================",
+        "L30: __version__ = \"1.0.0\"",
+        "L31: __phase__ = 4",
+        "L32: __stage__ = 10",
+        "L33: __order__ = 0",
+        "L34: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L35: __created__ = \"2026-01-10\"",
+        "L36: __modified__ = \"2026-01-10\"",
+        "L37: __criticality__ = \"CRITICAL\"",
+        "L38: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "029c2f0bf5deb522"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_08/phase8_30_00_signal_enriched_recommendations.py",
+      "future_line_number": 44,
+      "correct_line_number": 27,
+      "preceding_statements": [
+        "L28: # ==========================================================",
+        "L29: # METADATA",
+        "L30: # ==========================================================",
+        "L32: __version__ = \"1.0.0\"",
+        "L33: __phase__ = 8",
+        "L34: __stage__ = 30",
+        "L35: __order__ = 0",
+        "L36: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L37: __created__ = \"2026-01-10\"",
+        "L38: __modified__ = \"2026-01-10\"",
+        "L39: __criticality__ = \"MEDIUM\"",
+        "L40: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "91a13957d1b4fda7"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_assembly.py",
+      "future_line_number": 42,
+      "correct_line_number": 25,
+      "preceding_statements": [
+        "L26: # ==========================================================",
+        "L27: # METADATA",
+        "L28: # ==========================================================",
+        "L30: __version__ = \"1.0.0\"",
+        "L31: __phase__ = 9",
+        "L32: __stage__ = 10",
+        "L33: __order__ = 0",
+        "L34: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L35: __created__ = \"2026-01-10\"",
+        "L36: __modified__ = \"2026-01-10\"",
+        "L37: __criticality__ = \"CRITICAL\"",
+        "L38: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "8e15dcf1122d2f83"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_report_generator.py",
+      "future_line_number": 36,
+      "correct_line_number": 19,
+      "preceding_statements": [
+        "L20: # ==========================================================",
+        "L21: # METADATA",
+        "L22: # ==========================================================",
+        "L24: __version__ = \"1.0.0\"",
+        "L25: __phase__ = 9",
+        "L26: __stage__ = 10",
+        "L27: __order__ = 0",
+        "L28: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L29: __created__ = \"2026-01-10\"",
+        "L30: __modified__ = \"2026-01-10\"",
+        "L31: __criticality__ = \"CRITICAL\"",
+        "L32: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "14e6a2e62abcace6"
+    },
+    {
+      "file_path": "src/farfan_pipeline/phases/Phase_09/phase9_10_00_signal_enriched_reporting.py",
+      "future_line_number": 36,
+      "correct_line_number": 19,
+      "preceding_statements": [
+        "L20: # ==========================================================",
+        "L21: # METADATA",
+        "L22: # ==========================================================",
+        "L24: __version__ = \"1.0.0\"",
+        "L25: __phase__ = 9",
+        "L26: __stage__ = 10",
+        "L27: __order__ = 0",
+        "L28: __author__ = \"F.A.R.F.A.N Core Team\"",
+        "L29: __created__ = \"2026-01-10\"",
+        "L30: __modified__ = \"2026-01-10\"",
+        "L31: __criticality__ = \"CRITICAL\"",
+        "L32: __execution_pattern__ = \"On-Demand\""
+      ],
+      "content_hash": "76f3903d0a1357b4"
+    }
+  ]
+}

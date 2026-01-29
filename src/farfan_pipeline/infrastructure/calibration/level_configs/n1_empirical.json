@@ -1,0 +1,50 @@
+{
+  "level": "N1-EMP",
+  "epistemology": "Empirismo positivista",
+  "description": "Extracción de hechos observables sin interpretación. Opera bajo el principio de verificar lo que está en el documento sin añadir inferencia.",
+  "output_type": "FACT",
+  "fusion_behavior": "additive",
+  "fusion_symbol": "⊕",
+  "calibration_parameters": {
+    "extraction_confidence_floor": 0.6,
+    "deduplication_threshold": 0.95,
+    "pattern_fuzzy_threshold": 0.85,
+    "table_extraction_boost": 1.0,
+    "hierarchy_sensitivity": 1.0
+  },
+  "validation_schema": {
+    "extraction_confidence_floor": {"type": "float", "range": [0.0, 1.0]},
+    "deduplication_threshold": {"type": "float", "range": [0.0, 1.0]},
+    "pattern_fuzzy_threshold": {"type": "float", "range": [0.0, 1.0]},
+    "table_extraction_boost": {"type": "float", "range": [1.0, null]},
+    "hierarchy_sensitivity": {"type": "float", "range": [0.0, null]}
+  },
+  "pdm_sensitivity": {
+    "active": true,
+    "rules": ["table_boost", "hierarchy_sensitivity"],
+    "rule_descriptions": {
+      "table_boost": "Aumenta extracción de confianza para tablas PPI/PAI detectadas",
+      "hierarchy_sensitivity": "Ajusta sensibilidad basado en profundidad jerárquica del documento"
+    }
+  },
+  "constraints": [
+    "output_must_be_literal",
+    "no_transformation_allowed",
+    "confidence_cannot_be_inferred",
+    "level_is_immutable"
+  ],
+  "typical_methods": [
+    "TextMiningEngine.diagnose_critical_links",
+    "SemanticProcessor.chunk_text",
+    "SemanticProcessor.embed_single",
+    "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+    "PolicyAnalysisEmbedder._extract_numerical_values"
+  ],
+  "epistemic_regime": "Positivist",
+  "meta_level": false,
+  "asymmetry_principle": {
+    "can_veto": false,
+    "can_be_vetoed_by": ["N3-AUD"],
+    "description": "N1 puede ser vetado por N3, pero N1 no puede vetar a ningún nivel superior"
+  }
+}

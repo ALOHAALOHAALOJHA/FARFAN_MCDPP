@@ -407,7 +407,7 @@
     }
   ],
   "implementation_roadmap": {
-    "phase_1": {
+    "phase_01": {
       "name": "Critical Fixes",
       "duration_weeks": "1-2",
       "sub_issues": ["SUB-1", "SUB-2"],
@@ -416,7 +416,7 @@
         "Document 100 questions with new template"
       ]
     },
-    "phase_2": {
+    "phase_02": {
       "name": "High Priority Enrichment",
       "duration_weeks": "3-4",
       "sub_issues": ["SUB-3", "SUB-4", "SUB-5", "SUB-6", "SUB-7"],
@@ -426,7 +426,7 @@
         "Diversify scoring modalities"
       ]
     },
-    "phase_3": {
+    "phase_03": {
       "name": "Medium Priority Improvements",
       "duration_weeks": "5-6",
       "sub_issues": ["SUB-8", "SUB-9", "SUB-10"],
@@ -436,7 +436,7 @@
         "Review expected elements"
       ]
     },
-    "phase_4": {
+    "phase_04": {
       "name": "Continuous Improvement",
       "duration_weeks": "7+",
       "sub_issues": ["SUB-11", "SUB-12"],

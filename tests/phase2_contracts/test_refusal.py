@@ -3,14 +3,12 @@ Test RefC - Refusal Contract
 Verifies: Pre-flight checks refuse execution immediately
 Refusal mechanism guarantee
 """
+
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-
-from cross_cutting_infrastructure.contractual.dura_lex.refusal import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.refusal import (
     RefusalContract,
     RefusalError,
 )

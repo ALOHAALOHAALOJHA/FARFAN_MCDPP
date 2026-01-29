@@ -1,0 +1,372 @@
+{
+  "$schema": "../../../schemas/phase_manifest_schema.json",
+  "phase_id": "phase_01",
+  "phase_name": "CPP Ingestion & Preprocessing with Colombian PDM Enhancement",
+  "version": "2.0.0",
+  "status": "ACTIVE",
+  "created_at": "2026-01-04",
+  "updated_at": "2026-01-18",
+  "owner": "farfan_pipeline. phases.Phase_one",
+  "description": "Phase 1 performs question-aware chunking (60 chunks: 10 PA × 6 Dim), Colombian PDM enhancement (default behavior), and multi-level semantic enrichment to produce domain-enriched SmartChunks. Phase 2 expands to 300 tasks (60 chunks × 5 questions). Colombian PDM enhancement recognizes regulatory frameworks, territorial indicators, financial markers, and differential approach patterns constitutionally mandated for all chunks.",
+  "subphases": [
+    {
+      "id": "SP0",
+      "name": "Language Detection",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 900,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP1",
+      "name": "Advanced Preprocessing",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 2500,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP2",
+      "name": "Structural Analysis",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 3000,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP3",
+      "name": "Knowledge Graph Construction",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 4000,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP4",
+      "name": "Question-Aware Chunking (60 chunks)",
+      "module": "phase1_07_00_sp4_question_aware",
+      "weight": 10000,
+      "tier": "CRITICAL",
+      "constitutional": true
+    },
+    {
+      "id": "SP4.1",
+      "name": "Colombian PDM Enhancement",
+      "module": "phase1_07_01_colombian_pdm_enhancer",
+      "weight": 0,
+      "tier": "CRITICAL",
+      "parent": "SP4",
+      "mandatory": true,
+      "note": "Included in SP4 budget, executes automatically after SP4"
+    },
+    {
+      "id": "SP5",
+      "name": "Causal Chain Construction",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 5000,
+      "tier": "HIGH"
+    },
+    {
+      "id": "SP6",
+      "name": "Integrated Causal Graph",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 3500,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP7",
+      "name": "Argumentative Structure",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 4500,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP8",
+      "name": "Temporal Markers",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 3500,
+      "tier": "STANDARD"
+    },
+    {
+      "id": "SP9",
+      "name": "Discourse Mode",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 6000,
+      "tier": "HIGH"
+    },
+    {
+      "id": "SP10",
+      "name": "Strategic Integration",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 8000,
+      "tier": "HIGH"
+    },
+    {
+      "id": "SP11",
+      "name": "SmartChunk Assembly (60 chunks)",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 10000,
+      "tier": "CRITICAL",
+      "constitutional": true
+    },
+    {
+      "id": "SP12",
+      "name": "SISAS Irrigation Linking",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 7000,
+      "tier": "HIGH"
+    },
+    {
+      "id": "SP13",
+      "name": "CPP Packaging & Integrity Validation",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 10000,
+      "tier": "CRITICAL",
+      "constitutional": true
+    },
+    {
+      "id": "SP14",
+      "name": "Quality Metrics & Ranking",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 5000,
+      "tier": "HIGH"
+    },
+    {
+      "id": "SP15",
+      "name": "Final Output & Integrity Verification",
+      "module": "phase1_13_00_cpp_ingestion",
+      "weight": 9000,
+      "tier": "HIGH"
+    }
+  ],
+  "dependencies": {
+    "internal": [
+      "farfan_pipeline. core.types"
+    ],
+    "external": [
+      "fitz",
+      "spacy",
+      "networkx"
+    ]
+  },
+  "outputs": {
+    "primary": "List[SmartChunk]",
+    "secondary": [
+      "TruncationAudit",
+      "ValidationResult",
+      "IrrigationMap"
+    ]
+  },
+  "constants_file": "PHASE_1_CONSTANTS.py",
+  "interfaces_module": "interfaces. phase1_protocols",
+  "metadata": {
+    "created": "2026-01-04",
+    "modified": "2026-01-18",
+    "version": "1.0.0",
+    "author": "F.A.R.F.A.N Core Architecture Team",
+    "status": "ACTIVE"
+  },
+  "stages": [
+    {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base infrastructure and types",
+      "execution_order": 1,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "purpose": "Package initialization"
+        }
+      ]
+    },
+    {
+      "code": 1,
+      "name": "Stage 1",
+      "description": "Stage 1 modules",
+      "execution_order": 2,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_01_00_cpp_models",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Cpp Models"
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "name": "Stage 3",
+      "description": "Stage 3 modules",
+      "execution_order": 3,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_03_00_models",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Models"
+        }
+      ]
+    },
+    {
+      "code": 5,
+      "name": "Stage 5",
+      "description": "Stage 5 modules",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_05_00_thread_safe_results",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Thread Safe Results"
+        }
+      ]
+    },
+    {
+      "code": 6,
+      "name": "Stage 6",
+      "description": "Stage 6 modules",
+      "execution_order": 5,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_06_00_questionnaire_mapper",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Questionnaire Mapper"
+        }
+      ]
+    },
+    {
+      "code": 7,
+      "name": "Stage 7",
+      "description": "Stage 7 modules",
+      "execution_order": 6,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_07_00_sp4_question_aware",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Sp4 Question Aware"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase1_07_01_colombian_pdm_enhancer",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Colombian Pdm Enhancer"
+        }
+      ]
+    },
+    {
+      "code": 9,
+      "name": "Stage 9",
+      "description": "Stage 9 modules",
+      "execution_order": 7,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_09_00_circuit_breaker",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Circuit Breaker"
+        }
+      ]
+    },
+    {
+      "code": 11,
+      "name": "Stage 11",
+      "description": "Stage 11 modules",
+      "execution_order": 8,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_11_00_signal_enrichment",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Signal Enrichment"
+        }
+      ]
+    },
+    {
+      "code": 12,
+      "name": "Stage 12",
+      "description": "Stage 12 modules",
+      "execution_order": 9,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_12_00_structural",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Structural"
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase1_12_01_pdm_integration",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Pdm Integration"
+        }
+      ]
+    },
+    {
+      "code": 13,
+      "name": "Stage 13",
+      "description": "Stage 13 modules",
+      "execution_order": 10,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase1_13_00_cpp_ingestion",
+          "type": "CFG",
+          "criticality": "LOW",
+          "purpose": "Cpp Ingestion"
+        }
+      ]
+    },
+    {
+      "code": 99,
+      "name": "Stage 99",
+      "description": "Stage 99 modules",
+      "execution_order": 11,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "PHASE_1_CONSTANTS",
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "purpose": "Phase 1 Constants"
+        }
+      ]
+    }
+  ],
+  "statistics": {
+    "total_modules": 13,
+    "stages": 11,
+    "subphases": 16,
+    "subphases_with_sub": 17,
+    "constitutional_chunks": 60,
+    "policy_areas": 10,
+    "dimensions": 6,
+    "questions_per_dimension": 5,
+    "phase2_expansion": 300,
+    "colombian_pdm_enhancement": "MANDATORY",
+    "critical_subphases": ["SP4", "SP4.1", "SP11", "SP13"],
+    "high_subphases": ["SP5", "SP9", "SP10", "SP12", "SP14", "SP15"],
+    "formula": "Phase 1: 10 PA × 6 DIM = 60 chunks; Phase 2: 60 × 5 Q = 300 tasks"
+  }
+}

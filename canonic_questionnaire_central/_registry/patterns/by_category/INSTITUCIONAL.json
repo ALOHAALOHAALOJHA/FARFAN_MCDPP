@@ -1,0 +1,406 @@
+{
+  "_category": "INSTITUCIONAL",
+  "_count": 8,
+  "patterns": {
+    "INST-001": {
+      "id": "INST-001",
+      "canonical_id": "INST-001",
+      "legacy_ids": [
+        "INST-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849876+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-002": {
+      "id": "INST-002",
+      "canonical_id": "INST-002",
+      "legacy_ids": [
+        "INST-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849884+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-003": {
+      "id": "INST-003",
+      "canonical_id": "INST-003",
+      "legacy_ids": [
+        "INST-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849889+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-004": {
+      "id": "INST-004",
+      "canonical_id": "INST-004",
+      "legacy_ids": [
+        "INST-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849894+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-005": {
+      "id": "INST-005",
+      "canonical_id": "INST-005",
+      "legacy_ids": [
+        "INST-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849898+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-006": {
+      "id": "INST-006",
+      "canonical_id": "INST-006",
+      "legacy_ids": [
+        "INST-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849903+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-007": {
+      "id": "INST-007",
+      "canonical_id": "INST-007",
+      "legacy_ids": [
+        "INST-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849909+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "INST-008": {
+      "id": "INST-008",
+      "canonical_id": "INST-008",
+      "legacy_ids": [
+        "INST-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/institutional_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849913+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    }
+  }
+}

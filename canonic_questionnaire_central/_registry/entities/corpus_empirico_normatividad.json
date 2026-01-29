@@ -1,0 +1,268 @@
+{
+  "normative_mapping_version": "1.0.0",
+  "creation_date": "2026-01-06",
+  "source": "Empirical analysis of 14 PDT Colombia 2024-2027",
+  "purpose": "Normative compliance validation for CC_COHERENCIA_NORMATIVA",
+
+  "mandatory_norms_by_policy_area": {
+    "PA01_mujeres_genero": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 1257 de 2008",
+          "name": "Normas de sensibilización, prevención y sanción de formas de violencia y discriminación contra las mujeres",
+          "reason": "Marco legal fundamental para enfoque de género",
+          "empirical_frequency": 4,
+          "penalty_if_missing": 0.3
+        },
+        {
+          "norm_id": "CONPES 4080 de 2022",
+          "name": "Política Pública Nacional de Equidad de Género para las Mujeres",
+          "reason": "Política nacional vigente",
+          "empirical_frequency": 3,
+          "penalty_if_missing": 0.2
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 1496 de 2011", "name": "Igualdad salarial"},
+        {"norm_id": "Ley 1761 de 2015", "name": "Feminicidio"}
+      ]
+    },
+
+    "PA02_violencia_conflicto": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 1257 de 2008",
+          "name": "Violencia contra las mujeres",
+          "reason": "Marco para VBG (Violencia Basada en Género)",
+          "empirical_frequency": 4,
+          "penalty_if_missing": 0.25
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 1719 de 2014", "name": "Violencia sexual en conflicto armado"}
+      ]
+    },
+
+    "PA03_ambiente_cambio_climatico": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 99 de 1993",
+          "name": "Sistema Nacional Ambiental",
+          "reason": "Marco institucional ambiental",
+          "empirical_frequency": 6,
+          "penalty_if_missing": 0.2
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 1931 de 2018", "name": "Gestión del Cambio Climático"},
+        {"norm_id": "CONPES 3918 de 2018", "name": "ODS en Colombia"}
+      ]
+    },
+
+    "PA04_desc": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 1098 de 2006",
+          "name": "Código de la Infancia y la Adolescencia",
+          "reason": "Protección de derechos de niñez",
+          "empirical_frequency": 8,
+          "penalty_if_missing": 0.25
+        },
+        {
+          "norm_id": "Ley 100 de 1993",
+          "name": "Sistema General de Seguridad Social en Salud",
+          "reason": "Marco del sistema de salud",
+          "empirical_frequency": 7,
+          "penalty_if_missing": 0.2
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 115 de 1994", "name": "Ley General de Educación"},
+        {"norm_id": "Ley 1753 de 2015", "name": "PND 2014-2018"}
+      ]
+    },
+
+    "PA05_victimas_paz": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 1448 de 2011",
+          "name": "Ley de Víctimas y Restitución de Tierras",
+          "reason": "Marco fundamental para víctimas del conflicto",
+          "empirical_frequency": 5,
+          "penalty_if_missing": 0.4
+        },
+        {
+          "norm_id": "Decreto 893 de 2017",
+          "name": "Programas de Desarrollo con Enfoque Territorial (PDET)",
+          "reason": "Implementación de acuerdos de paz",
+          "empirical_frequency": 7,
+          "penalty_if_missing": 0.3
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Acuerdo Final de Paz 2016", "name": "Acuerdo de Paz"},
+        {"norm_id": "Ley 1975 de 2019", "name": "Justicia Transicional"}
+      ]
+    },
+
+    "PA06_ninez_juventud": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 1098 de 2006",
+          "name": "Código de la Infancia y la Adolescencia",
+          "reason": "Marco legal de protección",
+          "empirical_frequency": 8,
+          "penalty_if_missing": 0.35
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 1622 de 2013", "name": "Estatuto de Ciudadanía Juvenil"},
+        {"norm_id": "Ley 1804 de 2016", "name": "Política de Estado para Primera Infancia"}
+      ]
+    },
+
+    "PA07_tierras_territorios": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 388 de 1997",
+          "name": "Desarrollo Territorial - POT",
+          "reason": "Marco de ordenamiento territorial",
+          "empirical_frequency": 8,
+          "penalty_if_missing": 0.3
+        },
+        {
+          "norm_id": "Ley 1448 de 2011",
+          "name": "Restitución de Tierras",
+          "reason": "Restitución a víctimas",
+          "empirical_frequency": 5,
+          "penalty_if_missing": 0.25
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 160 de 1994", "name": "Sistema Nacional de Reforma Agraria"}
+      ]
+    },
+
+    "PA08_lideres_ddhh": {
+      "mandatory": [
+        {
+          "norm_id": "Decreto 660 de 2018",
+          "name": "Programa Integral de Garantías para Líderes Sociales",
+          "reason": "Protección de defensores de DDHH",
+          "empirical_frequency": 3,
+          "penalty_if_missing": 0.35
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 1712 de 2014", "name": "Transparencia y Acceso a Información"}
+      ]
+    },
+
+    "PA09_crisis_ppl": {
+      "mandatory": [
+        {
+          "norm_id": "Ley 65 de 1993",
+          "name": "Código Penitenciario y Carcelario",
+          "reason": "Marco legal del sistema penitenciario",
+          "empirical_frequency": 2,
+          "penalty_if_missing": 0.3
+        }
+      ],
+      "recommended": [
+        {"norm_id": "Ley 1709 de 2014", "name": "Reforma al Código Penitenciario"}
+      ]
+    },
+
+    "PA10_migracion": {
+      "mandatory": [],
+      "recommended": [
+        {"norm_id": "Ley 1565 de 2012", "name": "Sistema Nacional de Migraciones"},
+        {"norm_id": "CONPES 3950 de 2018", "name": "Migración desde Venezuela"}
+      ]
+    }
+  },
+
+  "universal_mandatory_norms": [
+    {
+      "norm_id": "Constitución Política 1991",
+      "articles_key": ["Art. 339", "Art. 342"],
+      "reason": "Base constitucional del Plan de Desarrollo",
+      "empirical_frequency": 14,
+      "penalty_if_missing": 0.5
+    },
+    {
+      "norm_id": "Ley 152 de 1994",
+      "name": "Ley Orgánica del Plan de Desarrollo",
+      "reason": "Marco procedimental obligatorio",
+      "empirical_frequency": 11,
+      "penalty_if_missing": 0.4
+    },
+    {
+      "norm_id": "Ley 2294 de 2023",
+      "name": "Plan Nacional de Desarrollo 2022-2026",
+      "reason": "Armonización obligatoria con PND vigente",
+      "empirical_frequency": 13,
+      "penalty_if_missing": 0.35
+    },
+    {
+      "norm_id": "Ley 1551 de 2012",
+      "name": "Normas para modernizar la organización y el funcionamiento de los municipios",
+      "reason": "Marco de gestión municipal",
+      "empirical_frequency": 7,
+      "penalty_if_missing": 0.2
+    }
+  ],
+
+  "contextual_validation_rules": {
+    "pdet_municipalities": {
+      "condition": "Municipality is in PDET list",
+      "additional_mandatory": [
+        {"norm_id": "Decreto 893 de 2017", "penalty_if_missing": 0.4}
+      ]
+    },
+    "ethnic_territories": {
+      "condition": "Population > 10% indigenous or afro",
+      "additional_mandatory": [
+        {"norm_id": "Ley 70 de 1993", "name": "Comunidades Negras"},
+        {"norm_id": "Decreto 1953 de 2014", "name": "Sistema de Salud Indígena"}
+      ]
+    },
+    "coastal_municipalities": {
+      "condition": "Has coastal zone",
+      "additional_mandatory": [
+        {"norm_id": "Ley 1450 de 2011", "name": "Artículo sobre zonas costeras"}
+      ]
+    }
+  },
+
+  "scoring_algorithm": {
+    "description": "CC_COHERENCIA_NORMATIVA score calculation",
+    "formula": "score = 1.0 - SUM(penalties) for missing mandatory norms",
+    "interpretation": {
+      "EXCELENTE": ">= 0.90 (all mandatory norms cited)",
+      "BUENO": "0.75 - 0.89 (minor gaps)",
+      "ACEPTABLE": "0.60 - 0.74 (significant gaps)",
+      "DEFICIENTE": "< 0.60 (critical gaps)"
+    },
+    "gap_report_format": {
+      "policy_area": "PA05",
+      "missing_norms": [
+        {"norm_id": "Ley 1448 de 2011", "penalty": 0.4, "severity": "CRITICAL"}
+      ],
+      "total_penalty": 0.4,
+      "score": 0.6,
+      "recommendation": "Debe incluir Ley 1448 de 2011 para validar enfoque de víctimas"
+    }
+  },
+
+  "empirical_baseline": {
+    "best_performers": [
+      {"plan": "Caldono", "universal_norms_cited": 8, "pa_specific_norms": 13},
+      {"plan": "Bosconia", "universal_norms_cited": 7, "pa_specific_norms": 14}
+    ],
+    "common_gaps": [
+      {"norm": "Ley 1257 de 2008", "missing_in": 10, "note": "Frecuente omisión"},
+      {"norm": "Decreto 660 de 2018", "missing_in": 11, "note": "Norm is relatively new"}
+    ]
+  }
+}

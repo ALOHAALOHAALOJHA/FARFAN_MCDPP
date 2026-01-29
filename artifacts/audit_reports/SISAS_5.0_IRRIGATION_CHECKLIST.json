@@ -1,0 +1,3919 @@
+{
+  "specification": "SISAS 5.0 IRRIGATION CHECKLIST",
+  "timestamp": "2026-01-19T01:37:07.135963Z",
+  "total_files": 489,
+  "checklist": {
+    "_build/build_manifest.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_build/integrity_report.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/EMPIRICAL_CORPUS_INDEX.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/SISAS_IRRIGATION_SPEC.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/capabilities/capability_definitions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/capabilities/consumer_capability_declarations.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/capabilities/schema.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/capabilities/signal_capability_map.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/corpus_empirico_calibracion_extractores.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/corpus_empirico_integrado.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/corpus_empirico_normatividad.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/index.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/institutions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/institutions_expanded.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/international.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/normative.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/normative_compliance.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/policy_areas_canonical.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/populations.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/schema.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/entities/territorial.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/irrigation_validation_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/CONSOLIDATED_INDEX.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/KEYWORD_TO_PA_MAP.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/PA_TO_KEYWORDS_MAP.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA01.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA01_mujeres_genero.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA02.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA02_violencia_conflicto.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA03.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA03_ambiente_cambio_climatico.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA04.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA04_derechos_economicos_sociales_culturales.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA05.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA05_victimas_paz.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA06.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA06_ninez_adolescencia_juventud.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA07.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA07_tierras_territorios.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA08.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA08_lideres_defensores.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA09.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA09_crisis_PPL.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA10.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/by_policy_area/PA10_migracion.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/index.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/keywords/schema.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC01_structural_markers.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC02_quantitative_triplets.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC03_normative_references.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC04_programmatic_hierarchy.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC05_financial_chains.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC06_population_disaggregation.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC07_temporal_markers.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC08_causal_verbs.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC09_institutional_network.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/MC10_semantic_relationships.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/_bindings/mc_to_dimensions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/_bindings/mc_to_questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/_bindings/mc_to_scoring.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/_calibration/extractor_calibration.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/membership_criteria/schema.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/MASTER_INDEX.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/CAUSAL_CONNECTOR.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/CAUSAL_OUTCOME.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/DESCRIPCION.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/FUENTE_OFICIAL.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/GENERAL.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/INDICADOR.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/INSTITUCIONAL.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/INSTRUMENTO.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/MECANISMO_COMPLETO.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/MEDICION.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/POBLACION.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/PRODUCTO_TIPO.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/TEMPORAL.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/TERRITORIAL.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_category/UNIDAD_MEDIDA.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_context/PDET.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_dimension/DIM01.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_dimension/DIM02.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_dimension/DIM03.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_dimension/DIM04.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_dimension/DIM05.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_dimension/DIM06.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_policy_area/PA01.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/by_policy_area/PA02.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/patterns/schema.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/questionnaire_index.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/questions/integration_map.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/questions/macro_question.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_registry/questions/meso_questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/capability_coverage_matrix.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/cc_pa_matrix.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/keyword_pa_matrix.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/mc_question_matrix.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/pattern_question_matrix.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/questionnaire_flat.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "_views/signal_flow_graph.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL01_seguridad_paz/aggregation_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL01_seguridad_paz/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL01_seguridad_paz/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL02_grupos_poblacionales/aggregation_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL02_grupos_poblacionales/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL02_grupos_poblacionales/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL03_territorio_ambiente/aggregation_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL03_territorio_ambiente/contextual_enrichment.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL03_territorio_ambiente/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL03_territorio_ambiente/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL04_derechos_sociales_crisis/aggregation_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL04_derechos_sociales_crisis/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "clusters/CL04_derechos_sociales_crisis/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "colombia_context/colombia_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "colombia_context/municipal_governance.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "colombia_context/pdet_municipalities.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "config/canonical_notation.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "config/modular_manifest.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "config/questionnaire_schema.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/cross_cutting_themes.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/theme_integration_framework.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_COHERENCIA_NORMATIVA/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_CONTEXTO_PDET/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_ENFOQUE_DIFERENCIAL/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_ENTORNO_TERRITORIAL/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_INTEROPERABILIDAD/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_MECANISMOS_SEGUIMIENTO/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_PARTICIPACION_CIUDADANA/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_PERSPECTIVA_GENERO/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "cross_cutting/themes/CC_SOSTENIBILIDAD_PRESUPUESTAL/detection_rules.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/pdet_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q001.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q002.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q003.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q004.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q005.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q031.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q032.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q033.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q034.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q035.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q061.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q062.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q063.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q064.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q065.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q091.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q092.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q093.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q094.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q095.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q121.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q122.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q123.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q124.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q125.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q151.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q152.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q153.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q154.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q155.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q181.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q182.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q183.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q184.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q185.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q211.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q212.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q213.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q214.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q215.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q241.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q242.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q243.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q244.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q245.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q271.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q272.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q273.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q274.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM01_INSUMOS/questions/Q275.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/pdet_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q006.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q007.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q008.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q009.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q010.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q036.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q037.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q038.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q039.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q040.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q066.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q067.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q068.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q069.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q070.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q096.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q097.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q098.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q099.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q100.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q126.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q127.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q128.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q129.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q130.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q156.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q157.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q158.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q159.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q160.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q186.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q187.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q188.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q189.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q190.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q216.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q217.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q218.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q219.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q220.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q246.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q247.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q248.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q249.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q250.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q276.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q277.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q278.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q279.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM02_ACTIVIDADES/questions/Q280.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/pdet_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q011.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q012.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q013.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q014.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q015.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q041.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q042.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q043.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q044.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q045.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q071.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q072.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q073.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q074.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q075.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q101.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q102.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q103.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q104.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q105.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q131.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q132.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q133.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q134.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q135.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q161.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q162.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q163.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q164.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q165.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q191.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q192.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q193.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q194.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q195.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q221.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q222.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q223.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q224.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q225.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q251.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q252.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q253.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q254.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q255.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q281.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q282.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q283.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q284.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM03_PRODUCTOS/questions/Q285.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/pdet_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q016.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q017.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q018.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q019.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q020.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q046.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q047.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q048.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q049.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q050.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q076.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q077.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q078.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q079.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q080.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q106.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q107.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q108.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q109.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q110.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q136.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q137.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q138.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q139.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q140.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q166.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q167.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q168.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q169.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q170.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q196.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q197.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q198.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q199.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q200.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q226.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q227.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q228.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q229.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q230.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q256.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q257.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q258.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q259.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q260.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q286.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q287.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q288.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q289.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM04_RESULTADOS/questions/Q290.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/pdet_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q021.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q022.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q023.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q024.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q025.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q051.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q052.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q053.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q054.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q055.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q081.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q082.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q083.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q084.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q085.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q111.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q112.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q113.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q114.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q115.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q141.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q142.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q143.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q144.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q145.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q171.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q172.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q173.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q174.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q175.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q201.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q202.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q203.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q204.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q205.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q231.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q232.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q233.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q234.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q235.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q261.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q262.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q263.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q264.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q265.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q291.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q292.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q293.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q294.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM05_IMPACTOS/questions/Q295.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/pdet_context.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q026.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q027.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q028.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q029.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q030.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q056.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q057.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q058.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q059.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q060.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q086.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q087.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q088.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q089.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q090.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q116.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q117.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q118.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q119.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q120.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q146.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q147.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q148.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q149.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q150.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q176.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q177.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q178.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q179.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q180.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q206.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q207.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q208.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q209.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q210.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q236.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q237.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q238.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q239.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q240.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q266.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q267.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q268.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q269.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q270.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q296.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q297.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q298.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q299.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "dimensions/DIM06_CAUSALIDAD/questions/Q300.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "governance/METHODS_OPERACIONALIZACION.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "governance/METHODS_TO_QUESTIONS_AND_FILES.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "governance/governance.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA01_mujeres_genero/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA01_mujeres_genero/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA01_mujeres_genero/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA02_violencia_conflicto/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA02_violencia_conflicto/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA02_violencia_conflicto/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA03_ambiente_cambio_climatico/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA03_ambiente_cambio_climatico/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA03_ambiente_cambio_climatico/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA04_derechos_economicos_sociales_culturales/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA05_victimas_paz/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA05_victimas_paz/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA05_victimas_paz/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA06_ninez_adolescencia_juventud/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA06_ninez_adolescencia_juventud/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA06_ninez_adolescencia_juventud/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA07_tierras_territorios/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA07_tierras_territorios/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA07_tierras_territorios/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA08_lideres_defensores/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA08_lideres_defensores/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA08_lideres_defensores/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA09_crisis_PPL/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA09_crisis_PPL/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA09_crisis_PPL/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA10_migracion/keywords.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA10_migracion/metadata.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "policy_areas/PA10_migracion/questions.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "scoring/calibration/empirical_weights.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "scoring/scoring_system.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "semantic/pdet_semantic_enrichment.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "semantic/semantic_config.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "validations/interdependency_mapping.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "validations/normalization_report.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "validations/quality_assurance_test_suite.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "validations/referential_integrity.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    },
+    "validations/validation_templates.json": {
+      "status": "INTEGRATION_NEEDED",
+      "vehicle_assigned": true,
+      "consumer_assigned": true,
+      "contract_created": false,
+      "signals_generated": true,
+      "connected_to_sisas": false
+    }
+  }
+}

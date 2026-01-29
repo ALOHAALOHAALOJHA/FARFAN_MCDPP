@@ -1,0 +1,460 @@
+{
+  "_schema_version": "1.0.0",
+  "_dimension_id": "DIM01",
+  "_dimension_name": "INSUMOS (Diagnóstico y Líneas Base)",
+  "_generated_at": "2026-01-08T13:30:00Z",
+  "_description": "PDET context enrichment for DIM01 focusing on diagnostic quality, baseline data, and resource assessment in PDET municipalities",
+  
+  "validation_gates_alignment": {
+    "gate_1_scope": {
+      "required_scope": "pdet_context",
+      "allowed_signal_types": ["ENRICHMENT_DATA", "DIAGNOSTIC_DATA"],
+      "scope_level": "EVIDENCE_COLLECTION",
+      "justification": "DIM01 requires access to territorial diagnostic data, baseline indicators, and resource inventories specific to PDET municipalities"
+    },
+    "gate_2_value_add": {
+      "estimated_value_add": 0.35,
+      "value_components": {
+        "territorial_diagnostic_data": 0.15,
+        "baseline_indicators": 0.10,
+        "resource_assessment": 0.05,
+        "gap_identification": 0.05
+      },
+      "justification": "Provides critical baseline context for evaluating diagnostic quality in PDET municipalities with high poverty rates and structural gaps"
+    },
+    "gate_3_capability": {
+      "required_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "TABLE_PARSING",
+        "NUMERICAL_ANALYSIS"
+      ],
+      "recommended_capabilities": [
+        "STATISTICAL_ANALYSIS",
+        "GIS_MAPPING"
+      ],
+      "justification": "Methods must parse diagnostic tables, extract baseline indicators, and analyze quantitative data quality"
+    },
+    "gate_4_channel": {
+      "flow_id": "DIM01_PDET_ENRICHMENT",
+      "flow_type": "ENRICHMENT_FLOW",
+      "source": "pdet_municipalities.json",
+      "destination": "DIM01_questions_evaluation",
+      "data_schema": "PDETContextDIM01",
+      "governance_policy": "CCP-PDET-2024",
+      "documentation_path": "canonic_questionnaire_central/dimensions/DIM01_INSUMOS/README_PDET_ENRICHMENT.md",
+      "is_explicit": true,
+      "is_documented": true,
+      "is_traceable": true,
+      "is_governed": true
+    }
+  },
+  
+  "pdet_pillar_mapping": {
+    "primary_pillars": [
+      {
+        "pillar_id": "pillar_1",
+        "pillar_name": "Ordenamiento social de la propiedad rural y uso del suelo",
+        "relevance": "CRITICAL",
+        "relevance_score": 0.95,
+        "diagnostic_requirements": [
+          "Land tenure diagnostic with cadastral data",
+          "Rural property formalization baseline",
+          "Land use conflicts identification",
+          "Informal settlement quantification"
+        ],
+        "expected_indicators": [
+          "percentage_formalized_property",
+          "hectares_informal_occupation",
+          "land_conflicts_count",
+          "cadastral_coverage_percentage"
+        ]
+      },
+      {
+        "pillar_id": "pillar_4",
+        "pillar_name": "Educación rural y primera infancia",
+        "relevance": "HIGH",
+        "relevance_score": 0.85,
+        "diagnostic_requirements": [
+          "Educational coverage diagnostic by vereda",
+          "School infrastructure baseline",
+          "Teacher-student ratio by rural zone",
+          "Early childhood care gaps"
+        ],
+        "expected_indicators": [
+          "rural_school_enrollment_rate",
+          "schools_with_infrastructure_gaps",
+          "average_distance_to_school_km",
+          "early_childhood_coverage_percentage"
+        ]
+      }
+    ],
+    "secondary_pillars": [
+      {
+        "pillar_id": "pillar_2",
+        "pillar_name": "Infraestructura y adecuación de tierras",
+        "relevance": "MEDIUM",
+        "relevance_score": 0.70,
+        "diagnostic_requirements": [
+          "Road connectivity diagnostic",
+          "Irrigation infrastructure assessment",
+          "Energy access baseline"
+        ]
+      },
+      {
+        "pillar_id": "pillar_3",
+        "pillar_name": "Salud rural",
+        "relevance": "MEDIUM",
+        "relevance_score": 0.70,
+        "diagnostic_requirements": [
+          "Health services coverage by vereda",
+          "Maternal and child health baseline",
+          "Disease prevalence data"
+        ]
+      },
+      {
+        "pillar_id": "pillar_7",
+        "pillar_name": "Seguridad alimentaria y nutrición",
+        "relevance": "MEDIUM",
+        "relevance_score": 0.65,
+        "diagnostic_requirements": [
+          "Food security baseline indicators",
+          "Malnutrition rates by age group",
+          "Agricultural production capacity"
+        ]
+      }
+    ]
+  },
+  
+  "pdet_specific_criteria": {
+    "territorial_disaggregation": {
+      "required": true,
+      "levels": [
+        "municipality",
+        "corregimiento",
+        "vereda"
+      ],
+      "justification": "PDET municipalities must provide diagnostics at vereda level due to rural focus and territorial heterogeneity"
+    },
+    "ethnic_differential_approach": {
+      "required": true,
+      "ethnic_groups": [
+        "Indígena",
+        "Afrodescendiente",
+        "Mestizo",
+        "ROM"
+      ],
+      "required_disaggregation": [
+        "indigenous_territories_resguardos",
+        "afro_community_councils",
+        "peasant_reserve_zones"
+      ],
+      "justification": "PDET subregions have high ethnic diversity requiring differential diagnostic approaches"
+    },
+    "multidimensional_poverty": {
+      "required": true,
+      "baseline_indicators": [
+        "multidimensional_poverty_rate",
+        "unsatisfied_basic_needs_index",
+        "income_poverty_rate",
+        "rural_urban_poverty_gap"
+      ],
+      "expected_threshold": {
+        "multidimensional_poverty_rate": ">40%",
+        "description": "PDET municipalities average 46.8% poverty rate"
+      },
+      "justification": "PDET municipalities are characterized by extreme poverty requiring comprehensive baseline assessment"
+    },
+    "conflict_affected_indicators": {
+      "required": true,
+      "baseline_indicators": [
+        "registered_victims_count",
+        "displacement_events",
+        "land_dispossession_cases",
+        "armed_actors_presence_history"
+      ],
+      "justification": "PDET municipalities are conflict-affected territories requiring specific diagnostics on victimization and security"
+    },
+    "fiscal_autonomy_assessment": {
+      "required": true,
+      "indicators": [
+        "municipal_category",
+        "icld_smmlv",
+        "sgp_dependency_rate",
+        "own_revenue_percentage"
+      ],
+      "typical_values": {
+        "category": "Sixth (88.8% of PDET municipalities)",
+        "icld_smmlv": "<2,000 (very low)",
+        "sgp_dependency": ">90%",
+        "fiscal_autonomy": "Muy baja"
+      },
+      "justification": "88.8% of PDET municipalities are Category 6 with very low fiscal capacity requiring clear resource diagnosis"
+    },
+    "pdet_patr_initiatives": {
+      "required": true,
+      "indicators": [
+        "total_patr_initiatives",
+        "active_route_initiatives",
+        "completion_rate",
+        "community_participation_level"
+      ],
+      "average_values": {
+        "total_patr_initiatives": 193,
+        "active_route": 120,
+        "completion_rate": "62%"
+      },
+      "justification": "PDET Action Plans for Regional Transformation (PATR) must be integrated into municipal diagnostics"
+    },
+    "ocad_paz_investment": {
+      "required": false,
+      "indicators": [
+        "ocad_paz_projects_count",
+        "ocad_paz_investment_cop_millions",
+        "sectors_prioritized"
+      ],
+      "justification": "OCAD Paz provides additional resources for PDET municipalities that should be reflected in resource baselines"
+    }
+  },
+  
+  "policy_area_specificity": {
+    "PA01_Gender": {
+      "required_diagnostics": [
+        "Gender-based violence rates with territorial disaggregation",
+        "Women's political participation baseline",
+        "Female employment and wage gap data",
+        "Access to reproductive health services"
+      ],
+      "pdet_subregions_high_priority": ["SR04", "SR05", "SR08"],
+      "key_indicators": [
+        "gbv_rate_per_100k",
+        "women_council_representation_percentage",
+        "gender_wage_gap_percentage",
+        "reproductive_health_coverage"
+      ]
+    },
+    "PA02_Violence_Security": {
+      "required_diagnostics": [
+        "Homicide rate by municipality and vereda",
+        "Displacement events and IDP population",
+        "Armed actors presence mapping",
+        "Security infrastructure assessment"
+      ],
+      "pdet_subregions_high_priority": ["SR01", "SR02", "SR03", "SR04", "SR05", "SR06", "SR07", "SR08"],
+      "key_indicators": [
+        "homicide_rate_per_100k",
+        "displacement_events_last_5_years",
+        "armed_groups_presence_binary",
+        "police_stations_per_100k_inhabitants"
+      ]
+    },
+    "PA03_Environment": {
+      "required_diagnostics": [
+        "Deforestation rate and forest cover baseline",
+        "Protected areas and environmental conflicts",
+        "Illegal mining presence and environmental damage",
+        "Water source contamination"
+      ],
+      "pdet_subregions_high_priority": ["SR03", "SR05", "SR06", "SR07"],
+      "key_indicators": [
+        "deforestation_rate_ha_per_year",
+        "protected_areas_percentage",
+        "illegal_mining_sites_count",
+        "water_quality_index"
+      ]
+    },
+    "PA04_Economic_Development": {
+      "required_diagnostics": [
+        "Agricultural productivity baseline",
+        "Market access and road connectivity",
+        "Formal enterprise density",
+        "Financial inclusion indicators"
+      ],
+      "pdet_subregions_high_priority": ["SR02", "SR03", "SR04", "SR06", "SR07", "SR08"],
+      "key_indicators": [
+        "agricultural_productivity_tons_per_ha",
+        "km_tertiary_roads_per_100_km2",
+        "formal_enterprises_per_1000_inhabitants",
+        "bank_account_penetration_percentage"
+      ]
+    },
+    "PA05_Victims_Restitution": {
+      "required_diagnostics": [
+        "Registered victims by type of victimization",
+        "Land restitution cases and status",
+        "Reparation programs coverage",
+        "Transitional justice mechanisms access"
+      ],
+      "pdet_subregions_high_priority": ["SR01", "SR05", "SR08"],
+      "key_indicators": [
+        "victims_per_1000_inhabitants",
+        "land_restitution_cases_count",
+        "victims_receiving_reparations_percentage",
+        "access_to_justice_index"
+      ]
+    },
+    "PA06_Children_Youth": {
+      "required_diagnostics": [
+        "School enrollment and dropout rates",
+        "Child malnutrition prevalence",
+        "Child recruitment prevention programs",
+        "Youth unemployment"
+      ],
+      "pdet_subregions_high_priority": ["SR04", "SR05", "SR06"],
+      "key_indicators": [
+        "primary_enrollment_rate",
+        "child_malnutrition_percentage",
+        "recruitment_prevention_coverage",
+        "youth_unemployment_rate"
+      ]
+    },
+    "PA07_Peace_Building": {
+      "required_diagnostics": [
+        "Reconciliation initiatives count and coverage",
+        "Peace councils functionality assessment",
+        "Social fabric indicators",
+        "Community organization density"
+      ],
+      "pdet_subregions_high_priority": ["SR01", "SR02", "SR03", "SR04", "SR07"],
+      "key_indicators": [
+        "reconciliation_initiatives_count",
+        "active_peace_councils",
+        "community_organizations_per_10k",
+        "social_cohesion_index"
+      ]
+    },
+    "PA08_Human_Rights": {
+      "required_diagnostics": [
+        "Human rights defenders at risk count",
+        "Human rights violations registry",
+        "Access to justice indicators",
+        "Early warning system coverage"
+      ],
+      "pdet_subregions_high_priority": ["SR08"],
+      "key_indicators": [
+        "defenders_at_risk_count",
+        "hr_violations_per_100k",
+        "justice_access_index",
+        "early_warning_alerts_count"
+      ]
+    },
+    "PA09_Justice": {
+      "required_diagnostics": [
+        "Justice infrastructure (casas de justicia) coverage",
+        "Legal assistance programs availability",
+        "Transitional justice mechanisms participation",
+        "Judicial congestion rates"
+      ],
+      "pdet_subregions_high_priority": ["SR01"],
+      "key_indicators": [
+        "casas_justicia_per_100k",
+        "legal_assistance_coverage_percentage",
+        "tjm_participation_rate",
+        "judicial_congestion_index"
+      ]
+    },
+    "PA10_International": {
+      "required_diagnostics": [
+        "Border crossing points and dynamics",
+        "Migration flows and refugee population",
+        "International cooperation projects",
+        "Cross-border trade indicators"
+      ],
+      "pdet_subregions_high_priority": ["SR02", "SR04"],
+      "key_indicators": [
+        "border_crossings_count",
+        "refugee_population",
+        "international_projects_count",
+        "cross_border_trade_volume"
+      ]
+    }
+  },
+  
+  "quality_expectations": {
+    "data_recency": {
+      "maximum_age_years": 3,
+      "preferred_age_years": 1,
+      "justification": "PDET context is rapidly evolving; outdated diagnostics compromise planning validity"
+    },
+    "source_authority": {
+      "required_sources": [
+        "DANE",
+        "Agencia de Renovación del Territorio (ART)",
+        "Departamento Nacional de Planeación (DNP)",
+        "Unidad de Víctimas",
+        "IDEAM",
+        "Medicina Legal"
+      ],
+      "acceptable_sources": [
+        "University research centers",
+        "International organizations (UNDP, UNHCR)",
+        "Local observatories"
+      ],
+      "unacceptable_sources": [
+        "Unverified community claims",
+        "Political campaign documents",
+        "Unsourced media reports"
+      ]
+    },
+    "territorial_granularity": {
+      "minimum_level": "municipality",
+      "preferred_level": "vereda",
+      "urban_rural_disaggregation": "required",
+      "justification": "PDET's rural focus demands vereda-level diagnostic precision"
+    },
+    "quantitative_rigor": {
+      "minimum_indicators_per_sector": 3,
+      "time_series_minimum_years": 3,
+      "confidence_intervals_preferred": true,
+      "justification": "High-stakes resource allocation requires statistically sound diagnostics"
+    }
+  },
+  
+  "common_diagnostic_gaps": {
+    "gap_1_territorial_aggregation": {
+      "description": "Diagnostics present only municipal-level data without vereda or corregimiento disaggregation",
+      "prevalence": "high",
+      "impact": "Masks intra-municipal heterogeneity in dispersed rural territories",
+      "remediation": "Require vereda-level data or explicit justification for aggregation"
+    },
+    "gap_2_ethnic_invisibilization": {
+      "description": "Indigenous and Afro-Colombian populations are not disaggregated or are lumped into 'rural population'",
+      "prevalence": "medium",
+      "impact": "Violates differential approach and obscures specific vulnerabilities",
+      "remediation": "Mandate ethnic disaggregation for all demographic indicators"
+    },
+    "gap_3_conflict_indicators_absence": {
+      "description": "Diagnostics omit victimization, displacement, or armed actors presence",
+      "prevalence": "medium",
+      "impact": "Ignores root causes and context of PDET territories",
+      "remediation": "Require explicit conflict-affected indicators section"
+    },
+    "gap_4_outdated_baselines": {
+      "description": "Baseline data predates PDET designation (pre-2017) or uses census 2005 data",
+      "prevalence": "high",
+      "impact": "Planning based on obsolete reality; resources misallocated",
+      "remediation": "Flag indicators older than 3 years; demand updated data"
+    },
+    "gap_5_patr_disconnection": {
+      "description": "Municipal diagnostic does not reference PATR (Plan de Acción para la Transformación Regional)",
+      "prevalence": "medium",
+      "impact": "Breaks coherence between PDET regional planning and municipal PDT",
+      "remediation": "Require explicit PATR alignment section in diagnostic"
+    }
+  },
+  
+  "metadata": {
+    "created_at": "2026-01-08T13:30:00Z",
+    "version": "1.0.0",
+    "author": "PDET Enrichment System",
+    "validated": true,
+    "validation_date": "2026-01-08T13:30:00Z",
+    "last_updated": "2026-01-08T13:30:00Z",
+    "change_log": [
+      {
+        "date": "2026-01-08",
+        "change": "Initial creation of DIM01 PDET context enrichment",
+        "author": "PDET Enrichment System"
+      }
+    ]
+  }
+}

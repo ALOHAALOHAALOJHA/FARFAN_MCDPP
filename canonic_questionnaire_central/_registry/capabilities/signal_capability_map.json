@@ -1,0 +1,182 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T16:49:00Z",
+  "_description": "Mapping from signal types to required/optional capabilities (Rule 3 enforcement)",
+  "_source": "corpus_thresholds_weights.json capability_requirements + specification",
+  "signal_capability_requirements": {
+    "STRUCTURAL_MARKER": {
+      "required": [
+        "TABLE_PARSING"
+      ],
+      "optional": [],
+      "description": "Extracción de secciones, tablas y estructura documental"
+    },
+    "QUANTITATIVE_TRIPLET": {
+      "required": [
+        "NUMERIC_PARSING"
+      ],
+      "optional": [
+        "TABLE_PARSING"
+      ],
+      "description": "Triplets de Línea Base + Meta + Año"
+    },
+    "NORMATIVE_REFERENCE": {
+      "required": [
+        "NER_EXTRACTION"
+      ],
+      "optional": [],
+      "description": "Referencias a leyes, decretos, CONPES, artículos"
+    },
+    "PROGRAMMATIC_HIERARCHY": {
+      "required": [],
+      "optional": [
+        "GRAPH_CONSTRUCTION"
+      ],
+      "description": "Jerarquía Eje → Programa → Subprograma → Meta"
+    },
+    "FINANCIAL_CHAIN": {
+      "required": [
+        "NUMERIC_PARSING",
+        "FINANCIAL_ANALYSIS"
+      ],
+      "optional": [
+        "TABLE_PARSING"
+      ],
+      "description": "Cadenas presupuestales Monto → Fuente → Programa"
+    },
+    "POPULATION_DISAGGREGATION": {
+      "required": [],
+      "optional": [
+        "NER_EXTRACTION",
+        "SEMANTIC_PROCESSING"
+      ],
+      "description": "Desagregación por poblaciones específicas"
+    },
+    "TEMPORAL_MARKER": {
+      "required": [
+        "TEMPORAL_REASONING"
+      ],
+      "optional": [],
+      "description": "Marcadores temporales, vigencias, períodos"
+    },
+    "CAUSAL_LINK": {
+      "required": [
+        "CAUSAL_INFERENCE",
+        "GRAPH_CONSTRUCTION"
+      ],
+      "optional": [
+        "SEMANTIC_PROCESSING"
+      ],
+      "description": "Enlaces causales producto → resultado → impacto"
+    },
+    "INSTITUTIONAL_ENTITY": {
+      "required": [
+        "NER_EXTRACTION"
+      ],
+      "optional": [],
+      "description": "Entidades institucionales colombianas"
+    },
+    "SEMANTIC_RELATIONSHIP": {
+      "required": [
+        "SEMANTIC_PROCESSING",
+        "GRAPH_CONSTRUCTION"
+      ],
+      "optional": [],
+      "description": "Relaciones semánticas entre conceptos"
+    },
+    "CROSS_CUTTING_THEME": {
+      "required": [],
+      "optional": [
+        "SEMANTIC_PROCESSING"
+      ],
+      "description": "Detección de temas transversales"
+    },
+    "COHERENCE_SIGNAL": {
+      "required": [],
+      "optional": [],
+      "description": "Señales de coherencia entre componentes (agregación)"
+    },
+    "INTERDEPENDENCY_CONTEXT": {
+      "required": [
+        "INTERDEPENDENCY_VALIDATION"
+      ],
+      "optional": [
+        "CAUSAL_INFERENCE"
+      ],
+      "description": "Contexto de interdependencia dimensional para validación de cadenas causales (R-W3)"
+    }
+  },
+  "consumer_requirements": {
+    "EvidenceNexus": {
+      "declared_capabilities": [
+        "NUMERIC_PARSING",
+        "SEMANTIC_PROCESSING",
+        "GRAPH_CONSTRUCTION",
+        "TABLE_PARSING",
+        "CAUSAL_INFERENCE",
+        "FINANCIAL_ANALYSIS",
+        "NER_EXTRACTION",
+        "TEMPORAL_REASONING"
+      ],
+      "can_process": "ALL",
+      "scope_level": "EVIDENCE_COLLECTION"
+    },
+    "BaselineScorer": {
+      "declared_capabilities": [
+        "NUMERIC_PARSING"
+      ],
+      "can_process": [
+        "QUANTITATIVE_TRIPLET"
+      ],
+      "scope_level": "SCORING_BASELINE"
+    },
+    "QualityScorer": {
+      "declared_capabilities": [
+        "NUMERIC_PARSING",
+        "NER_EXTRACTION"
+      ],
+      "can_process": [
+        "QUANTITATIVE_TRIPLET",
+        "FINANCIAL_CHAIN",
+        "NORMATIVE_REFERENCE"
+      ],
+      "scope_level": "SCORING_QUALITY"
+    },
+    "CausalScorer": {
+      "declared_capabilities": [
+        "CAUSAL_INFERENCE",
+        "GRAPH_CONSTRUCTION",
+        "FINANCIAL_ANALYSIS"
+      ],
+      "can_process": [
+        "CAUSAL_LINK",
+        "FINANCIAL_CHAIN",
+        "PROGRAMMATIC_HIERARCHY"
+      ],
+      "scope_level": "SCORING_CHAIN"
+    },
+    "StructuralScorer": {
+      "declared_capabilities": [
+        "TABLE_PARSING"
+      ],
+      "can_process": [
+        "STRUCTURAL_MARKER",
+        "PROGRAMMATIC_HIERARCHY"
+      ],
+      "scope_level": "STRUCTURAL_ANALYSIS"
+    },
+    "CrossCuttingScorer": {
+      "declared_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "NER_EXTRACTION"
+      ],
+      "can_process": [
+        "CROSS_CUTTING_THEME",
+        "POPULATION_DISAGGREGATION",
+        "INSTITUTIONAL_ENTITY"
+      ],
+      "scope_level": "CROSS_CUTTING"
+    }
+  }
+}

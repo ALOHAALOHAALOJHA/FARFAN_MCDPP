@@ -1,0 +1,109 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 9,
+    "name": "Report Generation"
+  },
+  "inventory_date": "2026-01-20",
+  "root_path": "src/farfan_pipeline/phases/Phase_09",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 9 modules",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "templates",
+      "purpose": "Report templates and formatting resources"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 9 unit and integration tests"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase9_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 50,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase9_10_00_phase_9_constants.py",
+      "canonical_name": "phase9_10_00_phase_9_constants",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 70,
+      "purpose": "Phase 9 constants and configuration values"
+    },
+    {
+      "filename": "phase9_10_00_report_assembly.py",
+      "canonical_name": "phase9_10_00_report_assembly",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1650,
+      "purpose": "Report assembly from analysis components"
+    },
+    {
+      "filename": "phase9_10_00_report_generator.py",
+      "canonical_name": "phase9_10_00_report_generator",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1750,
+      "purpose": "Core report generation logic"
+    },
+    {
+      "filename": "phase9_10_00_signal_enriched_reporting.py",
+      "canonical_name": "phase9_10_00_signal_enriched_reporting",
+      "type": "CFG",
+      "criticality": "CRITICAL",
+      "lines_of_code": 620,
+      "purpose": "Signal-enriched reporting capabilities"
+    },
+    {
+      "filename": "phase9_15_00_institutional_entity_annex.py",
+      "canonical_name": "phase9_15_00_institutional_entity_annex",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "lines_of_code": 980,
+      "purpose": "Institutional entity annex generation"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_9_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure, stages, and contracts"
+    },
+    {
+      "filename": "PHASE_9_CONSTANTS.py",
+      "purpose": "Phase 9 constants and configuration values"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 9"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 9"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "total_python_modules": 6,
+  "total_lines_of_code": 5120,
+  "criticality_summary": {
+    "CRITICAL": 5,
+    "HIGH": 1,
+    "MEDIUM": 0,
+    "LOW": 0
+  }
+}

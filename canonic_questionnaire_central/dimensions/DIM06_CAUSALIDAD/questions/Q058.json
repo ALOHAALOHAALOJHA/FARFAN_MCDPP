@@ -1,0 +1,158 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q058",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "identifiers": {
+    "base_slot": "D6-Q3",
+    "legacy_id": "Q058",
+    "canonical_notation": "DIM06.PA02.Q058"
+  },
+  "text": {
+    "es": "¿El plan reconoce 'inconsistencias' en su lógica de seguridad y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "propone_pilotos_o_pruebas"
+    },
+    {
+      "required": true,
+      "type": "reconoce_inconsistencias"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0572",
+      "PAT-0573",
+      "PAT-0574",
+      "PAT-0575",
+      "PAT-0576",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC08",
+      "MC10"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_COHERENCIA_NORMATIVA"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q058.v4.json",
+    "methods": [
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "execute_suite",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "IndustrialGradeValidator.execute_suite"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "validate_engine_readiness",
+        "method_type": "validation",
+        "priority": 2,
+        "description": "IndustrialGradeValidator.validate_engine_readiness"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "_benchmark_operation",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "IndustrialGradeValidator._benchmark_operation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "validate_quality_criteria",
+        "method_type": "validation",
+        "priority": 4,
+        "description": "AdaptivePriorCalculator.validate_quality_criteria"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_calculate_r_hat",
+        "method_type": "scoring",
+        "priority": 5,
+        "description": "HierarchicalGenerativeModel._calculate_r_hat"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_calculate_ess",
+        "method_type": "scoring",
+        "priority": 6,
+        "description": "HierarchicalGenerativeModel._calculate_ess"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "calculate_acyclicity_pvalue",
+        "method_type": "scoring",
+        "priority": 7,
+        "description": "AdvancedDAGValidator.calculate_acyclicity_pvalue"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "function": "analyze_performance",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "PerformanceAnalyzer.analyze_performance"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q088-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "CAUSALIDAD",
+      "TEORIA_CAMBIO",
+      "ESTRATEGICO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.793039+00:00",
+    "updated_at": "2026-01-06T17:38:07.793041+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

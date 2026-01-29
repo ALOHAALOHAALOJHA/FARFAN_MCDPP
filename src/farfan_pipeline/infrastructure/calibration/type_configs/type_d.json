@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/type_d.json",
+  "contract_type": "TYPE_D",
+  "name": "Financial Aggregation Contracts",
+  "version": "2.0.0-epistemic",
+  "description": "Financial contracts emphasizing N2-dominant processing for budget aggregation, fiscal validation, and financial coherence auditing with lenient veto thresholds.",
+
+  "epistemology": {
+    "regime": "Fiscal Positivism",
+    "primary_paradigm": "Arithmetic Aggregation with Fiscal Validation",
+    "justification_mode": "Budgetary Coherence and Fiscal Consistency",
+    "evaluation_criteria": "Numerical precision, fiscal coherence, aggregation validity"
+  },
+
+  "epistemic_ratios": {
+    "description": "Distribution of computational effort across epistemic layers",
+    "n1_empirical": { "lower": 0.15, "upper": 0.35, "default": 0.25, "justification": "Extraction of financial amounts and budgetary data" },
+    "n2_inferential": { "lower": 0.45, "upper": 0.65, "default": 0.55, "justification": "DOMINANT: Financial aggregation and summation" },
+    "n3_audit": { "lower": 0.10, "upper": 0.30, "default": 0.20, "justification": "LENIENT: Financial coherence validation without strict veto" }
+  },
+
+  "thresholds": {
+    "veto_threshold": { "lower": 0.05, "upper": 0.10, "default": 0.07, "description": "Probability threshold for N3 veto gate activation", "strictness_level": "LENIENT" },
+    "aggregation_precision": { "lower": 0.001, "upper": 0.1, "default": 0.01, "description": "Precision threshold for numerical aggregation", "units": "decimal_places" },
+    "fiscal_coherence_threshold": { "lower": 0.80, "upper": 0.95, "default": 0.90, "description": "Minimum coherence score for fiscal validation" },
+    "budget_discrepancy_tolerance": { "lower": 0.01, "upper": 0.10, "default": 0.05, "description": "Acceptable budget discrepancy percentage", "units": "percentage" }
+  },
+
+  "operations": {
+    "permitted": [
+      { "name": "weighted_mean", "description": "Weighted mean for financial aggregation", "layer": "N2", "implementation": "WeightedFinancialAggregation" },
+      { "name": "arithmetic_aggregation", "description": "Standard arithmetic operations for financial data", "layer": "N2", "implementation": "ArithmeticAggregator" },
+      { "name": "budget_aggregation", "description": "Budget line-item aggregation", "layer": "N2", "implementation": "BudgetAggregator" },
+      { "name": "concat", "description": "Concatenation of financial evidence", "layer": "N1", "implementation": "FinancialConcatenation" },
+      { "name": "financial_coherence_audit", "description": "Specialized audit for financial coherence", "layer": "N3", "implementation": "FinancialCoherenceAuditor" },
+      { "name": "fiscal_validation", "description": "Fiscal rule and constraint validation", "layer": "N3", "implementation": "FiscalValidator" }
+    ],
+    "prohibited": [
+      { "name": "semantic_corroboration", "reason": "Inappropriate for numerical financial data", "alternative": "Use budget_aggregation for financial summation" },
+      { "name": "topological_overlay", "reason": "Not applicable to financial aggregation", "alternative": "Use weighted_mean for financial weighting" },
+      { "name": "bayesian_update", "reason": "Overkill for deterministic financial aggregation", "alternative": "Use arithmetic_aggregation for financial sums" }
+    ]
+  },
+
+  "fusion_strategies": {
+    "description": "Canonical fusion strategy per epistemic layer",
+    "N1": { "strategy": "concat", "symbol": "⊕", "behavior": "additive", "implementation": "ConcatenationStrategy" },
+    "N2": { "strategy": "weighted_mean", "symbol": "⊗", "behavior": "multiplicative", "implementation": "WeightedMeanStrategy" },
+    "N3": { "strategy": "financial_coherence_audit", "symbol": "⊘", "behavior": "gate", "implementation": "FinancialCoherenceStrategy" }
+  },
+
+  "sample_questions": {
+    "description": "Base questions classified as TYPE_D (Financial)",
+    "questions": ["Q003", "Q004", "Q006", "Q009", "Q012", "Q015", "Q021", "Q022"],
+    "extended_pattern": "8 base questions × 10 policy areas = 80 total questions"
+  },
+
+  "calibration_adjustments": {
+    "description": "Parameter overrides from base level configuration",
+    "aggregation_precision": { "value": 0.01, "description": "Two-decimal precision for financial aggregation" },
+    "budget_discrepancy_tolerance": { "value": 0.05, "description": "5% tolerance for budget discrepancies" },
+    "fiscal_coherence_threshold": { "value": 0.90, "description": "90% coherence required for fiscal validation" }
+  },
+
+  "quality_metrics": {
+    "precision_target": 0.90,
+    "recall_target": 0.85,
+    "f1_target": 0.87,
+    "numerical_accuracy_target": 0.95
+  },
+
+  "validation_rules": [
+    { "rule": "budget_balance_check", "description": "Validate budget balances (sum = total)", "severity": "ERROR" },
+    { "rule": "fiscal_coherence_check", "description": "Validate fiscal rules and constraints", "severity": "ERROR" },
+    { "rule": "numerical_precision_check", "description": "Validate numerical precision of aggregated values", "severity": "WARNING" },
+    { "rule": "currency_consistency_check", "description": "Validate currency units are consistent", "severity": "ERROR" }
+  ],
+
+  "financial_validation_schema": {
+    "data_types": ["budget", "allocation", "revenue", "expenditure", "disbursement"],
+    "aggregation_methods": ["sum", "weighted_average", "proportional", "hierarchical"],
+    "fiscal_rules": ["balance", "solvency", "sustainability", "legal_limit"],
+    "currency_handling": "standardize_to_COP_with_millions_scaling",
+    "precision": "2_decimal_places"
+  },
+
+  "metadata": {
+    "created": "2026-01-21",
+    "last_modified": "2026-01-21",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "aligns_with": "episteme_rules.md Part I.1.1"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q299",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D6-Q4",
+    "legacy_id": "Q299",
+    "canonical_notation": "DIM06.PA10.Q299"
+  },
+  "text": {
+    "es": "¿Se describe un sistema de monitoreo para la política migratoria que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia ante cambios en los flujos?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "ciclos_aprendizaje"
+    },
+    {
+      "required": true,
+      "type": "mecanismos_correccion"
+    },
+    {
+      "required": true,
+      "type": "sistema_monitoreo"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0428",
+      "PAT-0429",
+      "PAT-0430",
+      "PAT-0431",
+      "PAT-0432",
+      "PAT-0433",
+      "PAT-0434"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC08",
+      "MC10"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_INTEROPERABILIDAD",
+      "CC_MECANISMOS_SEGUIMIENTO"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q299.v4.json",
+    "methods": [
+      {
+        "class": "ConfigLoader",
+        "function": "update_priors_from_feedback",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "ConfigLoader.update_priors_from_feedback"
+      },
+      {
+        "class": "ConfigLoader",
+        "function": "check_uncertainty_reduction_criterion",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "ConfigLoader.check_uncertainty_reduction_criterion"
+      },
+      {
+        "class": "ConfigLoader",
+        "function": "_save_prior_history",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "ConfigLoader._save_prior_history"
+      },
+      {
+        "class": "ConfigLoader",
+        "function": "_load_uncertainty_history",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "ConfigLoader._load_uncertainty_history"
+      },
+      {
+        "class": "CDAFFramework",
+        "function": "_extract_feedback_from_audit",
+        "method_type": "validation",
+        "priority": 5,
+        "description": "CDAFFramework._extract_feedback_from_audit"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_calculate_node_importance",
+        "method_type": "scoring",
+        "priority": 6,
+        "description": "AdvancedDAGValidator._calculate_node_importance"
+      },
+      {
+        "class": "BayesFactorTable",
+        "function": "get_bayes_factor",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "BayesFactorTable.get_bayes_factor"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q059-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "CAUSALIDAD",
+      "TEORIA_CAMBIO",
+      "ESTRATEGICO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.941690+00:00",
+    "updated_at": "2026-01-06T17:38:07.941693+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

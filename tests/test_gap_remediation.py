@@ -26,16 +26,14 @@ class TestColombianContextRule:
 
     def test_colombian_context_rule_detects_missing_ref(self):
         """Verify rule triggers when required regulatory reference is missing."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             ColombianContextRule,
             EvidenceGraph,
         )
 
         contract = {
             "validation_rules": {
-                "colombian_context": {
-                    "required_regulatory_refs": ["Ley 1448 de 2011"]
-                }
+                "colombian_context": {"required_regulatory_refs": ["Ley 1448 de 2011"]}
             }
         }
         graph = EvidenceGraph()
@@ -48,7 +46,7 @@ class TestColombianContextRule:
 
     def test_colombian_context_rule_passes_when_ref_present(self):
         """Verify rule passes when regulatory reference is found."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             ColombianContextRule,
             EvidenceGraph,
             EvidenceNode,
@@ -57,9 +55,7 @@ class TestColombianContextRule:
 
         contract = {
             "validation_rules": {
-                "colombian_context": {
-                    "required_regulatory_refs": ["Ley 1448 de 2011"]
-                }
+                "colombian_context": {"required_regulatory_refs": ["Ley 1448 de 2011"]}
             }
         }
         graph = EvidenceGraph()
@@ -78,7 +74,7 @@ class TestColombianContextRule:
 
     def test_colombian_context_rule_empty_context(self):
         """Verify rule is bypassed when no colombian_context defined."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             ColombianContextRule,
             EvidenceGraph,
         )
@@ -97,7 +93,7 @@ class TestBlockingRulesEngine:
 
     def test_blocking_engine_score_zero_veto(self):
         """Verify SCORE_ZERO veto action sets confidence to 0."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             BlockingRulesEngine,
             EvidenceGraph,
             ValidationReport,
@@ -130,7 +126,7 @@ class TestBlockingRulesEngine:
 
     def test_blocking_engine_no_rules(self):
         """Verify engine works gracefully with no blocking rules."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             BlockingRulesEngine,
             EvidenceGraph,
             ValidationReport,
@@ -147,7 +143,7 @@ class TestBlockingRulesEngine:
 
     def test_blocking_engine_contradiction_detection(self):
         """Verify contradiction_detected condition works."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             BlockingRulesEngine,
             EvidenceGraph,
             EvidenceNode,
@@ -217,8 +213,14 @@ class TestKeywordsIrrigation:
 
     def test_keywords_loaded_from_policy_area(self):
         """Verify keywords are loaded from canonical policy area (modular structure)."""
-        base_path = Path(__file__).parent.parent
-        pa_path = base_path / "canonic_questionnaire_central" / "policy_areas" / "PA01_mujeres_genero" / "questions.json"
+        base_path = Path(__file__).resolve().parent.parent
+        pa_path = (
+            base_path
+            / "canonic_questionnaire_central"
+            / "policy_areas"
+            / "PA01_mujeres_genero"
+            / "questions.json"
+        )
 
         if pa_path.exists():
             with open(pa_path, "r", encoding="utf-8") as f:
@@ -236,8 +238,13 @@ class TestCrossCuttingThemesIntegration:
 
     def test_enhancement_integrator_loads_themes(self):
         """Verify cross-cutting themes file exists in modular structure."""
-        base_path = Path(__file__).parent.parent
-        themes_path = base_path / "canonic_questionnaire_central" / "cross_cutting" / "cross_cutting_themes.json"
+        base_path = Path(__file__).resolve().parent.parent
+        themes_path = (
+            base_path
+            / "canonic_questionnaire_central"
+            / "cross_cutting"
+            / "cross_cutting_themes.json"
+        )
 
         if themes_path.exists():
             with open(themes_path, "r", encoding="utf-8") as f:
@@ -273,8 +280,13 @@ class TestInterdependencyValidationIntegration:
 
     def test_interdependency_mapping_exists(self):
         """Verify interdependency mapping file exists in modular structure."""
-        base_path = Path(__file__).parent.parent
-        mapping_path = base_path / "canonic_questionnaire_central" / "validations" / "interdependency_mapping.json"
+        base_path = Path(__file__).resolve().parent.parent
+        mapping_path = (
+            base_path
+            / "canonic_questionnaire_central"
+            / "validations"
+            / "interdependency_mapping.json"
+        )
 
         if mapping_path.exists():
             with open(mapping_path, "r", encoding="utf-8") as f:
@@ -306,7 +318,7 @@ class TestDynamicSectorLoading:
 
     def test_sector_loading_from_canonical(self):
         """Verify sectors are loaded from canonical questionnaire (modular structure)."""
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).resolve().parent.parent
         pa_base = base_path / "canonic_questionnaire_central" / "policy_areas"
 
         if pa_base.exists():
@@ -319,7 +331,7 @@ class TestDynamicSectorLoading:
 
     def test_sector_definitions_have_expected_fields(self):
         """Verify sector definitions have required fields."""
-        from farfan_pipeline.phases.Phase_two.contract_generator.input_registry import (
+        from farfan_pipeline.phases.Phase_02.contract_generator.input_registry import (
             SECTOR_DEFINITIONS,
         )
 
@@ -356,7 +368,7 @@ class TestCrossCuttingCoverageRule:
 
     def test_cross_cutting_rule_detects_missing_required(self):
         """Verify rule detects missing required cross-cutting themes."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             CrossCuttingCoverageRule,
             EvidenceGraph,
         )
@@ -382,7 +394,7 @@ class TestCrossCuttingCoverageRule:
 
     def test_cross_cutting_rule_passes_when_satisfied(self):
         """Verify rule passes when all requirements are met."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             CrossCuttingCoverageRule,
             EvidenceGraph,
         )
@@ -408,7 +420,7 @@ class TestCrossCuttingCoverageRule:
 
     def test_cross_cutting_rule_empty_pack(self):
         """Verify rule is bypassed when no cross_cutting_themes defined."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             CrossCuttingCoverageRule,
             EvidenceGraph,
         )
@@ -427,7 +439,7 @@ class TestInterdependencyConsistencyRule:
 
     def test_interdependency_rule_detects_order_violation(self):
         """Verify rule detects when dependencies appear after current dimension."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             InterdependencyConsistencyRule,
             EvidenceGraph,
         )
@@ -458,7 +470,7 @@ class TestInterdependencyConsistencyRule:
 
     def test_interdependency_rule_reports_active_rules(self):
         """Verify rule reports applicable validation rules as INFO."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             InterdependencyConsistencyRule,
             EvidenceGraph,
         )
@@ -484,7 +496,7 @@ class TestInterdependencyConsistencyRule:
 
     def test_interdependency_rule_empty_pack(self):
         """Verify rule is bypassed when no interdependency_context defined."""
-        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+        from farfan_pipeline.phases.Phase_02.phase2_80_00_evidence_nexus import (
             InterdependencyConsistencyRule,
             EvidenceGraph,
         )

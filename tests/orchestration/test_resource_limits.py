@@ -11,9 +11,8 @@ from pathlib import Path
 import pytest
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from orchestration.orchestrator import ResourceLimits
+from farfan_pipeline.phases.Phase_00.phase0_30_00_resource_controller import ResourceLimits
 
 
 class TestResourceLimitsDecisionLogic:

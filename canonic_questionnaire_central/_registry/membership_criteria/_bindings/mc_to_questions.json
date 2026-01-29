@@ -1,0 +1,126 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T16:49:00Z",
+  "_description": "Mapping from Membership Criteria to Questions",
+  "_source": "corpus_empirico_integrado.json slot_to_signal_mapping",
+  
+  "mc_to_questions": {
+    "MC01": {
+      "criterion_id": "MC01",
+      "signal_type": "STRUCTURAL_MARKER",
+      "questions_mapped": 87,
+      "primary_questions": [
+        "Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273",
+        "Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"
+      ],
+      "applies_to_slots": ["D1-Q3", "D1-Q5", "D2-Q1", "D3-Q3"],
+      "coverage": 0.29
+    },
+    "MC02": {
+      "criterion_id": "MC02",
+      "signal_type": "QUANTITATIVE_TRIPLET",
+      "questions_mapped": 94,
+      "primary_questions": [
+        "Q001", "Q031", "Q061", "Q091", "Q121", "Q151", "Q181", "Q211", "Q241", "Q271",
+        "Q002", "Q032", "Q062", "Q092", "Q122", "Q152", "Q182", "Q212", "Q242", "Q272",
+        "Q011", "Q041", "Q071", "Q101", "Q131", "Q161", "Q191", "Q221", "Q251", "Q281"
+      ],
+      "applies_to_slots": ["D1-Q1", "D1-Q2", "D3-Q1", "D3-Q2", "D4-Q1"],
+      "coverage": 0.31
+    },
+    "MC03": {
+      "criterion_id": "MC03",
+      "signal_type": "NORMATIVE_REFERENCE",
+      "questions_mapped": 62,
+      "primary_questions": [
+        "Q001", "Q031", "Q061", "Q091", "Q121", "Q151", "Q181", "Q211", "Q241", "Q271",
+        "Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"
+      ],
+      "applies_to_slots": ["D1-Q1", "D1-Q5", "D2-Q5"],
+      "coverage": 0.20
+    },
+    "MC04": {
+      "criterion_id": "MC04",
+      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "questions_mapped": 78,
+      "primary_questions": [
+        "Q006", "Q036", "Q066", "Q096", "Q126", "Q156", "Q186", "Q216", "Q246", "Q276",
+        "Q007", "Q037", "Q067", "Q097", "Q127", "Q157", "Q187", "Q217", "Q247", "Q277"
+      ],
+      "applies_to_slots": ["D2-Q1", "D2-Q2", "D3-Q1"],
+      "coverage": 0.26
+    },
+    "MC05": {
+      "criterion_id": "MC05",
+      "signal_type": "FINANCIAL_CHAIN",
+      "questions_mapped": 52,
+      "primary_questions": [
+        "Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273",
+        "Q013", "Q043", "Q073", "Q103", "Q133", "Q163", "Q193", "Q223", "Q253", "Q283"
+      ],
+      "applies_to_slots": ["D1-Q3", "D3-Q3"],
+      "coverage": 0.17
+    },
+    "MC06": {
+      "criterion_id": "MC06",
+      "signal_type": "POPULATION_DISAGGREGATION",
+      "questions_mapped": 45,
+      "primary_questions": [
+        "Q001", "Q002", "Q031", "Q032", "Q061", "Q062",
+        "Q091", "Q092", "Q121", "Q122", "Q151", "Q152"
+      ],
+      "applies_to_slots": ["D1-Q1", "D1-Q2"],
+      "coverage": 0.15
+    },
+    "MC07": {
+      "criterion_id": "MC07",
+      "signal_type": "TEMPORAL_MARKER",
+      "questions_mapped": 41,
+      "primary_questions": [
+        "Q001", "Q031", "Q061", "Q091", "Q121", "Q151",
+        "Q011", "Q041", "Q071", "Q101", "Q131", "Q161"
+      ],
+      "applies_to_slots": ["D1-Q1", "D3-Q1", "D4-Q1"],
+      "coverage": 0.14
+    },
+    "MC08": {
+      "criterion_id": "MC08",
+      "signal_type": "CAUSAL_LINK",
+      "questions_mapped": 68,
+      "primary_questions": [
+        "Q008", "Q038", "Q068", "Q098", "Q128", "Q158", "Q188", "Q218", "Q248", "Q278",
+        "Q015", "Q045", "Q075", "Q105", "Q135", "Q165", "Q195", "Q225", "Q255", "Q285"
+      ],
+      "applies_to_slots": ["D2-Q3", "D3-Q5", "D4-Q3", "D6-Q1", "D6-Q2"],
+      "coverage": 0.23
+    },
+    "MC09": {
+      "criterion_id": "MC09",
+      "signal_type": "INSTITUTIONAL_ENTITY",
+      "questions_mapped": 39,
+      "primary_questions": [
+        "Q004", "Q034", "Q064", "Q094", "Q124", "Q154", "Q184", "Q214", "Q244", "Q274"
+      ],
+      "applies_to_slots": ["D1-Q4", "D2-Q2"],
+      "coverage": 0.13
+    },
+    "MC10": {
+      "criterion_id": "MC10",
+      "signal_type": "SEMANTIC_RELATIONSHIP",
+      "questions_mapped": 58,
+      "primary_questions": ["ALL"],
+      "applies_to_slots": ["ALL"],
+      "coverage": 0.19,
+      "note": "Applied universally for semantic matching"
+    }
+  },
+  
+  "summary": {
+    "total_mc": 10,
+    "total_questions": 300,
+    "avg_coverage": 0.21,
+    "highest_coverage": {"mc": "MC02", "value": 0.31},
+    "lowest_coverage": {"mc": "MC09", "value": 0.13}
+  }
+}

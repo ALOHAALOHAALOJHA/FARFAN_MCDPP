@@ -1,7 +1,58 @@
 {
-  "version": "3.1.0",
-  "generated_at": "2026-01-03T00:00:00Z",
-  "description": "Validation templates for normalizing validation contracts across dimensions",
+  "version": "3.2.0",
+  "generated_at": "2026-01-08T00:00:00Z",
+  "description": "Validation templates for normalizing validation contracts across dimensions with PDET municipality context enrichment",
+  "pdet_enrichment": {
+    "version": "1.0.0",
+    "enabled": true,
+    "description": "PDET municipality context validations ensure territorial targeting, resource alignment, and contextual accuracy for 170 municipalities across 16 subregions",
+    "validation_gates": {
+      "gate_1_scope": {
+        "enabled": true,
+        "description": "Consumer scope validation - ensures consumers have authorization to access PDET context",
+        "required_signal_types": ["ENRICHMENT_DATA", "PDET_CONTEXT"],
+        "min_confidence": 0.50
+      },
+      "gate_2_value_contribution": {
+        "enabled": true,
+        "description": "Value-add validation - ensures PDET context materially improves validation process",
+        "min_value_add_threshold": 0.10,
+        "estimated_contributions": {
+          "territorial_targeting": 0.25,
+          "resource_alignment": 0.20,
+          "pillar_mapping": 0.15,
+          "subregion_context": 0.20
+        }
+      },
+      "gate_3_capability_readiness": {
+        "enabled": true,
+        "description": "Capability validation - ensures consumers can process PDET territorial data",
+        "required_capabilities": ["SEMANTIC_PROCESSING", "TABLE_PARSING"],
+        "recommended_capabilities": ["GRAPH_CONSTRUCTION", "FINANCIAL_ANALYSIS"]
+      },
+      "gate_4_channel_integrity": {
+        "enabled": true,
+        "description": "Channel validation - ensures PDET data flow is explicit, traceable, and governed",
+        "flow_id": "PDET_ENRICHMENT",
+        "flow_type": "ENRICHMENT_FLOW",
+        "source": "colombia_context.pdet_municipalities",
+        "documentation": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+      }
+    },
+    "pdet_municipality_criteria": {
+      "total_municipalities": 170,
+      "subregions": 16,
+      "legal_basis": "Decreto Ley 893 de 2017 + Acuerdo de Paz Punto 1",
+      "data_sources": ["ART", "OCAD Paz", "DNP", "Central de Información PDET"],
+      "key_characteristics": [
+        "Conflict-affected territories",
+        "High multidimensional poverty (avg 46.8%)",
+        "Low fiscal autonomy (88.8% category 6)",
+        "PATR territorial planning",
+        "OCAD Paz investment priority"
+      ]
+    }
+  },
   "templates": {
     "DIM01_INSUMOS": [
       {
@@ -54,6 +105,55 @@
         "description": "Validates territorial disaggregation (urban/rural, corregimiento, vereda)",
         "priority": 6,
         "colombian_context": "PDET municipalities must disaggregate data to vereda level when possible"
+      },
+      {
+        "type": "pdet_municipality_context",
+        "check": "is_pdet_municipality",
+        "description": "Validates if municipality is PDET and applies specific validation criteria",
+        "priority": 7,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution"],
+        "checks": {
+          "municipality_identification": "Verify municipality code against 170 PDET municipalities",
+          "subregion_alignment": "Validate subregion (1 of 16) for contextual accuracy",
+          "conflict_context": "Acknowledge conflict-affected status in diagnostic",
+          "ethnic_composition": "Include ethnic population disaggregation when applicable"
+        },
+        "colombian_context": "PDET municipalities (Decreto 893/2017) require enhanced territorial diagnostic citing PATR, OCAD Paz investments, and conflict-sensitive indicators"
+      },
+      {
+        "type": "pdet_resource_mapping",
+        "check": "pdet_resource_identification",
+        "description": "Validates identification of PDET-specific resources (OCAD Paz, Obras por Impuestos, PATR initiatives)",
+        "priority": 8,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_4_channel_integrity"],
+        "requires": [
+          "ocad_paz_reference",
+          "patr_initiatives_count",
+          "obras_impuestos_participation"
+        ],
+        "colombian_context": "PDET municipalities must explicitly reference OCAD Paz projects, PATR initiatives (avg 193 per municipality), and coordination with ART (Agencia de Renovación del Territorio)"
+      },
+      {
+        "type": "pdet_pillar_alignment",
+        "check": "pdet_pillar_mapping",
+        "description": "Validates alignment with PDET 8 pillars (Reforma Rural Integral, infraestructura, salud, educación, etc.)",
+        "priority": 9,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution"],
+        "pdet_pillars": [
+          "pillar_1_rural_reform",
+          "pillar_2_infrastructure",
+          "pillar_3_health",
+          "pillar_4_education",
+          "pillar_5_victims",
+          "pillar_6_reincorporation",
+          "pillar_7_security",
+          "pillar_8_justice"
+        ],
+        "min_pillar_alignment": 2,
+        "colombian_context": "PDET municipal diagnostics must demonstrate alignment with at least 2 of 8 PDET pillars, with explicit reference to Plan Marco de Implementación (PMI)"
       }
     ],
     "DIM02_ACTIVIDADES": [
@@ -90,6 +190,50 @@
         "description": "Validates activity duration is realistic",
         "priority": 5,
         "colombian_context": "Activities must fit within 4-year mayoral term"
+      },
+      {
+        "type": "pdet_patr_coordination",
+        "check": "patr_initiative_linkage",
+        "description": "Validates coordination with PATR (Plan de Acción para la Transformación Regional) initiatives",
+        "priority": 6,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_4_channel_integrity"],
+        "checks": {
+          "patr_reference": "Activities explicitly reference PATR initiative IDs",
+          "active_route_status": "Status of activities in PATR Ruta de Implementación",
+          "art_coordination": "Coordination mechanisms with Agencia de Renovación del Territorio"
+        },
+        "colombian_context": "PDET municipalities must coordinate activities with PATR initiatives (avg 193 initiatives per municipality, 62% completion rate). Activities should reference specific PATR initiative codes"
+      },
+      {
+        "type": "pdet_resource_allocation",
+        "check": "ocad_paz_alignment",
+        "description": "Validates alignment with OCAD Paz investment decisions and sectoral priorities",
+        "priority": 7,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution", "gate_3_capability_readiness"],
+        "requires": [
+          "ocad_paz_project_reference",
+          "sector_alignment",
+          "investment_cop_amount"
+        ],
+        "dominant_sectors": ["Transporte", "Agricultura", "Vivienda", "Educación", "Salud"],
+        "colombian_context": "Activities in PDET municipalities requiring major investment (>$1,000M COP) must align with OCAD Paz approved projects. Total OCAD Paz investment: $1.76 trillion COP across 170 municipalities"
+      },
+      {
+        "type": "pdet_capability_requirements",
+        "check": "municipal_readiness",
+        "description": "Validates municipal capacity to execute activities given fiscal autonomy constraints",
+        "priority": 8,
+        "pdet_specific": true,
+        "validation_gates": ["gate_3_capability_readiness"],
+        "checks": {
+          "fiscal_autonomy_level": "Consider 88.8% of PDET municipalities are category 6 (muy baja autonomía)",
+          "icld_capacity": "Municipal free disposal income (ICLD) averaging 1,850 SMMLV for category 6",
+          "institutional_presence": "ART, ANT presence and support mechanisms",
+          "technical_assistance": "Need for national entity support (DNP, sector ministries)"
+        },
+        "colombian_context": "PDET municipalities have low fiscal autonomy (category 6) and require national support. Activities must acknowledge institutional capacity constraints and include technical assistance provisions"
       }
     ],
     "DIM03_PRODUCTOS": [
@@ -149,6 +293,49 @@
         "description": "Validates product has annualized delivery schedule",
         "priority": 7,
         "colombian_context": "4-year term must show phased delivery (e.g., Year 1: 25%, Year 2: 30%, Year 3: 30%, Year 4: 15%)"
+      },
+      {
+        "type": "pdet_territorial_targeting",
+        "check": "vereda_level_targeting",
+        "description": "Validates products are targeted at appropriate territorial level (vereda, corregimiento, subregion)",
+        "priority": 8,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution"],
+        "checks": {
+          "vereda_disaggregation": "Products specify target veredas (11,000 veredas across PDET)",
+          "rural_urban_split": "24% rural population consideration",
+          "ethnic_targeting": "Specific targeting for Indigenous/Afrodescendant communities when applicable"
+        },
+        "colombian_context": "PDET products must specify territorial targeting at vereda level (11,000 veredas). Rural coverage essential given 24% rural population concentration"
+      },
+      {
+        "type": "pdet_delivery_realism",
+        "check": "conflict_sensitive_delivery",
+        "description": "Validates delivery assumptions are realistic given security and access challenges",
+        "priority": 9,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_3_capability_readiness"],
+        "checks": {
+          "security_considerations": "Acknowledge security challenges in conflict-affected areas",
+          "access_constraints": "Road connectivity, infrastructure limitations",
+          "institutional_presence": "State presence and reach in remote veredas",
+          "community_participation": "PATR community participation mechanisms"
+        },
+        "colombian_context": "PDET product delivery must account for: (1) security volatility in post-conflict zones, (2) limited road infrastructure (dominant OCAD Paz sector: Transporte), (3) dispersed rural population"
+      },
+      {
+        "type": "pdet_monitoring_systems",
+        "check": "patr_monitoring_integration",
+        "description": "Validates integration with PATR monitoring and OCAD Paz reporting systems",
+        "priority": 10,
+        "pdet_specific": true,
+        "validation_gates": ["gate_4_channel_integrity"],
+        "requires": [
+          "patr_monitoring_indicator",
+          "ocad_paz_reporting_protocol",
+          "art_supervision_mechanism"
+        ],
+        "colombian_context": "PDET products must integrate with Central de Información PDET monitoring system and report to OCAD Paz for investment tracking (current avg: 110M COP per subregion)"
       }
     ],
     "DIM04_RESULTADOS": [
@@ -189,6 +376,49 @@
         "description": "Ensures outcome can be measured",
         "priority": 5,
         "colombian_context": "DNP requires measurable outcomes for follow-up"
+      },
+      {
+        "type": "pdet_outcome_indicators",
+        "check": "pmi_indicator_alignment",
+        "description": "Validates alignment with Plan Marco de Implementación (PMI) outcome indicators",
+        "priority": 6,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution"],
+        "checks": {
+          "pmi_reference": "Explicit reference to PMI indicator framework",
+          "pillar_contribution": "Contribution to specific PDET pillar outcomes",
+          "territorial_measurement": "Measurement at subregion or municipality level"
+        },
+        "colombian_context": "PDET outcomes must align with PMI indicator framework and demonstrate contribution to Peace Agreement implementation. Reference to 8 PDET pillars required"
+      },
+      {
+        "type": "pdet_baseline_context",
+        "check": "conflict_affected_baseline",
+        "description": "Validates baseline accounts for conflict legacy and multidimensional poverty",
+        "priority": 7,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_3_capability_readiness"],
+        "checks": {
+          "multidimensional_poverty": "Baseline acknowledges avg 46.8% poverty rate in PDET",
+          "displacement_history": "Historical displacement and return processes",
+          "institutional_weakness": "Low state presence baseline",
+          "conflict_metrics": "Security indicators, armed actor presence (historical)"
+        },
+        "colombian_context": "PDET baselines must acknowledge structural deficits: multidimensional poverty (46.8% avg), low institutional presence, conflict history. Realistic improvement targets given 15-year planning horizon"
+      },
+      {
+        "type": "pdet_comparative_benchmarking",
+        "check": "subregion_peer_comparison",
+        "description": "Validates outcomes are benchmarked against peer PDET municipalities or subregion averages",
+        "priority": 8,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution"],
+        "checks": {
+          "subregion_comparison": "Compare against subregion averages (16 subregions)",
+          "category_peers": "Compare against category 6 municipalities (88.8% of PDET)",
+          "ethnic_context_peers": "Compare with municipalities of similar ethnic composition"
+        },
+        "colombian_context": "PDET outcome targets should be realistic given peer performance. Use subregion statistics and category 6 benchmarks for target setting"
       }
     ],
     "DIM05_IMPACTOS": [
@@ -231,6 +461,51 @@
         "description": "Balances ambitious goals with feasibility",
         "priority": 5,
         "colombian_context": "Impact targets must be ambitious yet municipality-feasible"
+      },
+      {
+        "type": "pdet_peace_accord_alignment",
+        "check": "peace_agreement_contribution",
+        "description": "Validates impacts explicitly contribute to Peace Agreement implementation (Acuerdo de Paz 2016)",
+        "priority": 6,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution"],
+        "checks": {
+          "punto_1_rri": "Contribution to Punto 1 (Reforma Rural Integral)",
+          "territorial_peace": "Territorial peace construction mechanisms",
+          "victim_reparation": "Transitional justice and victim reparation",
+          "reconciliation": "Community reconciliation and social fabric rebuilding"
+        },
+        "colombian_context": "PDET impacts must demonstrate direct contribution to Peace Agreement (especially Punto 1 - RRI). 15-year horizon aligns with PMI implementation timeline"
+      },
+      {
+        "type": "pdet_structural_transformation",
+        "check": "territorial_closure_gap",
+        "description": "Validates impacts address structural territorial gaps (Estado-Territorio closure)",
+        "priority": 7,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_3_capability_readiness"],
+        "checks": {
+          "institutional_presence": "Closing state presence gaps in remote areas",
+          "basic_service_access": "Universal access to health, education, justice",
+          "economic_inclusion": "Rural economic inclusion and formalization",
+          "infrastructure_connectivity": "Road connectivity and digital infrastructure"
+        },
+        "colombian_context": "PDET impacts must address Estado-Territorio closure: bringing state services to historically abandoned territories. Focus on structural transformation beyond traditional service delivery"
+      },
+      {
+        "type": "pdet_long_term_sustainability",
+        "check": "post_pdet_sustainability",
+        "description": "Validates impacts consider sustainability beyond PDET program lifecycle",
+        "priority": 8,
+        "pdet_specific": true,
+        "validation_gates": ["gate_3_capability_readiness", "gate_4_channel_integrity"],
+        "checks": {
+          "institutional_capacity": "Local institutional capacity building for post-PDET autonomy",
+          "fiscal_sustainability": "Fiscal sustainability given low autonomy (category 6)",
+          "social_capital": "Community organization and participation sustainability",
+          "private_sector_engagement": "Private sector and productive chains development"
+        },
+        "colombian_context": "PDET is 15-year transitional program. Long-term impacts must consider post-PDET sustainability, especially fiscal (88.8% category 6 municipalities with muy baja autonomía fiscal)"
       }
     ],
     "DIM06_CAUSALIDAD": [
@@ -269,6 +544,66 @@
         "description": "Validates causal logic is adapted to municipal context",
         "priority": 5,
         "colombian_context": "Causal mechanisms must reflect municipal realities"
+      },
+      {
+        "type": "pdet_conflict_sensitive_causality",
+        "check": "conflict_sensitive_theory_change",
+        "description": "Validates causal chains account for conflict legacy and peacebuilding requirements",
+        "priority": 6,
+        "pdet_specific": true,
+        "validation_gates": ["gate_1_scope", "gate_2_value_contribution", "gate_3_capability_readiness"],
+        "checks": {
+          "conflict_drivers": "Causal analysis includes historical conflict drivers",
+          "peacebuilding_mechanisms": "Explicit peacebuilding and reconciliation mechanisms",
+          "security_preconditions": "Security as enabler/constraint in causal chain",
+          "trust_building": "Community trust and institutional legitimacy building"
+        },
+        "colombian_context": "PDET causal logic must be conflict-sensitive: acknowledge that traditional development causality may not hold in post-conflict contexts. Security, trust, and reconciliation are preconditions for service delivery effectiveness"
+      },
+      {
+        "type": "pdet_territorial_causality",
+        "check": "territorial_specificity_pdet",
+        "description": "Validates causal mechanisms adapted to PDET territorial realities (remoteness, ethnic diversity, institutional weakness)",
+        "priority": 7,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_3_capability_readiness"],
+        "checks": {
+          "geographic_isolation": "Causality accounts for remoteness and access challenges",
+          "ethnic_cultural_context": "Cultural appropriateness for Indigenous/Afrodescendant communities",
+          "institutional_capacity": "Realistic assumptions about municipal execution capacity (category 6)",
+          "community_participation": "PATR participatory planning as causal mechanism"
+        },
+        "colombian_context": "PDET territories are highly heterogeneous: geographic isolation, ethnic diversity (38 Afro-majority, 22 Indigenous-majority), weak institutions. Causal chains must adapt to these realities, not assume standard urban/central municipality conditions"
+      },
+      {
+        "type": "pdet_evidence_base",
+        "check": "patr_empirical_evidence",
+        "description": "Validates causal assumptions grounded in PATR empirical evidence and PDET subregion learning",
+        "priority": 8,
+        "pdet_specific": true,
+        "validation_gates": ["gate_2_value_contribution", "gate_4_channel_integrity"],
+        "checks": {
+          "patr_lessons_learned": "Reference PATR implementation lessons (62% completion rate)",
+          "subregion_evidence": "Evidence from peer municipalities in same subregion",
+          "ocad_paz_evaluations": "OCAD Paz project evaluations and impact evidence",
+          "art_technical_inputs": "ART technical guidance and territorial diagnostics"
+        },
+        "colombian_context": "PDET causal assumptions must be empirically grounded in PATR evidence (32,808 initiatives, 62% completion rate), OCAD Paz evaluations, and ART territorial diagnostics. Avoid importing unvalidated causality from non-PDET contexts"
+      },
+      {
+        "type": "pdet_systemic_approach",
+        "check": "multi_actor_coordination",
+        "description": "Validates causal logic recognizes multi-actor coordination requirements (national, regional, local, community)",
+        "priority": 9,
+        "pdet_specific": true,
+        "validation_gates": ["gate_4_channel_integrity"],
+        "checks": {
+          "vertical_coordination": "National-departmental-municipal coordination mechanisms",
+          "horizontal_coordination": "Inter-municipal and subregion coordination",
+          "art_coordination": "Agencia de Renovación del Territorio facilitation role",
+          "community_governance": "Community organizations and PATR governance structures"
+        },
+        "colombian_context": "PDET implementation requires unprecedented multi-level governance coordination. Causal chains must explicitly model: (1) national entities (DNP, ART, sector ministries), (2) departmental coordination, (3) inter-municipal cooperation, (4) community participation. Single-actor causality insufficient"
       }
     ]
   }

@@ -1,0 +1,4 @@
+from .profile.pdm_structural_profile import HierarchyLevel, CanonicalSection, ContextualMarker, SemanticRule, StructuralTransition, TableSchema, PDMStructuralProfile, get_default_profile
+from .contracts.pdm_contracts import PDMProfileContract, SP2Obligations, SP4Obligations, Phase1Phase2HandoffContract, PrerequisiteError, ValidationError, verify_all_pdm_contracts
+def enforce_profile_presence(profile_path=None): return PDMProfileContract.enforce_profile_presence(profile_path)
+__all__ = ["HierarchyLevel", "CanonicalSection", "ContextualMarker", "SemanticRule", "StructuralTransition", "TableSchema", "PDMStructuralProfile", "get_default_profile", "PDMProfileContract", "SP2Obligations", "SP4Obligations", "Phase1Phase2HandoffContract", "PrerequisiteError", "ValidationError", "verify_all_pdm_contracts", "enforce_profile_presence"]

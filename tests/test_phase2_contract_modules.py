@@ -14,9 +14,8 @@ from pathlib import Path
 import pytest
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from canonic_phases.phase_2.contracts import (
+from farfan_pipeline.phases.Phase_02.contracts import (
     ConcurrencyContractViolation,
     ConcurrencyDeterminismVerifier,
     InvariantViolation,

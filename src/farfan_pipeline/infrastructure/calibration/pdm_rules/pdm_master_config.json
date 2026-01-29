@@ -1,0 +1,239 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan.pipeline/schemas/calibration/pdm/master.json",
+  "config_type": "PDM_MASTER_CONFIGURATION",
+  "name": "PDM Sensitivity Master Configuration",
+  "version": "2.0.0-epistemic",
+  "description": "Master configuration for PDM-driven calibration aligned with episteme_rules.md lattice structure and 300 executor contracts",
+
+  "epistemic_lattice": {
+    "description": "Lattice structure L = {N1, N2, N3, N4} with order ≤",
+    "structure": "N1 ≤ N2 ≤ N3 ≤ N4",
+    "fusion_operator": "⊗ : Output × Output → Output",
+    "asymmetry": "∀o₁ ∈ Output(N1 ∪ N2), ∀o₃ ∈ Output(N3): o₃ ⊗ o₁ ≠ o₁ ⊗ o₃",
+    "levels": {
+      "N1-EMP": {
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "symbol": "⊕",
+        "epistemology": "Empirismo positivista"
+      },
+      "N2-INF": {
+        "output_type": "PARAMETER", 
+        "fusion_behavior": "multiplicative",
+        "symbol": "⊗",
+        "epistemology": "Bayesianismo subjetivista"
+      },
+      "N3-AUD": {
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "symbol": "⊘",
+        "epistemology": "Falsacionismo popperiano",
+        "veto_power": true
+      },
+      "N4-META": {
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "symbol": "⊙",
+        "epistemology": "Reflexividad crítica"
+      }
+    }
+  },
+
+  "contract_types": {
+    "description": "5 contract types from episteme_rules.md Part I.1.1",
+    "types": {
+      "TYPE_A": {
+        "name": "Semántico",
+        "contracts": ["Q001", "Q013"],
+        "focus": "Coherencia narrativa, NLP",
+        "primary_fusion": "semantic_triangulation",
+        "n1_strategy": "semantic_corroboration",
+        "n2_strategy": "dempster_shafer",
+        "n3_strategy": "veto_gate"
+      },
+      "TYPE_B": {
+        "name": "Bayesiano",
+        "contracts": ["Q002", "Q005", "Q007", "Q011", "Q017", "Q018", "Q020", "Q023", "Q024", "Q025", "Q027", "Q029"],
+        "focus": "Significancia estadística, priors",
+        "primary_fusion": "bayesian_update",
+        "n1_strategy": "concat",
+        "n2_strategy": "bayesian_update",
+        "n3_strategy": "veto_gate"
+      },
+      "TYPE_C": {
+        "name": "Causal",
+        "contracts": ["Q008", "Q016", "Q026", "Q030"],
+        "focus": "Topología de grafos, DAGs",
+        "primary_fusion": "topological_overlay",
+        "n1_strategy": "graph_construction",
+        "n2_strategy": "topological_overlay",
+        "n3_strategy": "veto_gate"
+      },
+      "TYPE_D": {
+        "name": "Financiero",
+        "contracts": ["Q003", "Q004", "Q006", "Q009", "Q012", "Q015", "Q021", "Q022"],
+        "focus": "Suficiencia presupuestal",
+        "primary_fusion": "financial_coherence_audit",
+        "n1_strategy": "concat",
+        "n2_strategy": "weighted_mean",
+        "n3_strategy": "financial_coherence_audit"
+      },
+      "TYPE_E": {
+        "name": "Lógico",
+        "contracts": ["Q010", "Q014", "Q019", "Q028"],
+        "focus": "Detección de contradicciones",
+        "primary_fusion": "logical_consistency_validation",
+        "n1_strategy": "concat",
+        "n2_strategy": "weighted_mean",
+        "n3_strategy": "logical_consistency_validation"
+      }
+    }
+  },
+
+  "constitutional_framework": {
+    "description": "Constitutional principles from episteme_rules asymmetry principle",
+    "principles": [
+      {
+        "id": "CI-03",
+        "name": "INMUTABILIDAD EPISTÉMICA",
+        "formula": "π : M → L is immutable",
+        "description": "Method level assignment π cannot be changed by PDM",
+        "enforcement": "Level is read from registry, never modified"
+      },
+      {
+        "id": "CI-04", 
+        "name": "ASIMETRÍA POPPERIANA",
+        "formula": "o₃ ⊗ o₁ puede = ∅ (N3 anula N1), pero o₁ ⊗ o₃ = o₃",
+        "description": "N3 can BLOCK N1/N2, but N1/N2 CANNOT invalidate N3",
+        "enforcement": "Unidirectional veto gate in cross_layer_fusion"
+      },
+      {
+        "id": "CI-05",
+        "name": "SEPARACIÓN TIPO-OUTPUT",
+        "formula": "ρ : M → {FACT, PARAMETER, CONSTRAINT, NARRATIVE}",
+        "description": "Output type mapping ρ is determined by level",
+        "enforcement": "Output type follows from epistemic level"
+      }
+    ]
+  },
+
+  "pdm_trigger_categories": {
+    "description": "PDM triggers aligned with contract type requirements",
+    "categories": {
+      "STRUCTURAL": {
+        "triggers": ["HIERARCHY_DEPTH", "TABLE_DENSITY", "SEMANTIC_SECTIONS"],
+        "affects_contracts": ["TYPE_A", "TYPE_C"]
+      },
+      "FINANCIAL": {
+        "triggers": ["PPI_PAI_TABLES", "FINANCIAL_DATA", "BUDGET_TABLES"],
+        "affects_contracts": ["TYPE_D"]
+      },
+      "TEMPORAL": {
+        "triggers": ["HISTORICAL_BASELINES", "TEMPORAL_LOGIC", "TIME_SERIES"],
+        "affects_contracts": ["TYPE_B", "TYPE_C"]
+      },
+      "QUANTITATIVE": {
+        "triggers": ["HIGH_DIMENSIONAL", "PRECISION_REQUIRED", "MULTI_MODAL"],
+        "affects_contracts": ["TYPE_B", "TYPE_D"]
+      },
+      "LOGICAL": {
+        "triggers": ["HIGH_STAKES", "CONTRADICTION_RISK", "COMPLETENESS_CHECK"],
+        "affects_contracts": ["TYPE_E"]
+      }
+    }
+  },
+
+  "cross_layer_effects": {
+    "description": "Cross-layer fusion from episteme_rules Part V",
+    "N1_to_N2": {
+      "relationship": "N2 reads N1 facts",
+      "data_flow": "forward_propagation",
+      "formula": "N2 = f(N1_facts)"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 modifies N1 confidence",
+      "data_flow": "confidence_backpropagation",
+      "formula": "N1.confidence *= N2.adjustment"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK N1 facts",
+      "asymmetry": "N1 CANNOT invalidate N3",
+      "formula": "if N3.veto then N1 = ∅"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "asymmetry": "N2 CANNOT invalidate N3",
+      "formula": "if N3.veto then N2.confidence *= 0.0"
+    },
+    "all_to_N4": {
+      "relationship": "N4 consumes validated outputs from all layers",
+      "data_flow": "terminal_aggregation",
+      "formula": "N4 = synthesize(N1_validated, N2_validated, N3_constraints)"
+    }
+  },
+
+  "veto_gate_specifications": {
+    "description": "N3 veto conditions from episteme_rules Part II.2.2",
+    "veto_conditions": {
+      "matrix_not_positive_definite": {
+        "triggered_by": "IndustrialGradeValidator",
+        "propagation": "upstream_and_downstream",
+        "confidence_multiplier": 0.0
+      },
+      "statistical_significance_failed": {
+        "triggered_by": "PolicyContradictionDetector._statistical_significance_test",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.0
+      },
+      "logical_contradiction": {
+        "triggered_by": "PolicyContradictionDetector._detect_logical_incompatibilities",
+        "propagation": "both",
+        "confidence_multiplier": 0.0
+      },
+      "cycle_detected": {
+        "triggered_by": "AdvancedDAGValidator._is_acyclic",
+        "propagation": "total",
+        "confidence_multiplier": 0.0
+      },
+      "budget_insufficiency": {
+        "triggered_by": "FinancialAuditor._detect_allocation_gaps",
+        "propagation": "partial",
+        "confidence_multiplier": 0.3
+      }
+    }
+  },
+
+  "calibration_pipeline": {
+    "description": "PDM calibration aligned with execution_phases structure",
+    "phases": {
+      "phase_A_construction": {
+        "level": "N1-EMP",
+        "description": "Extract raw facts",
+        "output_type": "FACT",
+        "typical_methods": ["extract_*", "parse_*", "mine_*", "chunk_*"]
+      },
+      "phase_B_computation": {
+        "level": "N2-INF",
+        "description": "Transform facts to parameters",
+        "output_type": "PARAMETER",
+        "typical_methods": ["analyze_*", "score_*", "calculate_*", "infer_*"]
+      },
+      "phase_C_litigation": {
+        "level": "N3-AUD",
+        "description": "Audit and potentially veto",
+        "output_type": "CONSTRAINT",
+        "typical_methods": ["validate_*", "detect_*", "audit_*", "test_*"]
+      }
+    }
+  },
+
+  "metadata": {
+    "created": "2025-01-21",
+    "last_modified": "2025-01-21",
+    "author": "FARFAN Calibration Team",
+    "review_status": "CONSTITUTIONAL",
+    "schema_compliance": "EPISTEMIC-v4.0.0",
+    "aligns_with": "episteme_rules.md v1.0.0"
+  }
+}

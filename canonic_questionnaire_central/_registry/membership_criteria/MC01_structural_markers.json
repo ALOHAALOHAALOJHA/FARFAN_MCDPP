@@ -1,0 +1,205 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
+  "criterion_id": "MC01",
+  "name": "Structural Markers",
+  "description_es": "Detecta marcadores estructurales del documento: secciones, tablas, figuras, encabezados",
+  "description_en": "Detects document structural markers: sections, tables, figures, headers",
+  "signal_type": "STRUCTURAL_MARKER",
+  "implementation_status": "IMPLEMENTED",
+  "extractor_class": "CPPStructuralParser",
+  "detection": {
+    "primary_method": "COMPOUND_PATTERN",
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/STRUCTURAL_MARKER",
+    "components": [
+      {
+        "component_id": "SM-SECTION",
+        "name": "section_header",
+        "description": "Encabezados de sección principales (Diagnóstico, Estratégica, PPI, Seguimiento)",
+        "detection": {
+          "type": "REGEX",
+          "patterns": [
+            {
+              "name": "DIAGNOSTICO",
+              "regex": "(?:Diagnóstico|DIAGNÓSTICO|Capítulo\\s+1)",
+              "weight": 1.0
+            },
+            {
+              "name": "ESTRATEGICA",
+              "regex": "(?:Parte\\s+Estratégica|Componente\\s+Estratégico)",
+              "weight": 1.0
+            },
+            {
+              "name": "PPI",
+              "regex": "(?:Plan\\s+Plurianual|Plurianual\\s+de\\s+Inversiones|PPI)",
+              "weight": 1.0
+            },
+            {
+              "name": "SEGUIMIENTO",
+              "regex": "(?:Seguimiento|Evaluación|Monitoreo)",
+              "weight": 0.9
+            }
+          ]
+        },
+        "confidence_base": 0.90
+      },
+      {
+        "component_id": "SM-TABLE",
+        "name": "table_structure",
+        "description": "Tablas con encabezados estructurados",
+        "detection": {
+          "type": "TABLE_EXTRACTION",
+          "regex": "Tabla\\s+(\\d+)[:\\s.-]+(.*?)(?=\\n|$)",
+          "validation": "headers_detected >= 2 AND row_count >= 3",
+          "library": "pdfplumber",
+          "header_templates": {
+            "ppi_table": [
+              "Programa",
+              "Meta",
+              "Presupuesto",
+              "Fuente"
+            ],
+            "indicator_table": [
+              "Indicador",
+              "Línea Base",
+              "Meta 2027",
+              "Responsable"
+            ],
+            "budget_table": [
+              "Fuente",
+              "Monto",
+              "Porcentaje"
+            ]
+          }
+        },
+        "confidence_base": 0.95
+      }
+    ],
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "tables_per_plan": {
+        "mean": 62,
+        "min": 20,
+        "max": 128,
+        "std": 28
+      },
+      "graphs_per_plan": {
+        "mean": 52,
+        "min": 11,
+        "max": 104,
+        "std": 24
+      },
+      "sections_per_plan": {
+        "mean": 7,
+        "min": 4,
+        "max": 12,
+        "std": 2
+      }
+    },
+    "gold_standard_examples": [
+      {
+        "plan": "Caldono",
+        "table_id": "TBL-045",
+        "headers": [
+          "Indicador de Resultado",
+          "Línea Base 2023",
+          "Meta 2027",
+          "Unidad"
+        ],
+        "row_count": 15,
+        "confidence": 0.98
+      },
+      {
+        "plan": "Bosconia",
+        "table_id": "TBL-PPI-001",
+        "headers": [
+          "Eje",
+          "Programa",
+          "Presupuesto 2024-2027",
+          "Fuente"
+        ],
+        "row_count": 57,
+        "confidence": 0.97
+      }
+    ]
+  },
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.05,
+      "DIM02": 0.05,
+      "DIM03": 0.10
+    },
+    "cross_cutting_boost": {
+      "CC_MECANISMOS_SEGUIMIENTO": 0.10
+    }
+  },
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 87,
+    "coverage": 0.29,
+    "applies_to_slots": [
+      "D1-Q3",
+      "D1-Q5",
+      "D2-Q1",
+      "D3-Q3"
+    ],
+    "primary_questions": [
+      "Q003",
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123",
+      "Q153",
+      "Q183",
+      "Q213",
+      "Q243",
+      "Q273",
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125",
+      "Q155",
+      "Q185",
+      "Q215",
+      "Q245",
+      "Q275"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_u_smip": {
+        "weight": 0.60,
+        "sub_weights": {
+          "sections": 0.60,
+          "tables": 0.25,
+          "hierarchy_depth": 0.15
+        }
+      }
+    },
+    "required_for": [
+      "layer_u_smip"
+    ]
+  },
+  "required_capabilities": [
+    "TABLE_PARSING"
+  ],
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc01_structural.py",
+    "expected_precision": 0.95,
+    "expected_recall": 0.92,
+    "gold_standard_plan": "Caldono",
+    "gold_standard_reason": "Best structural completeness (128 tablas, 104 gráficos)"
+  }
+}
