@@ -511,7 +511,7 @@ check_dependencies() {
 
     local missing_deps=()
     for dep in "${critical_deps[@]}"; do
-        if ! python -c "import ${dep//_/}" 2>/dev/null; then
+        if ! python -c "import importlib.util; exit(0 if importlib.util.find_spec('${dep}') else 1)" 2>/dev/null; then
             missing_deps+=("$dep")
         fi
     done
@@ -684,9 +684,16 @@ set_env_vars() {
     verbose "RANDOM_SEED=$RANDOM_SEED"
 
     # Set manifest secret key
+    # Only use default in test/dev mode; fail otherwise to prevent insecure production deployments
     if [ -z "${MANIFEST_SECRET_KEY:-}" ]; then
-        export MANIFEST_SECRET_KEY="default-dev-key-change-in-production"
-        warning "Using default MANIFEST_SECRET_KEY (change in production)"
+        if [[ "$TEST_MODE" == true ]] || [[ "${NODE_ENV:-}" == "development" ]] || [[ -n "${CI:-}" ]]; then
+            export MANIFEST_SECRET_KEY="default-dev-key-change-in-production"
+            warning "Using default MANIFEST_SECRET_KEY (acceptable in test/dev mode)"
+        else
+            error "MANIFEST_SECRET_KEY is not set and not running in test/dev mode"
+            error "Set MANIFEST_SECRET_KEY environment variable or use --test flag for development"
+            exit 1
+        fi
     else
         verbose "Using custom MANIFEST_SECRET_KEY"
     fi
@@ -1533,6 +1540,10 @@ generate_summary_report() {
 
     local summary_file="$ARTIFACTS_DIR/execution_summary.json"
 
+    # Convert bash booleans to Python literals
+    local PY_SKIP_QUALITY=$( [[ "$SKIP_QUALITY" == "true" ]] && echo "True" || echo "False" )
+    local PY_TEST_MODE=$( [[ "$TEST_MODE" == "true" ]] && echo "True" || echo "False" )
+
     python3 -c "
 import json
 from datetime import datetime
@@ -1548,8 +1559,8 @@ summary = {
     'warnings': $WARNING_COUNT,
     'success_rate': round($COMPLETED_STEPS / $TOTAL_STEPS * 100, 2) if $TOTAL_STEPS > 0 else 0,
     'exit_code': ${1:-0},
-    'quality_gates_skipped': $SKIP_QUALITY,
-    'test_mode': $TEST_MODE,
+    'quality_gates_skipped': $PY_SKIP_QUALITY,
+    'test_mode': $PY_TEST_MODE,
     'determinism_seeds': {
         'PYTHONHASHSEED': $PYTHONHASHSEED,
         'TORCH_SEED': $TORCH_SEED,
