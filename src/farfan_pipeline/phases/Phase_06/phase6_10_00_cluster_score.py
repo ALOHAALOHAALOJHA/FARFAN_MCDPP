@@ -49,6 +49,7 @@ from typing import (
     Self,
     TypeAlias,
     TypedDict,
+    TYPE_CHECKING,
 )
 try:
     from typing import override

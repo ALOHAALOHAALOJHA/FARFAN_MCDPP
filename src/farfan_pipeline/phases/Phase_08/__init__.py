@@ -154,6 +154,9 @@ def get_interface_validator() -> "Phase8InterfaceValidator":
     return Phase8InterfaceValidator()
 
 
+# Direct exports for convenience
+from .phase8_25_00_recommendation_bifurcator import UnifiedBifurcator
+
 # Public API
 __all__ = [
     # Version info
@@ -166,4 +169,6 @@ __all__ = [
     "get_recommendation_engine",
     "get_recommendation_bifurcator",
     "get_interface_validator",
+    # Direct class exports
+    "UnifiedBifurcator",
 ]

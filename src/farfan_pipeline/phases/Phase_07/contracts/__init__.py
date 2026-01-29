@@ -23,9 +23,9 @@ __modified__ = "2026-01-18T00:00:00Z"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "Per-Task"
 
-from .phase7_input_contract import Phase7InputContract
-from .phase7_mission_contract import Phase7MissionContract
-from .phase7_output_contract import Phase7OutputContract
+from .phase7_10_00_input_contract import Phase7InputContract
+from .phase7_10_01_mission_contract import Phase7MissionContract
+from .phase7_10_02_output_contract import Phase7OutputContract
 
 __all__ = [
     "Phase7InputContract",

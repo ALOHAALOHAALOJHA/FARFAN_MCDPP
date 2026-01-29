@@ -118,6 +118,16 @@ Examples:
   - PA01-DIM07 ❌ (DIM out of range 1-6)
 """
 
+# Legacy chunk ID pattern (backwards compatibility)
+CHUNK_ID_PATTERN_LEGACY: Final[str] = r"^chunk_PA(0[1-9]|10)_DIM0[1-6](_\d+)?$"
+"""
+Legacy chunk_id pattern with 'chunk_' prefix and optional index suffix.
+
+Examples:
+  - chunk_PA01_DIM01 ✅
+  - chunk_PA10_DIM06_42 ✅
+"""
+
 # Task ID patterns (Phase 2: PA×DIM×Q)
 TASK_ID_PATTERN: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]-Q[1-5]$"
 """

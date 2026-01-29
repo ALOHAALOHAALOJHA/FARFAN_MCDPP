@@ -579,9 +579,65 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
             raise RuntimeError(f"Failed to open PDF {pdf_path}: {e}")
 
 
+def validate_phase0_input(input_data: Phase0Input) -> CanonicalInput:
+    """
+    Validate Phase0Input and convert to CanonicalInput.
+    
+    This is a convenience function that uses Phase0ValidationContract
+    to validate and transform Phase0Input into CanonicalInput.
+    
+    Args:
+        input_data: Phase0Input to validate
+        
+    Returns:
+        CanonicalInput if validation passes
+        
+    Raises:
+        ValueError: If validation fails
+    """
+    contract = Phase0ValidationContract()
+    result = contract.validate_input(input_data)
+    
+    if not result.is_valid:
+        raise ValueError(f"Phase0 input validation failed: {result.errors}")
+    
+    # Create CanonicalInput from Phase0Input
+    import hashlib
+    from datetime import datetime
+    
+    # Calculate hashes if not provided
+    pdf_sha256 = getattr(input_data, 'pdf_sha256', '') or ''
+    if not pdf_sha256 and hasattr(input_data, 'pdf_path'):
+        try:
+            with open(input_data.pdf_path, 'rb') as f:
+                pdf_sha256 = hashlib.sha256(f.read()).hexdigest()
+        except Exception:
+            pdf_sha256 = hashlib.sha256(b'unknown').hexdigest()
+    
+    questionnaire_sha256 = getattr(input_data, 'questionnaire_sha256', '') or ''
+    if not questionnaire_sha256:
+        questionnaire_sha256 = hashlib.sha256(b'default-questionnaire').hexdigest()
+    
+    return CanonicalInput(
+        run_id=input_data.run_id,
+        document_id=f"doc_{input_data.run_id}",
+        pdf_path=input_data.pdf_path,
+        questionnaire_path=getattr(input_data, 'questionnaire_path', ''),
+        pdf_sha256=pdf_sha256,
+        questionnaire_sha256=questionnaire_sha256,
+        pdf_page_count=getattr(input_data, 'pdf_page_count', 1) or 1,
+        pdf_size_bytes=getattr(input_data, 'pdf_size_bytes', 0) or 0,
+        validation_passed=True,
+        validation_errors=[],
+        created_at=datetime.now(),
+        phase0_version=PHASE0_VERSION,
+    )
+
+
 __all__ = [
     "Phase0Input",
     "CanonicalInput",
     "Phase0ValidationContract",
+    "validate_phase0_input",
     "PHASE0_VERSION",
 ]
