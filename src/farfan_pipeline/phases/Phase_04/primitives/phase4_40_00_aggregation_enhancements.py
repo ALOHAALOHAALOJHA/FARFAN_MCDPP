@@ -577,3 +577,31 @@ def enhance_aggregator(aggregator: Any, level: str, enable_contracts: bool = Tru
         )
 
     return enhancers[level.lower()](aggregator, enable_contracts=enable_contracts)
+
+
+# =============================================================================
+# ADAPTIVE MESO SCORING (Compatibility Stub)
+# =============================================================================
+
+class AdaptiveMesoScoring:
+    """
+    Adaptive meso-level scoring mechanism.
+    
+    Provides adaptive scoring that adjusts based on dispersion and convergence
+    patterns in the data.
+    """
+    
+    def __init__(self, config=None):
+        """Initialize with optional configuration."""
+        self.config = config or {}
+    
+    def calculate_score(self, scores):
+        """Calculate adaptive score from a collection of scores."""
+        if not scores:
+            return 0.0
+        return sum(scores) / len(scores)
+    
+    def apply_penalty(self, base_score, dispersion):
+        """Apply adaptive penalty based on dispersion."""
+        penalty = dispersion * 0.1  # Simple penalty factor
+        return max(0.0, base_score - penalty)

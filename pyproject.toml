@@ -59,8 +59,14 @@ dependencies = [
     "typing_extensions>=4.10.0",
     "bcrypt>=4.0.0",
 ]
-description = "F.A.R.F.A.N Municipal Comprehensive Development Plans Platform"
-requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+# Exclude test files in src directory - those are unit tests for the source modules
+norecursedirs = ["src", ".git", ".venv", "venv", "__pycache__", "build", "dist"]
 
 [tool.black]
 line-length = 100

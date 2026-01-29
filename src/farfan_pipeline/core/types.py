@@ -60,6 +60,12 @@ MechanismPartType = Literal[
 #: Output types from epistemic levels (aligned with episteme_rules.md)
 EpistemicOutputType = Literal["FACT", "PARAMETER", "CONSTRAINT", "NARRATIVE", "META_ANALYSIS"]
 
+#: Type alias for chunk data structures (used across phases)
+ChunkData = Dict[str, Any]
+
+#: Type alias for preprocessed document structures
+PreprocessedDocument = Dict[str, Any]
+
 
 # ============================================================================
 # PROTOCOLS - Analytical Interfaces

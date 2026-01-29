@@ -23,6 +23,28 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 logger = logging.getLogger(__name__)
 
 # =============================================================================
+# SUBPHASE CLASSIFICATION CONSTANTS
+# =============================================================================
+
+# Calibrable subphases - those with adjustable heuristic parameters
+CALIBRABLE_SUBPHASES = {
+    "SP5": "Causal Extraction",
+    "SP7": "Discourse Analysis", 
+    "SP9": "Causal Integration",
+    "SP10": "Strategic Integration",
+    "SP12": "SISAS Irrigation",
+    "SP14": "Quality Metrics",
+}
+
+# Non-calibrable subphases - constitutional structure, not adjustable
+NON_CALIBRABLE_SUBPHASES = {
+    "SP0": "Language Detection",
+    "SP2": "Structural Analysis",
+    "SP4": "PA×Dim Grid (60-chunk invariant)",
+    "SP13": "Validation (integrity gate)",
+}
+
+# =============================================================================
 # MATHEMATICAL MODELS FROM CANONIC DESCRIPTION
 # =============================================================================
 
@@ -193,6 +215,43 @@ class CalibrationMetrics:
     def is_significant_improvement(self, baseline: 'CalibrationMetrics', alpha: float = 0.05) -> bool:
         """Test if improvement is statistically significant"""
         return self.p_value < alpha and self.cohen_d > 0.5
+
+
+@dataclass
+class CalibrationCorpus:
+    """Collection of gold-standard annotations for calibration."""
+    
+    annotations: List[GoldAnnotation] = field(default_factory=list)
+    corpus_id: str = ""
+    version: str = "1.0"
+    
+    def add_annotation(self, annotation: GoldAnnotation) -> None:
+        """Add a gold annotation to the corpus."""
+        self.annotations.append(annotation)
+    
+    def size(self) -> int:
+        """Return number of annotations in corpus."""
+        return len(self.annotations)
+
+
+@dataclass 
+class CalibrationResult:
+    """Result of a calibration run."""
+    
+    metrics: CalibrationMetrics
+    optimized_parameters: Dict[str, Any] = field(default_factory=dict)
+    timestamp: str = ""
+    corpus_id: str = ""
+    
+    def __post_init__(self):
+        if not self.timestamp:
+            self.timestamp = datetime.now().isoformat()
+
+
+class CalibrationError(Exception):
+    """Exception raised during calibration process."""
+    pass
+
 
 # =============================================================================
 # CALIBRABLE SUBPHASES WITH MATHEMATICAL PARAMETERS

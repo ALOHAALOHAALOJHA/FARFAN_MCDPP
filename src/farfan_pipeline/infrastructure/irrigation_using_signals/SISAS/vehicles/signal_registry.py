@@ -259,3 +259,56 @@ class SignalRegistryVehicle(BaseVehicle):
             confidence=SignalConfidence. MEDIUM if unmapped else SignalConfidence.HIGH,
             rationale=f"Mapped {len(mapped)} entities, {len(unmapped)} unmapped"
         )
+
+
+# =============================================================================
+# QUESTIONNAIRE SIGNAL REGISTRY
+# =============================================================================
+
+class QuestionnaireSignalRegistry:
+    """
+    Registry for managing signals associated with questionnaire questions.
+    Provides access to all signals generated for questions in the pipeline.
+    """
+    
+    def __init__(self, questionnaire_path: Optional[str] = None):
+        """Initialize the registry with optional questionnaire path."""
+        self.questionnaire_path = questionnaire_path
+        self.signals: Dict[str, List[Signal]] = {}
+        self._vehicle = SignalRegistryVehicle()
+    
+    def get_signals_for_question(self, question_id: str) -> List[Signal]:
+        """
+        Get all signals for a specific question.
+        
+        Args:
+            question_id: Question identifier (e.g., "Q001")
+            
+        Returns:
+            List of signals associated with the question
+        """
+        return self.signals.get(question_id, [])
+    
+    def register_signal(self, question_id: str, signal: Signal) -> None:
+        """
+        Register a signal for a question.
+        
+        Args:
+            question_id: Question identifier
+            signal: Signal to register
+        """
+        if question_id not in self.signals:
+            self.signals[question_id] = []
+        self.signals[question_id].append(signal)
+    
+    def get_all_question_ids(self) -> List[str]:
+        """Get all question IDs that have registered signals."""
+        return list(self.signals.keys())
+    
+    def signal_count_for_question(self, question_id: str) -> int:
+        """Get count of signals for a specific question."""
+        return len(self.signals.get(question_id, []))
+    
+    def total_signal_count(self) -> int:
+        """Get total count of all signals across all questions."""
+        return sum(len(sigs) for sigs in self.signals.values())

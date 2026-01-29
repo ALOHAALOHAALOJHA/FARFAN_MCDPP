@@ -90,6 +90,24 @@ class SystemContractError(ContractViolationError):
     pass
 
 
+class AbortRequested(Exception):
+    """
+    Exception raised when a graceful abort is requested.
+    
+    This signals that the operation should terminate cleanly,
+    allowing for proper cleanup and resource release.
+    
+    Examples:
+        >>> try:
+        ...     raise AbortRequested("User requested cancellation")
+        ... except AbortRequested as e:
+        ...     print(f"Abort: {e}")
+        Abort: User requested cancellation
+    """
+    
+    pass
+
+
 if __name__ == "__main__":
     import doctest
 

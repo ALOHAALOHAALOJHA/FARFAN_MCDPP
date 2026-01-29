@@ -5263,3 +5263,7 @@ __all__ = [
     "PipelineResult",
     "UnifiedOrchestrator",
 ]
+
+# Backward compatibility aliases
+Orchestrator = UnifiedOrchestrator
+PipelineOrchestrator = UnifiedOrchestrator

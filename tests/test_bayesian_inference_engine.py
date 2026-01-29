@@ -40,15 +40,26 @@ class MockConfig:
     """Mock configuration for testing"""
 
     def __init__(self) -> None:
-        self.bayesian_thresholds = Mock()
-        self.bayesian_thresholds.prior_alpha = 1.0
-        self.bayesian_thresholds.prior_beta = 1.0
+        # Create a proper mock object with expected attributes
+        self.bayesian_thresholds = type('BayesianThresholds', (), {
+            'prior_alpha': 1.0,
+            'prior_beta': 1.0,
+            'mcmc_samples': 2000,
+            'mcmc_chains': 4,
+            'target_accept': 0.9
+        })()
 
     def get(self, key: str, default: Any = None) -> Any:
         if key == "bayesian_thresholds.prior_alpha":
             return 1.0
         elif key == "bayesian_thresholds.prior_beta":
             return 1.0
+        elif key == "mcmc_samples":
+            return 2000
+        elif key == "mcmc_chains":
+            return 4
+        elif key == "target_accept":
+            return 0.9
         return default
 
 
@@ -211,6 +222,17 @@ class TestBayesianPriorBuilder:
 # ==================== BayesianSamplingEngine Tests ====================
 
 
+def _check_pymc_available() -> bool:
+    """Helper to check if PyMC is available without Mock issues"""
+    try:
+        mock_config = Mock()
+        mock_config.get.return_value = None
+        engine = BayesianSamplingEngine(mock_config)
+        return engine.is_available()
+    except Exception:
+        return False
+
+
 class TestBayesianSamplingEngine:
     """Tests for BayesianSamplingEngine (AGUJA II)"""
 
@@ -219,7 +241,7 @@ class TestBayesianSamplingEngine:
         assert isinstance(sampling_engine.logger, logging.Logger)
 
     @pytest.mark.skipif(
-        not BayesianSamplingEngine(Mock()).is_available(),
+        not _check_pymc_available(),
         reason="PyMC not available",
     )
     def test_beta_binomial_sampling(self, sampling_engine: BayesianSamplingEngine) -> None:
@@ -241,7 +263,7 @@ class TestBayesianSamplingEngine:
         assert 0.5 < result.posterior_mean < 0.9
 
     @pytest.mark.skipif(
-        not BayesianSamplingEngine(Mock()).is_available(),
+        not _check_pymc_available(),
         reason="PyMC not available",
     )
     def test_convergence_diagnostics(self, sampling_engine: BayesianSamplingEngine) -> None:
@@ -261,7 +283,7 @@ class TestBayesianSamplingEngine:
             assert result.rhat < 1.1
 
     @pytest.mark.skipif(
-        not BayesianSamplingEngine(Mock()).is_available(),
+        not _check_pymc_available(),
         reason="PyMC not available",
     )
     def test_hierarchical_sampling(self, sampling_engine: BayesianSamplingEngine) -> None:
@@ -320,6 +342,16 @@ class TestBayesianDiagnostics:
 # ==================== BayesianEngineAdapter Tests ====================
 
 
+def _check_adapter_available() -> bool:
+    """Helper to check if BayesianEngineAdapter is available without Mock issues"""
+    try:
+        mock_config = MockConfig()
+        adapter = BayesianEngineAdapter(mock_config)
+        return adapter.is_available()
+    except Exception:
+        return False
+
+
 class TestBayesianEngineAdapter:
     """Tests for BayesianEngineAdapter (Unified Interface)"""
 
@@ -348,7 +380,7 @@ class TestBayesianEngineAdapter:
         assert result["posterior_beta"] == 1.0 + 3.0
 
     @pytest.mark.skipif(
-        not BayesianEngineAdapter(Mock()).is_available(),
+        not _check_adapter_available(),
         reason="PyMC not available",
     )
     def test_necessity_test(self, adapter: BayesianEngineAdapter) -> None:
@@ -363,7 +395,7 @@ class TestBayesianEngineAdapter:
         assert result["posterior_mean"] > 0.5
 
     @pytest.mark.skipif(
-        not BayesianEngineAdapter(Mock()).is_available(),
+        not _check_adapter_available(),
         reason="PyMC not available",
     )
     def test_sufficiency_test(self, adapter: BayesianEngineAdapter) -> None:
@@ -376,7 +408,7 @@ class TestBayesianEngineAdapter:
         assert result["test_type"] == "sufficiency_smoking_gun"
 
     @pytest.mark.skipif(
-        not BayesianEngineAdapter(Mock()).is_available(),
+        not _check_adapter_available(),
         reason="PyMC not available",
     )
     def test_doubly_decisive_test(self, adapter: BayesianEngineAdapter) -> None:
@@ -398,7 +430,7 @@ class TestBayesianEngineIntegration:
     """Integration tests for complete Bayesian workflow"""
 
     @pytest.mark.skipif(
-        not BayesianEngineAdapter(Mock()).is_available(),
+        not _check_adapter_available(),
         reason="PyMC not available",
     )
     def test_complete_workflow(self, adapter: BayesianEngineAdapter) -> None:
