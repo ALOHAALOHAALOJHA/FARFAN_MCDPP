@@ -47,17 +47,14 @@ Version: 2.0.0 (Unified)
 
 from __future__ import annotations
 
-import asyncio
-import csv
 import json
-import logging
 import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, cast
+from typing import Any
 from uuid import uuid4
 
 import blake3
@@ -68,11 +65,12 @@ import structlog
 # =============================================================================
 try:
     from canonic_questionnaire_central.core.signal import (
-        Signal, SignalType, SignalScope, SignalProvenance
+        Signal,
+        SignalProvenance,
+        SignalScope,
+        SignalType,
     )
-    from canonic_questionnaire_central.core.signal_distribution_orchestrator import (
-        SignalDistributionOrchestrator, Consumer, DeadLetterReason
-    )
+
     SISAS_CORE_AVAILABLE = True
 except ImportError:
     SISAS_CORE_AVAILABLE = False
@@ -83,13 +81,8 @@ except ImportError:
 
 # Import validation gates
 try:
-    from .gates import (
-        GateOrchestrator,
-        ScopeAlignmentGate,
-        ValueAddGate,
-        CapabilityGate,
-        IrrigationChannelGate
-    )
+    from .gates import GateOrchestrator
+
     GATES_AVAILABLE = True
 except ImportError:
     GATES_AVAILABLE = False
@@ -100,7 +93,8 @@ except ImportError:
 # =============================================================================
 # Import the unified factory for all component creation and questionnaire loading
 try:
-    from .factory import UnifiedFactory, FactoryConfig
+    from .factory import FactoryConfig, UnifiedFactory
+
     FACTORY_AVAILABLE = True
 except ImportError:
     FACTORY_AVAILABLE = False
@@ -112,12 +106,8 @@ except ImportError:
 # =============================================================================
 # Import the SISAS integration hub for comprehensive SISAS wiring
 try:
-    from .sisas_integration_hub import (
-        SISASIntegrationHub,
-        IntegrationStatus,
-        initialize_sisas,
-        get_sisas_status,
-    )
+    from .sisas_integration_hub import SISASIntegrationHub, initialize_sisas
+
     SISAS_HUB_AVAILABLE = True
 except ImportError:
     SISAS_HUB_AVAILABLE = False
@@ -130,9 +120,11 @@ except ImportError:
 # Import GateResult from Phase 0 exit gates for use in Phase0ValidationResult
 try:
     from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import GateResult
+
     GATE_RESULT_AVAILABLE = True
 except ImportError:
     GATE_RESULT_AVAILABLE = False
+
     # Define a fallback GateResult if import fails
     @dataclass
     class GateResult:
@@ -149,6 +141,7 @@ except ImportError:
                 "reason": self.reason,
             }
 
+
 # =============================================================================
 # LOGGER CONFIGURATION
 # =============================================================================
@@ -159,9 +152,9 @@ logger = structlog.get_logger(__name__)
 # SECTION 1: CONFIGURATION (from orchestrator_config.py)
 # =============================================================================
 
+
 class ConfigValidationError(Exception):
     """Raised when configuration validation fails."""
-    pass
 
 
 @dataclass
@@ -170,7 +163,7 @@ class OrchestratorConfig:
 
     # Core settings
     municipality_name: str = "Unknown"
-    document_path: Optional[str] = None
+    document_path: str | None = None
     output_dir: str = "./output"
 
     # Execution settings
@@ -283,14 +276,15 @@ def get_testing_config() -> OrchestratorConfig:
 # SECTION 2: EXCEPTIONS (from orchestration_core.py)
 # =============================================================================
 
+
 class OrchestrationError(Exception):
     """Base exception for all orchestration errors."""
 
     def __init__(
         self,
         message: str,
-        error_code: Optional[str] = None,
-        context: Optional[dict[str, Any]] = None,
+        error_code: str | None = None,
+        context: dict[str, Any] | None = None,
     ) -> None:
         self.message = message
         self.error_code = error_code or "ORCHESTRATION_ERROR"
@@ -311,9 +305,9 @@ class DependencyResolutionError(OrchestrationError):
     def __init__(
         self,
         message: str,
-        phase_id: Optional[str] = None,
-        dependency_chain: Optional[List[str]] = None,
-        context: Optional[dict[str, Any]] = None,
+        phase_id: str | None = None,
+        dependency_chain: list[str] | None = None,
+        context: dict[str, Any] | None = None,
     ) -> None:
         self.phase_id = phase_id
         self.dependency_chain = dependency_chain or []
@@ -335,9 +329,9 @@ class SchedulingError(OrchestrationError):
     def __init__(
         self,
         message: str,
-        scheduling_strategy: Optional[str] = None,
-        phases_in_conflict: Optional[List[str]] = None,
-        context: Optional[dict[str, Any]] = None,
+        scheduling_strategy: str | None = None,
+        phases_in_conflict: list[str] | None = None,
+        context: dict[str, Any] | None = None,
     ) -> None:
         self.scheduling_strategy = scheduling_strategy
         self.phases_in_conflict = phases_in_conflict or []
@@ -359,9 +353,9 @@ class StateTransitionError(OrchestrationError):
     def __init__(
         self,
         message: str,
-        current_state: Optional[str] = None,
-        target_state: Optional[str] = None,
-        context: Optional[dict[str, Any]] = None,
+        current_state: str | None = None,
+        target_state: str | None = None,
+        context: dict[str, Any] | None = None,
     ) -> None:
         self.current_state = current_state
         self.target_state = target_state
@@ -379,18 +373,21 @@ class StateTransitionError(OrchestrationError):
 
 class OrchestrationInitializationError(OrchestrationError):
     """Raised when the orchestrator cannot be initialized."""
+
     def __init__(self, message: str, **kwargs):
         super().__init__(message, error_code="ORCH_INIT_ERROR", context=kwargs)
 
 
 class PhaseExecutionError(OrchestrationError):
     """Raised when a phase fails to execute."""
+
     def __init__(self, message: str, **kwargs):
         super().__init__(message, error_code="PHASE_EXECUTION_ERROR", context=kwargs)
 
 
 class ContractViolationError(OrchestrationError):
     """Raised when a signal contract is violated."""
+
     def __init__(self, message: str, **kwargs):
         super().__init__(message, error_code="CONTRACT_VIOLATION_ERROR", context=kwargs)
 
@@ -398,6 +395,7 @@ class ContractViolationError(OrchestrationError):
 # =============================================================================
 # SECTION 3: STATE MACHINE (from orchestration_core.py)
 # =============================================================================
+
 
 class OrchestrationState(Enum):
     """States of the orchestration lifecycle."""
@@ -418,10 +416,10 @@ class StateTransition:
     from_state: OrchestrationState
     to_state: OrchestrationState
     timestamp: datetime = field(default_factory=datetime.utcnow)
-    reason: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    reason: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "from_state": self.from_state.name,
             "to_state": self.to_state.name,
@@ -431,7 +429,7 @@ class StateTransition:
         }
 
 
-VALID_TRANSITIONS: Dict[OrchestrationState, Set[OrchestrationState]] = {
+VALID_TRANSITIONS: dict[OrchestrationState, set[OrchestrationState]] = {
     OrchestrationState.IDLE: {OrchestrationState.INITIALIZING},
     OrchestrationState.INITIALIZING: {OrchestrationState.RUNNING, OrchestrationState.STOPPING},
     OrchestrationState.RUNNING: {
@@ -451,15 +449,15 @@ class OrchestrationStateMachine:
     """State machine for orchestration lifecycle management."""
 
     current_state: OrchestrationState = field(default=OrchestrationState.IDLE)
-    _transition_history: List[StateTransition] = field(default_factory=list)
+    _transition_history: list[StateTransition] = field(default_factory=list)
     allow_terminal_transition: bool = False
-    _transition_callbacks: Dict[OrchestrationState, List[callable]] = field(default_factory=dict)
+    _transition_callbacks: dict[OrchestrationState, list[callable]] = field(default_factory=dict)
 
     def transition_to(
         self,
         new_state: OrchestrationState,
-        reason: Optional[str] = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        reason: str | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> StateTransition:
         """Transition to a new state."""
         if not self._is_valid_transition(new_state):
@@ -518,7 +516,7 @@ class OrchestrationStateMachine:
             except Exception as e:
                 logger.error(f"State transition callback failed for state {state.name}: {e}")
 
-    def get_transition_history(self) -> List[Dict[str, Any]]:
+    def get_transition_history(self) -> list[dict[str, Any]]:
         """Get the complete transition history."""
         return [t.to_dict() for t in self._transition_history]
 
@@ -534,7 +532,7 @@ class OrchestrationStateMachine:
         """Check if the orchestration is currently running."""
         return self.current_state == OrchestrationState.RUNNING
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize the state machine to a dictionary."""
         return {
             "current_state": self.current_state.name,
@@ -549,8 +547,10 @@ class OrchestrationStateMachine:
 # SECTION 4: DEPENDENCY GRAPH (from orchestration_core.py)
 # =============================================================================
 
+
 class DependencyStatus(Enum):
     """Status of a node in the dependency graph."""
+
     PENDING = auto()
     READY = auto()
     RUNNING = auto()
@@ -569,12 +569,12 @@ class DependencyNode:
     node_id: str
     phase_id: str
     status: DependencyStatus = DependencyStatus.PENDING
-    upstream: Set[str] = field(default_factory=set)
-    downstream: Set[str] = field(default_factory=set)
-    config: Dict[str, Any] = field(default_factory=dict)
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    started_at: Optional[datetime] = None
-    completed_at: Optional[datetime] = None
+    upstream: set[str] = field(default_factory=set)
+    downstream: set[str] = field(default_factory=set)
+    config: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
+    started_at: datetime | None = None
+    completed_at: datetime | None = None
     retry_count: int = 0
 
     def __hash__(self) -> int:
@@ -602,6 +602,7 @@ class DependencyNode:
 @dataclass
 class DependencyEdge:
     """Represents a dependency relationship between two phases."""
+
     from_node: str
     to_node: str
     edge_type: str = "hard"
@@ -618,28 +619,29 @@ class DependencyEdge:
 @dataclass
 class GraphValidationResult:
     """Result of validating the dependency graph."""
+
     is_valid: bool
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    cycles: List[List[str]] = field(default_factory=list)
-    orphan_nodes: List[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    cycles: list[list[str]] = field(default_factory=list)
+    orphan_nodes: list[str] = field(default_factory=list)
 
 
 @dataclass
 class DependencyGraph:
     """Dependency graph for phase orchestration."""
 
-    nodes: Dict[str, DependencyNode] = field(default_factory=dict)
-    edges: Set[DependencyEdge] = field(default_factory=set)
-    _adjacency: Dict[str, Set[str]] = field(default_factory=dict)
-    _reverse_adjacency: Dict[str, Set[str]] = field(default_factory=dict)
+    nodes: dict[str, DependencyNode] = field(default_factory=dict)
+    edges: set[DependencyEdge] = field(default_factory=set)
+    _adjacency: dict[str, set[str]] = field(default_factory=dict)
+    _reverse_adjacency: dict[str, set[str]] = field(default_factory=dict)
 
     def add_node(
         self,
         node_id: str,
         phase_id: str,
-        config: Optional[Dict[str, Any]] = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        config: dict[str, Any] | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> DependencyNode:
         """Add a phase node to the graph."""
         if node_id in self.nodes:
@@ -663,9 +665,7 @@ class DependencyGraph:
 
         return node
 
-    def add_edge(
-        self, from_node: str, to_node: str, edge_type: str = "hard"
-    ) -> DependencyEdge:
+    def add_edge(self, from_node: str, to_node: str, edge_type: str = "hard") -> DependencyEdge:
         """Add a dependency edge between two nodes."""
         if from_node not in self.nodes:
             raise DependencyResolutionError(f"Source node {from_node} does not exist")
@@ -692,7 +692,7 @@ class DependencyGraph:
 
     def _would_create_cycle(self, new_edge: DependencyEdge) -> bool:
         """Check if adding an edge would create a cycle."""
-        visited: Set[str] = set()
+        visited: set[str] = set()
 
         def has_cycle(node: str) -> bool:
             visited.add(node)
@@ -709,7 +709,7 @@ class DependencyGraph:
         self,
         node_id: str,
         new_status: DependencyStatus,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ) -> None:
         """Update the status of a node."""
         if node_id not in self.nodes:
@@ -764,27 +764,23 @@ class DependencyGraph:
             }:
                 edge = self._get_edge(node_id, downstream_id)
                 if edge and edge.edge_type == "hard":
-                    self.update_node_status(
-                        downstream_id, DependencyStatus.PERMANENTLY_BLOCKED
-                    )
+                    self.update_node_status(downstream_id, DependencyStatus.PERMANENTLY_BLOCKED)
 
-    def get_ready_phases(self) -> List[str]:
+    def get_ready_phases(self) -> list[str]:
         """Get all phases that are ready to start."""
         return [
-            node_id
-            for node_id, node in self.nodes.items()
-            if node.status == DependencyStatus.READY
+            node_id for node_id, node in self.nodes.items() if node.status == DependencyStatus.READY
         ]
 
-    def get_upstream_dependencies(self, node_id: str) -> List[str]:
+    def get_upstream_dependencies(self, node_id: str) -> list[str]:
         """Get upstream dependencies for a node."""
         return list(self.nodes.get(node_id, DependencyNode("", "")).upstream)
 
-    def get_downstream_dependents(self, node_id: str) -> List[str]:
+    def get_downstream_dependents(self, node_id: str) -> list[str]:
         """Get downstream dependents of a node."""
         return list(self._adjacency.get(node_id, set()))
 
-    def get_newly_unblocked(self, node_id: str) -> List[str]:
+    def get_newly_unblocked(self, node_id: str) -> list[str]:
         """Get downstream nodes that became unblocked by a node completion."""
         unblocked = []
         for downstream_id in self._adjacency.get(node_id, set()):
@@ -792,7 +788,7 @@ class DependencyGraph:
                 unblocked.append(downstream_id)
         return unblocked
 
-    def get_permanently_blocked(self) -> List[str]:
+    def get_permanently_blocked(self) -> list[str]:
         """Get all permanently blocked nodes."""
         return [
             node_id
@@ -800,13 +796,11 @@ class DependencyGraph:
             if node.status == DependencyStatus.PERMANENTLY_BLOCKED
         ]
 
-    def get_state_snapshot(self) -> Dict[str, str]:
+    def get_state_snapshot(self) -> dict[str, str]:
         """Get a snapshot of all node states."""
-        return {
-            node_id: node.status.name for node_id, node in self.nodes.items()
-        }
+        return {node_id: node.status.name for node_id, node in self.nodes.items()}
 
-    def get_summary(self) -> Dict[str, Any]:
+    def get_summary(self) -> dict[str, Any]:
         """Get a summary of the graph."""
         status_counts = {}
         for node in self.nodes.values():
@@ -830,9 +824,9 @@ class DependencyGraph:
         cycles = []
         orphans = []
 
-        visited: Set[str] = set()
-        rec_stack: Set[str] = set()
-        path: List[str] = []
+        visited: set[str] = set()
+        rec_stack: set[str] = set()
+        path: list[str] = []
 
         def dfs_cycle(node: str) -> bool:
             visited.add(node)
@@ -874,14 +868,14 @@ class DependencyGraph:
             orphan_nodes=orphans,
         )
 
-    def _get_edge(self, from_node: str, to_node: str) -> Optional[DependencyEdge]:
+    def _get_edge(self, from_node: str, to_node: str) -> DependencyEdge | None:
         """Get an edge between two nodes."""
         for edge in self.edges:
             if edge.from_node == from_node and edge.to_node == to_node:
                 return edge
         return None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize the graph to a dictionary."""
         return {
             "nodes": {
@@ -906,8 +900,10 @@ class DependencyGraph:
 # SECTION 5: PHASE SCHEDULER (from orchestration_core.py)
 # =============================================================================
 
+
 class SchedulingStrategy(Enum):
     """Scheduling strategies for phase execution."""
+
     SEQUENTIAL = auto()
     PARALLEL = auto()
     HYBRID = auto()
@@ -917,13 +913,14 @@ class SchedulingStrategy(Enum):
 @dataclass
 class SchedulingDecision:
     """Result of a scheduling operation."""
-    phases_to_start: List[str] = field(default_factory=list)
-    phases_waiting: List[str] = field(default_factory=list)
-    phases_blocked: List[str] = field(default_factory=list)
+
+    phases_to_start: list[str] = field(default_factory=list)
+    phases_waiting: list[str] = field(default_factory=list)
+    phases_blocked: list[str] = field(default_factory=list)
     rationale: str = ""
     strategy_used: SchedulingStrategy = SchedulingStrategy.HYBRID
     timestamp: datetime = field(default_factory=datetime.utcnow)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -932,21 +929,20 @@ class PhaseScheduler:
 
     dependency_graph: DependencyGraph
     mode: SchedulingStrategy = SchedulingStrategy.HYBRID
-    priority_weights: Dict[str, float] = field(default_factory=dict)
+    priority_weights: dict[str, float] = field(default_factory=dict)
 
     def get_ready_phases(
         self,
-        completed_phases: Set[str],
-        failed_phases: Set[str],
-        active_phases: Set[str],
+        completed_phases: set[str],
+        failed_phases: set[str],
+        active_phases: set[str],
         max_parallel: int = 4,
     ) -> SchedulingDecision:
         """Determine which phases should start."""
         ready_phases = self.dependency_graph.get_ready_phases()
 
         available = [
-            p for p in ready_phases
-            if p not in active_phases and p not in completed_phases
+            p for p in ready_phases if p not in active_phases and p not in completed_phases
         ]
 
         blocked = self._get_blocked_phases(available, completed_phases, failed_phases)
@@ -962,9 +958,9 @@ class PhaseScheduler:
 
     def _schedule_sequential(
         self,
-        available: List[str],
-        blocked: List[str],
-        active_phases: Set[str],
+        available: list[str],
+        blocked: list[str],
+        active_phases: set[str],
         max_parallel: int,
     ) -> SchedulingDecision:
         """Sequential scheduling - one phase at a time."""
@@ -990,9 +986,9 @@ class PhaseScheduler:
 
     def _schedule_parallel(
         self,
-        available: List[str],
-        blocked: List[str],
-        active_phases: Set[str],
+        available: list[str],
+        blocked: list[str],
+        active_phases: set[str],
         max_parallel: int,
     ) -> SchedulingDecision:
         """Parallel scheduling - start all available up to limit."""
@@ -1010,9 +1006,9 @@ class PhaseScheduler:
 
     def _schedule_hybrid(
         self,
-        available: List[str],
-        blocked: List[str],
-        active_phases: Set[str],
+        available: list[str],
+        blocked: list[str],
+        active_phases: set[str],
         max_parallel: int,
     ) -> SchedulingDecision:
         """Hybrid scheduling - respect dependencies, parallelize independent phases."""
@@ -1041,9 +1037,9 @@ class PhaseScheduler:
 
     def _schedule_priority(
         self,
-        available: List[str],
-        blocked: List[str],
-        active_phases: Set[str],
+        available: list[str],
+        blocked: list[str],
+        active_phases: set[str],
         max_parallel: int,
     ) -> SchedulingDecision:
         """Priority-based scheduling - use priority weights."""
@@ -1067,10 +1063,10 @@ class PhaseScheduler:
 
     def _get_blocked_phases(
         self,
-        available: List[str],
-        completed_phases: Set[str],
-        failed_phases: Set[str],
-    ) -> List[str]:
+        available: list[str],
+        completed_phases: set[str],
+        failed_phases: set[str],
+    ) -> list[str]:
         """Get phases that are blocked by failed dependencies."""
         blocked = []
         for phase_id in available:
@@ -1081,12 +1077,12 @@ class PhaseScheduler:
                     break
         return blocked
 
-    def _prioritize_by_unblocking(self, phases: List[str]) -> List[str]:
+    def _prioritize_by_unblocking(self, phases: list[str]) -> list[str]:
         """Prioritize phases by how many downstream phases they unblock."""
         unblocking_counts = self._get_unblocking_counts(phases)
         return sorted(phases, key=lambda p: unblocking_counts.get(p, 0), reverse=True)
 
-    def _get_unblocking_counts(self, phases: List[str]) -> Dict[str, int]:
+    def _get_unblocking_counts(self, phases: list[str]) -> dict[str, int]:
         """Get count of downstream phases each phase would unblock."""
         counts = {}
         for phase_id in phases:
@@ -1104,8 +1100,10 @@ class PhaseScheduler:
 # SECTION 6: CORE ORCHESTRATOR (consolidated from core_orchestrator.py)
 # =============================================================================
 
+
 class PhaseStatus(str, Enum):
     """Execution status for a pipeline phase."""
+
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
@@ -1117,6 +1115,7 @@ class PhaseStatus(str, Enum):
 
 class PhaseID(str, Enum):
     """Canonical phase identifiers."""
+
     PHASE_0 = "P00"
     PHASE_1 = "P01"
     PHASE_2 = "P02"
@@ -1204,13 +1203,14 @@ PHASE_METADATA = {
 @dataclass
 class PhaseResult:
     """Result of a single phase execution."""
+
     phase_id: PhaseID
     status: PhaseStatus
     output: Any
     execution_time_s: float
     violations: list = field(default_factory=list)
     metrics: dict = field(default_factory=dict)
-    error: Optional[Exception] = None
+    error: Exception | None = None
     timestamp: datetime = field(default_factory=datetime.utcnow)
     stage_timings: dict = field(default_factory=dict)
     sub_phase_results: dict = field(default_factory=dict)
@@ -1220,21 +1220,23 @@ class PhaseResult:
 class ExecutionContext:
     """Shared context across all pipeline phases."""
 
-    wiring: Optional[Any] = None
-    questionnaire: Optional[Any] = None
-    sisas: Optional[Any] = None
+    wiring: Any | None = None
+    questionnaire: Any | None = None
+    sisas: Any | None = None
 
     phase_inputs: dict = field(default_factory=dict)
     phase_outputs: dict = field(default_factory=dict)
     phase_results: dict = field(default_factory=dict)
 
-    execution_id: str = field(default_factory=lambda: blake3.blake3(f"{time.time()}".encode()).hexdigest()[:16])
+    execution_id: str = field(
+        default_factory=lambda: blake3.blake3(f"{time.time()}".encode()).hexdigest()[:16]
+    )
     start_time: datetime = field(default_factory=datetime.utcnow)
     config: dict = field(default_factory=dict)
 
     input_hashes: dict = field(default_factory=dict)
     output_hashes: dict = field(default_factory=dict)
-    seed: Optional[int] = None
+    seed: int | None = None
 
     total_violations: list = field(default_factory=list)
     signal_metrics: dict = field(default_factory=dict)
@@ -1256,12 +1258,15 @@ class ExecutionContext:
         if phase_id != PhaseID.PHASE_0:
             prev_phase_id = PhaseID(f"P0{int(phase_id.value[2]) - 1}")
             if prev_phase_id not in self.phase_results:
-                raise RuntimeError(f"Phase {phase_id.value} requires {prev_phase_id.value} to complete first")
+                raise RuntimeError(
+                    f"Phase {phase_id.value} requires {prev_phase_id.value} to complete first"
+                )
 
 
 @dataclass
 class PipelineResult:
     """Result of complete pipeline execution."""
+
     success: bool
     phase_results: dict
     total_duration_seconds: float
@@ -1272,15 +1277,16 @@ class PipelineResult:
 @dataclass(frozen=True)
 class ExecutionTrace:
     """Immutable trace of execution for debugging/analysis."""
+
     execution_id: str
-    phase_sequence: Tuple[str, ...]
-    state_transitions: Tuple[Dict[str, Any], ...]
-    phase_timings: Dict[str, float]
-    violations: Tuple[Any, ...]
-    errors: Tuple[Exception, ...]
-    metadata: Dict[str, Any]
-    
-    def to_dict(self) -> Dict[str, Any]:
+    phase_sequence: tuple[str, ...]
+    state_transitions: tuple[dict[str, Any], ...]
+    phase_timings: dict[str, float]
+    violations: tuple[Any, ...]
+    errors: tuple[Exception, ...]
+    metadata: dict[str, Any]
+
+    def to_dict(self) -> dict[str, Any]:
         return {
             "execution_id": self.execution_id,
             "phase_sequence": self.phase_sequence,
@@ -1293,6 +1299,7 @@ class ExecutionTrace:
 
     def to_json(self, path: Path) -> None:
         import json
+
         with open(path, "w") as f:
             json.dump(self.to_dict(), f, indent=2, default=str)
 
@@ -1312,6 +1319,7 @@ class Phase0ValidationResult:
         questionnaire_sha256: SHA-256 hash of canonical questionnaire
         input_pdf_sha256: SHA-256 hash of input PDF document
     """
+
     all_passed: bool
     gate_results: list  # list[GateResult] - can't use forward ref here
     validation_time: str
@@ -1323,7 +1331,9 @@ class Phase0ValidationResult:
         """Convert to dictionary for serialization."""
         return {
             "all_passed": self.all_passed,
-            "gate_results": [gr.to_dict() if hasattr(gr, 'to_dict') else gr for gr in self.gate_results],
+            "gate_results": [
+                gr.to_dict() if hasattr(gr, "to_dict") else gr for gr in self.gate_results
+            ],
             "validation_time": self.validation_time,
             "seed_snapshot": self.seed_snapshot,
             "questionnaire_sha256": self.questionnaire_sha256,
@@ -1361,20 +1371,41 @@ class UnifiedOrchestrator:
         {
             "consumer_id": "phase_01_extraction_consumer",
             "scopes": [{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
-            "capabilities": ["EXTRACTION", "STRUCTURAL_PARSING", "TRIPLET_EXTRACTION",
-                           "NUMERIC_PARSING", "NORMATIVE_LOOKUP", "HIERARCHY_PARSING",
-                           "FINANCIAL_ANALYSIS", "POPULATION_PARSING", "TEMPORAL_PARSING",
-                           "CAUSAL_ANALYSIS", "NER", "SEMANTIC_ANALYSIS", "PHASE_MONITORING"],
+            "capabilities": [
+                "EXTRACTION",
+                "STRUCTURAL_PARSING",
+                "TRIPLET_EXTRACTION",
+                "NUMERIC_PARSING",
+                "NORMATIVE_LOOKUP",
+                "HIERARCHY_PARSING",
+                "FINANCIAL_ANALYSIS",
+                "POPULATION_PARSING",
+                "TEMPORAL_PARSING",
+                "CAUSAL_ANALYSIS",
+                "NER",
+                "SEMANTIC_ANALYSIS",
+                "PHASE_MONITORING",
+            ],
         },
         {
             "consumer_id": "phase_02_enrichment_consumer",
             "scopes": [{"phase": "phase_2", "policy_area": "ALL", "slot": "ALL"}],
-            "capabilities": ["ENRICHMENT", "PATTERN_MATCHING", "ENTITY_RECOGNITION", "PHASE_MONITORING"],
+            "capabilities": [
+                "ENRICHMENT",
+                "PATTERN_MATCHING",
+                "ENTITY_RECOGNITION",
+                "PHASE_MONITORING",
+            ],
         },
         {
             "consumer_id": "phase_03_validation_consumer",
             "scopes": [{"phase": "phase_3", "policy_area": "ALL", "slot": "ALL"}],
-            "capabilities": ["VALIDATION", "NORMATIVE_CHECK", "COHERENCE_CHECK", "PHASE_MONITORING"],
+            "capabilities": [
+                "VALIDATION",
+                "NORMATIVE_CHECK",
+                "COHERENCE_CHECK",
+                "PHASE_MONITORING",
+            ],
         },
         {
             "consumer_id": "phase_04_micro_consumer",
@@ -1389,7 +1420,12 @@ class UnifiedOrchestrator:
         {
             "consumer_id": "phase_06_macro_consumer",
             "scopes": [{"phase": "phase_6", "policy_area": "ALL", "slot": "ALL"}],
-            "capabilities": ["SCORING", "MACRO_LEVEL", "POLICY_AREA_AGGREGATION", "PHASE_MONITORING"],
+            "capabilities": [
+                "SCORING",
+                "MACRO_LEVEL",
+                "POLICY_AREA_AGGREGATION",
+                "PHASE_MONITORING",
+            ],
         },
         {
             "consumer_id": "phase_07_aggregation_consumer",
@@ -1428,18 +1464,18 @@ class UnifiedOrchestrator:
             dependency_graph=self.dependency_graph,
             mode=SchedulingStrategy[config.scheduling_mode],
         )
-        
+
         # Execution Trace
-        self._trace: List[Dict[str, Any]] = []
+        self._trace: list[dict[str, Any]] = []
         self._trace_lock = threading.Lock()
         self._execution_id = str(uuid4())
-        self._phase_timings: Dict[str, float] = {}
+        self._phase_timings: dict[str, float] = {}
 
         # Execution state
-        self._active_phases: Set[str] = set()
-        self._completed_phases: Dict[str, Any] = {}
-        self._failed_phases: Dict[str, List[Any]] = {}
-        self._phase_retry_counts: Dict[str, int] = {}
+        self._active_phases: set[str] = set()
+        self._completed_phases: dict[str, Any] = {}
+        self._failed_phases: dict[str, list[Any]] = {}
+        self._phase_retry_counts: dict[str, int] = {}
 
         # ==========================================================================
         # UNIFIED FACTORY INITIALIZATION
@@ -1453,10 +1489,12 @@ class UnifiedOrchestrator:
             # 3. Fall back to current working directory
             project_root = self._determine_project_root(config)
 
-            self.factory: Optional[UnifiedFactory] = UnifiedFactory(
+            self.factory: UnifiedFactory | None = UnifiedFactory(
                 config=FactoryConfig(
                     project_root=project_root,
-                    questionnaire_path=Path(config.questionnaire_path) if config.questionnaire_path else None,
+                    questionnaire_path=(
+                        Path(config.questionnaire_path) if config.questionnaire_path else None
+                    ),
                     sisas_enabled=config.enable_sisas,
                     lazy_load_questions=True,
                     enable_parallel_execution=config.enable_parallel_execution,
@@ -1488,7 +1526,9 @@ class UnifiedOrchestrator:
                 # Register phase consumers with SDO (legacy mode)
                 if self.context.sisas is not None:
                     consumers_registered = self._register_phase_consumers()
-                    self.logger.info(f"SISAS initialized (legacy mode) with {consumers_registered} consumers")
+                    self.logger.info(
+                        f"SISAS initialized (legacy mode) with {consumers_registered} consumers"
+                    )
 
             # ==========================================================================
             # INTERVENTION 2: Orchestrator-Factory Alignment
@@ -1501,7 +1541,9 @@ class UnifiedOrchestrator:
                 questionnaire_available=self.context.questionnaire is not None,
                 signal_registry_available=self.context.signal_registry is not None,
                 sisas_available=self.context.sisas is not None,
-                factory_capabilities=self.factory.get_factory_capabilities() if self.factory else None,
+                factory_capabilities=(
+                    self.factory.get_factory_capabilities() if self.factory else None
+                ),
             )
         else:
             self.factory = None
@@ -1567,7 +1609,7 @@ class UnifiedOrchestrator:
                     consumer_id=config["consumer_id"],
                     scopes=config["scopes"],
                     capabilities=config["capabilities"],
-                    handler=handler
+                    handler=handler,
                 )
                 registered += 1
                 self.logger.debug(f"Registered consumer: {config['consumer_id']}")
@@ -1575,29 +1617,25 @@ class UnifiedOrchestrator:
                 self.logger.error(f"Failed to register {config['consumer_id']}: {e}")
 
         self.logger.info(
-            "Phase consumers registered",
-            registered=registered,
-            total=len(self.CONSUMER_CONFIGS)
+            "Phase consumers registered", registered=registered, total=len(self.CONSUMER_CONFIGS)
         )
         return registered
 
     def _create_phase_handler(self, consumer_id: str):
         """Create a signal handler for a phase consumer."""
+
         def handler(signal):
             phase_num = consumer_id.split("_")[1]  # Extract "00", "01", etc.
             metric_key = f"phase_{phase_num}_signals"
             self.context.signal_metrics.setdefault(metric_key, []).append(signal.signal_id)
             self.logger.debug(f"{consumer_id} received signal: {signal.signal_id}")
+
         return handler
 
     def _trace_event(self, event_type: str, **kwargs) -> None:
         """Record an execution event to the trace."""
         with self._trace_lock:
-            event = {
-                "timestamp": time.time(),
-                "type": event_type,
-                "data": kwargs
-            }
+            event = {"timestamp": time.time(), "type": event_type, "data": kwargs}
             self._trace.append(event)
 
     def get_execution_trace(self) -> ExecutionTrace:
@@ -1606,25 +1644,23 @@ class UnifiedOrchestrator:
             # Safe retrieval
             return ExecutionTrace(
                 execution_id=self._execution_id,
-                phase_sequence=tuple(e["data"].get("phase_id") for e in self._trace if e["type"] == "PHASE_COMPLETE"),
-                state_transitions=(), 
+                phase_sequence=tuple(
+                    e["data"].get("phase_id") for e in self._trace if e["type"] == "PHASE_COMPLETE"
+                ),
+                state_transitions=(),
                 phase_timings=self._phase_timings.copy(),
                 violations=(),
                 errors=(),
-                metadata={"event_count": len(self._trace)}
+                metadata={"event_count": len(self._trace)},
             )
 
     def to_json(self, path: Path) -> None:
-         """Export execution trace to JSON."""
-         trace = self.get_execution_trace()
-         trace.to_json(path)
+        """Export execution trace to JSON."""
+        trace = self.get_execution_trace()
+        trace.to_json(path)
 
     def _emit_phase_signal(
-        self,
-        phase_id: PhaseID,
-        event_type: str,
-        payload: Dict[str, Any],
-        policy_area: str = "ALL"
+        self, phase_id: PhaseID, event_type: str, payload: dict[str, Any], policy_area: str = "ALL"
     ) -> bool:
         """
         Emit a SISAS signal for phase lifecycle events.
@@ -1641,8 +1677,6 @@ class UnifiedOrchestrator:
         if not self.config.enable_sisas:
             return False
 
-
-
         if self.context.sisas is None or not SISAS_CORE_AVAILABLE:
             return False
 
@@ -1652,16 +1686,12 @@ class UnifiedOrchestrator:
             phase_num = int(phase_id.value[1:])
             phase_str = f"phase_{phase_num}"
 
-            scope = SignalScope(
-                phase=phase_str,
-                policy_area=policy_area,
-                slot="ALL"
-            )
+            scope = SignalScope(phase=phase_str, policy_area=policy_area, slot="ALL")
 
             provenance = SignalProvenance(
                 extractor="UnifiedOrchestrator",
                 source_file="orchestrator.py",
-                extraction_pattern=f"{phase_id.value}_{event_type}"
+                extraction_pattern=f"{phase_id.value}_{event_type}",
             )
 
             signal = Signal.create(
@@ -1671,11 +1701,11 @@ class UnifiedOrchestrator:
                     "phase_id": phase_id.value,
                     "event_type": event_type,
                     "timestamp": datetime.utcnow().isoformat(),
-                    **payload
+                    **payload,
                 },
                 provenance=provenance,
                 empirical_availability=1.0,
-                capabilities_required=["PHASE_MONITORING"]
+                capabilities_required=["PHASE_MONITORING"],
             )
 
             delivered = sdo.dispatch(signal)
@@ -1684,7 +1714,7 @@ class UnifiedOrchestrator:
                 "Phase signal emitted",
                 phase=phase_id.value,
                 event_type=event_type,
-                delivered=delivered
+                delivered=delivered,
             )
 
             return delivered
@@ -1712,11 +1742,10 @@ class UnifiedOrchestrator:
             3. Try output_dir.parent if artifacts/ is at output level
             4. Fall back to current working directory
         """
-        import sys
 
         # Strategy 1: Check for explicit factory config
-        if hasattr(config, 'factory_config') and config.factory_config:
-            if hasattr(config.factory_config, 'project_root'):
+        if hasattr(config, "factory_config") and config.factory_config:
+            if hasattr(config.factory_config, "project_root"):
                 return Path(config.factory_config.project_root)
 
         output_dir = Path(config.output_dir)
@@ -1755,7 +1784,7 @@ class UnifiedOrchestrator:
         self.logger.warning(
             "Could not determine project_root via heuristics, using CWD",
             cwd=str(cwd),
-            output_dir=str(output_dir)
+            output_dir=str(output_dir),
         )
         return cwd
 
@@ -1768,7 +1797,7 @@ class UnifiedOrchestrator:
             graph.add_node(
                 node_id=phase_id.value,
                 phase_id=phase_id.value,
-                metadata=PHASE_METADATA.get(phase_id, {})
+                metadata=PHASE_METADATA.get(phase_id, {}),
             )
 
         # Add sequential dependencies
@@ -1784,17 +1813,14 @@ class UnifiedOrchestrator:
         Orchestrates all 10 phases (0-9) in sequence.
         """
         self.logger.critical(
-            "="*80 + "\n" +
-            "F.A.R.F.A.N PIPELINE EXECUTION STARTED\n" +
-            "="*80,
+            "=" * 80 + "\n" + "F.A.R.F.A.N PIPELINE EXECUTION STARTED\n" + "=" * 80,
             municipality=self.config.municipality_name,
             mode="STRICT" if self.config.strict_mode else "NORMAL",
         )
 
         # Transition to INITIALIZING
         self.state_machine.transition_to(
-            OrchestrationState.INITIALIZING,
-            reason="Starting pipeline execution"
+            OrchestrationState.INITIALIZING, reason="Starting pipeline execution"
         )
 
         # Record start time
@@ -1804,8 +1830,7 @@ class UnifiedOrchestrator:
         try:
             # Transition to RUNNING
             self.state_machine.transition_to(
-                OrchestrationState.RUNNING,
-                reason="Initialization complete"
+                OrchestrationState.RUNNING, reason="Initialization complete"
             )
 
             # Execute phases based on configuration
@@ -1835,14 +1860,14 @@ class UnifiedOrchestrator:
 
             # Transition to COMPLETED
             self.state_machine.transition_to(
-                OrchestrationState.COMPLETED,
-                reason="All phases completed successfully"
+                OrchestrationState.COMPLETED, reason="All phases completed successfully"
             )
 
             self.logger.critical(
-                "="*80 + "\n" +
-                "F.A.R.F.A.N PIPELINE EXECUTION COMPLETED SUCCESSFULLY\n" +
-                "="*80,
+                "=" * 80
+                + "\n"
+                + "F.A.R.F.A.N PIPELINE EXECUTION COMPLETED SUCCESSFULLY\n"
+                + "=" * 80,
                 total_time_seconds=total_time,
                 phases_completed=len(self.context.phase_results),
             )
@@ -1854,8 +1879,7 @@ class UnifiedOrchestrator:
 
             # Transition to COMPLETED_WITH_ERRORS
             self.state_machine.transition_to(
-                OrchestrationState.COMPLETED_WITH_ERRORS,
-                reason=f"Pipeline failed: {str(e)}"
+                OrchestrationState.COMPLETED_WITH_ERRORS, reason=f"Pipeline failed: {str(e)}"
             )
 
             if self.config.strict_mode:
@@ -1869,7 +1893,7 @@ class UnifiedOrchestrator:
                 errors=[str(e)],
             )
 
-    def _get_phases_to_execute(self) -> List[PhaseID]:
+    def _get_phases_to_execute(self) -> list[PhaseID]:
         """Get list of phases to execute based on configuration."""
         phases_to_execute = self.config.phases_to_execute
 
@@ -1884,7 +1908,7 @@ class UnifiedOrchestrator:
             all_phases = list(PhaseID)
             start_idx = int(start.replace("P0", "")) if start.startswith("P0") else int(start)
             end_idx = int(end.replace("P0", "")) if end.startswith("P0") else int(end)
-            return all_phases[start_idx:end_idx + 1]
+            return all_phases[start_idx : end_idx + 1]
 
         return list(PhaseID)
 
@@ -1908,9 +1932,7 @@ class UnifiedOrchestrator:
 
         # Emit PHASE_START signal
         self._emit_phase_signal(
-            phase_id=phase_id,
-            event_type="PHASE_START",
-            payload={"status": "started"}
+            phase_id=phase_id, event_type="PHASE_START", payload={"status": "started"}
         )
 
         try:
@@ -1927,10 +1949,7 @@ class UnifiedOrchestrator:
             self._emit_phase_signal(
                 phase_id=phase_id,
                 event_type="PHASE_COMPLETE",
-                payload={
-                    "status": "completed",
-                    "execution_time_s": execution_time
-                }
+                payload={"status": "completed", "execution_time_s": execution_time},
             )
 
             result = PhaseResult(
@@ -1950,11 +1969,7 @@ class UnifiedOrchestrator:
             self._emit_phase_signal(
                 phase_id=phase_id,
                 event_type="PHASE_FAILED",
-                payload={
-                    "status": "failed",
-                    "error": str(e),
-                    "execution_time_s": execution_time
-                }
+                payload={"status": "failed", "error": str(e), "execution_time_s": execution_time},
             )
 
             self.dependency_graph.update_node_status(phase_id.value, DependencyStatus.FAILED)
@@ -1964,7 +1979,9 @@ class UnifiedOrchestrator:
                 retry_count = self._phase_retry_counts.get(phase_id.value, 0)
                 if retry_count < self.config.max_retries_per_phase:
                     self._phase_retry_counts[phase_id.value] = retry_count + 1
-                    self.dependency_graph.update_node_status(phase_id.value, DependencyStatus.PENDING_RETRY)
+                    self.dependency_graph.update_node_status(
+                        phase_id.value, DependencyStatus.PENDING_RETRY
+                    )
                     return self._execute_single_phase(phase_id)
 
             return PhaseResult(
@@ -1999,63 +2016,62 @@ class UnifiedOrchestrator:
     # =========================================================================
     # INTERVENTION 2: Orchestrator-Factory Alignment Methods
     # =========================================================================
-    
+
     def _sync_with_factory(self) -> None:
         """
         Synchronize orchestrator state with factory.
-        
+
         INTERVENTION 2: Bidirectional sync for alignment.
         """
         if not self.factory:
             return
-            
+
         orchestrator_state = {
             "current_phase": None,
             "max_workers": self.config.max_workers,
             "enable_parallel": self.config.enable_parallel_execution,
             "phases_to_execute": self.config.phases_to_execute,
         }
-        
+
         sync_result = self.factory.synchronize_with_orchestrator(orchestrator_state)
-        
+
         if not sync_result["success"]:
             self.logger.warning(
                 "Factory sync detected conflicts",
                 conflicts=sync_result["conflicts"],
             )
             # Handle conflicts (could adjust scheduling, etc.)
-            
+
         if sync_result["adjustments"]:
             self.logger.info(
                 "Factory sync recommended adjustments",
                 adjustments=sync_result["adjustments"],
             )
-    
-    def _get_factory_execution_plan(self, phase_id: PhaseID) -> Optional[Dict[str, Any]]:
+
+    def _get_factory_execution_plan(self, phase_id: PhaseID) -> dict[str, Any] | None:
         """
         Get execution plan from factory for a phase.
-        
+
         INTERVENTION 2: Contract-aware scheduling.
         """
         if not self.factory:
             return None
-            
+
         # Get contracts for this phase
         contracts = self.factory.load_contracts()
         phase_contracts = [
-            cid for cid, c in contracts.items()
-            if phase_id.value in c.get("applicable_phases", [])
+            cid for cid, c in contracts.items() if phase_id.value in c.get("applicable_phases", [])
         ]
-        
+
         if not phase_contracts:
             return None
-            
+
         # Get execution plan with constraints
         constraints = {
             "max_parallel": self.config.max_workers,
             "time_budget_seconds": 300,  # 5 minutes per phase budget
         }
-        
+
         return self.factory.get_contract_execution_plan(phase_contracts, constraints)
 
     # =========================================================================
@@ -2106,7 +2122,7 @@ class UnifiedOrchestrator:
     Implementation: Delegates to VerifiedPipelineRunner (canonical Phase 0 orchestrator).
     """
 
-    def _execute_phase_00(self) -> Dict[str, Any]:
+    def _execute_phase_00(self) -> dict[str, Any]:
         """
         Execute Phase 0: Bootstrap & Validation via VerifiedPipelineRunner.
 
@@ -2129,21 +2145,24 @@ class UnifiedOrchestrator:
             - exit_gate_results: All 7 gate validations aligned with contract
         """
         from pathlib import Path as PathLib
+
+        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
+            Phase0Input,
+            validate_phase0_input,
+        )
+        from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
+            check_all_gates,
+            get_gate_summary,
+        )
         from farfan_pipeline.phases.Phase_00.phase0_90_01_verified_pipeline_runner import (
             VerifiedPipelineRunner,
         )
-        from farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap import (
-            WiringBootstrap, WiringComponents,
-        )
-        from farfan_pipeline.phases.Phase_00.phase0_50_01_exit_gates import (
-            check_all_gates, get_gate_summary, GateResult,
-        )
-        from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
-            Phase0Input, validate_phase0_input, CanonicalInput,
-        )
+        from farfan_pipeline.phases.Phase_00.phase0_90_02_bootstrap import WiringBootstrap
 
         self.logger.info("=" * 80)
-        self.logger.critical("PHASE 0: BOOTSTRAP & VALIDATION - DELEGATING TO VerifiedPipelineRunner")
+        self.logger.critical(
+            "PHASE 0: BOOTSTRAP & VALIDATION - DELEGATING TO VerifiedPipelineRunner"
+        )
         self.logger.info("=" * 80)
 
         exit_gates = {}
@@ -2157,8 +2176,16 @@ class UnifiedOrchestrator:
             self.logger.info("[P0] Part 1: Running P0.0-P0.3 via VerifiedPipelineRunner")
 
             # Prepare paths for VerifiedPipelineRunner
-            plan_pdf_path = PathLib(self.config.document_path) if self.config.document_path else PathLib("input.pdf")
-            questionnaire_path = PathLib(self.config.questionnaire_path) if self.config.questionnaire_path else PathLib("canonic_questionnaire_central/_registry/questionnaire_monolith.json")
+            plan_pdf_path = (
+                PathLib(self.config.document_path)
+                if self.config.document_path
+                else PathLib("input.pdf")
+            )
+            questionnaire_path = (
+                PathLib(self.config.questionnaire_path)
+                if self.config.questionnaire_path
+                else PathLib("canonic_questionnaire_central/_registry/questionnaire_monolith.json")
+            )
 
             # Create artifacts directory
             artifacts_dir = PathLib("artifacts") / "phase0"
@@ -2172,6 +2199,7 @@ class UnifiedOrchestrator:
 
             # Run Phase 0 via VerifiedPipelineRunner (P0.0-P0.3)
             import asyncio
+
             phase0_success = asyncio.run(runner.run_phase_zero())
 
             if not phase0_success:
@@ -2184,7 +2212,7 @@ class UnifiedOrchestrator:
                         "errors": runner.errors,
                         "bootstrap_failed": runner._bootstrap_failed,
                         "execution_id": runner.execution_id,
-                    }
+                    },
                 )
 
             # Check all 7 gates (GATE_1-7 from contract)
@@ -2201,7 +2229,7 @@ class UnifiedOrchestrator:
                             "gate_id": failed_gate.gate_id,
                             "gate_name": failed_gate.gate_name,
                             "reason": failed_gate.reason,
-                        }
+                        },
                     )
 
             # Map gate results to contract-aligned exit gates (GATE_1-7)
@@ -2221,8 +2249,7 @@ class UnifiedOrchestrator:
             self.logger.info("[P0] Part 2: Creating CanonicalInput (file integrity validation)")
 
             phase0_input = Phase0Input(
-                document_path=plan_pdf_path,
-                municipality_name=self.config.municipality_name
+                document_path=plan_pdf_path, municipality_name=self.config.municipality_name
             )
             canonical_input = validate_phase0_input(phase0_input)
 
@@ -2245,13 +2272,16 @@ class UnifiedOrchestrator:
                 calibration_profile="default",
                 abort_on_insufficient=False,
                 resource_limits=self.config.resource_limits,
-                flags=flags
+                flags=flags,
             )
 
             wiring_components = bootstrap.bootstrap()
 
             # Validate wiring integrity
-            from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import WiringValidator
+            from farfan_pipeline.phases.Phase_00.phase0_90_03_wiring_validator import (
+                WiringValidator,
+            )
+
             validator = WiringValidator()
             wiring_valid = validator.validate_wiring(wiring_components)
 
@@ -2261,7 +2291,9 @@ class UnifiedOrchestrator:
                     error_code="P0_WIRING_VALIDATION_FAILED",
                 )
 
-            self.logger.info(f"[P0] Wiring complete: {wiring_components.factory.factory_instances} factory instances")
+            self.logger.info(
+                f"[P0] Wiring complete: {wiring_components.factory.factory_instances} factory instances"
+            )
 
             # ====================================================================
             # PHASE 0 COMPLETE - STORE RESULTS
@@ -2272,9 +2304,9 @@ class UnifiedOrchestrator:
 
             # Store in context for subsequent phases
             self.context.wiring = wiring_components
-            
+
             # FORCE ARTICULATION: Update orchestrator factory with the bootstrapped one
-            if hasattr(wiring_components, 'factory') and wiring_components.factory:
+            if hasattr(wiring_components, "factory") and wiring_components.factory:
                 self.factory = wiring_components.factory
                 self.logger.info("[P0] Orchestrator factory updated from bootstrap wiring")
 
@@ -2282,13 +2314,27 @@ class UnifiedOrchestrator:
 
             return {
                 "status": "completed",
-                "canonical_input": canonical_input.to_dict() if hasattr(canonical_input, 'to_dict') else str(canonical_input),
+                "canonical_input": (
+                    canonical_input.to_dict()
+                    if hasattr(canonical_input, "to_dict")
+                    else str(canonical_input)
+                ),
                 "wiring_components": {
-                    "factory_status": wiring_components.factory.get_health_status().to_dict() if hasattr(wiring_components.factory, 'get_health_status') else "unknown",
-                    "argrouter_routes": wiring_components.arg_router.get_special_route_coverage() if wiring_components and wiring_components.arg_router else 0,
+                    "factory_status": (
+                        wiring_components.factory.get_health_status().to_dict()
+                        if hasattr(wiring_components.factory, "get_health_status")
+                        else "unknown"
+                    ),
+                    "argrouter_routes": (
+                        wiring_components.arg_router.get_special_route_coverage()
+                        if wiring_components and wiring_components.arg_router
+                        else 0
+                    ),
                 },
                 "exit_gates": exit_gates,
-                "validation_passed": canonical_input.validation_passed if canonical_input else False,
+                "validation_passed": (
+                    canonical_input.validation_passed if canonical_input else False
+                ),
                 "phase0_execution_id": runner.execution_id,
                 "seed_snapshot": runner.seed_snapshot,
                 "input_hashes": {
@@ -2305,7 +2351,7 @@ class UnifiedOrchestrator:
             raise PhaseExecutionError(
                 message=f"Phase 0 execution failed: {e}",
                 phase_id="P00",
-                context={"exit_gates": exit_gates}
+                context={"exit_gates": exit_gates},
             ) from e
 
     # =========================================================================
@@ -2336,7 +2382,7 @@ class UnifiedOrchestrator:
     Finalization: CanonPolicyPackage assembly
     """
 
-    def _execute_phase_01(self) -> Dict[str, Any]:
+    def _execute_phase_01(self) -> dict[str, Any]:
         """
         Execute Phase 1: CPP Ingestion - COMPLETE ORCHESTRATION.
 
@@ -2357,7 +2403,8 @@ class UnifiedOrchestrator:
         """
         from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
         from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
-            CanonPolicyPackage, SmartChunk, ChunkGraph
+            CanonPolicyPackage,
+            SmartChunk,
         )
 
         self.logger.info("=" * 80)
@@ -2378,29 +2425,40 @@ class UnifiedOrchestrator:
             # ====================================================================
             try:
                 from farfan_pipeline.phases.Phase_01.phase1_17_00_performance_metrics import (
-                    Phase1MetricsCollector
+                    Phase1MetricsCollector,
                 )
+
                 metrics_collector = Phase1MetricsCollector(plan_id=plan_id)
                 metrics_collector.start_phase()
                 self.logger.info(f"[P1] Metrics collector initialized for plan_id={plan_id}")
             except ImportError:
-                self.logger.warning("[P1] Metrics collector not available, running without performance tracking")
+                self.logger.warning(
+                    "[P1] Metrics collector not available, running without performance tracking"
+                )
                 metrics_collector = None
 
             # ====================================================================
             # INPUT: Get CanonicalInput from Phase 0
             # ====================================================================
             # Type note: Variable starts Optional, but after validation is guaranteed CanonicalInput
-            canonical_input_maybe: Optional[CanonicalInput] = self.context.get_phase_output(PhaseID.PHASE_0)
+            canonical_input_maybe: CanonicalInput | None = self.context.get_phase_output(
+                PhaseID.PHASE_0
+            )
             if canonical_input_maybe is None:
                 # Try to create from config
-                self.logger.warning("[P1] CanonicalInput not found in context, creating from config")
-                from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
-                    Phase0Input, validate_phase0_input
+                self.logger.warning(
+                    "[P1] CanonicalInput not found in context, creating from config"
                 )
+                from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import (
+                    Phase0Input,
+                    validate_phase0_input,
+                )
+
                 phase0_input = Phase0Input(
-                    document_path=Path(self.config.document_path) if self.config.document_path else None,
-                    municipality_name=self.config.municipality_name
+                    document_path=(
+                        Path(self.config.document_path) if self.config.document_path else None
+                    ),
+                    municipality_name=self.config.municipality_name,
                 )
                 # Explicitly type and validate the result
                 canonical_input_result: CanonicalInput = validate_phase0_input(phase0_input)
@@ -2424,8 +2482,9 @@ class UnifiedOrchestrator:
             if self.config.enable_checkpoint:
                 try:
                     from farfan_pipeline.phases.Phase_01.phase1_16_00_checkpoint_manager import (
-                        Phase1CheckpointManager
+                        Phase1CheckpointManager,
                     )
+
                     checkpoint_manager = Phase1CheckpointManager(
                         checkpoint_dir=checkpoint_dir,
                         plan_id=plan_id,
@@ -2447,7 +2506,9 @@ class UnifiedOrchestrator:
                             "plan_id": plan_id,
                         }
                 except ImportError:
-                    self.logger.warning("[P1] Checkpoint manager not available, running without recovery support")
+                    self.logger.warning(
+                        "[P1] Checkpoint manager not available, running without recovery support"
+                    )
                     checkpoint_manager = None
 
             # ====================================================================
@@ -2457,30 +2518,33 @@ class UnifiedOrchestrator:
             structural_profile = None
 
             if self.context.wiring:
-                signal_registry = getattr(self.context.wiring, 'signal_registry', None)
-                structural_profile = getattr(self.context.wiring, 'structural_profile', None)
-                self.logger.info(f"[P1] Extracted from wiring: signal_registry={signal_registry is not None}, structural_profile={structural_profile is not None}")
+                signal_registry = getattr(self.context.wiring, "signal_registry", None)
+                structural_profile = getattr(self.context.wiring, "structural_profile", None)
+                self.logger.info(
+                    f"[P1] Extracted from wiring: signal_registry={signal_registry is not None}, structural_profile={structural_profile is not None}"
+                )
 
             # ====================================================================
             # EXECUTE WITH FULL CONTRACT EXECUTOR (PRIMARY PATH)
             # ====================================================================
             self.logger.info("[P1] Using Phase 1 Full Contract Executor")
-            cpp_package: Optional[CanonPolicyPackage] = None
+            cpp_package: CanonPolicyPackage | None = None
 
             # Define execution function (with or without metrics tracking)
-            def _execute_phase1_core() -> Optional[CanonPolicyPackage]:
+            def _execute_phase1_core() -> CanonPolicyPackage | None:
                 """Core Phase 1 execution logic."""
                 # Import full contract executor
                 from farfan_pipeline.phases.Phase_01.phase1_13_00_cpp_ingestion import (
                     execute_phase_1_with_full_contract,
-                    Phase1FatalError,
                 )
 
                 # Log policy compliance
                 if signal_registry is not None:
                     self.logger.info("[P1] ✓ POLICY COMPLIANT: signal_registry injected via DI")
                 else:
-                    self.logger.warning("[P1] ⚠ POLICY VIOLATION: signal_registry NOT available (degraded mode)")
+                    self.logger.warning(
+                        "[P1] ⚠ POLICY VIOLATION: signal_registry NOT available (degraded mode)"
+                    )
 
                 # Execute Phase 1 with full contract enforcement
                 return execute_phase_1_with_full_contract(
@@ -2502,7 +2566,9 @@ class UnifiedOrchestrator:
                 # Extract smart chunks from package
                 smart_chunks = cpp_package.chunk_graph.chunks if cpp_package else []
 
-                self.logger.info(f"[P1] ✓ Full contract execution complete: {len(smart_chunks)} chunks")
+                self.logger.info(
+                    f"[P1] ✓ Full contract execution complete: {len(smart_chunks)} chunks"
+                )
 
                 # Populate subphase_results from execution trace
                 subphase_results["full_contract_executor"] = {
@@ -2514,8 +2580,7 @@ class UnifiedOrchestrator:
             except ImportError as e:
                 self.logger.error(f"[P1] Full contract executor not available: {e}")
                 raise PhaseExecutionError(
-                    message=f"Phase 1 full contract executor not available: {e}",
-                    phase_id="P01"
+                    message=f"Phase 1 full contract executor not available: {e}", phase_id="P01"
                 ) from e
 
             except Phase1FatalError as e:
@@ -2524,7 +2589,7 @@ class UnifiedOrchestrator:
                 raise PhaseExecutionError(
                     message=f"Phase 1 fatal error: {e}",
                     phase_id="P01",
-                    context={"error_type": "Phase1FatalError"}
+                    context={"error_type": "Phase1FatalError"},
                 ) from e
 
             # ====================================================================
@@ -2538,75 +2603,85 @@ class UnifiedOrchestrator:
 
             # Invariant 1: 60 Chunks (SP4 - Segmentation)
             chunk_count = len(smart_chunks)
-            invariant_60_chunks = (chunk_count == 60)
+            invariant_60_chunks = chunk_count == 60
             constitutional_invariants["invariant_60_chunks"] = {
                 "name": "60 Chunk Constitutional Invariant (SP4)",
                 "expected": 60,
                 "actual": chunk_count,
                 "passed": invariant_60_chunks,
-                "critical": True
+                "critical": True,
             }
-            self.logger.info(f"[P1] Invariant Check: 60 Chunks = {invariant_60_chunks} (actual: {chunk_count})")
+            self.logger.info(
+                f"[P1] Invariant Check: 60 Chunks = {invariant_60_chunks} (actual: {chunk_count})"
+            )
 
             # Invariant 2: Smart Chunk Generation (SP11)
-            all_smart_chunks_valid = all(
-                isinstance(chunk, SmartChunk) for chunk in smart_chunks
-            ) if smart_chunks else False
+            all_smart_chunks_valid = (
+                all(isinstance(chunk, SmartChunk) for chunk in smart_chunks)
+                if smart_chunks
+                else False
+            )
             constitutional_invariants["invariant_smart_chunks"] = {
                 "name": "Smart Chunk Generation Invariant (SP11)",
                 "expected_type": "SmartChunk",
                 "all_valid": all_smart_chunks_valid,
                 "passed": all_smart_chunks_valid,
-                "critical": True
+                "critical": True,
             }
 
             # Invariant 3: 10 Policy Areas
             # Extract policy areas from chunks (assuming they have policy_area attribute)
             policy_areas_found = set()
             for chunk in smart_chunks:
-                if hasattr(chunk, 'policy_area') and chunk.policy_area:
+                if hasattr(chunk, "policy_area") and chunk.policy_area:
                     policy_areas_found.add(chunk.policy_area)
             policy_areas_count = len(policy_areas_found)
-            invariant_10_policy_areas = (policy_areas_count == 10)
+            invariant_10_policy_areas = policy_areas_count == 10
             constitutional_invariants["invariant_10_policy_areas"] = {
                 "name": "10 Policy Areas Invariant",
                 "expected": 10,
                 "actual": policy_areas_count,
                 "passed": invariant_10_policy_areas,
-                "critical": True
+                "critical": True,
             }
-            self.logger.info(f"[P1] Invariant Check: 10 Policy Areas = {invariant_10_policy_areas} (actual: {policy_areas_count})")
+            self.logger.info(
+                f"[P1] Invariant Check: 10 Policy Areas = {invariant_10_policy_areas} (actual: {policy_areas_count})"
+            )
 
             # Invariant 4: 6 Dimensions
             # Extract dimensions from chunks (assuming they have dimension attribute)
             dimensions_found = set()
             for chunk in smart_chunks:
-                if hasattr(chunk, 'dimension') and chunk.dimension:
+                if hasattr(chunk, "dimension") and chunk.dimension:
                     dimensions_found.add(chunk.dimension)
             dimensions_count = len(dimensions_found)
-            invariant_6_dimensions = (dimensions_count == 6)
+            invariant_6_dimensions = dimensions_count == 6
             constitutional_invariants["invariant_6_dimensions"] = {
                 "name": "6 Dimensions Invariant",
                 "expected": 6,
                 "actual": dimensions_count,
                 "passed": invariant_6_dimensions,
-                "critical": True
+                "critical": True,
             }
-            self.logger.info(f"[P1] Invariant Check: 6 Dimensions = {invariant_6_dimensions} (actual: {dimensions_count})")
+            self.logger.info(
+                f"[P1] Invariant Check: 6 Dimensions = {invariant_6_dimensions} (actual: {dimensions_count})"
+            )
 
             # Invariant 5: Validation Gate (SP13) - Check from package quality metrics
-            validation_passed = canonical_package.quality_metrics.constitutional_invariants_passed if canonical_package else False
+            validation_passed = (
+                canonical_package.quality_metrics.constitutional_invariants_passed
+                if canonical_package
+                else False
+            )
             constitutional_invariants["invariant_validation_gate"] = {
                 "name": "Validation Gate Invariant (SP13)",
                 "all_checks_passed": validation_passed,
                 "passed": validation_passed,
-                "critical": True
+                "critical": True,
             }
 
             # Overall invariants status
-            all_invariants_passed = all(
-                inv["passed"] for inv in constitutional_invariants.values()
-            )
+            all_invariants_passed = all(inv["passed"] for inv in constitutional_invariants.values())
 
             # ====================================================================
             # FINALIZATION: Validate CanonPolicyPackage
@@ -2616,22 +2691,23 @@ class UnifiedOrchestrator:
             # Validate the package
             try:
                 from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
-                    CanonPolicyPackageValidator
+                    CanonPolicyPackageValidator,
                 )
+
                 validator = CanonPolicyPackageValidator()
                 package_valid = validator.validate(canonical_package)
 
                 subphase_results["finalization"] = {
                     "status": "completed",
                     "package_valid": package_valid,
-                    "chunks_count": len(canonical_package.smart_chunks)
+                    "chunks_count": len(canonical_package.smart_chunks),
                 }
             except Exception as e:
                 self.logger.warning(f"[P1] Package validation failed: {e}")
                 subphase_results["finalization"] = {
                     "status": "completed",
                     "package_valid": None,
-                    "error": str(e)
+                    "error": str(e),
                 }
 
             # ====================================================================
@@ -2640,7 +2716,9 @@ class UnifiedOrchestrator:
             if checkpoint_manager is not None:
                 try:
                     cleared = checkpoint_manager.clear_checkpoints()
-                    self.logger.info(f"[P1] Cleared {cleared} checkpoint files after successful completion")
+                    self.logger.info(
+                        f"[P1] Cleared {cleared} checkpoint files after successful completion"
+                    )
                     subphase_results["checkpoint_cleanup"] = {
                         "status": "completed",
                         "files_cleared": cleared,
@@ -2663,12 +2741,23 @@ class UnifiedOrchestrator:
                     # Log aggregate statistics
                     self.logger.info(f"[P1] Metrics Summary:")
                     self.logger.info(f"  - Total duration: {metrics.total_duration_ms:.2f}ms")
-                    self.logger.info(f"  - Subphases completed: {metrics.aggregate_stats.get('completed_subphases', 0)}")
-                    self.logger.info(f"  - Avg subphase duration: {metrics.aggregate_stats.get('avg_duration_ms', 0):.2f}ms")
-                    self.logger.info(f"  - Peak memory: {metrics.aggregate_stats.get('max_memory_mb_peak', 0):.2f}MB")
+                    self.logger.info(
+                        f"  - Subphases completed: {metrics.aggregate_stats.get('completed_subphases', 0)}"
+                    )
+                    self.logger.info(
+                        f"  - Avg subphase duration: {metrics.aggregate_stats.get('avg_duration_ms', 0):.2f}ms"
+                    )
+                    self.logger.info(
+                        f"  - Peak memory: {metrics.aggregate_stats.get('max_memory_mb_peak', 0):.2f}MB"
+                    )
 
                     # Export metrics to file
-                    metrics_path = Path(self.config.output_dir) / "metrics" / "phase1" / f"{plan_id}_metrics.json"
+                    metrics_path = (
+                        Path(self.config.output_dir)
+                        / "metrics"
+                        / "phase1"
+                        / f"{plan_id}_metrics.json"
+                    )
                     metrics_collector.export_metrics(metrics_path)
                     self.logger.info(f"[P1] Metrics exported to: {metrics_path}")
 
@@ -2690,21 +2779,22 @@ class UnifiedOrchestrator:
             # ====================================================================
             if not all_invariants_passed and self.config.strict_mode:
                 failed_invariants = [
-                    name for name, inv in constitutional_invariants.items()
-                    if not inv["passed"]
+                    name for name, inv in constitutional_invariants.items() if not inv["passed"]
                 ]
                 raise PhaseExecutionError(
                     message=f"Phase 1 constitutional invariants failed: {failed_invariants}",
                     phase_id="P01",
                     context={
                         "constitutional_invariants": constitutional_invariants,
-                        "failed_invariants": failed_invariants
-                    }
+                        "failed_invariants": failed_invariants,
+                    },
                 ) from None
 
             self.logger.info("=" * 80)
             self.logger.critical("PHASE 1: CPP INGESTION - FULL ORCHESTRATION COMPLETED")
-            self.logger.info(f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}")
+            self.logger.info(
+                f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}"
+            )
             self.logger.info(f"Smart Chunks: {len(smart_chunks)}")
             self.logger.info("=" * 80)
 
@@ -2713,16 +2803,28 @@ class UnifiedOrchestrator:
 
             return {
                 "status": "completed",
-                "canon_policy_package": canonical_package.to_dict() if hasattr(canonical_package, 'to_dict') else str(canonical_package),
+                "canon_policy_package": (
+                    canonical_package.to_dict()
+                    if hasattr(canonical_package, "to_dict")
+                    else str(canonical_package)
+                ),
                 "smart_chunks_count": len(smart_chunks),
                 "subphase_results": subphase_results,
                 "constitutional_invariants": constitutional_invariants,
                 "all_invariants_passed": all_invariants_passed,
                 "cpp_package": {
                     "total_chunks": len(canonical_package.smart_chunks),
-                    "document_title": canonical_package.manifest.document_name if hasattr(canonical_package.manifest, 'document_name') else "Unknown",
-                    "schema_version": canonical_package.manifest.schema_version if hasattr(canonical_package.manifest, 'schema_version') else "Unknown",
-                }
+                    "document_title": (
+                        canonical_package.manifest.document_name
+                        if hasattr(canonical_package.manifest, "document_name")
+                        else "Unknown"
+                    ),
+                    "schema_version": (
+                        canonical_package.manifest.schema_version
+                        if hasattr(canonical_package.manifest, "schema_version")
+                        else "Unknown"
+                    ),
+                },
             }
 
         except Exception as e:
@@ -2730,10 +2832,10 @@ class UnifiedOrchestrator:
             raise PhaseExecutionError(
                 message=f"Phase 1 execution failed: {e}",
                 phase_id="P01",
-                context={"subphase_results": subphase_results}
+                context={"subphase_results": subphase_results},
             ) from e
 
-    def _execute_phase_02(self, plan_text: Optional[str] = None, **kwargs) -> Any:
+    def _execute_phase_02(self, plan_text: str | None = None, **kwargs) -> Any:
         """
         Execute Phase 2: Executor Factory & Dispatch.
 
@@ -2741,7 +2843,7 @@ class UnifiedOrchestrator:
         1. Load analysis components (detectors, calculators, analyzers)
         2. Load contracts
         3. Execute contracts with method injection
-        
+
         INTERVENTION 2: Uses factory capabilities for optimal execution.
 
         Args:
@@ -2770,22 +2872,19 @@ class UnifiedOrchestrator:
 
         # Load contracts via factory
         contracts = self.factory.load_contracts()
-        active_contracts = {
-            cid: c for cid, c in contracts.items()
-            if c.get("status") == "ACTIVE"
-        }
+        active_contracts = {cid: c for cid, c in contracts.items() if c.get("status") == "ACTIVE"}
 
         self.logger.info(
             "Contracts loaded for execution",
             total_contracts=len(contracts),
             active_contracts=len(active_contracts),
         )
-        
+
         # ==========================================================================
         # INTERVENTION 2: Get optimal execution plan from factory
         # ==========================================================================
         execution_plan = self._get_factory_execution_plan(PhaseID.PHASE_2)
-        
+
         if execution_plan:
             self.logger.info(
                 "Factory execution plan obtained",
@@ -2797,47 +2896,53 @@ class UnifiedOrchestrator:
         # Execute contracts with method injection
         task_results = []
         input_data = {"plan_text": plan_text, **kwargs}
-        
+
         # Limit contracts for now (can be adjusted based on execution plan)
         contract_list = list(active_contracts.keys())[:10]
-        
+
         # ==========================================================================
         # INTERVENTION 1 & 2: Use parallel batch execution if recommended by plan
         # ==========================================================================
         if execution_plan and execution_plan["execution_strategy"] == "parallel_batch":
-            
+
             self.logger.info("Using parallel batch execution")
-            
+
             # Execute in parallel batches
             batch_results = self.factory.execute_contracts_batch(contract_list, input_data)
-            
+
             for contract_id, result in batch_results.items():
-                task_results.append({
-                    "contract_id": contract_id,
-                    "result": result,
-                    "status": "completed" if "error" not in result else "failed",
-                })
+                task_results.append(
+                    {
+                        "contract_id": contract_id,
+                        "result": result,
+                        "status": "completed" if "error" not in result else "failed",
+                    }
+                )
         else:
             # Sequential execution
             for contract_id in contract_list:
                 try:
                     result = self.factory.execute_contract(contract_id, input_data)
-                    task_results.append({
-                        "contract_id": contract_id,
-                        "result": result,
-                        "status": "completed" if "error" not in result else "failed",
-                    })
+                    task_results.append(
+                        {
+                            "contract_id": contract_id,
+                            "result": result,
+                            "status": "completed" if "error" not in result else "failed",
+                        }
+                    )
                 except Exception as e:
                     self.logger.warning(
                         "Contract execution failed",
                         contract_id=contract_id,
                         error=str(e),
                     )
-                    task_results.append({
-                        "contract_id": contract_id,
-                        "error": str(e),
-                        "status": "error",
-                    })
+                    task_results.append(
+                        {
+                            "contract_id": contract_id,
+                            "error": str(e),
+                            "status": "error",
+                        }
+                    )
 
         # Get performance metrics from factory
         perf_metrics = self.factory.get_performance_metrics()
@@ -2846,43 +2951,45 @@ class UnifiedOrchestrator:
         # CONSTITUTIONAL INVARIANTS VALIDATION FOR PHASE 2
         # ====================================================================
         self.logger.info("[P2] Validating constitutional invariants")
-        
+
         constitutional_invariants = {}
-        
+
         # Invariant 1: 300 Contracts (30 base questions × 10 policy areas)
         total_contracts = len(contracts)
-        invariant_300_contracts = (total_contracts == 300)
+        invariant_300_contracts = total_contracts == 300
         constitutional_invariants["invariant_300_contracts"] = {
             "name": "300 Contracts Constitutional Invariant",
             "expected": 300,
             "actual": total_contracts,
             "passed": invariant_300_contracts,
-            "critical": True  # Critical per CANONICAL_PHASE_ARCHITECTURE.md
+            "critical": True,  # Critical per CANONICAL_PHASE_ARCHITECTURE.md
         }
-        self.logger.info(f"[P2] Invariant Check: 300 Contracts = {invariant_300_contracts} (actual: {total_contracts})")
-        
+        self.logger.info(
+            f"[P2] Invariant Check: 300 Contracts = {invariant_300_contracts} (actual: {total_contracts})"
+        )
+
         # Invariant 2: Input validation from Phase 1
         canonical_input = self.context.get_phase_output(PhaseID.PHASE_1)
-        invariant_p1_input = (canonical_input is not None)
+        invariant_p1_input = canonical_input is not None
         constitutional_invariants["invariant_p1_input"] = {
             "name": "Phase 1 Input Validation",
             "expected": "CanonPolicyPackage from P1",
             "actual": "Present" if canonical_input else "Missing",
             "passed": invariant_p1_input,
-            "critical": True
+            "critical": True,
         }
         self.logger.info(f"[P2] Invariant Check: Phase 1 Input = {invariant_p1_input}")
-        
-        all_invariants_passed = all(
-            inv["passed"] for inv in constitutional_invariants.values()
-        )
+
+        all_invariants_passed = all(inv["passed"] for inv in constitutional_invariants.values())
 
         return {
             "task_results": task_results,
             "status": "completed",
             "contracts_executed": len(task_results),
             "components_available": list(components.keys()),
-            "execution_strategy": execution_plan["execution_strategy"] if execution_plan else "sequential",
+            "execution_strategy": (
+                execution_plan["execution_strategy"] if execution_plan else "sequential"
+            ),
             "performance_metrics": perf_metrics,
             "constitutional_invariants": constitutional_invariants,
             "all_invariants_passed": all_invariants_passed,
@@ -2903,7 +3010,7 @@ class UnifiedOrchestrator:
     7. Output Contract Verification
     """
 
-    def _execute_phase_03(self) -> Dict[str, Any]:
+    def _execute_phase_03(self) -> dict[str, Any]:
         """
         Execute Phase 3: Layer Scoring - COMPLETE ORCHESTRATION.
 
@@ -2929,14 +3036,17 @@ class UnifiedOrchestrator:
             # ====================================================================
             # INPUT: Get CanonPolicyPackage from Phase 1
             # ====================================================================
-            canon_policy_package: Optional[CanonPolicyPackage] = self.context.get_phase_output(PhaseID.PHASE_1)
+            canon_policy_package: CanonPolicyPackage | None = self.context.get_phase_output(
+                PhaseID.PHASE_1
+            )
             if canon_policy_package is None:
                 raise PhaseExecutionError(
-                    message="Phase 3 requires Phase 1 CanonPolicyPackage output",
-                    phase_id="P03"
+                    message="Phase 3 requires Phase 1 CanonPolicyPackage output", phase_id="P03"
                 )
 
-            self.logger.info(f"[P3] Input received: {len(canon_policy_package.smart_chunks)} SmartChunks")
+            self.logger.info(
+                f"[P3] Input received: {len(canon_policy_package.smart_chunks)} SmartChunks"
+            )
 
             # ====================================================================
             # STEP 1: Input Contract Verification
@@ -2945,12 +3055,13 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_03.contracts.phase3_input_contract import (
-                    validate_phase3_input
+                    validate_phase3_input,
                 )
+
                 input_contract_valid = validate_phase3_input(canon_policy_package)
                 step_results["s01_input_contract"] = {
                     "status": "completed",
-                    "valid": input_contract_valid
+                    "valid": input_contract_valid,
                 }
             except Exception as e:
                 self.logger.warning(f"[P3-S01] Input contract validation failed: {e}")
@@ -2963,12 +3074,13 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_03.phase3_10_00_thresholds import (
-                    load_scoring_thresholds
+                    load_scoring_thresholds,
                 )
+
                 thresholds = load_scoring_thresholds()
                 step_results["s02_thresholds"] = {
                     "status": "completed",
-                    "thresholds_loaded": len(thresholds) if thresholds else 0
+                    "thresholds_loaded": len(thresholds) if thresholds else 0,
                 }
             except Exception as e:
                 self.logger.warning(f"[P3-S02] Threshold loading failed: {e}")
@@ -2982,22 +3094,21 @@ class UnifiedOrchestrator:
             scored_results = []
             try:
                 from farfan_pipeline.phases.Phase_03.phase3_20_00_score_extractor import (
-                    extract_scores_from_chunks
+                    extract_scores_from_chunks,
                 )
+
                 scored_results = extract_scores_from_chunks(
-                    canon_policy_package.smart_chunks,
-                    thresholds=thresholds
+                    canon_policy_package.smart_chunks, thresholds=thresholds
                 )
                 step_results["s03_extraction"] = {
                     "status": "completed",
-                    "scores_extracted": len(scored_results)
+                    "scores_extracted": len(scored_results),
                 }
                 self.logger.info(f"[P3-S03] Scores extracted: {len(scored_results)} results")
             except Exception as e:
                 self.logger.error(f"[P3-S03] Score extraction failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 3 score extraction failed: {e}",
-                    phase_id="P03"
+                    message=f"Step 3 score extraction failed: {e}", phase_id="P03"
                 ) from e
 
             # ====================================================================
@@ -3006,14 +3117,13 @@ class UnifiedOrchestrator:
             self.logger.info("[P3-S04] Step 4: Validation")
 
             try:
-                from farfan_pipeline.phases.Phase_03.phase3_30_00_validation import (
-                    validate_scores
-                )
+                from farfan_pipeline.phases.Phase_03.phase3_30_00_validation import validate_scores
+
                 validation_result = validate_scores(scored_results)
                 step_results["s04_validation"] = {
                     "status": "completed",
                     "all_valid": validation_result.get("all_valid", False),
-                    "validation_errors": validation_result.get("errors", [])
+                    "validation_errors": validation_result.get("errors", []),
                 }
             except Exception as e:
                 self.logger.warning(f"[P3-S04] Validation failed: {e}")
@@ -3028,21 +3138,21 @@ class UnifiedOrchestrator:
                 if self.config.enable_sisas and self.context.sisas:
                     # Enrich scores with SISAS signals
                     from farfan_pipeline.phases.Phase_03.phase3_40_00_signal_enrichment import (
-                        enrich_scores_with_signals
+                        enrich_scores_with_signals,
                     )
+
                     enriched_results = enrich_scores_with_signals(
-                        scored_results,
-                        self.context.sisas
+                        scored_results, self.context.sisas
                     )
                     step_results["s05_signal_enrichment"] = {
                         "status": "completed",
-                        "enriched": True
+                        "enriched": True,
                     }
                     scored_results = enriched_results
                 else:
                     step_results["s05_signal_enrichment"] = {
                         "status": "skipped",
-                        "reason": "SISAS disabled or unavailable"
+                        "reason": "SISAS disabled or unavailable",
                     }
             except Exception as e:
                 self.logger.warning(f"[P3-S05] Signal enrichment failed: {e}")
@@ -3055,12 +3165,13 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_03.phase3_50_00_normative import (
-                    check_normative_compliance
+                    check_normative_compliance,
                 )
+
                 normative_result = check_normative_compliance(scored_results)
                 step_results["s06_normative"] = {
                     "status": "completed",
-                    "compliant": normative_result.get("compliant", True)
+                    "compliant": normative_result.get("compliant", True),
                 }
             except Exception as e:
                 self.logger.warning(f"[P3-S06] Normative compliance check failed: {e}")
@@ -3073,12 +3184,13 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_03.contracts.phase3_output_contract import (
-                    validate_phase3_output
+                    validate_phase3_output,
                 )
+
                 output_contract_valid = validate_phase3_output(scored_results)
                 step_results["s07_output_contract"] = {
                     "status": "completed",
-                    "valid": output_contract_valid
+                    "valid": output_contract_valid,
                 }
             except Exception as e:
                 self.logger.warning(f"[P3-S07] Output contract validation failed: {e}")
@@ -3087,7 +3199,7 @@ class UnifiedOrchestrator:
             # EXIT GATE: Output validation
             exit_gates["gate_final"] = {
                 "status": "passed" if len(scored_results) > 0 else "failed",
-                "scores_count": len(scored_results)
+                "scores_count": len(scored_results),
             }
 
             self.logger.info("=" * 80)
@@ -3103,10 +3215,10 @@ class UnifiedOrchestrator:
                 "scored_results": len(scored_results),
                 "layer_scores": {
                     "layer_count": 8,
-                    "results_summary": step_results.get("s03_extraction", {})
+                    "results_summary": step_results.get("s03_extraction", {}),
                 },
                 "step_results": step_results,
-                "exit_gates": exit_gates
+                "exit_gates": exit_gates,
             }
 
         except Exception as e:
@@ -3114,7 +3226,7 @@ class UnifiedOrchestrator:
             raise PhaseExecutionError(
                 message=f"Phase 3 execution failed: {e}",
                 phase_id="P03",
-                context={"step_results": step_results}
+                context={"step_results": step_results},
             ) from e
 
     # =========================================================================
@@ -3142,7 +3254,7 @@ class UnifiedOrchestrator:
     Output: DimensionScore (60 dimensiones = 6 DIM × 10 PA)
     """
 
-    def _execute_phase_04(self) -> Dict[str, Any]:
+    def _execute_phase_04(self) -> dict[str, Any]:
         """
         Execute Phase 4: Dimension Aggregation - COMPLETE ORCHESTRATION.
 
@@ -3173,8 +3285,7 @@ class UnifiedOrchestrator:
             scored_results = self.context.get_phase_output(PhaseID.PHASE_3)
             if scored_results is None or len(scored_results) == 0:
                 raise PhaseExecutionError(
-                    message="Phase 4 requires Phase 3 scored results",
-                    phase_id="P04"
+                    message="Phase 4 requires Phase 3 scored results", phase_id="P04"
                 )
 
             self.logger.info(f"[P4] Input received: {len(scored_results)} scored results")
@@ -3186,18 +3297,16 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_settings import (
-                    load_aggregation_settings, AggregationSettings
+                    AggregationSettings,
+                    load_aggregation_settings,
                 )
+
                 aggregation_settings: AggregationSettings = load_aggregation_settings()
-                step_results["s01_config"] = {
-                    "status": "completed",
-                    "settings_loaded": True
-                }
+                step_results["s01_config"] = {"status": "completed", "settings_loaded": True}
             except Exception as e:
                 self.logger.error(f"[P4-S01] Config loading failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 1 config loading failed: {e}",
-                    phase_id="P04"
+                    message=f"Step 1 config loading failed: {e}", phase_id="P04"
                 ) from e
 
             # ====================================================================
@@ -3207,21 +3316,21 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_04.contracts.phase4_10_00_input_contract import (
-                    Phase4InputContract
+                    Phase4InputContract,
                 )
+
                 input_valid, validation_details = Phase4InputContract.validate(scored_results)
                 step_results["s02_input_validation"] = {
                     "status": "completed",
                     "valid": input_valid,
-                    "details": validation_details
+                    "details": validation_details,
                 }
                 if not input_valid:
                     self.logger.warning(f"[P4-S02] Input validation issues: {validation_details}")
             except Exception as e:
                 self.logger.error(f"[P4-S02] Input validation failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 2 input validation failed: {e}",
-                    phase_id="P04"
+                    message=f"Step 2 input validation failed: {e}", phase_id="P04"
                 ) from e
 
             # ====================================================================
@@ -3234,29 +3343,26 @@ class UnifiedOrchestrator:
             try:
                 from farfan_pipeline.phases.Phase_04.phase4_30_00_aggregation import (
                     DimensionAggregator,
-                    group_by
                 )
-                
+
                 # Check if SOTA Choquet integral should be used
                 use_choquet = aggregation_settings.enable_choquet
-                
+
                 # Initialize aggregator with SOTA features
                 aggregator = DimensionAggregator(
-                    aggregation_settings=aggregation_settings,
-                    enable_sota_features=use_choquet
+                    aggregation_settings=aggregation_settings, enable_sota_features=use_choquet
                 )
-                
+
                 step_results["s03_aggregator_init"] = {
                     "status": "completed",
                     "sota_enabled": use_choquet,
-                    "group_by_keys": aggregator.dimension_group_by_keys
+                    "group_by_keys": aggregator.dimension_group_by_keys,
                 }
                 self.logger.info(f"[P4-S03] Aggregator initialized with SOTA={use_choquet}")
             except Exception as e:
                 self.logger.error(f"[P4-S03] Aggregator initialization failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 3 aggregator init failed: {e}",
-                    phase_id="P04"
+                    message=f"Step 3 aggregator init failed: {e}", phase_id="P04"
                 ) from e
 
             # ====================================================================
@@ -3269,30 +3375,31 @@ class UnifiedOrchestrator:
                 if use_choquet:
                     # Use ChoquetAggregator for SOTA Choquet integral
                     from farfan_pipeline.phases.Phase_04.phase4_30_00_choquet_aggregator import (
-                        ChoquetAggregator
+                        ChoquetAggregator,
                     )
+
                     choquet_aggregator = ChoquetAggregator(aggregation_settings)
                     dimension_scores = choquet_aggregator.aggregate(scored_results)
                     aggregation_method = "choquet"
                 else:
                     # Use DimensionAggregator.run() for weighted average
                     dimension_scores = aggregator.run(
-                        scored_results,
-                        group_by_keys=aggregator.dimension_group_by_keys
+                        scored_results, group_by_keys=aggregator.dimension_group_by_keys
                     )
                     aggregation_method = "weighted_average"
 
                 step_results["s04_calculation"] = {
                     "status": "completed",
                     "method": aggregation_method,
-                    "dimension_scores_count": len(dimension_scores)
+                    "dimension_scores_count": len(dimension_scores),
                 }
-                self.logger.info(f"[P4-S04] Scores calculated using {aggregation_method}: {len(dimension_scores)} dimensions")
+                self.logger.info(
+                    f"[P4-S04] Scores calculated using {aggregation_method}: {len(dimension_scores)} dimensions"
+                )
             except Exception as e:
                 self.logger.error(f"[P4-S04] Score calculation failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 4 score calculation failed: {e}",
-                    phase_id="P04"
+                    message=f"Step 4 score calculation failed: {e}", phase_id="P04"
                 ) from e
 
             # ====================================================================
@@ -3304,27 +3411,41 @@ class UnifiedOrchestrator:
             provenance_data = None
             try:
                 # If SOTA enabled, provenance DAG is already built by aggregator
-                if use_choquet and hasattr(aggregator, 'provenance_dag') and aggregator.provenance_dag:
+                if (
+                    use_choquet
+                    and hasattr(aggregator, "provenance_dag")
+                    and aggregator.provenance_dag
+                ):
                     provenance_data = aggregator.provenance_dag.get_statistics()
                     step_results["s05_provenance"] = {
                         "status": "completed",
                         "provenance_registered": True,
                         "source": "aggregator_internal_dag",
-                        "statistics": provenance_data
+                        "statistics": provenance_data,
                     }
                 else:
                     # Fallback: Create provenance DAG manually
                     from farfan_pipeline.phases.Phase_04.phase4_10_00_aggregation_provenance import (
-                        AggregationDAG, ProvenanceNode
+                        AggregationDAG,
+                        ProvenanceNode,
                     )
+
                     provenance_dag = AggregationDAG()
                     # Register dimension score nodes
                     for ds in dimension_scores:
                         node = ProvenanceNode(
-                            node_id=f"{ds.dimension_id}_{ds.area_id}" if hasattr(ds, 'area_id') else str(ds.dimension_id),
+                            node_id=(
+                                f"{ds.dimension_id}_{ds.area_id}"
+                                if hasattr(ds, "area_id")
+                                else str(ds.dimension_id)
+                            ),
                             level="dimension",
-                            score=ds.score if hasattr(ds, 'score') else 0.0,
-                            contributing_ids=[q.question_id for q in ds.contributing_questions] if hasattr(ds, 'contributing_questions') else []
+                            score=ds.score if hasattr(ds, "score") else 0.0,
+                            contributing_ids=(
+                                [q.question_id for q in ds.contributing_questions]
+                                if hasattr(ds, "contributing_questions")
+                                else []
+                            ),
                         )
                         provenance_dag.add_node(node)
                     provenance_data = provenance_dag.get_statistics()
@@ -3332,7 +3453,7 @@ class UnifiedOrchestrator:
                         "status": "completed",
                         "provenance_registered": True,
                         "source": "manual_dag_construction",
-                        "statistics": provenance_data
+                        "statistics": provenance_data,
                     }
             except Exception as e:
                 self.logger.warning(f"[P4-S05] Provenance tracking failed: {e}")
@@ -3347,30 +3468,46 @@ class UnifiedOrchestrator:
             uncertainty_metrics = None
             try:
                 from farfan_pipeline.phases.Phase_04.phase4_10_00_uncertainty_quantification import (
-                    aggregate_with_uncertainty, BootstrapAggregator
+                    BootstrapAggregator,
                 )
-                
+
                 # Extract scores for uncertainty computation
-                scores_for_uq = [ds.score for ds in dimension_scores if hasattr(ds, 'score')]
-                
+                scores_for_uq = [ds.score for ds in dimension_scores if hasattr(ds, "score")]
+
                 if scores_for_uq:
                     bootstrap_agg = BootstrapAggregator(iterations=1000, seed=42)
                     uncertainty_result = bootstrap_agg.compute_bca_interval(scores_for_uq)
                     uncertainty_metrics = {
-                        "point_estimate": uncertainty_result.point_estimate if hasattr(uncertainty_result, 'point_estimate') else sum(scores_for_uq) / len(scores_for_uq),
-                        "ci_lower": uncertainty_result.ci_lower if hasattr(uncertainty_result, 'ci_lower') else None,
-                        "ci_upper": uncertainty_result.ci_upper if hasattr(uncertainty_result, 'ci_upper') else None,
-                        "standard_error": uncertainty_result.standard_error if hasattr(uncertainty_result, 'standard_error') else None
+                        "point_estimate": (
+                            uncertainty_result.point_estimate
+                            if hasattr(uncertainty_result, "point_estimate")
+                            else sum(scores_for_uq) / len(scores_for_uq)
+                        ),
+                        "ci_lower": (
+                            uncertainty_result.ci_lower
+                            if hasattr(uncertainty_result, "ci_lower")
+                            else None
+                        ),
+                        "ci_upper": (
+                            uncertainty_result.ci_upper
+                            if hasattr(uncertainty_result, "ci_upper")
+                            else None
+                        ),
+                        "standard_error": (
+                            uncertainty_result.standard_error
+                            if hasattr(uncertainty_result, "standard_error")
+                            else None
+                        ),
                     }
                     step_results["s06_uncertainty"] = {
                         "status": "completed",
                         "uncertainty_computed": True,
-                        "metrics": uncertainty_metrics
+                        "metrics": uncertainty_metrics,
                     }
                 else:
                     step_results["s06_uncertainty"] = {
                         "status": "skipped",
-                        "reason": "No scores available for uncertainty quantification"
+                        "reason": "No scores available for uncertainty quantification",
                     }
             except Exception as e:
                 self.logger.warning(f"[P4-S06] Uncertainty quantification failed: {e}")
@@ -3383,17 +3520,22 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_04.phase4_60_00_aggregation_validation import (
-                    validate_phase4_output, ValidationResult
+                    validate_phase4_output,
                 )
+
                 validation_result = validate_phase4_output(dimension_scores, scored_results)
                 step_results["s07_output_validation"] = {
                     "status": "completed",
                     "passed": validation_result.passed,
                     "phase": validation_result.phase,
-                    "error_message": validation_result.error_message if not validation_result.passed else None
+                    "error_message": (
+                        validation_result.error_message if not validation_result.passed else None
+                    ),
                 }
                 if not validation_result.passed:
-                    self.logger.warning(f"[P4-S07] Output validation failed: {validation_result.error_message}")
+                    self.logger.warning(
+                        f"[P4-S07] Output validation failed: {validation_result.error_message}"
+                    )
             except Exception as e:
                 self.logger.warning(f"[P4-S07] Output validation failed: {e}")
                 step_results["s07_output_validation"] = {"status": "skipped", "reason": str(e)}
@@ -3410,7 +3552,7 @@ class UnifiedOrchestrator:
             exit_gates["gate_final"] = {
                 "status": "passed" if actual_count == expected_count else "failed",
                 "expected_count": expected_count,
-                "actual_count": actual_count
+                "actual_count": actual_count,
             }
 
             self.logger.info("=" * 80)
@@ -3430,7 +3572,7 @@ class UnifiedOrchestrator:
                 "provenance": provenance_data,
                 "uncertainty": uncertainty_metrics,
                 "step_results": step_results,
-                "exit_gates": exit_gates
+                "exit_gates": exit_gates,
             }
 
         except Exception as e:
@@ -3438,7 +3580,7 @@ class UnifiedOrchestrator:
             raise PhaseExecutionError(
                 message=f"Phase 4 execution failed: {e}",
                 phase_id="P04",
-                context={"step_results": step_results}
+                context={"step_results": step_results},
             ) from e
 
     # =========================================================================
@@ -3452,7 +3594,7 @@ class UnifiedOrchestrator:
     Method: Dimension aggregation to policy areas
     """
 
-    def _execute_phase_05(self) -> Dict[str, Any]:
+    def _execute_phase_05(self) -> dict[str, Any]:
         """
         Execute Phase 5: Policy Area Aggregation - COMPLETE ORCHESTRATION (v2.0).
 
@@ -3476,10 +3618,10 @@ class UnifiedOrchestrator:
         self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION STARTED (v2.0)")
         self.logger.info("=" * 80)
 
-        stage_results: Dict[str, Any] = {}
-        exit_gates: Dict[str, Any] = {}
+        stage_results: dict[str, Any] = {}
+        exit_gates: dict[str, Any] = {}
         area_scores: list = []
-        synthesis_result: Dict[str, Any] | None = None
+        synthesis_result: dict[str, Any] | None = None
 
         try:
             # ================================================================
@@ -3488,15 +3630,15 @@ class UnifiedOrchestrator:
             dimension_scores = self.context.get_phase_output(PhaseID.PHASE_4)
             if dimension_scores is None or len(dimension_scores) == 0:
                 raise PhaseExecutionError(
-                    message="Phase 5 requires Phase 4 dimension scores",
-                    phase_id="P05"
+                    message="Phase 5 requires Phase 4 dimension scores", phase_id="P05"
                 )
 
             # Validate input contract
             try:
                 from farfan_pipeline.phases.Phase_05.contracts.phase5_10_00_input_contract import (
-                    Phase5InputContract
+                    Phase5InputContract,
                 )
+
                 input_valid, input_details = Phase5InputContract.validate(dimension_scores)
                 stage_results["s00_input_validation"] = {
                     "status": "completed" if input_valid else "failed",
@@ -3508,7 +3650,7 @@ class UnifiedOrchestrator:
                     raise PhaseExecutionError(
                         message=f"Phase 5 input contract violated: {input_details.get('violations', [])}",
                         phase_id="P05",
-                        context=input_details
+                        context=input_details,
                     )
             except ImportError as e:
                 self.logger.warning(f"[P5-S00] Input contract import failed: {e}")
@@ -3520,7 +3662,7 @@ class UnifiedOrchestrator:
             self._emit_phase_signal(
                 phase_id=PhaseID.PHASE_5,
                 event_type="PHASE_START",
-                payload={"dimension_scores_count": len(dimension_scores)}
+                payload={"dimension_scores_count": len(dimension_scores)},
             )
 
             # ================================================================
@@ -3528,22 +3670,23 @@ class UnifiedOrchestrator:
             # ================================================================
             self.logger.info("[P5-S10] Stage 10: Area Aggregation")
 
-            use_performance_boost = getattr(self.config, 'enable_parallel_execution', False)
+            use_performance_boost = getattr(self.config, "enable_parallel_execution", False)
             perf_metrics = None
 
             if use_performance_boost:
                 try:
-                    from farfan_pipeline.phases.Phase_05.phase5_15_00_performance_boost import (
-                        HighPerformanceAreaAggregator
-                    )
                     import asyncio
+
+                    from farfan_pipeline.phases.Phase_05.phase5_15_00_performance_boost import (
+                        HighPerformanceAreaAggregator,
+                    )
 
                     aggregator = HighPerformanceAreaAggregator(
                         enable_parallel=True,
                         enable_caching=True,
                         enable_vectorization=True,
                         enable_jit=True,
-                        max_workers=getattr(self.config, 'max_workers', 10),
+                        max_workers=getattr(self.config, "max_workers", 10),
                     )
 
                     area_scores, perf_metrics = asyncio.run(
@@ -3567,8 +3710,9 @@ class UnifiedOrchestrator:
             if not use_performance_boost or not area_scores:
                 # Fallback to standard aggregator
                 from farfan_pipeline.phases.Phase_05.phase5_10_00_area_aggregation import (
-                    AreaPolicyAggregator
+                    AreaPolicyAggregator,
                 )
+
                 aggregator = AreaPolicyAggregator(
                     abort_on_insufficient=True,
                     enable_sota_features=True,
@@ -3588,6 +3732,7 @@ class UnifiedOrchestrator:
             # ================================================================
             try:
                 from farfan_pipeline.phases.Phase_05.phase5_00_00_area_score import AreaScore
+
                 for i, area in enumerate(area_scores):
                     if not isinstance(area, AreaScore):
                         raise PhaseExecutionError(
@@ -3596,22 +3741,22 @@ class UnifiedOrchestrator:
                                 f"Got type: {type(area).__name__}."
                             ),
                             phase_id="P05",
-                            context={"index": i, "actual_type": type(area).__name__}
+                            context={"index": i, "actual_type": type(area).__name__},
                         )
-                    if not hasattr(area, 'area_id') or not hasattr(area, 'score'):
+                    if not hasattr(area, "area_id") or not hasattr(area, "score"):
                         raise PhaseExecutionError(
                             message=f"Phase 5 area_scores[{i}] missing required attributes.",
                             phase_id="P05",
-                            context={"index": i}
+                            context={"index": i},
                         )
             except ImportError:
                 # Fallback attribute check
                 for i, area in enumerate(area_scores):
-                    if not hasattr(area, 'area_id') or not hasattr(area, 'score'):
+                    if not hasattr(area, "area_id") or not hasattr(area, "score"):
                         raise PhaseExecutionError(
                             message=f"Phase 5 area_scores[{i}] missing required attributes.",
                             phase_id="P05",
-                            context={"index": i}
+                            context={"index": i},
                         )
 
             # ================================================================
@@ -3620,7 +3765,7 @@ class UnifiedOrchestrator:
             self.logger.info("[P5-S20] Stage 20: Comprehensive Validation")
 
             validation_valid = True
-            validation_details: Dict[str, Any] = {}
+            validation_details: dict[str, Any] = {}
             try:
                 from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (
                     validate_phase5_output_comprehensive,
@@ -3628,7 +3773,7 @@ class UnifiedOrchestrator:
 
                 validation_valid, validation_details = validate_phase5_output_comprehensive(
                     area_scores,
-                    strict=getattr(self.config, 'strict_mode', False),
+                    strict=getattr(self.config, "strict_mode", False),
                     enable_statistical_validation=True,
                     enable_anomaly_detection=True,
                 )
@@ -3639,11 +3784,11 @@ class UnifiedOrchestrator:
                     "details": validation_details,
                 }
 
-                if not validation_valid and getattr(self.config, 'strict_mode', False):
+                if not validation_valid and getattr(self.config, "strict_mode", False):
                     raise PhaseExecutionError(
                         message="Phase 5 comprehensive validation failed",
                         phase_id="P05",
-                        context=validation_details
+                        context=validation_details,
                     )
             except ImportError as e:
                 self.logger.warning(f"[P5-S20] Comprehensive validation not available: {e}")
@@ -3655,7 +3800,7 @@ class UnifiedOrchestrator:
             self.logger.info("[P5-S30] Stage 30: Cluster Assignment Validation")
 
             cluster_valid = True
-            cluster_details: Dict[str, Any] = {}
+            cluster_details: dict[str, Any] = {}
             try:
                 from farfan_pipeline.phases.Phase_05.phase5_20_00_area_validation import (
                     validate_cluster_assignments,
@@ -3673,11 +3818,11 @@ class UnifiedOrchestrator:
                         f"[P5-S30] Cluster assignment validation failed: "
                         f"{cluster_details.get('missing_cluster_assignments', [])}"
                     )
-                    if getattr(self.config, 'strict_mode', False):
+                    if getattr(self.config, "strict_mode", False):
                         raise PhaseExecutionError(
                             message="Phase 5 exit gate failed: cluster assignments invalid for Phase 6",
                             phase_id="P05",
-                            context=cluster_details
+                            context=cluster_details,
                         )
 
                 stage_results["s30_cluster_validation"] = {
@@ -3696,15 +3841,18 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_05.phase5_40_00_synthesis_engine import (
-                    SynthesisEngine
+                    SynthesisEngine,
                 )
+
                 synthesis_engine = SynthesisEngine()
                 synthesis_result = synthesis_engine.synthesize(area_scores, dimension_scores)
 
                 stage_results["s40_synthesis"] = {
                     "status": "completed",
                     "patterns_detected": len(synthesis_result.get("cross_area_patterns", [])),
-                    "recommendations_generated": len(synthesis_result.get("policy_recommendations", [])),
+                    "recommendations_generated": len(
+                        synthesis_result.get("policy_recommendations", [])
+                    ),
                 }
             except Exception as e:
                 self.logger.warning(f"[P5-S40] Synthesis engine failed: {e}")
@@ -3714,11 +3862,12 @@ class UnifiedOrchestrator:
             # OUTPUT CONTRACT VALIDATION
             # ================================================================
             output_valid = True
-            output_details: Dict[str, Any] = {}
+            output_details: dict[str, Any] = {}
             try:
                 from farfan_pipeline.phases.Phase_05.contracts.phase5_10_02_output_contract import (
-                    Phase5OutputContract
+                    Phase5OutputContract,
                 )
+
                 output_valid, output_details = Phase5OutputContract.validate(area_scores)
 
                 exit_gates["gate_output_contract"] = {
@@ -3749,11 +3898,13 @@ class UnifiedOrchestrator:
                     "area_scores_count": actual_count,
                     "validation_passed": validation_valid,
                     "cluster_assignments_valid": cluster_valid,
-                }
+                },
             )
 
             self.logger.info("=" * 80)
-            self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION COMPLETED (v2.0)")
+            self.logger.critical(
+                "PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION COMPLETED (v2.0)"
+            )
             self.logger.info(f"Area Scores: {actual_count} (expected: {expected_count})")
             self.logger.info("=" * 80)
 
@@ -3761,21 +3912,21 @@ class UnifiedOrchestrator:
             # CONSTITUTIONAL INVARIANTS VALIDATION FOR PHASE 5
             # ====================================================================
             constitutional_invariants = {}
-            
+
             # Invariant 1: 10 Policy Area Scores
-            invariant_10_areas = (actual_count == 10)
+            invariant_10_areas = actual_count == 10
             constitutional_invariants["invariant_10_policy_areas"] = {
                 "name": "10 Policy Area Scores Constitutional Invariant",
                 "expected": 10,
                 "actual": actual_count,
                 "passed": invariant_10_areas,
-                "critical": True
+                "critical": True,
             }
-            self.logger.info(f"[P5] Invariant Check: 10 Policy Areas = {invariant_10_areas} (actual: {actual_count})")
-            
-            all_invariants_passed = all(
-                inv["passed"] for inv in constitutional_invariants.values()
+            self.logger.info(
+                f"[P5] Invariant Check: 10 Policy Areas = {invariant_10_areas} (actual: {actual_count})"
             )
+
+            all_invariants_passed = all(inv["passed"] for inv in constitutional_invariants.values())
 
             # Store in context
             self.context.phase_outputs[PhaseID.PHASE_5] = area_scores
@@ -3801,9 +3952,8 @@ class UnifiedOrchestrator:
             raise PhaseExecutionError(
                 message=f"Phase 5 execution failed: {e}",
                 phase_id="P05",
-                context={"stage_results": stage_results}
+                context={"stage_results": stage_results},
             ) from e
-
 
     # =========================================================================
     # PHASE 6: Cluster Aggregation (3 Stages)
@@ -3819,7 +3969,7 @@ class UnifiedOrchestrator:
     Output: 4 ClusterScore objects
     """
 
-    def _execute_phase_06(self) -> Dict[str, Any]:
+    def _execute_phase_06(self) -> dict[str, Any]:
         """
         Execute Phase 6: Cluster Aggregation - COMPLETE ORCHESTRATION.
 
@@ -3840,8 +3990,7 @@ class UnifiedOrchestrator:
             area_scores = self.context.get_phase_output(PhaseID.PHASE_5)
             if area_scores is None or len(area_scores) == 0:
                 raise PhaseExecutionError(
-                    message="Phase 6 requires Phase 5 area scores",
-                    phase_id="P06"
+                    message="Phase 6 requires Phase 5 area scores", phase_id="P06"
                 )
 
             self.logger.info(f"[P6] Input received: {len(area_scores)} area scores")
@@ -3850,9 +3999,8 @@ class UnifiedOrchestrator:
             # STAGE 1: Constants & Configuration
             # ====================================================================
             try:
-                from farfan_pipeline.phases.Phase_06.phase6_10_00_phase_6_constants import (
-                    CLUSTER_COMPOSITION, DISPERSION_THRESHOLDS
-                )
+                pass
+
                 self.logger.info("[P6-S10] Constants loaded")
             except Exception as e:
                 self.logger.warning(f"[P6-S10] Constants loading failed: {e}")
@@ -3863,7 +4011,9 @@ class UnifiedOrchestrator:
             # NOTE: AdaptiveMesoScoring is initialized internally by ClusterAggregator.
             # No standalone import needed - this design ensures each aggregator instance
             # has its own configured scoring engine, improving isolation and testability.
-            self.logger.info("[P6-S20] Adaptive penalty mechanism configured within ClusterAggregator")
+            self.logger.info(
+                "[P6-S20] Adaptive penalty mechanism configured within ClusterAggregator"
+            )
 
             # ====================================================================
             # STAGE 3: Cluster Aggregation
@@ -3871,8 +4021,9 @@ class UnifiedOrchestrator:
             cluster_scores = []
             try:
                 from farfan_pipeline.phases.Phase_06.phase6_30_00_cluster_aggregator import (
-                    ClusterAggregator
+                    ClusterAggregator,
                 )
+
                 aggregator = ClusterAggregator()
                 cluster_scores = aggregator.aggregate(area_scores)
 
@@ -3880,8 +4031,7 @@ class UnifiedOrchestrator:
             except Exception as e:
                 self.logger.error(f"[P6-S30] Cluster aggregation failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Phase 6 cluster aggregation failed: {e}",
-                    phase_id="P06"
+                    message=f"Phase 6 cluster aggregation failed: {e}", phase_id="P06"
                 ) from e
 
             # ====================================================================
@@ -3907,11 +4057,11 @@ class UnifiedOrchestrator:
                                 f"Expected ClusterScore from farfan_pipeline.phases.Phase_06."
                             ),
                             phase_id="P06",
-                            context={"index": i, "actual_type": type(cs).__name__}
+                            context={"index": i, "actual_type": type(cs).__name__},
                         )
                 else:
                     # Fallback: Check required attributes when type import failed
-                    if not hasattr(cs, 'cluster_id'):
+                    if not hasattr(cs, "cluster_id"):
                         raise PhaseExecutionError(
                             message=(
                                 f"Phase 6 cluster_scores[{i}] missing required attribute 'cluster_id'. "
@@ -3919,9 +4069,9 @@ class UnifiedOrchestrator:
                                 f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
                             ),
                             phase_id="P06",
-                            context={"index": i, "actual_type": type(cs).__name__}
+                            context={"index": i, "actual_type": type(cs).__name__},
                         )
-                    if not hasattr(cs, 'score'):
+                    if not hasattr(cs, "score"):
                         raise PhaseExecutionError(
                             message=(
                                 f"Phase 6 cluster_scores[{i}] missing required attribute 'score'. "
@@ -3929,7 +4079,7 @@ class UnifiedOrchestrator:
                                 f"Expected ClusterScore object with 'cluster_id' and 'score' attributes."
                             ),
                             phase_id="P06",
-                            context={"index": i, "actual_type": type(cs).__name__}
+                            context={"index": i, "actual_type": type(cs).__name__},
                         )
 
                 # Extract values safely after validation
@@ -3943,13 +4093,10 @@ class UnifiedOrchestrator:
                             f"Object type: {type(cs).__name__}."
                         ),
                         phase_id="P06",
-                        context={"index": i, "actual_type": type(cs).__name__, "error": str(ae)}
+                        context={"index": i, "actual_type": type(cs).__name__, "error": str(ae)},
                     ) from ae
 
-                validated_cluster_scores.append({
-                    "cluster_id": cluster_id,
-                    "score": score
-                })
+                validated_cluster_scores.append({"cluster_id": cluster_id, "score": score})
 
             # Validate: Should be 4 clusters
             expected_count = 4
@@ -3966,14 +4113,13 @@ class UnifiedOrchestrator:
             return {
                 "status": "completed",
                 "cluster_count": actual_count,
-                "cluster_scores": validated_cluster_scores
+                "cluster_scores": validated_cluster_scores,
             }
 
         except Exception as e:
             self.logger.error(f"Phase 6 orchestration failed: {e}")
             raise PhaseExecutionError(
-                message=f"Phase 6 execution failed: {e}",
-                phase_id="P06"
+                message=f"Phase 6 execution failed: {e}", phase_id="P06"
             ) from e
 
     # =========================================================================
@@ -3992,7 +4138,7 @@ class UnifiedOrchestrator:
     Output: 1 MacroScore object
     """
 
-    def _execute_phase_07(self) -> Dict[str, Any]:
+    def _execute_phase_07(self) -> dict[str, Any]:
         """
         Execute Phase 7: Macro Aggregation - CONSTITUTIONAL ORCHESTRATION.
 
@@ -4009,7 +4155,6 @@ class UnifiedOrchestrator:
         Returns:
             Dict with complete macro aggregation results
         """
-        from farfan_pipeline.phases.Phase_06.phase6_10_00_cluster_score import ClusterScore
 
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 7: MACRO AGGREGATION - CONSTITUTIONAL ORCHESTRATION STARTED")
@@ -4027,13 +4172,16 @@ class UnifiedOrchestrator:
             # ====================================================================
             try:
                 from farfan_pipeline.phases.Phase_07.phase7_31_00_performance_metrics import (
-                    Phase7MetricsCollector
+                    Phase7MetricsCollector,
                 )
+
                 metrics_collector = Phase7MetricsCollector(plan_id=plan_id, cluster_count=4)
                 metrics_collector.start_phase()
                 self.logger.info(f"[P7] Metrics collector initialized for plan_id={plan_id}")
             except ImportError:
-                self.logger.warning("[P7] Metrics collector not available, running without performance tracking")
+                self.logger.warning(
+                    "[P7] Metrics collector not available, running without performance tracking"
+                )
                 metrics_collector = None
 
             # ====================================================================
@@ -4044,8 +4192,9 @@ class UnifiedOrchestrator:
             if self.config.enable_checkpoint:
                 try:
                     from farfan_pipeline.phases.Phase_07.phase7_30_00_checkpoint_manager import (
-                        Phase7CheckpointManager
+                        Phase7CheckpointManager,
                     )
+
                     checkpoint_manager = Phase7CheckpointManager(
                         checkpoint_dir=checkpoint_dir,
                         plan_id=plan_id,
@@ -4066,7 +4215,9 @@ class UnifiedOrchestrator:
                             "plan_id": plan_id,
                         }
                 except ImportError:
-                    self.logger.warning("[P7] Checkpoint manager not available, running without recovery support")
+                    self.logger.warning(
+                        "[P7] Checkpoint manager not available, running without recovery support"
+                    )
                     checkpoint_manager = None
 
             # ====================================================================
@@ -4079,14 +4230,14 @@ class UnifiedOrchestrator:
                 raise PhaseExecutionError(
                     message="Phase 7 requires Phase 6 cluster scores",
                     phase_id="P07",
-                    context={"stage": "S1_INPUT_VALIDATION"}
+                    context={"stage": "S1_INPUT_VALIDATION"},
                 )
 
             # Use interphase bridge for validation
             try:
                 from farfan_pipeline.phases.Phase_07.interphase import (
-                    bridge_phase6_to_phase7,
                     Phase6ToPhase7BridgeError,
+                    bridge_phase6_to_phase7,
                 )
 
                 validated_cluster_scores, bridge_contract = bridge_phase6_to_phase7(cluster_scores)
@@ -4097,26 +4248,29 @@ class UnifiedOrchestrator:
                     "cluster_ids": sorted(bridge_contract.cluster_ids),
                     "score_range": [
                         min(bridge_contract.cluster_scores.values()),
-                        max(bridge_contract.cluster_scores.values())
+                        max(bridge_contract.cluster_scores.values()),
                     ],
                     "certificate": bridge_contract.certificate,
                 }
 
-                self.logger.info(f"[P7-S1] Input validated: {bridge_contract.cluster_count} clusters")
+                self.logger.info(
+                    f"[P7-S1] Input validated: {bridge_contract.cluster_count} clusters"
+                )
 
             except Phase6ToPhase7BridgeError as e:
                 self.logger.error(f"[P7-S1] Bridge validation failed: {e}")
                 raise PhaseExecutionError(
                     message=f"Phase 7 input validation failed: {e}",
                     phase_id="P07",
-                    context={"stage": "S1_INPUT_VALIDATION", "error_code": e.error_code}
+                    context={"stage": "S1_INPUT_VALIDATION", "error_code": e.error_code},
                 ) from e
 
             # Emit SISAS signal for phase start
-            self._emit_phase_signal("P07", "STARTED", {
-                "plan_id": plan_id,
-                "cluster_count": len(validated_cluster_scores)
-            })
+            self._emit_phase_signal(
+                "P07",
+                "STARTED",
+                {"plan_id": plan_id, "cluster_count": len(validated_cluster_scores)},
+            )
 
             # ====================================================================
             # STAGE 2-8: MACRO AGGREGATION WITH METRICS TRACKING
@@ -4130,12 +4284,11 @@ class UnifiedOrchestrator:
                 with metrics_collector.track_stage("P7_MACRO_AGGREGATION"):
                     try:
                         from farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator import (
-                            MacroAggregator
+                            MacroAggregator,
                         )
+
                         # Pass checkpoint_manager for granular stage-level recovery
-                        aggregator = MacroAggregator(
-                            checkpoint_manager=checkpoint_manager
-                        )
+                        aggregator = MacroAggregator(checkpoint_manager=checkpoint_manager)
                         macro_score = aggregator.aggregate(validated_cluster_scores)
 
                         self.logger.info(f"[P7] Macro aggregated: score={macro_score.score}")
@@ -4145,18 +4298,17 @@ class UnifiedOrchestrator:
                         raise PhaseExecutionError(
                             message=f"Phase 7 macro aggregation failed: {e}",
                             phase_id="P07",
-                            context={"stage": "MACRO_AGGREGATION"}
+                            context={"stage": "MACRO_AGGREGATION"},
                         ) from e
             else:
                 # Without metrics tracking
                 try:
                     from farfan_pipeline.phases.Phase_07.phase7_20_00_macro_aggregator import (
-                        MacroAggregator
+                        MacroAggregator,
                     )
+
                     # Pass checkpoint_manager for granular stage-level recovery
-                    aggregator = MacroAggregator(
-                        checkpoint_manager=checkpoint_manager
-                    )
+                    aggregator = MacroAggregator(checkpoint_manager=checkpoint_manager)
                     macro_score = aggregator.aggregate(validated_cluster_scores)
 
                     self.logger.info(f"[P7] Macro aggregated: score={macro_score.score}")
@@ -4166,7 +4318,7 @@ class UnifiedOrchestrator:
                     raise PhaseExecutionError(
                         message=f"Phase 7 macro aggregation failed: {e}",
                         phase_id="P07",
-                        context={"stage": "MACRO_AGGREGATION"}
+                        context={"stage": "MACRO_AGGREGATION"},
                     ) from e
 
             # ====================================================================
@@ -4176,8 +4328,9 @@ class UnifiedOrchestrator:
 
             # INV-7.1: Cluster weights sum to 1.0
             from farfan_pipeline.phases.Phase_07.contracts.phase7_10_01_mission_contract import (
-                Phase7MissionContract
+                Phase7MissionContract,
             )
+
             weight_sum = sum(Phase7MissionContract.CLUSTER_WEIGHTS.values())
             invariant_7_1 = abs(weight_sum - 1.0) < 1e-6
             constitutional_invariants["INV-7.1"] = {
@@ -4188,7 +4341,11 @@ class UnifiedOrchestrator:
             }
 
             # INV-7.3: Score domain [0.0, 3.0]
-            score_in_bounds = (Phase7MissionContract.SCORE_MIN <= macro_score.score <= Phase7MissionContract.SCORE_MAX)
+            score_in_bounds = (
+                Phase7MissionContract.SCORE_MIN
+                <= macro_score.score
+                <= Phase7MissionContract.SCORE_MAX
+            )
             constitutional_invariants["INV-7.3"] = {
                 "name": "Score domain [0.0, 3.0]",
                 "min": Phase7MissionContract.SCORE_MIN,
@@ -4208,22 +4365,19 @@ class UnifiedOrchestrator:
             }
 
             # Overall invariants status
-            all_invariants_passed = all(
-                inv["passed"] for inv in constitutional_invariants.values()
-            )
+            all_invariants_passed = all(inv["passed"] for inv in constitutional_invariants.values())
 
             if not all_invariants_passed and self.config.strict_mode:
                 failed_invariants = [
-                    name for name, inv in constitutional_invariants.items()
-                    if not inv["passed"]
+                    name for name, inv in constitutional_invariants.items() if not inv["passed"]
                 ]
                 raise PhaseExecutionError(
                     message=f"Phase 7 constitutional invariants failed: {failed_invariants}",
                     phase_id="P07",
                     context={
                         "constitutional_invariants": constitutional_invariants,
-                        "failed_invariants": failed_invariants
-                    }
+                        "failed_invariants": failed_invariants,
+                    },
                 )
 
             # ====================================================================
@@ -4260,7 +4414,7 @@ class UnifiedOrchestrator:
                 raise PhaseExecutionError(
                     message=f"Phase 7 exit gate validation failed: {e}",
                     phase_id="P07",
-                    context={"stage": "EXIT_GATE_VALIDATION"}
+                    context={"stage": "EXIT_GATE_VALIDATION"},
                 ) from e
 
             # ====================================================================
@@ -4269,7 +4423,9 @@ class UnifiedOrchestrator:
             if checkpoint_manager is not None:
                 try:
                     cleared = checkpoint_manager.clear_checkpoints()
-                    self.logger.info(f"[P7] Cleared {cleared} checkpoint files after successful completion")
+                    self.logger.info(
+                        f"[P7] Cleared {cleared} checkpoint files after successful completion"
+                    )
                     step_results["checkpoint_cleanup"] = {
                         "status": "completed",
                         "files_cleared": cleared,
@@ -4287,11 +4443,11 @@ class UnifiedOrchestrator:
             if metrics_collector is not None:
                 try:
                     macro_score_info = {
-                        "evaluation_id": getattr(macro_score, 'evaluation_id', 'UNKNOWN'),
-                        "score": getattr(macro_score, 'score', 0.0),
-                        "quality_level": getattr(macro_score, 'quality_level', 'UNKNOWN'),
-                        "coherence": getattr(macro_score, 'cross_cutting_coherence', 0.0),
-                        "alignment": getattr(macro_score, 'strategic_alignment', 0.0),
+                        "evaluation_id": getattr(macro_score, "evaluation_id", "UNKNOWN"),
+                        "score": getattr(macro_score, "score", 0.0),
+                        "quality_level": getattr(macro_score, "quality_level", "UNKNOWN"),
+                        "coherence": getattr(macro_score, "cross_cutting_coherence", 0.0),
+                        "alignment": getattr(macro_score, "strategic_alignment", 0.0),
                     }
                     metrics_collector.end_phase(macro_score_info)
                     metrics = metrics_collector.get_metrics()
@@ -4299,12 +4455,23 @@ class UnifiedOrchestrator:
                     # Log aggregate statistics
                     self.logger.info(f"[P7] Metrics Summary:")
                     self.logger.info(f"  - Total duration: {metrics.total_duration_ms:.2f}ms")
-                    self.logger.info(f"  - Stages completed: {metrics.aggregate_stats.get('completed_stages', 0)}")
-                    self.logger.info(f"  - Avg stage duration: {metrics.aggregate_stats.get('avg_duration_ms', 0):.2f}ms")
-                    self.logger.info(f"  - Peak memory: {metrics.aggregate_stats.get('max_memory_mb_peak', 0):.2f}MB")
+                    self.logger.info(
+                        f"  - Stages completed: {metrics.aggregate_stats.get('completed_stages', 0)}"
+                    )
+                    self.logger.info(
+                        f"  - Avg stage duration: {metrics.aggregate_stats.get('avg_duration_ms', 0):.2f}ms"
+                    )
+                    self.logger.info(
+                        f"  - Peak memory: {metrics.aggregate_stats.get('max_memory_mb_peak', 0):.2f}MB"
+                    )
 
                     # Export metrics to file
-                    metrics_path = Path(self.config.output_dir) / "metrics" / "phase7" / f"{plan_id}_metrics.json"
+                    metrics_path = (
+                        Path(self.config.output_dir)
+                        / "metrics"
+                        / "phase7"
+                        / f"{plan_id}_metrics.json"
+                    )
                     metrics_collector.export_metrics(metrics_path)
                     self.logger.info(f"[P7] Metrics exported to: {metrics_path}")
 
@@ -4322,21 +4489,29 @@ class UnifiedOrchestrator:
                     }
 
             # Emit SISAS signal for phase completion
-            self._emit_phase_signal("P07", "COMPLETED", {
-                "plan_id": plan_id,
-                "macro_score": macro_score.score,
-                "quality_level": macro_score.quality_level,
-                "exit_gate_passed": exit_gate_result.passed if exit_gate_result else False,
-            })
+            self._emit_phase_signal(
+                "P07",
+                "COMPLETED",
+                {
+                    "plan_id": plan_id,
+                    "macro_score": macro_score.score,
+                    "quality_level": macro_score.quality_level,
+                    "exit_gate_passed": exit_gate_result.passed if exit_gate_result else False,
+                },
+            )
 
             # ====================================================================
             # FINALIZATION: Store and Return Results
             # ====================================================================
             self.logger.info("=" * 80)
-            self.logger.critical("PHASE 7: MACRO AGGREGATION - CONSTITUTIONAL ORCHESTRATION COMPLETED")
+            self.logger.critical(
+                "PHASE 7: MACRO AGGREGATION - CONSTITUTIONAL ORCHESTRATION COMPLETED"
+            )
             self.logger.info(f"Macro Score: {macro_score.score}")
             self.logger.info(f"Quality Level: {macro_score.quality_level}")
-            self.logger.info(f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}")
+            self.logger.info(
+                f"Constitutional Invariants: {'ALL PASSED' if all_invariants_passed else 'SOME FAILED'}"
+            )
             self.logger.info("=" * 80)
 
             # Store in context
@@ -4345,12 +4520,12 @@ class UnifiedOrchestrator:
             return {
                 "status": "completed",
                 "macro_score": {
-                    "evaluation_id": getattr(macro_score, 'evaluation_id', 'UNKNOWN'),
+                    "evaluation_id": getattr(macro_score, "evaluation_id", "UNKNOWN"),
                     "score": macro_score.score,
                     "quality_level": macro_score.quality_level,
-                    "coherence": getattr(macro_score, 'cross_cutting_coherence', 0.0),
-                    "alignment": getattr(macro_score, 'strategic_alignment', 0.0),
-                    "systemic_gaps": getattr(macro_score, 'systemic_gaps', []),
+                    "coherence": getattr(macro_score, "cross_cutting_coherence", 0.0),
+                    "alignment": getattr(macro_score, "strategic_alignment", 0.0),
+                    "systemic_gaps": getattr(macro_score, "systemic_gaps", []),
                 },
                 "step_results": step_results,
                 "constitutional_invariants": constitutional_invariants,
@@ -4362,14 +4537,18 @@ class UnifiedOrchestrator:
         except Exception as e:
             self.logger.error(f"Phase 7 orchestration failed: {e}")
             # Emit SISAS signal for phase failure
-            self._emit_phase_signal("P07", "FAILED", {
-                "plan_id": plan_id,
-                "error": str(e),
-            })
+            self._emit_phase_signal(
+                "P07",
+                "FAILED",
+                {
+                    "plan_id": plan_id,
+                    "error": str(e),
+                },
+            )
             raise PhaseExecutionError(
                 message=f"Phase 7 execution failed: {e}",
                 phase_id="P07",
-                context={"step_results": step_results}
+                context={"step_results": step_results},
             ) from e
 
     # =========================================================================
@@ -4388,7 +4567,7 @@ class UnifiedOrchestrator:
     Output: Three-level recommendations (MICRO, MESO, MACRO)
     """
 
-    def _execute_phase_08(self) -> Dict[str, Any]:
+    def _execute_phase_08(self) -> dict[str, Any]:
         """
         Execute Phase 8: Recommendations Engine - COMPLETE ORCHESTRATION.
 
@@ -4410,8 +4589,7 @@ class UnifiedOrchestrator:
             macro_score = self.context.get_phase_output(PhaseID.PHASE_7)
             if macro_score is None:
                 raise PhaseExecutionError(
-                    message="Phase 8 requires Phase 7 macro score",
-                    phase_id="P08"
+                    message="Phase 8 requires Phase 7 macro score", phase_id="P08"
                 )
 
             self.logger.info(f"[P8] Input received: macro_score")
@@ -4422,9 +4600,8 @@ class UnifiedOrchestrator:
             self.logger.info("[P8-S00] Stage 00: Foundation - Data Models")
 
             try:
-                from farfan_pipeline.phases.Phase_08.phase8_00_00_data_models import (
-                    Recommendation, RecommendationSet
-                )
+                pass
+
                 stage_results["s00_foundation"] = {"status": "completed"}
             except Exception as e:
                 self.logger.warning(f"[P8-S00] Foundation failed: {e}")
@@ -4437,9 +4614,10 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_08.phase8_10_00_schema_validation import (
-                    UniversalRuleValidator
+                    UniversalRuleValidator,
                 )
-                validator = UniversalRuleValidator()
+
+                UniversalRuleValidator()
                 stage_results["s10_validation"] = {"status": "completed"}
             except Exception as e:
                 self.logger.warning(f"[P8-S10] Validation failed: {e}")
@@ -4452,11 +4630,11 @@ class UnifiedOrchestrator:
 
             recommendations = {"MICRO": [], "MESO": [], "MACRO": []}
             try:
-                from farfan_pipeline.phases.Phase_08.phase8_20_00_recommendation_engine import (
-                    RecommendationEngine
+                from farfan_pipeline.phases.Phase_08.phase8_25_00_recommendation_bifurcator import (
+                    UnifiedBifurcator,
                 )
 
-                engine = RecommendationEngine()
+                engine = UnifiedBifurcator()
 
                 # Get cluster data from Phase 6 and macro data from Phase 7
                 cluster_scores = self.context.get_phase_output(PhaseID.PHASE_6) or []
@@ -4466,7 +4644,7 @@ class UnifiedOrchestrator:
                 micro_scores = {}
                 if isinstance(area_scores, list):
                     for score in area_scores:
-                        if hasattr(score, 'area_id') and hasattr(score, 'score'):
+                        if hasattr(score, "area_id") and hasattr(score, "score"):
                             micro_scores[score.area_id] = score.score
                 elif isinstance(area_scores, dict):
                     micro_scores = area_scores
@@ -4474,25 +4652,25 @@ class UnifiedOrchestrator:
                 cluster_data = {}
                 if isinstance(cluster_scores, list):
                     for score in cluster_scores:
-                        if hasattr(score, 'cluster_id'):
+                        if hasattr(score, "cluster_id"):
                             cluster_data[score.cluster_id] = score
                 elif isinstance(cluster_scores, dict):
                     cluster_data = cluster_scores
 
-                macro_data = macro_score if isinstance(macro_score, dict) else {"macro_score": macro_score}
+                macro_data = (
+                    macro_score if isinstance(macro_score, dict) else {"macro_score": macro_score}
+                )
 
                 # Generate all recommendations using RecommendationEngine
                 all_recs = engine.generate_all_recommendations(
-                    micro_scores=micro_scores,
-                    cluster_data=cluster_data,
-                    macro_data=macro_data
+                    micro_scores=micro_scores, cluster_data=cluster_data, macro_data=macro_data
                 )
 
                 recommendations = all_recs
-                
+
                 # Count recommendations (handle both dict and RecommendationSet)
                 def get_rec_count(rec_set):
-                    if hasattr(rec_set, 'recommendations'):
+                    if hasattr(rec_set, "recommendations"):
                         return len(rec_set.recommendations)
                     elif isinstance(rec_set, dict):
                         return len(rec_set.get("recommendations", []))
@@ -4502,14 +4680,13 @@ class UnifiedOrchestrator:
                     "status": "completed",
                     "micro_count": get_rec_count(all_recs.get("MICRO", {})),
                     "meso_count": get_rec_count(all_recs.get("MESO", {})),
-                    "macro_count": get_rec_count(all_recs.get("MACRO", {}))
+                    "macro_count": get_rec_count(all_recs.get("MACRO", {})),
                 }
                 self.logger.info(f"[P8-S20] Recommendations generated: {stage_results['s20_core']}")
             except Exception as e:
                 self.logger.error(f"[P8-S20] Core generation failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Stage 20 core generation failed: {e}",
-                    phase_id="P08"
+                    message=f"Stage 20 core generation failed: {e}", phase_id="P08"
                 ) from e
 
             # ====================================================================
@@ -4526,12 +4703,13 @@ class UnifiedOrchestrator:
                         )
                         stage_results["s30_enrichment"] = {
                             "status": "skipped",
-                            "reason": "missing get_metrics method on SISAS object"
+                            "reason": "missing get_metrics method on SISAS object",
                         }
                     else:
                         from farfan_pipeline.phases.Phase_08.phase8_30_00_signal_enriched_recommendations import (
-                            SignalEnrichedRecommender
+                            SignalEnrichedRecommender,
                         )
+
                         enricher = SignalEnrichedRecommender()
                         # Guard against AttributeError when calling get_metrics
                         try:
@@ -4542,16 +4720,18 @@ class UnifiedOrchestrator:
                             )
                             stage_results["s30_enrichment"] = {
                                 "status": "skipped",
-                                "reason": f"AttributeError from get_metrics: {ae}"
+                                "reason": f"AttributeError from get_metrics: {ae}",
                             }
                         else:
                             recommendations = enricher.enrich_with_signals(
-                                recommendations=recommendations,
-                                signal_data=signal_data
+                                recommendations=recommendations, signal_data=signal_data
                             )
                             stage_results["s30_enrichment"] = {"status": "completed"}
                 else:
-                    stage_results["s30_enrichment"] = {"status": "skipped", "reason": "SISAS disabled"}
+                    stage_results["s30_enrichment"] = {
+                        "status": "skipped",
+                        "reason": "SISAS disabled",
+                    }
             except Exception as e:
                 self.logger.warning(f"[P8-S30] Signal enrichment failed: {e}")
                 stage_results["s30_enrichment"] = {"status": "skipped", "reason": str(e)}
@@ -4561,16 +4741,16 @@ class UnifiedOrchestrator:
             # ====================================================================
             # Helper function to count recommendations (handles both RecommendationSet and dict)
             def get_rec_count_output(rec_set):
-                if hasattr(rec_set, 'recommendations'):
+                if hasattr(rec_set, "recommendations"):
                     return len(rec_set.recommendations)
                 elif isinstance(rec_set, dict):
                     return len(rec_set.get("recommendations", []))
                 return 0
 
             total_recs = (
-                get_rec_count_output(recommendations.get("MICRO", {})) +
-                get_rec_count_output(recommendations.get("MESO", {})) +
-                get_rec_count_output(recommendations.get("MACRO", {}))
+                get_rec_count_output(recommendations.get("MICRO", {}))
+                + get_rec_count_output(recommendations.get("MESO", {}))
+                + get_rec_count_output(recommendations.get("MACRO", {}))
             )
 
             self.logger.info("=" * 80)
@@ -4588,16 +4768,15 @@ class UnifiedOrchestrator:
                     "micro_count": get_rec_count_output(recommendations.get("MICRO", {})),
                     "meso_count": get_rec_count_output(recommendations.get("MESO", {})),
                     "macro_count": get_rec_count_output(recommendations.get("MACRO", {})),
-                    "version": "3.0.0"
+                    "version": "3.0.0",
                 },
-                "stage_results": stage_results
+                "stage_results": stage_results,
             }
 
         except Exception as e:
             self.logger.error(f"Phase 8 orchestration failed: {e}")
             raise PhaseExecutionError(
-                message=f"Phase 8 execution failed: {e}",
-                phase_id="P08"
+                message=f"Phase 8 execution failed: {e}", phase_id="P08"
             ) from e
 
     # =========================================================================
@@ -4619,7 +4798,7 @@ class UnifiedOrchestrator:
     Output: PolicyReport, ExecutiveSummary, DetailedFindings (MD/HTML/PDF)
     """
 
-    def _execute_phase_09(self) -> Dict[str, Any]:
+    def _execute_phase_09(self) -> dict[str, Any]:
         """
         Execute Phase 9: Report Assembly - COMPLETE ORCHESTRATION.
 
@@ -4646,8 +4825,7 @@ class UnifiedOrchestrator:
             recommendations = self.context.get_phase_output(PhaseID.PHASE_8)
             if recommendations is None:
                 raise PhaseExecutionError(
-                    message="Phase 9 requires Phase 8 recommendations",
-                    phase_id="P09"
+                    message="Phase 9 requires Phase 8 recommendations", phase_id="P09"
                 )
 
             self.logger.info(f"[P9] Input received: Phase 8 recommendations")
@@ -4659,25 +4837,28 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_09.contracts.phase9_10_00_input_contract import (
-                    Phase9Input, validate_phase9_input
+                    Phase9Input,
+                    validate_phase9_input,
                 )
-                
+
                 # Build Phase9Input from context
                 phase9_input = Phase9Input(
-                    recommendations=recommendations if isinstance(recommendations, list) else [recommendations],
+                    recommendations=(
+                        recommendations if isinstance(recommendations, list) else [recommendations]
+                    ),
                     signal_enriched_data=self.context.get_phase_output(PhaseID.PHASE_8) or {},
                     institutional_context={"municipality": self.config.municipality_name},
                     policy_areas=[f"PA{i:02d}" for i in range(1, 11)],
-                    report_config={"format": ["html", "markdown", "pdf"]}
+                    report_config={"format": ["html", "markdown", "pdf"]},
                 )
-                
+
                 is_valid, validation_errors = validate_phase9_input(phase9_input)
                 step_results["s01_input_validation"] = {
                     "status": "completed",
                     "valid": is_valid,
-                    "errors": validation_errors if not is_valid else []
+                    "errors": validation_errors if not is_valid else [],
                 }
-                
+
                 if not is_valid:
                     self.logger.warning(f"[P9-S01] Input validation issues: {validation_errors}")
             except Exception as e:
@@ -4692,50 +4873,57 @@ class UnifiedOrchestrator:
             analysis_report = None
             try:
                 from farfan_pipeline.phases.Phase_09.phase9_10_00_report_assembly import (
-                    ReportAssembler, AnalysisReport
+                    ReportAssembler,
                 )
-                
+
                 # Get questionnaire provider from context or factory
                 questionnaire_provider = None
-                if hasattr(self.context, 'wiring') and self.context.wiring:
-                    questionnaire_provider = getattr(self.context.wiring.factory, 'questionnaire_provider', None)
-                
+                if hasattr(self.context, "wiring") and self.context.wiring:
+                    questionnaire_provider = getattr(
+                        self.context.wiring.factory, "questionnaire_provider", None
+                    )
+
                 if questionnaire_provider is None:
                     # Fallback: Create a minimal provider
                     class MinimalProvider:
                         def get_data(self):
                             return {"blocks": {}, "metadata": {}}
+
                     questionnaire_provider = MinimalProvider()
-                
+
                 assembler = ReportAssembler(
-                    questionnaire_provider=questionnaire_provider,
-                    orchestrator=self
+                    questionnaire_provider=questionnaire_provider, orchestrator=self
                 )
-                
+
                 # Gather all phase outputs for report
                 execution_results = {
                     "macro_score": self.context.get_phase_output(PhaseID.PHASE_7),
                     "cluster_scores": self.context.get_phase_output(PhaseID.PHASE_6),
                     "area_scores": self.context.get_phase_output(PhaseID.PHASE_5),
                     "dimension_scores": self.context.get_phase_output(PhaseID.PHASE_4),
-                    "recommendations": recommendations
+                    "recommendations": recommendations,
                 }
-                
+
                 analysis_report = assembler.assemble_report(
                     plan_name=self.config.municipality_name or "policy_analysis",
-                    execution_results=execution_results
+                    execution_results=execution_results,
                 )
-                
+
                 step_results["s02_assembly"] = {
                     "status": "completed",
-                    "report_id": analysis_report.metadata.report_id if hasattr(analysis_report, 'metadata') else "unknown"
+                    "report_id": (
+                        analysis_report.metadata.report_id
+                        if hasattr(analysis_report, "metadata")
+                        else "unknown"
+                    ),
                 }
-                self.logger.info(f"[P9-S02] Report assembled: {step_results['s02_assembly']['report_id']}")
+                self.logger.info(
+                    f"[P9-S02] Report assembled: {step_results['s02_assembly']['report_id']}"
+                )
             except Exception as e:
                 self.logger.error(f"[P9-S02] Report assembly failed: {e}")
                 raise PhaseExecutionError(
-                    message=f"Step 2 report assembly failed: {e}",
-                    phase_id="P09"
+                    message=f"Step 2 report assembly failed: {e}", phase_id="P09"
                 ) from e
 
             # ====================================================================
@@ -4745,29 +4933,30 @@ class UnifiedOrchestrator:
 
             artifacts = {}
             try:
-                from farfan_pipeline.phases.Phase_09.phase9_10_00_report_generator import (
-                    ReportGenerator
-                )
                 from pathlib import Path
-                
+
+                from farfan_pipeline.phases.Phase_09.phase9_10_00_report_generator import (
+                    ReportGenerator,
+                )
+
                 output_dir = Path(self.config.output_dir) / "reports"
                 generator = ReportGenerator(
                     output_dir=output_dir,
                     plan_name=self.config.municipality_name or "policy_analysis",
                     enable_charts=True,
-                    enable_animations=True
+                    enable_animations=True,
                 )
-                
+
                 artifacts = generator.generate_all(
                     report=analysis_report,
                     generate_pdf=True,
                     generate_html=True,
-                    generate_markdown=True
+                    generate_markdown=True,
                 )
-                
+
                 step_results["s03_generation"] = {
                     "status": "completed",
-                    "artifacts": {k: str(v) for k, v in artifacts.items()}
+                    "artifacts": {k: str(v) for k, v in artifacts.items()},
                 }
                 self.logger.info(f"[P9-S03] Generated {len(artifacts)} report artifacts")
             except Exception as e:
@@ -4781,17 +4970,13 @@ class UnifiedOrchestrator:
 
             try:
                 from farfan_pipeline.phases.Phase_09.phase9_15_00_institutional_entity_annex import (
-                    generate_institutional_annex
+                    generate_institutional_annex,
                 )
-                
+
                 annex = generate_institutional_annex(
-                    report=analysis_report,
-                    municipality=self.config.municipality_name
+                    report=analysis_report, municipality=self.config.municipality_name
                 )
-                step_results["s04_annex"] = {
-                    "status": "completed",
-                    "annex_generated": True
-                }
+                step_results["s04_annex"] = {"status": "completed", "annex_generated": True}
             except Exception as e:
                 self.logger.warning(f"[P9-S04] Institutional annex skipped: {e}")
                 step_results["s04_annex"] = {"status": "skipped", "reason": str(e)}
@@ -4801,7 +4986,7 @@ class UnifiedOrchestrator:
             # ====================================================================
             exit_gates["gate_final"] = {
                 "status": "passed" if analysis_report is not None else "failed",
-                "artifacts_generated": len(artifacts)
+                "artifacts_generated": len(artifacts),
             }
 
             self.logger.info("=" * 80)
@@ -4813,7 +4998,7 @@ class UnifiedOrchestrator:
             # Store in context
             self.context.phase_outputs[PhaseID.PHASE_9] = {
                 "report": analysis_report,
-                "artifacts": artifacts
+                "artifacts": artifacts,
             }
 
             return {
@@ -4821,11 +5006,15 @@ class UnifiedOrchestrator:
                 "report": {
                     "municipality": self.config.municipality_name,
                     "status": "complete" if analysis_report else "failed",
-                    "report_id": analysis_report.metadata.report_id if analysis_report and hasattr(analysis_report, 'metadata') else None
+                    "report_id": (
+                        analysis_report.metadata.report_id
+                        if analysis_report and hasattr(analysis_report, "metadata")
+                        else None
+                    ),
                 },
                 "artifacts": {k: str(v) for k, v in artifacts.items()},
                 "step_results": step_results,
-                "exit_gates": exit_gates
+                "exit_gates": exit_gates,
             }
 
         except PhaseExecutionError:
@@ -4835,7 +5024,7 @@ class UnifiedOrchestrator:
             raise PhaseExecutionError(
                 message=f"Phase 9 execution failed: {e}",
                 phase_id="P09",
-                context={"step_results": step_results}
+                context={"step_results": step_results},
             ) from e
 
     # =========================================================================
@@ -4857,19 +5046,13 @@ class UnifiedOrchestrator:
             return ""
 
     def _execute_phase_01_subphases_individually(
-        self,
-        canonical_input,
-        signal_enricher,
-        subphase_results
-    ) -> Dict[str, Any]:
+        self, canonical_input, signal_enricher, subphase_results
+    ) -> dict[str, Any]:
         """
         Fallback method to execute Phase 1 subphases individually.
 
         Used when the complete ingestion function is not available.
         """
-        from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
-            CanonPolicyPackage, PolicyManifest, QualityMetrics, ChunkGraph
-        )
 
         self.logger.info("[P1] Executing subphases individually (fallback mode)")
 
@@ -4879,7 +5062,7 @@ class UnifiedOrchestrator:
             "smart_chunks": [],
             "canon_policy_package": None,
             "subphase_results": subphase_results,
-            "validation_result": {"all_passed": True}
+            "validation_result": {"all_passed": True},
         }
 
     # =========================================================================
@@ -4890,7 +5073,7 @@ class UnifiedOrchestrator:
         self,
         subphase_id: str,
         status: str,
-        metrics: Optional[Dict[str, Any]] = None,
+        metrics: dict[str, Any] | None = None,
     ) -> None:
         """
         Callback for Phase 1 subphase progress updates.
@@ -4932,7 +5115,7 @@ class UnifiedOrchestrator:
         phase: str,
         subphase: str,
         status: str,
-        metrics: Optional[Dict[str, Any]] = None,
+        metrics: dict[str, Any] | None = None,
     ) -> None:
         """
         Emit SISAS signal for subphase progress.
@@ -4995,7 +5178,7 @@ class UnifiedOrchestrator:
     def _validate_phase1_exit_gate(
         self,
         canon_policy_package: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Validate Phase 1 output meets Phase 2 input requirements.
 
@@ -5037,7 +5220,11 @@ class UnifiedOrchestrator:
                     "expected_chunk_count": preconditions.EXPECTED_CHUNK_COUNT,
                     "actual_chunk_count": len(canon_policy_package.smart_chunks),
                     "expected_schema_version": preconditions.REQUIRED_CPP_SCHEMA_VERSION,
-                    "actual_schema_version": canon_policy_package.manifest.schema_version if hasattr(canon_policy_package, 'manifest') else "UNKNOWN",
+                    "actual_schema_version": (
+                        canon_policy_package.manifest.schema_version
+                        if hasattr(canon_policy_package, "manifest")
+                        else "UNKNOWN"
+                    ),
                 },
             }
 
@@ -5077,7 +5264,7 @@ class UnifiedOrchestrator:
         cpp: Any,
         valid: bool,
         errors: list,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Generate Phase 1 compatibility certificate for Phase 2.
 
@@ -5093,7 +5280,7 @@ class UnifiedOrchestrator:
         from datetime import datetime, timezone
 
         # Compute CPP hash
-        cpp_dict = cpp.to_dict() if hasattr(cpp, 'to_dict') else {}
+        cpp_dict = cpp.to_dict() if hasattr(cpp, "to_dict") else {}
         cpp_json = json.dumps(cpp_dict, sort_keys=True, default=str)
         cpp_hash = hashlib.sha256(cpp_json.encode()).hexdigest()
 
@@ -5103,7 +5290,9 @@ class UnifiedOrchestrator:
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "cpp_hash": cpp_hash,
             "chunk_count": len(cpp.smart_chunks),
-            "schema_version": cpp.manifest.schema_version if hasattr(cpp, 'manifest') else "UNKNOWN",
+            "schema_version": (
+                cpp.manifest.schema_version if hasattr(cpp, "manifest") else "UNKNOWN"
+            ),
             "errors": errors,
             "warnings": [],
             "certificate_version": "CERT-P1-2025.1",
@@ -5117,7 +5306,7 @@ class UnifiedOrchestrator:
 
         return certificate
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Get current orchestrator status."""
         return {
             "state": self.state_machine.current_state.name,
@@ -5127,7 +5316,7 @@ class UnifiedOrchestrator:
             "dependency_graph_state": self.dependency_graph.get_state_snapshot(),
         }
 
-    def get_sisas_metrics(self) -> Dict[str, Any]:
+    def get_sisas_metrics(self) -> dict[str, Any]:
         """Get SISAS metrics from SDO and context."""
         if self.context.sisas is None:
             return {"sisas_enabled": False}
@@ -5173,7 +5362,7 @@ class UnifiedOrchestrator:
         self.logger.info(f"Checkpoint saved to {checkpoint_file}")
         return str(checkpoint_file)
 
-    def export_results(self, output_dir: str = None) -> Dict[str, str]:
+    def export_results(self, output_dir: str = None) -> dict[str, str]:
         """Export all pipeline results to structured format."""
         if output_dir is None:
             output_dir = self.config.output_dir
@@ -5204,12 +5393,13 @@ class UnifiedOrchestrator:
     def cleanup(self) -> None:
         """Clean up resources after pipeline execution."""
         self.logger.info("Starting cleanup")
-        
+
         # Clean up factory resources
         if self.factory:
             self.factory.cleanup()
-            
+
         import gc
+
         gc.collect()
         self.logger.info("Cleanup completed")
 
@@ -5226,7 +5416,6 @@ __all__ = [
     "get_development_config",
     "get_production_config",
     "get_testing_config",
-
     # Exceptions
     "OrchestrationError",
     "DependencyResolutionError",
@@ -5235,25 +5424,21 @@ __all__ = [
     "OrchestrationInitializationError",
     "PhaseExecutionError",
     "ContractViolationError",
-
     # State Machine
     "OrchestrationState",
     "StateTransition",
     "OrchestrationStateMachine",
     "VALID_TRANSITIONS",
-
     # Dependency Graph
     "DependencyStatus",
     "DependencyNode",
     "DependencyEdge",
     "GraphValidationResult",
     "DependencyGraph",
-
     # Phase Scheduler
     "SchedulingStrategy",
     "SchedulingDecision",
     "PhaseScheduler",
-
     # Core Orchestrator
     "PhaseStatus",
     "PhaseID",

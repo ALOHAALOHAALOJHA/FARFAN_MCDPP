@@ -6,12 +6,13 @@ The actual AggregationSettings class is now in primitives/ layer.
 
 Import hierarchy (Clean Architecture):
 1. primitives/phase4_00_00_aggregation_settings.py - Pure dataclass (no deps)
-2. configuration/ - Factory methods (depends on primitives)  
+2. configuration/ - Factory methods (depends on primitives)
 3. THIS MODULE - Convenience re-export (depends on primitives)
 4. aggregation.py, choquet_adapter.py - Import from THIS MODULE or primitives
 
 Module: src/farfan_pipeline/phases/Phase_04/phase4_10_00_aggregation_settings.py
 """
+
 from __future__ import annotations
 
 __version__ = "2.0.0"
@@ -24,10 +25,35 @@ from farfan_pipeline.phases.Phase_04.primitives.phase4_00_00_aggregation_setting
     validate_aggregation_settings,
 )
 
+
+def load_aggregation_settings() -> AggregationSettings:
+    """
+    Load default aggregation settings.
+
+    Returns a default AggregationSettings instance with equal weights.
+    For production, use AggregationSettingsFactory.from_signal_registry()
+    or AggregationSettingsFactory.from_monolith() instead.
+
+    Returns:
+        AggregationSettings with default values
+    """
+    return AggregationSettings(
+        dimension_group_by_keys=["policy_area", "dimension"],
+        area_group_by_keys=["area_id"],
+        cluster_group_by_keys=["cluster_id"],
+        dimension_question_weights={},
+        policy_area_dimension_weights={},
+        cluster_policy_area_weights={},
+        macro_cluster_weights={},
+        dimension_expected_counts={},
+        area_expected_dimension_counts={},
+        source_hash=None,
+        sisas_source="legacy",
+    )
+
+
 __all__ = [
     "AggregationSettings",
     "validate_aggregation_settings",
+    "load_aggregation_settings",
 ]
-
-
-

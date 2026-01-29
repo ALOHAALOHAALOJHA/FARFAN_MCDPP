@@ -81,18 +81,19 @@ from farfan_pipeline.phases.Phase_00.phase0_00_03_protocols import (
 # These tools ensure idempotency and full traceability per FORCING ROUTE
 try:
     from farfan_pipeline.infrastructure.contractual.dura_lex.idempotency_dedup import (
-        IdempotencyContract,
         EvidenceStore,
+        IdempotencyContract,
     )
     from farfan_pipeline.infrastructure.contractual.dura_lex.traceability import (
-        TraceabilityContract,
         MerkleTree,
+        TraceabilityContract,
     )
 
     DURA_LEX_AVAILABLE = True
 except ImportError as e:
     # Fallback if dura_lex modules are not available
     import warnings
+
     warnings.warn(f"Dura Lex contracts unavailable: {e}", ImportWarning)
     DURA_LEX_AVAILABLE = False
     IdempotencyContract = None
@@ -120,7 +121,7 @@ class Phase0Input:
     pdf_path: Path
     run_id: str
     questionnaire_path: Path | None = None
-    
+
     def __post_init__(self) -> None:
         """Validate types at construction time."""
         if not isinstance(self.pdf_path, Path):
@@ -128,38 +129,38 @@ class Phase0Input:
         if not isinstance(self.run_id, str):
             raise TypeError(f"run_id must be str, got {type(self.run_id).__name__}")
         if self.questionnaire_path is not None and not isinstance(self.questionnaire_path, Path):
-            raise TypeError(f"questionnaire_path must be Path or None, got {type(self.questionnaire_path).__name__}")
+            raise TypeError(
+                f"questionnaire_path must be Path or None, got {type(self.questionnaire_path).__name__}"
+            )
 
 
 class Phase0InputValidator(BaseModel):
     """
     Runtime validator for Phase0Input contract - Dura Lex StrictModel Pattern.
-    
+
     Uses pydantic for strict runtime validation following the dura_lex contract system.
     This ensures maximum performance and deterministic execution with zero tolerance
     for invalid inputs.
-    
+
     Configuration follows dura_lex/contracts_runtime.py StrictModel pattern:
     - extra='forbid': Refuse unknown fields
     - validate_assignment=True: Validate on assignment
     - str_strip_whitespace=True: Auto-strip strings
     - validate_default=True: Validate default values
     """
-    
+
     # Strict configuration per dura_lex contract system
     model_config = {
-        'extra': 'forbid',  # Refuse unknown fields - zero tolerance
-        'validate_assignment': True,  # Validate on assignment
-        'str_strip_whitespace': True,  # Auto-strip whitespace
-        'validate_default': True,  # Validate defaults
-        'frozen': False,  # Allow mutation for validation
+        "extra": "forbid",  # Refuse unknown fields - zero tolerance
+        "validate_assignment": True,  # Validate on assignment
+        "str_strip_whitespace": True,  # Auto-strip whitespace
+        "validate_default": True,  # Validate defaults
+        "frozen": False,  # Allow mutation for validation
     }
 
     pdf_path: str = Field(min_length=1, description="Path to input PDF")
     run_id: str = Field(min_length=1, description="Unique run identifier")
-    questionnaire_path: str | None = Field(
-        default=None, description="Optional questionnaire path"
-    )
+    questionnaire_path: str | None = Field(default=None, description="Optional questionnaire path")
 
     @field_validator("pdf_path")
     @classmethod
@@ -168,10 +169,10 @@ class Phase0InputValidator(BaseModel):
         if not v or not v.strip():
             raise ValueError("[PRE-003] FATAL: pdf_path cannot be empty")
         # Security: Reject null bytes (truncation attack)
-        if '\x00' in v:
+        if "\x00" in v:
             raise ValueError("[PRE-003] FATAL: pdf_path contains null bytes")
         # Security: Reject path traversal attempts
-        if '..' in v:
+        if ".." in v:
             raise ValueError("[PRE-003] FATAL: pdf_path contains path traversal sequences")
         return v
 
@@ -182,7 +183,7 @@ class Phase0InputValidator(BaseModel):
         if not v or not v.strip():
             raise ValueError("[PRE-002] FATAL: run_id cannot be empty")
         # Ensure run_id is filesystem-safe and deterministic
-        if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+        if any(char in v for char in ["/", "\\", ":", "*", "?", '"', "<", ">", "|"]):
             raise ValueError(
                 "[PRE-002] FATAL: run_id contains invalid characters (must be filesystem-safe)"
             )
@@ -233,7 +234,7 @@ class CanonicalInput:
     validation_passed: bool
     validation_errors: list[str] = field(default_factory=list)
     validation_warnings: list[str] = field(default_factory=list)
-    
+
     def __post_init__(self) -> None:
         """Validate types at construction time."""
         if not isinstance(self.document_id, str):
@@ -245,7 +246,9 @@ class CanonicalInput:
         if not isinstance(self.created_at, datetime):
             raise TypeError(f"created_at must be datetime, got {type(self.created_at).__name__}")
         if not isinstance(self.validation_passed, bool):
-            raise TypeError(f"validation_passed must be bool, got {type(self.validation_passed).__name__}")
+            raise TypeError(
+                f"validation_passed must be bool, got {type(self.validation_passed).__name__}"
+            )
 
 
 class CanonicalInputValidator(BaseModel):
@@ -269,13 +272,11 @@ class CanonicalInputValidator(BaseModel):
     validation_errors: list[str] = Field(default_factory=list)
     validation_warnings: list[str] = Field(default_factory=list)
 
-    @model_validator(mode='after')
-    def validate_consistency(self) -> "CanonicalInputValidator":
+    @model_validator(mode="after")
+    def validate_consistency(self) -> CanonicalInputValidator:
         """Ensure validation_passed is True and consistent with errors."""
         if not self.validation_passed:
-            raise ValueError(
-                "validation_passed must be True for valid CanonicalInput"
-            )
+            raise ValueError("validation_passed must be True for valid CanonicalInput")
         if self.validation_errors:
             raise ValueError(
                 f"validation_passed is True but validation_errors is not empty: {self.validation_errors}"
@@ -369,9 +370,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
         # Type check
         if not isinstance(input_data, Phase0Input):
-            errors.append(
-                f"Expected Phase0Input, got {type(input_data).__name__}"
-            )
+            errors.append(f"Expected Phase0Input, got {type(input_data).__name__}")
             return ContractValidationResult(
                 passed=False,
                 contract_type="input",
@@ -385,9 +384,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
                 pdf_path=str(input_data.pdf_path),
                 run_id=input_data.run_id,
                 questionnaire_path=(
-                    str(input_data.questionnaire_path)
-                    if input_data.questionnaire_path
-                    else None
+                    str(input_data.questionnaire_path) if input_data.questionnaire_path else None
                 ),
             )
         except Exception as e:
@@ -416,9 +413,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
         # Type check
         if not isinstance(output_data, CanonicalInput):
-            errors.append(
-                f"Expected CanonicalInput, got {type(output_data).__name__}"
-            )
+            errors.append(f"Expected CanonicalInput, got {type(output_data).__name__}")
             return ContractValidationResult(
                 passed=False,
                 contract_type="output",
@@ -475,7 +470,9 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
             # Use the new Modular Manifest Entry Point
-            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
+            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import (
+                QUESTIONNAIRE_ENTRY_POINT,
+            )
 
             questionnaire_path = QUESTIONNAIRE_ENTRY_POINT
             warnings.append(
@@ -583,66 +580,74 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 # SIGNATURE VALIDATION SYSTEM (Stub Implementation)
 # =============================================================================
 
-from dataclasses import dataclass
-from typing import Callable, Dict, Optional
-import json
 import inspect
+import json
+from collections.abc import Callable
+from dataclasses import dataclass
 
 
 @dataclass
 class FunctionSignature:
     """Signature metadata for a function."""
-    
+
     function_name: str
-    parameters: Dict[str, str]
-    parameter_types: Dict[str, str]
+    parameters: dict[str, str]
+    parameter_types: dict[str, str]
     return_type: str
     module: str = ""
-    class_name: Optional[str] = None
+    class_name: str | None = None
 
 
 class SignatureRegistry:
     """Registry for tracking and validating function signatures."""
-    
+
     def __init__(self, registry_path: Path = Path("signature_registry.json")):
         self.registry_path = registry_path
-        self.signatures: Dict[str, FunctionSignature] = {}
-        
+        self.signatures: dict[str, FunctionSignature] = {}
+
         if self.registry_path.exists():
             self._load_registry()
-    
+
     def _load_registry(self) -> None:
         """Load signatures from registry file."""
         try:
-            with open(self.registry_path, 'r') as f:
+            with open(self.registry_path) as f:
                 data = json.load(f)
                 for key, sig_data in data.items():
                     self.signatures[key] = FunctionSignature(**sig_data)
         except Exception:
             pass  # Ignore errors loading registry
-    
+
     def _save_registry(self) -> None:
         """Save signatures to registry file."""
         try:
             data = {k: vars(v) for k, v in self.signatures.items()}
-            with open(self.registry_path, 'w') as f:
+            with open(self.registry_path, "w") as f:
                 json.dump(data, f, indent=2)
         except Exception:
             pass  # Ignore errors saving registry
-    
+
     def register_function(self, func: Callable) -> FunctionSignature:
         """Register a function signature."""
         sig = inspect.signature(func)
-        
+
         parameters = {}
         parameter_types = {}
-        
+
         for param_name, param in sig.parameters.items():
-            parameters[param_name] = str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
-            parameter_types[param_name] = str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
-        
-        return_type = str(sig.return_annotation) if sig.return_annotation != inspect.Signature.empty else "Any"
-        
+            parameters[param_name] = (
+                str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
+            )
+            parameter_types[param_name] = (
+                str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
+            )
+
+        return_type = (
+            str(sig.return_annotation)
+            if sig.return_annotation != inspect.Signature.empty
+            else "Any"
+        )
+
         signature = FunctionSignature(
             function_name=func.__name__,
             parameters=parameters,
@@ -650,14 +655,16 @@ class SignatureRegistry:
             return_type=return_type,
             module=func.__module__,
         )
-        
+
         key = f"{func.__module__}.{func.__name__}"
         self.signatures[key] = signature
         self._save_registry()
-        
+
         return signature
-    
-    def get_signature(self, module: str, class_name: Optional[str], function_name: str) -> Optional[FunctionSignature]:
+
+    def get_signature(
+        self, module: str, class_name: str | None, function_name: str
+    ) -> FunctionSignature | None:
         """Retrieve a function signature from the registry."""
         key = f"{module}.{function_name}"
         return self.signatures.get(key)
@@ -670,31 +677,71 @@ _signature_registry = SignatureRegistry()
 def validate_signature(enforce: bool = True):
     """
     Decorator to validate function signatures at runtime.
-    
+
     Args:
         enforce: If True, raise errors on validation failures
     """
+
     def decorator(func: Callable) -> Callable:
         # Register the function
         _signature_registry.register_function(func)
-        
+
         def wrapper(*args, **kwargs):
             # For now, just pass through
             return func(*args, **kwargs)
-        
+
         return wrapper
+
     return decorator
 
 
 def validate_call_signature(func: Callable, *args, **kwargs) -> bool:
     """
     Validate a function call against its registered signature.
-    
+
     Returns:
         True if validation passes
     """
     # Stub implementation - always returns True
     return True
+
+
+def validate_phase0_input(input_data: Phase0Input) -> CanonicalInput:
+    """
+    Validate Phase0Input and convert to CanonicalInput.
+
+    This is a convenience function that uses Phase0ValidationContract
+    to validate and transform Phase0Input into CanonicalInput.
+
+    Args:
+        input_data: Phase0Input to validate
+
+    Returns:
+        CanonicalInput if validation passes
+
+    Raises:
+        ValueError: If validation fails
+    """
+    contract = Phase0ValidationContract()
+    result = contract.validate_input(input_data)
+
+    if not result.is_valid:
+        raise ValueError(f"Phase0 input validation failed: {result.errors}")
+
+    # Create CanonicalInput from Phase0Input
+    return CanonicalInput(
+        run_id=input_data.run_id,
+        pdf_path=input_data.pdf_path,
+        questionnaire_path=input_data.questionnaire_path,
+        pdf_sha256=input_data.pdf_sha256 if hasattr(input_data, "pdf_sha256") else "",
+        questionnaire_sha256=(
+            input_data.questionnaire_sha256 if hasattr(input_data, "questionnaire_sha256") else ""
+        ),
+        pdf_page_count=input_data.pdf_page_count if hasattr(input_data, "pdf_page_count") else 1,
+        pdf_size_bytes=input_data.pdf_size_bytes if hasattr(input_data, "pdf_size_bytes") else 0,
+        validation_passed=True,
+        validation_errors=[],
+    )
 
 
 __all__ = [
@@ -706,5 +753,6 @@ __all__ = [
     "FunctionSignature",
     "validate_signature",
     "validate_call_signature",
+    "validate_phase0_input",
     "_signature_registry",
 ]
