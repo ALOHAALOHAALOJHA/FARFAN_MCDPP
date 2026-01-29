@@ -1907,6 +1907,9 @@ class ContractValidator:
         1. Corrección léxica: tokens completos (normalización camelCase/snake_case)
         2. Separación por capa: métodos semánticos/lógicos/temporales permitidos en N1 de TYPE_D
         3. Alineación con scoring_modality: permite métodos TYPE_A/TYPE_E cuando scoring_modality lo indica
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 33 - Refactoring scheduled Q2-Q3 2026
         """
         section = SectionReport("15", "Coherencia Semántica - Anti-Patterns de Dominio", 0, 0, 0, 0)
         

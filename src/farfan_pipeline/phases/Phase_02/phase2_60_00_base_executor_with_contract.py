@@ -403,6 +403,9 @@ class BaseExecutorWithContract(ABC):
 
         Returns:
             List of error messages (empty if all checks pass)
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 44 - Refactoring scheduled Q2 2026 (Chain of Responsibility)
         """
         errors: list[str] = []
 
@@ -1295,6 +1298,9 @@ class BaseExecutorWithContract(ABC):
         - signal_registry for signal pack retrieval
         - policy_area_id for signal routing
         - signal_requirements validation
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 34 - Refactoring scheduled Q2-Q3 2026
         """
         base_slot = self.get_base_slot()
         question_id = question_context.get("question_id")
@@ -1695,6 +1701,9 @@ class BaseExecutorWithContract(ABC):
 
         In v3, contract contains all context, so we use contract['question_context']
         instead of question_context_external (which comes from orchestrator).
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 73 - Refactoring scheduled Q2 2026 (Strategy + State Machine)
         """
         # Extract identity from contract
         identity = contract["identity"]

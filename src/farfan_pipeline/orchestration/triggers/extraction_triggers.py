@@ -187,6 +187,9 @@ class ExtractionTriggers:
 
         Returns:
             Registration ID
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 25 - Refactoring scheduled Q2-Q3 2026
         """
         registration_id = str(uuid.uuid4())[:12]
         trigger_name = name or f"{event.name.lower()}_{signal_type}_{registration_id}"

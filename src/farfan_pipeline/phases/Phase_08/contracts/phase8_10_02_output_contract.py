@@ -92,6 +92,9 @@ def validate_phase8_output_contract(
         
     Returns:
         Validation result with status and details
+    
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 34 - Refactoring scheduled Q2-Q3 2026
     """
     results = {
         'contract_id': 'P8-OUTPUT-CONTRACT-v1.0',

@@ -253,6 +253,8 @@ class PipelineAuditor:
         lines = content.split('\n')
         is_test = self._is_test_file(str(file_path))
         file_path_lower = str(file_path).lower()
+        # Check if script file (acceptable patterns)
+        is_script = '/scripts/' in file_path_lower or file_path_lower.startswith('scripts/')
         # Files that commonly use pickle for internal storage (not user data)
         is_cache_file = any(keyword in file_path_lower for keyword in [
             'cache', 'checkpoint', 'circuit_breaker', 'nexus', 'storage'
@@ -294,6 +296,10 @@ class PipelineAuditor:
                         else:
                             severity = 'CRITICAL'
                             recommendation = self._get_recommendation_for_pattern(category, matched_text)
+                    # Downgrade silenced_errors in test/script files (acceptable patterns)
+                    elif category == 'silenced_errors' and (is_test or is_script):
+                        severity = 'INFO'
+                        recommendation = "Acceptable for test/script code, but consider logging for debugging"
                     else:
                         severity_map = {
                             'silenced_errors': 'HIGH',

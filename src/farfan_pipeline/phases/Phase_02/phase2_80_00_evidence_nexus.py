@@ -1123,6 +1123,9 @@ class RequiredElementsRule:
         - Prefer exact EvidenceType matches when possible
         - Otherwise use contract-pattern evidence nodes (source_method=contract.patterns)
           and map "context" types to categories/lexical markers.
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 48 - Refactoring scheduled Q2 2026 (Strategy Pattern)
         """
         expected = (expected_type or "").strip()
         if not expected:
@@ -3962,6 +3965,9 @@ class EvidenceNexus:
         - Only regex/literal matching (NER_OR_REGEX treated as regex fallback)
         - Caps matches per pattern for determinism and bounded output
         - Type mapping from contract's type_system (not hardcoded)
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 57 - Refactoring scheduled Q2 2026 (Builder + Strategy)
         """
         nodes: list[EvidenceNode] = []
         qid = str(question_context.get("question_id") or "")

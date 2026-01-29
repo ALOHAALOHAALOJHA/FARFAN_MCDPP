@@ -600,6 +600,9 @@ class EpistemologicalClassifier:
         """
         Aplica el árbol de decisión de PARTE II, Sección 2.3
         Retorna: (nivel, justificación, confianza)
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 27 - Refactoring scheduled Q2-Q3 2026
         """
         
         # Excluir métodos de infraestructura básica

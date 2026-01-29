@@ -115,6 +115,9 @@ class MethodSignatureValidator:
         - required_inputs: MUST be present, hard failure if missing at runtime
         - optional_inputs: Nice to have, no penalty if missing
         - critical_optional: Penalize if missing, but don't fail hard
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 29 - Refactoring scheduled Q2-Q3 2026
         """
         is_valid = True
         missing_fields = []

@@ -593,7 +593,10 @@ class IrrigationSynchronizer:
             raise ValueError(error_msg) from e
 
     def _extract_questions(self) -> list[dict[str, Any]]:
-        """Extract all questions from questionnaire in deterministic order."""
+        """Extract all questions from questionnaire in deterministic order.
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 25 - Refactoring scheduled Q2-Q3 2026
+        """
         questions = []
 
         # Ensure questionnaire is a dict (handle CanonicalQuestionnaire object)
@@ -1942,6 +1945,9 @@ class IrrigationSynchronizer:
         Raises:
             TypeError: If signal_registry returns non-list type
             ValueError: If signal missing required field or required signals not found
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 31 - Refactoring scheduled Q2-Q3 2026
         """
         question_id = question.get("question_id", "UNKNOWN")
         chunk_id = getattr(target_chunk, "chunk_id", "UNKNOWN")

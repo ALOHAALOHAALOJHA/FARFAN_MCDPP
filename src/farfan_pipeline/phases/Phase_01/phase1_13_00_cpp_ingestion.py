@@ -761,6 +761,9 @@ def extract_document_genome(
     
     Returns:
         DocumentGenome with adaptive processing hints
+    
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 36 - Refactoring scheduled Q2-Q3 2026
     """
     import hashlib
     
@@ -1827,6 +1830,11 @@ class Phase1CPPIngestionFullContract:
     def _execute_sp2_structural(
         self, preprocessed: PreprocessedDoc, profile: PDMStructuralProfile | None = None
     ) -> StructureData:
+        """SP2: Structural analysis with hierarchy detection.
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 32 - Refactoring scheduled Q2-Q3 2026
+        """
         logger.info("SP2: Starting structural analysis")
 
         profile = profile or getattr(self, "structural_profile", None)
@@ -2015,6 +2023,9 @@ class Phase1CPPIngestionFullContract:
         SP3: Knowledge Graph Construction per FORCING ROUTE SECCIÓN 4.5.
         [EXEC-SP3-001] through [EXEC-SP3-006]
         Extracts ACTOR, INDICADOR, TERRITORIO entities.
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 27 - Refactoring scheduled Q2-Q3 2026
         """
         logger.info("SP3: Starting knowledge graph construction")
         
@@ -2189,6 +2200,9 @@ class Phase1CPPIngestionFullContract:
         SP4: Structured PA×DIM Segmentation per FORCING ROUTE SECCIÓN 5.
         [EXEC-SP4-001] through [EXEC-SP4-008]
         CONSTITUTIONAL INVARIANT: EXACTLY 60 CHUNKS
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 45 - Refactoring scheduled Q2 2026 (Strategy Pattern)
         """
         logger.info("SP4: Starting PA×DIM segmentation - CONSTITUTIONAL INVARIANT")
         profile = profile or getattr(self, "structural_profile", None)
@@ -3109,6 +3123,9 @@ class Phase1CPPIngestionFullContract:
         SP12: Inter-Chunk Enrichment per FORCING ROUTE SECCIÓN 8.
         [EXEC-SP12-001] through [EXEC-SP12-004]
         Links chunks using SISAS signal cross-references.
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 29 - Refactoring scheduled Q2-Q3 2026
         """
         logger.info("SP12: Starting inter-chunk irrigation")
         

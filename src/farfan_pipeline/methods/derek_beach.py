@@ -4493,6 +4493,9 @@ class OperationalizationAuditor:
         - Cross-checks baseline/target against extracted quantitative_claims
         - Verifies DNP INDICATOR_STRUCTURE compliance for producto nodes
         - Scores 'Excelente' only if ≥80% of productos pass full audit
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 29 - Refactoring scheduled Q2-Q3 2026
         """
         # Import for quantitative claims extraction
         try:

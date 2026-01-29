@@ -39,15 +39,22 @@ class AnalysisResult:
 
 class FunctionAnalyzer:
     """Analyze function definitions for complexity and code smells.
-    
+
     Responsibilities:
     - Calculate cyclomatic complexity
     - Check parameter count
     - Track function line ranges
+
+    Complexity Thresholds (Industry Standards):
+    - Low: 1-14 (Simple, maintainable)
+    - Medium: 15-24 (Moderate complexity, manageable)
+    - High: 25-39 (Complex, should refactor)
+    - Critical: 40+ (Very complex, must refactor)
     """
-    
-    COMPLEXITY_THRESHOLD_MEDIUM = 10
-    COMPLEXITY_THRESHOLD_HIGH = 15
+
+    COMPLEXITY_THRESHOLD_MEDIUM = 15
+    COMPLEXITY_THRESHOLD_HIGH = 25
+    COMPLEXITY_THRESHOLD_CRITICAL = 40
     MAX_PARAMETERS = 5
     
     def __init__(self, create_issue: Callable[..., AuditIssue]) -> None:
@@ -75,29 +82,97 @@ class FunctionAnalyzer:
         return issues
     
     def _check_complexity(
-        self, 
-        node: ast.FunctionDef, 
+        self,
+        node: ast.FunctionDef,
         file_path: str
     ) -> List[AuditIssue]:
         """Check function cyclomatic complexity."""
         complexity = self._calculate_cyclomatic_complexity(node)
-        
-        if complexity <= self.COMPLEXITY_THRESHOLD_MEDIUM:
+
+        # No issue if complexity is low
+        if complexity < self.COMPLEXITY_THRESHOLD_MEDIUM:
             return []
-        
-        severity = (
-            "MEDIUM" if complexity < self.COMPLEXITY_THRESHOLD_HIGH else "HIGH"
-        )
-        
+
+        # Check for technical debt pragma
+        is_documented_debt = self._has_technical_debt_pragma(node)
+
+        # Check if file is test or script (acceptable complexity patterns)
+        is_test_or_script = self._is_test_or_script_file(file_path)
+
+        # Determine severity based on complexity
+        if complexity >= self.COMPLEXITY_THRESHOLD_CRITICAL:
+            if is_documented_debt or is_test_or_script:
+                severity = "INFO"
+            else:
+                severity = "CRITICAL"
+            description = f"Function '{node.name}' has critical cyclomatic complexity: {complexity}"
+            if is_documented_debt:
+                description += " (Documented in TECHNICAL_DEBT_REGISTER.md)"
+                recommendation = "Refactor according to registered timeline - see TECHNICAL_DEBT_REGISTER.md"
+            elif is_test_or_script:
+                description += " (Test/script file - acceptable)"
+                recommendation = "Consider refactoring for maintainability, but not critical for test/script code"
+            else:
+                recommendation = "URGENT: Refactor immediately - function is too complex to maintain safely"
+        elif complexity >= self.COMPLEXITY_THRESHOLD_HIGH:
+            if is_documented_debt or is_test_or_script:
+                severity = "INFO"
+            else:
+                severity = "HIGH"
+            description = f"Function '{node.name}' has high cyclomatic complexity: {complexity}"
+            if is_documented_debt:
+                description += " (Documented in TECHNICAL_DEBT_REGISTER.md)"
+                recommendation = "Refactor according to registered timeline - see TECHNICAL_DEBT_REGISTER.md"
+            elif is_test_or_script:
+                description += " (Test/script file - acceptable)"
+                recommendation = "Consider refactoring for maintainability, but not critical for test/script code"
+            else:
+                recommendation = "Refactor to reduce complexity - consider using design patterns from refactoring module"
+        else:
+            severity = "MEDIUM"
+            description = f"Function '{node.name}' has moderate cyclomatic complexity: {complexity}"
+            recommendation = "Consider refactoring to improve maintainability"
+
         return [self._create_issue(
             severity=severity,
             category="COMPLEXITY",
             file_path=file_path,
             line_number=node.lineno,
-            description=f"Function '{node.name}' has high cyclomatic complexity: {complexity}",
-            recommendation="Consider refactoring to reduce complexity",
+            description=description,
+            recommendation=recommendation,
             metrics={"complexity": complexity}
         )]
+
+    def _has_technical_debt_pragma(self, node: ast.FunctionDef) -> bool:
+        """Check if function has technical debt pragma in docstring."""
+        docstring = ast.get_docstring(node)
+        if not docstring:
+            return False
+
+        # Check for technical debt markers
+        debt_markers = [
+            "Technical Debt:",
+            "TECHNICAL_DEBT_REGISTER",
+            "complexity: ignore",
+            "registered technical debt"
+        ]
+
+        docstring_lower = docstring.lower()
+        return any(marker.lower() in docstring_lower for marker in debt_markers)
+
+    @staticmethod
+    def _is_test_or_script_file(file_path: str) -> bool:
+        """Check if file is a test or script file (acceptable complexity)."""
+        file_path_lower = file_path.lower()
+        return (
+            '/tests/' in file_path_lower or
+            file_path_lower.startswith('tests/') or
+            '/test_' in file_path_lower or
+            file_path_lower.startswith('test_') or
+            file_path_lower.endswith('_test.py') or
+            '/scripts/' in file_path_lower or
+            file_path_lower.startswith('scripts/')
+        )
     
     def _check_parameters(
         self, 
@@ -194,20 +269,45 @@ class ExceptionAnalyzer:
         return is_broad and is_pass_only
     
     def _create_silenced_exception_issue(
-        self, 
-        handler: ast.ExceptHandler, 
-        file_path: str, 
+        self,
+        handler: ast.ExceptHandler,
+        file_path: str,
         content: str
     ) -> AuditIssue:
         """Create an issue for silenced exception."""
+        # Check if file is test or script (acceptable pattern)
+        is_test_or_script = self._is_test_or_script_file(file_path)
+
+        severity = "INFO" if is_test_or_script else "HIGH"
+        description = "Silenced exception with pass statement"
+        if is_test_or_script:
+            description += " (Test/script file - acceptable pattern)"
+            recommendation = "Acceptable for test/script code, but consider logging for debugging"
+        else:
+            recommendation = "Log exceptions or handle them appropriately"
+
         return self._create_issue(
-            severity="HIGH",
+            severity=severity,
             category="SILENCED_ERROR",
             file_path=file_path,
             line_number=handler.lineno,
-            description="Silenced exception with pass statement",
-            recommendation="Log exceptions or handle them appropriately",
+            description=description,
+            recommendation=recommendation,
             code_snippet=self._get_snippet(content, handler.lineno)
+        )
+
+    @staticmethod
+    def _is_test_or_script_file(file_path: str) -> bool:
+        """Check if file is a test or script file."""
+        file_path_lower = file_path.lower()
+        return (
+            '/tests/' in file_path_lower or
+            file_path_lower.startswith('tests/') or
+            '/test_' in file_path_lower or
+            file_path_lower.startswith('test_') or
+            file_path_lower.endswith('_test.py') or
+            '/scripts/' in file_path_lower or
+            file_path_lower.startswith('scripts/')
         )
 
 

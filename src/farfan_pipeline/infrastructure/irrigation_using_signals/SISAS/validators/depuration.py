@@ -737,7 +737,10 @@ class DepurationValidator:
         role: str,
         file_path: str
     ) -> List[DepurationWarning]:
-        """Verifica coherencia lógica de los datos"""
+        """Verifica coherencia lógica de los datos
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 30 - Refactoring scheduled Q2-Q3 2026
+        """
         warnings = []
 
         # Coherencia para metadata

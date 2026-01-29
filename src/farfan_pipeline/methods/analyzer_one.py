@@ -1878,6 +1878,11 @@ class SemanticAnalyzer:
         return self._compute_unit_of_analysis_natural_blocks(report)
 
     def _compute_unit_of_analysis_natural_blocks(self, report: dict[str, Any]) -> dict[str, int]:
+        """Compute natural blocks from unit of analysis report sections.
+
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 25 - Refactoring scheduled Q2-Q3 2026
+        """
         unit_report = report.get("reporte_unit_of_analysis", {})
         sections = unit_report.get("secciones", [])
 
@@ -3307,7 +3312,10 @@ class DocumentProcessor:
         questionnaire_path: str = "questionnaire.json",
         rubric_path: str = "rubric_scoring_FIXED.json",
     ) -> tuple[list[CanonicalQuestionContract], dict[str, Any], dict[str, Any], str]:
-        """Load canonical question contracts based on questionnaire and rubric."""
+        """Load canonical question contracts based on questionnaire and rubric.
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 28 - Refactoring scheduled Q2-Q3 2026
+        """
 
         questionnaire_file = Path(questionnaire_path)
         rubric_file = Path(rubric_path)

@@ -2354,6 +2354,9 @@ class UnifiedOrchestrator:
             - subphase_results: Results from each subphase
             - constitutional_invariants: Validation of all invariants
             - smart_chunks: Final list of 60 SmartChunks
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 27 - Refactoring scheduled Q2-Q3 2026
         """
         from farfan_pipeline.phases.Phase_00.phase0_40_00_input_validation import CanonicalInput
         from farfan_pipeline.phases.Phase_01.phase1_01_00_cpp_models import (
@@ -3471,6 +3474,9 @@ class UnifiedOrchestrator:
             - exit_gates: Validation gates for Phase 6 transition
             - synthesis: Cross-area pattern analysis
             - validation_passed: Overall validation status
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 28 - Refactoring scheduled Q2-Q3 2026
         """
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 5: POLICY AREA AGGREGATION - FULL ORCHESTRATION STARTED (v2.0)")
@@ -4396,6 +4402,9 @@ class UnifiedOrchestrator:
 
         Returns:
             Dict with recommendation generation results
+        
+        Technical Debt: Registered in TECHNICAL_DEBT_REGISTER.md
+        Complexity: 26 - Refactoring scheduled Q2-Q3 2026
         """
         self.logger.info("=" * 80)
         self.logger.critical("PHASE 8: RECOMMENDATIONS ENGINE - FULL ORCHESTRATION STARTED")
