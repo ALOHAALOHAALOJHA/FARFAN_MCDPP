@@ -788,13 +788,18 @@ run_pipeline() {
         if [ -f "$orchestrator_script" ]; then
             info "Using orchestrator directly"
             python -c "
-from farfan_pipeline.orchestration.orchestrator import UnifiedOrchestrator
+from farfan_pipeline.orchestration.orchestrator import UnifiedOrchestrator, OrchestratorConfig
 import sys
 
 try:
-    orchestrator = UnifiedOrchestrator()
-    result = orchestrator.run_pipeline('$PLAN_PDF', '$ARTIFACTS_DIR')
-    sys.exit(0)
+    config = OrchestratorConfig(
+        document_path='$PLAN_PDF',
+        output_dir='$ARTIFACTS_DIR',
+        municipality_name='pipeline_execution'
+    )
+    orchestrator = UnifiedOrchestrator(config)
+    result = orchestrator.execute()
+    sys.exit(0 if result.success else 1)
 except Exception as e:
     print(f'Pipeline execution failed: {e}', file=sys.stderr)
     sys.exit(1)
