@@ -448,7 +448,6 @@ class N2InferentialOptimizer:
         
         # Between-chain variance
         chain_means = np.array([np.mean(chain) for chain in chains])
-        overall_mean = np.mean(chain_means)
         B = n * np.var(chain_means, ddof=1)
         
         # Marginal posterior variance estimate
