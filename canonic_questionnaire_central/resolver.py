@@ -1133,8 +1133,8 @@ class CanonicalQuestionnaireResolver:
             )
             if result.returncode == 0:
                 return result.stdout.strip()[:12]
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Exception silenced: {str(e)}")
         return None
 
 

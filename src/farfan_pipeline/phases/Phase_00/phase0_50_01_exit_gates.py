@@ -504,9 +504,9 @@ def check_method_registry_gate(runner: Phase0Runner) -> GateResult:
                     gate_id=gate_id,
                     reason=f"Validated via UnifiedFactory (Registry Stub detected): {registered_count} contracts"
                 )
-        except Exception:
+        except Exception as e:
             # Fall through to standard failure
-            pass
+            logger.debug(f"Could not validate via UnifiedFactory, using standard check: {str(e)}")
 
     if registered_count < expected_count:
         return GateResult(

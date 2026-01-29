@@ -158,33 +158,6 @@
   },
   "epistemic_necessity_logic": {
     "description": "Override score threshold for epistemically necessary methods",
-    "implementation": """
-    def select_with_epistemic_override(candidates, question_type, level):
-        type_requirements = EPISTEMIC_MINIMA[question_type]
-
-        # Get forced inclusions for this level
-        forced_patterns = type_requirements["mandatory_patterns"][level]
-        forced_inclusions = type_requirements.get("epistemic_necessity_override", {}).get("forced_inclusions", [])
-
-        # Always include methods matching mandatory patterns
-        selected = []
-        for candidate in candidates:
-            method_id = candidate.get("method_id", "")
-
-            # Check if method matches forced inclusion pattern
-            if any(re.search(pattern, method_id, re.IGNORECASE) for pattern in forced_inclusions):
-                candidate["selection_reason"] = "epistemic_necessity_override"
-                candidate["effective_score"] = 1.0  # Force inclusion
-                selected.append(candidate)
-            elif any(re.search(pattern, method_id, re.IGNORECASE) for pattern in forced_patterns):
-                if candidate.get("score", 0) >= EPISTEMIC_THRESHOLD:
-                    candidate["selection_reason"] = "mandatory_pattern_match"
-                    selected.append(candidate)
-            elif candidate.get("score", 0) >= SCORE_THRESHOLD:
-                candidate["selection_reason"] = "score_threshold"
-                selected.append(candidate)
-
-        return selected
-    """
+    "implementation": "def select_with_epistemic_override(candidates, question_type, level):\n    type_requirements = EPISTEMIC_MINIMA[question_type]\n\n    # Get forced inclusions for this level\n    forced_patterns = type_requirements[\"mandatory_patterns\"][level]\n    forced_inclusions = type_requirements.get(\"epistemic_necessity_override\", {}).get(\"forced_inclusions\", [])\n\n    # Always include methods matching mandatory patterns\n    selected = []\n    for candidate in candidates:\n        method_id = candidate.get(\"method_id\", \"\")\n\n        # Check if method matches forced inclusion pattern\n        if any(re.search(pattern, method_id, re.IGNORECASE) for pattern in forced_inclusions):\n            candidate[\"selection_reason\"] = \"epistemic_necessity_override\"\n            candidate[\"effective_score\"] = 1.0  # Force inclusion\n            selected.append(candidate)\n        elif any(re.search(pattern, method_id, re.IGNORECASE) for pattern in forced_patterns):\n            if candidate.get(\"score\", 0) >= EPISTEMIC_THRESHOLD:\n                candidate[\"selection_reason\"] = \"mandatory_pattern_match\"\n                selected.append(candidate)\n        elif candidate.get(\"score\", 0) >= SCORE_THRESHOLD:\n            candidate[\"selection_reason\"] = \"score_threshold\"\n            selected.append(candidate)\n\n    return selected"
   }
 }

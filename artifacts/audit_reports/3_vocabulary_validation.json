@@ -298,8 +298,8 @@
     ]
   },
   "statistics": {
-    "vocabulary_size_lines": 483 (signal_vocabulary.py) + 191 (capability_vocabulary.py)",
-    "total_validators": 2 (SignalVocabulary, CapabilityVocabulary),
+    "vocabulary_size_lines": "483 (signal_vocabulary.py) + 191 (capability_vocabulary.py)",
+    "total_validators": "2 (SignalVocabulary, CapabilityVocabulary)",
     "cache_hit_rate": "Not measured in production",
     "validation_methods": 10
   }

@@ -1365,8 +1365,12 @@ class IrrigationSynchronizer:
                     tasks_per_policy_area[policy_area_id] = (
                         tasks_per_policy_area.get(policy_area_id, 0) + 1
                     )
-            except (IndexError, ValueError):
-                pass
+            except (IndexError, ValueError) as e:
+                logger.debug(
+                    "failed_to_parse_policy_area_id",
+                    chunk_id=task.chunk_id,
+                    error=str(e)
+                )
 
         tasks_per_dimension: dict[str, int] = {}
         for task in plan.tasks:
@@ -1377,8 +1381,12 @@ class IrrigationSynchronizer:
                     tasks_per_dimension[dimension_id] = (
                         tasks_per_dimension.get(dimension_id, 0) + 1
                     )
-            except (IndexError, ValueError):
-                pass
+            except (IndexError, ValueError) as e:
+                logger.debug(
+                    "failed_to_parse_dimension_id",
+                    chunk_id=task.chunk_id,
+                    error=str(e)
+                )
 
         logger.info(
             json.dumps(
@@ -1977,15 +1985,25 @@ class IrrigationSynchronizer:
                     if hasattr(signal, field):
                         getattr(signal, field)
                         has_field = True
-                except (AttributeError, KeyError):
-                    pass
+                except (AttributeError, KeyError) as e:
+                    logger.debug(
+                        "signal_field_access_failed",
+                        field=field,
+                        signal_index=i,
+                        error=str(e)
+                    )
 
                 if not has_field:
                     try:
                         if isinstance(signal, dict) and field in signal:
                             has_field = True
-                    except (TypeError, KeyError):
-                        pass
+                    except (TypeError, KeyError) as e:
+                        logger.debug(
+                            "signal_dict_access_failed",
+                            field=field,
+                            signal_index=i,
+                            error=str(e)
+                        )
 
                 if not has_field:
                     raise ValueError(
@@ -2000,15 +2018,21 @@ class IrrigationSynchronizer:
             try:
                 if hasattr(signal, "signal_type"):
                     signal_type = signal.signal_type
-            except AttributeError:
-                pass
+            except AttributeError as e:
+                logger.debug(
+                    "signal_type_attribute_access_failed",
+                    error=str(e)
+                )
 
             if signal_type is None:
                 try:
                     if isinstance(signal, dict):
                         signal_type = signal["signal_type"]
-                except (KeyError, TypeError):
-                    pass
+                except (KeyError, TypeError) as e:
+                    logger.debug(
+                        "signal_type_dict_access_failed",
+                        error=str(e)
+                    )
 
             if signal_type is not None:
                 signal_types.add(signal_type)
@@ -2034,15 +2058,21 @@ class IrrigationSynchronizer:
                 try:
                     if hasattr(signal, "signal_type"):
                         signal_type = signal.signal_type
-                except AttributeError:
-                    pass
+                except AttributeError as e:
+                    logger.debug(
+                        "duplicate_check_signal_type_attribute_failed",
+                        error=str(e)
+                    )
 
                 if signal_type is None:
                     try:
                         if isinstance(signal, dict):
                             signal_type = signal["signal_type"]
-                    except (KeyError, TypeError):
-                        pass
+                    except (KeyError, TypeError) as e:
+                        logger.debug(
+                            "duplicate_check_signal_type_dict_failed",
+                            error=str(e)
+                        )
 
                 if signal_type is not None:
                     type_counts[signal_type] = type_counts.get(signal_type, 0) + 1

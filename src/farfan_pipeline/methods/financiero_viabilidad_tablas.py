@@ -903,7 +903,8 @@ class PDETMunicipalPlanAnalyzer:
                         risk_level=DEFAULT_INDICATOR_RISK,  # Refactored
                     )
                 )
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Exception in operation: {str(e)}")
                 continue
 
         return indicators
@@ -1064,7 +1065,8 @@ class PDETMunicipalPlanAnalyzer:
                                 budget_allocated=None,
                             )
                         )
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Exception in operation: {str(e)}")
                 continue
 
         return entities
@@ -1424,7 +1426,8 @@ class PDETMunicipalPlanAnalyzer:
 
                 if pillar_lower in context:
                     return Decimal(str(indicator["amount"]))
-            except Exception:
+            except Exception as e:
+                logger.debug(f"Exception in operation: {str(e)}")
                 continue
 
         return None
